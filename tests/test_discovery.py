@@ -54,12 +54,21 @@ def adapter(monkeypatch):
     for name in ("entity_registry", "device_registry", "area_registry"):
         reg = types.ModuleType(f"homeassistant.helpers.{name}")
         if name == "entity_registry":
-            reg.async_get = lambda hass: SimpleNamespace(async_get=lambda e: (
-                SimpleNamespace(area_id=hass._entity_areas[e], device_id=None)
-                if e in hass._entity_areas else None
-            ))
+            def entity_registry(hass):
+                def get(e):
+                    if e in hass._entity_areas or e in getattr(hass, "_entity_devices", {}):
+                        return SimpleNamespace(
+                            area_id=hass._entity_areas.get(e),
+                            device_id=getattr(hass, "_entity_devices", {}).get(e),
+                        )
+                    return None
+                return SimpleNamespace(async_get=get)
+            reg.async_get = entity_registry
         elif name == "device_registry":
-            reg.async_get = lambda hass: SimpleNamespace(async_get=lambda device_id: None)
+            reg.async_get = lambda hass: SimpleNamespace(async_get=lambda device_id: (
+                SimpleNamespace(area_id=hass._device_areas[device_id])
+                if device_id in getattr(hass, "_device_areas", {}) else None
+            ))
         else:
             reg.async_get = lambda hass: SimpleNamespace(async_get_area=lambda area: SimpleNamespace(name=area))
         setattr(helpers, name, reg)
@@ -134,3 +143,49 @@ def test_window_class_only(adapter):
 def test_quiet_warning_sensor_need_not_republish_off_every_hour(adapter):
     home = FakeHass([MockState("binary_sensor.weather_warning", "off", hours_old=72)])
     assert adapter.warning(home, "binary_sensor.weather_warning", 90).active is False
+
+
+
+def test_window_area_choices_only_contain_areas_with_recognized_windows(adapter):
+    home = FakeHass([
+        MockState("binary_sensor.living_window", "off", device_class="window", name="Living window"),
+        MockState("cover.living_window", "closed", device_class="window", name="Living cover"),
+        MockState("binary_sensor.kitchen_door", "off", device_class="door"),
+        MockState("sensor.bedroom_co2", 1250, device_class="co2", unit="ppm"),
+        MockState("binary_sensor.outside_window", "on", device_class="window"),
+    ], {
+        "binary_sensor.living_window": "living",
+        "cover.living_window": "living",
+        "binary_sensor.kitchen_door": "kitchen",
+        "sensor.bedroom_co2": "bedroom",
+    })
+    choices = adapter.window_area_choices(home)
+    assert len(choices) == 1
+    assert choices[0]["value"] == "living"
+    assert "2" in choices[0]["label"]
+
+
+def test_window_area_choices_use_device_area_when_entity_has_no_override(adapter):
+    home = FakeHass([
+        MockState("binary_sensor.bedroom_window", "off", device_class="window"),
+    ])
+    home._entity_devices = {"binary_sensor.bedroom_window": "device_1"}
+    home._device_areas = {"device_1": "bedroom"}
+    assert adapter.window_area_choices(home)[0]["value"] == "bedroom"
+
+
+def test_window_area_choices_keep_previous_selection_without_suggesting_empty_areas(adapter):
+    home = FakeHass([
+        MockState("binary_sensor.kitchen_window", "off", device_class="window"),
+    ], {"binary_sensor.kitchen_window": "kitchen"})
+    assert {c["value"] for c in adapter.window_area_choices(home)} == {"kitchen"}
+    choices = adapter.window_area_choices(home, ["bedroom", "kitchen"])
+    assert {c["value"] for c in choices} == {"bedroom", "kitchen"}
+    assert choices[0]["value"] == "kitchen"
+    assert "⚠" in next(c["label"] for c in choices if c["value"] == "bedroom")
+
+
+def test_window_area_choices_empty_when_no_recognized_windows(adapter):
+    home = FakeHass([MockState("binary_sensor.lounge_door", "off", device_class="door")],
+                    {"binary_sensor.lounge_door": "lounge"})
+    assert adapter.window_area_choices(home) == []
