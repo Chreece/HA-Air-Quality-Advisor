@@ -18,7 +18,7 @@ from .const import (
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN,
 )
-from .discovery import outdoor_choices, warning_choices
+from .discovery import outdoor_choices, warning_choices, window_area_choices
 
 
 def _marker(name: str, default: Any = None, *, required: bool = False) -> probatio.Marker:
@@ -49,16 +49,23 @@ class _FlowMixin:
     _values: dict[str, Any]
 
     async def async_step_areas(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        previous = self._values.get(CONF_AREAS, []) if getattr(self, "_editing", False) else []
+        choices = window_area_choices(self.hass, previous)
+        known = {choice["value"] for choice in choices}
         errors: dict[str, str] = {}
         if user_input is not None:
-            if not user_input.get(CONF_AREAS):
+            selected = list(dict.fromkeys(user_input.get(CONF_AREAS, [])))
+            if not selected:
                 errors["base"] = "no_areas"
+            elif any(area not in known for area in selected):
+                errors["base"] = "invalid_areas"
             else:
-                self._values[CONF_AREAS] = user_input[CONF_AREAS]
+                self._values[CONF_AREAS] = selected
                 return await self.async_step_outdoor()
+        elif not choices:
+            errors["base"] = "no_window_areas"
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
-            _marker(CONF_AREAS, self._values.get(CONF_AREAS, []), required=True):
-                selector.AreaSelector(selector.AreaSelectorConfig(multiple=True)),
+            _marker(CONF_AREAS, previous, required=True): _multi(choices),
         }), errors=errors)
 
     async def async_step_outdoor(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
