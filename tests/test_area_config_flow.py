@@ -273,54 +273,141 @@ def test_missing_saved_sensor_kept_removable_invalid_selection_rejected(monkeypa
     assert wizard._values["excluded_indoor_entities"]["office"] == []
 
 
-def test_reconfigure_runs_complete_wizard_and_can_edit_advanced_thresholds(monkeypatch, adapter):
-    Wizard = _wizard(monkeypatch, adapter)
+def _make_options(monkeypatch, adapter, *, two_rooms=False):
+    """Build the real options handler with the test Home Assistant doubles."""
+    _wizard(monkeypatch, adapter)
     import custom_components.air_quality_advisor.config_flow as flows
-    co2 = "sensor.living_co2"
-    outdoor = "sensor.outdoor_pm25"
-    home = FakeHass([
+    states = [
         MockState("binary_sensor.living_window", "off", device_class="window"),
-        MockState(co2, 900, device_class="co2", unit="ppm"),
-        MockState(outdoor, 8, device_class="pm25", unit="µg/m³"),
+        MockState("sensor.living_co2", 900, device_class="co2", unit="ppm"),
+        MockState("sensor.outdoor_pm25", 8, device_class="pm25", unit="µg/m³"),
         MockState("weather.home", "sunny"),
-    ], {
-        "binary_sensor.living_window":"living", co2:"living", outdoor:"outside"
-    })
+    ]
+    areas = {
+        "binary_sensor.living_window":"living",
+        "sensor.living_co2":"living",
+        "sensor.outdoor_pm25":"outside",
+    }
+    selected_areas = ["living"]
+    exclusions = {"living":["sensor.living_co2"]}
+    if two_rooms:
+        states.extend([
+            MockState("binary_sensor.kitchen_window", "off", device_class="window"),
+            MockState("sensor.kitchen_co2", 850, device_class="co2", unit="ppm"),
+        ])
+        areas.update({
+            "binary_sensor.kitchen_window":"kitchen",
+            "sensor.kitchen_co2":"kitchen",
+        })
+        selected_areas.append("kitchen")
+        exclusions["kitchen"] = ["sensor.kitchen_co2"]
+
+    home = FakeHass(states, areas)
     home.services = SimpleNamespace(has_service=lambda *args: False)
     options = flows.AirQualityOptionsFlow()
     options.hass = home
     options.config_entry = SimpleNamespace(data={
-        "areas":["living"], "excluded_window_entities":[],
-        "excluded_indoor_entities":{"living":[co2]},
-        "outdoor_sensors":[outdoor], "weather_entities":["weather.home"],
-        "thresholds":{"indoor_co2":1200}, "automatic_tts":False,
-        "automatic_notifications":False, "language":"el",
+        "areas":selected_areas,
+        "excluded_window_entities":[],
+        "excluded_indoor_entities":exclusions,
+        "outdoor_sensors":["sensor.outdoor_pm25"],
+        "weather_entities":["weather.home"],
+        "thresholds":{"indoor_co2":1200},
+        "automatic_tts":False,
+        "automatic_notifications":False,
+        "language":"el",
     }, options={})
     options.async_show_form = lambda **kwargs: kwargs
-    options.async_create_entry = lambda **kwargs: {"completed": kwargs}
+    options.async_show_menu = lambda **kwargs: kwargs
+    options.async_create_entry = lambda **kwargs: {"completed":kwargs}
+    return options
 
-    result = asyncio.run(options.async_step_init())
-    assert result["step_id"] == "window_sensors"  # Not a menu
-    result = asyncio.run(options.async_step_window_sensors({"excluded_window_entities": []}))
-    assert result["step_id"] == "areas"
+
+def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    menu = asyncio.run(options.async_step_init())
+    assert menu["step_id"] == "init"
+    assert menu["menu_options"] == [
+        "window_sensors", "areas", "indoor_sensors", "outdoor",
+        "weather", "delivery", "thresholds",
+    ]
+    assert options._values["thresholds"] == {"indoor_co2":1200}
+
+
+def test_reconfigure_window_exclusions_finish_without_full_wizard(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_window_sensors())
+    assert form["step_id"] == "window_sensors"
+    result = asyncio.run(options.async_step_window_sensors({
+        "excluded_window_entities":["binary_sensor.living_window"],
+    }))
+    assert result["completed"]["data"]["excluded_window_entities"] == ["binary_sensor.living_window"]
+    assert result["completed"]["data"]["areas"] == ["living"]
+    assert result["completed"]["data"]["excluded_indoor_entities"] == {"living":["sensor.living_co2"]}
+
+
+def test_reconfigure_areas_outdoor_and_weather_save_only_selected_section(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
     result = asyncio.run(options.async_step_areas({"areas":["living"]}))
-    assert result["step_id"] == "indoor_sensors"
-    assert next(iter(result["data_schema"])).default == [co2]
-    result = asyncio.run(options.async_step_indoor_sensors({"excluded_indoor_entities": []}))
-    assert result["step_id"] == "outdoor"
-    result = asyncio.run(options.async_step_outdoor({"outdoor_sensors":[outdoor]}))
-    assert result["step_id"] == "weather"
-    result = asyncio.run(options.async_step_weather({"weather_entities":["weather.home"]}))
-    assert result["step_id"] == "delivery"
-    assert next(k.default for k in result["data_schema"] if k == "language") == "el"
-    result = asyncio.run(options.async_step_delivery({"edit_thresholds":True}))
-    assert result["step_id"] == "thresholds"
-    assert next(k.default for k in result["data_schema"] if k == "indoor_co2") == 1200
+    assert result["completed"]["data"]["outdoor_sensors"] == ["sensor.outdoor_pm25"]
+    assert result["completed"]["data"]["thresholds"] == {"indoor_co2":1200}
+
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    result = asyncio.run(options.async_step_outdoor({"outdoor_sensors":["sensor.outdoor_pm25"]}))
+    assert result["completed"]["data"]["weather_entities"] == ["weather.home"]
+
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    result = asyncio.run(options.async_step_weather({
+        "weather_entities":["weather.home"], "weather_warnings":[],
+    }))
+    assert result["completed"]["data"]["excluded_indoor_entities"] == {"living":["sensor.living_co2"]}
+
+
+def test_reconfigure_indoor_sensors_remain_room_by_room(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter, two_rooms=True)
+    asyncio.run(options.async_step_init())
+    first = asyncio.run(options.async_step_indoor_sensors())
+    assert first["step_id"] == "indoor_sensors"
+    assert next(iter(first["data_schema"])).default == ["sensor.living_co2"]
+    second = asyncio.run(options.async_step_indoor_sensors({"excluded_indoor_entities":[]}))
+    assert second["step_id"] == "indoor_sensors"
+    assert next(iter(second["data_schema"])).default == ["sensor.kitchen_co2"]
+    saved = asyncio.run(options.async_step_indoor_sensors({
+        "excluded_indoor_entities":["sensor.kitchen_co2"],
+    }))
+    assert saved["completed"]["data"]["excluded_indoor_entities"] == {
+        "living":[], "kitchen":["sensor.kitchen_co2"],
+    }
+    assert saved["completed"]["data"]["weather_entities"] == ["weather.home"]
+
+
+def test_announcement_editor_has_no_advanced_threshold_toggle(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_delivery())
+    assert "edit_thresholds" not in form["data_schema"]
+    assert next(k.default for k in form["data_schema"] if k == "language") == "el"
+    saved = asyncio.run(options.async_step_delivery({"language":"de"}))
+    assert saved["completed"]["data"]["language"] == "de"
+    assert saved["completed"]["data"]["thresholds"] == {"indoor_co2":1200}
+    assert "edit_thresholds" not in saved["completed"]["data"]
+
+
+def test_advanced_thresholds_are_editable_directly_from_menu(monkeypatch, adapter):
     from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
-    result = asyncio.run(options.async_step_thresholds({**DEFAULT_THRESHOLDS,"indoor_co2":1100}))
-    assert result["completed"]["data"]["thresholds"]["indoor_co2"] == 1100
-    assert result["completed"]["data"]["excluded_indoor_entities"] == {"living":[]}
-    assert "edit_thresholds" not in result["completed"]["data"]
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_thresholds())
+    assert form["step_id"] == "thresholds"
+    assert next(k.default for k in form["data_schema"] if k == "indoor_co2") == 1200
+    saved = asyncio.run(options.async_step_thresholds({**DEFAULT_THRESHOLDS,"indoor_co2":1100}))
+    assert saved["completed"]["data"]["thresholds"]["indoor_co2"] == 1100
+    assert saved["completed"]["data"]["excluded_indoor_entities"] == {"living":["sensor.living_co2"]}
+
 
 
 def test_reconfigure_when_no_supported_air_sensors_skips_empty_room_page(monkeypatch, adapter):

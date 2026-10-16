@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.6 — targeted and localized reconfiguration
+
+- Remove the optional advanced-threshold checkbox from initial setup and the Announcements page.
+- Restore the seven-section Configure menu: Window exclusions, Rooms, Per-room indoor sensors, Outdoor sensors, Weather/warnings, Announcements and Advanced thresholds.
+- Edit and save only the chosen section, preserving all other existing settings. Indoor exclusion editing remains room-by-room.
+- Keep the original first-time guided wizard and same HA entity IDs.
+- Localize the menu into English, Greek, German, French and Spanish, and update tests and documentation.
+
 ## 0.1.5 — full reconfiguration and per-room indoor sensor exclusions
 
 - Configure now starts the complete setup wizard again: window-contact exclusions, room selection, per-room indoor air exclusions, outside sensors, weather and announcements.

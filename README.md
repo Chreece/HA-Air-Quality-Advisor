@@ -58,18 +58,18 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## Guided configuration and reconfiguration
 
-The **Configure** action follows the same guided wizard as first installation. Existing choices are preloaded so you can review every stage without deleting or recreating the integration:
+**Initial setup** follows the guided sequence below:
 
 1. **Window sensor exclusions (multi-select).** Review Window-class `binary_sensor` entities; likely thermostat-derived or virtual window signals are preselected for exclusion. Uncheck genuine contacts, or add others. Your saved choice—including a deliberately empty exclusion list—always takes precedence over automatic suggestions.
 2. **Areas (multi-select).** Rooms with at least one eligible window contact are preselected on first setup. Reconfiguration retains your selected rooms, even when a contact is temporarily unavailable. Window-class `cover` entities never count as window sensors.
 3. **Indoor air-quality exclusions (one page per selected room).** Each room with supported indoor sensors has its own multi-select. Available candidates include **humidity, CO₂, US AQI, PM2.5, PM10, total VOC mass concentration and VOC parts concentration**, using only the supported device classes or recognized sensor IDs with compatible units. Options show **device name › entity name · measurement · entity ID**; entities without a registered device still show entity name, metric and ID. Select sensors to **exclude** from that specific room; **leave empty to monitor them all**. On reconfiguration the saved exclusions are checked. Previously excluded but now missing sensors remain selectable, so you can remove obsolete exclusions. Rooms without supported indoor sensors are skipped rather than showing a useless blank menu.
 4. **Outdoor air quality.** Select recognized outdoor entities not associated with monitored rooms. Unknown, unavailable and stale readings are reported as missing, not treated as dangerous. Valid high readings still block opening.
 5. **Weather and warnings.** Select one or more `weather.*` entities and optional recognized warning sensors. Unsafe weather and active or unknown warnings block window opening.
-6. **Announcements (optional).** Set spoken/visual delivery, per-action language support and optional [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) routing. A final **Edit advanced thresholds** checkbox opens a separate limits page only when requested. Saved limits remain unchanged otherwise.
+6. **Announcements (optional).** Configure spoken/visual delivery, language and optional [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) routing. Advanced thresholds are edited separately through Configure.
 
 Indoor exclusions are stored **by Home Assistant area**, used for both recommendations and the dashboard snapshot. An excluded indoor sensor remains available in Home Assistant; the integration does not disable, delete or modify it. Areas with no remaining active indoor measurements are shown as **unknown**, never silently marked safe. Only the single existing window-recommendation entity is generated.
 
-For an installed integration, open **Settings → Devices & services → Integrations → Air Quality Advisor → Configure**. Continue through each step and save at the end; cancelling the wizard leaves existing settings untouched. The full flow uses the same five Home Assistant UI languages (English, German, Greek, French and Spanish).
+For an installed integration, open **Settings → Devices & services → Integrations → Air Quality Advisor → Configure**. A translated menu lets you choose exactly which section to edit: Window sensor exclusions, Rooms, Per-room indoor air sensors, Outdoor air sensors, Weather and warnings, Announcements, or Advanced thresholds. Only the selected section opens. Indoor sensor exclusions continue room by room, but every other section saves immediately without forcing the rest of setup. Your saved selections are prefilled; cancelling leaves existing settings unchanged. The full flow uses the same five Home Assistant UI languages (English, German, Greek, French and Spanish).
 
 ### Supported indoor and outdoor measurements
 
