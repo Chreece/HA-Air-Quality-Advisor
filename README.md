@@ -58,6 +58,8 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
 
 *Demo sensor values are illustrative; actual recommendations always use your configured Home Assistant entities. The card does not operate windows.*
 
+Screenshots are generated with the bundled card source using [`tools/generate_readme_screenshots.py`](tools/generate_readme_screenshots.py). To refresh them after changing the card, run the one-time [README screenshots workflow](.github/workflows/readme-screenshots.yml) manually; it does not run on routine development pushes.
+
 ## What it provides
 
 - A single `sensor.air_quality_advisor_window_recommendations` (actual entity ID may vary with user settings). States: `open`, `close`, `idle`, `blocked`.
@@ -66,12 +68,12 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
 - A guided setup with editable, automatically suggested window exclusions, room selection, outdoor measurements and weather warnings. Indoor measurements and genuine window contacts are discovered using HA's entity/device area assignments. Configurable thresholds are tucked into **Configure → Advanced thresholds**.
 - Optional room-aware [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) output (`notify.announcement_hub`), **or** direct `notify.send_message` and `tts.speak` via supported entities. Not installing Announcement Hub does not affect the recommendation sensor.
 - Auto notifications/TTS can each be enabled or disabled independently. Open announcements wait 90 seconds for conditions to stay stable; close announcements are immediate. Repeated open recommendations have a 15-minute cooldown during the current HA process. New urgent close recommendations are not suppressed by that cooldown, even if the same window was reopened. No notification is generated on every unchanged sensor reading.
-- Manual `air_quality_advisor.announce` action, with independent **English, German, Greek, French or Spanish** language selection every time.
+- Manual `air_quality_advisor.announce` action with an independent language override across **38 supported Home Assistant language choices**. Speech requires a compatible TTS voice.
 - A responsive **Air Quality Advisor dashboard card**: safe/attention/unknown room counts, current outdoor weather and pollution, threshold meters, window states, and room-specific advice. Card text follows your **Home Assistant user language**, independently of voice/notification language.
 
 ## Installation
 
-### HACS (after publishing the repository)
+### HACS (versioned releases)
 
 1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Air-Quality-Advisor` and choose **Integration**.
 2. Install **Air Quality Advisor**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**. The dashboard card is bundled and registered automatically when Home Assistant starts; no separate HACS frontend repository or copy to `www` is required.
@@ -89,7 +91,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**First published HACS version: [v0.1.8](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.1.8)** · [Release notes](.github/releases/v0.1.8.md) · [Changelog](CHANGELOG.md).
+**Latest stable release: [v0.2.0](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.0)** · [Release notes](.github/releases/v0.2.0.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
 
 Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
 
