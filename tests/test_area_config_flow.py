@@ -11,8 +11,13 @@ from test_discovery import FakeHass, MockState, adapter
 
 def _wizard(monkeypatch, adapter):
     probatio = types.ModuleType("probatio")
-    probatio.Required = lambda key, default=None: key
-    probatio.Optional = lambda key, default=None: key
+    class Field(str):
+        def __new__(cls, key, default=None):
+            field = str.__new__(cls, key)
+            field.default = default
+            return field
+    probatio.Required = Field
+    probatio.Optional = Field
     probatio.Schema = lambda fields: fields
     monkeypatch.setitem(sys.modules, "probatio", probatio)
 
@@ -76,6 +81,23 @@ def test_wizard_only_offers_areas_with_windows(monkeypatch, adapter):
     options = form["data_schema"]["areas"].config.options
     assert [option["value"] for option in options] == ["kitchen"]
     assert form["errors"] == {}
+    assert next(iter(form["data_schema"])).default == ["kitchen"]
+
+
+def test_first_setup_preselects_contacts_and_excludes_covers(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([
+        MockState("binary_sensor.kitchen", "off", device_class="window"),
+        MockState("binary_sensor.living", "on", device_class="window"),
+        MockState("cover.bedroom", "closed", device_class="window"),
+    ], {
+        "binary_sensor.kitchen": "kitchen",
+        "binary_sensor.living": "living",
+        "cover.bedroom": "bedroom",
+    })
+    form = asyncio.run(Wizard(home).async_step_areas())
+    assert next(iter(form["data_schema"])).default == ["kitchen", "living"]
+    assert [o["value"] for o in form["data_schema"]["areas"].config.options] == ["kitchen", "living"]
 
 
 def test_wizard_rejects_stale_or_unrecognized_area(monkeypatch, adapter):
@@ -98,6 +120,7 @@ def test_wizard_keeps_preexisting_area_on_options_edit(monkeypatch, adapter):
     assert {item["value"] for item in form["data_schema"]["areas"].config.options} == {
         "kitchen", "bedroom"
     }
+    assert next(iter(form["data_schema"])).default == ["bedroom"]
 
 
 def test_empty_discovery_has_actionable_error(monkeypatch, adapter):
