@@ -25,3 +25,5 @@ A failed check **prevents release publication**.
 If checks fail, fix the issue and change the request file again for one new attempt. Leave normal development pushes quiet, and do not call failed releases published.
 
 Live Home Assistant setup, sensor integration and physical Announcement Hub/TTS/notification output tests remain separate acceptance requirements. The integration never operates windows.
+
+**GitHub About metadata:** HACS Action currently ignores only the missing `description` and `topics` checks. Add a repository description/topics and remove this exception before any default HACS catalog application.
