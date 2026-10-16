@@ -1,13 +1,23 @@
 # Changelog
 
-## 0.1.2 — preselected areas and incomplete outdoor readings
+## 0.1.3 — Dashboard card and live room overview
 
-- Preselect all discovered rooms with Window-class **binary sensors** during initial setup; keep saved area selections during reconfiguration.
-- Exclude all covers, including covers of device class Window, from area suggestions, window counts and recommendations.
-- Ignore unknown, unavailable and stale outdoor air-quality readings as hazards; known high readings still block opening.
-- Keep blocking behavior for missing weather, active warnings and unknown warning status.
-- Add `outdoor_data_complete` and `unavailable_outdoor_sensors` attributes to the single recommendation sensor.
-- Refresh all five setup languages, documentation and regression tests.
+- Move the existing Ko-fi banner directly below the project banner on GitHub.
+- Ship a responsive, standalone Air Quality Advisor Lovelace custom card inside the HACS integration.
+- Register its Home Assistant static resource and card picker entry automatically at startup.
+- Display all rooms (good, attention, unknown), their readings, limits and window contacts; outdoor weather, pollutants and warnings.
+- Localize card UI using the Home Assistant user language, independently of announcement language.
+- Keep a single existing recommendation entity and the same unique ID. Add dashboard-only structured attributes, without changing window control or announcement policy.
+- Add Python snapshot tests and a Node.js frontend smoke/security test.
+
+## 0.1.2 — room defaults and missing outdoor readings
+
+- Preselect every discovered Window-class **binary sensor** area on first setup. Keep saved selections when editing the integration.
+- Exclude **all covers**, including Window-class covers, from room/window detection and recommendations.
+- Treat unknown, unavailable and stale outdoor air-quality values as neutral (not unsafe). Valid high measurements still block opening; weather and warning safety checks are unchanged.
+- Expose `outdoor_data_complete` and `unavailable_outdoor_sensors` on the single recommendation entity.
+- Update the setup descriptions in all five languages and add regression tests.
+
 
 ## 0.1.1 — setup and integration visibility
 
