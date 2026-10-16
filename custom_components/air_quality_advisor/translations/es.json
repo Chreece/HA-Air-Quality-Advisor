@@ -4,12 +4,12 @@
     "step": {
       "areas": {
         "title": "Áreas",
-        "description": "Selecciona las habitaciones. Los sensores interiores y contactos de ventana se detectan según las áreas de Home Assistant. Solo se usan entidades de clase Ventana.",
+        "description": "Solo se sugieren áreas con ventanas detectadas, indicando su cantidad. Las áreas elegidas anteriormente sin ventanas detectables se marcan con ⚠ al reconfigurar.",
         "data": {
           "areas": "Áreas supervisadas"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -89,7 +89,9 @@
       "missing_notify": "Activa Announcement Hub o selecciona notificaciones.",
       "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
       "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
-      "no_areas": "Selecciona al menos un área."
+      "no_areas": "Selecciona al menos un área.",
+      "no_window_areas": "No se detectaron áreas con ventanas. Asigna un sensor binario o una cubierta de clase Ventana a un área de Home Assistant.",
+      "invalid_areas": "Un área ya no está disponible como área con ventanas."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -107,12 +109,12 @@
       },
       "areas": {
         "title": "Áreas",
-        "description": "Selecciona las habitaciones. Los sensores interiores y contactos de ventana se detectan según las áreas de Home Assistant. Solo se usan entidades de clase Ventana.",
+        "description": "Solo se sugieren áreas con ventanas detectadas, indicando su cantidad. Las áreas elegidas anteriormente sin ventanas detectables se marcan con ⚠ al reconfigurar.",
         "data": {
           "areas": "Áreas supervisadas"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -192,7 +194,9 @@
       "missing_notify": "Activa Announcement Hub o selecciona notificaciones.",
       "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
       "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
-      "no_areas": "Selecciona al menos un área."
+      "no_areas": "Selecciona al menos un área.",
+      "no_window_areas": "No se detectaron áreas con ventanas. Asigna un sensor binario o una cubierta de clase Ventana a un área de Home Assistant.",
+      "invalid_areas": "Un área ya no está disponible como área con ventanas."
     }
   },
   "entity": {
