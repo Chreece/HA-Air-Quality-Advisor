@@ -60,10 +60,11 @@ class _FlowMixin:
     async def async_step_window_sensors(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Review likely virtual window signals *before* suggesting room areas.
+        """Review likely virtual window signals after selecting rooms.
 
-        A saved empty exclusion list is intentional and must override all
-        heuristics when the user returns to Configure.
+        An explicit empty saved exclusion list must override all heuristics.
+        Initial setup reviews the area choice again only if exclusions remove
+        the last usable window contact from a selected room.
         """
         existing = self._values.get(CONF_EXCLUDED_WINDOWS)
         choices = window_exclusion_choices(self.hass, existing)
@@ -79,13 +80,33 @@ class _FlowMixin:
             if any(entity_id not in allowed for entity_id in selected):
                 errors["base"] = "invalid_window_exclusions"
             else:
-                self._values[CONF_EXCLUDED_WINDOWS] = selected
-                return await self._advance("areas")
+                # Rooms are the *first* initial-setup step. Exclusions are
+                # chosen afterwards, so make sure selected rooms still have
+                # usable contacts before continuing to indoor air sensors.
+                if not getattr(self, "_menu_mode", False):
+                    selected_areas = self._values.get(CONF_AREAS, [])
+                    eligible_areas = {
+                        item["value"] for item in window_area_choices(
+                            self.hass, excluded_entities=set(selected)
+                        )
+                    }
+                    if selected_areas and not eligible_areas:
+                        errors["base"] = "no_windows_after_exclusions"
+                    elif any(area not in eligible_areas for area in selected_areas):
+                        self._values[CONF_EXCLUDED_WINDOWS] = selected
+                        self._review_areas_after_exclusions = True
+                        return await self.async_step_areas()
+                if not errors:
+                    self._values[CONF_EXCLUDED_WINDOWS] = selected
+                    return await self._advance("indoor_sensors")
         elif not choices:
-            # With no window contacts yet, the existing area page provides the
-            # actionable 'no_window_areas' error rather than an empty dropdown.
-            self._values.setdefault(CONF_EXCLUDED_WINDOWS, [])
-            return await self._advance("areas")
+            if not getattr(self, "_menu_mode", False) and self._values.get(CONF_AREAS):
+                # Contacts vanished between the Rooms and Exclusions pages.
+                # Do not silently continue with unusable selected rooms.
+                errors["base"] = "no_windows_after_exclusions"
+            else:
+                self._values.setdefault(CONF_EXCLUDED_WINDOWS, [])
+                return await self._advance("indoor_sensors")
         return self.async_show_form(
             step_id="window_sensors",
             data_schema=probatio.Schema({
@@ -102,12 +123,18 @@ class _FlowMixin:
         # contact. Reconfiguration must honour the user's stored choices,
         # otherwise previously deselected rooms would be reintroduced.
         editing = getattr(self, "_editing", False)
+        reviewing = getattr(self, "_review_areas_after_exclusions", False)
         previous = self._values.get(CONF_AREAS, []) if editing else []
         choices = window_area_choices(
             self.hass, previous, set(self._values.get(CONF_EXCLUDED_WINDOWS, []))
         )
         known = {choice["value"] for choice in choices}
-        default_areas = list(previous) if editing else [choice["value"] for choice in choices]
+        if reviewing:
+            # Keep the user's initial selections, excluding only rooms which
+            # lost their last window contact after explicit exclusions.
+            default_areas = [area for area in self._values.get(CONF_AREAS, []) if area in known]
+        else:
+            default_areas = list(previous) if editing else [choice["value"] for choice in choices]
         errors: dict[str, str] = {}
         if user_input is not None:
             selected = list(dict.fromkeys(user_input.get(CONF_AREAS, [])))
@@ -118,9 +145,14 @@ class _FlowMixin:
             else:
                 self._values[CONF_AREAS] = selected
                 self._indoor_index = 0
-                return await self._advance("indoor_sensors")
+                if reviewing:
+                    self._review_areas_after_exclusions = False
+                    return await self._advance("indoor_sensors")
+                return await self._advance("window_sensors")
         elif not choices:
             errors["base"] = "no_window_areas"
+        elif reviewing:
+            errors["base"] = "review_areas_after_exclusions"
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
             _marker(CONF_AREAS, user_input.get(CONF_AREAS, []) if user_input is not None
                     else default_areas, required=True): _multi(choices),
@@ -323,7 +355,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         self._abort_if_unique_id_configured()
         self._editing = False
         self._values = {}
-        return await self.async_step_window_sensors()
+        return await self.async_step_areas()
 
     async def _finish(self) -> ConfigFlowResult:
         return self.async_create_entry(title="Air Quality Advisor", data=self._values)

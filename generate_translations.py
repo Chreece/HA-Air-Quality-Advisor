@@ -152,6 +152,45 @@ threshold_labels = {
 fields = ['excluded_window_entities','areas','excluded_indoor_entities','outdoor_sensors','weather_entities','language']
 stepids = ['window_sensors','areas','indoor_sensors','outdoor','weather','delivery','thresholds']
 menu_stepids = ['areas','window_sensors','indoor_sensors','outdoor','weather','delivery','thresholds']
+initial_stepids = menu_stepids  # Form navigation begins with Rooms too.
+
+area_descriptions = {
+ 'en':'First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.',
+ 'de':'Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.',
+ 'el':'Πρώτα επίλεξε τους χώρους παρακολούθησης. Προεπιλέγονται όσοι έχουν δυαδικό αισθητήρα κατηγορίας «Παράθυρο» (όχι cover). Έπειτα έλεγξε τις εξαιρέσεις. Αν ένας χώρος μείνει χωρίς ενεργή επαφή παραθύρου, θα επανεξετάσεις την επιλογή χώρων.',
+ 'fr':'Choisissez d’abord les pièces à surveiller. Celles avec un capteur binaire de classe Fenêtre sont présélectionnées ; les volets ne comptent pas. Examinez ensuite les exclusions. Si une pièce n’a plus de contact utilisable, révisez la sélection.',
+ 'es':'Primero selecciona las habitaciones. Se preseleccionan las que tienen sensores binarios de clase Ventana; las cubiertas no cuentan. Después revisa las exclusiones. Si una habitación se queda sin contactos útiles, vuelve a revisar la selección.',
+}
+area_hints = {
+ 'en':'Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed.',
+ 'de':'Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl.',
+ 'el':'Πρώτα οι χώροι. Μόνο δυαδικοί αισθητήρες «Παράθυρο», όχι cover. Ακολουθούν οι εξαιρέσεις και, αν χρειαστεί, επανεξέταση χώρων.',
+ 'fr':'Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite.',
+ 'es':'Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección.',
+}
+area_validation = {
+ 'en':{
+  'no_windows_after_exclusions':'These exclusions would leave no usable window contacts. Keep at least one contact included.',
+  'review_areas_after_exclusions':'Some selected rooms lost their last window contact after exclusions. Please review your rooms.',
+ },
+ 'de':{
+  'no_windows_after_exclusions':'Diese Ausschlüsse würden alle nutzbaren Fensterkontakte entfernen. Lass mindestens einen Kontakt aktiviert.',
+  'review_areas_after_exclusions':'Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl.',
+ },
+ 'el':{
+  'no_windows_after_exclusions':'Με αυτές τις εξαιρέσεις δεν απομένει κανένας διαθέσιμος αισθητήρας παραθύρου. Διατήρησε τουλάχιστον μία επαφή.',
+  'review_areas_after_exclusions':'Κάποιοι επιλεγμένοι χώροι έμειναν χωρίς επαφή παραθύρου μετά τις εξαιρέσεις. Έλεγξε ξανά τους χώρους.',
+ },
+ 'fr':{
+  'no_windows_after_exclusions':'Ces exclusions supprimeraient tous les contacts de fenêtre utilisables. Conservez au moins un contact.',
+  'review_areas_after_exclusions':'Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces.',
+ },
+ 'es':{
+  'no_windows_after_exclusions':'Estas exclusiones dejarían todas las habitaciones sin contactos de ventana utilizables. Conserva al menos uno.',
+  'review_areas_after_exclusions':'Algunas habitaciones seleccionadas ya no tienen contactos de ventana tras las exclusiones. Revisa la selección.',
+ },
+}
+
 for code,v in lang.items():
  steps = {}
  for i, sid in enumerate(stepids):
@@ -177,8 +216,10 @@ for code,v in lang.items():
     'media_players':'Direct audio destinations; room assignment controls targeting.',
    }
    steps[sid]['data_description']={field:helps.get(field, stepdata[field]) for field in stepdata}
- errors = v['errors']
- section = {'step':steps,'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
+ steps['areas']['description'] = area_descriptions[code]
+ steps['areas']['data_description']['areas'] = area_hints[code]
+ errors = {**v['errors'], **area_validation[code]}
+ section = {'step':{sid:steps[sid] for sid in initial_stepids},'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
  # Configure selects a single section from a localized options menu.
  menu_titles = {
   'en':'Choose settings to edit', 'el':'Επιλογή ρυθμίσεων',

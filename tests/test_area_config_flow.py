@@ -116,7 +116,7 @@ def test_wizard_rejects_stale_or_unrecognized_area(monkeypatch, adapter):
     form = asyncio.run(Wizard(home).async_step_areas({"areas": ["hallway"]}))
     assert form["errors"] == {"base": "invalid_areas"}
     result = asyncio.run(Wizard(home).async_step_areas({"areas": ["living"]}))
-    assert result == {"next_step": "outdoor"}
+    assert result["step_id"] == "window_sensors"
 
 
 def test_wizard_keeps_preexisting_area_on_options_edit(monkeypatch, adapter):
@@ -137,7 +137,7 @@ def test_empty_discovery_has_actionable_error(monkeypatch, adapter):
     assert form["errors"] == {"base": "no_window_areas"}
 
 
-def test_exclusion_page_auto_selects_virtuals_before_suggesting_areas(monkeypatch, adapter):
+def test_exclusion_page_auto_selects_virtuals_after_rooms_and_reviews_only_when_needed(monkeypatch, adapter):
     Wizard = _wizard(monkeypatch, adapter)
     physical = "binary_sensor.kitchen_window"
     virtual = "binary_sensor.bedroom_window_open_detected"
@@ -146,14 +146,20 @@ def test_exclusion_page_auto_selects_virtuals_before_suggesting_areas(monkeypatc
         MockState(virtual, "off", device_class="window"),
     ], {physical: "kitchen", virtual: "bedroom"})
     flow = Wizard(home)
-    form = asyncio.run(flow.async_step_window_sensors())
-    selector = form["data_schema"]["excluded_window_entities"]
-    assert {item["value"] for item in selector.config.options} == {physical, virtual}
-    assert next(iter(form["data_schema"])).default == [virtual]
-    next_form = asyncio.run(flow.async_step_window_sensors({"excluded_window_entities": [virtual]}))
+    rooms = asyncio.run(flow.async_step_areas())
+    assert next(iter(rooms["data_schema"])).default == ["bedroom", "kitchen"]
+    exclusion_form = asyncio.run(flow.async_step_areas({"areas": ["kitchen", "bedroom"]}))
+    assert exclusion_form["step_id"] == "window_sensors"
+    assert next(iter(exclusion_form["data_schema"])).default == [virtual]
+    reviewed = asyncio.run(flow.async_step_window_sensors({"excluded_window_entities": [virtual]}))
+    assert reviewed["step_id"] == "areas"
+    assert reviewed["errors"] == {"base": "review_areas_after_exclusions"}
+    assert [item["value"] for item in reviewed["data_schema"]["areas"].config.options] == ["kitchen"]
+    assert next(iter(reviewed["data_schema"])).default == ["kitchen"]
+    finished_rooms = asyncio.run(flow.async_step_areas({"areas": ["kitchen"]}))
+    assert finished_rooms == {"next_step": "outdoor"}
     assert flow._values["excluded_window_entities"] == [virtual]
-    assert [item["value"] for item in next_form["data_schema"]["areas"].config.options] == ["kitchen"]
-    assert next(iter(next_form["data_schema"])).default == ["kitchen"]
+    assert flow._values["areas"] == ["kitchen"]
 
 
 def test_unchecked_virtual_contact_is_honored_even_on_options_reopen(monkeypatch, adapter):
@@ -161,15 +167,16 @@ def test_unchecked_virtual_contact_is_honored_even_on_options_reopen(monkeypatch
     entity = "binary_sensor.living_window_open_detected"
     home = FakeHass([MockState(entity, "on", device_class="window")], {entity: "living"})
     wizard = Wizard(home)
-    first = asyncio.run(wizard.async_step_window_sensors())
-    assert next(iter(first["data_schema"])).default == [entity]
-    rooms_form = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
+    assert asyncio.run(wizard.async_step_areas())["step_id"] == "areas"
+    form = asyncio.run(wizard.async_step_areas({"areas": ["living"]}))
+    assert form["step_id"] == "window_sensors"
+    assert next(iter(form["data_schema"])).default == [entity]
+    completed = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
+    assert completed == {"next_step": "outdoor"}
     assert wizard._values["excluded_window_entities"] == []
-    assert [item["value"] for item in rooms_form["data_schema"]["areas"].config.options] == ["living"]
     editing = Wizard(home, editing=True, existing=["living"], excluded=[])
     saved = asyncio.run(editing.async_step_window_sensors())
-    assert next(iter(saved["data_schema"])).default == []  # no heuristic re-insertion
-    assert [item["value"] for item in saved["data_schema"]["excluded_window_entities"].config.options] == [entity]
+    assert next(iter(saved["data_schema"])).default == []
 
 
 def test_existing_exclusions_remain_selected_on_reconfigure(monkeypatch, adapter):
@@ -192,13 +199,18 @@ def test_excluded_sensor_validation_prevents_arbitrary_targets(monkeypatch, adap
     assert invalid["errors"] == {"base": "invalid_window_exclusions"}
 
 
-def test_every_discovered_window_excluded_stops_false_area_suggestions(monkeypatch, adapter):
+def test_excluding_every_window_blocks_setup_without_erasing_rooms(monkeypatch, adapter):
     Wizard = _wizard(monkeypatch, adapter)
     virtual = "binary_sensor.thermostat_window_open_detected"
     home = FakeHass([MockState(virtual, "on", device_class="window")], {virtual: "bathroom"})
-    next_form = asyncio.run(Wizard(home).async_step_window_sensors({"excluded_window_entities": [virtual]}))
-    assert next_form["errors"] == {"base": "no_window_areas"}
-    assert next_form["data_schema"]["areas"].config.options == []
+    wizard = Wizard(home)
+    form = asyncio.run(wizard.async_step_areas({"areas": ["bathroom"]}))
+    assert form["step_id"] == "window_sensors"
+    blocked = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": [virtual]}))
+    assert blocked["step_id"] == "window_sensors"
+    assert blocked["errors"] == {"base": "no_windows_after_exclusions"}
+    assert wizard._values["areas"] == ["bathroom"]
+    assert "excluded_window_entities" not in wizard._values
 
 
 def test_indoor_room_page_lists_only_supported_sensors_with_device_and_entity(monkeypatch, adapter):
@@ -220,7 +232,9 @@ def test_indoor_room_page_lists_only_supported_sensors_with_device_and_entity(mo
     home._entity_devices[humidity] = "env_monitor"
     home._device_details["env_monitor"] = {"name":"Airthings Wave Plus"}
     wizard = Wizard(home)
-    result = asyncio.run(wizard.async_step_areas({"areas": ["kitchen"]}))
+    exclusions = asyncio.run(wizard.async_step_areas({"areas": ["kitchen"]}))
+    assert exclusions["step_id"] == "window_sensors"
+    result = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
     assert result["step_id"] == "indoor_sensors"
     assert result["description_placeholders"] == {"area_name":"kitchen", "position":"1", "total":"1"}
     choices = result["data_schema"]["excluded_indoor_entities"].config.options
@@ -415,5 +429,65 @@ def test_reconfigure_when_no_supported_air_sensors_skips_empty_room_page(monkeyp
     home = FakeHass([MockState("binary_sensor.kitchen_window", "off", device_class="window")],
                     {"binary_sensor.kitchen_window":"kitchen"})
     wizard = Wizard(home, editing=True, existing=["kitchen"])
-    result = asyncio.run(wizard.async_step_areas({"areas":["kitchen"]}))
+    wizard._values["areas"] = ["kitchen"]
+    result = asyncio.run(wizard.async_step_indoor_sensors())
     assert result == {"next_step":"outdoor"}
+
+def test_initial_config_entry_starts_with_rooms(monkeypatch, adapter):
+    _wizard(monkeypatch, adapter)
+    import custom_components.air_quality_advisor.config_flow as flows
+    home = FakeHass([
+        MockState("binary_sensor.living_window", "off", device_class="window"),
+    ], {"binary_sensor.living_window": "living"})
+    initial = flows.AirQualityConfigFlow()
+    initial.hass = home
+
+    async def set_unique_id(_value):
+        return None
+
+    initial.async_set_unique_id = set_unique_id
+    initial._abort_if_unique_id_configured = lambda: None
+    initial.async_show_form = lambda **kwargs: kwargs
+    form = asyncio.run(initial.async_step_user())
+    assert form["step_id"] == "areas"
+    assert next(iter(form["data_schema"])).default == ["living"]
+
+
+def test_initial_no_exclusions_still_moves_to_indoor_then_outdoor(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([
+        MockState("binary_sensor.kitchen_window", "off", device_class="window"),
+        MockState("sensor.kitchen_co2", 800, device_class="co2", unit="ppm"),
+    ], {
+        "binary_sensor.kitchen_window": "kitchen",
+        "sensor.kitchen_co2": "kitchen",
+    })
+    wizard = Wizard(home)
+    step = asyncio.run(wizard.async_step_areas({"areas": ["kitchen"]}))
+    assert step["step_id"] == "window_sensors"
+    step = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
+    assert step["step_id"] == "indoor_sensors"
+    step = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": []}))
+    assert step == {"next_step": "outdoor"}
+
+
+def test_reconfigure_keeps_rooms_first_without_replaying_setup(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    menu = asyncio.run(options.async_step_init())
+    assert menu["menu_options"][0] == "areas"
+    result = asyncio.run(options.async_step_areas({"areas": ["living"]}))
+    assert "completed" in result
+    assert result["completed"]["data"]["areas"] == ["living"]
+
+def test_disappearing_contacts_cannot_silently_finish_initial_setup(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    contact = "binary_sensor.living_window"
+    home = FakeHass([
+        MockState(contact, "off", device_class="window"),
+    ], {contact: "living"})
+    wizard = Wizard(home)
+    assert asyncio.run(wizard.async_step_areas({"areas":["living"]}))["step_id"] == "window_sensors"
+    home._values.pop(contact)
+    form = asyncio.run(wizard.async_step_window_sensors())
+    assert form["step_id"] == "window_sensors"
+    assert form["errors"] == {"base": "no_windows_after_exclusions"}

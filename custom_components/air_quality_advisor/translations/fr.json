@@ -2,6 +2,16 @@
   "title": "Conseiller qualité de l’air",
   "config": {
     "step": {
+      "areas": {
+        "title": "Pièces",
+        "description": "Choisissez d’abord les pièces à surveiller. Celles avec un capteur binaire de classe Fenêtre sont présélectionnées ; les volets ne comptent pas. Examinez ensuite les exclusions. Si une pièce n’a plus de contact utilisable, révisez la sélection.",
+        "data": {
+          "areas": "Zones à surveiller"
+        },
+        "data_description": {
+          "areas": "Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite."
+        }
+      },
       "window_sensors": {
         "title": "Exclure des capteurs de fenêtre",
         "description": "Vérifiez les capteurs binaires de classe Fenêtre. ⚠ signale les indicateurs probablement virtuels ou auxiliaires (p. ex. détection de fenêtre ouverte d’un thermostat), présélectionnés pour exclusion. Décochez les véritables contacts. Vos choix sont conservés.",
@@ -10,16 +20,6 @@
         },
         "data_description": {
           "excluded_window_entities": "Tous les capteurs de fenêtre, avec leur pièce et leur identifiant. Les entités sélectionnées sont ignorées dans les pièces, recommandations et le tableau de bord. Une sélection vide conserve tous les capteurs."
-        }
-      },
-      "areas": {
-        "title": "Pièces",
-        "description": "À la première configuration, les zones dotées de capteurs binaires de classe Fenêtre sont présélectionnées. Les covers sont exclus. Les sélections existantes sont conservées ; les zones sans contact sont marquées ⚠.",
-        "data": {
-          "areas": "Zones à surveiller"
-        },
-        "data_description": {
-          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "indoor_sensors": {
@@ -113,7 +113,9 @@
       "no_window_areas": "Aucun contact de fenêtre détecté. Attribuez un capteur binaire de classe Fenêtre à une zone ; les covers sont exclus.",
       "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre.",
       "invalid_window_exclusions": "Une ou plusieurs entités exclues ne figurent plus dans la liste.",
-      "invalid_indoor_exclusions": "Un capteur sélectionné n’est pas compatible avec cette pièce."
+      "invalid_indoor_exclusions": "Un capteur sélectionné n’est pas compatible avec cette pièce.",
+      "no_windows_after_exclusions": "Ces exclusions supprimeraient tous les contacts de fenêtre utilisables. Conservez au moins un contact.",
+      "review_areas_after_exclusions": "Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."

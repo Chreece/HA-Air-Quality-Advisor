@@ -2,6 +2,16 @@
   "title": "Luftqualitätsberater",
   "config": {
     "step": {
+      "areas": {
+        "title": "Bereiche",
+        "description": "Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.",
+        "data": {
+          "areas": "Zu überwachende Bereiche"
+        },
+        "data_description": {
+          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl."
+        }
+      },
       "window_sensors": {
         "title": "Fenstersensoren ausschließen",
         "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
@@ -10,16 +20,6 @@
         },
         "data_description": {
           "excluded_window_entities": "Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt."
-        }
-      },
-      "areas": {
-        "title": "Bereiche",
-        "description": "Bei der Ersteinrichtung werden Bereiche mit Binärsensoren der Geräteklasse Fenster vorausgewählt. Cover zählen nicht. Bestehende Auswahlen bleiben bei Änderungen erhalten; fehlende Fensterkontakte erscheinen mit ⚠.",
-        "data": {
-          "areas": "Zu überwachende Bereiche"
-        },
-        "data_description": {
-          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "indoor_sensors": {
@@ -113,7 +113,9 @@
       "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
       "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
       "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.",
-      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar."
+      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar.",
+      "no_windows_after_exclusions": "Diese Ausschlüsse würden alle nutzbaren Fensterkontakte entfernen. Lass mindestens einen Kontakt aktiviert.",
+      "review_areas_after_exclusions": "Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."

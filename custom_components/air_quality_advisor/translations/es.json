@@ -2,6 +2,16 @@
   "title": "Asesor de calidad del aire",
   "config": {
     "step": {
+      "areas": {
+        "title": "Áreas",
+        "description": "Primero selecciona las habitaciones. Se preseleccionan las que tienen sensores binarios de clase Ventana; las cubiertas no cuentan. Después revisa las exclusiones. Si una habitación se queda sin contactos útiles, vuelve a revisar la selección.",
+        "data": {
+          "areas": "Áreas supervisadas"
+        },
+        "data_description": {
+          "areas": "Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección."
+        }
+      },
       "window_sensors": {
         "title": "Excluir sensores de ventana",
         "description": "Revisa los sensores binarios de clase Ventana. ⚠ indica señales probablemente virtuales o auxiliares (como detección de ventana abierta de un termostato), preseleccionadas para excluir. Desmarca cualquier contacto real. Tus elecciones se guardan.",
@@ -10,16 +20,6 @@
         },
         "data_description": {
           "excluded_window_entities": "Se muestran todos los sensores con su área e ID. Los seleccionados no cuentan en áreas, recomendaciones ni panel. Sin selección se incluyen todos."
-        }
-      },
-      "areas": {
-        "title": "Áreas",
-        "description": "En la configuración inicial se preseleccionan las áreas con sensores binarios de clase Ventana. No se incluyen covers. Al reconfigurar se conservan las selecciones existentes y las áreas sin contacto se marcan con ⚠.",
-        "data": {
-          "areas": "Áreas supervisadas"
-        },
-        "data_description": {
-          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "indoor_sensors": {
@@ -113,7 +113,9 @@
       "no_window_areas": "No se encontraron contactos de ventana. Asigna un sensor binario de clase Ventana a un área; los covers no cuentan.",
       "invalid_areas": "Un área ya no está disponible como área con ventanas.",
       "invalid_window_exclusions": "Una o más entidades excluidas ya no aparecen entre las opciones.",
-      "invalid_indoor_exclusions": "Un sensor seleccionado no es compatible con esta habitación."
+      "invalid_indoor_exclusions": "Un sensor seleccionado no es compatible con esta habitación.",
+      "no_windows_after_exclusions": "Estas exclusiones dejarían todas las habitaciones sin contactos de ventana utilizables. Conserva al menos uno.",
+      "review_areas_after_exclusions": "Algunas habitaciones seleccionadas ya no tienen contactos de ventana tras las exclusiones. Revisa la selección."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."

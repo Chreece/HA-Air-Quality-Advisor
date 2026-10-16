@@ -29,13 +29,18 @@ def test_exclusion_selector_is_translated_for_setup_and_options():
         document = json.loads((DOMAIN / name).read_text())
         assert document["config"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
         assert document["options"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
-        assert "init" not in document["options"]["step"]
+        assert next(iter(document["config"]["step"])) == "areas"
+        assert document["options"]["step"]["init"]["menu_options"]
+        assert next(iter(document["options"]["step"]["init"]["menu_options"])) == "areas"
         for context in ("config", "options"):
             room = document[context]["step"]["indoor_sensors"]
             assert room["data"]["excluded_indoor_entities"]
             assert "{area_name}" in room["description"]
-            assert "edit_thresholds" in document[context]["step"]["delivery"]["data"]
+            assert "edit_thresholds" not in document[context]["step"]["delivery"]["data"]
         assert "invalid_window_exclusions" in document["config"]["error"]
+        for context in ("config", "options"):
+            assert "no_windows_after_exclusions" in document[context]["error"]
+            assert "review_areas_after_exclusions" in document[context]["error"]
 
 
 def test_runtime_exclusions_are_applied_before_window_recommendations():

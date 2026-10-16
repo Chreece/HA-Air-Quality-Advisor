@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.8 — rooms first throughout setup
+
+- Show **Rooms** as the first page during initial installation, matching the existing Rooms-first Configure menu.
+- Keep preselection of areas with Window-class binary sensors; never count covers as window contacts.
+- Move editable window exclusions to the next initial setup step, ahead of per-room indoor air-quality sensor exclusions.
+- Validate exclusions against selected areas: ask for a room review when contacts disappear from some areas, and block selections which exclude every usable contact.
+- Localize the new Rooms-first wording and recovery errors in English, German, Greek, French and Spanish.
+- Update current UI and wizard tests; keep unrelated settings, unique IDs and dashboard behavior unchanged.
+
 ## 0.1.7 — rooms first in Configure
 
 - Put **Rooms** at the top of the seven-section Reconfigure menu, followed by window sensor exclusions and the remaining options.

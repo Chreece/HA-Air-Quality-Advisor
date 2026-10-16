@@ -2,6 +2,16 @@
   "title": "Air Quality Advisor",
   "config": {
     "step": {
+      "areas": {
+        "title": "Areas",
+        "description": "First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.",
+        "data": {
+          "areas": "Areas to monitor"
+        },
+        "data_description": {
+          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed."
+        }
+      },
       "window_sensors": {
         "title": "Window sensor exclusions",
         "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
@@ -10,16 +20,6 @@
         },
         "data_description": {
           "excluded_window_entities": "The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all."
-        }
-      },
-      "areas": {
-        "title": "Areas",
-        "description": "Areas with Window-class binary sensors are preselected during initial setup; covers are excluded. The detected window count appears beside each area. In reconfiguration, your existing selection is preserved, and areas with missing contacts are marked ⚠.",
-        "data": {
-          "areas": "Areas to monitor"
-        },
-        "data_description": {
-          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "indoor_sensors": {
@@ -113,7 +113,9 @@
       "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
       "invalid_areas": "An area is no longer available as a window area.",
       "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list."
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
