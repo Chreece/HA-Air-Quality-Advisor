@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.4 — editable window sensor exclusions
+
+- Add an **Exclude window entities** multi-select before area selection in the initial configuration wizard.
+- Preselect likely virtual, thermostat-derived, detection-only, diagnostic or configuration window-class binary sensors; do not assume device class alone proves a physical window.
+- Allow users to add and remove exclusions, including saving an explicitly empty exclusion list, without heuristics silently reselecting options when reconfiguring.
+- Exclude selected contacts consistently from suggested areas, actual window status, close/open recommendations and dashboard; keep previously selected areas during reconfiguration.
+- Support English, Greek, German, French and Spanish setup text and targeted regression tests.
+- Keep the existing config entry, entity IDs, HACS installation and dashboard card.
+
 ## 0.1.4 — Window sensor exclusions
 
 - Add an editable, multi-select **Window sensor exclusions** step to initial setup and reconfiguration before choosing monitored areas.
