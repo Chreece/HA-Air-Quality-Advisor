@@ -51,6 +51,12 @@ class _FlowMixin:
 
     _values: dict[str, Any]
 
+    async def _advance(self, next_step: str) -> ConfigFlowResult:
+        """Finish a selected options section; initial setup continues normally."""
+        if getattr(self, "_menu_mode", False):
+            return await self._finish()
+        return await getattr(self, f"async_step_{next_step}")()
+
     async def async_step_window_sensors(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
@@ -74,12 +80,12 @@ class _FlowMixin:
                 errors["base"] = "invalid_window_exclusions"
             else:
                 self._values[CONF_EXCLUDED_WINDOWS] = selected
-                return await self.async_step_areas()
+                return await self._advance("areas")
         elif not choices:
             # With no window contacts yet, the existing area page provides the
             # actionable 'no_window_areas' error rather than an empty dropdown.
             self._values.setdefault(CONF_EXCLUDED_WINDOWS, [])
-            return await self.async_step_areas()
+            return await self._advance("areas")
         return self.async_show_form(
             step_id="window_sensors",
             data_schema=probatio.Schema({
@@ -112,7 +118,7 @@ class _FlowMixin:
             else:
                 self._values[CONF_AREAS] = selected
                 self._indoor_index = 0
-                return await self.async_step_indoor_sensors()
+                return await self._advance("indoor_sensors")
         elif not choices:
             errors["base"] = "no_window_areas"
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
@@ -143,7 +149,7 @@ class _FlowMixin:
             index += 1
         self._indoor_index = index
         if index >= len(area_ids):
-            return await self.async_step_outdoor()
+            return await self._advance("outdoor")
 
         known = {choice["value"] for choice in choices}
         errors: dict[str, str] = {}
@@ -188,7 +194,7 @@ class _FlowMixin:
             known = {item["value"] for item in choices}
             if selected and all(value in known for value in selected):
                 self._values[CONF_OUTDOOR] = selected
-                return await self.async_step_weather()
+                return await self._advance("weather")
             errors["base"] = "invalid_outdoor"
         elif not choices:
             errors["base"] = "no_outdoor"
@@ -213,7 +219,7 @@ class _FlowMixin:
             else:
                 self._values[CONF_WEATHER] = weather_entities
                 self._values[CONF_WARNINGS] = warnings
-                return await self.async_step_delivery()
+                return await self._advance("delivery")
         schema: dict[Any, Any] = {
             _marker(CONF_WEATHER, self._values.get(CONF_WEATHER, []), required=True):
                 selector.EntitySelector(selector.EntitySelectorConfig(domain="weather", multiple=True)),
@@ -241,14 +247,13 @@ class _FlowMixin:
             ):
                 errors = {"base": "missing_tts"}
             else:
-                edit_thresholds = bool(user_input.get("edit_thresholds", False))
-                self._values.update({k: v for k, v in user_input.items() if k != "edit_thresholds"})
+                self._values.update(user_input)
                 self._values.setdefault(CONF_HUB, False)
                 self._values.setdefault(CONF_AUTO_NOTIFY, False)
                 self._values.setdefault(CONF_AUTO_TTS, False)
                 self._values.setdefault(CONF_NOTIFY_TARGETS, [])
                 self._values.setdefault(CONF_MEDIA_PLAYERS, [])
-                return await self.async_step_thresholds() if edit_thresholds else await self._finish()
+                return await self._finish()
         else:
             errors = {}
         fields: dict[Any, Any] = {
@@ -267,7 +272,6 @@ class _FlowMixin:
                 selector.BooleanSelector(),
             _marker(CONF_AUTO_TTS, self._values.get(CONF_AUTO_TTS, False)):
                 selector.BooleanSelector(),
-            _marker("edit_thresholds", False): selector.BooleanSelector(),
         }
         if hub_present or self._values.get(CONF_HUB):
             fields[_marker(CONF_HUB, self._values.get(CONF_HUB, hub_present))] = selector.BooleanSelector()
@@ -331,13 +335,20 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
 
 
 class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
-    """Reconfigure the same wizard as first setup, without branching menus."""
+    """Choose exactly one section of saved settings to modify."""
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         self._editing = True
+        self._menu_mode = True
         self._values = {**self.config_entry.data, **self.config_entry.options}
         self._indoor_index = 0
-        return await self.async_step_window_sensors()
+        return self.async_show_menu(
+            step_id="init",
+            menu_options=[
+                "window_sensors", "areas", "indoor_sensors", "outdoor",
+                "weather", "delivery", "thresholds",
+            ],
+        )
 
     async def _finish(self) -> ConfigFlowResult:
         return self.async_create_entry(data=self._values)

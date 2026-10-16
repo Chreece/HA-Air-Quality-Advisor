@@ -133,7 +133,6 @@ indoor_step_text = json.loads("{\"en\":[\"Indoor air quality exclusions\",\"Room
 for language, item in indoor_step_text.items():
     lang[language]['steps'].insert(2, tuple(item[:3]))
     lang[language]['fields']['excluded_indoor_entities'] = item[2]
-    lang[language]['fields']['edit_thresholds'] = item[5]
     lang[language]['errors']['invalid_indoor_exclusions'] = item[4]
 
 threshold_labels = {
@@ -158,7 +157,7 @@ for code,v in lang.items():
   name, desc, primary = v['steps'][i]
   stepdata = {fields[i]:primary} if i < 5 else threshold_labels
   if sid=='weather':stepdata['weather_warnings']=v['fields']['weather_warnings']
-  if sid=='delivery':stepdata = {key:v['fields'][key] for key in ['language','automatic_tts','automatic_notifications','use_announcement_hub','notify_entities','tts_engine','media_players','edit_thresholds']}
+  if sid=='delivery':stepdata = {key:v['fields'][key] for key in ['language','automatic_tts','automatic_notifications','use_announcement_hub','notify_entities','tts_engine','media_players']}
   steps[sid] = {'title':name,'description':desc,'data':stepdata}
   if sid in ('window_sensors','areas','indoor_sensors','outdoor','weather','delivery'):
    helps = {
@@ -175,14 +174,32 @@ for code,v in lang.items():
     'notify_entities':'Direct outputs when Announcement Hub is not used.',
     'tts_engine':'Direct speech provider when Announcement Hub is not used.',
     'media_players':'Direct audio destinations; room assignment controls targeting.',
-    'edit_thresholds':indoor_step_text[code][6],
    }
    steps[sid]['data_description']={field:helps.get(field, stepdata[field]) for field in stepdata}
  errors = v['errors']
  section = {'step':steps,'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
- # Configure launches the same full wizard as initial setup, without shortcut menus.
+ # Configure selects a single section from a localized options menu.
+ menu_titles = {
+  'en':'Choose settings to edit', 'el':'Επιλογή ρυθμίσεων',
+  'de':'Einstellungen auswählen', 'fr':'Choisir les paramètres à modifier',
+  'es':'Elegir ajustes para editar',
+ }
+ menu_descriptions = {
+  'en':'Choose one section. All other settings stay unchanged.',
+  'el':'Επίλεξε μία ενότητα. Όλες οι υπόλοιπες ρυθμίσεις παραμένουν ως έχουν.',
+  'de':'Wähle einen Bereich aus. Alle anderen Einstellungen bleiben unverändert.',
+  'fr':'Choisissez une rubrique. Tous les autres paramètres restent inchangés.',
+  'es':'Elige una sección. El resto de ajustes no cambiará.',
+ }
  opts={
-   'step':steps,
+   'step':{
+     'init':{
+       'title':menu_titles[code],
+       'description':menu_descriptions[code],
+       'menu_options':{sid:steps[sid]['title'] for sid in stepids},
+     },
+     **steps,
+   },
    'error':errors,
  }
  data={
