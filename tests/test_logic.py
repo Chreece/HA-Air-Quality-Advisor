@@ -38,8 +38,30 @@ def test_outdoor_pollution_prevents_ventilation():
     assert result.outside_reasons[0].code == "outside_pm25"
 
 
-def test_outdoor_sensor_unavailable_is_fail_closed():
-    assert plan(outside=(Reading("sensor.bad", "Outside", "aqi", None),)).status == "blocked"
+def test_unavailable_outdoor_is_neutral_and_exposed():
+    result = plan(outside=(Reading("sensor.unknown", "Outside", "aqi", None),))
+    assert result.status == "open"
+    assert result.outdoor_safe
+    assert result.outside_reasons == ()
+    assert result.unavailable_outdoor == ("sensor.unknown",)
+
+
+def test_missing_outdoor_does_not_hide_known_pollution():
+    result = plan(outside=(
+        Reading("sensor.unknown", "Outside AQI", "aqi", None),
+        Reading("sensor.bad", "Outside PM2.5", "pm25", 30),
+    ))
+    assert result.status == "blocked"
+    assert [r.code for r in result.outside_reasons] == ["outside_pm25"]
+    assert result.unavailable_outdoor == ("sensor.unknown",)
+
+
+def test_unavailable_outdoor_does_not_trigger_close():
+    opened = Room("living_room", "Living room", (
+        Window("binary_sensor.window", "Window", True),
+    ), ROOM.readings)
+    result = plan(outside=(Reading("sensor.unknown", "Outside", "pm25", None),), areas=(opened,))
+    assert result.status == "idle"
 
 
 def test_no_outdoor_sensor_is_not_safe():
