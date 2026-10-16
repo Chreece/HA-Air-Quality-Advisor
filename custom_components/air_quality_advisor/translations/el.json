@@ -4,22 +4,22 @@
     "step": {
       "areas": {
         "title": "Χώροι",
-        "description": "Εμφανίζονται μόνο χώροι με αναγνωρισμένους αισθητήρες ή καλύμματα παραθύρων. Δίπλα σε κάθε χώρο φαίνεται το πλήθος παραθύρων. Σε επαναρύθμιση, χώροι που είχαν επιλεγεί αλλά δεν έχουν πλέον ανιχνεύσιμο παράθυρο σημειώνονται με ⚠.",
+        "description": "Στην αρχική ρύθμιση προεπιλέγονται οι χώροι με δυαδικούς αισθητήρες κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται. Στην επαναρύθμιση διατηρούνται οι επιλογές και οι χώροι χωρίς επαφή παραθύρου σημειώνονται με ⚠.",
         "data": {
           "areas": "Χώροι προς παρακολούθηση"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Ποιότητα εξωτερικού αέρα",
-        "description": "Επίλεξε έναν ή περισσότερους υποστηριζόμενους αισθητήρες. Εμφανίζονται μόνο συμβατές αριθμητικές μετρήσεις και μονάδες. Όλοι οι επιλεγμένοι αισθητήρες πρέπει να είναι διαθέσιμοι και σε αποδεκτά επίπεδα.",
+        "description": "Επίλεξε υποστηριζόμενους αισθητήρες εξωτερικού αέρα. Οι έγκυρες υψηλές τιμές εμποδίζουν το άνοιγμα. Άγνωστες, παλιές ή μη διαθέσιμες τιμές δεν θεωρούνται επικίνδυνες, αλλά εμφανίζονται ως ελλιπή δεδομένα.",
         "data": {
           "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -90,7 +90,7 @@
       "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
       "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
       "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
-      "no_window_areas": "Δεν βρέθηκαν χώροι με αναγνωρισμένα παράθυρα. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα ή κάλυμμα με κατηγορία Παραθύρου.",
+      "no_window_areas": "Δεν εντοπίστηκαν επαφές παραθύρων. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται.",
       "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο."
     },
     "abort": {
@@ -109,22 +109,22 @@
       },
       "areas": {
         "title": "Χώροι",
-        "description": "Εμφανίζονται μόνο χώροι με αναγνωρισμένους αισθητήρες ή καλύμματα παραθύρων. Δίπλα σε κάθε χώρο φαίνεται το πλήθος παραθύρων. Σε επαναρύθμιση, χώροι που είχαν επιλεγεί αλλά δεν έχουν πλέον ανιχνεύσιμο παράθυρο σημειώνονται με ⚠.",
+        "description": "Στην αρχική ρύθμιση προεπιλέγονται οι χώροι με δυαδικούς αισθητήρες κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται. Στην επαναρύθμιση διατηρούνται οι επιλογές και οι χώροι χωρίς επαφή παραθύρου σημειώνονται με ⚠.",
         "data": {
           "areas": "Χώροι προς παρακολούθηση"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Ποιότητα εξωτερικού αέρα",
-        "description": "Επίλεξε έναν ή περισσότερους υποστηριζόμενους αισθητήρες. Εμφανίζονται μόνο συμβατές αριθμητικές μετρήσεις και μονάδες. Όλοι οι επιλεγμένοι αισθητήρες πρέπει να είναι διαθέσιμοι και σε αποδεκτά επίπεδα.",
+        "description": "Επίλεξε υποστηριζόμενους αισθητήρες εξωτερικού αέρα. Οι έγκυρες υψηλές τιμές εμποδίζουν το άνοιγμα. Άγνωστες, παλιές ή μη διαθέσιμες τιμές δεν θεωρούνται επικίνδυνες, αλλά εμφανίζονται ως ελλιπή δεδομένα.",
         "data": {
           "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -195,7 +195,7 @@
       "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
       "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
       "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
-      "no_window_areas": "Δεν βρέθηκαν χώροι με αναγνωρισμένα παράθυρα. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα ή κάλυμμα με κατηγορία Παραθύρου.",
+      "no_window_areas": "Δεν εντοπίστηκαν επαφές παραθύρων. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται.",
       "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο."
     }
   },
