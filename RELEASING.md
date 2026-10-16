@@ -1,13 +1,15 @@
-# Release checklist
+# Release checklist (v0.1.5)
 
-1. Verify all Python checks and the frontend smoke test locally: `python -m pytest -q tests && node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js && node tests/card_test.cjs`.
-2. Validate shipped JSON and compile Python: `python -m compileall -q custom_components && python -m json.tool hacs.json >/dev/null`.
-3. In GitHub **Actions → Validate (manual only) → Run workflow**, check `test`, `hacs`, and `hassfest` all pass. There are **no push, PR, cron or daily triggers**.
-4. Confirm the setup and reconfiguration flows display the window exclusions picker first; verify heuristic preselection, manual deselection, deliberately empty exclusions, and that excluded contacts do not reappear in room counts, recommendations or the card.
-5. Install from HACS as a **custom integration** on Home Assistant 2026.10+; confirm setup and options screens work, and the logo renders.
-5. Verify the window sensor exclusion picker: likely virtual thermostat/auxiliary entities are preselected, genuine contacts can be unchecked, deliberately empty exclusions persist across reconfiguration, and excluded entities never appear in area counts, recommendations or the dashboard. Verify room/device assignment, supported outdoor-sensor filtering, weather warning logic, timestamps, stable open recommendations, urgent close recommendations, and unload/reload. Confirm the single recommendation sensor exposes `dashboard` with all rooms and outside measurements.
-7. After a Home Assistant restart, verify Air Quality Advisor appears in the dashboard card picker, loads its JavaScript without copying into `www`, displays safe/attention/unknown counts, and follows different HA user interface languages. Check narrow mobile and desktop layouts in light and dark mode.
-8. Verify manual `air_quality_advisor.announce` (with different languages) and both direct outputs and Announcement Hub routes with real devices. Do not claim output success from accepted service calls alone.
-8. When all gates pass, create a **GitHub Release** tagged `v0.1.4`, noting supported HA versions, features and any untested providers. Public HACS catalog listing requires a separate submission after release.
+1. Run `python -m pytest -q tests`, `python -m compileall -q custom_components`, `node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js` and `node tests/card_test.cjs`.
+2. Confirm all JSON translations are valid and `generate_translations.py` produces the same UI contract.
+3. In GitHub **Actions → Validate (manual only) → Run workflow**, confirm the `test`, `hacs` and `hassfest` jobs pass. There are no scheduled, push or PR triggers.
+4. Test initial setup and **Configure** in Home Assistant 2026.10+: both must walk window exclusions → areas → one indoor exclusion step for each room containing supported sensors → outdoor quality → weather and warnings → announcements. Empty indoor-room lists should be skipped. The optional advanced-threshold step must only appear when checked.
+5. Assign multiple supported readings to a single physical device, including CO₂ and humidity. Check that the indoor selector shows **device name, entity name, metric and entity ID**; never include an entity from another room, incompatible unit or unsupported device class.
+6. Exclude a high indoor reading for one room and verify it is absent from that room’s recommendation reasons and dashboard readings, without disabling the entity in Home Assistant or affecting another room. Clear the exclusion, save and verify the reading returns.
+7. Verify window-contact heuristics, covers ignored as windows, preserved selected rooms, persisted empty exclusions, and previously excluded sensors that temporarily disappear.
+8. Check outside sensor / weather warning behavior, timestamps, urgent closure, announcement cooldowns, unload/reload and unchanged entity unique ID.
+9. Verify the Lovelace card is offered automatically, with localized safe/attention/unknown counts and responsive mobile/desktop layouts in both HA themes.
+10. Verify direct notification, TTS, and optional Announcement Hub delivery on live devices, including per-action language selection. Only call delivery successful after observing the actual output.
+11. After all live gates pass, create a GitHub Release tagged `v0.1.5` and include tested Home Assistant versions and known limitations. Public HACS catalog submission is a separate process.
 
-Never enable automatic window actuation without an additional independently audited integration.
+Air Quality Advisor remains advisory only. It never directly actuates windows or covers.

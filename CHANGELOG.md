@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.5 — full reconfiguration and per-room indoor sensor exclusions
+
+- Configure now starts the complete setup wizard again: window-contact exclusions, room selection, per-room indoor air exclusions, outside sensors, weather and announcements.
+- After area selection, present one supported indoor-sensor multi-select per room, with device name, entity name, measurement and entity ID. Support humidity, CO₂, AQI, PM2.5, PM10 and both VOC metrics; omit unsupported units.
+- Existing per-room exclusions are preselected during reconfiguration; an empty selection intentionally restores all supported sensors, and missing previously excluded sensors remain removable.
+- Apply per-room exclusions to both decision logic and the visual dashboard; do not disable or alter the original Home Assistant entities.
+- Allow advanced threshold editing from an optional checkbox on the final announcement page without losing saved values.
+- Update English, German, Greek, French and Spanish setup/option translations and add comprehensive wizard, device-registry and recommendation regression tests.
+- Preserve the same integration instance, entity unique ID, HACS layout and Lovelace card.
+
 ## 0.1.4 — editable window sensor exclusions
 
 - Add an **Exclude window entities** multi-select before area selection in the initial configuration wizard.
@@ -8,14 +18,6 @@
 - Exclude selected contacts consistently from suggested areas, actual window status, close/open recommendations and dashboard; keep previously selected areas during reconfiguration.
 - Support English, Greek, German, French and Spanish setup text and targeted regression tests.
 - Keep the existing config entry, entity IDs, HACS installation and dashboard card.
-
-## 0.1.4 — Window sensor exclusions
-
-- Add an editable, multi-select **Window sensor exclusions** step to initial setup and reconfiguration before choosing monitored areas.
-- Preselect likely virtual/auxiliary window-class binary sensors, using thermostat/TRV associations, diagnostic metadata, and window-detection descriptions. Users can uncheck any suggestion or exclude other window-class sensors.
-- Honor saved choices, including an intentionally empty exclusion list, and retain temporarily missing excluded entities in configuration.
-- Apply exclusions to room discovery, window counts, opening/closing recommendations, announcements, and the dashboard. Covers continue to be ignored.
-- Keep existing config entries and entity IDs. Add regression tests and five setup translations.
 
 ## 0.1.3 — Dashboard card and live room overview
 
