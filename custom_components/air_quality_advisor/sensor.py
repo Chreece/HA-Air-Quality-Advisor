@@ -68,7 +68,10 @@ class AirQualityRecommendation(SensorEntity):
                 "message": message,
             })
         return {
+            # A safe result means no *known* blockers, not full data coverage.
             "outdoor_safe": plan.outdoor_safe,
+            "outdoor_data_complete": not plan.unavailable_outdoor,
+            "unavailable_outdoor_sensors": list(plan.unavailable_outdoor),
             "open_windows": open_ids,
             "close_windows": close_ids,
             "recommendations": actionable,
