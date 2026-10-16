@@ -11,6 +11,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import DOMAIN, NAME, SIGNAL_UPDATED
+from .dashboard import dashboard_snapshot
 from .messages import announcement, explain
 
 
@@ -68,7 +69,8 @@ class AirQualityRecommendation(SensorEntity):
                 "message": message,
             })
         return {
-            # A safe result means no *known* blockers, not full data coverage.
+            # outdoor_safe means no *known* blockers, not that every selected
+            # sensor currently provides a verified air-quality measurement.
             "outdoor_safe": plan.outdoor_safe,
             "outdoor_data_complete": not plan.unavailable_outdoor,
             "unavailable_outdoor_sensors": list(plan.unavailable_outdoor),
@@ -81,6 +83,7 @@ class AirQualityRecommendation(SensorEntity):
             ],
             "language": language,
             "announcement_hub_available": self._manager.hub_available,
+            "dashboard": dashboard_snapshot(plan, self._manager.thresholds),
         }
 
     async def async_added_to_hass(self) -> None:
