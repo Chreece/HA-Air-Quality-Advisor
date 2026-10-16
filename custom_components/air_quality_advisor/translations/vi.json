@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Phòng",
+        "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Phòng"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Phòng. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Loại trừ cảm biến cửa sổ",
+        "description": "2 · Loại trừ cảm biến cửa sổ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ"
+        },
+        "data_description": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Loại trừ cảm biến không khí trong nhà",
+        "description": "Phòng: {area_name} ({position}/{total}). Loại trừ cảm biến không khí trong nhà. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Chất lượng không khí ngoài trời",
+        "description": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời"
+        },
+        "data_description": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Thời tiết và cảnh báo",
+        "description": "Thời tiết và cảnh báo. weather.*",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "weather_warnings": "Cảnh báo thời tiết"
+        },
+        "data_description": {
+          "weather_entities": "Thời tiết và cảnh báo. weather.*",
+          "weather_warnings": "Thời tiết và cảnh báo. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Thông báo (tùy chọn)",
+        "description": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+        "data": {
+          "language": "Ngôn ngữ",
+          "automatic_tts": "Thông báo giọng nói tự động",
+          "automatic_notifications": "Thông báo tự động",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Thông báo tự động",
+          "tts_engine": "Thông báo giọng nói tự động",
+          "media_players": "Thông báo giọng nói tự động"
+        },
+        "data_description": {
+          "language": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "automatic_tts": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "automatic_notifications": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "use_announcement_hub": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "notify_entities": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "tts_engine": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "media_players": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Ngưỡng nâng cao",
+        "description": "Ngưỡng nâng cao. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ngoài trời · AQI (≤)",
+          "outdoor_co2": "Ngoài trời · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ngoài trời · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ngoài trời · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ngoài trời · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ngoài trời · VOC (ppb) (≤)",
+          "indoor_aqi": "Chất lượng không khí · AQI (≥)",
+          "indoor_co2": "Chất lượng không khí · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Chất lượng không khí · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Chất lượng không khí · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Chất lượng không khí · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Chất lượng không khí · VOC (ppb) (≥)",
+          "indoor_humidity": "Chất lượng không khí · RH (%) (≥)",
+          "min_outdoor_temp": "Ngoài trời · °C (≥)",
+          "max_outdoor_temp": "Ngoài trời · °C (≤)",
+          "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
+          "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
+          "max_age_minutes": "⏱ · Mở (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ngưỡng nâng cao",
+        "description": "Phòng · Loại trừ cảm biến cửa sổ · Loại trừ cảm biến không khí trong nhà · Chất lượng không khí ngoài trời · Thời tiết và cảnh báo · Thông báo (tùy chọn) · Ngưỡng nâng cao",
+        "menu_options": {
+          "areas": "Phòng",
+          "window_sensors": "Loại trừ cảm biến cửa sổ",
+          "indoor_sensors": "Loại trừ cảm biến không khí trong nhà",
+          "outdoor": "Chất lượng không khí ngoài trời",
+          "weather": "Thời tiết và cảnh báo",
+          "delivery": "Thông báo (tùy chọn)",
+          "thresholds": "Ngưỡng nâng cao"
+        }
+      },
+      "window_sensors": {
+        "title": "Loại trừ cảm biến cửa sổ",
+        "description": "2 · Loại trừ cảm biến cửa sổ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ"
+        },
+        "data_description": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Phòng",
+        "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Phòng"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Phòng. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Loại trừ cảm biến không khí trong nhà",
+        "description": "Phòng: {area_name} ({position}/{total}). Loại trừ cảm biến không khí trong nhà. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Chất lượng không khí ngoài trời",
+        "description": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời"
+        },
+        "data_description": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Thời tiết và cảnh báo",
+        "description": "Thời tiết và cảnh báo. weather.*",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "weather_warnings": "Cảnh báo thời tiết"
+        },
+        "data_description": {
+          "weather_entities": "Thời tiết và cảnh báo. weather.*",
+          "weather_warnings": "Thời tiết và cảnh báo. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Thông báo (tùy chọn)",
+        "description": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+        "data": {
+          "language": "Ngôn ngữ",
+          "automatic_tts": "Thông báo giọng nói tự động",
+          "automatic_notifications": "Thông báo tự động",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Thông báo tự động",
+          "tts_engine": "Thông báo giọng nói tự động",
+          "media_players": "Thông báo giọng nói tự động"
+        },
+        "data_description": {
+          "language": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "automatic_tts": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "automatic_notifications": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "use_announcement_hub": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "notify_entities": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "tts_engine": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+          "media_players": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Ngưỡng nâng cao",
+        "description": "Ngưỡng nâng cao. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ngoài trời · AQI (≤)",
+          "outdoor_co2": "Ngoài trời · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ngoài trời · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ngoài trời · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ngoài trời · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ngoài trời · VOC (ppb) (≤)",
+          "indoor_aqi": "Chất lượng không khí · AQI (≥)",
+          "indoor_co2": "Chất lượng không khí · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Chất lượng không khí · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Chất lượng không khí · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Chất lượng không khí · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Chất lượng không khí · VOC (ppb) (≥)",
+          "indoor_humidity": "Chất lượng không khí · RH (%) (≥)",
+          "min_outdoor_temp": "Ngoài trời · °C (≥)",
+          "max_outdoor_temp": "Ngoài trời · °C (≤)",
+          "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
+          "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
+          "max_age_minutes": "⏱ · Mở (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Chất lượng không khí",
+        "state": {
+          "open": "Đóng · Đo lường",
+          "close": "Thông báo tự động · Đo lường",
+          "idle": "Tốt",
+          "blocked": "Giữ cửa sổ đóng"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Thông báo (tùy chọn) — Air Quality Advisor",
+      "description": "Thông báo (tùy chọn) · Phòng",
+      "fields": {
+        "language": {
+          "name": "Ngôn ngữ",
+          "description": "Ngôn ngữ"
+        },
+        "channels": {
+          "name": "Thông báo (tùy chọn)",
+          "description": "Thông báo (tùy chọn)"
+        },
+        "areas": {
+          "name": "Phòng",
+          "description": "Phòng"
+        }
+      }
+    }
+  }
+}

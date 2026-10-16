@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Prostorije",
+        "description": "1 · 🪟 Prostorije. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Prostorije"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Prostorije. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Isključi senzore prozora",
+        "description": "2 · Isključi senzore prozora. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Isključi senzore prozora"
+        },
+        "data_description": {
+          "excluded_window_entities": "Isključi senzore prozora · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Isključi senzore zraka u zatvorenom",
+        "description": "Prostorije: {area_name} ({position}/{total}). Isključi senzore zraka u zatvorenom. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kvaliteta vanjskog zraka",
+        "description": "Kvaliteta vanjskog zraka. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kvaliteta vanjskog zraka"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kvaliteta vanjskog zraka. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vrijeme i upozorenja",
+        "description": "Vrijeme i upozorenja. weather.*",
+        "data": {
+          "weather_entities": "Vrijeme i upozorenja",
+          "weather_warnings": "Vremenska upozorenja"
+        },
+        "data_description": {
+          "weather_entities": "Vrijeme i upozorenja. weather.*",
+          "weather_warnings": "Vrijeme i upozorenja. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Obavijesti (neobavezno)",
+        "description": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+        "data": {
+          "language": "Jezik",
+          "automatic_tts": "Automatske glasovne obavijesti",
+          "automatic_notifications": "Automatske obavijesti",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatske obavijesti",
+          "tts_engine": "Automatske glasovne obavijesti",
+          "media_players": "Automatske glasovne obavijesti"
+        },
+        "data_description": {
+          "language": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "automatic_tts": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "automatic_notifications": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "use_announcement_hub": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "notify_entities": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "tts_engine": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "media_players": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Napredni pragovi",
+        "description": "Napredni pragovi. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Vani · AQI (≤)",
+          "outdoor_co2": "Vani · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Vani · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Vani · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Vani · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Vani · VOC (ppb) (≤)",
+          "indoor_aqi": "Kvaliteta zraka · AQI (≥)",
+          "indoor_co2": "Kvaliteta zraka · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kvaliteta zraka · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kvaliteta zraka · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kvaliteta zraka · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kvaliteta zraka · VOC (ppb) (≥)",
+          "indoor_humidity": "Kvaliteta zraka · RH (%) (≥)",
+          "min_outdoor_temp": "Vani · °C (≥)",
+          "max_outdoor_temp": "Vani · °C (≤)",
+          "max_outdoor_humidity": "Vani · RH (%) (≤)",
+          "max_wind_kmh": "Vrijeme i upozorenja · km/h (≤)",
+          "max_age_minutes": "⏱ · Otvorite (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Napredni pragovi",
+        "description": "Prostorije · Isključi senzore prozora · Isključi senzore zraka u zatvorenom · Kvaliteta vanjskog zraka · Vrijeme i upozorenja · Obavijesti (neobavezno) · Napredni pragovi",
+        "menu_options": {
+          "areas": "Prostorije",
+          "window_sensors": "Isključi senzore prozora",
+          "indoor_sensors": "Isključi senzore zraka u zatvorenom",
+          "outdoor": "Kvaliteta vanjskog zraka",
+          "weather": "Vrijeme i upozorenja",
+          "delivery": "Obavijesti (neobavezno)",
+          "thresholds": "Napredni pragovi"
+        }
+      },
+      "window_sensors": {
+        "title": "Isključi senzore prozora",
+        "description": "2 · Isključi senzore prozora. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Isključi senzore prozora"
+        },
+        "data_description": {
+          "excluded_window_entities": "Isključi senzore prozora · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Prostorije",
+        "description": "1 · 🪟 Prostorije. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Prostorije"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Prostorije. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Isključi senzore zraka u zatvorenom",
+        "description": "Prostorije: {area_name} ({position}/{total}). Isključi senzore zraka u zatvorenom. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kvaliteta vanjskog zraka",
+        "description": "Kvaliteta vanjskog zraka. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kvaliteta vanjskog zraka"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kvaliteta vanjskog zraka. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vrijeme i upozorenja",
+        "description": "Vrijeme i upozorenja. weather.*",
+        "data": {
+          "weather_entities": "Vrijeme i upozorenja",
+          "weather_warnings": "Vremenska upozorenja"
+        },
+        "data_description": {
+          "weather_entities": "Vrijeme i upozorenja. weather.*",
+          "weather_warnings": "Vrijeme i upozorenja. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Obavijesti (neobavezno)",
+        "description": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+        "data": {
+          "language": "Jezik",
+          "automatic_tts": "Automatske glasovne obavijesti",
+          "automatic_notifications": "Automatske obavijesti",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatske obavijesti",
+          "tts_engine": "Automatske glasovne obavijesti",
+          "media_players": "Automatske glasovne obavijesti"
+        },
+        "data_description": {
+          "language": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "automatic_tts": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "automatic_notifications": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "use_announcement_hub": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "notify_entities": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "tts_engine": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub.",
+          "media_players": "Obavijesti (neobavezno). Automatske obavijesti · Automatske glasovne obavijesti. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Napredni pragovi",
+        "description": "Napredni pragovi. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Vani · AQI (≤)",
+          "outdoor_co2": "Vani · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Vani · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Vani · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Vani · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Vani · VOC (ppb) (≤)",
+          "indoor_aqi": "Kvaliteta zraka · AQI (≥)",
+          "indoor_co2": "Kvaliteta zraka · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kvaliteta zraka · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kvaliteta zraka · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kvaliteta zraka · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kvaliteta zraka · VOC (ppb) (≥)",
+          "indoor_humidity": "Kvaliteta zraka · RH (%) (≥)",
+          "min_outdoor_temp": "Vani · °C (≥)",
+          "max_outdoor_temp": "Vani · °C (≤)",
+          "max_outdoor_humidity": "Vani · RH (%) (≤)",
+          "max_wind_kmh": "Vrijeme i upozorenja · km/h (≤)",
+          "max_age_minutes": "⏱ · Otvorite (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Kvaliteta zraka",
+        "state": {
+          "open": "Zatvorite · Mjerenja",
+          "close": "Automatske obavijesti · Mjerenja",
+          "idle": "Dobra",
+          "blocked": "Držite prozore zatvorenima"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Obavijesti (neobavezno) — Air Quality Advisor",
+      "description": "Obavijesti (neobavezno) · Prostorije",
+      "fields": {
+        "language": {
+          "name": "Jezik",
+          "description": "Jezik"
+        },
+        "channels": {
+          "name": "Obavijesti (neobavezno)",
+          "description": "Obavijesti (neobavezno)"
+        },
+        "areas": {
+          "name": "Prostorije",
+          "description": "Prostorije"
+        }
+      }
+    }
+  }
+}

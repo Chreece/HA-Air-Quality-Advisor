@@ -64,6 +64,18 @@ Install or update through the [HACS Integration repository](https://my.home-assi
 
 Regular development pushes stay quiet. A dedicated release-request change triggers Python and JavaScript validation, HACS Action and Hassfest before publishing a tag and full GitHub Release.
 
+## Internationalization — 38 languages
+
+Air Quality Advisor supports **38 Home Assistant language choices**, including 33 new locale packs for setup, reconfiguration, room states, notification messages, announcement text and the built-in dashboard card. The card follows the signed-in **Home Assistant user's language**, while `air_quality_advisor.announce` can override message language independently.
+
+**Languages:** English, German, Greek, French, Spanish, Italian, Dutch, Portuguese (Portugal and Brazil), Polish, Russian, Ukrainian, Turkish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Serbian, Swedish, Norwegian Bokmål, Danish, Finnish, Indonesian, Vietnamese, Thai, Hindi, Simplified/Traditional Chinese, Japanese, Korean, Arabic, Hebrew, Persian, Bengali, Urdu and Tamil.
+
+BCP47 support distinguishes `pt-BR` from `pt-PT`, and `zh-Hans` from `zh-Hant` (`zh-CN` and `zh-TW` are also recognized). Unsupported locales fall back to English. The dashboard uses right-to-left layout for Arabic, Hebrew, Persian and Urdu.
+
+**Translation maturity:** Existing English, German, Greek, French and Spanish detailed setup text is retained. Additional locales have translated interface labels, core instructions, states and recommendations, but some rare validation messages currently fall back to English rather than risk an inaccurate safety warning. Sensor/device names, weather-provider conditions and measurement units remain those supplied by Home Assistant. Speech voices are **not bundled**; your installed TTS engine must support the language.
+
+Locale source lives under `custom_components/air_quality_advisor/locale_pack_*.py`; edit the source then run `python generate_translations.py` and check the generated `translations/<language>.json` files. Native-speaker translation improvements are welcome.
+
 ## Guided configuration and reconfiguration
 
 **Initial setup** starts with Rooms, then window exclusions, followed by the remaining guided steps:

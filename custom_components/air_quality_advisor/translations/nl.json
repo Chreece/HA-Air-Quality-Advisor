@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Kamers",
+        "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Kamers"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Kamers. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Raamsensoren uitsluiten",
+        "description": "2 · Raamsensoren uitsluiten. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Raamsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Raamsensoren uitsluiten · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Binnenluchtsensoren uitsluiten",
+        "description": "Kamers: {area_name} ({position}/{total}). Binnenluchtsensoren uitsluiten. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Buitenluchtkwaliteit",
+        "description": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Buitenluchtkwaliteit"
+        },
+        "data_description": {
+          "outdoor_sensors": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Weer en waarschuwingen",
+        "description": "Weer en waarschuwingen. weather.*",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "weather_warnings": "Weerwaarschuwingen"
+        },
+        "data_description": {
+          "weather_entities": "Weer en waarschuwingen. weather.*",
+          "weather_warnings": "Weer en waarschuwingen. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Meldingen (optioneel)",
+        "description": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+        "data": {
+          "language": "Taal",
+          "automatic_tts": "Automatisch gesproken meldingen",
+          "automatic_notifications": "Automatische meldingen",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatische meldingen",
+          "tts_engine": "Automatisch gesproken meldingen",
+          "media_players": "Automatisch gesproken meldingen"
+        },
+        "data_description": {
+          "language": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "automatic_tts": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "automatic_notifications": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "use_announcement_hub": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "notify_entities": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "tts_engine": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "media_players": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Geavanceerde grenswaarden",
+        "description": "Geavanceerde grenswaarden. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Buiten · AQI (≤)",
+          "outdoor_co2": "Buiten · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Buiten · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Buiten · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Buiten · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Buiten · VOC (ppb) (≤)",
+          "indoor_aqi": "Luchtkwaliteit · AQI (≥)",
+          "indoor_co2": "Luchtkwaliteit · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luchtkwaliteit · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luchtkwaliteit · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luchtkwaliteit · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luchtkwaliteit · VOC (ppb) (≥)",
+          "indoor_humidity": "Luchtkwaliteit · RH (%) (≥)",
+          "min_outdoor_temp": "Buiten · °C (≥)",
+          "max_outdoor_temp": "Buiten · °C (≤)",
+          "max_outdoor_humidity": "Buiten · RH (%) (≤)",
+          "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
+          "max_age_minutes": "⏱ · Open (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Geavanceerde grenswaarden",
+        "description": "Kamers · Raamsensoren uitsluiten · Binnenluchtsensoren uitsluiten · Buitenluchtkwaliteit · Weer en waarschuwingen · Meldingen (optioneel) · Geavanceerde grenswaarden",
+        "menu_options": {
+          "areas": "Kamers",
+          "window_sensors": "Raamsensoren uitsluiten",
+          "indoor_sensors": "Binnenluchtsensoren uitsluiten",
+          "outdoor": "Buitenluchtkwaliteit",
+          "weather": "Weer en waarschuwingen",
+          "delivery": "Meldingen (optioneel)",
+          "thresholds": "Geavanceerde grenswaarden"
+        }
+      },
+      "window_sensors": {
+        "title": "Raamsensoren uitsluiten",
+        "description": "2 · Raamsensoren uitsluiten. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Raamsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Raamsensoren uitsluiten · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Kamers",
+        "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Kamers"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Kamers. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Binnenluchtsensoren uitsluiten",
+        "description": "Kamers: {area_name} ({position}/{total}). Binnenluchtsensoren uitsluiten. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Buitenluchtkwaliteit",
+        "description": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Buitenluchtkwaliteit"
+        },
+        "data_description": {
+          "outdoor_sensors": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Weer en waarschuwingen",
+        "description": "Weer en waarschuwingen. weather.*",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "weather_warnings": "Weerwaarschuwingen"
+        },
+        "data_description": {
+          "weather_entities": "Weer en waarschuwingen. weather.*",
+          "weather_warnings": "Weer en waarschuwingen. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Meldingen (optioneel)",
+        "description": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+        "data": {
+          "language": "Taal",
+          "automatic_tts": "Automatisch gesproken meldingen",
+          "automatic_notifications": "Automatische meldingen",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatische meldingen",
+          "tts_engine": "Automatisch gesproken meldingen",
+          "media_players": "Automatisch gesproken meldingen"
+        },
+        "data_description": {
+          "language": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "automatic_tts": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "automatic_notifications": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "use_announcement_hub": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "notify_entities": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "tts_engine": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+          "media_players": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Geavanceerde grenswaarden",
+        "description": "Geavanceerde grenswaarden. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Buiten · AQI (≤)",
+          "outdoor_co2": "Buiten · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Buiten · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Buiten · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Buiten · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Buiten · VOC (ppb) (≤)",
+          "indoor_aqi": "Luchtkwaliteit · AQI (≥)",
+          "indoor_co2": "Luchtkwaliteit · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luchtkwaliteit · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luchtkwaliteit · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luchtkwaliteit · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luchtkwaliteit · VOC (ppb) (≥)",
+          "indoor_humidity": "Luchtkwaliteit · RH (%) (≥)",
+          "min_outdoor_temp": "Buiten · °C (≥)",
+          "max_outdoor_temp": "Buiten · °C (≤)",
+          "max_outdoor_humidity": "Buiten · RH (%) (≤)",
+          "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
+          "max_age_minutes": "⏱ · Open (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Luchtkwaliteit",
+        "state": {
+          "open": "Sluit · Metingen",
+          "close": "Automatische meldingen · Metingen",
+          "idle": "Goed",
+          "blocked": "Houd ramen gesloten"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Meldingen (optioneel) — Air Quality Advisor",
+      "description": "Meldingen (optioneel) · Kamers",
+      "fields": {
+        "language": {
+          "name": "Taal",
+          "description": "Taal"
+        },
+        "channels": {
+          "name": "Meldingen (optioneel)",
+          "description": "Meldingen (optioneel)"
+        },
+        "areas": {
+          "name": "Kamers",
+          "description": "Kamers"
+        }
+      }
+    }
+  }
+}

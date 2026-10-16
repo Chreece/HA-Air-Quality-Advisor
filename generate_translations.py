@@ -257,3 +257,7 @@ for code,v in lang.items():
  (root/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
  # HA expects en.json alongside strings.json as well.
  if code=='en':(root/'translations/en.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+# Extend the standard five translations without changing their existing text.
+from generate_extra_translations import generate_extended
+generate_extended(root)

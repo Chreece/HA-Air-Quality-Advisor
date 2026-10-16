@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Huoneet",
+        "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Huoneet"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Huoneet. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Ohita ikkuna-anturit",
+        "description": "2 · Ohita ikkuna-anturit. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ohita ikkuna-anturit"
+        },
+        "data_description": {
+          "excluded_window_entities": "Ohita ikkuna-anturit · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Ohita sisäilma-anturit",
+        "description": "Huoneet: {area_name} ({position}/{total}). Ohita sisäilma-anturit. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Ulkoilman laatu",
+        "description": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Ulkoilman laatu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Sää ja varoitukset",
+        "description": "Sää ja varoitukset. weather.*",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "weather_warnings": "Säävaroitukset"
+        },
+        "data_description": {
+          "weather_entities": "Sää ja varoitukset. weather.*",
+          "weather_warnings": "Sää ja varoitukset. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Ilmoitukset (valinnainen)",
+        "description": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+        "data": {
+          "language": "Kieli",
+          "automatic_tts": "Automaattiset puheilmoitukset",
+          "automatic_notifications": "Automaattiset ilmoitukset",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automaattiset ilmoitukset",
+          "tts_engine": "Automaattiset puheilmoitukset",
+          "media_players": "Automaattiset puheilmoitukset"
+        },
+        "data_description": {
+          "language": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "automatic_tts": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "automatic_notifications": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "use_announcement_hub": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "notify_entities": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "tts_engine": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "media_players": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Lisäraja-arvot",
+        "description": "Lisäraja-arvot. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ulkona · AQI (≤)",
+          "outdoor_co2": "Ulkona · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ulkona · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ulkona · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ulkona · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ulkona · VOC (ppb) (≤)",
+          "indoor_aqi": "Ilmanlaatu · AQI (≥)",
+          "indoor_co2": "Ilmanlaatu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Ilmanlaatu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Ilmanlaatu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Ilmanlaatu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Ilmanlaatu · VOC (ppb) (≥)",
+          "indoor_humidity": "Ilmanlaatu · RH (%) (≥)",
+          "min_outdoor_temp": "Ulkona · °C (≥)",
+          "max_outdoor_temp": "Ulkona · °C (≤)",
+          "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
+          "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
+          "max_age_minutes": "⏱ · Avaa (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Lisäraja-arvot",
+        "description": "Huoneet · Ohita ikkuna-anturit · Ohita sisäilma-anturit · Ulkoilman laatu · Sää ja varoitukset · Ilmoitukset (valinnainen) · Lisäraja-arvot",
+        "menu_options": {
+          "areas": "Huoneet",
+          "window_sensors": "Ohita ikkuna-anturit",
+          "indoor_sensors": "Ohita sisäilma-anturit",
+          "outdoor": "Ulkoilman laatu",
+          "weather": "Sää ja varoitukset",
+          "delivery": "Ilmoitukset (valinnainen)",
+          "thresholds": "Lisäraja-arvot"
+        }
+      },
+      "window_sensors": {
+        "title": "Ohita ikkuna-anturit",
+        "description": "2 · Ohita ikkuna-anturit. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ohita ikkuna-anturit"
+        },
+        "data_description": {
+          "excluded_window_entities": "Ohita ikkuna-anturit · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Huoneet",
+        "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Huoneet"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Huoneet. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Ohita sisäilma-anturit",
+        "description": "Huoneet: {area_name} ({position}/{total}). Ohita sisäilma-anturit. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Ulkoilman laatu",
+        "description": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Ulkoilman laatu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Sää ja varoitukset",
+        "description": "Sää ja varoitukset. weather.*",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "weather_warnings": "Säävaroitukset"
+        },
+        "data_description": {
+          "weather_entities": "Sää ja varoitukset. weather.*",
+          "weather_warnings": "Sää ja varoitukset. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Ilmoitukset (valinnainen)",
+        "description": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+        "data": {
+          "language": "Kieli",
+          "automatic_tts": "Automaattiset puheilmoitukset",
+          "automatic_notifications": "Automaattiset ilmoitukset",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automaattiset ilmoitukset",
+          "tts_engine": "Automaattiset puheilmoitukset",
+          "media_players": "Automaattiset puheilmoitukset"
+        },
+        "data_description": {
+          "language": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "automatic_tts": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "automatic_notifications": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "use_announcement_hub": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "notify_entities": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "tts_engine": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+          "media_players": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Lisäraja-arvot",
+        "description": "Lisäraja-arvot. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ulkona · AQI (≤)",
+          "outdoor_co2": "Ulkona · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ulkona · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ulkona · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ulkona · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ulkona · VOC (ppb) (≤)",
+          "indoor_aqi": "Ilmanlaatu · AQI (≥)",
+          "indoor_co2": "Ilmanlaatu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Ilmanlaatu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Ilmanlaatu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Ilmanlaatu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Ilmanlaatu · VOC (ppb) (≥)",
+          "indoor_humidity": "Ilmanlaatu · RH (%) (≥)",
+          "min_outdoor_temp": "Ulkona · °C (≥)",
+          "max_outdoor_temp": "Ulkona · °C (≤)",
+          "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
+          "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
+          "max_age_minutes": "⏱ · Avaa (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Ilmanlaatu",
+        "state": {
+          "open": "Sulje · Mittaukset",
+          "close": "Automaattiset ilmoitukset · Mittaukset",
+          "idle": "Hyvä",
+          "blocked": "Pidä ikkunat kiinni"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Ilmoitukset (valinnainen) — Air Quality Advisor",
+      "description": "Ilmoitukset (valinnainen) · Huoneet",
+      "fields": {
+        "language": {
+          "name": "Kieli",
+          "description": "Kieli"
+        },
+        "channels": {
+          "name": "Ilmoitukset (valinnainen)",
+          "description": "Ilmoitukset (valinnainen)"
+        },
+        "areas": {
+          "name": "Huoneet",
+          "description": "Huoneet"
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,13 @@
 
 **First public GitHub/HACS release:** v0.1.8. Earlier 0.1.x changelog entries are development milestones and were not individually tagged.
 
+## v0.2.0 language checks
+
+- Run the translation generator and ensure shipped JSON files do not change.
+- Verify all 38 Home Assistant BCP47 language files, fallback tags, speech placeholders and RTL card layouts.
+- Check regional Portuguese and Chinese script handling and sampled spoken messages.
+- Some uncommon configuration error details still use English fallback pending native-speaker review.
+
 ## Verification gates
 
 The repository's `.github/workflows/validate.yml` runs on manual dispatch or an explicit release-request change, not on every push, pull request or schedule. Checks:

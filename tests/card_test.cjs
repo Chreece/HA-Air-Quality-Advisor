@@ -36,6 +36,26 @@ for(const [lang,needle] of [['el','Ποιότητα αέρα'],['de','Luftqualit
   card.hass={language:lang,states:{'sensor.air_quality_advisor_recommendations':{state:'open',attributes:{dashboard:input}}}};
   assert.ok(card.shadowRoot.innerHTML.includes(needle), `missing language ${lang}`);
 }
+
+for (const [lang, expected, rtl] of [
+  ['it', 'Qualità dell’aria', false],
+  ['nl', 'Luchtkwaliteit', false],
+  ['pt-BR', 'Qualidade do ar', false],
+  ['zh-Hans', '空气质量', false],
+  ['zh-Hant', '空氣品質', false],
+  ['zh_TW', '空氣品質', false],
+  ['ja', '空気質', false],
+  ['ko', '공기질', false],
+  ['hi', 'वायु गुणवत्ता', false],
+  ['ar', 'جودة الهواء', true],
+  ['he', 'איכות האוויר', true],
+  ['ur', 'ہوا کا معیار', true],
+]) {
+  card.hass={language:lang,states:{'sensor.air_quality_advisor_recommendations':{state:'open',attributes:{dashboard:input}}}};
+  assert.ok(card.shadowRoot.innerHTML.includes(expected), `missing UI language: ${lang}`);
+  assert.ok(card.shadowRoot.innerHTML.includes(`dir="${rtl ? 'rtl' : 'ltr'}"`), `wrong text direction: ${lang}`);
+}
+card.hass={language:'en',states:{'sensor.air_quality_advisor_recommendations':{state:'open',attributes:{dashboard:input}}}};
 assert.ok(!card.shadowRoot.innerHTML.includes('<img src=x onerror='),'dynamic names must be escaped');
 assert.ok(card.shadowRoot.innerHTML.includes('&lt;img src=x'));
 assert.ok(card.shadowRoot.innerHTML.includes('out-chip'));

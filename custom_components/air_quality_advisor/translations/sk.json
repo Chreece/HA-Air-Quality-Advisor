@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Miestnosti",
+        "description": "1 · 🪟 Miestnosti. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Miestnosti"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Miestnosti. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Vylúčiť snímače okien",
+        "description": "2 · Vylúčiť snímače okien. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Vylúčiť snímače okien"
+        },
+        "data_description": {
+          "excluded_window_entities": "Vylúčiť snímače okien · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Vylúčiť snímače vnútorného vzduchu",
+        "description": "Miestnosti: {area_name} ({position}/{total}). Vylúčiť snímače vnútorného vzduchu. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Vylúčiť snímače vnútorného vzduchu"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Vylúčiť snímače vnútorného vzduchu · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kvalita vonkajšieho vzduchu",
+        "description": "Kvalita vonkajšieho vzduchu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Počasie a výstrahy",
+        "description": "Počasie a výstrahy. weather.*",
+        "data": {
+          "weather_entities": "Počasie a výstrahy",
+          "weather_warnings": "Výstrahy počasia"
+        },
+        "data_description": {
+          "weather_entities": "Počasie a výstrahy. weather.*",
+          "weather_warnings": "Počasie a výstrahy. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Oznámenia (voliteľné)",
+        "description": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+        "data": {
+          "language": "Jazyk",
+          "automatic_tts": "Automatické hlasové oznámenia",
+          "automatic_notifications": "Automatické oznámenia",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatické oznámenia",
+          "tts_engine": "Automatické hlasové oznámenia",
+          "media_players": "Automatické hlasové oznámenia"
+        },
+        "data_description": {
+          "language": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "automatic_tts": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "automatic_notifications": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "use_announcement_hub": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "notify_entities": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "tts_engine": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "media_players": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Pokročilé limity",
+        "description": "Pokročilé limity. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Vonku · AQI (≤)",
+          "outdoor_co2": "Vonku · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Vonku · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Vonku · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Vonku · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Vonku · VOC (ppb) (≤)",
+          "indoor_aqi": "Kvalita vzduchu · AQI (≥)",
+          "indoor_co2": "Kvalita vzduchu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kvalita vzduchu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kvalita vzduchu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kvalita vzduchu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kvalita vzduchu · VOC (ppb) (≥)",
+          "indoor_humidity": "Kvalita vzduchu · RH (%) (≥)",
+          "min_outdoor_temp": "Vonku · °C (≥)",
+          "max_outdoor_temp": "Vonku · °C (≤)",
+          "max_outdoor_humidity": "Vonku · RH (%) (≤)",
+          "max_wind_kmh": "Počasie a výstrahy · km/h (≤)",
+          "max_age_minutes": "⏱ · Otvorte (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Pokročilé limity",
+        "description": "Miestnosti · Vylúčiť snímače okien · Vylúčiť snímače vnútorného vzduchu · Kvalita vonkajšieho vzduchu · Počasie a výstrahy · Oznámenia (voliteľné) · Pokročilé limity",
+        "menu_options": {
+          "areas": "Miestnosti",
+          "window_sensors": "Vylúčiť snímače okien",
+          "indoor_sensors": "Vylúčiť snímače vnútorného vzduchu",
+          "outdoor": "Kvalita vonkajšieho vzduchu",
+          "weather": "Počasie a výstrahy",
+          "delivery": "Oznámenia (voliteľné)",
+          "thresholds": "Pokročilé limity"
+        }
+      },
+      "window_sensors": {
+        "title": "Vylúčiť snímače okien",
+        "description": "2 · Vylúčiť snímače okien. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Vylúčiť snímače okien"
+        },
+        "data_description": {
+          "excluded_window_entities": "Vylúčiť snímače okien · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Miestnosti",
+        "description": "1 · 🪟 Miestnosti. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Miestnosti"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Miestnosti. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Vylúčiť snímače vnútorného vzduchu",
+        "description": "Miestnosti: {area_name} ({position}/{total}). Vylúčiť snímače vnútorného vzduchu. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Vylúčiť snímače vnútorného vzduchu"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Vylúčiť snímače vnútorného vzduchu · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kvalita vonkajšieho vzduchu",
+        "description": "Kvalita vonkajšieho vzduchu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Počasie a výstrahy",
+        "description": "Počasie a výstrahy. weather.*",
+        "data": {
+          "weather_entities": "Počasie a výstrahy",
+          "weather_warnings": "Výstrahy počasia"
+        },
+        "data_description": {
+          "weather_entities": "Počasie a výstrahy. weather.*",
+          "weather_warnings": "Počasie a výstrahy. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Oznámenia (voliteľné)",
+        "description": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+        "data": {
+          "language": "Jazyk",
+          "automatic_tts": "Automatické hlasové oznámenia",
+          "automatic_notifications": "Automatické oznámenia",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatické oznámenia",
+          "tts_engine": "Automatické hlasové oznámenia",
+          "media_players": "Automatické hlasové oznámenia"
+        },
+        "data_description": {
+          "language": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "automatic_tts": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "automatic_notifications": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "use_announcement_hub": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "notify_entities": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "tts_engine": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub.",
+          "media_players": "Oznámenia (voliteľné). Automatické oznámenia · Automatické hlasové oznámenia. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Pokročilé limity",
+        "description": "Pokročilé limity. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Vonku · AQI (≤)",
+          "outdoor_co2": "Vonku · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Vonku · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Vonku · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Vonku · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Vonku · VOC (ppb) (≤)",
+          "indoor_aqi": "Kvalita vzduchu · AQI (≥)",
+          "indoor_co2": "Kvalita vzduchu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kvalita vzduchu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kvalita vzduchu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kvalita vzduchu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kvalita vzduchu · VOC (ppb) (≥)",
+          "indoor_humidity": "Kvalita vzduchu · RH (%) (≥)",
+          "min_outdoor_temp": "Vonku · °C (≥)",
+          "max_outdoor_temp": "Vonku · °C (≤)",
+          "max_outdoor_humidity": "Vonku · RH (%) (≤)",
+          "max_wind_kmh": "Počasie a výstrahy · km/h (≤)",
+          "max_age_minutes": "⏱ · Otvorte (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Kvalita vzduchu",
+        "state": {
+          "open": "Zatvorte · Merania",
+          "close": "Automatické oznámenia · Merania",
+          "idle": "Dobrá",
+          "blocked": "Nechajte okná zatvorené"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Oznámenia (voliteľné) — Air Quality Advisor",
+      "description": "Oznámenia (voliteľné) · Miestnosti",
+      "fields": {
+        "language": {
+          "name": "Jazyk",
+          "description": "Jazyk"
+        },
+        "channels": {
+          "name": "Oznámenia (voliteľné)",
+          "description": "Oznámenia (voliteľné)"
+        },
+        "areas": {
+          "name": "Miestnosti",
+          "description": "Miestnosti"
+        }
+      }
+    }
+  }
+}

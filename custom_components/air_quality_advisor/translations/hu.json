@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Helyiségek",
+        "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Helyiségek"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Helyiségek. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Ablakérzékelők kizárása",
+        "description": "2 · Ablakérzékelők kizárása. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ablakérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_window_entities": "Ablakérzékelők kizárása · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Beltéri levegőérzékelők kizárása",
+        "description": "Helyiségek: {area_name} ({position}/{total}). Beltéri levegőérzékelők kizárása. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kültéri levegőminőség",
+        "description": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kültéri levegőminőség"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Időjárás és riasztások",
+        "description": "Időjárás és riasztások. weather.*",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "weather_warnings": "Időjárási figyelmeztetések"
+        },
+        "data_description": {
+          "weather_entities": "Időjárás és riasztások. weather.*",
+          "weather_warnings": "Időjárás és riasztások. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Értesítések (opcionális)",
+        "description": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+        "data": {
+          "language": "Nyelv",
+          "automatic_tts": "Automatikus hangos értesítések",
+          "automatic_notifications": "Automatikus értesítések",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatikus értesítések",
+          "tts_engine": "Automatikus hangos értesítések",
+          "media_players": "Automatikus hangos értesítések"
+        },
+        "data_description": {
+          "language": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "automatic_tts": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "automatic_notifications": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "use_announcement_hub": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "notify_entities": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "tts_engine": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "media_players": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Speciális határértékek",
+        "description": "Speciális határértékek. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Kint · AQI (≤)",
+          "outdoor_co2": "Kint · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Kint · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Kint · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Kint · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Kint · VOC (ppb) (≤)",
+          "indoor_aqi": "Levegőminőség · AQI (≥)",
+          "indoor_co2": "Levegőminőség · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Levegőminőség · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Levegőminőség · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Levegőminőség · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Levegőminőség · VOC (ppb) (≥)",
+          "indoor_humidity": "Levegőminőség · RH (%) (≥)",
+          "min_outdoor_temp": "Kint · °C (≥)",
+          "max_outdoor_temp": "Kint · °C (≤)",
+          "max_outdoor_humidity": "Kint · RH (%) (≤)",
+          "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Speciális határértékek",
+        "description": "Helyiségek · Ablakérzékelők kizárása · Beltéri levegőérzékelők kizárása · Kültéri levegőminőség · Időjárás és riasztások · Értesítések (opcionális) · Speciális határértékek",
+        "menu_options": {
+          "areas": "Helyiségek",
+          "window_sensors": "Ablakérzékelők kizárása",
+          "indoor_sensors": "Beltéri levegőérzékelők kizárása",
+          "outdoor": "Kültéri levegőminőség",
+          "weather": "Időjárás és riasztások",
+          "delivery": "Értesítések (opcionális)",
+          "thresholds": "Speciális határértékek"
+        }
+      },
+      "window_sensors": {
+        "title": "Ablakérzékelők kizárása",
+        "description": "2 · Ablakérzékelők kizárása. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ablakérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_window_entities": "Ablakérzékelők kizárása · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Helyiségek",
+        "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Helyiségek"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Helyiségek. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Beltéri levegőérzékelők kizárása",
+        "description": "Helyiségek: {area_name} ({position}/{total}). Beltéri levegőérzékelők kizárása. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kültéri levegőminőség",
+        "description": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kültéri levegőminőség"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Időjárás és riasztások",
+        "description": "Időjárás és riasztások. weather.*",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "weather_warnings": "Időjárási figyelmeztetések"
+        },
+        "data_description": {
+          "weather_entities": "Időjárás és riasztások. weather.*",
+          "weather_warnings": "Időjárás és riasztások. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Értesítések (opcionális)",
+        "description": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+        "data": {
+          "language": "Nyelv",
+          "automatic_tts": "Automatikus hangos értesítések",
+          "automatic_notifications": "Automatikus értesítések",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatikus értesítések",
+          "tts_engine": "Automatikus hangos értesítések",
+          "media_players": "Automatikus hangos értesítések"
+        },
+        "data_description": {
+          "language": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "automatic_tts": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "automatic_notifications": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "use_announcement_hub": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "notify_entities": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "tts_engine": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+          "media_players": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Speciális határértékek",
+        "description": "Speciális határértékek. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Kint · AQI (≤)",
+          "outdoor_co2": "Kint · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Kint · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Kint · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Kint · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Kint · VOC (ppb) (≤)",
+          "indoor_aqi": "Levegőminőség · AQI (≥)",
+          "indoor_co2": "Levegőminőség · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Levegőminőség · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Levegőminőség · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Levegőminőség · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Levegőminőség · VOC (ppb) (≥)",
+          "indoor_humidity": "Levegőminőség · RH (%) (≥)",
+          "min_outdoor_temp": "Kint · °C (≥)",
+          "max_outdoor_temp": "Kint · °C (≤)",
+          "max_outdoor_humidity": "Kint · RH (%) (≤)",
+          "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Levegőminőség",
+        "state": {
+          "open": "Csukd be · Mérések",
+          "close": "Automatikus értesítések · Mérések",
+          "idle": "Jó",
+          "blocked": "Tartsd csukva az ablakokat"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Értesítések (opcionális) — Air Quality Advisor",
+      "description": "Értesítések (opcionális) · Helyiségek",
+      "fields": {
+        "language": {
+          "name": "Nyelv",
+          "description": "Nyelv"
+        },
+        "channels": {
+          "name": "Értesítések (opcionális)",
+          "description": "Értesítések (opcionális)"
+        },
+        "areas": {
+          "name": "Helyiségek",
+          "description": "Helyiségek"
+        }
+      }
+    }
+  }
+}

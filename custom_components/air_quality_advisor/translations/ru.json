@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Комнаты",
+        "description": "1 · 🪟 Комнаты. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Комнаты"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Комнаты. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Исключить датчики окон",
+        "description": "2 · Исключить датчики окон. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Исключить датчики окон"
+        },
+        "data_description": {
+          "excluded_window_entities": "Исключить датчики окон · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Исключить датчики воздуха в помещениях",
+        "description": "Комнаты: {area_name} ({position}/{total}). Исключить датчики воздуха в помещениях. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Качество воздуха снаружи",
+        "description": "Качество воздуха снаружи. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Качество воздуха снаружи"
+        },
+        "data_description": {
+          "outdoor_sensors": "Качество воздуха снаружи. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Погода и предупреждения",
+        "description": "Погода и предупреждения. weather.*",
+        "data": {
+          "weather_entities": "Погода и предупреждения",
+          "weather_warnings": "Погодные предупреждения"
+        },
+        "data_description": {
+          "weather_entities": "Погода и предупреждения. weather.*",
+          "weather_warnings": "Погода и предупреждения. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Оповещения (необязательно)",
+        "description": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+        "data": {
+          "language": "Язык",
+          "automatic_tts": "Автоматические голосовые оповещения",
+          "automatic_notifications": "Автоматические уведомления",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматические уведомления",
+          "tts_engine": "Автоматические голосовые оповещения",
+          "media_players": "Автоматические голосовые оповещения"
+        },
+        "data_description": {
+          "language": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "automatic_tts": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "automatic_notifications": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "use_announcement_hub": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "notify_entities": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "tts_engine": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "media_players": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Дополнительные пороги",
+        "description": "Дополнительные пороги. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Снаружи · AQI (≤)",
+          "outdoor_co2": "Снаружи · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Снаружи · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Снаружи · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Снаружи · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Снаружи · VOC (ppb) (≤)",
+          "indoor_aqi": "Качество воздуха · AQI (≥)",
+          "indoor_co2": "Качество воздуха · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Качество воздуха · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Качество воздуха · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Качество воздуха · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Качество воздуха · VOC (ppb) (≥)",
+          "indoor_humidity": "Качество воздуха · RH (%) (≥)",
+          "min_outdoor_temp": "Снаружи · °C (≥)",
+          "max_outdoor_temp": "Снаружи · °C (≤)",
+          "max_outdoor_humidity": "Снаружи · RH (%) (≤)",
+          "max_wind_kmh": "Погода и предупреждения · km/h (≤)",
+          "max_age_minutes": "⏱ · Откройте (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Дополнительные пороги",
+        "description": "Комнаты · Исключить датчики окон · Исключить датчики воздуха в помещениях · Качество воздуха снаружи · Погода и предупреждения · Оповещения (необязательно) · Дополнительные пороги",
+        "menu_options": {
+          "areas": "Комнаты",
+          "window_sensors": "Исключить датчики окон",
+          "indoor_sensors": "Исключить датчики воздуха в помещениях",
+          "outdoor": "Качество воздуха снаружи",
+          "weather": "Погода и предупреждения",
+          "delivery": "Оповещения (необязательно)",
+          "thresholds": "Дополнительные пороги"
+        }
+      },
+      "window_sensors": {
+        "title": "Исключить датчики окон",
+        "description": "2 · Исключить датчики окон. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Исключить датчики окон"
+        },
+        "data_description": {
+          "excluded_window_entities": "Исключить датчики окон · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Комнаты",
+        "description": "1 · 🪟 Комнаты. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Комнаты"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Комнаты. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Исключить датчики воздуха в помещениях",
+        "description": "Комнаты: {area_name} ({position}/{total}). Исключить датчики воздуха в помещениях. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Качество воздуха снаружи",
+        "description": "Качество воздуха снаружи. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Качество воздуха снаружи"
+        },
+        "data_description": {
+          "outdoor_sensors": "Качество воздуха снаружи. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Погода и предупреждения",
+        "description": "Погода и предупреждения. weather.*",
+        "data": {
+          "weather_entities": "Погода и предупреждения",
+          "weather_warnings": "Погодные предупреждения"
+        },
+        "data_description": {
+          "weather_entities": "Погода и предупреждения. weather.*",
+          "weather_warnings": "Погода и предупреждения. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Оповещения (необязательно)",
+        "description": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+        "data": {
+          "language": "Язык",
+          "automatic_tts": "Автоматические голосовые оповещения",
+          "automatic_notifications": "Автоматические уведомления",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматические уведомления",
+          "tts_engine": "Автоматические голосовые оповещения",
+          "media_players": "Автоматические голосовые оповещения"
+        },
+        "data_description": {
+          "language": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "automatic_tts": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "automatic_notifications": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "use_announcement_hub": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "notify_entities": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "tts_engine": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub.",
+          "media_players": "Оповещения (необязательно). Автоматические уведомления · Автоматические голосовые оповещения. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Дополнительные пороги",
+        "description": "Дополнительные пороги. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Снаружи · AQI (≤)",
+          "outdoor_co2": "Снаружи · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Снаружи · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Снаружи · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Снаружи · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Снаружи · VOC (ppb) (≤)",
+          "indoor_aqi": "Качество воздуха · AQI (≥)",
+          "indoor_co2": "Качество воздуха · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Качество воздуха · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Качество воздуха · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Качество воздуха · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Качество воздуха · VOC (ppb) (≥)",
+          "indoor_humidity": "Качество воздуха · RH (%) (≥)",
+          "min_outdoor_temp": "Снаружи · °C (≥)",
+          "max_outdoor_temp": "Снаружи · °C (≤)",
+          "max_outdoor_humidity": "Снаружи · RH (%) (≤)",
+          "max_wind_kmh": "Погода и предупреждения · km/h (≤)",
+          "max_age_minutes": "⏱ · Откройте (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Качество воздуха",
+        "state": {
+          "open": "Закройте · Измерения",
+          "close": "Автоматические уведомления · Измерения",
+          "idle": "Хорошее",
+          "blocked": "Держите окна закрытыми"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Оповещения (необязательно) — Air Quality Advisor",
+      "description": "Оповещения (необязательно) · Комнаты",
+      "fields": {
+        "language": {
+          "name": "Язык",
+          "description": "Язык"
+        },
+        "channels": {
+          "name": "Оповещения (необязательно)",
+          "description": "Оповещения (необязательно)"
+        },
+        "areas": {
+          "name": "Комнаты",
+          "description": "Комнаты"
+        }
+      }
+    }
+  }
+}

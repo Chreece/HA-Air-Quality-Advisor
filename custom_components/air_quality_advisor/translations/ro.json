@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Camere",
+        "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Camere"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Camere. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Exclude senzori de fereastră",
+        "description": "2 · Exclude senzori de fereastră. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Exclude senzori de fereastră"
+        },
+        "data_description": {
+          "excluded_window_entities": "Exclude senzori de fereastră · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Exclude senzori de aer interior",
+        "description": "Camere: {area_name} ({position}/{total}). Exclude senzori de aer interior. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Calitatea aerului exterior",
+        "description": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Calitatea aerului exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vreme și avertizări",
+        "description": "Vreme și avertizări. weather.*",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "weather_warnings": "Avertizări meteo"
+        },
+        "data_description": {
+          "weather_entities": "Vreme și avertizări. weather.*",
+          "weather_warnings": "Vreme și avertizări. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Anunțuri (opțional)",
+        "description": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+        "data": {
+          "language": "Limbă",
+          "automatic_tts": "Anunțuri vocale automate",
+          "automatic_notifications": "Notificări automate",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notificări automate",
+          "tts_engine": "Anunțuri vocale automate",
+          "media_players": "Anunțuri vocale automate"
+        },
+        "data_description": {
+          "language": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "automatic_tts": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "automatic_notifications": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "use_announcement_hub": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "notify_entities": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "tts_engine": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "media_players": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Praguri avansate",
+        "description": "Praguri avansate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Exterior · AQI (≤)",
+          "outdoor_co2": "Exterior · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Exterior · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Exterior · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Exterior · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Exterior · VOC (ppb) (≤)",
+          "indoor_aqi": "Calitatea aerului · AQI (≥)",
+          "indoor_co2": "Calitatea aerului · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Calitatea aerului · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Calitatea aerului · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Calitatea aerului · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Calitatea aerului · VOC (ppb) (≥)",
+          "indoor_humidity": "Calitatea aerului · RH (%) (≥)",
+          "min_outdoor_temp": "Exterior · °C (≥)",
+          "max_outdoor_temp": "Exterior · °C (≤)",
+          "max_outdoor_humidity": "Exterior · RH (%) (≤)",
+          "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Praguri avansate",
+        "description": "Camere · Exclude senzori de fereastră · Exclude senzori de aer interior · Calitatea aerului exterior · Vreme și avertizări · Anunțuri (opțional) · Praguri avansate",
+        "menu_options": {
+          "areas": "Camere",
+          "window_sensors": "Exclude senzori de fereastră",
+          "indoor_sensors": "Exclude senzori de aer interior",
+          "outdoor": "Calitatea aerului exterior",
+          "weather": "Vreme și avertizări",
+          "delivery": "Anunțuri (opțional)",
+          "thresholds": "Praguri avansate"
+        }
+      },
+      "window_sensors": {
+        "title": "Exclude senzori de fereastră",
+        "description": "2 · Exclude senzori de fereastră. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Exclude senzori de fereastră"
+        },
+        "data_description": {
+          "excluded_window_entities": "Exclude senzori de fereastră · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Camere",
+        "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Camere"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Camere. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Exclude senzori de aer interior",
+        "description": "Camere: {area_name} ({position}/{total}). Exclude senzori de aer interior. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Calitatea aerului exterior",
+        "description": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Calitatea aerului exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vreme și avertizări",
+        "description": "Vreme și avertizări. weather.*",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "weather_warnings": "Avertizări meteo"
+        },
+        "data_description": {
+          "weather_entities": "Vreme și avertizări. weather.*",
+          "weather_warnings": "Vreme și avertizări. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Anunțuri (opțional)",
+        "description": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+        "data": {
+          "language": "Limbă",
+          "automatic_tts": "Anunțuri vocale automate",
+          "automatic_notifications": "Notificări automate",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notificări automate",
+          "tts_engine": "Anunțuri vocale automate",
+          "media_players": "Anunțuri vocale automate"
+        },
+        "data_description": {
+          "language": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "automatic_tts": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "automatic_notifications": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "use_announcement_hub": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "notify_entities": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "tts_engine": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+          "media_players": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Praguri avansate",
+        "description": "Praguri avansate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Exterior · AQI (≤)",
+          "outdoor_co2": "Exterior · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Exterior · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Exterior · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Exterior · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Exterior · VOC (ppb) (≤)",
+          "indoor_aqi": "Calitatea aerului · AQI (≥)",
+          "indoor_co2": "Calitatea aerului · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Calitatea aerului · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Calitatea aerului · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Calitatea aerului · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Calitatea aerului · VOC (ppb) (≥)",
+          "indoor_humidity": "Calitatea aerului · RH (%) (≥)",
+          "min_outdoor_temp": "Exterior · °C (≥)",
+          "max_outdoor_temp": "Exterior · °C (≤)",
+          "max_outdoor_humidity": "Exterior · RH (%) (≤)",
+          "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Calitatea aerului",
+        "state": {
+          "open": "Închideți · Măsurători",
+          "close": "Notificări automate · Măsurători",
+          "idle": "Bună",
+          "blocked": "Țineți ferestrele închise"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Anunțuri (opțional) — Air Quality Advisor",
+      "description": "Anunțuri (opțional) · Camere",
+      "fields": {
+        "language": {
+          "name": "Limbă",
+          "description": "Limbă"
+        },
+        "channels": {
+          "name": "Anunțuri (opțional)",
+          "description": "Anunțuri (opțional)"
+        },
+        "areas": {
+          "name": "Camere",
+          "description": "Camere"
+        }
+      }
+    }
+  }
+}

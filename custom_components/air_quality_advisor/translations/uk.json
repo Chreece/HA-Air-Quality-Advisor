@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Кімнати",
+        "description": "1 · 🪟 Кімнати. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Кімнати"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Кімнати. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Виключити датчики вікон",
+        "description": "2 · Виключити датчики вікон. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Виключити датчики вікон"
+        },
+        "data_description": {
+          "excluded_window_entities": "Виключити датчики вікон · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Виключити датчики повітря в приміщенні",
+        "description": "Кімнати: {area_name} ({position}/{total}). Виключити датчики повітря в приміщенні. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Якість повітря надворі",
+        "description": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Якість повітря надворі"
+        },
+        "data_description": {
+          "outdoor_sensors": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Погода та попередження",
+        "description": "Погода та попередження. weather.*",
+        "data": {
+          "weather_entities": "Погода та попередження",
+          "weather_warnings": "Попередження про погоду"
+        },
+        "data_description": {
+          "weather_entities": "Погода та попередження. weather.*",
+          "weather_warnings": "Погода та попередження. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Оголошення (необов’язково)",
+        "description": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+        "data": {
+          "language": "Мова",
+          "automatic_tts": "Автоматичні голосові оголошення",
+          "automatic_notifications": "Автоматичні сповіщення",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматичні сповіщення",
+          "tts_engine": "Автоматичні голосові оголошення",
+          "media_players": "Автоматичні голосові оголошення"
+        },
+        "data_description": {
+          "language": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "automatic_tts": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "automatic_notifications": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "use_announcement_hub": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "notify_entities": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "tts_engine": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "media_players": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Додаткові пороги",
+        "description": "Додаткові пороги. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Надворі · AQI (≤)",
+          "outdoor_co2": "Надворі · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Надворі · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Надворі · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Надворі · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Надворі · VOC (ppb) (≤)",
+          "indoor_aqi": "Якість повітря · AQI (≥)",
+          "indoor_co2": "Якість повітря · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Якість повітря · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Якість повітря · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Якість повітря · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Якість повітря · VOC (ppb) (≥)",
+          "indoor_humidity": "Якість повітря · RH (%) (≥)",
+          "min_outdoor_temp": "Надворі · °C (≥)",
+          "max_outdoor_temp": "Надворі · °C (≤)",
+          "max_outdoor_humidity": "Надворі · RH (%) (≤)",
+          "max_wind_kmh": "Погода та попередження · km/h (≤)",
+          "max_age_minutes": "⏱ · Відкрийте (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Додаткові пороги",
+        "description": "Кімнати · Виключити датчики вікон · Виключити датчики повітря в приміщенні · Якість повітря надворі · Погода та попередження · Оголошення (необов’язково) · Додаткові пороги",
+        "menu_options": {
+          "areas": "Кімнати",
+          "window_sensors": "Виключити датчики вікон",
+          "indoor_sensors": "Виключити датчики повітря в приміщенні",
+          "outdoor": "Якість повітря надворі",
+          "weather": "Погода та попередження",
+          "delivery": "Оголошення (необов’язково)",
+          "thresholds": "Додаткові пороги"
+        }
+      },
+      "window_sensors": {
+        "title": "Виключити датчики вікон",
+        "description": "2 · Виключити датчики вікон. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Виключити датчики вікон"
+        },
+        "data_description": {
+          "excluded_window_entities": "Виключити датчики вікон · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Кімнати",
+        "description": "1 · 🪟 Кімнати. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Кімнати"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Кімнати. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Виключити датчики повітря в приміщенні",
+        "description": "Кімнати: {area_name} ({position}/{total}). Виключити датчики повітря в приміщенні. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Якість повітря надворі",
+        "description": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Якість повітря надворі"
+        },
+        "data_description": {
+          "outdoor_sensors": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Погода та попередження",
+        "description": "Погода та попередження. weather.*",
+        "data": {
+          "weather_entities": "Погода та попередження",
+          "weather_warnings": "Попередження про погоду"
+        },
+        "data_description": {
+          "weather_entities": "Погода та попередження. weather.*",
+          "weather_warnings": "Погода та попередження. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Оголошення (необов’язково)",
+        "description": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+        "data": {
+          "language": "Мова",
+          "automatic_tts": "Автоматичні голосові оголошення",
+          "automatic_notifications": "Автоматичні сповіщення",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматичні сповіщення",
+          "tts_engine": "Автоматичні голосові оголошення",
+          "media_players": "Автоматичні голосові оголошення"
+        },
+        "data_description": {
+          "language": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "automatic_tts": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "automatic_notifications": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "use_announcement_hub": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "notify_entities": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "tts_engine": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
+          "media_players": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Додаткові пороги",
+        "description": "Додаткові пороги. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Надворі · AQI (≤)",
+          "outdoor_co2": "Надворі · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Надворі · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Надворі · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Надворі · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Надворі · VOC (ppb) (≤)",
+          "indoor_aqi": "Якість повітря · AQI (≥)",
+          "indoor_co2": "Якість повітря · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Якість повітря · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Якість повітря · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Якість повітря · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Якість повітря · VOC (ppb) (≥)",
+          "indoor_humidity": "Якість повітря · RH (%) (≥)",
+          "min_outdoor_temp": "Надворі · °C (≥)",
+          "max_outdoor_temp": "Надворі · °C (≤)",
+          "max_outdoor_humidity": "Надворі · RH (%) (≤)",
+          "max_wind_kmh": "Погода та попередження · km/h (≤)",
+          "max_age_minutes": "⏱ · Відкрийте (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Якість повітря",
+        "state": {
+          "open": "Зачиніть · Вимірювання",
+          "close": "Автоматичні сповіщення · Вимірювання",
+          "idle": "Добра",
+          "blocked": "Тримайте вікна зачиненими"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Оголошення (необов’язково) — Air Quality Advisor",
+      "description": "Оголошення (необов’язково) · Кімнати",
+      "fields": {
+        "language": {
+          "name": "Мова",
+          "description": "Мова"
+        },
+        "channels": {
+          "name": "Оголошення (необов’язково)",
+          "description": "Оголошення (необов’язково)"
+        },
+        "areas": {
+          "name": "Кімнати",
+          "description": "Кімнати"
+        }
+      }
+    }
+  }
+}

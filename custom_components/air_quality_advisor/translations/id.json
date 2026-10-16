@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Ruangan",
+        "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Ruangan"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Ruangan. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Kecualikan sensor jendela",
+        "description": "2 · Kecualikan sensor jendela. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Kecualikan sensor jendela"
+        },
+        "data_description": {
+          "excluded_window_entities": "Kecualikan sensor jendela · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Kecualikan sensor udara dalam ruangan",
+        "description": "Ruangan: {area_name} ({position}/{total}). Kecualikan sensor udara dalam ruangan. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kualitas udara luar",
+        "description": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kualitas udara luar"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Cuaca dan peringatan",
+        "description": "Cuaca dan peringatan. weather.*",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "weather_warnings": "Peringatan cuaca"
+        },
+        "data_description": {
+          "weather_entities": "Cuaca dan peringatan. weather.*",
+          "weather_warnings": "Cuaca dan peringatan. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Pengumuman (opsional)",
+        "description": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+        "data": {
+          "language": "Bahasa",
+          "automatic_tts": "Pengumuman suara otomatis",
+          "automatic_notifications": "Notifikasi otomatis",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notifikasi otomatis",
+          "tts_engine": "Pengumuman suara otomatis",
+          "media_players": "Pengumuman suara otomatis"
+        },
+        "data_description": {
+          "language": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "automatic_tts": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "automatic_notifications": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "use_announcement_hub": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "notify_entities": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "tts_engine": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "media_players": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Ambang batas lanjutan",
+        "description": "Ambang batas lanjutan. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Di luar · AQI (≤)",
+          "outdoor_co2": "Di luar · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Di luar · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Di luar · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Di luar · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Di luar · VOC (ppb) (≤)",
+          "indoor_aqi": "Kualitas udara · AQI (≥)",
+          "indoor_co2": "Kualitas udara · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kualitas udara · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kualitas udara · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kualitas udara · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kualitas udara · VOC (ppb) (≥)",
+          "indoor_humidity": "Kualitas udara · RH (%) (≥)",
+          "min_outdoor_temp": "Di luar · °C (≥)",
+          "max_outdoor_temp": "Di luar · °C (≤)",
+          "max_outdoor_humidity": "Di luar · RH (%) (≤)",
+          "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
+          "max_age_minutes": "⏱ · Buka (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ambang batas lanjutan",
+        "description": "Ruangan · Kecualikan sensor jendela · Kecualikan sensor udara dalam ruangan · Kualitas udara luar · Cuaca dan peringatan · Pengumuman (opsional) · Ambang batas lanjutan",
+        "menu_options": {
+          "areas": "Ruangan",
+          "window_sensors": "Kecualikan sensor jendela",
+          "indoor_sensors": "Kecualikan sensor udara dalam ruangan",
+          "outdoor": "Kualitas udara luar",
+          "weather": "Cuaca dan peringatan",
+          "delivery": "Pengumuman (opsional)",
+          "thresholds": "Ambang batas lanjutan"
+        }
+      },
+      "window_sensors": {
+        "title": "Kecualikan sensor jendela",
+        "description": "2 · Kecualikan sensor jendela. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Kecualikan sensor jendela"
+        },
+        "data_description": {
+          "excluded_window_entities": "Kecualikan sensor jendela · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Ruangan",
+        "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Ruangan"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Ruangan. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Kecualikan sensor udara dalam ruangan",
+        "description": "Ruangan: {area_name} ({position}/{total}). Kecualikan sensor udara dalam ruangan. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Kualitas udara luar",
+        "description": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kualitas udara luar"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Cuaca dan peringatan",
+        "description": "Cuaca dan peringatan. weather.*",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "weather_warnings": "Peringatan cuaca"
+        },
+        "data_description": {
+          "weather_entities": "Cuaca dan peringatan. weather.*",
+          "weather_warnings": "Cuaca dan peringatan. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Pengumuman (opsional)",
+        "description": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+        "data": {
+          "language": "Bahasa",
+          "automatic_tts": "Pengumuman suara otomatis",
+          "automatic_notifications": "Notifikasi otomatis",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notifikasi otomatis",
+          "tts_engine": "Pengumuman suara otomatis",
+          "media_players": "Pengumuman suara otomatis"
+        },
+        "data_description": {
+          "language": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "automatic_tts": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "automatic_notifications": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "use_announcement_hub": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "notify_entities": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "tts_engine": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+          "media_players": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Ambang batas lanjutan",
+        "description": "Ambang batas lanjutan. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Di luar · AQI (≤)",
+          "outdoor_co2": "Di luar · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Di luar · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Di luar · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Di luar · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Di luar · VOC (ppb) (≤)",
+          "indoor_aqi": "Kualitas udara · AQI (≥)",
+          "indoor_co2": "Kualitas udara · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kualitas udara · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kualitas udara · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kualitas udara · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kualitas udara · VOC (ppb) (≥)",
+          "indoor_humidity": "Kualitas udara · RH (%) (≥)",
+          "min_outdoor_temp": "Di luar · °C (≥)",
+          "max_outdoor_temp": "Di luar · °C (≤)",
+          "max_outdoor_humidity": "Di luar · RH (%) (≤)",
+          "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
+          "max_age_minutes": "⏱ · Buka (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Kualitas udara",
+        "state": {
+          "open": "Tutup · Pengukuran",
+          "close": "Notifikasi otomatis · Pengukuran",
+          "idle": "Baik",
+          "blocked": "Biarkan jendela tertutup"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Pengumuman (opsional) — Air Quality Advisor",
+      "description": "Pengumuman (opsional) · Ruangan",
+      "fields": {
+        "language": {
+          "name": "Bahasa",
+          "description": "Bahasa"
+        },
+        "channels": {
+          "name": "Pengumuman (opsional)",
+          "description": "Pengumuman (opsional)"
+        },
+        "areas": {
+          "name": "Ruangan",
+          "description": "Ruangan"
+        }
+      }
+    }
+  }
+}

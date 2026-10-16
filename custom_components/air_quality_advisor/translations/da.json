@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Rum",
+        "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Rum"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Rum. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Udeluk vinduessensorer",
+        "description": "2 · Udeluk vinduessensorer. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Udeluk vinduessensorer"
+        },
+        "data_description": {
+          "excluded_window_entities": "Udeluk vinduessensorer · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Udeluk indeklimasensorer",
+        "description": "Rum: {area_name} ({position}/{total}). Udeluk indeklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Udendørs luftkvalitet",
+        "description": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Udendørs luftkvalitet"
+        },
+        "data_description": {
+          "outdoor_sensors": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vejr og advarsler",
+        "description": "Vejr og advarsler. weather.*",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "weather_warnings": "Vejradvarsler"
+        },
+        "data_description": {
+          "weather_entities": "Vejr og advarsler. weather.*",
+          "weather_warnings": "Vejr og advarsler. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Meddelelser (valgfrit)",
+        "description": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+        "data": {
+          "language": "Sprog",
+          "automatic_tts": "Automatiske talemeddelelser",
+          "automatic_notifications": "Automatiske notifikationer",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatiske notifikationer",
+          "tts_engine": "Automatiske talemeddelelser",
+          "media_players": "Automatiske talemeddelelser"
+        },
+        "data_description": {
+          "language": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "automatic_tts": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "automatic_notifications": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "use_announcement_hub": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "notify_entities": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "tts_engine": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "media_players": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Avancerede grænser",
+        "description": "Avancerede grænser. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Udenfor · AQI (≤)",
+          "outdoor_co2": "Udenfor · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Udenfor · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Udenfor · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Udenfor · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Udenfor · VOC (ppb) (≤)",
+          "indoor_aqi": "Luftkvalitet · AQI (≥)",
+          "indoor_co2": "Luftkvalitet · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luftkvalitet · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luftkvalitet · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luftkvalitet · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luftkvalitet · VOC (ppb) (≥)",
+          "indoor_humidity": "Luftkvalitet · RH (%) (≥)",
+          "min_outdoor_temp": "Udenfor · °C (≥)",
+          "max_outdoor_temp": "Udenfor · °C (≤)",
+          "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
+          "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
+          "max_age_minutes": "⏱ · Åbn (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Avancerede grænser",
+        "description": "Rum · Udeluk vinduessensorer · Udeluk indeklimasensorer · Udendørs luftkvalitet · Vejr og advarsler · Meddelelser (valgfrit) · Avancerede grænser",
+        "menu_options": {
+          "areas": "Rum",
+          "window_sensors": "Udeluk vinduessensorer",
+          "indoor_sensors": "Udeluk indeklimasensorer",
+          "outdoor": "Udendørs luftkvalitet",
+          "weather": "Vejr og advarsler",
+          "delivery": "Meddelelser (valgfrit)",
+          "thresholds": "Avancerede grænser"
+        }
+      },
+      "window_sensors": {
+        "title": "Udeluk vinduessensorer",
+        "description": "2 · Udeluk vinduessensorer. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Udeluk vinduessensorer"
+        },
+        "data_description": {
+          "excluded_window_entities": "Udeluk vinduessensorer · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Rum",
+        "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Rum"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Rum. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Udeluk indeklimasensorer",
+        "description": "Rum: {area_name} ({position}/{total}). Udeluk indeklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Udendørs luftkvalitet",
+        "description": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Udendørs luftkvalitet"
+        },
+        "data_description": {
+          "outdoor_sensors": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Vejr og advarsler",
+        "description": "Vejr og advarsler. weather.*",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "weather_warnings": "Vejradvarsler"
+        },
+        "data_description": {
+          "weather_entities": "Vejr og advarsler. weather.*",
+          "weather_warnings": "Vejr og advarsler. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Meddelelser (valgfrit)",
+        "description": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+        "data": {
+          "language": "Sprog",
+          "automatic_tts": "Automatiske talemeddelelser",
+          "automatic_notifications": "Automatiske notifikationer",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Automatiske notifikationer",
+          "tts_engine": "Automatiske talemeddelelser",
+          "media_players": "Automatiske talemeddelelser"
+        },
+        "data_description": {
+          "language": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "automatic_tts": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "automatic_notifications": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "use_announcement_hub": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "notify_entities": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "tts_engine": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+          "media_players": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Avancerede grænser",
+        "description": "Avancerede grænser. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Udenfor · AQI (≤)",
+          "outdoor_co2": "Udenfor · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Udenfor · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Udenfor · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Udenfor · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Udenfor · VOC (ppb) (≤)",
+          "indoor_aqi": "Luftkvalitet · AQI (≥)",
+          "indoor_co2": "Luftkvalitet · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luftkvalitet · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luftkvalitet · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luftkvalitet · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luftkvalitet · VOC (ppb) (≥)",
+          "indoor_humidity": "Luftkvalitet · RH (%) (≥)",
+          "min_outdoor_temp": "Udenfor · °C (≥)",
+          "max_outdoor_temp": "Udenfor · °C (≤)",
+          "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
+          "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
+          "max_age_minutes": "⏱ · Åbn (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Luftkvalitet",
+        "state": {
+          "open": "Luk · Målinger",
+          "close": "Automatiske notifikationer · Målinger",
+          "idle": "God",
+          "blocked": "Hold vinduerne lukkede"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Meddelelser (valgfrit) — Air Quality Advisor",
+      "description": "Meddelelser (valgfrit) · Rum",
+      "fields": {
+        "language": {
+          "name": "Sprog",
+          "description": "Sprog"
+        },
+        "channels": {
+          "name": "Meddelelser (valgfrit)",
+          "description": "Meddelelser (valgfrit)"
+        },
+        "areas": {
+          "name": "Rum",
+          "description": "Rum"
+        }
+      }
+    }
+  }
+}

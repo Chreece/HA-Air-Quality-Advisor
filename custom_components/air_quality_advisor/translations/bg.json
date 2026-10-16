@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Стаи",
+        "description": "1 · 🪟 Стаи. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Стаи"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Стаи. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Изключване на датчици за прозорци",
+        "description": "2 · Изключване на датчици за прозорци. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Изключване на датчици за прозорци"
+        },
+        "data_description": {
+          "excluded_window_entities": "Изключване на датчици за прозорци · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Изключване на датчици за въздух на закрито",
+        "description": "Стаи: {area_name} ({position}/{total}). Изключване на датчици за въздух на закрито. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Качество на външния въздух",
+        "description": "Качество на външния въздух. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Качество на външния въздух"
+        },
+        "data_description": {
+          "outdoor_sensors": "Качество на външния въздух. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Време и предупреждения",
+        "description": "Време и предупреждения. weather.*",
+        "data": {
+          "weather_entities": "Време и предупреждения",
+          "weather_warnings": "Метеорологични предупреждения"
+        },
+        "data_description": {
+          "weather_entities": "Време и предупреждения. weather.*",
+          "weather_warnings": "Време и предупреждения. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Съобщения (по избор)",
+        "description": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+        "data": {
+          "language": "Език",
+          "automatic_tts": "Автоматични гласови съобщения",
+          "automatic_notifications": "Автоматични известия",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматични известия",
+          "tts_engine": "Автоматични гласови съобщения",
+          "media_players": "Автоматични гласови съобщения"
+        },
+        "data_description": {
+          "language": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "automatic_tts": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "automatic_notifications": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "use_announcement_hub": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "notify_entities": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "tts_engine": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "media_players": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Разширени прагове",
+        "description": "Разширени прагове. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Навън · AQI (≤)",
+          "outdoor_co2": "Навън · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Навън · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Навън · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Навън · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Навън · VOC (ppb) (≤)",
+          "indoor_aqi": "Качество на въздуха · AQI (≥)",
+          "indoor_co2": "Качество на въздуха · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Качество на въздуха · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Качество на въздуха · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Качество на въздуха · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Качество на въздуха · VOC (ppb) (≥)",
+          "indoor_humidity": "Качество на въздуха · RH (%) (≥)",
+          "min_outdoor_temp": "Навън · °C (≥)",
+          "max_outdoor_temp": "Навън · °C (≤)",
+          "max_outdoor_humidity": "Навън · RH (%) (≤)",
+          "max_wind_kmh": "Време и предупреждения · km/h (≤)",
+          "max_age_minutes": "⏱ · Отворете (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Разширени прагове",
+        "description": "Стаи · Изключване на датчици за прозорци · Изключване на датчици за въздух на закрито · Качество на външния въздух · Време и предупреждения · Съобщения (по избор) · Разширени прагове",
+        "menu_options": {
+          "areas": "Стаи",
+          "window_sensors": "Изключване на датчици за прозорци",
+          "indoor_sensors": "Изключване на датчици за въздух на закрито",
+          "outdoor": "Качество на външния въздух",
+          "weather": "Време и предупреждения",
+          "delivery": "Съобщения (по избор)",
+          "thresholds": "Разширени прагове"
+        }
+      },
+      "window_sensors": {
+        "title": "Изключване на датчици за прозорци",
+        "description": "2 · Изключване на датчици за прозорци. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Изключване на датчици за прозорци"
+        },
+        "data_description": {
+          "excluded_window_entities": "Изключване на датчици за прозорци · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Стаи",
+        "description": "1 · 🪟 Стаи. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Стаи"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Стаи. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Изключване на датчици за въздух на закрито",
+        "description": "Стаи: {area_name} ({position}/{total}). Изключване на датчици за въздух на закрито. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Качество на външния въздух",
+        "description": "Качество на външния въздух. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Качество на външния въздух"
+        },
+        "data_description": {
+          "outdoor_sensors": "Качество на външния въздух. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Време и предупреждения",
+        "description": "Време и предупреждения. weather.*",
+        "data": {
+          "weather_entities": "Време и предупреждения",
+          "weather_warnings": "Метеорологични предупреждения"
+        },
+        "data_description": {
+          "weather_entities": "Време и предупреждения. weather.*",
+          "weather_warnings": "Време и предупреждения. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Съобщения (по избор)",
+        "description": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+        "data": {
+          "language": "Език",
+          "automatic_tts": "Автоматични гласови съобщения",
+          "automatic_notifications": "Автоматични известия",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Автоматични известия",
+          "tts_engine": "Автоматични гласови съобщения",
+          "media_players": "Автоматични гласови съобщения"
+        },
+        "data_description": {
+          "language": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "automatic_tts": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "automatic_notifications": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "use_announcement_hub": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "notify_entities": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "tts_engine": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub.",
+          "media_players": "Съобщения (по избор). Автоматични известия · Автоматични гласови съобщения. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Разширени прагове",
+        "description": "Разширени прагове. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Навън · AQI (≤)",
+          "outdoor_co2": "Навън · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Навън · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Навън · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Навън · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Навън · VOC (ppb) (≤)",
+          "indoor_aqi": "Качество на въздуха · AQI (≥)",
+          "indoor_co2": "Качество на въздуха · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Качество на въздуха · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Качество на въздуха · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Качество на въздуха · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Качество на въздуха · VOC (ppb) (≥)",
+          "indoor_humidity": "Качество на въздуха · RH (%) (≥)",
+          "min_outdoor_temp": "Навън · °C (≥)",
+          "max_outdoor_temp": "Навън · °C (≤)",
+          "max_outdoor_humidity": "Навън · RH (%) (≤)",
+          "max_wind_kmh": "Време и предупреждения · km/h (≤)",
+          "max_age_minutes": "⏱ · Отворете (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Качество на въздуха",
+        "state": {
+          "open": "Затворете · Измервания",
+          "close": "Автоматични известия · Измервания",
+          "idle": "Добро",
+          "blocked": "Дръжте прозорците затворени"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Съобщения (по избор) — Air Quality Advisor",
+      "description": "Съобщения (по избор) · Стаи",
+      "fields": {
+        "language": {
+          "name": "Език",
+          "description": "Език"
+        },
+        "channels": {
+          "name": "Съобщения (по избор)",
+          "description": "Съобщения (по избор)"
+        },
+        "areas": {
+          "name": "Стаи",
+          "description": "Стаи"
+        }
+      }
+    }
+  }
+}

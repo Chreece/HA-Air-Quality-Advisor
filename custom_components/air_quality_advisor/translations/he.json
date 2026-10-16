@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "חדרים",
+        "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "חדרים"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 חדרים. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "החרגת חיישני חלונות",
+        "description": "2 · החרגת חיישני חלונות. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "החרגת חיישני חלונות"
+        },
+        "data_description": {
+          "excluded_window_entities": "החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "החרגת חיישני אוויר פנימיים",
+        "description": "חדרים: {area_name} ({position}/{total}). החרגת חיישני אוויר פנימיים. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "איכות האוויר בחוץ",
+        "description": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "איכות האוויר בחוץ"
+        },
+        "data_description": {
+          "outdoor_sensors": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "מזג אוויר ואזהרות",
+        "description": "מזג אוויר ואזהרות. weather.*",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "weather_warnings": "אזהרות מזג אוויר"
+        },
+        "data_description": {
+          "weather_entities": "מזג אוויר ואזהרות. weather.*",
+          "weather_warnings": "מזג אוויר ואזהרות. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "הודעות (אופציונלי)",
+        "description": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+        "data": {
+          "language": "שפה",
+          "automatic_tts": "הודעות קוליות אוטומטיות",
+          "automatic_notifications": "התראות אוטומטיות",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "התראות אוטומטיות",
+          "tts_engine": "הודעות קוליות אוטומטיות",
+          "media_players": "הודעות קוליות אוטומטיות"
+        },
+        "data_description": {
+          "language": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "automatic_tts": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "automatic_notifications": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "use_announcement_hub": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "notify_entities": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "tts_engine": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "media_players": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "ספי התראה מתקדמים",
+        "description": "ספי התראה מתקדמים. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "בחוץ · AQI (≤)",
+          "outdoor_co2": "בחוץ · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "בחוץ · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "בחוץ · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "בחוץ · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "בחוץ · VOC (ppb) (≤)",
+          "indoor_aqi": "איכות האוויר · AQI (≥)",
+          "indoor_co2": "איכות האוויר · CO₂ (ppm) (≥)",
+          "indoor_pm25": "איכות האוויר · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "איכות האוויר · PM10 (µg/m³) (≥)",
+          "indoor_voc": "איכות האוויר · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "איכות האוויר · VOC (ppb) (≥)",
+          "indoor_humidity": "איכות האוויר · RH (%) (≥)",
+          "min_outdoor_temp": "בחוץ · °C (≥)",
+          "max_outdoor_temp": "בחוץ · °C (≤)",
+          "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
+          "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
+          "max_age_minutes": "⏱ · פתחו (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ספי התראה מתקדמים",
+        "description": "חדרים · החרגת חיישני חלונות · החרגת חיישני אוויר פנימיים · איכות האוויר בחוץ · מזג אוויר ואזהרות · הודעות (אופציונלי) · ספי התראה מתקדמים",
+        "menu_options": {
+          "areas": "חדרים",
+          "window_sensors": "החרגת חיישני חלונות",
+          "indoor_sensors": "החרגת חיישני אוויר פנימיים",
+          "outdoor": "איכות האוויר בחוץ",
+          "weather": "מזג אוויר ואזהרות",
+          "delivery": "הודעות (אופציונלי)",
+          "thresholds": "ספי התראה מתקדמים"
+        }
+      },
+      "window_sensors": {
+        "title": "החרגת חיישני חלונות",
+        "description": "2 · החרגת חיישני חלונות. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "החרגת חיישני חלונות"
+        },
+        "data_description": {
+          "excluded_window_entities": "החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "חדרים",
+        "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "חדרים"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 חדרים. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "החרגת חיישני אוויר פנימיים",
+        "description": "חדרים: {area_name} ({position}/{total}). החרגת חיישני אוויר פנימיים. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "איכות האוויר בחוץ",
+        "description": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "איכות האוויר בחוץ"
+        },
+        "data_description": {
+          "outdoor_sensors": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "מזג אוויר ואזהרות",
+        "description": "מזג אוויר ואזהרות. weather.*",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "weather_warnings": "אזהרות מזג אוויר"
+        },
+        "data_description": {
+          "weather_entities": "מזג אוויר ואזהרות. weather.*",
+          "weather_warnings": "מזג אוויר ואזהרות. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "הודעות (אופציונלי)",
+        "description": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+        "data": {
+          "language": "שפה",
+          "automatic_tts": "הודעות קוליות אוטומטיות",
+          "automatic_notifications": "התראות אוטומטיות",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "התראות אוטומטיות",
+          "tts_engine": "הודעות קוליות אוטומטיות",
+          "media_players": "הודעות קוליות אוטומטיות"
+        },
+        "data_description": {
+          "language": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "automatic_tts": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "automatic_notifications": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "use_announcement_hub": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "notify_entities": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "tts_engine": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+          "media_players": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "ספי התראה מתקדמים",
+        "description": "ספי התראה מתקדמים. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "בחוץ · AQI (≤)",
+          "outdoor_co2": "בחוץ · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "בחוץ · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "בחוץ · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "בחוץ · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "בחוץ · VOC (ppb) (≤)",
+          "indoor_aqi": "איכות האוויר · AQI (≥)",
+          "indoor_co2": "איכות האוויר · CO₂ (ppm) (≥)",
+          "indoor_pm25": "איכות האוויר · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "איכות האוויר · PM10 (µg/m³) (≥)",
+          "indoor_voc": "איכות האוויר · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "איכות האוויר · VOC (ppb) (≥)",
+          "indoor_humidity": "איכות האוויר · RH (%) (≥)",
+          "min_outdoor_temp": "בחוץ · °C (≥)",
+          "max_outdoor_temp": "בחוץ · °C (≤)",
+          "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
+          "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
+          "max_age_minutes": "⏱ · פתחו (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "איכות האוויר",
+        "state": {
+          "open": "סגרו · מדידות",
+          "close": "התראות אוטומטיות · מדידות",
+          "idle": "טובה",
+          "blocked": "השאירו חלונות סגורים"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "הודעות (אופציונלי) — Air Quality Advisor",
+      "description": "הודעות (אופציונלי) · חדרים",
+      "fields": {
+        "language": {
+          "name": "שפה",
+          "description": "שפה"
+        },
+        "channels": {
+          "name": "הודעות (אופציונלי)",
+          "description": "הודעות (אופציונלי)"
+        },
+        "areas": {
+          "name": "חדרים",
+          "description": "חדרים"
+        }
+      }
+    }
+  }
+}

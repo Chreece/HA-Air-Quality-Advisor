@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "কক্ষ",
+        "description": "1 · 🪟 কক্ষ. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "কক্ষ"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 কক্ষ. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "জানালার সেন্সর বাদ দিন",
+        "description": "2 · জানালার সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "জানালার সেন্সর বাদ দিন"
+        },
+        "data_description": {
+          "excluded_window_entities": "জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "ঘরের বায়ু সেন্সর বাদ দিন",
+        "description": "কক্ষ: {area_name} ({position}/{total}). ঘরের বায়ু সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "বাইরের বায়ুর মান",
+        "description": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "বাইরের বায়ুর মান"
+        },
+        "data_description": {
+          "outdoor_sensors": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "আবহাওয়া ও সতর্কতা",
+        "description": "আবহাওয়া ও সতর্কতা. weather.*",
+        "data": {
+          "weather_entities": "আবহাওয়া ও সতর্কতা",
+          "weather_warnings": "আবহাওয়ার সতর্কতা"
+        },
+        "data_description": {
+          "weather_entities": "আবহাওয়া ও সতর্কতা. weather.*",
+          "weather_warnings": "আবহাওয়া ও সতর্কতা. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "ঘোষণা (ঐচ্ছিক)",
+        "description": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+        "data": {
+          "language": "ভাষা",
+          "automatic_tts": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "automatic_notifications": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "tts_engine": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "media_players": "স্বয়ংক্রিয় ভয়েস ঘোষণা"
+        },
+        "data_description": {
+          "language": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "automatic_tts": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "automatic_notifications": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "use_announcement_hub": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "notify_entities": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "tts_engine": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "media_players": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "উন্নত সীমা",
+        "description": "উন্নত সীমা. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "বাইরে · AQI (≤)",
+          "outdoor_co2": "বাইরে · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "বাইরে · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "বাইরে · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "বাইরে · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "বাইরে · VOC (ppb) (≤)",
+          "indoor_aqi": "বায়ুর মান · AQI (≥)",
+          "indoor_co2": "বায়ুর মান · CO₂ (ppm) (≥)",
+          "indoor_pm25": "বায়ুর মান · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "বায়ুর মান · PM10 (µg/m³) (≥)",
+          "indoor_voc": "বায়ুর মান · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "বায়ুর মান · VOC (ppb) (≥)",
+          "indoor_humidity": "বায়ুর মান · RH (%) (≥)",
+          "min_outdoor_temp": "বাইরে · °C (≥)",
+          "max_outdoor_temp": "বাইরে · °C (≤)",
+          "max_outdoor_humidity": "বাইরে · RH (%) (≤)",
+          "max_wind_kmh": "আবহাওয়া ও সতর্কতা · km/h (≤)",
+          "max_age_minutes": "⏱ · খুলুন (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "উন্নত সীমা",
+        "description": "কক্ষ · জানালার সেন্সর বাদ দিন · ঘরের বায়ু সেন্সর বাদ দিন · বাইরের বায়ুর মান · আবহাওয়া ও সতর্কতা · ঘোষণা (ঐচ্ছিক) · উন্নত সীমা",
+        "menu_options": {
+          "areas": "কক্ষ",
+          "window_sensors": "জানালার সেন্সর বাদ দিন",
+          "indoor_sensors": "ঘরের বায়ু সেন্সর বাদ দিন",
+          "outdoor": "বাইরের বায়ুর মান",
+          "weather": "আবহাওয়া ও সতর্কতা",
+          "delivery": "ঘোষণা (ঐচ্ছিক)",
+          "thresholds": "উন্নত সীমা"
+        }
+      },
+      "window_sensors": {
+        "title": "জানালার সেন্সর বাদ দিন",
+        "description": "2 · জানালার সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "জানালার সেন্সর বাদ দিন"
+        },
+        "data_description": {
+          "excluded_window_entities": "জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "কক্ষ",
+        "description": "1 · 🪟 কক্ষ. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "কক্ষ"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 কক্ষ. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "ঘরের বায়ু সেন্সর বাদ দিন",
+        "description": "কক্ষ: {area_name} ({position}/{total}). ঘরের বায়ু সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "বাইরের বায়ুর মান",
+        "description": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "বাইরের বায়ুর মান"
+        },
+        "data_description": {
+          "outdoor_sensors": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "আবহাওয়া ও সতর্কতা",
+        "description": "আবহাওয়া ও সতর্কতা. weather.*",
+        "data": {
+          "weather_entities": "আবহাওয়া ও সতর্কতা",
+          "weather_warnings": "আবহাওয়ার সতর্কতা"
+        },
+        "data_description": {
+          "weather_entities": "আবহাওয়া ও সতর্কতা. weather.*",
+          "weather_warnings": "আবহাওয়া ও সতর্কতা. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "ঘোষণা (ঐচ্ছিক)",
+        "description": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+        "data": {
+          "language": "ভাষা",
+          "automatic_tts": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "automatic_notifications": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "tts_engine": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "media_players": "স্বয়ংক্রিয় ভয়েস ঘোষণা"
+        },
+        "data_description": {
+          "language": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "automatic_tts": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "automatic_notifications": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "use_announcement_hub": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "notify_entities": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "tts_engine": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
+          "media_players": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "উন্নত সীমা",
+        "description": "উন্নত সীমা. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "বাইরে · AQI (≤)",
+          "outdoor_co2": "বাইরে · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "বাইরে · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "বাইরে · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "বাইরে · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "বাইরে · VOC (ppb) (≤)",
+          "indoor_aqi": "বায়ুর মান · AQI (≥)",
+          "indoor_co2": "বায়ুর মান · CO₂ (ppm) (≥)",
+          "indoor_pm25": "বায়ুর মান · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "বায়ুর মান · PM10 (µg/m³) (≥)",
+          "indoor_voc": "বায়ুর মান · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "বায়ুর মান · VOC (ppb) (≥)",
+          "indoor_humidity": "বায়ুর মান · RH (%) (≥)",
+          "min_outdoor_temp": "বাইরে · °C (≥)",
+          "max_outdoor_temp": "বাইরে · °C (≤)",
+          "max_outdoor_humidity": "বাইরে · RH (%) (≤)",
+          "max_wind_kmh": "আবহাওয়া ও সতর্কতা · km/h (≤)",
+          "max_age_minutes": "⏱ · খুলুন (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "বায়ুর মান",
+        "state": {
+          "open": "বন্ধ করুন · পরিমাপ",
+          "close": "স্বয়ংক্রিয় বিজ্ঞপ্তি · পরিমাপ",
+          "idle": "ভালো",
+          "blocked": "জানালা বন্ধ রাখুন"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "ঘোষণা (ঐচ্ছিক) — Air Quality Advisor",
+      "description": "ঘোষণা (ঐচ্ছিক) · কক্ষ",
+      "fields": {
+        "language": {
+          "name": "ভাষা",
+          "description": "ভাষা"
+        },
+        "channels": {
+          "name": "ঘোষণা (ঐচ্ছিক)",
+          "description": "ঘোষণা (ঐচ্ছিক)"
+        },
+        "areas": {
+          "name": "কক্ষ",
+          "description": "কক্ষ"
+        }
+      }
+    }
+  }
+}

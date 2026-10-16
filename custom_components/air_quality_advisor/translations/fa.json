@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "اتاق‌ها",
+        "description": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "اتاق‌ها"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "حذف حسگرهای پنجره",
+        "description": "2 · حذف حسگرهای پنجره. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "حذف حسگرهای پنجره"
+        },
+        "data_description": {
+          "excluded_window_entities": "حذف حسگرهای پنجره · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "حذف حسگرهای هوای داخل",
+        "description": "اتاق‌ها: {area_name} ({position}/{total}). حذف حسگرهای هوای داخل. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "کیفیت هوای بیرون",
+        "description": "کیفیت هوای بیرون. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "کیفیت هوای بیرون"
+        },
+        "data_description": {
+          "outdoor_sensors": "کیفیت هوای بیرون. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "آب‌وهوا و هشدارها",
+        "description": "آب‌وهوا و هشدارها. weather.*",
+        "data": {
+          "weather_entities": "آب‌وهوا و هشدارها",
+          "weather_warnings": "هشدارهای آب‌وهوا"
+        },
+        "data_description": {
+          "weather_entities": "آب‌وهوا و هشدارها. weather.*",
+          "weather_warnings": "آب‌وهوا و هشدارها. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "اعلان‌ها (اختیاری)",
+        "description": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+        "data": {
+          "language": "زبان",
+          "automatic_tts": "اعلان‌های صوتی خودکار",
+          "automatic_notifications": "اعلان‌های خودکار",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "اعلان‌های خودکار",
+          "tts_engine": "اعلان‌های صوتی خودکار",
+          "media_players": "اعلان‌های صوتی خودکار"
+        },
+        "data_description": {
+          "language": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "automatic_tts": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "automatic_notifications": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "use_announcement_hub": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "notify_entities": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "tts_engine": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "media_players": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "آستانه‌های پیشرفته",
+        "description": "آستانه‌های پیشرفته. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "بیرون · AQI (≤)",
+          "outdoor_co2": "بیرون · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "بیرون · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "بیرون · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "بیرون · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "بیرون · VOC (ppb) (≤)",
+          "indoor_aqi": "کیفیت هوا · AQI (≥)",
+          "indoor_co2": "کیفیت هوا · CO₂ (ppm) (≥)",
+          "indoor_pm25": "کیفیت هوا · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "کیفیت هوا · PM10 (µg/m³) (≥)",
+          "indoor_voc": "کیفیت هوا · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "کیفیت هوا · VOC (ppb) (≥)",
+          "indoor_humidity": "کیفیت هوا · RH (%) (≥)",
+          "min_outdoor_temp": "بیرون · °C (≥)",
+          "max_outdoor_temp": "بیرون · °C (≤)",
+          "max_outdoor_humidity": "بیرون · RH (%) (≤)",
+          "max_wind_kmh": "آب‌وهوا و هشدارها · km/h (≤)",
+          "max_age_minutes": "⏱ · باز کنید (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "آستانه‌های پیشرفته",
+        "description": "اتاق‌ها · حذف حسگرهای پنجره · حذف حسگرهای هوای داخل · کیفیت هوای بیرون · آب‌وهوا و هشدارها · اعلان‌ها (اختیاری) · آستانه‌های پیشرفته",
+        "menu_options": {
+          "areas": "اتاق‌ها",
+          "window_sensors": "حذف حسگرهای پنجره",
+          "indoor_sensors": "حذف حسگرهای هوای داخل",
+          "outdoor": "کیفیت هوای بیرون",
+          "weather": "آب‌وهوا و هشدارها",
+          "delivery": "اعلان‌ها (اختیاری)",
+          "thresholds": "آستانه‌های پیشرفته"
+        }
+      },
+      "window_sensors": {
+        "title": "حذف حسگرهای پنجره",
+        "description": "2 · حذف حسگرهای پنجره. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "حذف حسگرهای پنجره"
+        },
+        "data_description": {
+          "excluded_window_entities": "حذف حسگرهای پنجره · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "اتاق‌ها",
+        "description": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "اتاق‌ها"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "حذف حسگرهای هوای داخل",
+        "description": "اتاق‌ها: {area_name} ({position}/{total}). حذف حسگرهای هوای داخل. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "کیفیت هوای بیرون",
+        "description": "کیفیت هوای بیرون. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "کیفیت هوای بیرون"
+        },
+        "data_description": {
+          "outdoor_sensors": "کیفیت هوای بیرون. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "آب‌وهوا و هشدارها",
+        "description": "آب‌وهوا و هشدارها. weather.*",
+        "data": {
+          "weather_entities": "آب‌وهوا و هشدارها",
+          "weather_warnings": "هشدارهای آب‌وهوا"
+        },
+        "data_description": {
+          "weather_entities": "آب‌وهوا و هشدارها. weather.*",
+          "weather_warnings": "آب‌وهوا و هشدارها. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "اعلان‌ها (اختیاری)",
+        "description": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+        "data": {
+          "language": "زبان",
+          "automatic_tts": "اعلان‌های صوتی خودکار",
+          "automatic_notifications": "اعلان‌های خودکار",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "اعلان‌های خودکار",
+          "tts_engine": "اعلان‌های صوتی خودکار",
+          "media_players": "اعلان‌های صوتی خودکار"
+        },
+        "data_description": {
+          "language": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "automatic_tts": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "automatic_notifications": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "use_announcement_hub": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "notify_entities": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "tts_engine": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub.",
+          "media_players": "اعلان‌ها (اختیاری). اعلان‌های خودکار · اعلان‌های صوتی خودکار. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "آستانه‌های پیشرفته",
+        "description": "آستانه‌های پیشرفته. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "بیرون · AQI (≤)",
+          "outdoor_co2": "بیرون · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "بیرون · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "بیرون · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "بیرون · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "بیرون · VOC (ppb) (≤)",
+          "indoor_aqi": "کیفیت هوا · AQI (≥)",
+          "indoor_co2": "کیفیت هوا · CO₂ (ppm) (≥)",
+          "indoor_pm25": "کیفیت هوا · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "کیفیت هوا · PM10 (µg/m³) (≥)",
+          "indoor_voc": "کیفیت هوا · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "کیفیت هوا · VOC (ppb) (≥)",
+          "indoor_humidity": "کیفیت هوا · RH (%) (≥)",
+          "min_outdoor_temp": "بیرون · °C (≥)",
+          "max_outdoor_temp": "بیرون · °C (≤)",
+          "max_outdoor_humidity": "بیرون · RH (%) (≤)",
+          "max_wind_kmh": "آب‌وهوا و هشدارها · km/h (≤)",
+          "max_age_minutes": "⏱ · باز کنید (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "کیفیت هوا",
+        "state": {
+          "open": "ببندید · اندازه‌گیری‌ها",
+          "close": "اعلان‌های خودکار · اندازه‌گیری‌ها",
+          "idle": "خوب",
+          "blocked": "پنجره‌ها را بسته نگه دارید"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "اعلان‌ها (اختیاری) — Air Quality Advisor",
+      "description": "اعلان‌ها (اختیاری) · اتاق‌ها",
+      "fields": {
+        "language": {
+          "name": "زبان",
+          "description": "زبان"
+        },
+        "channels": {
+          "name": "اعلان‌ها (اختیاری)",
+          "description": "اعلان‌ها (اختیاری)"
+        },
+        "areas": {
+          "name": "اتاق‌ها",
+          "description": "اتاق‌ها"
+        }
+      }
+    }
+  }
+}

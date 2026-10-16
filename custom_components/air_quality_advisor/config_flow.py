@@ -12,6 +12,8 @@ from homeassistant.config_entries import ConfigFlowResult, OptionsFlowWithReload
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
+from .languages import LANGUAGE_OPTIONS
+
 from .const import (
     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
@@ -293,11 +295,7 @@ class _FlowMixin:
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[
                         {"value": "auto", "label": "Home Assistant default"},
-                        {"value": "en", "label": "English"},
-                        {"value": "de", "label": "Deutsch"},
-                        {"value": "el", "label": "Ελληνικά"},
-                        {"value": "fr", "label": "Français"},
-                        {"value": "es", "label": "Español"},
+                        *LANGUAGE_OPTIONS,
                     ], mode=selector.SelectSelectorMode.DROPDOWN,
                 )),
             _marker(CONF_AUTO_NOTIFY, self._values.get(CONF_AUTO_NOTIFY, False)):

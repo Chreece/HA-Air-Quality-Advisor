@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "الغرف",
+        "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "الغرف"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 الغرف. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "استبعاد مستشعرات النوافذ",
+        "description": "2 · استبعاد مستشعرات النوافذ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ"
+        },
+        "data_description": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "استبعاد مستشعرات الهواء الداخلي",
+        "description": "الغرف: {area_name} ({position}/{total}). استبعاد مستشعرات الهواء الداخلي. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "جودة الهواء الخارجي",
+        "description": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "جودة الهواء الخارجي"
+        },
+        "data_description": {
+          "outdoor_sensors": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "الطقس والتحذيرات",
+        "description": "الطقس والتحذيرات. weather.*",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "weather_warnings": "تحذيرات الطقس"
+        },
+        "data_description": {
+          "weather_entities": "الطقس والتحذيرات. weather.*",
+          "weather_warnings": "الطقس والتحذيرات. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "الإعلانات (اختياري)",
+        "description": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+        "data": {
+          "language": "اللغة",
+          "automatic_tts": "إعلانات صوتية تلقائية",
+          "automatic_notifications": "إشعارات تلقائية",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "إشعارات تلقائية",
+          "tts_engine": "إعلانات صوتية تلقائية",
+          "media_players": "إعلانات صوتية تلقائية"
+        },
+        "data_description": {
+          "language": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "automatic_tts": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "automatic_notifications": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "use_announcement_hub": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "notify_entities": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "tts_engine": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "media_players": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "حدود متقدمة",
+        "description": "حدود متقدمة. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "الخارج · AQI (≤)",
+          "outdoor_co2": "الخارج · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "الخارج · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "الخارج · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "الخارج · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "الخارج · VOC (ppb) (≤)",
+          "indoor_aqi": "جودة الهواء · AQI (≥)",
+          "indoor_co2": "جودة الهواء · CO₂ (ppm) (≥)",
+          "indoor_pm25": "جودة الهواء · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "جودة الهواء · PM10 (µg/m³) (≥)",
+          "indoor_voc": "جودة الهواء · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "جودة الهواء · VOC (ppb) (≥)",
+          "indoor_humidity": "جودة الهواء · RH (%) (≥)",
+          "min_outdoor_temp": "الخارج · °C (≥)",
+          "max_outdoor_temp": "الخارج · °C (≤)",
+          "max_outdoor_humidity": "الخارج · RH (%) (≤)",
+          "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
+          "max_age_minutes": "⏱ · افتح (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "حدود متقدمة",
+        "description": "الغرف · استبعاد مستشعرات النوافذ · استبعاد مستشعرات الهواء الداخلي · جودة الهواء الخارجي · الطقس والتحذيرات · الإعلانات (اختياري) · حدود متقدمة",
+        "menu_options": {
+          "areas": "الغرف",
+          "window_sensors": "استبعاد مستشعرات النوافذ",
+          "indoor_sensors": "استبعاد مستشعرات الهواء الداخلي",
+          "outdoor": "جودة الهواء الخارجي",
+          "weather": "الطقس والتحذيرات",
+          "delivery": "الإعلانات (اختياري)",
+          "thresholds": "حدود متقدمة"
+        }
+      },
+      "window_sensors": {
+        "title": "استبعاد مستشعرات النوافذ",
+        "description": "2 · استبعاد مستشعرات النوافذ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ"
+        },
+        "data_description": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "الغرف",
+        "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "الغرف"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 الغرف. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "استبعاد مستشعرات الهواء الداخلي",
+        "description": "الغرف: {area_name} ({position}/{total}). استبعاد مستشعرات الهواء الداخلي. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "جودة الهواء الخارجي",
+        "description": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "جودة الهواء الخارجي"
+        },
+        "data_description": {
+          "outdoor_sensors": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "الطقس والتحذيرات",
+        "description": "الطقس والتحذيرات. weather.*",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "weather_warnings": "تحذيرات الطقس"
+        },
+        "data_description": {
+          "weather_entities": "الطقس والتحذيرات. weather.*",
+          "weather_warnings": "الطقس والتحذيرات. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "الإعلانات (اختياري)",
+        "description": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+        "data": {
+          "language": "اللغة",
+          "automatic_tts": "إعلانات صوتية تلقائية",
+          "automatic_notifications": "إشعارات تلقائية",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "إشعارات تلقائية",
+          "tts_engine": "إعلانات صوتية تلقائية",
+          "media_players": "إعلانات صوتية تلقائية"
+        },
+        "data_description": {
+          "language": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "automatic_tts": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "automatic_notifications": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "use_announcement_hub": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "notify_entities": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "tts_engine": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+          "media_players": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "حدود متقدمة",
+        "description": "حدود متقدمة. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "الخارج · AQI (≤)",
+          "outdoor_co2": "الخارج · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "الخارج · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "الخارج · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "الخارج · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "الخارج · VOC (ppb) (≤)",
+          "indoor_aqi": "جودة الهواء · AQI (≥)",
+          "indoor_co2": "جودة الهواء · CO₂ (ppm) (≥)",
+          "indoor_pm25": "جودة الهواء · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "جودة الهواء · PM10 (µg/m³) (≥)",
+          "indoor_voc": "جودة الهواء · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "جودة الهواء · VOC (ppb) (≥)",
+          "indoor_humidity": "جودة الهواء · RH (%) (≥)",
+          "min_outdoor_temp": "الخارج · °C (≥)",
+          "max_outdoor_temp": "الخارج · °C (≤)",
+          "max_outdoor_humidity": "الخارج · RH (%) (≤)",
+          "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
+          "max_age_minutes": "⏱ · افتح (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "جودة الهواء",
+        "state": {
+          "open": "أغلق · القياسات",
+          "close": "إشعارات تلقائية · القياسات",
+          "idle": "جيدة",
+          "blocked": "أبقِ النوافذ مغلقة"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "الإعلانات (اختياري) — Air Quality Advisor",
+      "description": "الإعلانات (اختياري) · الغرف",
+      "fields": {
+        "language": {
+          "name": "اللغة",
+          "description": "اللغة"
+        },
+        "channels": {
+          "name": "الإعلانات (اختياري)",
+          "description": "الإعلانات (اختياري)"
+        },
+        "areas": {
+          "name": "الغرف",
+          "description": "الغرف"
+        }
+      }
+    }
+  }
+}

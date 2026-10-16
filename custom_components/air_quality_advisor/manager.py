@@ -266,8 +266,13 @@ class AirQualityManager:
                         state = self.hass.states.get(engine)
                         supported = (state.attributes.get("supported_languages", []) if state else [])
                         if isinstance(supported, list) and supported:
-                            exact = next((s for s in supported if s.casefold() == requested_language.casefold()), None)
-                            compatible = next((s for s in supported if s.replace("-", "_").split("_")[0].casefold() == localized), None)
+                            # Compare canonical BCP47 tags and fall back to the
+                            # primary language when a provider advertises only
+                            # country-specific variants (e.g. pt_BR / pt-PT).
+                            canonical = lambda value: str(value).replace("_", "-").casefold()
+                            base = canonical(localized).split("-", 1)[0]
+                            exact = next((s for s in supported if canonical(s) == canonical(requested_language)), None)
+                            compatible = next((s for s in supported if canonical(s).split("-", 1)[0] == base), None)
                             if exact or compatible:
                                 data["language"] = exact or compatible
                             else:

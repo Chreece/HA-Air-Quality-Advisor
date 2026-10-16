@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "房間",
+        "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "房間"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 房間. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "排除窗戶感測器",
+        "description": "2 · 排除窗戶感測器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗戶感測器"
+        },
+        "data_description": {
+          "excluded_window_entities": "排除窗戶感測器 · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "排除室內空氣感測器",
+        "description": "房間: {area_name} ({position}/{total}). 排除室內空氣感測器. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "排除室內空氣感測器"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "排除室內空氣感測器 · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "室外空氣品質",
+        "description": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空氣品質"
+        },
+        "data_description": {
+          "outdoor_sensors": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "天氣與警報",
+        "description": "天氣與警報. weather.*",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "weather_warnings": "天氣警報"
+        },
+        "data_description": {
+          "weather_entities": "天氣與警報. weather.*",
+          "weather_warnings": "天氣與警報. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "播報（選用）",
+        "description": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+        "data": {
+          "language": "語言",
+          "automatic_tts": "自動語音播報",
+          "automatic_notifications": "自動通知",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "自動通知",
+          "tts_engine": "自動語音播報",
+          "media_players": "自動語音播報"
+        },
+        "data_description": {
+          "language": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "automatic_tts": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "automatic_notifications": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "use_announcement_hub": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "notify_entities": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "tts_engine": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "media_players": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "進階閾值",
+        "description": "進階閾值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "indoor_aqi": "空氣品質 · AQI (≥)",
+          "indoor_co2": "空氣品質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空氣品質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空氣品質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空氣品質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空氣品質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空氣品質 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天氣與警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "進階閾值",
+        "description": "房間 · 排除窗戶感測器 · 排除室內空氣感測器 · 室外空氣品質 · 天氣與警報 · 播報（選用） · 進階閾值",
+        "menu_options": {
+          "areas": "房間",
+          "window_sensors": "排除窗戶感測器",
+          "indoor_sensors": "排除室內空氣感測器",
+          "outdoor": "室外空氣品質",
+          "weather": "天氣與警報",
+          "delivery": "播報（選用）",
+          "thresholds": "進階閾值"
+        }
+      },
+      "window_sensors": {
+        "title": "排除窗戶感測器",
+        "description": "2 · 排除窗戶感測器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗戶感測器"
+        },
+        "data_description": {
+          "excluded_window_entities": "排除窗戶感測器 · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "房間",
+        "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "房間"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 房間. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "排除室內空氣感測器",
+        "description": "房間: {area_name} ({position}/{total}). 排除室內空氣感測器. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "排除室內空氣感測器"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "排除室內空氣感測器 · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "室外空氣品質",
+        "description": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空氣品質"
+        },
+        "data_description": {
+          "outdoor_sensors": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "天氣與警報",
+        "description": "天氣與警報. weather.*",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "weather_warnings": "天氣警報"
+        },
+        "data_description": {
+          "weather_entities": "天氣與警報. weather.*",
+          "weather_warnings": "天氣與警報. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "播報（選用）",
+        "description": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+        "data": {
+          "language": "語言",
+          "automatic_tts": "自動語音播報",
+          "automatic_notifications": "自動通知",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "自動通知",
+          "tts_engine": "自動語音播報",
+          "media_players": "自動語音播報"
+        },
+        "data_description": {
+          "language": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "automatic_tts": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "automatic_notifications": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "use_announcement_hub": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "notify_entities": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "tts_engine": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+          "media_players": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "進階閾值",
+        "description": "進階閾值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "indoor_aqi": "空氣品質 · AQI (≥)",
+          "indoor_co2": "空氣品質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空氣品質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空氣品質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空氣品質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空氣品質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空氣品質 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天氣與警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "空氣品質",
+        "state": {
+          "open": "關閉 · 測量值",
+          "close": "自動通知 · 測量值",
+          "idle": "良好",
+          "blocked": "請保持窗戶關閉"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "播報（選用） — Air Quality Advisor",
+      "description": "播報（選用） · 房間",
+      "fields": {
+        "language": {
+          "name": "語言",
+          "description": "語言"
+        },
+        "channels": {
+          "name": "播報（選用）",
+          "description": "播報（選用）"
+        },
+        "areas": {
+          "name": "房間",
+          "description": "房間"
+        }
+      }
+    }
+  }
+}

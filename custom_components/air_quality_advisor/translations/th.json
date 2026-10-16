@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "ห้อง",
+        "description": "1 · 🪟 ห้อง. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "ห้อง"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 ห้อง. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "ยกเว้นเซ็นเซอร์หน้าต่าง",
+        "description": "2 · ยกเว้นเซ็นเซอร์หน้าต่าง. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "ยกเว้นเซ็นเซอร์หน้าต่าง"
+        },
+        "data_description": {
+          "excluded_window_entities": "ยกเว้นเซ็นเซอร์หน้าต่าง · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "ยกเว้นเซ็นเซอร์อากาศภายใน",
+        "description": "ห้อง: {area_name} ({position}/{total}). ยกเว้นเซ็นเซอร์อากาศภายใน. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "คุณภาพอากาศภายนอก",
+        "description": "คุณภาพอากาศภายนอก. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "คุณภาพอากาศภายนอก"
+        },
+        "data_description": {
+          "outdoor_sensors": "คุณภาพอากาศภายนอก. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "สภาพอากาศและคำเตือน",
+        "description": "สภาพอากาศและคำเตือน. weather.*",
+        "data": {
+          "weather_entities": "สภาพอากาศและคำเตือน",
+          "weather_warnings": "คำเตือนสภาพอากาศ"
+        },
+        "data_description": {
+          "weather_entities": "สภาพอากาศและคำเตือน. weather.*",
+          "weather_warnings": "สภาพอากาศและคำเตือน. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "การประกาศ (ไม่บังคับ)",
+        "description": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+        "data": {
+          "language": "ภาษา",
+          "automatic_tts": "ประกาศเสียงอัตโนมัติ",
+          "automatic_notifications": "การแจ้งเตือนอัตโนมัติ",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "การแจ้งเตือนอัตโนมัติ",
+          "tts_engine": "ประกาศเสียงอัตโนมัติ",
+          "media_players": "ประกาศเสียงอัตโนมัติ"
+        },
+        "data_description": {
+          "language": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "automatic_tts": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "automatic_notifications": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "use_announcement_hub": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "notify_entities": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "tts_engine": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "media_players": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "ค่าขีดจำกัดขั้นสูง",
+        "description": "ค่าขีดจำกัดขั้นสูง. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "ภายนอก · AQI (≤)",
+          "outdoor_co2": "ภายนอก · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "ภายนอก · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "ภายนอก · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "ภายนอก · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "ภายนอก · VOC (ppb) (≤)",
+          "indoor_aqi": "คุณภาพอากาศ · AQI (≥)",
+          "indoor_co2": "คุณภาพอากาศ · CO₂ (ppm) (≥)",
+          "indoor_pm25": "คุณภาพอากาศ · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "คุณภาพอากาศ · PM10 (µg/m³) (≥)",
+          "indoor_voc": "คุณภาพอากาศ · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "คุณภาพอากาศ · VOC (ppb) (≥)",
+          "indoor_humidity": "คุณภาพอากาศ · RH (%) (≥)",
+          "min_outdoor_temp": "ภายนอก · °C (≥)",
+          "max_outdoor_temp": "ภายนอก · °C (≤)",
+          "max_outdoor_humidity": "ภายนอก · RH (%) (≤)",
+          "max_wind_kmh": "สภาพอากาศและคำเตือน · km/h (≤)",
+          "max_age_minutes": "⏱ · เปิด (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ค่าขีดจำกัดขั้นสูง",
+        "description": "ห้อง · ยกเว้นเซ็นเซอร์หน้าต่าง · ยกเว้นเซ็นเซอร์อากาศภายใน · คุณภาพอากาศภายนอก · สภาพอากาศและคำเตือน · การประกาศ (ไม่บังคับ) · ค่าขีดจำกัดขั้นสูง",
+        "menu_options": {
+          "areas": "ห้อง",
+          "window_sensors": "ยกเว้นเซ็นเซอร์หน้าต่าง",
+          "indoor_sensors": "ยกเว้นเซ็นเซอร์อากาศภายใน",
+          "outdoor": "คุณภาพอากาศภายนอก",
+          "weather": "สภาพอากาศและคำเตือน",
+          "delivery": "การประกาศ (ไม่บังคับ)",
+          "thresholds": "ค่าขีดจำกัดขั้นสูง"
+        }
+      },
+      "window_sensors": {
+        "title": "ยกเว้นเซ็นเซอร์หน้าต่าง",
+        "description": "2 · ยกเว้นเซ็นเซอร์หน้าต่าง. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "ยกเว้นเซ็นเซอร์หน้าต่าง"
+        },
+        "data_description": {
+          "excluded_window_entities": "ยกเว้นเซ็นเซอร์หน้าต่าง · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "ห้อง",
+        "description": "1 · 🪟 ห้อง. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "ห้อง"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 ห้อง. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "ยกเว้นเซ็นเซอร์อากาศภายใน",
+        "description": "ห้อง: {area_name} ({position}/{total}). ยกเว้นเซ็นเซอร์อากาศภายใน. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "คุณภาพอากาศภายนอก",
+        "description": "คุณภาพอากาศภายนอก. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "คุณภาพอากาศภายนอก"
+        },
+        "data_description": {
+          "outdoor_sensors": "คุณภาพอากาศภายนอก. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "สภาพอากาศและคำเตือน",
+        "description": "สภาพอากาศและคำเตือน. weather.*",
+        "data": {
+          "weather_entities": "สภาพอากาศและคำเตือน",
+          "weather_warnings": "คำเตือนสภาพอากาศ"
+        },
+        "data_description": {
+          "weather_entities": "สภาพอากาศและคำเตือน. weather.*",
+          "weather_warnings": "สภาพอากาศและคำเตือน. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "การประกาศ (ไม่บังคับ)",
+        "description": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+        "data": {
+          "language": "ภาษา",
+          "automatic_tts": "ประกาศเสียงอัตโนมัติ",
+          "automatic_notifications": "การแจ้งเตือนอัตโนมัติ",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "การแจ้งเตือนอัตโนมัติ",
+          "tts_engine": "ประกาศเสียงอัตโนมัติ",
+          "media_players": "ประกาศเสียงอัตโนมัติ"
+        },
+        "data_description": {
+          "language": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "automatic_tts": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "automatic_notifications": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "use_announcement_hub": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "notify_entities": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "tts_engine": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub.",
+          "media_players": "การประกาศ (ไม่บังคับ). การแจ้งเตือนอัตโนมัติ · ประกาศเสียงอัตโนมัติ. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "ค่าขีดจำกัดขั้นสูง",
+        "description": "ค่าขีดจำกัดขั้นสูง. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "ภายนอก · AQI (≤)",
+          "outdoor_co2": "ภายนอก · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "ภายนอก · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "ภายนอก · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "ภายนอก · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "ภายนอก · VOC (ppb) (≤)",
+          "indoor_aqi": "คุณภาพอากาศ · AQI (≥)",
+          "indoor_co2": "คุณภาพอากาศ · CO₂ (ppm) (≥)",
+          "indoor_pm25": "คุณภาพอากาศ · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "คุณภาพอากาศ · PM10 (µg/m³) (≥)",
+          "indoor_voc": "คุณภาพอากาศ · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "คุณภาพอากาศ · VOC (ppb) (≥)",
+          "indoor_humidity": "คุณภาพอากาศ · RH (%) (≥)",
+          "min_outdoor_temp": "ภายนอก · °C (≥)",
+          "max_outdoor_temp": "ภายนอก · °C (≤)",
+          "max_outdoor_humidity": "ภายนอก · RH (%) (≤)",
+          "max_wind_kmh": "สภาพอากาศและคำเตือน · km/h (≤)",
+          "max_age_minutes": "⏱ · เปิด (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "คุณภาพอากาศ",
+        "state": {
+          "open": "ปิด · ค่าที่วัด",
+          "close": "การแจ้งเตือนอัตโนมัติ · ค่าที่วัด",
+          "idle": "ดี",
+          "blocked": "ปิดหน้าต่างไว้"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "การประกาศ (ไม่บังคับ) — Air Quality Advisor",
+      "description": "การประกาศ (ไม่บังคับ) · ห้อง",
+      "fields": {
+        "language": {
+          "name": "ภาษา",
+          "description": "ภาษา"
+        },
+        "channels": {
+          "name": "การประกาศ (ไม่บังคับ)",
+          "description": "การประกาศ (ไม่บังคับ)"
+        },
+        "areas": {
+          "name": "ห้อง",
+          "description": "ห้อง"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "कमरे",
+        "description": "1 · 🪟 कमरे. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "कमरे"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 कमरे. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "खिड़की सेंसर बाहर रखें",
+        "description": "2 · खिड़की सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "खिड़की सेंसर बाहर रखें"
+        },
+        "data_description": {
+          "excluded_window_entities": "खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "इनडोर वायु सेंसर बाहर रखें",
+        "description": "कमरे: {area_name} ({position}/{total}). इनडोर वायु सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "बाहरी वायु गुणवत्ता",
+        "description": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता"
+        },
+        "data_description": {
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "मौसम और चेतावनियाँ",
+        "description": "मौसम और चेतावनियाँ. weather.*",
+        "data": {
+          "weather_entities": "मौसम और चेतावनियाँ",
+          "weather_warnings": "मौसम चेतावनियाँ"
+        },
+        "data_description": {
+          "weather_entities": "मौसम और चेतावनियाँ. weather.*",
+          "weather_warnings": "मौसम और चेतावनियाँ. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "घोषणाएँ (वैकल्पिक)",
+        "description": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+        "data": {
+          "language": "भाषा",
+          "automatic_tts": "स्वचालित ध्वनि घोषणाएँ",
+          "automatic_notifications": "स्वचालित सूचनाएँ",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "स्वचालित सूचनाएँ",
+          "tts_engine": "स्वचालित ध्वनि घोषणाएँ",
+          "media_players": "स्वचालित ध्वनि घोषणाएँ"
+        },
+        "data_description": {
+          "language": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "automatic_tts": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "automatic_notifications": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "use_announcement_hub": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "notify_entities": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "tts_engine": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "media_players": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "उन्नत सीमाएँ",
+        "description": "उन्नत सीमाएँ. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "बाहर · AQI (≤)",
+          "outdoor_co2": "बाहर · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "बाहर · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "बाहर · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "बाहर · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "बाहर · VOC (ppb) (≤)",
+          "indoor_aqi": "वायु गुणवत्ता · AQI (≥)",
+          "indoor_co2": "वायु गुणवत्ता · CO₂ (ppm) (≥)",
+          "indoor_pm25": "वायु गुणवत्ता · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "वायु गुणवत्ता · PM10 (µg/m³) (≥)",
+          "indoor_voc": "वायु गुणवत्ता · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "वायु गुणवत्ता · VOC (ppb) (≥)",
+          "indoor_humidity": "वायु गुणवत्ता · RH (%) (≥)",
+          "min_outdoor_temp": "बाहर · °C (≥)",
+          "max_outdoor_temp": "बाहर · °C (≤)",
+          "max_outdoor_humidity": "बाहर · RH (%) (≤)",
+          "max_wind_kmh": "मौसम और चेतावनियाँ · km/h (≤)",
+          "max_age_minutes": "⏱ · खोलें (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "उन्नत सीमाएँ",
+        "description": "कमरे · खिड़की सेंसर बाहर रखें · इनडोर वायु सेंसर बाहर रखें · बाहरी वायु गुणवत्ता · मौसम और चेतावनियाँ · घोषणाएँ (वैकल्पिक) · उन्नत सीमाएँ",
+        "menu_options": {
+          "areas": "कमरे",
+          "window_sensors": "खिड़की सेंसर बाहर रखें",
+          "indoor_sensors": "इनडोर वायु सेंसर बाहर रखें",
+          "outdoor": "बाहरी वायु गुणवत्ता",
+          "weather": "मौसम और चेतावनियाँ",
+          "delivery": "घोषणाएँ (वैकल्पिक)",
+          "thresholds": "उन्नत सीमाएँ"
+        }
+      },
+      "window_sensors": {
+        "title": "खिड़की सेंसर बाहर रखें",
+        "description": "2 · खिड़की सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "खिड़की सेंसर बाहर रखें"
+        },
+        "data_description": {
+          "excluded_window_entities": "खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "कमरे",
+        "description": "1 · 🪟 कमरे. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "कमरे"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 कमरे. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "इनडोर वायु सेंसर बाहर रखें",
+        "description": "कमरे: {area_name} ({position}/{total}). इनडोर वायु सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "बाहरी वायु गुणवत्ता",
+        "description": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता"
+        },
+        "data_description": {
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "मौसम और चेतावनियाँ",
+        "description": "मौसम और चेतावनियाँ. weather.*",
+        "data": {
+          "weather_entities": "मौसम और चेतावनियाँ",
+          "weather_warnings": "मौसम चेतावनियाँ"
+        },
+        "data_description": {
+          "weather_entities": "मौसम और चेतावनियाँ. weather.*",
+          "weather_warnings": "मौसम और चेतावनियाँ. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "घोषणाएँ (वैकल्पिक)",
+        "description": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+        "data": {
+          "language": "भाषा",
+          "automatic_tts": "स्वचालित ध्वनि घोषणाएँ",
+          "automatic_notifications": "स्वचालित सूचनाएँ",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "स्वचालित सूचनाएँ",
+          "tts_engine": "स्वचालित ध्वनि घोषणाएँ",
+          "media_players": "स्वचालित ध्वनि घोषणाएँ"
+        },
+        "data_description": {
+          "language": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "automatic_tts": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "automatic_notifications": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "use_announcement_hub": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "notify_entities": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "tts_engine": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
+          "media_players": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "उन्नत सीमाएँ",
+        "description": "उन्नत सीमाएँ. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "बाहर · AQI (≤)",
+          "outdoor_co2": "बाहर · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "बाहर · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "बाहर · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "बाहर · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "बाहर · VOC (ppb) (≤)",
+          "indoor_aqi": "वायु गुणवत्ता · AQI (≥)",
+          "indoor_co2": "वायु गुणवत्ता · CO₂ (ppm) (≥)",
+          "indoor_pm25": "वायु गुणवत्ता · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "वायु गुणवत्ता · PM10 (µg/m³) (≥)",
+          "indoor_voc": "वायु गुणवत्ता · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "वायु गुणवत्ता · VOC (ppb) (≥)",
+          "indoor_humidity": "वायु गुणवत्ता · RH (%) (≥)",
+          "min_outdoor_temp": "बाहर · °C (≥)",
+          "max_outdoor_temp": "बाहर · °C (≤)",
+          "max_outdoor_humidity": "बाहर · RH (%) (≤)",
+          "max_wind_kmh": "मौसम और चेतावनियाँ · km/h (≤)",
+          "max_age_minutes": "⏱ · खोलें (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "वायु गुणवत्ता",
+        "state": {
+          "open": "बंद करें · माप",
+          "close": "स्वचालित सूचनाएँ · माप",
+          "idle": "अच्छी",
+          "blocked": "खिड़कियाँ बंद रखें"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "घोषणाएँ (वैकल्पिक) — Air Quality Advisor",
+      "description": "घोषणाएँ (वैकल्पिक) · कमरे",
+      "fields": {
+        "language": {
+          "name": "भाषा",
+          "description": "भाषा"
+        },
+        "channels": {
+          "name": "घोषणाएँ (वैकल्पिक)",
+          "description": "घोषणाएँ (वैकल्पिक)"
+        },
+        "areas": {
+          "name": "कमरे",
+          "description": "कमरे"
+        }
+      }
+    }
+  }
+}

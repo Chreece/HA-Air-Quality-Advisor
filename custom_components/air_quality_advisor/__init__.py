@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
 
-from .const import DOMAIN, PLATFORMS
+from .const import DOMAIN, PLATFORMS, LANGUAGES
 from .manager import AirQualityManager
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -28,12 +28,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
-    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.1.8")
+    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.2.0")
     return True
 
 
 SERVICE_SCHEMA = probatio.Schema({
-    probatio.Optional("language"): probatio.In(["en", "de", "el", "fr", "es"]),
+    probatio.Optional("language"): probatio.In([tag for tag in LANGUAGES if tag != "auto"]),
     probatio.Optional("channels", default="both"): probatio.In(["both", "tts", "notification"]),
     probatio.Optional("areas"): probatio.All(probatio.EnsureList(), [cv.string]),
 })

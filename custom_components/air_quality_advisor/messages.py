@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .logic import Reason, Recommendation
+from .languages import EXTRA_LOCALES, resolve_language
 
 
 TEXT = {
@@ -104,9 +105,36 @@ TEXT = {
 }
 
 
+def _extra_messages(entry: dict) -> dict[str, str]:
+    ui = entry["ui"]
+    say = entry["speech"]
+    missing = entry["card"][5]
+    return {
+        "open": say[0],
+        "close": say[1],
+        "title_open": f"{ui[7]} — {ui[14]} {ui[12]}",
+        "title_close": f"{ui[7]} — {ui[15]} {ui[12]}",
+        "inside": say[2],
+        "outside": say[3],
+        "no_outdoor_data": f"{ui[3]} — {missing}",
+        "unavailable_outdoor": f"{ui[3]} — {missing}: {{name}}",
+        "no_weather_data": f"{ui[4]} — {missing}",
+        "unavailable_weather": f"{ui[4]} — {missing}",
+        "weather_condition": f"{ui[4]}: {{value}}",
+        "weather_cold": f"{ui[18]} — {{value}}",
+        "weather_hot": f"{ui[18]} — {{value}}",
+        "weather_humid": f"{ui[18]} — {{value}}",
+        "weather_wind": f"{ui[4]} — {{value}}",
+        "active_warning": f"{ui[4]}: {{name}}",
+        "unavailable_warning": f"{ui[4]} — {missing}: {{name}}",
+    }
+
+
+TEXT.update({tag: _extra_messages(locale) for tag, locale in EXTRA_LOCALES.items()})
+
+
 def language_code(language: str | None) -> str:
-    code = str(language or "en").replace("-", "_").split("_", 1)[0].lower()
-    return code if code in TEXT else "en"
+    return resolve_language(language)
 
 
 def explain(reason: Reason, language: str) -> str:

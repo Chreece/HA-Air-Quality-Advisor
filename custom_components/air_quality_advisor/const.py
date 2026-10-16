@@ -19,7 +19,9 @@ CONF_MEDIA_PLAYERS = "media_players"
 CONF_LANGUAGE = "language"
 CONF_THRESHOLDS = "thresholds"
 
-LANGUAGES = ("auto", "en", "de", "el", "fr", "es")
+from .languages import SUPPORTED_LANGUAGE_TAGS
+
+LANGUAGES = ("auto", *SUPPORTED_LANGUAGE_TAGS)
 SUPPORTED_AIR_METRICS = ("aqi", "co2", "pm25", "pm10", "voc", "voc_parts")
 INDOOR_METRICS = (*SUPPORTED_AIR_METRICS, "humidity")
 WEATHER_CLEAR = frozenset(("sunny", "clear-night", "partlycloudy", "cloudy"))

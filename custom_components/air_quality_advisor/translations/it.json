@@ -1,0 +1,288 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Stanze",
+        "description": "1 · 🪟 Stanze. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Stanze"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Stanze. binary_sensor (device_class: window)."
+        }
+      },
+      "window_sensors": {
+        "title": "Escludi sensori finestra",
+        "description": "2 · Escludi sensori finestra. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Escludi sensori finestra"
+        },
+        "data_description": {
+          "excluded_window_entities": "Escludi sensori finestra · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Escludi sensori dell'aria interna",
+        "description": "Stanze: {area_name} ({position}/{total}). Escludi sensori dell'aria interna. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Qualità dell'aria esterna",
+        "description": "Qualità dell'aria esterna. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Qualità dell'aria esterna"
+        },
+        "data_description": {
+          "outdoor_sensors": "Qualità dell'aria esterna. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Meteo e allerte",
+        "description": "Meteo e allerte. weather.*",
+        "data": {
+          "weather_entities": "Meteo e allerte",
+          "weather_warnings": "Avvisi meteo"
+        },
+        "data_description": {
+          "weather_entities": "Meteo e allerte. weather.*",
+          "weather_warnings": "Meteo e allerte. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Annunci (facoltativi)",
+        "description": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+        "data": {
+          "language": "Lingua",
+          "automatic_tts": "Annunci vocali automatici",
+          "automatic_notifications": "Notifiche automatiche",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notifiche automatiche",
+          "tts_engine": "Annunci vocali automatici",
+          "media_players": "Annunci vocali automatici"
+        },
+        "data_description": {
+          "language": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "automatic_tts": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "automatic_notifications": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "use_announcement_hub": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "notify_entities": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "tts_engine": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "media_players": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Soglie avanzate",
+        "description": "Soglie avanzate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Esterno · AQI (≤)",
+          "outdoor_co2": "Esterno · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Esterno · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Esterno · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Esterno · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Esterno · VOC (ppb) (≤)",
+          "indoor_aqi": "Qualità dell'aria · AQI (≥)",
+          "indoor_co2": "Qualità dell'aria · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Qualità dell'aria · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Qualità dell'aria · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Qualità dell'aria · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Qualità dell'aria · VOC (ppb) (≥)",
+          "indoor_humidity": "Qualità dell'aria · RH (%) (≥)",
+          "min_outdoor_temp": "Esterno · °C (≥)",
+          "max_outdoor_temp": "Esterno · °C (≤)",
+          "max_outdoor_humidity": "Esterno · RH (%) (≤)",
+          "max_wind_kmh": "Meteo e allerte · km/h (≤)",
+          "max_age_minutes": "⏱ · Apri (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Soglie avanzate",
+        "description": "Stanze · Escludi sensori finestra · Escludi sensori dell'aria interna · Qualità dell'aria esterna · Meteo e allerte · Annunci (facoltativi) · Soglie avanzate",
+        "menu_options": {
+          "areas": "Stanze",
+          "window_sensors": "Escludi sensori finestra",
+          "indoor_sensors": "Escludi sensori dell'aria interna",
+          "outdoor": "Qualità dell'aria esterna",
+          "weather": "Meteo e allerte",
+          "delivery": "Annunci (facoltativi)",
+          "thresholds": "Soglie avanzate"
+        }
+      },
+      "window_sensors": {
+        "title": "Escludi sensori finestra",
+        "description": "2 · Escludi sensori finestra. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Escludi sensori finestra"
+        },
+        "data_description": {
+          "excluded_window_entities": "Escludi sensori finestra · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "areas": {
+        "title": "Stanze",
+        "description": "1 · 🪟 Stanze. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Stanze"
+        },
+        "data_description": {
+          "areas": "1 · 🪟 Stanze. binary_sensor (device_class: window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Escludi sensori dell'aria interna",
+        "description": "Stanze: {area_name} ({position}/{total}). Escludi sensori dell'aria interna. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓"
+        }
+      },
+      "outdoor": {
+        "title": "Qualità dell'aria esterna",
+        "description": "Qualità dell'aria esterna. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Qualità dell'aria esterna"
+        },
+        "data_description": {
+          "outdoor_sensors": "Qualità dell'aria esterna. AQI, CO₂, PM2.5, PM10, VOC."
+        }
+      },
+      "weather": {
+        "title": "Meteo e allerte",
+        "description": "Meteo e allerte. weather.*",
+        "data": {
+          "weather_entities": "Meteo e allerte",
+          "weather_warnings": "Avvisi meteo"
+        },
+        "data_description": {
+          "weather_entities": "Meteo e allerte. weather.*",
+          "weather_warnings": "Meteo e allerte. weather.*"
+        }
+      },
+      "delivery": {
+        "title": "Annunci (facoltativi)",
+        "description": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+        "data": {
+          "language": "Lingua",
+          "automatic_tts": "Annunci vocali automatici",
+          "automatic_notifications": "Notifiche automatiche",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "Notifiche automatiche",
+          "tts_engine": "Annunci vocali automatici",
+          "media_players": "Annunci vocali automatici"
+        },
+        "data_description": {
+          "language": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "automatic_tts": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "automatic_notifications": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "use_announcement_hub": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "notify_entities": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "tts_engine": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub.",
+          "media_players": "Annunci (facoltativi). Notifiche automatiche · Annunci vocali automatici. Announcement Hub."
+        }
+      },
+      "thresholds": {
+        "title": "Soglie avanzate",
+        "description": "Soglie avanzate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Esterno · AQI (≤)",
+          "outdoor_co2": "Esterno · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Esterno · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Esterno · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Esterno · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Esterno · VOC (ppb) (≤)",
+          "indoor_aqi": "Qualità dell'aria · AQI (≥)",
+          "indoor_co2": "Qualità dell'aria · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Qualità dell'aria · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Qualità dell'aria · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Qualità dell'aria · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Qualità dell'aria · VOC (ppb) (≥)",
+          "indoor_humidity": "Qualità dell'aria · RH (%) (≥)",
+          "min_outdoor_temp": "Esterno · °C (≥)",
+          "max_outdoor_temp": "Esterno · °C (≤)",
+          "max_outdoor_humidity": "Esterno · RH (%) (≤)",
+          "max_wind_kmh": "Meteo e allerte · km/h (≤)",
+          "max_age_minutes": "⏱ · Apri (min, ≤)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Qualità dell'aria",
+        "state": {
+          "open": "Chiudi · Misurazioni",
+          "close": "Notifiche automatiche · Misurazioni",
+          "idle": "Buona",
+          "blocked": "Tieni le finestre chiuse"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Annunci (facoltativi) — Air Quality Advisor",
+      "description": "Annunci (facoltativi) · Stanze",
+      "fields": {
+        "language": {
+          "name": "Lingua",
+          "description": "Lingua"
+        },
+        "channels": {
+          "name": "Annunci (facoltativi)",
+          "description": "Annunci (facoltativi)"
+        },
+        "areas": {
+          "name": "Stanze",
+          "description": "Stanze"
+        }
+      }
+    }
+  }
+}

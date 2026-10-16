@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — Expanded language support
+
+- Add 33 languages for a total of 38 Home Assistant language choices, while preserving the existing five detailed translations.
+- Localize setup and Reconfigure labels, card status/readouts and actionable recommendation messages.
+- Normalize regional and script variants (Brazil/Portugal Portuguese, Simplified/Traditional Chinese), and enable RTL dashboard layouts for Arabic, Hebrew, Persian and Urdu.
+- Extend language override choices for manual notifications and TTS; voice availability still depends on the TTS engine.
+- Ship generated HA translation files, comprehensive locale/placeholder tests and JavaScript card smoke tests.
+- Keep existing entity IDs, rooms, settings and HACS installation untouched.
+
 > **First public HACS release:** [v0.1.8](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.1.8) (2026-10-16). Earlier v0.1.x entries document development milestones on `main`, not previous published GitHub Releases.
 
 ## v0.1.8 — First versioned HACS release (2026-10-16)
