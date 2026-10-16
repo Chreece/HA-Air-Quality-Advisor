@@ -162,7 +162,21 @@ def test_window_area_choices_only_contain_areas_with_recognized_windows(adapter)
     choices = adapter.window_area_choices(home)
     assert len(choices) == 1
     assert choices[0]["value"] == "living"
-    assert "2" in choices[0]["label"]
+    assert "1" in choices[0]["label"]
+
+
+def test_window_class_cover_does_not_count_as_window(adapter):
+    home = FakeHass([
+        MockState("cover.bedroom_window", "open", device_class="window"),
+        MockState("binary_sensor.hall_window", "off", device_class="window"),
+    ], {
+        "cover.bedroom_window": "bedroom",
+        "binary_sensor.hall_window": "hall",
+    })
+    assert [choice["value"] for choice in adapter.window_area_choices(home)] == ["hall"]
+    scanned = adapter.rooms(home, ["bedroom", "hall"], 90)
+    assert scanned[0].windows == ()
+    assert [window.entity_id for window in scanned[1].windows] == ["binary_sensor.hall_window"]
 
 
 def test_window_area_choices_use_device_area_when_entity_has_no_override(adapter):
