@@ -4,22 +4,22 @@
     "step": {
       "areas": {
         "title": "Areas",
-        "description": "Only areas with recognized window contacts or covers are suggested. The number of detected windows is shown beside each area. Select the rooms to monitor; sensors must be assigned to the correct Home Assistant areas. Previously selected areas without a detected window are marked ⚠ when reconfiguring.",
+        "description": "Areas with Window-class binary sensors are preselected during initial setup; covers are excluded. The detected window count appears beside each area. In reconfiguration, your existing selection is preserved, and areas with missing contacts are marked ⚠.",
         "data": {
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Outdoor air quality",
-        "description": "Choose one or more supported outdoor air-quality sensors. Only supported numeric sensor types and units are listed. All selected outdoor sensors must be available and acceptable before opening is recommended.",
+        "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
         "data": {
           "outdoor_sensors": "Outdoor air-quality sensors"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -90,7 +90,7 @@
       "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
       "temperature_range": "The minimum temperature must be lower than the maximum.",
       "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with recognized windows were found. Assign a Window-class binary sensor or cover to a Home Assistant area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
       "invalid_areas": "An area is no longer available as a window area."
     },
     "abort": {
@@ -109,22 +109,22 @@
       },
       "areas": {
         "title": "Areas",
-        "description": "Only areas with recognized window contacts or covers are suggested. The number of detected windows is shown beside each area. Select the rooms to monitor; sensors must be assigned to the correct Home Assistant areas. Previously selected areas without a detected window are marked ⚠ when reconfiguring.",
+        "description": "Areas with Window-class binary sensors are preselected during initial setup; covers are excluded. The detected window count appears beside each area. In reconfiguration, your existing selection is preserved, and areas with missing contacts are marked ⚠.",
         "data": {
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Outdoor air quality",
-        "description": "Choose one or more supported outdoor air-quality sensors. Only supported numeric sensor types and units are listed. All selected outdoor sensors must be available and acceptable before opening is recommended.",
+        "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
         "data": {
           "outdoor_sensors": "Outdoor air-quality sensors"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -195,7 +195,7 @@
       "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
       "temperature_range": "The minimum temperature must be lower than the maximum.",
       "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with recognized windows were found. Assign a Window-class binary sensor or cover to a Home Assistant area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
       "invalid_areas": "An area is no longer available as a window area."
     }
   },
