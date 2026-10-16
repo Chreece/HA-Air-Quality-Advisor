@@ -4,12 +4,12 @@
     "step": {
       "areas": {
         "title": "Areas",
-        "description": "Select all rooms to monitor. Indoor air sensors and window contacts are discovered from their Home Assistant area assignments. Only window contacts/covers with the Window device class can be recommended.",
+        "description": "Only areas with recognized window contacts or covers are suggested. The number of detected windows is shown beside each area. Select the rooms to monitor; sensors must be assigned to the correct Home Assistant areas. Previously selected areas without a detected window are marked ⚠ when reconfiguring.",
         "data": {
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -89,7 +89,9 @@
       "missing_notify": "Enable Announcement Hub or choose a notification entity.",
       "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
       "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area."
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with recognized windows were found. Assign a Window-class binary sensor or cover to a Home Assistant area.",
+      "invalid_areas": "An area is no longer available as a window area."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -107,12 +109,12 @@
       },
       "areas": {
         "title": "Areas",
-        "description": "Select all rooms to monitor. Indoor air sensors and window contacts are discovered from their Home Assistant area assignments. Only window contacts/covers with the Window device class can be recommended.",
+        "description": "Only areas with recognized window contacts or covers are suggested. The number of detected windows is shown beside each area. Select the rooms to monitor; sensors must be assigned to the correct Home Assistant areas. Previously selected areas without a detected window are marked ⚠ when reconfiguring.",
         "data": {
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -192,7 +194,9 @@
       "missing_notify": "Enable Announcement Hub or choose a notification entity.",
       "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
       "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area."
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with recognized windows were found. Assign a Window-class binary sensor or cover to a Home Assistant area.",
+      "invalid_areas": "An area is no longer available as a window area."
     }
   },
   "entity": {
