@@ -18,7 +18,7 @@
 
 **One recommendation entity for all the rooms you select.** It compares indoor CO₂, AQI, particles, VOCs and humidity against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
 
-> This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
+> This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor weather warnings and unavailable warning status remain blockers. Missing air-quality readings are reported separately and do not by themselves block ventilation.
 
 <p align="center">
   <img src=".github/assets/how-it-works.svg" alt="Air quality, weather and warning sensors feed one window recommendation entity and optional announcement outputs" width="100%">
@@ -27,7 +27,7 @@
 ## What it provides
 
 - A single `sensor.air_quality_advisor_window_recommendations` (actual entity ID may vary with user settings). States: `open`, `close`, `idle`, `blocked`.
-- Attributes: `open_windows`, `close_windows`, structured `recommendations` with windows, room/area, sensor reason, value and localised message, `outside_blockers`, `diagnostics`, `outdoor_safe`, `announcement_hub_available`.
+- Attributes: `open_windows`, `close_windows`, structured `recommendations` with windows, room/area, sensor reason, value and localised message, `outside_blockers`, `diagnostics`, `outdoor_safe`, `outdoor_data_complete`, `unavailable_outdoor_sensors`, `announcement_hub_available`.
 - Event-driven updates and periodic 5-minute freshness checks. No external APIs, daemons, cloud credentials or Home Assistant tokens. Uses existing entities only.
 - A guided four-step setup. Indoor measurements and window contacts are automatically discovered from each selected area's HA entity/device registry assignments. Configurable thresholds are tucked into **Configure → Advanced thresholds**.
 - Optional room-aware [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) output (`notify.announcement_hub`), **or** direct `notify.send_message` and `tts.speak` via supported entities. Not installing Announcement Hub does not affect the recommendation sensor.
@@ -54,8 +54,8 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## Guided configuration
 
-1. **Areas — multi-select, filtered to rooms with windows.** Only areas currently containing a Window-class `binary_sensor` or Window-class `cover` are suggested, with the number of windows shown next to each name. Areas are determined by entity area overrides or their device assignments, not by names. Already-selected areas missing a recognized window remain visible with a ⚠ in **Configure**, so your previous selections are not silently deleted. Assign indoor air-quality sensors to these areas too. If nothing is listed, verify that the contact/cover's *device class is Window*, it has a live entity, and the entity/device is assigned to a Home Assistant area.
-2. **Outdoor air-quality sensors — multi-select.** Only supported sensors with recognizable metric and compatible units are selectable. Sensors assigned to the monitored indoor areas are excluded from the outdoor choices. A sensor without a device class can be recognized by a strictly matched suffix like `_co2`, `_pm25`, `_pm2_5`, `_pm10`, `_aqi` or `_tvoc`, *and* an appropriate unit. Assign outdoor sensors to an Outside area, or leave them unassigned. All selected sensors must be safe and fresh for an open recommendation.
+1. **Areas — multi-select, filtered to rooms with windows.** Areas containing Window-class `binary_sensor` contacts are suggested **and preselected on first setup**, with the number of detected contacts next to each name. Window-class `cover` entities do not count. Areas are determined by entity area overrides or their device assignments, not by names. Already-selected areas missing a recognized window remain visible with a ⚠ in **Configure**, so your previous selections are not silently deleted. Assign indoor air-quality sensors to these areas too. If nothing is listed, verify that the binary sensor's *device class is Window*, it has a live entity, and the entity/device is assigned to a Home Assistant area.
+2. **Outdoor air-quality sensors — multi-select.** Only supported sensors with recognizable metric and compatible units are selectable. Sensors assigned to the monitored indoor areas are excluded from the outdoor choices. A sensor without a device class can be recognized by a strictly matched suffix like `_co2`, `_pm25`, `_pm2_5`, `_pm10`, `_aqi` or `_tvoc`, *and* an appropriate unit. Assign outdoor sensors to an Outside area, or leave them unassigned. An available measurement above its outdoor threshold blocks opening, but unknown, unavailable or stale sensors are neutral and reported as incomplete data.
 3. **Weather and warnings — multi-select.** Pick one or more `weather.*` entities and optionally warning sensors. Relevant `binary_sensor`/`sensor` warnings are discovered by common names used by DWD, Meteoalarm, NINA and other providers; no vendor-specific services or APIs are assumed. If your provider exposes only a special event type or differently named entity, first create a normal binary or numeric warning sensor in HA.
 4. **Announcements (optional).** Choose a language and enable automatic notifications and/or speech. When Announcement Hub is present, the wizard can route announcements through it, respecting selected area IDs. Otherwise select `notify.*` recipients, a `tts.*` engine and `media_player.*` output(s). Room-assigned direct outputs receive only their own room's recommendation; unassigned outputs receive all recommendations.
 
@@ -73,7 +73,7 @@ Click **Configure** on the integration to open a short three-choice menu: **Area
 | VOC concentration (parts) | ppb or ppm | 500 ppb | 500 ppb |
 | Relative humidity | % | — | 65% |
 
-Sensor values are normalised to the units above. Outdoor temperatures from weather entities must remain from **5–32 °C**, humidity at most **85%** and wind at most **35 km/h** when those attributes are provided. Supported fair weather states: `sunny`, `clear-night`, `partlycloudy`, `cloudy`. All other states, including rain, snow, thunderstorms, fog and high wind, block opening. Selected warnings that are active **or cannot be verified** also block opening. Weather providers with unknown state block opening. Selected outdoor data older than 90 minutes (using `last_reported` when available) block opening; adjust the time in advanced options.
+Sensor values are normalised to the units above. Outdoor temperatures from weather entities must remain from **5–32 °C**, humidity at most **85%** and wind at most **35 km/h** when those attributes are provided. Supported fair weather states: `sunny`, `clear-night`, `partlycloudy`, `cloudy`. All other states, including rain, snow, thunderstorms, fog and high wind, block opening. Selected warnings that are active **or cannot be verified** also block opening. Weather providers with unknown state block opening. Selected outdoor data older than 90 minutes (using `last_reported` when available) are treated as missing data rather than unsafe values. Adjust the freshness limit in advanced options.
 
 **AQI scales differ internationally.** A European 1–5 index is *not* the US 0–500 AQI. For 1–5 index sensors, change the outdoor AQI limit (for example `2`) and indoor AQI trigger (for example `3`) in advanced options, or use the measured pollutant sensors instead. Numeric thresholds are configurable per installation, not per sensor, and do not represent exposure-duration standards.
 
@@ -85,10 +85,11 @@ Sensor values are normalised to the units above. Outdoor temperatures from weath
 | Bad, rainy, extreme, warning active or unknown | Any recognized window is actually open | **Close** each open window, with outdoor blocker(s) |
 | Good | Room already has a window open | No further open action (ventilation already underway) |
 | Good | Indoor values acceptable | `idle` |
-| Uncertain outside | No windows verified open | `blocked`; no open recommendation |
+| Missing weather or unknown warning status | No windows verified open | `blocked`; no open recommendation |
+| Unknown/unavailable outdoor air-quality sensor | Otherwise favorable conditions | Neutral: report unavailable sensor ID, no forced close or blocker |
 | No room sensor or window contact | Missing information | No guessed recommendation; diagnostics attribute identifies the gap |
 
-A `cover` with the `window` device class is recognized as open/closed, but the integration **never calls** `cover.open_cover` or `cover.close_cover`. Other sensors (door/motion/etc.) are intentionally not treated as windows. When a selected outside sensor is missing/unavailable/unsupported or a warning cannot be interpreted reliably, safe opening cannot be asserted.
+Only `binary_sensor` entities with the `window` device class are counted as windows. Covers are excluded from area discovery and recommendations, including covers labeled `window`. Missing outdoor air-quality measurements alone never cause `close` or `blocked`; the sensor lists them in `unavailable_outdoor_sensors`, sets `outdoor_data_complete: false`, and continues to evaluate known weather, warning and outdoor readings. Missing weather or unavailable warning status still blocks opening.
 
 ## The one sensor
 
@@ -103,6 +104,8 @@ Typical state when CO₂ is high but outdoor air and weather are good:
 state: open
 attributes:
   outdoor_safe: true
+  outdoor_data_complete: true
+  unavailable_outdoor_sensors: []
   open_windows:
     - binary_sensor.living_room_window
   close_windows: []
