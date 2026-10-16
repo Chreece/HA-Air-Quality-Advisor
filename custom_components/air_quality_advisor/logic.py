@@ -69,7 +69,11 @@ class Plan:
     outside_reasons: tuple[Reason, ...]
     recommendations: tuple[Recommendation, ...]
     diagnostics: tuple[tuple[str, str], ...]  # area name, missing-input reason
-    unavailable_outdoor: tuple[str, ...] = ()  # Missing readings, nonblocking.
+    unavailable_outdoor: tuple[str, ...] = ()  # Non-blocking missing entity IDs.
+    rooms: tuple[Room, ...] = ()
+    outdoor_readings: tuple[Reading, ...] = ()
+    weather: tuple[Weather, ...] = ()
+    warnings: tuple[Warning, ...] = ()
 
     @property
     def signature(self) -> str:
@@ -104,19 +108,20 @@ def evaluate(
     rooms: tuple[Room, ...],
     limits: dict[str, float] | None = None,
 ) -> Plan:
-    """Block on known hazards, report missing air-quality inputs separately."""
+    """Block on known outdoor hazards; report missing AQ data separately."""
     thresholds = {**DEFAULT_THRESHOLDS, **(limits or {})}
     outside: list[Reason] = []
     unavailable_outdoor: list[str] = []
 
-    # No configured sensors differs from a configured sensor being unavailable.
+    # No configured sensors at all is a setup error, distinct from a selected
+    # sensor currently reporting unknown/unavailable/stale.
     if not outdoor:
         outside.append(Reason("no_outdoor_data"))
     for reading in outdoor:
         limit = thresholds.get(f"outdoor_{reading.metric}")
         if reading.value is None or limit is None:
             unavailable_outdoor.append(reading.entity_id)
-            continue  # Unknown is neutral; it never triggers a close warning.
+            continue  # Unknown is not unsafe and must not trigger 'close'.
         if reading.value > limit:
             outside.append(_reading_reason("outside", reading))
 
@@ -184,4 +189,5 @@ def evaluate(
     return Plan(
         status, outdoor_safe, tuple(outside), tuple(recommendations),
         tuple(diagnostics), tuple(unavailable_outdoor),
+        tuple(rooms), tuple(outdoor), tuple(weather), tuple(warnings),
     )
