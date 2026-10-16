@@ -27,6 +27,37 @@
 
 <p align="center"><img src=".github/assets/how-it-works.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
 
+## Dashboard screenshots
+
+The examples below are **real renders of the bundled Lovelace card** using *sample sensor values*, not screenshots of a live Home Assistant installation. They demonstrate the available room summary, ventilation recommendations, outdoor warnings, responsive layout and Greek localization.
+
+### Desktop overview — light theme
+
+<p align="center">
+  <img src=".github/assets/screenshots/dashboard-overview-light.png" alt="Air Quality Advisor light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
+</p>
+
+### Greek localization — dark theme
+
+<p align="center">
+  <img src=".github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Air Quality Advisor dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
+</p>
+
+### Mobile view and outdoor warning
+
+<table>
+  <tr>
+    <td align="center" width="38%"><b>Responsive mobile dashboard</b></td>
+    <td align="center"><b>Unsafe outdoor conditions — close windows</b></td>
+  </tr>
+  <tr>
+    <td valign="top" align="center"><img src=".github/assets/screenshots/dashboard-mobile.png" alt="Air Quality Advisor mobile dashboard with room cards and sensor gauges" width="340"></td>
+    <td valign="top" align="center"><img src=".github/assets/screenshots/dashboard-outdoor-alert.png" alt="Air Quality Advisor dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
+  </tr>
+</table>
+
+*Demo sensor values are illustrative; actual recommendations always use your configured Home Assistant entities. The card does not operate windows.*
+
 ## What it provides
 
 - A single `sensor.air_quality_advisor_window_recommendations` (actual entity ID may vary with user settings). States: `open`, `close`, `idle`, `blocked`.
