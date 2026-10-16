@@ -13,13 +13,13 @@ from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
+    CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN,
 )
 from .discovery import (
-    outdoor_choices, suggested_window_exclusions, warning_choices,
+    indoor_sensor_exclusion_choices, outdoor_choices, suggested_window_exclusions, warning_choices,
     window_area_choices, window_exclusion_choices,
 )
 
@@ -111,13 +111,74 @@ class _FlowMixin:
                 errors["base"] = "invalid_areas"
             else:
                 self._values[CONF_AREAS] = selected
-                return await self.async_step_outdoor()
+                self._indoor_index = 0
+                return await self.async_step_indoor_sensors()
         elif not choices:
             errors["base"] = "no_window_areas"
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
             _marker(CONF_AREAS, user_input.get(CONF_AREAS, []) if user_input is not None
                     else default_areas, required=True): _multi(choices),
         }), errors=errors)
+
+    async def async_step_indoor_sensors(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Review all supported air sensors (including humidity), one area at a time.
+
+        Missing selected sensors are retained and removable during reconfigure.
+        Skipping rooms with no candidates avoids presenting an empty selector.
+        """
+        area_ids = list(self._values.get(CONF_AREAS, []))
+        previous = self._values.get(CONF_EXCLUDED_INDOOR, {})
+        if not isinstance(previous, dict):
+            previous = {}
+        index = getattr(self, "_indoor_index", 0)
+        while index < len(area_ids):
+            area_id = area_ids[index]
+            choices = indoor_sensor_exclusion_choices(
+                self.hass, area_id, previous.get(area_id, [])
+            )
+            if choices:
+                break
+            index += 1
+        self._indoor_index = index
+        if index >= len(area_ids):
+            return await self.async_step_outdoor()
+
+        known = {choice["value"] for choice in choices}
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            selected = list(dict.fromkeys(user_input.get(CONF_EXCLUDED_INDOOR, [])))
+            if any(entity_id not in known for entity_id in selected):
+                errors["base"] = "invalid_indoor_exclusions"
+            else:
+                # An empty list is a deliberate choice, never a signal to
+                # restore previous exclusions or auto-select humidity.
+                per_area = dict(previous)
+                per_area[area_id] = selected
+                self._values[CONF_EXCLUDED_INDOOR] = per_area
+                self._indoor_index += 1
+                return await self.async_step_indoor_sensors()
+
+        from homeassistant.helpers import area_registry as ar
+        registered_area = ar.async_get(self.hass).async_get_area(area_id)
+        area_name = registered_area.name if registered_area else area_id
+        return self.async_show_form(
+            step_id="indoor_sensors",
+            description_placeholders={
+                "area_name": area_name,
+                "position": str(index + 1),
+                "total": str(len(area_ids)),
+            },
+            data_schema=probatio.Schema({
+                _marker(
+                    CONF_EXCLUDED_INDOOR,
+                    user_input.get(CONF_EXCLUDED_INDOOR, [])
+                    if user_input is not None else list(previous.get(area_id, [])),
+                ): _multi(choices),
+            }),
+            errors=errors,
+        )
 
     async def async_step_outdoor(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         choices = outdoor_choices(self.hass, self._values.get(CONF_AREAS, []))
@@ -152,8 +213,6 @@ class _FlowMixin:
             else:
                 self._values[CONF_WEATHER] = weather_entities
                 self._values[CONF_WARNINGS] = warnings
-                if getattr(self, "_editing", False):
-                    return await self._finish()
                 return await self.async_step_delivery()
         schema: dict[Any, Any] = {
             _marker(CONF_WEATHER, self._values.get(CONF_WEATHER, []), required=True):
@@ -182,13 +241,14 @@ class _FlowMixin:
             ):
                 errors = {"base": "missing_tts"}
             else:
-                self._values.update(user_input)
+                edit_thresholds = bool(user_input.get("edit_thresholds", False))
+                self._values.update({k: v for k, v in user_input.items() if k != "edit_thresholds"})
                 self._values.setdefault(CONF_HUB, False)
                 self._values.setdefault(CONF_AUTO_NOTIFY, False)
                 self._values.setdefault(CONF_AUTO_TTS, False)
                 self._values.setdefault(CONF_NOTIFY_TARGETS, [])
                 self._values.setdefault(CONF_MEDIA_PLAYERS, [])
-                return await self._finish()
+                return await self.async_step_thresholds() if edit_thresholds else await self._finish()
         else:
             errors = {}
         fields: dict[Any, Any] = {
@@ -207,6 +267,7 @@ class _FlowMixin:
                 selector.BooleanSelector(),
             _marker(CONF_AUTO_TTS, self._values.get(CONF_AUTO_TTS, False)):
                 selector.BooleanSelector(),
+            _marker("edit_thresholds", False): selector.BooleanSelector(),
         }
         if hub_present or self._values.get(CONF_HUB):
             fields[_marker(CONF_HUB, self._values.get(CONF_HUB, hub_present))] = selector.BooleanSelector()
@@ -270,14 +331,13 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
 
 
 class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
-    """Reconfigure all selections, with extra thresholds after delivery."""
+    """Reconfigure the same wizard as first setup, without branching menus."""
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         self._editing = True
         self._values = {**self.config_entry.data, **self.config_entry.options}
-        return self.async_show_menu(
-            step_id="init", menu_options=["window_sensors", "delivery", "thresholds"]
-        )
+        self._indoor_index = 0
+        return await self.async_step_window_sensors()
 
     async def _finish(self) -> ConfigFlowResult:
         return self.async_create_entry(data=self._values)

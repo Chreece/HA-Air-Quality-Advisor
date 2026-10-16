@@ -60,7 +60,8 @@ def entity_area(hass: HomeAssistant, entity_id: str) -> str | None:
 def _device_class(hass: HomeAssistant, state: State) -> str:
     entry = er.async_get(hass).async_get(state.entity_id)
     return str(state.attributes.get("device_class") or (
-        (entry.device_class or entry.original_device_class) if entry else ""
+        (getattr(entry, "device_class", None) or getattr(entry, "original_device_class", None))
+        if entry else ""
     ) or "").casefold()
 
 
@@ -388,6 +389,54 @@ def window_area_choices(
             choice["label"].casefold(),
         ),
     )
+
+
+
+def indoor_sensor_exclusion_choices(
+    hass: HomeAssistant, area_id: str, previously_selected: list[str] | None = None
+) -> list[dict[str, str]]:
+    """Build a strict supported-sensor list for one selected room.
+
+    Use entity-area overrides and device areas exactly like runtime discovery.
+    Show the registered device name, user-visible entity name, metric and ID so
+    users can distinguish e.g. the humidity entity of a combined CO₂ device.
+    Already excluded entities that went offline or vanished remain removable.
+    """
+    registry = er.async_get(hass)
+    devices = dr.async_get(hass)
+    titles = {
+        "aqi": "AQI", "co2": "CO₂", "pm25": "PM2.5", "pm10": "PM10",
+        "voc": "VOC (µg/m³)", "voc_parts": "VOC (ppb)", "humidity": "RH (%)",
+    }
+    known: set[str] = set()
+    options: list[dict[str, str]] = []
+    for state in hass.states.async_all("sensor"):
+        if entity_area(hass, state.entity_id) != area_id:
+            continue
+        metric = supported_metric(hass, state, outdoor=False)
+        if metric is None:
+            continue
+        entity_id = state.entity_id
+        entry = registry.async_get(entity_id)
+        device_id = getattr(entry, "device_id", None) if entry else None
+        device = devices.async_get(device_id) if device_id else None
+        device_name = (
+            (getattr(device, "name_by_user", None) or getattr(device, "name", None))
+            if device else None
+        )
+        entity_name = (getattr(entry, "name", None) if entry else None) or state.name or entity_id
+        prefix = f"{device_name} › " if device_name else ""
+        options.append({
+            "value": entity_id,
+            "label": f"{prefix}{entity_name} · {titles[metric]} · {entity_id}",
+        })
+        known.add(entity_id)
+    for entity_id in previously_selected or []:
+        # Keep a previously excluded missing sensor removable without offering
+        # arbitrary new entity IDs or pulling in sensors from another room.
+        if entity_id not in known and entity_id.startswith("sensor."):
+            options.append({"value": entity_id, "label": f"⚠ {entity_id}"})
+    return sorted(options, key=lambda item: (item["label"].casefold(), item["value"]))
 
 
 def outdoor_choices(

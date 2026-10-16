@@ -6,6 +6,7 @@ PLATFORMS = ["sensor"]
 
 CONF_AREAS = "areas"
 CONF_EXCLUDED_WINDOWS = "excluded_window_entities"
+CONF_EXCLUDED_INDOOR = "excluded_indoor_entities"  # Map Home Assistant area_id -> entity_id list.
 CONF_OUTDOOR = "outdoor_sensors"
 CONF_WEATHER = "weather_entities"
 CONF_WARNINGS = "weather_warnings"

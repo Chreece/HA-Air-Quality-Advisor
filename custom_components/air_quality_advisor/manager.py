@@ -15,7 +15,7 @@ from homeassistant.helpers.event import async_call_later, async_track_time_inter
 
 from .const import (
     ANNOUNCE_COOLDOWN_SECONDS, ANNOUNCE_OPEN_STABLE_SECONDS, CONF_AREAS,
-    CONF_EXCLUDED_WINDOWS,
+    CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_LANGUAGE,
     CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
@@ -67,9 +67,23 @@ class AirQualityManager:
         config = self.settings
         max_age = self.thresholds["max_age_minutes"]
         selected_outdoor = set(config.get(CONF_OUTDOOR, []))
+        monitored_areas = config.get(CONF_AREAS, [])
+        by_area = config.get(CONF_EXCLUDED_INDOOR, {})
+        if not isinstance(by_area, dict):
+            by_area = {}
+        excluded_indoor = {
+            entity_id
+            for area_id in monitored_areas
+            for entity_id in by_area.get(area_id, [])
+            if isinstance(entity_id, str) and entity_area(self.hass, entity_id) == area_id
+        }
         selected_rooms = rooms(
-            self.hass, config.get(CONF_AREAS, []), max_age,
-            excluded_entities=selected_outdoor | set(config.get(CONF_EXCLUDED_WINDOWS, [])),
+            self.hass, monitored_areas, max_age,
+            excluded_entities=(
+                selected_outdoor
+                | set(config.get(CONF_EXCLUDED_WINDOWS, []))
+                | excluded_indoor
+            ),
         )
         self._tracked = (
             selected_outdoor

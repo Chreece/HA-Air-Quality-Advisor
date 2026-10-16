@@ -10,7 +10,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import CONF_EXCLUDED_WINDOWS, DOMAIN, NAME, SIGNAL_UPDATED
+from .const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, DOMAIN, NAME, SIGNAL_UPDATED
 from .dashboard import dashboard_snapshot
 from .messages import announcement, explain
 
@@ -75,6 +75,7 @@ class AirQualityRecommendation(SensorEntity):
             "outdoor_data_complete": not plan.unavailable_outdoor,
             "unavailable_outdoor_sensors": list(plan.unavailable_outdoor),
             "excluded_window_entities": list(self._manager.settings.get(CONF_EXCLUDED_WINDOWS, [])),
+            "excluded_indoor_entities": dict(self._manager.settings.get(CONF_EXCLUDED_INDOOR, {})),
             "open_windows": open_ids,
             "close_windows": close_ids,
             "recommendations": actionable,
