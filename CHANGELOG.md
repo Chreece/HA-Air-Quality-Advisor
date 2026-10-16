@@ -1,5 +1,16 @@
 # Changelog
 
+> **First public HACS release:** [v0.1.8](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.1.8) (2026-10-16). Earlier v0.1.x entries document development milestones on `main`, not previous published GitHub Releases.
+
+## v0.1.8 — First versioned HACS release (2026-10-16)
+
+- Publish the integration, bundled Lovelace card, localization, brand assets and complete configuration UI as a selectable HACS release.
+- Rooms-first setup and reconfiguration; editable contact/indoor measurement exclusions, outdoor/weather safeguards and optional announcements.
+- Package a manual-install ZIP and full [release notes](.github/releases/v0.1.8.md).
+- Gate publication on Python, JavaScript, HACS Action and Home Assistant Hassfest checks.
+
+### Included development milestones
+
 ## 0.1.8 — rooms first throughout setup
 
 - Show **Rooms** as the first page during initial installation, matching the existing Rooms-first Configure menu.
@@ -78,4 +89,4 @@
 - Added optional Announcement Hub or direct Home Assistant notify/TTS delivery, including five translation languages and per-action language overrides.
 - Added HACS metadata, locally bundled Home Assistant branding, validation workflows and sample diagrams.
 
-**Validation:** Pure Python tests and static checks pass locally; Home Assistant, HACS and Hassfest live validation are still required.
+**Verification:** The release is gated by Python and JavaScript tests, HACS Action and Hassfest. A full live Home Assistant and physical notification-output test remains separate.

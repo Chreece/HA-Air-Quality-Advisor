@@ -1,12 +1,19 @@
-name: Validate (manual only)
+name: Validate and release (on demand)
 
-# Intentionally avoid push/PR/schedule triggers to prevent noisy CI notifications
-# during iterative development; run once when preparing a release.
+# Development pushes/PRs do not run CI. Explicit release request starts gates.
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/release-request.json'
 
 permissions:
   contents: read
+
+concurrency:
+  group: air-quality-advisor-release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   test:
@@ -51,3 +58,56 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
+
+  publish:
+    name: Publish versioned HACS release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test, hassfest, hacs]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check requested version and release notes
+        id: metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, re
+          request = json.loads(Path('.github/release-request.json').read_text(encoding='utf-8'))
+          version = request.get('version', '')
+          assert re.fullmatch(r'\d+\.\d+\.\d+', version), f'Invalid release version: {version}'
+          manifest = json.loads(Path('custom_components/air_quality_advisor/manifest.json').read_text(encoding='utf-8'))
+          assert manifest['version'] == version, f"Manifest {manifest['version']} differs from request {version}"
+          tag = f'v{version}'
+          notes = Path(f'.github/releases/{tag}.md')
+          assert notes.is_file() and notes.stat().st_size > 200, f'Missing release notes: {notes}'
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              print(f'tag={tag}', file=out)
+              print(f'notes={notes}', file=out)
+          PY
+      - name: Build manual integration ZIP
+        env:
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+        run: |
+          mkdir -p dist
+          zip -q -r "dist/HA-Air-Quality-Advisor-${RELEASE_TAG}.zip" custom_components/air_quality_advisor \
+            -x '*__pycache__*' '*.pyc'
+      - name: Create release at the validated commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+          RELEASE_NOTES: ${{ steps.metadata.outputs.notes }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite" >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "dist/HA-Air-Quality-Advisor-${RELEASE_TAG}.zip#Manual installation ZIP" \
+            --target "$GITHUB_SHA" \
+            --title "Air Quality Advisor ${RELEASE_TAG}" \
+            --notes-file "$RELEASE_NOTES" \
+            --latest

@@ -56,6 +56,14 @@ HA_CONFIG=/path/to/homeassistant/config bash ./install.sh
 
 The installer writes **only** the integration directory, makes a rollback backup of an older installation and does not restart HA or end your SSH session.
 
+## HACS releases
+
+**First published HACS version: [v0.1.8](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.1.8)** · [Release notes](.github/releases/v0.1.8.md) · [Changelog](CHANGELOG.md).
+
+Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
+
+Regular development pushes stay quiet. A dedicated release-request change triggers Python and JavaScript validation, HACS Action and Hassfest before publishing a tag and full GitHub Release.
+
 ## Guided configuration and reconfiguration
 
 **Initial setup** starts with Rooms, then window exclusions, followed by the remaining guided steps:
