@@ -4,22 +4,22 @@
     "step": {
       "areas": {
         "title": "Pièces",
-        "description": "Seules les zones comportant des fenêtres détectées sont proposées, avec leur nombre. Les zones déjà sélectionnées sans fenêtre détectée sont signalées par ⚠ lors de la reconfiguration.",
+        "description": "À la première configuration, les zones dotées de capteurs binaires de classe Fenêtre sont présélectionnées. Les covers sont exclus. Les sélections existantes sont conservées ; les zones sans contact sont marquées ⚠.",
         "data": {
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Qualité de l’air extérieur",
-        "description": "Choisissez uniquement les capteurs extérieurs pris en charge, avec des unités reconnues. Tous doivent être disponibles et sûrs avant de recommander une ouverture.",
+        "description": "Sélectionnez des capteurs extérieurs compatibles. Une mesure élevée valide bloque la ventilation. Les valeurs inconnues, périmées ou indisponibles ne sont pas considérées dangereuses, mais sont signalées comme données manquantes.",
         "data": {
           "outdoor_sensors": "Capteurs extérieurs"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -90,7 +90,7 @@
       "missing_tts": "Activez Announcement Hub ou sélectionnez un moteur TTS et un lecteur.",
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
       "no_areas": "Sélectionnez au moins une zone.",
-      "no_window_areas": "Aucune zone avec fenêtre reconnue. Attribuez un capteur binaire ou un volet de classe Fenêtre à une zone.",
+      "no_window_areas": "Aucun contact de fenêtre détecté. Attribuez un capteur binaire de classe Fenêtre à une zone ; les covers sont exclus.",
       "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
     },
     "abort": {
@@ -109,22 +109,22 @@
       },
       "areas": {
         "title": "Pièces",
-        "description": "Seules les zones comportant des fenêtres détectées sont proposées, avec leur nombre. Les zones déjà sélectionnées sans fenêtre détectée sont signalées par ⚠ lors de la reconfiguration.",
+        "description": "À la première configuration, les zones dotées de capteurs binaires de classe Fenêtre sont présélectionnées. Les covers sont exclus. Les sélections existantes sont conservées ; les zones sans contact sont marquées ⚠.",
         "data": {
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Qualité de l’air extérieur",
-        "description": "Choisissez uniquement les capteurs extérieurs pris en charge, avec des unités reconnues. Tous doivent être disponibles et sûrs avant de recommander une ouverture.",
+        "description": "Sélectionnez des capteurs extérieurs compatibles. Une mesure élevée valide bloque la ventilation. Les valeurs inconnues, périmées ou indisponibles ne sont pas considérées dangereuses, mais sont signalées comme données manquantes.",
         "data": {
           "outdoor_sensors": "Capteurs extérieurs"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -195,7 +195,7 @@
       "missing_tts": "Activez Announcement Hub ou sélectionnez un moteur TTS et un lecteur.",
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
       "no_areas": "Sélectionnez au moins une zone.",
-      "no_window_areas": "Aucune zone avec fenêtre reconnue. Attribuez un capteur binaire ou un volet de classe Fenêtre à une zone.",
+      "no_window_areas": "Aucun contact de fenêtre détecté. Attribuez un capteur binaire de classe Fenêtre à une zone ; les covers sont exclus.",
       "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
     }
   },
