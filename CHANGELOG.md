@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 — setup and integration visibility
+
+- Suggest only actual Home Assistant areas containing Window-class binary sensors or covers, showing the number of detected windows per area.
+- Preserve already selected areas without currently detected windows (marked ⚠) when editing options, instead of silently deleting them.
+- Validate submitted area choices, with actionable guidance when no windows have been discovered.
+- Classify the integration as a `service` rather than `helper` so Home Assistant lists it in **Devices & services → Integrations** instead of Helpers.
+- Keep the existing single sensor and config entry identifiers; no re-pairing or deleting the integration is needed. Restart Home Assistant to reload the changed manifest.
+
+
 ## 0.1.0 — initial testable release
 
 - Added one area-aware window recommendation sensor (`open`, `close`, `idle`, `blocked`) with window IDs, reasons, and diagnostics.
