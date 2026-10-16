@@ -69,6 +69,7 @@ class Plan:
     outside_reasons: tuple[Reason, ...]
     recommendations: tuple[Recommendation, ...]
     diagnostics: tuple[tuple[str, str], ...]  # area name, missing-input reason
+    unavailable_outdoor: tuple[str, ...] = ()  # Missing readings, nonblocking.
 
     @property
     def signature(self) -> str:
@@ -103,17 +104,20 @@ def evaluate(
     rooms: tuple[Room, ...],
     limits: dict[str, float] | None = None,
 ) -> Plan:
-    """Safety first: require all selected outdoor sensors and weather to be usable."""
+    """Block on known hazards, report missing air-quality inputs separately."""
     thresholds = {**DEFAULT_THRESHOLDS, **(limits or {})}
     outside: list[Reason] = []
+    unavailable_outdoor: list[str] = []
 
+    # No configured sensors differs from a configured sensor being unavailable.
     if not outdoor:
         outside.append(Reason("no_outdoor_data"))
     for reading in outdoor:
         limit = thresholds.get(f"outdoor_{reading.metric}")
         if reading.value is None or limit is None:
-            outside.append(Reason("unavailable_outdoor", reading.name))
-        elif reading.value > limit:
+            unavailable_outdoor.append(reading.entity_id)
+            continue  # Unknown is neutral; it never triggers a close warning.
+        if reading.value > limit:
             outside.append(_reading_reason("outside", reading))
 
     if not weather:
@@ -177,4 +181,7 @@ def evaluate(
     has_open = any(rec.action == "open" for rec in recommendations)
     has_close = any(rec.action == "close" for rec in recommendations)
     status = "close" if has_close else "open" if has_open else "blocked" if not outdoor_safe else "idle"
-    return Plan(status, outdoor_safe, tuple(outside), tuple(recommendations), tuple(diagnostics))
+    return Plan(
+        status, outdoor_safe, tuple(outside), tuple(recommendations),
+        tuple(diagnostics), tuple(unavailable_outdoor),
+    )
