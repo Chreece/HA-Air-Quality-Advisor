@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from datetime import timedelta
 import re
 from typing import Any
@@ -242,6 +243,52 @@ def rooms(
             tuple(sorted(by_area_readings[area], key=lambda s: s.entity_id)),
         )
         for area in areas
+    )
+
+
+def window_area_choices(
+    hass: HomeAssistant, previously_selected: list[str] | None = None
+) -> list[dict[str, str]]:
+    """Suggest only areas with recognized windows; retain old selections in Options.
+
+    A window must use the ``window`` device class on a binary sensor or
+    cover, and its actual HA area is resolved through the entity's override
+    or its device. No naming guesses, including room-name suffixes, are used.
+
+    Existing selections with temporarily removed/disabled windows remain
+    selectable so editing an unrelated setting never silently loses rooms.
+    """
+    registry = ar.async_get(hass)
+    counts: Counter[str] = Counter()
+    for state in hass.states.async_all():
+        if not is_window(hass, state):
+            continue
+        area_id = entity_area(hass, state.entity_id)
+        if area_id and registry.async_get_area(area_id) is not None:
+            counts[area_id] += 1
+
+    choices = []
+    for area_id, count in counts.items():
+        area = registry.async_get_area(area_id)
+        choices.append({
+            "value": area_id,
+            "label": f"{area.name} · {count} 🪟",
+        })
+
+    for area_id in set(previously_selected or []) - counts.keys():
+        area = registry.async_get_area(area_id)
+        if area is not None:
+            choices.append({
+                "value": area_id,
+                "label": f"{area.name} · ⚠ 0 🪟",
+            })
+
+    return sorted(
+        choices,
+        key=lambda choice: (
+            choice["value"] not in counts,
+            choice["label"].casefold(),
+        ),
     )
 
 
