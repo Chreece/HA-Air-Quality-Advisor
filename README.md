@@ -40,7 +40,7 @@
 
 1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Air-Quality-Advisor` and choose **Integration**.
 2. Install **Air Quality Advisor**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**.
-3. No YAML configuration is required.
+3. No YAML configuration is required. After updating from a version that was classified as a Helper, **restart Home Assistant** so the new manifest type takes effect. The existing configuration and entity ID are kept; the integration should now appear under **Settings → Devices & services → Integrations** instead of being categorized under Helpers.
 
 ### Manual
 
@@ -54,7 +54,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## Guided configuration
 
-1. **Areas — multi-select.** Select your monitored rooms. They need a Window-class binary sensor or Window-class cover, plus room air-quality sensors. Select an area and assign entities to it in Home Assistant's entity/device settings; arbitrary names are not interpreted as room mappings.
+1. **Areas — multi-select, filtered to rooms with windows.** Only areas currently containing a Window-class `binary_sensor` or Window-class `cover` are suggested, with the number of windows shown next to each name. Areas are determined by entity area overrides or their device assignments, not by names. Already-selected areas missing a recognized window remain visible with a ⚠ in **Configure**, so your previous selections are not silently deleted. Assign indoor air-quality sensors to these areas too. If nothing is listed, verify that the contact/cover's *device class is Window*, it has a live entity, and the entity/device is assigned to a Home Assistant area.
 2. **Outdoor air-quality sensors — multi-select.** Only supported sensors with recognizable metric and compatible units are selectable. Sensors assigned to the monitored indoor areas are excluded from the outdoor choices. A sensor without a device class can be recognized by a strictly matched suffix like `_co2`, `_pm25`, `_pm2_5`, `_pm10`, `_aqi` or `_tvoc`, *and* an appropriate unit. Assign outdoor sensors to an Outside area, or leave them unassigned. All selected sensors must be safe and fresh for an open recommendation.
 3. **Weather and warnings — multi-select.** Pick one or more `weather.*` entities and optionally warning sensors. Relevant `binary_sensor`/`sensor` warnings are discovered by common names used by DWD, Meteoalarm, NINA and other providers; no vendor-specific services or APIs are assumed. If your provider exposes only a special event type or differently named entity, first create a normal binary or numeric warning sensor in HA.
 4. **Announcements (optional).** Choose a language and enable automatic notifications and/or speech. When Announcement Hub is present, the wizard can route announcements through it, respecting selected area IDs. Otherwise select `notify.*` recipients, a `tts.*` engine and `media_player.*` output(s). Room-assigned direct outputs receive only their own room's recommendation; unassigned outputs receive all recommendations.
