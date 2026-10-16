@@ -4,12 +4,12 @@
     "step": {
       "areas": {
         "title": "Χώροι",
-        "description": "Επίλεξε τους χώρους προς παρακολούθηση. Οι αισθητήρες εσωτερικού αέρα και τα παράθυρα εντοπίζονται από την ανάθεσή τους σε χώρους στο Home Assistant. Χρησιμοποιούνται μόνο αισθητήρες/καλύμματα τύπου Παραθύρου.",
+        "description": "Εμφανίζονται μόνο χώροι με αναγνωρισμένους αισθητήρες ή καλύμματα παραθύρων. Δίπλα σε κάθε χώρο φαίνεται το πλήθος παραθύρων. Σε επαναρύθμιση, χώροι που είχαν επιλεγεί αλλά δεν έχουν πλέον ανιχνεύσιμο παράθυρο σημειώνονται με ⚠.",
         "data": {
           "areas": "Χώροι προς παρακολούθηση"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -89,7 +89,9 @@
       "missing_notify": "Επίλεξε Announcement Hub ή μια οντότητα ειδοποιήσεων.",
       "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
       "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
-      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο."
+      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
+      "no_window_areas": "Δεν βρέθηκαν χώροι με αναγνωρισμένα παράθυρα. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα ή κάλυμμα με κατηγορία Παραθύρου.",
+      "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -107,12 +109,12 @@
       },
       "areas": {
         "title": "Χώροι",
-        "description": "Επίλεξε τους χώρους προς παρακολούθηση. Οι αισθητήρες εσωτερικού αέρα και τα παράθυρα εντοπίζονται από την ανάθεσή τους σε χώρους στο Home Assistant. Χρησιμοποιούνται μόνο αισθητήρες/καλύμματα τύπου Παραθύρου.",
+        "description": "Εμφανίζονται μόνο χώροι με αναγνωρισμένους αισθητήρες ή καλύμματα παραθύρων. Δίπλα σε κάθε χώρο φαίνεται το πλήθος παραθύρων. Σε επαναρύθμιση, χώροι που είχαν επιλεγεί αλλά δεν έχουν πλέον ανιχνεύσιμο παράθυρο σημειώνονται με ⚠.",
         "data": {
           "areas": "Χώροι προς παρακολούθηση"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -192,7 +194,9 @@
       "missing_notify": "Επίλεξε Announcement Hub ή μια οντότητα ειδοποιήσεων.",
       "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
       "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
-      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο."
+      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
+      "no_window_areas": "Δεν βρέθηκαν χώροι με αναγνωρισμένα παράθυρα. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα ή κάλυμμα με κατηγορία Παραθύρου.",
+      "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο."
     }
   },
   "entity": {
