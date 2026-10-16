@@ -49,9 +49,13 @@ class _FlowMixin:
     _values: dict[str, Any]
 
     async def async_step_areas(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        previous = self._values.get(CONF_AREAS, []) if getattr(self, "_editing", False) else []
+        # Initially preselect all rooms with window contacts. Keep explicitly
+        # chosen rooms on later reconfiguration instead of restoring deselections.
+        editing = getattr(self, "_editing", False)
+        previous = self._values.get(CONF_AREAS, []) if editing else []
         choices = window_area_choices(self.hass, previous)
         known = {choice["value"] for choice in choices}
+        default_areas = list(previous) if editing else [choice["value"] for choice in choices]
         errors: dict[str, str] = {}
         if user_input is not None:
             selected = list(dict.fromkeys(user_input.get(CONF_AREAS, [])))
@@ -65,7 +69,8 @@ class _FlowMixin:
         elif not choices:
             errors["base"] = "no_window_areas"
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
-            _marker(CONF_AREAS, previous, required=True): _multi(choices),
+            _marker(CONF_AREAS, user_input.get(CONF_AREAS, []) if user_input is not None
+                    else default_areas, required=True): _multi(choices),
         }), errors=errors)
 
     async def async_step_outdoor(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
