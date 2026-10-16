@@ -22,6 +22,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Indoor air quality exclusions",
+        "description": "Room: {area_name} ({position}/{total}). Choose the air-quality and humidity sensors to EXCLUDE from this room. Each choice identifies its device, entity name and ID. Leave everything unselected to monitor all supported sensors.",
+        "data": {
+          "excluded_indoor_entities": "Sensors to exclude in this room"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all."
+        }
+      },
       "outdoor": {
         "title": "Outdoor air quality",
         "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
@@ -54,7 +64,8 @@
           "use_announcement_hub": "Use Announcement Hub if available",
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
-          "media_players": "Direct TTS media players"
+          "media_players": "Direct TTS media players",
+          "edit_thresholds": "Edit advanced thresholds after announcements (optional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -63,7 +74,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "If enabled, an extra page lets you edit measurement and weather thresholds. Otherwise finish with your saved thresholds unchanged."
         }
       },
       "thresholds": {
@@ -102,7 +114,8 @@
       "no_areas": "Select at least one area.",
       "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
       "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list."
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -110,14 +123,6 @@
   },
   "options": {
     "step": {
-      "init": {
-        "title": "Air Quality Advisor",
-        "menu_options": {
-          "window_sensors": "Window sensor exclusions / Areas / Outdoor air quality / Weather and warnings",
-          "delivery": "Announcements (optional)",
-          "thresholds": "Advanced thresholds"
-        }
-      },
       "window_sensors": {
         "title": "Window sensor exclusions",
         "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
@@ -138,6 +143,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Indoor air quality exclusions",
+        "description": "Room: {area_name} ({position}/{total}). Choose the air-quality and humidity sensors to EXCLUDE from this room. Each choice identifies its device, entity name and ID. Leave everything unselected to monitor all supported sensors.",
+        "data": {
+          "excluded_indoor_entities": "Sensors to exclude in this room"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all."
+        }
+      },
       "outdoor": {
         "title": "Outdoor air quality",
         "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
@@ -170,7 +185,8 @@
           "use_announcement_hub": "Use Announcement Hub if available",
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
-          "media_players": "Direct TTS media players"
+          "media_players": "Direct TTS media players",
+          "edit_thresholds": "Edit advanced thresholds after announcements (optional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -179,7 +195,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "If enabled, an extra page lets you edit measurement and weather thresholds. Otherwise finish with your saved thresholds unchanged."
         }
       },
       "thresholds": {
@@ -218,7 +235,8 @@
       "no_areas": "Select at least one area.",
       "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
       "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list."
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list."
     }
   },
   "entity": {

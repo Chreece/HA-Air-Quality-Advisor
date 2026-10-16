@@ -22,6 +22,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Excluir sensores de aire interior",
+        "description": "Habitación: {area_name} ({position}/{total}). Selecciona los sensores de calidad del aire y humedad que deseas EXCLUIR de esta habitación. Se muestran dispositivo, nombre de entidad e ID. Deja la selección vacía para usar todos los sensores compatibles.",
+        "data": {
+          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV."
+        }
+      },
       "outdoor": {
         "title": "Calidad del aire exterior",
         "description": "Selecciona sensores exteriores compatibles. Una lectura válida por encima del límite bloquea la ventilación. Las lecturas desconocidas, antiguas o no disponibles son neutrales y se muestran como datos incompletos.",
@@ -54,7 +64,8 @@
           "use_announcement_hub": "Usar Announcement Hub si está disponible",
           "notify_entities": "Destinos directos de notificación",
           "tts_engine": "Motor TTS directo",
-          "media_players": "Reproductores TTS directos"
+          "media_players": "Reproductores TTS directos",
+          "edit_thresholds": "Editar límites avanzados después (opcional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -63,7 +74,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Actívalo para editar los límites después de anuncios. Si no, se conservarán los actuales."
         }
       },
       "thresholds": {
@@ -102,7 +114,8 @@
       "no_areas": "Selecciona al menos un área.",
       "no_window_areas": "No se encontraron contactos de ventana. Asigna un sensor binario de clase Ventana a un área; los covers no cuentan.",
       "invalid_areas": "Un área ya no está disponible como área con ventanas.",
-      "invalid_window_exclusions": "Una o más entidades excluidas ya no aparecen entre las opciones."
+      "invalid_window_exclusions": "Una o más entidades excluidas ya no aparecen entre las opciones.",
+      "invalid_indoor_exclusions": "Un sensor seleccionado no es compatible con esta habitación."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -110,14 +123,6 @@
   },
   "options": {
     "step": {
-      "init": {
-        "title": "Asesor de calidad del aire",
-        "menu_options": {
-          "window_sensors": "Excluir sensores de ventana / Áreas / Calidad del aire exterior / Tiempo y alertas",
-          "delivery": "Anuncios (opcional)",
-          "thresholds": "Umbrales avanzados"
-        }
-      },
       "window_sensors": {
         "title": "Excluir sensores de ventana",
         "description": "Revisa los sensores binarios de clase Ventana. ⚠ indica señales probablemente virtuales o auxiliares (como detección de ventana abierta de un termostato), preseleccionadas para excluir. Desmarca cualquier contacto real. Tus elecciones se guardan.",
@@ -138,6 +143,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Excluir sensores de aire interior",
+        "description": "Habitación: {area_name} ({position}/{total}). Selecciona los sensores de calidad del aire y humedad que deseas EXCLUIR de esta habitación. Se muestran dispositivo, nombre de entidad e ID. Deja la selección vacía para usar todos los sensores compatibles.",
+        "data": {
+          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV."
+        }
+      },
       "outdoor": {
         "title": "Calidad del aire exterior",
         "description": "Selecciona sensores exteriores compatibles. Una lectura válida por encima del límite bloquea la ventilación. Las lecturas desconocidas, antiguas o no disponibles son neutrales y se muestran como datos incompletos.",
@@ -170,7 +185,8 @@
           "use_announcement_hub": "Usar Announcement Hub si está disponible",
           "notify_entities": "Destinos directos de notificación",
           "tts_engine": "Motor TTS directo",
-          "media_players": "Reproductores TTS directos"
+          "media_players": "Reproductores TTS directos",
+          "edit_thresholds": "Editar límites avanzados después (opcional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -179,7 +195,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Actívalo para editar los límites después de anuncios. Si no, se conservarán los actuales."
         }
       },
       "thresholds": {
@@ -218,7 +235,8 @@
       "no_areas": "Selecciona al menos un área.",
       "no_window_areas": "No se encontraron contactos de ventana. Asigna un sensor binario de clase Ventana a un área; los covers no cuentan.",
       "invalid_areas": "Un área ya no está disponible como área con ventanas.",
-      "invalid_window_exclusions": "Una o más entidades excluidas ya no aparecen entre las opciones."
+      "invalid_window_exclusions": "Una o más entidades excluidas ya no aparecen entre las opciones.",
+      "invalid_indoor_exclusions": "Un sensor seleccionado no es compatible con esta habitación."
     }
   },
   "entity": {

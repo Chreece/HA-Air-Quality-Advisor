@@ -126,6 +126,16 @@ for language, copy in window_exclusion_text.items():
  lang[language]['fields']['excluded_window_entities'] = copy[2]
  lang[language]['errors']['invalid_window_exclusions'] = copy[4]
 
+
+# One room-specific picker per monitored area; options always follow the same wizard.
+# Each locale supplies its own instructions and field descriptions.
+indoor_step_text = json.loads("{\"en\":[\"Indoor air quality exclusions\",\"Room: {area_name} ({position}/{total}). Choose the air-quality and humidity sensors to EXCLUDE from this room. Each choice identifies its device, entity name and ID. Leave everything unselected to monitor all supported sensors.\",\"Sensors to exclude in this room\",\"Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.\",\"A selected indoor sensor is not in this room’s supported list.\",\"Edit advanced thresholds after announcements (optional)\",\"If enabled, an extra page lets you edit measurement and weather thresholds. Otherwise finish with your saved thresholds unchanged.\"],\"de\":[\"Raumluftsensoren ausschließen\",\"Raum: {area_name} ({position}/{total}). Wähle Luftqualitäts- und Feuchtesensoren, die in diesem Raum AUSGESCHLOSSEN werden sollen. Angezeigt werden Gerätename, Entitätsname und ID. Ohne Auswahl bleiben alle unterstützten Sensoren aktiv.\",\"In diesem Raum auszuschließende Sensoren\",\"Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.\",\"Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar.\",\"Erweiterte Grenzwerte danach bearbeiten (optional)\",\"Aktivieren, um nach den Ansagen die Grenzwerte anzupassen. Andernfalls bleiben die gespeicherten Werte erhalten.\"],\"el\":[\"Εξαίρεση αισθητήρων εσωτερικού αέρα\",\"Χώρος: {area_name} ({position}/{total}). Επίλεξε τους αισθητήρες ποιότητας αέρα και υγρασίας που θέλεις να ΕΞΑΙΡΕΘΟΥΝ από αυτόν τον χώρο. Εμφανίζονται όνομα συσκευής, όνομα οντότητας και ID. Χωρίς επιλογή χρησιμοποιούνται όλοι οι υποστηριζόμενοι αισθητήρες.\",\"Αισθητήρες προς εξαίρεση σε αυτόν τον χώρο\",\"Οι επιλεγμένοι αισθητήρες αγνοούνται στις συστάσεις και στον πίνακα μόνο για αυτόν τον χώρο. Υποστηρίζονται υγρασία, CO₂, AQI, PM2.5, PM10 και VOC.\",\"Ένας επιλεγμένος αισθητήρας δεν υποστηρίζεται σε αυτόν τον χώρο.\",\"Επεξεργασία προχωρημένων ορίων στη συνέχεια (προαιρετικά)\",\"Ενεργοποίησέ το για να τροποποιήσεις τα όρια μετά τις ανακοινώσεις. Διαφορετικά διατηρούνται τα αποθηκευμένα όρια.\"],\"fr\":[\"Exclure des capteurs d’air intérieur\",\"Pièce : {area_name} ({position}/{total}). Sélectionnez les capteurs de qualité de l’air ou d’humidité à EXCLURE de cette pièce. Chaque entrée affiche le nom de l’appareil, le nom de l’entité et son ID. Laissez vide pour surveiller tous les capteurs compatibles.\",\"Capteurs à exclure pour cette pièce\",\"Ces capteurs seront ignorés pour cette pièce dans les recommandations et le tableau de bord. Humidité, CO₂, AQI, PM2.5, PM10 et COV sont pris en charge.\",\"Un capteur sélectionné n’est pas compatible avec cette pièce.\",\"Modifier ensuite les seuils avancés (facultatif)\",\"Activez cette option pour modifier les seuils après les annonces ; sinon les valeurs actuelles sont conservées.\"],\"es\":[\"Excluir sensores de aire interior\",\"Habitación: {area_name} ({position}/{total}). Selecciona los sensores de calidad del aire y humedad que deseas EXCLUIR de esta habitación. Se muestran dispositivo, nombre de entidad e ID. Deja la selección vacía para usar todos los sensores compatibles.\",\"Sensores que se excluyen en esta habitación\",\"Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV.\",\"Un sensor seleccionado no es compatible con esta habitación.\",\"Editar límites avanzados después (opcional)\",\"Actívalo para editar los límites después de anuncios. Si no, se conservarán los actuales.\"]}")
+for language, item in indoor_step_text.items():
+    lang[language]['steps'].insert(2, tuple(item[:3]))
+    lang[language]['fields']['excluded_indoor_entities'] = item[2]
+    lang[language]['fields']['edit_thresholds'] = item[5]
+    lang[language]['errors']['invalid_indoor_exclusions'] = item[4]
+
 threshold_labels = {
  'outdoor_aqi':'Maximum outdoor AQI', 'outdoor_co2':'Maximum outdoor CO₂ (ppm)',
  'outdoor_pm25':'Maximum outdoor PM2.5 (µg/m³)', 'outdoor_pm10':'Maximum outdoor PM10 (µg/m³)',
@@ -140,20 +150,21 @@ threshold_labels = {
  'max_outdoor_humidity':'Maximum outdoor humidity (%)', 'max_wind_kmh':'Maximum wind speed (km/h)',
  'max_age_minutes':'Maximum age of any outdoor reading (minutes)',
 }
-fields = ['excluded_window_entities','areas','outdoor_sensors','weather_entities','language']
-stepids = ['window_sensors','areas','outdoor','weather','delivery','thresholds']
+fields = ['excluded_window_entities','areas','excluded_indoor_entities','outdoor_sensors','weather_entities','language']
+stepids = ['window_sensors','areas','indoor_sensors','outdoor','weather','delivery','thresholds']
 for code,v in lang.items():
  steps = {}
  for i, sid in enumerate(stepids):
   name, desc, primary = v['steps'][i]
   stepdata = {fields[i]:primary} if i < 5 else threshold_labels
   if sid=='weather':stepdata['weather_warnings']=v['fields']['weather_warnings']
-  if sid=='delivery':stepdata = {key:v['fields'][key] for key in ['language','automatic_tts','automatic_notifications','use_announcement_hub','notify_entities','tts_engine','media_players']}
+  if sid=='delivery':stepdata = {key:v['fields'][key] for key in ['language','automatic_tts','automatic_notifications','use_announcement_hub','notify_entities','tts_engine','media_players','edit_thresholds']}
   steps[sid] = {'title':name,'description':desc,'data':stepdata}
-  if sid in ('window_sensors','areas','outdoor','weather','delivery'):
+  if sid in ('window_sensors','areas','indoor_sensors','outdoor','weather','delivery'):
    helps = {
     'excluded_window_entities':window_exclusion_text[code][3],
     'areas':'Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact.',
+    'excluded_indoor_entities':indoor_step_text[code][3],
     'outdoor_sensors':'Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe.',
     'weather_entities':'At least one weather provider. Rain, storms and extreme wind/temperature block opening.',
     'weather_warnings':'Optional. Active and unavailable selected warnings block window opening.',
@@ -164,22 +175,14 @@ for code,v in lang.items():
     'notify_entities':'Direct outputs when Announcement Hub is not used.',
     'tts_engine':'Direct speech provider when Announcement Hub is not used.',
     'media_players':'Direct audio destinations; room assignment controls targeting.',
+    'edit_thresholds':indoor_step_text[code][6],
    }
    steps[sid]['data_description']={field:helps.get(field, stepdata[field]) for field in stepdata}
  errors = v['errors']
  section = {'step':steps,'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
+ # Configure launches the same full wizard as initial setup, without shortcut menus.
  opts={
-   'step':{
-     'init':{
-       'title':v['title'],
-       'menu_options':{
-         'window_sensors':v['steps'][0][0]+' / '+v['steps'][1][0]+' / '+v['steps'][2][0]+' / '+v['steps'][3][0],
-         'delivery':v['steps'][4][0],
-         'thresholds':v['steps'][5][0],
-       },
-     },
-     **steps,
-   },
+   'step':steps,
    'error':errors,
  }
  data={

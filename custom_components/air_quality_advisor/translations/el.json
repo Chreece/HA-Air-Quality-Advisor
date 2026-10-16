@@ -22,6 +22,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Εξαίρεση αισθητήρων εσωτερικού αέρα",
+        "description": "Χώρος: {area_name} ({position}/{total}). Επίλεξε τους αισθητήρες ποιότητας αέρα και υγρασίας που θέλεις να ΕΞΑΙΡΕΘΟΥΝ από αυτόν τον χώρο. Εμφανίζονται όνομα συσκευής, όνομα οντότητας και ID. Χωρίς επιλογή χρησιμοποιούνται όλοι οι υποστηριζόμενοι αισθητήρες.",
+        "data": {
+          "excluded_indoor_entities": "Αισθητήρες προς εξαίρεση σε αυτόν τον χώρο"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Οι επιλεγμένοι αισθητήρες αγνοούνται στις συστάσεις και στον πίνακα μόνο για αυτόν τον χώρο. Υποστηρίζονται υγρασία, CO₂, AQI, PM2.5, PM10 και VOC."
+        }
+      },
       "outdoor": {
         "title": "Ποιότητα εξωτερικού αέρα",
         "description": "Επίλεξε υποστηριζόμενους αισθητήρες εξωτερικού αέρα. Οι έγκυρες υψηλές τιμές εμποδίζουν το άνοιγμα. Άγνωστες, παλιές ή μη διαθέσιμες τιμές δεν θεωρούνται επικίνδυνες, αλλά εμφανίζονται ως ελλιπή δεδομένα.",
@@ -54,7 +64,8 @@
           "use_announcement_hub": "Χρήση Announcement Hub όταν υπάρχει",
           "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
           "tts_engine": "Μηχανή άμεσης ομιλίας",
-          "media_players": "Συσκευές αναπαραγωγής ομιλίας"
+          "media_players": "Συσκευές αναπαραγωγής ομιλίας",
+          "edit_thresholds": "Επεξεργασία προχωρημένων ορίων στη συνέχεια (προαιρετικά)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -63,7 +74,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Ενεργοποίησέ το για να τροποποιήσεις τα όρια μετά τις ανακοινώσεις. Διαφορετικά διατηρούνται τα αποθηκευμένα όρια."
         }
       },
       "thresholds": {
@@ -102,7 +114,8 @@
       "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
       "no_window_areas": "Δεν εντοπίστηκαν επαφές παραθύρων. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται.",
       "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο.",
-      "invalid_window_exclusions": "Μία ή περισσότερες εξαιρούμενες οντότητες δεν είναι διαθέσιμες στη λίστα."
+      "invalid_window_exclusions": "Μία ή περισσότερες εξαιρούμενες οντότητες δεν είναι διαθέσιμες στη λίστα.",
+      "invalid_indoor_exclusions": "Ένας επιλεγμένος αισθητήρας δεν υποστηρίζεται σε αυτόν τον χώρο."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -110,14 +123,6 @@
   },
   "options": {
     "step": {
-      "init": {
-        "title": "Σύμβουλος ποιότητας αέρα",
-        "menu_options": {
-          "window_sensors": "Εξαίρεση αισθητήρων παραθύρων / Χώροι / Ποιότητα εξωτερικού αέρα / Καιρός και προειδοποιήσεις",
-          "delivery": "Ανακοινώσεις (προαιρετικά)",
-          "thresholds": "Προχωρημένα όρια"
-        }
-      },
       "window_sensors": {
         "title": "Εξαίρεση αισθητήρων παραθύρων",
         "description": "Έλεγξε όλους τους δυαδικούς αισθητήρες κατηγορίας «Παράθυρο». Το ⚠ δείχνει πιθανές εικονικές ή βοηθητικές ενδείξεις (π.χ. ανίχνευση ανοιχτού παραθύρου θερμοστάτη), προεπιλεγμένες για εξαίρεση. Αποεπίλεξε οποιαδήποτε πραγματική επαφή παραθύρου. Οι επιλογές σου διατηρούνται.",
@@ -138,6 +143,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Εξαίρεση αισθητήρων εσωτερικού αέρα",
+        "description": "Χώρος: {area_name} ({position}/{total}). Επίλεξε τους αισθητήρες ποιότητας αέρα και υγρασίας που θέλεις να ΕΞΑΙΡΕΘΟΥΝ από αυτόν τον χώρο. Εμφανίζονται όνομα συσκευής, όνομα οντότητας και ID. Χωρίς επιλογή χρησιμοποιούνται όλοι οι υποστηριζόμενοι αισθητήρες.",
+        "data": {
+          "excluded_indoor_entities": "Αισθητήρες προς εξαίρεση σε αυτόν τον χώρο"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Οι επιλεγμένοι αισθητήρες αγνοούνται στις συστάσεις και στον πίνακα μόνο για αυτόν τον χώρο. Υποστηρίζονται υγρασία, CO₂, AQI, PM2.5, PM10 και VOC."
+        }
+      },
       "outdoor": {
         "title": "Ποιότητα εξωτερικού αέρα",
         "description": "Επίλεξε υποστηριζόμενους αισθητήρες εξωτερικού αέρα. Οι έγκυρες υψηλές τιμές εμποδίζουν το άνοιγμα. Άγνωστες, παλιές ή μη διαθέσιμες τιμές δεν θεωρούνται επικίνδυνες, αλλά εμφανίζονται ως ελλιπή δεδομένα.",
@@ -170,7 +185,8 @@
           "use_announcement_hub": "Χρήση Announcement Hub όταν υπάρχει",
           "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
           "tts_engine": "Μηχανή άμεσης ομιλίας",
-          "media_players": "Συσκευές αναπαραγωγής ομιλίας"
+          "media_players": "Συσκευές αναπαραγωγής ομιλίας",
+          "edit_thresholds": "Επεξεργασία προχωρημένων ορίων στη συνέχεια (προαιρετικά)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -179,7 +195,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Ενεργοποίησέ το για να τροποποιήσεις τα όρια μετά τις ανακοινώσεις. Διαφορετικά διατηρούνται τα αποθηκευμένα όρια."
         }
       },
       "thresholds": {
@@ -218,7 +235,8 @@
       "no_areas": "Επίλεξε τουλάχιστον έναν χώρο.",
       "no_window_areas": "Δεν εντοπίστηκαν επαφές παραθύρων. Αντιστοίχισε σε χώρο έναν δυαδικό αισθητήρα κατηγορίας «Παράθυρο». Τα cover δεν υπολογίζονται.",
       "invalid_areas": "Κάποιος χώρος δεν είναι πλέον διαθέσιμος ως χώρος με παράθυρο.",
-      "invalid_window_exclusions": "Μία ή περισσότερες εξαιρούμενες οντότητες δεν είναι διαθέσιμες στη λίστα."
+      "invalid_window_exclusions": "Μία ή περισσότερες εξαιρούμενες οντότητες δεν είναι διαθέσιμες στη λίστα.",
+      "invalid_indoor_exclusions": "Ένας επιλεγμένος αισθητήρας δεν υποστηρίζεται σε αυτόν τον χώρο."
     }
   },
   "entity": {

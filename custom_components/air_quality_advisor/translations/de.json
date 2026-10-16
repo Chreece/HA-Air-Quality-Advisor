@@ -22,6 +22,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Raumluftsensoren ausschließen",
+        "description": "Raum: {area_name} ({position}/{total}). Wähle Luftqualitäts- und Feuchtesensoren, die in diesem Raum AUSGESCHLOSSEN werden sollen. Angezeigt werden Gerätename, Entitätsname und ID. Ohne Auswahl bleiben alle unterstützten Sensoren aktiv.",
+        "data": {
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC."
+        }
+      },
       "outdoor": {
         "title": "Außenluftqualität",
         "description": "Wähle unterstützte Außenluftsensoren. Erhöhte gültige Messwerte verhindern Lüftungsempfehlungen. Unbekannte, veraltete oder nicht verfügbare Werte gelten nicht als Gefahr, werden aber als fehlende Daten angezeigt.",
@@ -54,7 +64,8 @@
           "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "tts_engine": "Direkte TTS-Engine",
-          "media_players": "Direkte TTS-Mediaplayer"
+          "media_players": "Direkte TTS-Mediaplayer",
+          "edit_thresholds": "Erweiterte Grenzwerte danach bearbeiten (optional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -63,7 +74,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Aktivieren, um nach den Ansagen die Grenzwerte anzupassen. Andernfalls bleiben die gespeicherten Werte erhalten."
         }
       },
       "thresholds": {
@@ -102,7 +114,8 @@
       "no_areas": "Mindestens einen Bereich auswählen.",
       "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
       "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
-      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar."
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.",
+      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -110,14 +123,6 @@
   },
   "options": {
     "step": {
-      "init": {
-        "title": "Luftqualitätsberater",
-        "menu_options": {
-          "window_sensors": "Fenstersensoren ausschließen / Bereiche / Außenluftqualität / Wetter und Warnungen",
-          "delivery": "Ansagen (optional)",
-          "thresholds": "Erweiterte Grenzwerte"
-        }
-      },
       "window_sensors": {
         "title": "Fenstersensoren ausschließen",
         "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
@@ -138,6 +143,16 @@
           "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
+      "indoor_sensors": {
+        "title": "Raumluftsensoren ausschließen",
+        "description": "Raum: {area_name} ({position}/{total}). Wähle Luftqualitäts- und Feuchtesensoren, die in diesem Raum AUSGESCHLOSSEN werden sollen. Angezeigt werden Gerätename, Entitätsname und ID. Ohne Auswahl bleiben alle unterstützten Sensoren aktiv.",
+        "data": {
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC."
+        }
+      },
       "outdoor": {
         "title": "Außenluftqualität",
         "description": "Wähle unterstützte Außenluftsensoren. Erhöhte gültige Messwerte verhindern Lüftungsempfehlungen. Unbekannte, veraltete oder nicht verfügbare Werte gelten nicht als Gefahr, werden aber als fehlende Daten angezeigt.",
@@ -170,7 +185,8 @@
           "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "tts_engine": "Direkte TTS-Engine",
-          "media_players": "Direkte TTS-Mediaplayer"
+          "media_players": "Direkte TTS-Mediaplayer",
+          "edit_thresholds": "Erweiterte Grenzwerte danach bearbeiten (optional)"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -179,7 +195,8 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "edit_thresholds": "Aktivieren, um nach den Ansagen die Grenzwerte anzupassen. Andernfalls bleiben die gespeicherten Werte erhalten."
         }
       },
       "thresholds": {
@@ -218,7 +235,8 @@
       "no_areas": "Mindestens einen Bereich auswählen.",
       "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
       "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
-      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar."
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.",
+      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar."
     }
   },
   "entity": {
