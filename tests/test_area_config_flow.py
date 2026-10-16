@@ -50,6 +50,12 @@ def _wizard(monkeypatch, adapter):
     selector.SelectSelectorConfig = SelectSelectorConfig
     selector.SelectSelector = SelectSelector
     selector.SelectSelectorMode = SimpleNamespace(DROPDOWN="dropdown")
+    selector.EntitySelectorConfig = SelectSelectorConfig
+    selector.EntitySelector = SelectSelector
+    selector.BooleanSelector = lambda: SelectSelector(SelectSelectorConfig(type="boolean"))
+    selector.NumberSelectorConfig = SelectSelectorConfig
+    selector.NumberSelector = SelectSelector
+    selector.NumberSelectorMode = SimpleNamespace(BOX="box")
     monkeypatch.setitem(sys.modules, "homeassistant.helpers.selector", selector)
 
     name = "custom_components.air_quality_advisor.config_flow"
@@ -193,3 +199,134 @@ def test_every_discovered_window_excluded_stops_false_area_suggestions(monkeypat
     next_form = asyncio.run(Wizard(home).async_step_window_sensors({"excluded_window_entities": [virtual]}))
     assert next_form["errors"] == {"base": "no_window_areas"}
     assert next_form["data_schema"]["areas"].config.options == []
+
+
+def test_indoor_room_page_lists_only_supported_sensors_with_device_and_entity(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    co2 = "sensor.kitchen_co2"
+    humidity = "sensor.kitchen_humidity"
+    pm = "sensor.living_pm25"
+    home = FakeHass([
+        MockState("binary_sensor.kitchen_window", "off", device_class="window"),
+        MockState(co2, "1150", device_class="co2", unit="ppm", name="Carbon dioxide"),
+        MockState(humidity, 52, device_class="humidity", unit="%", name="Relative humidity"),
+        MockState(pm, 14, device_class="pm25", unit="µg/m³"),
+        MockState("sensor.kitchen_voltage", 33, unit="V"),
+    ], {
+        "binary_sensor.kitchen_window": "kitchen", co2:"kitchen",
+        humidity:"kitchen", pm:"living", "sensor.kitchen_voltage":"kitchen",
+    })
+    home._entity_devices[co2] = "env_monitor"
+    home._entity_devices[humidity] = "env_monitor"
+    home._device_details["env_monitor"] = {"name":"Airthings Wave Plus"}
+    wizard = Wizard(home)
+    result = asyncio.run(wizard.async_step_areas({"areas": ["kitchen"]}))
+    assert result["step_id"] == "indoor_sensors"
+    assert result["description_placeholders"] == {"area_name":"kitchen", "position":"1", "total":"1"}
+    choices = result["data_schema"]["excluded_indoor_entities"].config.options
+    assert {option["value"] for option in choices} == {co2, humidity}
+    text = next(option["label"] for option in choices if option["value"] == co2)
+    assert "Airthings Wave Plus" in text and "Carbon dioxide" in text and co2 in text
+    assert next(iter(result["data_schema"])).default == []
+    ignored = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": [humidity]}))
+    assert ignored == {"next_step": "outdoor"}
+    assert wizard._values["excluded_indoor_entities"] == {"kitchen": [humidity]}
+
+
+def test_room_filters_are_independent_and_can_be_cleared_in_options(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    humidity = "sensor.kitchen_humidity"
+    bedroom = "sensor.bedroom_aqi"
+    home = FakeHass([
+        MockState(humidity, 75, device_class="humidity", unit="%"),
+        MockState(bedroom, 125, device_class="aqi", unit="index"),
+    ], {humidity:"kitchen", bedroom:"bedroom"})
+    wizard = Wizard(home, editing=True, existing=["kitchen", "bedroom"])
+    wizard._values["excluded_indoor_entities"] = {"kitchen": [humidity], "bedroom": [bedroom]}
+    wizard._indoor_index = 0
+    form = asyncio.run(wizard.async_step_indoor_sensors())
+    assert next(iter(form["data_schema"])).default == [humidity]
+    form = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": []}))
+    assert form["description_placeholders"]["area_name"] == "bedroom"
+    assert next(iter(form["data_schema"])).default == [bedroom]
+    form = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": [bedroom]}))
+    assert form == {"next_step": "outdoor"}
+    assert wizard._values["excluded_indoor_entities"] == {"kitchen": [], "bedroom": [bedroom]}
+
+
+def test_missing_saved_sensor_kept_removable_invalid_selection_rejected(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([MockState("sensor.office_co2", 800, device_class="co2", unit="ppm")],
+                    {"sensor.office_co2":"office"})
+    wizard = Wizard(home, editing=True, existing=["office"])
+    wizard._values["excluded_indoor_entities"] = {"office": ["sensor.old_humidity"]}
+    wizard._indoor_index = 0
+    form = asyncio.run(wizard.async_step_indoor_sensors())
+    assert next(iter(form["data_schema"])).default == ["sensor.old_humidity"]
+    assert {o["value"] for o in form["data_schema"]["excluded_indoor_entities"].config.options} == {
+        "sensor.old_humidity", "sensor.office_co2"
+    }
+    bad = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": ["sensor.rogue"]}))
+    assert bad["errors"] == {"base": "invalid_indoor_exclusions"}
+    good = asyncio.run(wizard.async_step_indoor_sensors({"excluded_indoor_entities": []}))
+    assert good == {"next_step": "outdoor"}
+    assert wizard._values["excluded_indoor_entities"]["office"] == []
+
+
+def test_reconfigure_runs_complete_wizard_and_can_edit_advanced_thresholds(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    import custom_components.air_quality_advisor.config_flow as flows
+    co2 = "sensor.living_co2"
+    outdoor = "sensor.outdoor_pm25"
+    home = FakeHass([
+        MockState("binary_sensor.living_window", "off", device_class="window"),
+        MockState(co2, 900, device_class="co2", unit="ppm"),
+        MockState(outdoor, 8, device_class="pm25", unit="µg/m³"),
+        MockState("weather.home", "sunny"),
+    ], {
+        "binary_sensor.living_window":"living", co2:"living", outdoor:"outside"
+    })
+    home.services = SimpleNamespace(has_service=lambda *args: False)
+    options = flows.AirQualityOptionsFlow()
+    options.hass = home
+    options.config_entry = SimpleNamespace(data={
+        "areas":["living"], "excluded_window_entities":[],
+        "excluded_indoor_entities":{"living":[co2]},
+        "outdoor_sensors":[outdoor], "weather_entities":["weather.home"],
+        "thresholds":{"indoor_co2":1200}, "automatic_tts":False,
+        "automatic_notifications":False, "language":"el",
+    }, options={})
+    options.async_show_form = lambda **kwargs: kwargs
+    options.async_create_entry = lambda **kwargs: {"completed": kwargs}
+
+    result = asyncio.run(options.async_step_init())
+    assert result["step_id"] == "window_sensors"  # Not a menu
+    result = asyncio.run(options.async_step_window_sensors({"excluded_window_entities": []}))
+    assert result["step_id"] == "areas"
+    result = asyncio.run(options.async_step_areas({"areas":["living"]}))
+    assert result["step_id"] == "indoor_sensors"
+    assert next(iter(result["data_schema"])).default == [co2]
+    result = asyncio.run(options.async_step_indoor_sensors({"excluded_indoor_entities": []}))
+    assert result["step_id"] == "outdoor"
+    result = asyncio.run(options.async_step_outdoor({"outdoor_sensors":[outdoor]}))
+    assert result["step_id"] == "weather"
+    result = asyncio.run(options.async_step_weather({"weather_entities":["weather.home"]}))
+    assert result["step_id"] == "delivery"
+    assert next(k.default for k in result["data_schema"] if k == "language") == "el"
+    result = asyncio.run(options.async_step_delivery({"edit_thresholds":True}))
+    assert result["step_id"] == "thresholds"
+    assert next(k.default for k in result["data_schema"] if k == "indoor_co2") == 1200
+    from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
+    result = asyncio.run(options.async_step_thresholds({**DEFAULT_THRESHOLDS,"indoor_co2":1100}))
+    assert result["completed"]["data"]["thresholds"]["indoor_co2"] == 1100
+    assert result["completed"]["data"]["excluded_indoor_entities"] == {"living":[]}
+    assert "edit_thresholds" not in result["completed"]["data"]
+
+
+def test_reconfigure_when_no_supported_air_sensors_skips_empty_room_page(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([MockState("binary_sensor.kitchen_window", "off", device_class="window")],
+                    {"binary_sensor.kitchen_window":"kitchen"})
+    wizard = Wizard(home, editing=True, existing=["kitchen"])
+    result = asyncio.run(wizard.async_step_areas({"areas":["kitchen"]}))
+    assert result == {"next_step":"outdoor"}

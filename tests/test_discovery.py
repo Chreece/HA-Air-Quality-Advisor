@@ -283,3 +283,65 @@ def test_previously_excluded_missing_sensor_stays_in_dropdown(adapter):
     home = FakeHass([])
     choices = adapter.window_exclusion_choices(home, ["binary_sensor.no_longer_available"])
     assert choices == [{"value": "binary_sensor.no_longer_available", "label": "⚠ binary_sensor.no_longer_available"}]
+
+
+def test_supported_indoor_exclusions_include_humidity_and_all_supported_air_metrics(adapter):
+    metrics = [
+        ("aqi", "aqi", "index"),
+        ("co2", "co2", "ppm"),
+        ("pm25", "pm25", "µg/m³"),
+        ("pm10", "pm10", "µg/m³"),
+        ("voc", "volatile_organic_compounds", "µg/m³"),
+        ("voc_parts", "volatile_organic_compounds_parts", "ppb"),
+        ("humidity", "humidity", "%"),
+    ]
+    values = [MockState(f"sensor.office_{kind}", 5, device_class=device_class, unit=unit)
+              for kind, device_class, unit in metrics]
+    home = FakeHass(values, {value.entity_id: "office" for value in values})
+    choices = adapter.indoor_sensor_exclusion_choices(home, "office")
+    assert {choice["value"] for choice in choices} == {value.entity_id for value in values}
+
+
+def test_indoor_exclusions_change_recommendations_and_card_without_disabling_sensors(adapter):
+    from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
+    from custom_components.air_quality_advisor.dashboard import dashboard_snapshot
+    from custom_components.air_quality_advisor.logic import Reading, Weather, evaluate
+
+    window = "binary_sensor.office_window"
+    co2 = "sensor.office_co2"
+    humidity = "sensor.office_humidity"
+    home = FakeHass([
+        MockState(window, "off", device_class="window"),
+        MockState(co2, 1550, device_class="co2", unit="ppm"),
+        MockState(humidity, 48, device_class="humidity", unit="%"),
+    ], {window: "office", co2: "office", humidity: "office"})
+
+    def snapshot(excluded):
+        all_rooms = adapter.rooms(home, ["office"], 90, excluded_entities=excluded)
+        plan = evaluate((Reading("sensor.outdoor_pm25", "Outside", "pm25", 7),),
+                        (Weather("weather.home", "sunny", 20, 35, 2),),
+                        (), all_rooms, DEFAULT_THRESHOLDS)
+        return plan, dashboard_snapshot(plan, DEFAULT_THRESHOLDS)
+
+    plan, card = snapshot(set())
+    assert plan.status == "open"
+    assert card["summary"]["attention"] == 1
+    assert {item["entity_id"] for item in card["rooms"][0]["readings"]} == {co2, humidity}
+    plan, card = snapshot({co2})
+    assert plan.status == "idle"
+    assert card["summary"]["safe"] == 1
+    assert [item["entity_id"] for item in card["rooms"][0]["readings"]] == [humidity]
+    assert home.states.get(co2).state == "1550"  # Integration never disables HA entities.
+
+
+def test_device_area_inheritance_for_indoor_selector(adapter):
+    co2 = "sensor.study_co2"
+    home = FakeHass([MockState(co2, 900, device_class="co2", unit="ppm", name="Indoor CO2")])
+    home._entity_devices[co2] = "meter"
+    home._device_areas["meter"] = "study"
+    home._device_details["meter"] = {"name":"Default model name", "name_by_user":"Office monitor"}
+    choices = adapter.indoor_sensor_exclusion_choices(home, "study")
+    assert len(choices) == 1
+    assert "Office monitor" in choices[0]["label"]
+    assert "Indoor CO2" in choices[0]["label"]
+    assert not adapter.indoor_sensor_exclusion_choices(home, "kitchen")

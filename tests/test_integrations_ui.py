@@ -29,13 +29,22 @@ def test_exclusion_selector_is_translated_for_setup_and_options():
         document = json.loads((DOMAIN / name).read_text())
         assert document["config"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
         assert document["options"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
-        assert "window_sensors" in document["options"]["step"]["init"]["menu_options"]
+        assert "init" not in document["options"]["step"]
+        for context in ("config", "options"):
+            room = document[context]["step"]["indoor_sensors"]
+            assert room["data"]["excluded_indoor_entities"]
+            assert "{area_name}" in room["description"]
+            assert "edit_thresholds" in document[context]["step"]["delivery"]["data"]
         assert "invalid_window_exclusions" in document["config"]["error"]
 
 
 def test_runtime_exclusions_are_applied_before_window_recommendations():
-    from custom_components.air_quality_advisor.const import CONF_EXCLUDED_WINDOWS
+    from custom_components.air_quality_advisor.const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR
     source = (DOMAIN / "manager.py").read_text()
-    assert "excluded_entities=selected_outdoor | set(config.get(CONF_EXCLUDED_WINDOWS, []))" in source
+    assert "set(config.get(CONF_EXCLUDED_WINDOWS, []))" in source
+    assert "config.get(CONF_EXCLUDED_INDOOR, {})" in source
+    assert "| excluded_indoor" in source
     assert CONF_EXCLUDED_WINDOWS == "excluded_window_entities"
+    assert CONF_EXCLUDED_INDOOR == "excluded_indoor_entities"
     assert "excluded_window_entities" in (DOMAIN / "sensor.py").read_text()
+    assert "excluded_indoor_entities" in (DOMAIN / "sensor.py").read_text()
