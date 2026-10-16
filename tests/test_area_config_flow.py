@@ -328,7 +328,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     menu = asyncio.run(options.async_step_init())
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
-        "window_sensors", "areas", "indoor_sensors", "outdoor",
+        "areas", "window_sensors", "indoor_sensors", "outdoor",
         "weather", "delivery", "thresholds",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}

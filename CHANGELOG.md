@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7 — rooms first in Configure
+
+- Put **Rooms** at the top of the seven-section Reconfigure menu, followed by window sensor exclusions and the remaining options.
+- Retain window sensor exclusions before room discovery in initial setup; this is only a menu ordering change.
+- Keep the menu order aligned across English, Greek, German, French and Spanish translations and tests.
+
 ## 0.1.6 — targeted and localized reconfiguration
 
 - Remove the optional advanced-threshold checkbox from initial setup and the Announcements page.

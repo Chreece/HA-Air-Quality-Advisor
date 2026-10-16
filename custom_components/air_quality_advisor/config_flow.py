@@ -345,7 +345,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         return self.async_show_menu(
             step_id="init",
             menu_options=[
-                "window_sensors", "areas", "indoor_sensors", "outdoor",
+                "areas", "window_sensors", "indoor_sensors", "outdoor",
                 "weather", "delivery", "thresholds",
             ],
         )

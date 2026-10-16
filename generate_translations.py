@@ -151,6 +151,7 @@ threshold_labels = {
 }
 fields = ['excluded_window_entities','areas','excluded_indoor_entities','outdoor_sensors','weather_entities','language']
 stepids = ['window_sensors','areas','indoor_sensors','outdoor','weather','delivery','thresholds']
+menu_stepids = ['areas','window_sensors','indoor_sensors','outdoor','weather','delivery','thresholds']
 for code,v in lang.items():
  steps = {}
  for i, sid in enumerate(stepids):
@@ -196,7 +197,7 @@ for code,v in lang.items():
      'init':{
        'title':menu_titles[code],
        'description':menu_descriptions[code],
-       'menu_options':{sid:steps[sid]['title'] for sid in stepids},
+       'menu_options':{sid:steps[sid]['title'] for sid in menu_stepids},
      },
      **steps,
    },
