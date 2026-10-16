@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.2 — preselected areas and incomplete outdoor readings
+
+- Preselect all discovered rooms with Window-class **binary sensors** during initial setup; keep saved area selections during reconfiguration.
+- Exclude all covers, including covers of device class Window, from area suggestions, window counts and recommendations.
+- Ignore unknown, unavailable and stale outdoor air-quality readings as hazards; known high readings still block opening.
+- Keep blocking behavior for missing weather, active warnings and unknown warning status.
+- Add `outdoor_data_complete` and `unavailable_outdoor_sensors` attributes to the single recommendation sensor.
+- Refresh all five setup languages, documentation and regression tests.
+
 ## 0.1.1 — setup and integration visibility
 
 - Suggest only actual Home Assistant areas containing Window-class binary sensors or covers, showing the number of detected windows per area.
