@@ -1,0 +1,231 @@
+{
+  "title": "Asesor de calidad del aire",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Áreas",
+        "description": "Selecciona las habitaciones. Los sensores interiores y contactos de ventana se detectan según las áreas de Home Assistant. Solo se usan entidades de clase Ventana.",
+        "data": {
+          "areas": "Áreas supervisadas"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Calidad del aire exterior",
+        "description": "Selecciona los sensores exteriores compatibles con unidades conocidas. Todos deben estar disponibles y dentro de los límites para recomendar abrir.",
+        "data": {
+          "outdoor_sensors": "Sensores de aire exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Tiempo y alertas",
+        "description": "Selecciona entidades meteorológicas y alertas opcionales. Lluvia, viento fuerte, temperaturas extremas y avisos activos o desconocidos impiden abrir.",
+        "data": {
+          "weather_entities": "Entidades meteorológicas",
+          "weather_warnings": "Sensores de alerta meteorológica (opcional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Anuncios (opcional)",
+        "description": "El sensor funciona sin anuncios. Activa voz y avisos solo si deseas. Announcement Hub puede gestionar la distribución por habitación.",
+        "data": {
+          "language": "Idioma",
+          "automatic_tts": "Anunciar automáticamente recomendaciones nuevas",
+          "automatic_notifications": "Enviar automáticamente avisos nuevos",
+          "use_announcement_hub": "Usar Announcement Hub si está disponible",
+          "notify_entities": "Destinos directos de notificación",
+          "tts_engine": "Motor TTS directo",
+          "media_players": "Reproductores TTS directos"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Umbrales avanzados",
+        "description": "Los límites se aplican a lecturas instantáneas, no a normas médicas. El AQI predeterminado usa la escala estadounidense 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Selecciona al menos un sensor exterior compatible.",
+      "no_outdoor": "No hay sensores exteriores compatibles.",
+      "invalid_weather": "Selecciona al menos una entidad meteorológica.",
+      "invalid_warning": "Alerta meteorológica no compatible.",
+      "missing_notify": "Activa Announcement Hub o selecciona notificaciones.",
+      "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
+      "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
+      "no_areas": "Selecciona al menos un área."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Asesor de calidad del aire",
+        "menu_options": {
+          "areas": "Áreas / Calidad del aire exterior / Tiempo y alertas",
+          "delivery": "Anuncios (opcional)",
+          "thresholds": "Umbrales avanzados"
+        }
+      },
+      "areas": {
+        "title": "Áreas",
+        "description": "Selecciona las habitaciones. Los sensores interiores y contactos de ventana se detectan según las áreas de Home Assistant. Solo se usan entidades de clase Ventana.",
+        "data": {
+          "areas": "Áreas supervisadas"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Calidad del aire exterior",
+        "description": "Selecciona los sensores exteriores compatibles con unidades conocidas. Todos deben estar disponibles y dentro de los límites para recomendar abrir.",
+        "data": {
+          "outdoor_sensors": "Sensores de aire exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Tiempo y alertas",
+        "description": "Selecciona entidades meteorológicas y alertas opcionales. Lluvia, viento fuerte, temperaturas extremas y avisos activos o desconocidos impiden abrir.",
+        "data": {
+          "weather_entities": "Entidades meteorológicas",
+          "weather_warnings": "Sensores de alerta meteorológica (opcional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Anuncios (opcional)",
+        "description": "El sensor funciona sin anuncios. Activa voz y avisos solo si deseas. Announcement Hub puede gestionar la distribución por habitación.",
+        "data": {
+          "language": "Idioma",
+          "automatic_tts": "Anunciar automáticamente recomendaciones nuevas",
+          "automatic_notifications": "Enviar automáticamente avisos nuevos",
+          "use_announcement_hub": "Usar Announcement Hub si está disponible",
+          "notify_entities": "Destinos directos de notificación",
+          "tts_engine": "Motor TTS directo",
+          "media_players": "Reproductores TTS directos"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Umbrales avanzados",
+        "description": "Los límites se aplican a lecturas instantáneas, no a normas médicas. El AQI predeterminado usa la escala estadounidense 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Selecciona al menos un sensor exterior compatible.",
+      "no_outdoor": "No hay sensores exteriores compatibles.",
+      "invalid_weather": "Selecciona al menos una entidad meteorológica.",
+      "invalid_warning": "Alerta meteorológica no compatible.",
+      "missing_notify": "Activa Announcement Hub o selecciona notificaciones.",
+      "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
+      "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
+      "no_areas": "Selecciona al menos un área."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Recomendaciones de ventanas",
+        "state": {
+          "open": "Abrir ventanas",
+          "close": "Cerrar ventanas",
+          "idle": "Sin acción",
+          "blocked": "Condiciones exteriores desfavorables"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Anunciar recomendaciones de aire",
+      "description": "Comunicar ventanas y razones por voz o notificación, con idioma por acción.",
+      "fields": {
+        "language": {
+          "name": "Idioma del mensaje",
+          "description": "Idioma del mensaje"
+        },
+        "channels": {
+          "name": "Canales de salida",
+          "description": "Canales de salida"
+        },
+        "areas": {
+          "name": "Solo estas áreas (opcional)",
+          "description": "Solo estas áreas (opcional)"
+        }
+      }
+    }
+  }
+}

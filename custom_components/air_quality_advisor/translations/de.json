@@ -1,0 +1,231 @@
+{
+  "title": "Luftqualitätsberater",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Bereiche",
+        "description": "Wähle alle Räume aus. Innenluftsensoren und Fensterkontakte werden anhand ihrer Home-Assistant-Bereiche automatisch erkannt. Nur Entitäten mit Geräteklasse „Fenster“ werden empfohlen.",
+        "data": {
+          "areas": "Zu überwachende Bereiche"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Außenluftqualität",
+        "description": "Wähle unterstützte Außenluftsensoren. Es erscheinen nur kompatible numerische Messwerte. Alle ausgewählten Sensoren müssen gültige und unbedenkliche Werte liefern.",
+        "data": {
+          "outdoor_sensors": "Außenluftsensoren"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Wetter und Warnungen",
+        "description": "Wähle Wetterentitäten und optional Wetterwarnsensoren. Regen, Sturm, starker Wind, extreme Temperaturen und aktive/unbekannte Warnungen verhindern Empfehlungen zum Öffnen.",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "weather_warnings": "Wetterwarnsensoren (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Ansagen (optional)",
+        "description": "Der Empfehlungssensor funktioniert auch ohne Ansagen. Benachrichtigungen und Sprache sind optional. Announcement Hub übernimmt gegebenenfalls die Raumzuordnung; sonst bitte direkte Ausgaben wählen.",
+        "data": {
+          "language": "Sprache",
+          "automatic_tts": "Neue Empfehlungen automatisch sprechen",
+          "automatic_notifications": "Neue Empfehlungen automatisch melden",
+          "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "tts_engine": "Direkte TTS-Engine",
+          "media_players": "Direkte TTS-Mediaplayer"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Erweiterte Grenzwerte",
+        "description": "Diese Grenzwerte beziehen sich auf Momentanmessungen und sind keine medizinischen Expositionsgrenzen. AQI verwendet standardmäßig die US-Skala 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Mindestens einen unterstützten Außenluftsensor auswählen.",
+      "no_outdoor": "Kein unterstützter Außenluftsensor erkannt. Zuerst eine passende AQI-, CO₂-, Feinstaub- oder VOC-Entität hinzufügen.",
+      "invalid_weather": "Mindestens eine Wetterentität auswählen.",
+      "invalid_warning": "Wetterwarnsensor wird nicht mehr unterstützt.",
+      "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
+      "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
+      "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
+      "no_areas": "Mindestens einen Bereich auswählen."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Luftqualitätsberater",
+        "menu_options": {
+          "areas": "Bereiche / Außenluftqualität / Wetter und Warnungen",
+          "delivery": "Ansagen (optional)",
+          "thresholds": "Erweiterte Grenzwerte"
+        }
+      },
+      "areas": {
+        "title": "Bereiche",
+        "description": "Wähle alle Räume aus. Innenluftsensoren und Fensterkontakte werden anhand ihrer Home-Assistant-Bereiche automatisch erkannt. Nur Entitäten mit Geräteklasse „Fenster“ werden empfohlen.",
+        "data": {
+          "areas": "Zu überwachende Bereiche"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Außenluftqualität",
+        "description": "Wähle unterstützte Außenluftsensoren. Es erscheinen nur kompatible numerische Messwerte. Alle ausgewählten Sensoren müssen gültige und unbedenkliche Werte liefern.",
+        "data": {
+          "outdoor_sensors": "Außenluftsensoren"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Wetter und Warnungen",
+        "description": "Wähle Wetterentitäten und optional Wetterwarnsensoren. Regen, Sturm, starker Wind, extreme Temperaturen und aktive/unbekannte Warnungen verhindern Empfehlungen zum Öffnen.",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "weather_warnings": "Wetterwarnsensoren (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Ansagen (optional)",
+        "description": "Der Empfehlungssensor funktioniert auch ohne Ansagen. Benachrichtigungen und Sprache sind optional. Announcement Hub übernimmt gegebenenfalls die Raumzuordnung; sonst bitte direkte Ausgaben wählen.",
+        "data": {
+          "language": "Sprache",
+          "automatic_tts": "Neue Empfehlungen automatisch sprechen",
+          "automatic_notifications": "Neue Empfehlungen automatisch melden",
+          "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "tts_engine": "Direkte TTS-Engine",
+          "media_players": "Direkte TTS-Mediaplayer"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Erweiterte Grenzwerte",
+        "description": "Diese Grenzwerte beziehen sich auf Momentanmessungen und sind keine medizinischen Expositionsgrenzen. AQI verwendet standardmäßig die US-Skala 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Mindestens einen unterstützten Außenluftsensor auswählen.",
+      "no_outdoor": "Kein unterstützter Außenluftsensor erkannt. Zuerst eine passende AQI-, CO₂-, Feinstaub- oder VOC-Entität hinzufügen.",
+      "invalid_weather": "Mindestens eine Wetterentität auswählen.",
+      "invalid_warning": "Wetterwarnsensor wird nicht mehr unterstützt.",
+      "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
+      "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
+      "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
+      "no_areas": "Mindestens einen Bereich auswählen."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Fensterempfehlungen",
+        "state": {
+          "open": "Fenster öffnen",
+          "close": "Fenster schließen",
+          "idle": "Keine Aktion",
+          "blocked": "Außenbedingungen ungeeignet"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Luftqualitäts-Empfehlungen ausgeben",
+      "description": "Aktuelle Fensterempfehlungen mit Begründung sprechen und/oder melden. Sprache bei jedem Aufruf wählbar.",
+      "fields": {
+        "language": {
+          "name": "Nachrichtensprache überschreiben",
+          "description": "Nachrichtensprache überschreiben"
+        },
+        "channels": {
+          "name": "Ausgabekanäle",
+          "description": "Ausgabekanäle"
+        },
+        "areas": {
+          "name": "Nur diese Bereiche (optional)",
+          "description": "Nur diese Bereiche (optional)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "title": "Σύμβουλος ποιότητας αέρα",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Χώροι",
+        "description": "Επίλεξε τους χώρους προς παρακολούθηση. Οι αισθητήρες εσωτερικού αέρα και τα παράθυρα εντοπίζονται από την ανάθεσή τους σε χώρους στο Home Assistant. Χρησιμοποιούνται μόνο αισθητήρες/καλύμματα τύπου Παραθύρου.",
+        "data": {
+          "areas": "Χώροι προς παρακολούθηση"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Ποιότητα εξωτερικού αέρα",
+        "description": "Επίλεξε έναν ή περισσότερους υποστηριζόμενους αισθητήρες. Εμφανίζονται μόνο συμβατές αριθμητικές μετρήσεις και μονάδες. Όλοι οι επιλεγμένοι αισθητήρες πρέπει να είναι διαθέσιμοι και σε αποδεκτά επίπεδα.",
+        "data": {
+          "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Καιρός και προειδοποιήσεις",
+        "description": "Επίλεξε οντότητες καιρού και, προαιρετικά, αισθητήρες προειδοποιήσεων. Βροχή, καταιγίδες, άνεμος, ακραίες θερμοκρασίες ή άγνωστες/ενεργές προειδοποιήσεις εμποδίζουν το άνοιγμα.",
+        "data": {
+          "weather_entities": "Οντότητες καιρού",
+          "weather_warnings": "Αισθητήρες προειδοποιήσεων καιρού (προαιρετικά)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Ανακοινώσεις (προαιρετικά)",
+        "description": "Ο αισθητήρας συστάσεων λειτουργεί και χωρίς ανακοινώσεις. Ενεργοποίησε ειδοποιήσεις ή ομιλία αν το επιθυμείς. Το Announcement Hub, εφόσον υπάρχει, αναλαμβάνει τη δρομολόγηση ανά δωμάτιο.",
+        "data": {
+          "language": "Γλώσσα",
+          "automatic_tts": "Αυτόματες φωνητικές συστάσεις",
+          "automatic_notifications": "Αυτόματες ειδοποιήσεις συστάσεων",
+          "use_announcement_hub": "Χρήση Announcement Hub όταν υπάρχει",
+          "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
+          "tts_engine": "Μηχανή άμεσης ομιλίας",
+          "media_players": "Συσκευές αναπαραγωγής ομιλίας"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Προχωρημένα όρια",
+        "description": "Τα όρια εφαρμόζονται σε στιγμιαίες μετρήσεις, όχι σε ιατρικά πρότυπα έκθεσης. Ο AQI χρησιμοποιεί αρχικά την κλίμακα ΗΠΑ 0–500· προσαρμόστε τον σε άλλες κλίμακες.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Επέλεξε τουλάχιστον έναν υποστηριζόμενο εξωτερικό αισθητήρα.",
+      "no_outdoor": "Δεν βρέθηκε συμβατός εξωτερικός αισθητήρας. Πρόσθεσε πρώτα μία οντότητα AQI, CO₂, PM2.5, PM10 ή VOC.",
+      "invalid_weather": "Επέλεξε τουλάχιστον μία οντότητα καιρού.",
+      "invalid_warning": "Ο αισθητήρας προειδοποίησης δεν υποστηρίζεται πλέον.",
+      "missing_notify": "Επίλεξε Announcement Hub ή μια οντότητα ειδοποιήσεων.",
+      "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
+      "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
+      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Σύμβουλος ποιότητας αέρα",
+        "menu_options": {
+          "areas": "Χώροι / Ποιότητα εξωτερικού αέρα / Καιρός και προειδοποιήσεις",
+          "delivery": "Ανακοινώσεις (προαιρετικά)",
+          "thresholds": "Προχωρημένα όρια"
+        }
+      },
+      "areas": {
+        "title": "Χώροι",
+        "description": "Επίλεξε τους χώρους προς παρακολούθηση. Οι αισθητήρες εσωτερικού αέρα και τα παράθυρα εντοπίζονται από την ανάθεσή τους σε χώρους στο Home Assistant. Χρησιμοποιούνται μόνο αισθητήρες/καλύμματα τύπου Παραθύρου.",
+        "data": {
+          "areas": "Χώροι προς παρακολούθηση"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Ποιότητα εξωτερικού αέρα",
+        "description": "Επίλεξε έναν ή περισσότερους υποστηριζόμενους αισθητήρες. Εμφανίζονται μόνο συμβατές αριθμητικές μετρήσεις και μονάδες. Όλοι οι επιλεγμένοι αισθητήρες πρέπει να είναι διαθέσιμοι και σε αποδεκτά επίπεδα.",
+        "data": {
+          "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Καιρός και προειδοποιήσεις",
+        "description": "Επίλεξε οντότητες καιρού και, προαιρετικά, αισθητήρες προειδοποιήσεων. Βροχή, καταιγίδες, άνεμος, ακραίες θερμοκρασίες ή άγνωστες/ενεργές προειδοποιήσεις εμποδίζουν το άνοιγμα.",
+        "data": {
+          "weather_entities": "Οντότητες καιρού",
+          "weather_warnings": "Αισθητήρες προειδοποιήσεων καιρού (προαιρετικά)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Ανακοινώσεις (προαιρετικά)",
+        "description": "Ο αισθητήρας συστάσεων λειτουργεί και χωρίς ανακοινώσεις. Ενεργοποίησε ειδοποιήσεις ή ομιλία αν το επιθυμείς. Το Announcement Hub, εφόσον υπάρχει, αναλαμβάνει τη δρομολόγηση ανά δωμάτιο.",
+        "data": {
+          "language": "Γλώσσα",
+          "automatic_tts": "Αυτόματες φωνητικές συστάσεις",
+          "automatic_notifications": "Αυτόματες ειδοποιήσεις συστάσεων",
+          "use_announcement_hub": "Χρήση Announcement Hub όταν υπάρχει",
+          "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
+          "tts_engine": "Μηχανή άμεσης ομιλίας",
+          "media_players": "Συσκευές αναπαραγωγής ομιλίας"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Προχωρημένα όρια",
+        "description": "Τα όρια εφαρμόζονται σε στιγμιαίες μετρήσεις, όχι σε ιατρικά πρότυπα έκθεσης. Ο AQI χρησιμοποιεί αρχικά την κλίμακα ΗΠΑ 0–500· προσαρμόστε τον σε άλλες κλίμακες.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Επέλεξε τουλάχιστον έναν υποστηριζόμενο εξωτερικό αισθητήρα.",
+      "no_outdoor": "Δεν βρέθηκε συμβατός εξωτερικός αισθητήρας. Πρόσθεσε πρώτα μία οντότητα AQI, CO₂, PM2.5, PM10 ή VOC.",
+      "invalid_weather": "Επέλεξε τουλάχιστον μία οντότητα καιρού.",
+      "invalid_warning": "Ο αισθητήρας προειδοποίησης δεν υποστηρίζεται πλέον.",
+      "missing_notify": "Επίλεξε Announcement Hub ή μια οντότητα ειδοποιήσεων.",
+      "missing_tts": "Επίλεξε Announcement Hub ή μηχανή ομιλίας και media player.",
+      "temperature_range": "Η ελάχιστη θερμοκρασία πρέπει να είναι μικρότερη της μέγιστης.",
+      "no_areas": "Επίλεξε τουλάχιστον έναν χώρο."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Συστάσεις παραθύρων",
+        "state": {
+          "open": "Άνοιγμα παραθύρων",
+          "close": "Κλείσιμο παραθύρων",
+          "idle": "Δεν απαιτείται ενέργεια",
+          "blocked": "Ακατάλληλες εξωτερικές συνθήκες"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Ανακοίνωση συστάσεων αέρα",
+      "description": "Προφορική ή οπτική ανακοίνωση προτεινόμενων παραθύρων και αιτιών, με ξεχωριστή γλώσσα ανά ενέργεια.",
+      "fields": {
+        "language": {
+          "name": "Αλλαγή γλώσσας μηνύματος",
+          "description": "Αλλαγή γλώσσας μηνύματος"
+        },
+        "channels": {
+          "name": "Κανάλια μηνυμάτων",
+          "description": "Κανάλια μηνυμάτων"
+        },
+        "areas": {
+          "name": "Μόνο αυτοί οι χώροι (προαιρετικά)",
+          "description": "Μόνο αυτοί οι χώροι (προαιρετικά)"
+        }
+      }
+    }
+  }
+}

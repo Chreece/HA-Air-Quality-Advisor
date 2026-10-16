@@ -1,0 +1,231 @@
+{
+  "title": "Air Quality Advisor",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Areas",
+        "description": "Select all rooms to monitor. Indoor air sensors and window contacts are discovered from their Home Assistant area assignments. Only window contacts/covers with the Window device class can be recommended.",
+        "data": {
+          "areas": "Areas to monitor"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Outdoor air quality",
+        "description": "Choose one or more supported outdoor air-quality sensors. Only supported numeric sensor types and units are listed. All selected outdoor sensors must be available and acceptable before opening is recommended.",
+        "data": {
+          "outdoor_sensors": "Outdoor air-quality sensors"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Weather and warnings",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.",
+        "data": {
+          "weather_entities": "Weather entities",
+          "weather_warnings": "Weather warning sensors (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Announcements (optional)",
+        "description": "The recommendation sensor always works without announcements. Enable notifications and/or speech only if wanted. Announcement Hub, when enabled and available, handles room-aware routing. For standalone output, choose notification targets and a TTS engine with players.",
+        "data": {
+          "language": "Language",
+          "automatic_tts": "Speak new recommendations automatically",
+          "automatic_notifications": "Notify about new recommendations automatically",
+          "use_announcement_hub": "Use Announcement Hub if available",
+          "notify_entities": "Direct notification entities",
+          "tts_engine": "Direct TTS engine",
+          "media_players": "Direct TTS media players"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Advanced thresholds",
+        "description": "These limits apply to instantaneous sensor values and are configurable guidance, not health or exposure standards. AQI assumes the US 0–500 scale by default; change the limits for any differently scaled provider.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area."
+    },
+    "abort": {
+      "already_configured": "Air Quality Advisor is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Air Quality Advisor",
+        "menu_options": {
+          "areas": "Areas / Outdoor air quality / Weather and warnings",
+          "delivery": "Announcements (optional)",
+          "thresholds": "Advanced thresholds"
+        }
+      },
+      "areas": {
+        "title": "Areas",
+        "description": "Select all rooms to monitor. Indoor air sensors and window contacts are discovered from their Home Assistant area assignments. Only window contacts/covers with the Window device class can be recommended.",
+        "data": {
+          "areas": "Areas to monitor"
+        },
+        "data_description": {
+          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+        }
+      },
+      "outdoor": {
+        "title": "Outdoor air quality",
+        "description": "Choose one or more supported outdoor air-quality sensors. Only supported numeric sensor types and units are listed. All selected outdoor sensors must be available and acceptable before opening is recommended.",
+        "data": {
+          "outdoor_sensors": "Outdoor air-quality sensors"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+        }
+      },
+      "weather": {
+        "title": "Weather and warnings",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.",
+        "data": {
+          "weather_entities": "Weather entities",
+          "weather_warnings": "Weather warning sensors (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Announcements (optional)",
+        "description": "The recommendation sensor always works without announcements. Enable notifications and/or speech only if wanted. Announcement Hub, when enabled and available, handles room-aware routing. For standalone output, choose notification targets and a TTS engine with players.",
+        "data": {
+          "language": "Language",
+          "automatic_tts": "Speak new recommendations automatically",
+          "automatic_notifications": "Notify about new recommendations automatically",
+          "use_announcement_hub": "Use Announcement Hub if available",
+          "notify_entities": "Direct notification entities",
+          "tts_engine": "Direct TTS engine",
+          "media_players": "Direct TTS media players"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting."
+        }
+      },
+      "thresholds": {
+        "title": "Advanced thresholds",
+        "description": "These limits apply to instantaneous sensor values and are configurable guidance, not health or exposure standards. AQI assumes the US 0–500 scale by default; change the limits for any differently scaled provider.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Window recommendations",
+        "state": {
+          "open": "Open windows",
+          "close": "Close windows",
+          "idle": "No action",
+          "blocked": "Outdoor conditions not suitable"
+        }
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Announce air-quality recommendations",
+      "description": "Speak and/or notify the currently recommended windows and reasons. Choose a language independently for each call.",
+      "fields": {
+        "language": {
+          "name": "Override message language",
+          "description": "Override message language"
+        },
+        "channels": {
+          "name": "Message channels",
+          "description": "Message channels"
+        },
+        "areas": {
+          "name": "Only these areas (optional)",
+          "description": "Only these areas (optional)"
+        }
+      }
+    }
+  }
+}
