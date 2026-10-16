@@ -4,12 +4,12 @@
     "step": {
       "areas": {
         "title": "Pièces",
-        "description": "Choisissez les pièces. Les capteurs intérieurs et contacts de fenêtre sont trouvés par zone Home Assistant. Seules les entités de classe Fenêtre sont utilisées.",
+        "description": "Seules les zones comportant des fenêtres détectées sont proposées, avec leur nombre. Les zones déjà sélectionnées sans fenêtre détectée sont signalées par ⚠ lors de la reconfiguration.",
         "data": {
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -89,7 +89,9 @@
       "missing_notify": "Activez Announcement Hub ou sélectionnez une notification.",
       "missing_tts": "Activez Announcement Hub ou sélectionnez un moteur TTS et un lecteur.",
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
-      "no_areas": "Sélectionnez au moins une zone."
+      "no_areas": "Sélectionnez au moins une zone.",
+      "no_window_areas": "Aucune zone avec fenêtre reconnue. Attribuez un capteur binaire ou un volet de classe Fenêtre à une zone.",
+      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -107,12 +109,12 @@
       },
       "areas": {
         "title": "Pièces",
-        "description": "Choisissez les pièces. Les capteurs intérieurs et contacts de fenêtre sont trouvés par zone Home Assistant. Seules les entités de classe Fenêtre sont utilisées.",
+        "description": "Seules les zones comportant des fenêtres détectées sont proposées, avec leur nombre. Les zones déjà sélectionnées sans fenêtre détectée sont signalées par ⚠ lors de la reconfiguration.",
         "data": {
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -192,7 +194,9 @@
       "missing_notify": "Activez Announcement Hub ou sélectionnez une notification.",
       "missing_tts": "Activez Announcement Hub ou sélectionnez un moteur TTS et un lecteur.",
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
-      "no_areas": "Sélectionnez au moins une zone."
+      "no_areas": "Sélectionnez au moins une zone.",
+      "no_window_areas": "Aucune zone avec fenêtre reconnue. Attribuez un capteur binaire ou un volet de classe Fenêtre à une zone.",
+      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
     }
   },
   "entity": {
