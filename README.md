@@ -1,11 +1,28 @@
+<p align="center">
+  <img src=".github/assets/air-quality-advisor-banner.jpg" alt="Air Quality Advisor — local window and ventilation advice" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://github.com/Chreece/HA-Air-Quality-Advisor/releases"><img src="https://img.shields.io/github/v/release/Chreece/HA-Air-Quality-Advisor?include_prereleases&amp;display_name=tag" alt="Release"></a>
+  <a href="https://www.hacs.xyz/"><img src="https://img.shields.io/badge/HACS-Custom%20Repository-41BDF5" alt="HACS"></a>
+  <a href="https://github.com/Chreece/HA-Air-Quality-Advisor/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-2aa198" alt="MIT license"></a>
+</p>
+
+<p align="center">
+  <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&amp;repository=HA-Air-Quality-Advisor&amp;category=integration">
+    <img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open in HACS">
+  </a>
+</p>
+
 # Air Quality Advisor for Home Assistant
 
 **One recommendation entity for all the rooms you select.** It compares indoor CO₂, AQI, particles, VOCs and humidity against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
 
-[![HACS custom repository](https://img.shields.io/badge/HACS-Custom%20Repository-41BDF5)](https://www.hacs.xyz/docs/use/repositories/type/integration/)
-[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-blue)](https://www.home-assistant.io/)
-
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
+
+<p align="center">
+  <img src=".github/assets/how-it-works.svg" alt="Air quality, weather and warning sensors feed one window recommendation entity and optional announcement outputs" width="100%">
+</p>
 
 ## What it provides
 
@@ -19,7 +36,7 @@
 
 ## Installation
 
-### HACS (after publishing the repository)
+### HACS (custom repository)
 
 1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Air-Quality-Advisor` and choose **Integration**.
 2. Install **Air Quality Advisor**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**.
@@ -74,6 +91,11 @@ Sensor values are normalised to the units above. Outdoor temperatures from weath
 A `cover` with the `window` device class is recognized as open/closed, but the integration **never calls** `cover.open_cover` or `cover.close_cover`. Other sensors (door/motion/etc.) are intentionally not treated as windows. When a selected outside sensor is missing/unavailable/unsupported or a warning cannot be interpreted reliably, safe opening cannot be asserted.
 
 ## The one sensor
+
+<p align="center">
+  <img src=".github/assets/recommendation-preview.svg" alt="Illustrated recommendation for closing a window during a weather warning" width="100%">
+</p>
+
 
 Typical state when CO₂ is high but outdoor air and weather are good:
 
@@ -144,6 +166,14 @@ bash ./publish.sh
 - Advisory window names/rooms depend on HA registry assignments. If window contacts are missing, a recommendation cannot name a window.
 - Direct TTS is a standard `tts.speak` call and may interrupt the chosen media player; use Announcement Hub for its queued/synchronized room audio policies.
 - Dynamic Home Assistant environment tests (config flow and live TTS/notifications) require a Home Assistant instance; the included automated tests cover the pure policy, not all integrations/providers.
+
+## Compatibility and release readiness
+
+**Home Assistant 2026.10+** is the declared minimum. The integration ships its own brand files under `custom_components/air_quality_advisor/brand` for Home Assistant 2026.3+ and keeps HACS-compatible assets at repository level. HACS can install directly from the default branch without a formal GitHub release. Automated tests pass locally; the `Validate (manual only)` workflow offers HACS and Hassfest checks. Please validate the configuration UI and real TTS/notification outputs in a live HA instance before labeling this a stable release. See [CHANGELOG](CHANGELOG.md) and [RELEASING](RELEASING.md).
+
+## Support the development
+
+<a href="https://ko-fi.com/chreece"><img src=".github/assets/ko-fi-banner.svg" alt="Support Chreece on Ko-fi" width="500"></a>
 
 ## License
 
