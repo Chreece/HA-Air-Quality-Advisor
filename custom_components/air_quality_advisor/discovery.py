@@ -112,8 +112,8 @@ def supported_metric(hass: HomeAssistant, state: State, *, outdoor: bool) -> str
     if metric not in (SUPPORTED_AIR_METRICS if outdoor else INDOOR_METRICS):
         return None
     unit = state.attributes.get("unit_of_measurement")
-    # Unknown readings can remain in the list if device_class declares a valid
-    # metric and units are consistent; evaluated readings then fail closed.
+    # Missing readings remain selectable with compatible metric and units;
+    # evaluation treats them as neutral and reports incomplete inputs.
     return metric if _normalize(metric, 1.0, unit) is not None else None
 
 
@@ -205,17 +205,12 @@ def weather(hass: HomeAssistant, entity_id: str, max_age_minutes: float) -> Weat
 
 
 def is_window(hass: HomeAssistant, state: State) -> bool:
-    return (
-        (state.domain == "binary_sensor" or state.domain == "cover")
-        and _device_class(hass, state) == "window"
-    )
+    """Only window contacts count: exclude all covers, even Window-class."""
+    return state.domain == "binary_sensor" and _device_class(hass, state) == "window"
 
 
 def _window_opened(state: State) -> bool | None:
-    value = state.state.casefold()
-    if state.domain == "binary_sensor":
-        return True if value == "on" else False if value == "off" else None
-    return True if value in ("open", "opening", "closing") else False if value == "closed" else None
+    return True if state.state == "on" else False if state.state == "off" else None
 
 
 def rooms(
@@ -251,9 +246,9 @@ def window_area_choices(
 ) -> list[dict[str, str]]:
     """Suggest only areas with recognized windows; retain old selections in Options.
 
-    A window must use the ``window`` device class on a binary sensor or
-    cover, and its actual HA area is resolved through the entity's override
-    or its device. No naming guesses, including room-name suffixes, are used.
+    A window must be a ``binary_sensor`` with device class ``window``.
+    Covers never count. Areas use entity overrides or device assignments;
+    names and guessed room suffixes are not used.
 
     Existing selections with temporarily removed/disabled windows remain
     selectable so editing an unrelated setting never silently loses rooms.
