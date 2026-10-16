@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import probatio
 
+from homeassistant.components.frontend import add_extra_js_url
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
@@ -17,7 +20,15 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
+    """Serve and register the card once; installation needs no www copy/YAML."""
     hass.data.setdefault(DOMAIN, {})
+    card_path = Path(__file__).parent / "frontend" / "air-quality-advisor-card.js"
+    await hass.http.async_register_static_paths([
+        StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
+    ])
+    # This is a native HA frontend registration, not a Lovelace storage mutation.
+    # Pin the cache key to the integration version so HACS updates refresh the JS.
+    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.1.3")
     return True
 
 
