@@ -4,12 +4,12 @@
     "step": {
       "areas": {
         "title": "Bereiche",
-        "description": "Wähle alle Räume aus. Innenluftsensoren und Fensterkontakte werden anhand ihrer Home-Assistant-Bereiche automatisch erkannt. Nur Entitäten mit Geräteklasse „Fenster“ werden empfohlen.",
+        "description": "Es werden nur Bereiche mit erkannten Fensterkontakten oder Fenster-Abdeckungen vorgeschlagen. Die Anzahl der Fenster steht neben dem Bereich. Bereits ausgewählte Bereiche ohne erkennbares Fenster sind bei der Neukonfiguration mit ⚠ markiert.",
         "data": {
           "areas": "Zu überwachende Bereiche"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -89,7 +89,9 @@
       "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
       "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
       "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
-      "no_areas": "Mindestens einen Bereich auswählen."
+      "no_areas": "Mindestens einen Bereich auswählen.",
+      "no_window_areas": "Keine Bereiche mit erkannten Fenstern gefunden. Weise einem Bereich einen Binärsensor oder ein Cover mit Geräteklasse Fenster zu.",
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -107,12 +109,12 @@
       },
       "areas": {
         "title": "Bereiche",
-        "description": "Wähle alle Räume aus. Innenluftsensoren und Fensterkontakte werden anhand ihrer Home-Assistant-Bereiche automatisch erkannt. Nur Entitäten mit Geräteklasse „Fenster“ werden empfohlen.",
+        "description": "Es werden nur Bereiche mit erkannten Fensterkontakten oder Fenster-Abdeckungen vorgeschlagen. Die Anzahl der Fenster steht neben dem Bereich. Bereits ausgewählte Bereiche ohne erkennbares Fenster sind bei der Neukonfiguration mit ⚠ markiert.",
         "data": {
           "areas": "Zu überwachende Bereiche"
         },
         "data_description": {
-          "areas": "Multi-select. Entities must be assigned to areas in Home Assistant."
+          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
         }
       },
       "outdoor": {
@@ -192,7 +194,9 @@
       "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
       "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
       "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
-      "no_areas": "Mindestens einen Bereich auswählen."
+      "no_areas": "Mindestens einen Bereich auswählen.",
+      "no_window_areas": "Keine Bereiche mit erkannten Fenstern gefunden. Weise einem Bereich einen Binärsensor oder ein Cover mit Geräteklasse Fenster zu.",
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar."
     }
   },
   "entity": {
