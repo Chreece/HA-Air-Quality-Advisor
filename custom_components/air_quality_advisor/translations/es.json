@@ -4,22 +4,22 @@
     "step": {
       "areas": {
         "title": "Áreas",
-        "description": "Solo se sugieren áreas con ventanas detectadas, indicando su cantidad. Las áreas elegidas anteriormente sin ventanas detectables se marcan con ⚠ al reconfigurar.",
+        "description": "En la configuración inicial se preseleccionan las áreas con sensores binarios de clase Ventana. No se incluyen covers. Al reconfigurar se conservan las selecciones existentes y las áreas sin contacto se marcan con ⚠.",
         "data": {
           "areas": "Áreas supervisadas"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Calidad del aire exterior",
-        "description": "Selecciona los sensores exteriores compatibles con unidades conocidas. Todos deben estar disponibles y dentro de los límites para recomendar abrir.",
+        "description": "Selecciona sensores exteriores compatibles. Una lectura válida por encima del límite bloquea la ventilación. Las lecturas desconocidas, antiguas o no disponibles son neutrales y se muestran como datos incompletos.",
         "data": {
           "outdoor_sensors": "Sensores de aire exterior"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -90,7 +90,7 @@
       "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
       "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
       "no_areas": "Selecciona al menos un área.",
-      "no_window_areas": "No se detectaron áreas con ventanas. Asigna un sensor binario o una cubierta de clase Ventana a un área de Home Assistant.",
+      "no_window_areas": "No se encontraron contactos de ventana. Asigna un sensor binario de clase Ventana a un área; los covers no cuentan.",
       "invalid_areas": "Un área ya no está disponible como área con ventanas."
     },
     "abort": {
@@ -109,22 +109,22 @@
       },
       "areas": {
         "title": "Áreas",
-        "description": "Solo se sugieren áreas con ventanas detectadas, indicando su cantidad. Las áreas elegidas anteriormente sin ventanas detectables se marcan con ⚠ al reconfigurar.",
+        "description": "En la configuración inicial se preseleccionan las áreas con sensores binarios de clase Ventana. No se incluyen covers. Al reconfigurar se conservan las selecciones existentes y las áreas sin contacto se marcan con ⚠.",
         "data": {
           "areas": "Áreas supervisadas"
         },
         "data_description": {
-          "areas": "Only areas with Window-class contacts or covers are suggested. The number of windows appears beside each area; ⚠ marks a previously selected area with no currently detected window."
+          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
         "title": "Calidad del aire exterior",
-        "description": "Selecciona los sensores exteriores compatibles con unidades conocidas. Todos deben estar disponibles y dentro de los límites para recomendar abrir.",
+        "description": "Selecciona sensores exteriores compatibles. Una lectura válida por encima del límite bloquea la ventilación. Las lecturas desconocidas, antiguas o no disponibles son neutrales y se muestran como datos incompletos.",
         "data": {
           "outdoor_sensors": "Sensores de aire exterior"
         },
         "data_description": {
-          "outdoor_sensors": "Choose only genuine outdoor sensors. Every selected reading must be fresh and good."
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
         }
       },
       "weather": {
@@ -195,7 +195,7 @@
       "missing_tts": "Activa Announcement Hub o selecciona un motor TTS y reproductor.",
       "temperature_range": "La temperatura mínima debe ser inferior a la máxima.",
       "no_areas": "Selecciona al menos un área.",
-      "no_window_areas": "No se detectaron áreas con ventanas. Asigna un sensor binario o una cubierta de clase Ventana a un área de Home Assistant.",
+      "no_window_areas": "No se encontraron contactos de ventana. Asigna un sensor binario de clase Ventana a un área; los covers no cuentan.",
       "invalid_areas": "Un área ya no está disponible como área con ventanas."
     }
   },
