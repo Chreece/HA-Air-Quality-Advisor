@@ -21,3 +21,21 @@ def test_all_languages_have_usable_area_picker_error_messages():
         assert doc["options"]["step"]["areas"]["data"]["areas"]
         assert "no_window_areas" in doc["config"]["error"]
         assert "invalid_areas" in doc["options"]["error"]
+
+
+def test_exclusion_selector_is_translated_for_setup_and_options():
+    for name in ("strings.json", "translations/en.json", "translations/de.json",
+                 "translations/el.json", "translations/fr.json", "translations/es.json"):
+        document = json.loads((DOMAIN / name).read_text())
+        assert document["config"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
+        assert document["options"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
+        assert "window_sensors" in document["options"]["step"]["init"]["menu_options"]
+        assert "invalid_window_exclusions" in document["config"]["error"]
+
+
+def test_runtime_exclusions_are_applied_before_window_recommendations():
+    from custom_components.air_quality_advisor.const import CONF_EXCLUDED_WINDOWS
+    source = (DOMAIN / "manager.py").read_text()
+    assert "excluded_entities=selected_outdoor | set(config.get(CONF_EXCLUDED_WINDOWS, []))" in source
+    assert CONF_EXCLUDED_WINDOWS == "excluded_window_entities"
+    assert "excluded_window_entities" in (DOMAIN / "sensor.py").read_text()

@@ -2,6 +2,16 @@
   "title": "Air Quality Advisor",
   "config": {
     "step": {
+      "window_sensors": {
+        "title": "Window sensor exclusions",
+        "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
+        "data": {
+          "excluded_window_entities": "Window entities to exclude"
+        },
+        "data_description": {
+          "excluded_window_entities": "The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all."
+        }
+      },
       "areas": {
         "title": "Areas",
         "description": "Areas with Window-class binary sensors are preselected during initial setup; covers are excluded. The detected window count appears beside each area. In reconfiguration, your existing selection is preserved, and areas with missing contacts are marked ⚠.",
@@ -9,7 +19,7 @@
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -91,7 +101,8 @@
       "temperature_range": "The minimum temperature must be lower than the maximum.",
       "no_areas": "Select at least one area.",
       "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area."
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -102,9 +113,19 @@
       "init": {
         "title": "Air Quality Advisor",
         "menu_options": {
-          "areas": "Areas / Outdoor air quality / Weather and warnings",
+          "window_sensors": "Window sensor exclusions / Areas / Outdoor air quality / Weather and warnings",
           "delivery": "Announcements (optional)",
           "thresholds": "Advanced thresholds"
+        }
+      },
+      "window_sensors": {
+        "title": "Window sensor exclusions",
+        "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
+        "data": {
+          "excluded_window_entities": "Window entities to exclude"
+        },
+        "data_description": {
+          "excluded_window_entities": "The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all."
         }
       },
       "areas": {
@@ -114,7 +135,7 @@
           "areas": "Areas to monitor"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -196,7 +217,8 @@
       "temperature_range": "The minimum temperature must be lower than the maximum.",
       "no_areas": "Select at least one area.",
       "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area."
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list."
     }
   },
   "entity": {

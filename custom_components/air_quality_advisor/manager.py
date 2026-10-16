@@ -15,6 +15,7 @@ from homeassistant.helpers.event import async_call_later, async_track_time_inter
 
 from .const import (
     ANNOUNCE_COOLDOWN_SECONDS, ANNOUNCE_OPEN_STABLE_SECONDS, CONF_AREAS,
+    CONF_EXCLUDED_WINDOWS,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_LANGUAGE,
     CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
@@ -68,7 +69,7 @@ class AirQualityManager:
         selected_outdoor = set(config.get(CONF_OUTDOOR, []))
         selected_rooms = rooms(
             self.hass, config.get(CONF_AREAS, []), max_age,
-            excluded_entities=selected_outdoor,
+            excluded_entities=selected_outdoor | set(config.get(CONF_EXCLUDED_WINDOWS, [])),
         )
         self._tracked = (
             selected_outdoor

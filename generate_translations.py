@@ -81,6 +81,51 @@ lang['es'] = {
  'service':'Anunciar recomendaciones de aire', 'service_description':'Comunicar ventanas y razones por voz o notificación, con idioma por acción.',
  'service_fields':{'language':'Idioma del mensaje', 'channels':'Canales de salida', 'areas':'Solo estas áreas (opcional)'},
 }
+# Dedicated window-contact review precedes area discovery. The picker includes
+# every Window-class binary sensor, while only likely virtual/auxiliary signals
+# are suggested for exclusion. Users remain authoritative.
+window_exclusion_text = {
+ 'en': (
+  'Window sensor exclusions',
+  'Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.',
+  'Window entities to exclude',
+  'The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all.',
+  'One or more excluded entities are no longer in the list.'
+ ),
+ 'de': (
+  'Fenstersensoren ausschließen',
+  'Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.',
+  'Auszuschließende Fenster-Entitäten',
+  'Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt.',
+  'Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.'
+ ),
+ 'el': (
+  'Εξαίρεση αισθητήρων παραθύρων',
+  'Έλεγξε όλους τους δυαδικούς αισθητήρες κατηγορίας «Παράθυρο». Το ⚠ δείχνει πιθανές εικονικές ή βοηθητικές ενδείξεις (π.χ. ανίχνευση ανοιχτού παραθύρου θερμοστάτη), προεπιλεγμένες για εξαίρεση. Αποεπίλεξε οποιαδήποτε πραγματική επαφή παραθύρου. Οι επιλογές σου διατηρούνται.',
+  'Οντότητες παραθύρων προς εξαίρεση',
+  'Εμφανίζονται όλοι οι αισθητήρες με χώρο και αναγνωριστικό οντότητας. Οι επιλεγμένοι αγνοούνται στους χώρους, στις συστάσεις και στον πίνακα. Κενή επιλογή σημαίνει καμία εξαίρεση.',
+  'Μία ή περισσότερες εξαιρούμενες οντότητες δεν είναι διαθέσιμες στη λίστα.'
+ ),
+ 'fr': (
+  'Exclure des capteurs de fenêtre',
+  'Vérifiez les capteurs binaires de classe Fenêtre. ⚠ signale les indicateurs probablement virtuels ou auxiliaires (p. ex. détection de fenêtre ouverte d’un thermostat), présélectionnés pour exclusion. Décochez les véritables contacts. Vos choix sont conservés.',
+  'Entités de fenêtre à exclure',
+  'Tous les capteurs de fenêtre, avec leur pièce et leur identifiant. Les entités sélectionnées sont ignorées dans les pièces, recommandations et le tableau de bord. Une sélection vide conserve tous les capteurs.',
+  'Une ou plusieurs entités exclues ne figurent plus dans la liste.'
+ ),
+ 'es': (
+  'Excluir sensores de ventana',
+  'Revisa los sensores binarios de clase Ventana. ⚠ indica señales probablemente virtuales o auxiliares (como detección de ventana abierta de un termostato), preseleccionadas para excluir. Desmarca cualquier contacto real. Tus elecciones se guardan.',
+  'Entidades de ventana que se excluyen',
+  'Se muestran todos los sensores con su área e ID. Los seleccionados no cuentan en áreas, recomendaciones ni panel. Sin selección se incluyen todos.',
+  'Una o más entidades excluidas ya no aparecen entre las opciones.'
+ ),
+}
+for language, copy in window_exclusion_text.items():
+ lang[language]['steps'].insert(0, copy[:3])
+ lang[language]['fields']['excluded_window_entities'] = copy[2]
+ lang[language]['errors']['invalid_window_exclusions'] = copy[4]
+
 threshold_labels = {
  'outdoor_aqi':'Maximum outdoor AQI', 'outdoor_co2':'Maximum outdoor CO₂ (ppm)',
  'outdoor_pm25':'Maximum outdoor PM2.5 (µg/m³)', 'outdoor_pm10':'Maximum outdoor PM10 (µg/m³)',
@@ -95,19 +140,20 @@ threshold_labels = {
  'max_outdoor_humidity':'Maximum outdoor humidity (%)', 'max_wind_kmh':'Maximum wind speed (km/h)',
  'max_age_minutes':'Maximum age of any outdoor reading (minutes)',
 }
-fields = ['areas','outdoor_sensors','weather_entities','language']
-stepids = ['areas','outdoor','weather','delivery','thresholds']
+fields = ['excluded_window_entities','areas','outdoor_sensors','weather_entities','language']
+stepids = ['window_sensors','areas','outdoor','weather','delivery','thresholds']
 for code,v in lang.items():
  steps = {}
  for i, sid in enumerate(stepids):
   name, desc, primary = v['steps'][i]
-  stepdata = {fields[i]:primary} if i < 4 else threshold_labels
+  stepdata = {fields[i]:primary} if i < 5 else threshold_labels
   if sid=='weather':stepdata['weather_warnings']=v['fields']['weather_warnings']
   if sid=='delivery':stepdata = {key:v['fields'][key] for key in ['language','automatic_tts','automatic_notifications','use_announcement_hub','notify_entities','tts_engine','media_players']}
   steps[sid] = {'title':name,'description':desc,'data':stepdata}
-  if sid in ('areas','outdoor','weather','delivery'):
+  if sid in ('window_sensors','areas','outdoor','weather','delivery'):
    helps = {
-    'areas':'Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact.',
+    'excluded_window_entities':window_exclusion_text[code][3],
+    'areas':'Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact.',
     'outdoor_sensors':'Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe.',
     'weather_entities':'At least one weather provider. Rain, storms and extreme wind/temperature block opening.',
     'weather_warnings':'Optional. Active and unavailable selected warnings block window opening.',
@@ -127,9 +173,9 @@ for code,v in lang.items():
      'init':{
        'title':v['title'],
        'menu_options':{
-         'areas':v['steps'][0][0]+' / '+v['steps'][1][0]+' / '+v['steps'][2][0],
-         'delivery':v['steps'][3][0],
-         'thresholds':v['steps'][4][0],
+         'window_sensors':v['steps'][0][0]+' / '+v['steps'][1][0]+' / '+v['steps'][2][0]+' / '+v['steps'][3][0],
+         'delivery':v['steps'][4][0],
+         'thresholds':v['steps'][5][0],
        },
      },
      **steps,

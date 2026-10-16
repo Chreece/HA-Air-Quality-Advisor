@@ -112,8 +112,9 @@ def supported_metric(hass: HomeAssistant, state: State, *, outdoor: bool) -> str
     if metric not in (SUPPORTED_AIR_METRICS if outdoor else INDOOR_METRICS):
         return None
     unit = state.attributes.get("unit_of_measurement")
-    # Missing readings remain selectable with compatible metric and units;
-    # evaluation treats them as neutral and reports incomplete inputs.
+    # Unknown/unavailable states can remain in the picker when their device
+    # class and units are supported. Evaluation treats missing values as neutral
+    # and exposes them separately as incomplete data.
     return metric if _normalize(metric, 1.0, unit) is not None else None
 
 
@@ -204,8 +205,106 @@ def weather(hass: HomeAssistant, entity_id: str, max_age_minutes: float) -> Weat
     )
 
 
+# Automatic *suggestions*, not hard exclusions: a window device class describes
+# on/off semantics, not whether the signal comes from a physical window contact.
+# Window detection inferred by HVAC devices is common and should be reviewed.
+_VIRTUAL_WINDOW_LABEL = re.compile(
+    r"(?:\b(?:window|fenster|ventana|fenêtre|παράθυρ\w*)\b.{0,35}"
+    r"\b(?:detection|detected|recognition|simulation|virtual|prediction|alarm|warning|"
+    r"erkennung|erkannt|simulation|détection|détectée?|detecci[oó]n|simulado|"
+    r"ανίχνευσ\w*|προσομοίωσ\w*)\b)"
+    r"|(?:\b(?:open|offen|abierta?|ouverte?|ανοιχτ\w*)\b.{0,20}"
+    r"\b(?:window|fenster|ventana|fenêtre|παράθυρ\w*)\b.{0,30}"
+    r"\b(?:detect\w*|erkannt|erkennung|détect\w*|detectad\w*|ανίχνευσ\w*)\b)"
+    r"|(?:\b(?:detection|detected|erkennung|erkannt|détection|detecci[oó]n|"
+    r"ανίχνευσ\w*)\b.{0,35}\b(?:window|fenster|ventana|fenêtre|παράθυρ\w*)\b)",
+    re.IGNORECASE,
+)
+_HVAC_LABEL = re.compile(
+    r"\b(?:thermostat|thermostatkopf|trv|radiator|hvac|heizkörper|"
+    r"heizungsregler|heizkörperthermostat|heating valve|chauffage|"
+    r"termostato|termostática|θερμοστάτ\w*)\b", re.IGNORECASE
+)
+
+
+def suggested_window_exclusions(hass: HomeAssistant) -> set[str]:
+    """Suggest auxiliary/derived window signals, never silently enforce them.
+
+    This intentionally uses only high-signal clues. A generic entity named
+    'Bedroom window' stays enabled. Physical/virtual cannot always be proven
+    from HA metadata, so every choice remains user-editable and persistent.
+    """
+    states = hass.states.async_all()
+    registry = er.async_get(hass)
+    devices = dr.async_get(hass)
+    climate_devices = {
+        entry.device_id for state in states if state.domain == "climate"
+        if (entry := registry.async_get(state.entity_id)) is not None
+        and getattr(entry, "device_id", None)
+    }
+    recommended: set[str] = set()
+    for state in states:
+        if not is_window(hass, state):
+            continue
+        entry = registry.async_get(state.entity_id)
+        raw_category = (
+            (getattr(entry, "entity_category", None) if entry else None)
+            or state.attributes.get("entity_category") or ""
+        )
+        category = str(getattr(raw_category, "value", raw_category)).casefold()
+        if category in ("diagnostic", "config"):
+            recommended.add(state.entity_id)
+            continue
+        label = " ".join(str(value or "") for value in (
+            state.entity_id.replace("_", " "), state.name,
+            getattr(entry, "name", None) if entry else None,
+            getattr(entry, "original_name", None) if entry else None,
+        ))
+        if _VIRTUAL_WINDOW_LABEL.search(label) or _HVAC_LABEL.search(label):
+            recommended.add(state.entity_id)
+            continue
+        device_id = getattr(entry, "device_id", None) if entry else None
+        if device_id and device_id in climate_devices:
+            recommended.add(state.entity_id)
+            continue
+        device = devices.async_get(device_id) if device_id else None
+        device_name = " ".join(str(value or "") for value in (
+            getattr(device, "name", None), getattr(device, "name_by_user", None),
+            getattr(device, "model", None),
+        )) if device else ""
+        if device_name and _HVAC_LABEL.search(device_name):
+            recommended.add(state.entity_id)
+    return recommended
+
+
+def window_exclusion_choices(
+    hass: HomeAssistant, previously_selected: list[str] | None = None
+) -> list[dict[str, str]]:
+    """Offer all Window-class binary sensors, with area/name/ID for review."""
+    areas = ar.async_get(hass)
+    suggested = suggested_window_exclusions(hass)
+    choices = []
+    seen: set[str] = set()
+    for state in hass.states.async_all("binary_sensor"):
+        if not is_window(hass, state):
+            continue
+        entity_id = state.entity_id
+        seen.add(entity_id)
+        area_id = entity_area(hass, entity_id)
+        area = areas.async_get_area(area_id) if area_id else None
+        area_name = area.name if area else "—"
+        label = f"{state.name or entity_id} · {area_name} · {entity_id}"
+        choices.append({"value": entity_id, "label": ("⚠ " if entity_id in suggested else "") + label})
+    # Keep saved exclusions if an entity is currently missing/renamed. It can
+    # still be deselected, and will not be dropped by unrelated reconfiguration.
+    for entity_id in previously_selected or []:
+        if entity_id not in seen and entity_id.startswith("binary_sensor."):
+            choices.append({"value": entity_id, "label": f"⚠ {entity_id}"})
+    return sorted(choices, key=lambda item: (item["label"].lstrip("⚠ ").casefold(), item["value"]))
+
+
 def is_window(hass: HomeAssistant, state: State) -> bool:
-    """Only window contacts count: exclude all covers, even Window-class."""
+    """Recognize only physical window contacts, never motorized covers."""
     return state.domain == "binary_sensor" and _device_class(hass, state) == "window"
 
 
@@ -225,9 +324,11 @@ def rooms(
         area = entity_area(hass, state.entity_id)
         if area not in by_area_windows:
             continue
+        if state.entity_id in excluded_entities:
+            continue
         if is_window(hass, state):
             by_area_windows[area].append(Window(state.entity_id, state.name or state.entity_id, _window_opened(state)))
-        elif state.entity_id not in excluded_entities and supported_metric(hass, state, outdoor=False):
+        elif supported_metric(hass, state, outdoor=False):
             by_area_readings[area].append(reading(hass, state.entity_id, max_age_minutes, outdoor=False))
 
     return tuple(
@@ -242,21 +343,23 @@ def rooms(
 
 
 def window_area_choices(
-    hass: HomeAssistant, previously_selected: list[str] | None = None
+    hass: HomeAssistant, previously_selected: list[str] | None = None,
+    excluded_entities: set[str] | None = None,
 ) -> list[dict[str, str]]:
     """Suggest only areas with recognized windows; retain old selections in Options.
 
-    A window must be a ``binary_sensor`` with device class ``window``.
-    Covers never count. Areas use entity overrides or device assignments;
-    names and guessed room suffixes are not used.
+    A window must be a ``binary_sensor`` with the ``window`` device class.
+    Covers are never treated as window contacts, even with that device class.
+    Areas come from entity overrides or device assignments, not name guesses.
 
     Existing selections with temporarily removed/disabled windows remain
     selectable so editing an unrelated setting never silently loses rooms.
     """
     registry = ar.async_get(hass)
+    excluded_entities = excluded_entities or set()
     counts: Counter[str] = Counter()
     for state in hass.states.async_all():
-        if not is_window(hass, state):
+        if state.entity_id in excluded_entities or not is_window(hass, state):
             continue
         area_id = entity_area(hass, state.entity_id)
         if area_id and registry.async_get_area(area_id) is not None:

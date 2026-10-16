@@ -5,6 +5,7 @@ NAME = "Air Quality Advisor"
 PLATFORMS = ["sensor"]
 
 CONF_AREAS = "areas"
+CONF_EXCLUDED_WINDOWS = "excluded_window_entities"
 CONF_OUTDOOR = "outdoor_sensors"
 CONF_WEATHER = "weather_entities"
 CONF_WARNINGS = "weather_warnings"

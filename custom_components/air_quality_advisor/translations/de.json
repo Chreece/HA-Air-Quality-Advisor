@@ -2,6 +2,16 @@
   "title": "Luftqualitätsberater",
   "config": {
     "step": {
+      "window_sensors": {
+        "title": "Fenstersensoren ausschließen",
+        "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
+        "data": {
+          "excluded_window_entities": "Auszuschließende Fenster-Entitäten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt."
+        }
+      },
       "areas": {
         "title": "Bereiche",
         "description": "Bei der Ersteinrichtung werden Bereiche mit Binärsensoren der Geräteklasse Fenster vorausgewählt. Cover zählen nicht. Bestehende Auswahlen bleiben bei Änderungen erhalten; fehlende Fensterkontakte erscheinen mit ⚠.",
@@ -9,7 +19,7 @@
           "areas": "Zu überwachende Bereiche"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -91,7 +101,8 @@
       "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
       "no_areas": "Mindestens einen Bereich auswählen.",
       "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
-      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar."
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -102,9 +113,19 @@
       "init": {
         "title": "Luftqualitätsberater",
         "menu_options": {
-          "areas": "Bereiche / Außenluftqualität / Wetter und Warnungen",
+          "window_sensors": "Fenstersensoren ausschließen / Bereiche / Außenluftqualität / Wetter und Warnungen",
           "delivery": "Ansagen (optional)",
           "thresholds": "Erweiterte Grenzwerte"
+        }
+      },
+      "window_sensors": {
+        "title": "Fenstersensoren ausschließen",
+        "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
+        "data": {
+          "excluded_window_entities": "Auszuschließende Fenster-Entitäten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt."
         }
       },
       "areas": {
@@ -114,7 +135,7 @@
           "areas": "Zu überwachende Bereiche"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -196,7 +217,8 @@
       "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
       "no_areas": "Mindestens einen Bereich auswählen.",
       "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
-      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar."
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar."
     }
   },
   "entity": {

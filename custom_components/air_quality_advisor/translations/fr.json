@@ -2,6 +2,16 @@
   "title": "Conseiller qualité de l’air",
   "config": {
     "step": {
+      "window_sensors": {
+        "title": "Exclure des capteurs de fenêtre",
+        "description": "Vérifiez les capteurs binaires de classe Fenêtre. ⚠ signale les indicateurs probablement virtuels ou auxiliaires (p. ex. détection de fenêtre ouverte d’un thermostat), présélectionnés pour exclusion. Décochez les véritables contacts. Vos choix sont conservés.",
+        "data": {
+          "excluded_window_entities": "Entités de fenêtre à exclure"
+        },
+        "data_description": {
+          "excluded_window_entities": "Tous les capteurs de fenêtre, avec leur pièce et leur identifiant. Les entités sélectionnées sont ignorées dans les pièces, recommandations et le tableau de bord. Une sélection vide conserve tous les capteurs."
+        }
+      },
       "areas": {
         "title": "Pièces",
         "description": "À la première configuration, les zones dotées de capteurs binaires de classe Fenêtre sont présélectionnées. Les covers sont exclus. Les sélections existantes sont conservées ; les zones sans contact sont marquées ⚠.",
@@ -9,7 +19,7 @@
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -91,7 +101,8 @@
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
       "no_areas": "Sélectionnez au moins une zone.",
       "no_window_areas": "Aucun contact de fenêtre détecté. Attribuez un capteur binaire de classe Fenêtre à une zone ; les covers sont exclus.",
-      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
+      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre.",
+      "invalid_window_exclusions": "Une ou plusieurs entités exclues ne figurent plus dans la liste."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -102,9 +113,19 @@
       "init": {
         "title": "Conseiller qualité de l’air",
         "menu_options": {
-          "areas": "Pièces / Qualité de l’air extérieur / Météo et alertes",
+          "window_sensors": "Exclure des capteurs de fenêtre / Pièces / Qualité de l’air extérieur / Météo et alertes",
           "delivery": "Annonces (facultatif)",
           "thresholds": "Seuils avancés"
+        }
+      },
+      "window_sensors": {
+        "title": "Exclure des capteurs de fenêtre",
+        "description": "Vérifiez les capteurs binaires de classe Fenêtre. ⚠ signale les indicateurs probablement virtuels ou auxiliaires (p. ex. détection de fenêtre ouverte d’un thermostat), présélectionnés pour exclusion. Décochez les véritables contacts. Vos choix sont conservés.",
+        "data": {
+          "excluded_window_entities": "Entités de fenêtre à exclure"
+        },
+        "data_description": {
+          "excluded_window_entities": "Tous les capteurs de fenêtre, avec leur pièce et leur identifiant. Les entités sélectionnées sont ignorées dans les pièces, recommandations et le tableau de bord. Une sélection vide conserve tous les capteurs."
         }
       },
       "areas": {
@@ -114,7 +135,7 @@
           "areas": "Zones à surveiller"
         },
         "data_description": {
-          "areas": "Window-class binary sensors only; covers are excluded. New setups preselect all detected areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
+          "areas": "Window-class binary sensors only; covers and selected exclusions are ignored. New setups preselect qualifying areas; existing selections are preserved when reconfiguring. ⚠ marks a missing contact."
         }
       },
       "outdoor": {
@@ -196,7 +217,8 @@
       "temperature_range": "La température minimale doit être inférieure à la maximale.",
       "no_areas": "Sélectionnez au moins une zone.",
       "no_window_areas": "Aucun contact de fenêtre détecté. Attribuez un capteur binaire de classe Fenêtre à une zone ; les covers sont exclus.",
-      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre."
+      "invalid_areas": "Une zone n’est plus disponible parmi les zones avec fenêtre.",
+      "invalid_window_exclusions": "Une ou plusieurs entités exclues ne figurent plus dans la liste."
     }
   },
   "entity": {

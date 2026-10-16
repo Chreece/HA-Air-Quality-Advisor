@@ -29,6 +29,10 @@ class FakeHass:
     def __init__(self, values, entity_areas=None):
         self._values = {s.entity_id: s for s in values}
         self._entity_areas = entity_areas or {}
+        self._entity_details = {}
+        self._device_details = {}
+        self._entity_devices = {}
+        self._device_areas = {}
         self.states = SimpleNamespace(get=self._values.get, async_all=self._async_all)
 
     def _async_all(self, domain=None):
@@ -56,18 +60,23 @@ def adapter(monkeypatch):
         if name == "entity_registry":
             def entity_registry(hass):
                 def get(e):
-                    if e in hass._entity_areas or e in getattr(hass, "_entity_devices", {}):
+                    if (e in hass._entity_areas or e in hass._entity_devices
+                            or e in hass._entity_details):
                         return SimpleNamespace(
                             area_id=hass._entity_areas.get(e),
-                            device_id=getattr(hass, "_entity_devices", {}).get(e),
+                            device_id=hass._entity_devices.get(e),
+                            **hass._entity_details.get(e, {}),
                         )
                     return None
                 return SimpleNamespace(async_get=get)
             reg.async_get = entity_registry
         elif name == "device_registry":
             reg.async_get = lambda hass: SimpleNamespace(async_get=lambda device_id: (
-                SimpleNamespace(area_id=hass._device_areas[device_id])
-                if device_id in getattr(hass, "_device_areas", {}) else None
+                SimpleNamespace(
+                    area_id=hass._device_areas.get(device_id),
+                    **hass._device_details.get(device_id, {}),
+                ) if device_id in hass._device_areas or device_id in hass._device_details
+                else None
             ))
         else:
             reg.async_get = lambda hass: SimpleNamespace(async_get_area=lambda area: SimpleNamespace(name=area))
@@ -145,7 +154,6 @@ def test_quiet_warning_sensor_need_not_republish_off_every_hour(adapter):
     assert adapter.warning(home, "binary_sensor.weather_warning", 90).active is False
 
 
-
 def test_window_area_choices_only_contain_areas_with_recognized_windows(adapter):
     home = FakeHass([
         MockState("binary_sensor.living_window", "off", device_class="window", name="Living window"),
@@ -165,18 +173,15 @@ def test_window_area_choices_only_contain_areas_with_recognized_windows(adapter)
     assert "1" in choices[0]["label"]
 
 
-def test_window_class_cover_does_not_count_as_window(adapter):
+def test_window_cover_is_not_a_window_contact(adapter):
     home = FakeHass([
         MockState("cover.bedroom_window", "open", device_class="window"),
         MockState("binary_sensor.hall_window", "off", device_class="window"),
-    ], {
-        "cover.bedroom_window": "bedroom",
-        "binary_sensor.hall_window": "hall",
-    })
-    assert [choice["value"] for choice in adapter.window_area_choices(home)] == ["hall"]
+    ], {"cover.bedroom_window": "bedroom", "binary_sensor.hall_window": "hall"})
+    assert adapter.window_area_choices(home) == [{"value": "hall", "label": "hall · 1 🪟"}]
     scanned = adapter.rooms(home, ["bedroom", "hall"], 90)
     assert scanned[0].windows == ()
-    assert [window.entity_id for window in scanned[1].windows] == ["binary_sensor.hall_window"]
+    assert [w.entity_id for w in scanned[1].windows] == ["binary_sensor.hall_window"]
 
 
 def test_window_area_choices_use_device_area_when_entity_has_no_override(adapter):
@@ -203,3 +208,78 @@ def test_window_area_choices_empty_when_no_recognized_windows(adapter):
     home = FakeHass([MockState("binary_sensor.lounge_door", "off", device_class="door")],
                     {"binary_sensor.lounge_door": "lounge"})
     assert adapter.window_area_choices(home) == []
+
+
+def test_virtual_window_detector_default_suggestions_and_labels(adapter):
+    """Best effort: climate device, 'detected' labels, and diagnostics are hints."""
+    home = FakeHass([
+        MockState("binary_sensor.kitchen_window", "off", device_class="window", name="Kitchen Window"),
+        MockState("binary_sensor.bathroom_window", "off", device_class="window", name="Bath window"),
+        MockState("climate.bathroom_trv", "heat"),
+        MockState("binary_sensor.living_window_open_detected", "on", device_class="window"),
+        MockState("binary_sensor.bedroom_diagnostic", "off", device_class="window"),
+        MockState("cover.kitchen_window", "open", device_class="window"),
+    ], {
+        "binary_sensor.kitchen_window": "kitchen",
+        "binary_sensor.bathroom_window": "bath",
+        "binary_sensor.living_window_open_detected": "living",
+        "binary_sensor.bedroom_diagnostic": "bedroom",
+    })
+    home._entity_devices = {
+        "binary_sensor.bathroom_window": "heating_1", "climate.bathroom_trv": "heating_1",
+    }
+    home._entity_details["binary_sensor.bedroom_diagnostic"] = {"entity_category": "diagnostic"}
+    suggested = adapter.suggested_window_exclusions(home)
+    assert suggested == {
+        "binary_sensor.bathroom_window",
+        "binary_sensor.living_window_open_detected",
+        "binary_sensor.bedroom_diagnostic",
+    }
+    options = adapter.window_exclusion_choices(home)
+    assert len(options) == 4
+    assert all(" · " in option["label"] and option["value"] in option["label"] for option in options)
+    assert not any(option["value"].startswith("cover.") for option in options)
+    assert not next(option for option in options if option["value"] == "binary_sensor.kitchen_window")["label"].startswith("⚠")
+    assert next(option for option in options if option["value"] == "binary_sensor.bathroom_window")["label"].startswith("⚠")
+
+
+def test_thermostat_model_suggested_even_without_climate_entity(adapter):
+    home = FakeHass([MockState("binary_sensor.kitchen_window", "off", device_class="window")],
+                    {"binary_sensor.kitchen_window": "kitchen"})
+    home._entity_devices = {"binary_sensor.kitchen_window": "trv_dev"}
+    home._device_details = {"trv_dev": {"model": "TRV-100", "name": "Smart Radiator"}}
+    assert adapter.suggested_window_exclusions(home) == {"binary_sensor.kitchen_window"}
+
+
+def test_excluded_window_is_removed_from_area_count_rooms_and_recommendation(adapter):
+    from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
+    from custom_components.air_quality_advisor.dashboard import dashboard_snapshot
+    from custom_components.air_quality_advisor.logic import Reading, Weather, evaluate
+
+    fake = "binary_sensor.bathroom_window_detection"
+    real = "binary_sensor.living_real_window"
+    home = FakeHass([
+        MockState(fake, "on", device_class="window"),
+        MockState(real, "off", device_class="window"),
+        MockState("sensor.living_co2", "1400", device_class="co2", unit="ppm"),
+    ], {fake: "bathroom", real: "living", "sensor.living_co2": "living"})
+    excluded = {fake}
+    assert [opt["value"] for opt in adapter.window_area_choices(home, excluded_entities=excluded)] == ["living"]
+    parsed = adapter.rooms(home, ["bathroom", "living"], 90, excluded_entities=excluded)
+    assert parsed[0].windows == ()
+    assert [w.entity_id for w in parsed[1].windows] == [real]
+    plan = evaluate(
+        (Reading("sensor.out_pm25", "Outside", "pm25", 8),),
+        (Weather("weather.home", "sunny", 20, 50, 7),),
+        (), parsed, DEFAULT_THRESHOLDS,
+    )
+    assert all(fake not in (win.entity_id for win in rec.windows) for rec in plan.recommendations)
+    snap = dashboard_snapshot(plan, DEFAULT_THRESHOLDS)
+    assert snap["rooms"][0]["window_count"] == 0
+    assert snap["rooms"][1]["window_count"] == 1
+
+
+def test_previously_excluded_missing_sensor_stays_in_dropdown(adapter):
+    home = FakeHass([])
+    choices = adapter.window_exclusion_choices(home, ["binary_sensor.no_longer_available"])
+    assert choices == [{"value": "binary_sensor.no_longer_available", "label": "⚠ binary_sensor.no_longer_available"}]

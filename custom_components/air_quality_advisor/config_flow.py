@@ -13,12 +13,15 @@ from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_AREAS, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
+    CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN,
 )
-from .discovery import outdoor_choices, warning_choices, window_area_choices
+from .discovery import (
+    outdoor_choices, suggested_window_exclusions, warning_choices,
+    window_area_choices, window_exclusion_choices,
+)
 
 
 def _marker(name: str, default: Any = None, *, required: bool = False) -> probatio.Marker:
@@ -48,12 +51,55 @@ class _FlowMixin:
 
     _values: dict[str, Any]
 
+    async def async_step_window_sensors(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Review likely virtual window signals *before* suggesting room areas.
+
+        A saved empty exclusion list is intentional and must override all
+        heuristics when the user returns to Configure.
+        """
+        existing = self._values.get(CONF_EXCLUDED_WINDOWS)
+        choices = window_exclusion_choices(self.hass, existing)
+        allowed = {item["value"] for item in choices}
+        if existing is None:
+            defaults = [choice["value"] for choice in choices
+                        if choice["value"] in suggested_window_exclusions(self.hass)]
+        else:
+            defaults = list(existing)
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            selected = list(dict.fromkeys(user_input.get(CONF_EXCLUDED_WINDOWS, [])))
+            if any(entity_id not in allowed for entity_id in selected):
+                errors["base"] = "invalid_window_exclusions"
+            else:
+                self._values[CONF_EXCLUDED_WINDOWS] = selected
+                return await self.async_step_areas()
+        elif not choices:
+            # With no window contacts yet, the existing area page provides the
+            # actionable 'no_window_areas' error rather than an empty dropdown.
+            self._values.setdefault(CONF_EXCLUDED_WINDOWS, [])
+            return await self.async_step_areas()
+        return self.async_show_form(
+            step_id="window_sensors",
+            data_schema=probatio.Schema({
+                _marker(
+                    CONF_EXCLUDED_WINDOWS,
+                    user_input.get(CONF_EXCLUDED_WINDOWS, []) if user_input is not None else defaults,
+                ): _multi(choices),
+            }),
+            errors=errors,
+        )
+
     async def async_step_areas(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        # Initially preselect all rooms with window contacts. Keep explicitly
-        # chosen rooms on later reconfiguration instead of restoring deselections.
+        # On first setup suggest *and preselect* every area with a window
+        # contact. Reconfiguration must honour the user's stored choices,
+        # otherwise previously deselected rooms would be reintroduced.
         editing = getattr(self, "_editing", False)
         previous = self._values.get(CONF_AREAS, []) if editing else []
-        choices = window_area_choices(self.hass, previous)
+        choices = window_area_choices(
+            self.hass, previous, set(self._values.get(CONF_EXCLUDED_WINDOWS, []))
+        )
         known = {choice["value"] for choice in choices}
         default_areas = list(previous) if editing else [choice["value"] for choice in choices]
         errors: dict[str, str] = {}
@@ -212,7 +258,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         self._abort_if_unique_id_configured()
         self._editing = False
         self._values = {}
-        return await self.async_step_areas()
+        return await self.async_step_window_sensors()
 
     async def _finish(self) -> ConfigFlowResult:
         return self.async_create_entry(title="Air Quality Advisor", data=self._values)
@@ -230,7 +276,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         self._editing = True
         self._values = {**self.config_entry.data, **self.config_entry.options}
         return self.async_show_menu(
-            step_id="init", menu_options=["areas", "delivery", "thresholds"]
+            step_id="init", menu_options=["window_sensors", "delivery", "thresholds"]
         )
 
     async def _finish(self) -> ConfigFlowResult:

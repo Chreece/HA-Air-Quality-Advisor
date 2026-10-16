@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4 — Window sensor exclusions
+
+- Add an editable, multi-select **Window sensor exclusions** step to initial setup and reconfiguration before choosing monitored areas.
+- Preselect likely virtual/auxiliary window-class binary sensors, using thermostat/TRV associations, diagnostic metadata, and window-detection descriptions. Users can uncheck any suggestion or exclude other window-class sensors.
+- Honor saved choices, including an intentionally empty exclusion list, and retain temporarily missing excluded entities in configuration.
+- Apply exclusions to room discovery, window counts, opening/closing recommendations, announcements, and the dashboard. Covers continue to be ignored.
+- Keep existing config entries and entity IDs. Add regression tests and five setup translations.
+
 ## 0.1.3 — Dashboard card and live room overview
 
 - Move the existing Ko-fi banner directly below the project banner on GitHub.
