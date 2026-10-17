@@ -21,5 +21,11 @@ def test_release_notes_and_manifest_match_without_triggering_ci_on_commit():
     manifest = json.loads(
         (ROOT / "custom_components/air_quality_advisor/manifest.json").read_text()
     )
-    assert manifest["version"] == "0.2.3"
-    assert (ROOT / ".github/releases/v0.2.3.md").exists()
+    request = json.loads(
+        (ROOT / ".github/release-request.json").read_text(encoding="utf-8")
+    )
+    version = manifest["version"]
+    assert request["version"] == version
+    notes = ROOT / ".github" / "releases" / f"v{version}.md"
+    assert notes.is_file()
+    assert notes.stat().st_size > 200
