@@ -99,6 +99,12 @@ class AirQualityManager:
             weather(self.hass, ent, max_age) for ent in config.get(CONF_WEATHER, [])
         )
         mold_temperature_entities: set[str] = set()
+        # Preserve the exact set of supported, included humidity sensors
+        # before replacing them with the derived room mold indicator.
+        humidity_entities = {
+            item.entity_id for room in selected_rooms for item in room.readings
+            if item.metric == "humidity"
+        } if config.get(CONF_USE_MOLD, False) else set()
         if config.get(CONF_USE_MOLD, False):
             calibrations = config.get(CONF_MOLD_ROOMS, {})
             if not isinstance(calibrations, dict):
@@ -131,19 +137,11 @@ class AirQualityManager:
             | set(config.get(CONF_WEATHER, []))
             | set(config.get(CONF_WARNINGS, []))
             | mold_temperature_entities
-            | {s.entity_id for room in selected_rooms for s in (*room.windows, *room.readings)
-               if s.metric != "mold"}
+            | humidity_entities
+            | {window.entity_id for room in selected_rooms for window in room.windows}
+            | {item.entity_id for room in selected_rooms for item in room.readings
+               if item.metric != "mold"}
         )
-        # Mold mode must also track RH inputs that are hidden as raw metrics.
-        if config.get(CONF_USE_MOLD, False):
-            for state in self.hass.states.async_all("sensor"):
-                if (
-                    entity_area(self.hass, state.entity_id) in monitored_areas
-                    and state.entity_id not in excluded_indoor
-                    and state.entity_id not in selected_outdoor
-                    and state.attributes.get("device_class") == "humidity"
-                ):
-                    self._tracked.add(state.entity_id)
         return evaluate(
             tuple(reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)),
             current_weather,
