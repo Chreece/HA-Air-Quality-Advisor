@@ -7,6 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from test_discovery import adapter  # pytest fixture shared with flow tests
 
 from custom_components.air_quality_advisor import ai_rewrite as ai
 from custom_components.air_quality_advisor.logic import Recommendation, Window, Reason
@@ -208,5 +209,5 @@ def test_invalid_agent_and_missing_conversation_action_rejected(monkeypatch, ada
 def test_ai_is_not_used_on_announcement_hub_path():
     root = Path(__file__).resolve().parents[1] / "custom_components" / "air_quality_advisor"
     manager = (root / "manager.py").read_text(encoding="utf-8")
-    assert "if ai_effectively_enabled(config):" in manager
+    assert "if ai_effectively_enabled(config) and has_direct_receiver:" in manager
     assert "async_rewrite_announcement" in manager
