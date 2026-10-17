@@ -649,6 +649,7 @@ def test_calibration_saves_live_temperatures_and_is_stable_on_room_edits(monkeyp
     assert calib["outdoor_weather_entity"] == "weather.home"
     # Changing weather later must NOT reinterpret the old measurement.
     options.hass._values["weather.home"].attributes["temperature"] = 10
+    options.config_entry.options = saved["completed"]["data"]
     asyncio.run(options.async_step_init())
     options._values["use_mold_indicator"] = True
     edited = asyncio.run(options.async_step_indoor_sensors({

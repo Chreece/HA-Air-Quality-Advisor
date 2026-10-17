@@ -246,6 +246,10 @@
   for (const [locale, translated] of Object.entries(EXTRA_LANGUAGE)) {
     LANGUAGE[locale] = {...translated, ...(LANGUAGE[locale] || {})};
   }
+  const MOLD_NAMES = {"en":"Mold indication","de":"Schimmelindikator","el":"Ένδειξη μούχλας","fr":"Indicateur de moisissure","es":"Indicador de moho","ar":"مؤشر العفن","bg":"Индикатор за мухъл","bn":"ছাঁচের সূচক","cs":"Indikátor plísní","da":"Skimmelindikator","fa":"شاخص کپک","fi":"Homeindikaattori","he":"מדד עובש","hi":"फफूंद संकेतक","hr":"Pokazatelj plijesni","hu":"Penészesedési mutató","id":"Indikator jamur","it":"Indicatore muffa","ja":"カビ指標","ko":"곰팡이 지표","nb":"Muggindikator","nl":"Schimmelindicator","pl":"Wskaźnik pleśni","pt":"Indicador de bolor","pt-br":"Indicador de mofo","ro":"Indicator de mucegai","ru":"Индикатор плесени","sk":"Indikátor plesní","sr":"Индикатор буђи","sv":"Mögelindikator","ta":"பூஞ்சை குறியீடு","th":"ตัวชี้วัดเชื้อรา","tr":"Küf göstergesi","uk":"Індикатор цвілі","ur":"پھپھوندی کی نشاندہی","vi":"Chỉ số nấm mốc","zh-hans":"霉菌指标","zh-hant":"黴菌指標"};
+  for (const [locale, name] of Object.entries(MOLD_NAMES)) {
+    if (LANGUAGE[locale]) LANGUAGE[locale].metric_mold = name;
+  }
 
   const RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur']);
   function cardLanguage(code) {

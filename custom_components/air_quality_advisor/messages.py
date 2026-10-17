@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .logic import Reason, Recommendation
 from .languages import EXTRA_LOCALES, resolve_language
+from .mold_text import MOLD_NAMES
 
 
 TEXT = {
@@ -138,6 +139,8 @@ def language_code(language: str | None) -> str:
 
 
 def explain(reason: Reason, language: str) -> str:
+    if reason.code == "inside_mold":
+        return f"{MOLD_NAMES.get(language_code(language), MOLD_NAMES['en'])}: {reason.value}"
     dictionary = TEXT[language_code(language)]
     template = dictionary.get(reason.code)
     if template is None:
