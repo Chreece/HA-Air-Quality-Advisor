@@ -52,6 +52,8 @@ def generate_extended(root: Path = ROOT) -> None:
                 "use_announcement_hub": "Announcement Hub",
                 "notify_entities": ui[15], "tts_engine": ui[16],
                 "media_players": ui[16],
+                "ai_rewrite_announcements": f"AI · {ui[5]}",
+                "ai_conversation_agent": f"AI · {ui[17]}",
             },
         }
         threshold_labels = {}

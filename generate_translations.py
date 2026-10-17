@@ -191,6 +191,48 @@ area_validation = {
  },
 }
 
+AI_REWRITE_TEXT = {
+ "en": {
+  "enable": "Rewrite direct announcements with AI",
+  "agent": "Conversation agent",
+  "explain": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
+  "help": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting.",
+  "missing": "The Home Assistant conversation.process action is unavailable.",
+  "invalid": "Select a supported Home Assistant conversation agent."
+ },
+ "de": {
+  "enable": "Direkte Ansagen mit KI natürlicher formulieren",
+  "agent": "Konversationsagent",
+  "explain": "Optional. Formuliert nur direkte TTS- und Benachrichtigungstexte um, wenn Announcement Hub nicht ausgewählt ist. Bei Fehlern bleibt die ursprüngliche Empfehlung erhalten. Der Agent kann je nach Berechtigung Geräte steuern.",
+  "help": "Home Assistant Standard ist vorausgewählt. Wähle einen verfügbaren Konversationsagenten; der integrierte Standardagent kann Texte möglicherweise nicht umformulieren.",
+  "missing": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
+  "invalid": "Wähle einen unterstützten Home-Assistant-Konversationsagenten."
+ },
+ "el": {
+  "enable": "Πιο φυσικές ανακοινώσεις με AI",
+  "agent": "Πράκτορας συνομιλίας",
+  "explain": "Προαιρετικό. Αναδιατυπώνει μόνο τις άμεσες ειδοποιήσεις και το TTS όταν δεν χρησιμοποιείται το Announcement Hub. Αν αποτύχει, χρησιμοποιείται η αρχική σύσταση. Ο πράκτορας ενδέχεται να έχει πρόσβαση σε συσκευές ανάλογα με τα δικαιώματά του.",
+  "help": "Προεπιλέγεται ο προεπιλεγμένος πράκτορας του Home Assistant. Επίλεξε έναν διαθέσιμο πράκτορα συνομιλίας· ο ενσωματωμένος ενδέχεται να μην μπορεί να αναδιατυπώνει ελεύθερο κείμενο.",
+  "missing": "Η ενέργεια conversation.process του Home Assistant δεν είναι διαθέσιμη.",
+  "invalid": "Επίλεξε έναν υποστηριζόμενο πράκτορα συνομιλίας του Home Assistant."
+ },
+ "fr": {
+  "enable": "Rendre les annonces directes plus naturelles avec l’IA",
+  "agent": "Agent conversationnel",
+  "explain": "Facultatif. Reformule uniquement les notifications et la synthèse vocale directes lorsque Announcement Hub n’est pas utilisé. En cas d’échec, le message original est conservé. L’agent peut avoir accès aux appareils selon ses autorisations.",
+  "help": "L’agent par défaut de Home Assistant est présélectionné. Choisissez un agent conversationnel ; l’agent intégré ne sait pas toujours reformuler du texte libre.",
+  "missing": "L’action Home Assistant conversation.process est indisponible.",
+  "invalid": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
+ },
+ "es": {
+  "enable": "Hacer más naturales los anuncios directos con IA",
+  "agent": "Agente de conversación",
+  "explain": "Opcional. Reformula solo las notificaciones y el TTS directos cuando no se utiliza Announcement Hub. Si la IA falla, se conserva el mensaje original. El agente puede tener acceso a dispositivos según sus permisos.",
+  "help": "El agente predeterminado de Home Assistant está preseleccionado. Elige un agente de conversación; el integrado puede no admitir la reformulación libre.",
+  "missing": "La acción conversation.process de Home Assistant no está disponible.",
+  "invalid": "Selecciona un agente de conversación compatible de Home Assistant."
+ }
+}
 for code,v in lang.items():
  steps = {}
  for i, sid in enumerate(stepids):
@@ -216,9 +258,15 @@ for code,v in lang.items():
     'media_players':'Direct audio destinations; room assignment controls targeting.',
    }
    steps[sid]['data_description']={field:helps.get(field, stepdata[field]) for field in stepdata}
+ ai = AI_REWRITE_TEXT[code]
+ steps['delivery']['data']['ai_rewrite_announcements'] = ai['enable']
+ steps['delivery']['data']['ai_conversation_agent'] = ai['agent']
+ steps['delivery']['data_description']['ai_rewrite_announcements'] = ai['explain']
+ steps['delivery']['data_description']['ai_conversation_agent'] = ai['help']
  steps['areas']['description'] = area_descriptions[code]
  steps['areas']['data_description']['areas'] = area_hints[code]
- errors = {**v['errors'], **area_validation[code]}
+ errors = {**v['errors'], **area_validation[code],
+           'missing_ai_service': ai['missing'], 'invalid_ai_agent': ai['invalid']}
  section = {'step':{sid:steps[sid] for sid in initial_stepids},'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
  # Configure selects a single section from a localized options menu.
  menu_titles = {

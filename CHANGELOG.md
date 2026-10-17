@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — Optional AI-rewritten direct announcements
+
+- Add an opt-in **Rewrite direct announcements with AI** checkbox and a Home Assistant conversation-agent dropdown, with **Home Assistant default** preselected.
+- Use the built-in `conversation.process` service only for direct TTS/notifications when Announcement Hub is not selected.
+- Rewrite one actionable recommendation at a time with localized instructions for more natural and varied text; preserve the window action, area, window names and numeric reasons.
+- Reject malformed, unverifiable, altered or action-related AI responses. Fall back to the original message on AI errors, missing agents or an eight-second timeout (three seconds for urgent closing advice).
+- Never allow AI to change the underlying window decision, sensor thresholds, room targeting or Announcement Hub delivery. No extra notifications or changes to alert detection; AI rewriting may add up to three/eight seconds before delivery.
+- Add all 38 UI translations, safeguards and regression tests. Existing integrations and stored configurations work without migration.
+
 ## 0.2.0 — Expanded language support
 
 - Add 33 languages for a total of 38 Home Assistant language choices, while preserving the existing five detailed translations.

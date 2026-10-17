@@ -14,9 +14,11 @@ from homeassistant.helpers import selector
 
 from .languages import LANGUAGE_OPTIONS
 
+from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
 from .const import (
     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
+    CONF_AI_REWRITE, CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN,
 )
@@ -266,6 +268,9 @@ class _FlowMixin:
 
     async def async_step_delivery(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         hub_present = self.hass.services.has_service("notify", "announcement_hub")
+        ai_service_available = self.hass.services.has_service("conversation", "process")
+        ai_agents = conversation_agent_choices(self.hass, self._values.get(CONF_AI_AGENT))
+        valid_ai_agents = {choice["value"] for choice in ai_agents}
         has_notify = bool(self.hass.states.async_all("notify"))
         has_tts = bool(self.hass.states.async_all("tts"))
         player_options = _tts_player_options(self.hass)
@@ -280,6 +285,12 @@ class _FlowMixin:
                 selected.get(CONF_TTS_ENGINE) and selected.get(CONF_MEDIA_PLAYERS)
             ):
                 errors = {"base": "missing_tts"}
+            elif selected.get(CONF_AI_REWRITE) and not hub and not ai_service_available:
+                errors = {"base": "missing_ai_service"}
+            elif selected.get(CONF_AI_REWRITE) and not hub and (
+                selected.get(CONF_AI_AGENT, DEFAULT_AGENT) not in valid_ai_agents
+            ):
+                errors = {"base": "invalid_ai_agent"}
             else:
                 self._values.update(user_input)
                 self._values.setdefault(CONF_HUB, False)
@@ -287,6 +298,8 @@ class _FlowMixin:
                 self._values.setdefault(CONF_AUTO_TTS, False)
                 self._values.setdefault(CONF_NOTIFY_TARGETS, [])
                 self._values.setdefault(CONF_MEDIA_PLAYERS, [])
+                self._values.setdefault(CONF_AI_REWRITE, False)
+                self._values.setdefault(CONF_AI_AGENT, DEFAULT_AGENT)
                 return await self._finish()
         else:
             errors = {}
@@ -302,9 +315,18 @@ class _FlowMixin:
                 selector.BooleanSelector(),
             _marker(CONF_AUTO_TTS, self._values.get(CONF_AUTO_TTS, False)):
                 selector.BooleanSelector(),
+            _marker(CONF_AI_REWRITE, self._values.get(CONF_AI_REWRITE, False)):
+                selector.BooleanSelector(),
         }
         if hub_present or self._values.get(CONF_HUB):
             fields[_marker(CONF_HUB, self._values.get(CONF_HUB, hub_present))] = selector.BooleanSelector()
+        if ai_service_available or self._values.get(CONF_AI_REWRITE, False):
+            fields[_marker(CONF_AI_AGENT, self._values.get(CONF_AI_AGENT, DEFAULT_AGENT), required=True)] = (
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=ai_agents, multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                ))
+            )
         if has_notify:
             fields[_marker(CONF_NOTIFY_TARGETS, self._values.get(CONF_NOTIFY_TARGETS, []))] = (
                 selector.EntitySelector(selector.EntitySelectorConfig(domain="notify", multiple=True))

@@ -67,6 +67,7 @@ Screenshots are generated with the bundled card source using [`tools/generate_re
 - Event-driven updates and periodic 5-minute freshness checks. No external APIs, daemons, cloud credentials or Home Assistant tokens. Uses existing entities only.
 - A guided setup with editable, automatically suggested window exclusions, room selection, outdoor measurements and weather warnings. Indoor measurements and genuine window contacts are discovered using HA's entity/device area assignments. Configurable thresholds are tucked into **Configure → Advanced thresholds**.
 - Optional room-aware [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) output (`notify.announcement_hub`), **or** direct `notify.send_message` and `tts.speak` via supported entities. Not installing Announcement Hub does not affect the recommendation sensor.
+- **Optional AI rewrites** for direct notifications/TTS through a selected Home Assistant conversation agent, defaulting to the HA default agent. AI is disabled by default, ignored when Announcement Hub is selected and never changes the window recommendations; any unsuccessful or inconsistent rewrite falls back to deterministic text.
 - Auto notifications/TTS can each be enabled or disabled independently. Open announcements wait 90 seconds for conditions to stay stable; close announcements are immediate. Repeated open recommendations have a 15-minute cooldown during the current HA process. New urgent close recommendations are not suppressed by that cooldown, even if the same window was reopened. No notification is generated on every unchanged sensor reading.
 - Manual `air_quality_advisor.announce` action with an independent language override across **38 supported Home Assistant language choices**. Speech requires a compatible TTS voice.
 - A responsive **Air Quality Advisor dashboard card**: safe/attention/unknown room counts, current outdoor weather and pollution, threshold meters, window states, and room-specific advice. Card text follows your **Home Assistant user language**, independently of voice/notification language.
@@ -91,7 +92,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**Latest stable release: [v0.2.0](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.0)** · [Release notes](.github/releases/v0.2.0.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
+**Latest stable release: [v0.2.1](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.1)** · [Release notes](.github/releases/v0.2.1.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
 
 Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
 
@@ -211,12 +212,25 @@ attributes:
 
 The system automatically updates this entity. You can display `recommendations`, `open_windows`, `close_windows` and `outside_blockers` in dashboards or automations. No duplicate per-area sensors.
 
+## Optional AI-powered announcements
+
+Go to **Air Quality Advisor → Configure → Announcements**. The original two switches still control whether automatic notifications and/or TTS are enabled; enabling AI **does not** activate either channel by itself.
+
+1. Disable **Use Announcement Hub** if selected. AI rewriting applies **only to direct notifications and TTS**, never to Announcement Hub deliveries.
+2. Check **Rewrite direct announcements with AI** (off by default).
+3. Select a **Conversation agent** from the dropdown. **Home Assistant default** is preselected; the other choices are your recognized `conversation.*` entities. The HA default Assist agent may not support text rewriting—in that case the original text is used.
+4. Choose your direct `notify.*` outputs and/or a TTS engine + media players, and save. You can also rewrite a manually triggered `air_quality_advisor.announce` action.
+
+For each actionable **open/close** recommendation, the integration sends only the area, window names, measured reasons, original message and requested language to `conversation.process` (see [Home Assistant documentation](https://www.home-assistant.io/actions/conversation.process/)). It requests **one natural, varied rephrasing** in the configured language. The *actual decision, targeting, window names and sensor measurements* remain deterministic. The result is accepted only if it preserves the action and all key facts; otherwise the original, translated recommendation is delivered. Timeouts (up to 8 seconds for opening advice or 3 seconds for urgent closing advice), unavailable agents, unsupported default Assist behavior and error replies are safe fallbacks. AI is not contacted when no direct output is eligible. The optional rewrite may add this latency to delivery. No new "unsafe-room" notifications or repeated reminders are introduced. The same rewritten sentence goes to both direct TTS and notification when both are enabled.
+
+**Important security and privacy limitations:** Home Assistant conversation agents are not guaranteed to be text-only; agents with device-control permissions might interpret even a rewriting prompt as a command. Air Quality Advisor asks for text-only processing and rejects responses indicating actions, but it cannot restrict or undo actions the chosen agent itself performs. **Use an agent configured without access to control devices for this feature.** A cloud agent may send the area names, window names and sensor readings to its external provider; consult the agent's privacy settings. AI is entirely opt-in and never called while Announcement Hub is selected.
+
 ## Announcing in a different language on each action
 
 ```yaml
 action: air_quality_advisor.announce
 data:
-  language: el  # en, de, el, fr, es
+  language: el  # any supported locale, e.g. el, de or pt-BR
   channels: both  # both, tts, notification
   areas:
     - living_room
@@ -247,7 +261,7 @@ python -m compileall -q custom_components
 bash ./publish.sh
 ```
 
-`publish.sh` requires a previously authenticated GitHub CLI (`gh auth status`) and creates `Chreece/HA-Air-Quality-Advisor` if absent. It **never force-pushes** or mutates other repositories. GitHub Actions are **manual-only** (`workflow_dispatch`) to prevent push/PR notification spam during development. Before publishing a release, manually trigger **Validate (manual only)** and check all jobs. A GitHub release (`v0.1.0` recommended) and registered Home Assistant brand assets may still be needed for HACS *default-store listing*; use as a custom repository immediately after publishing.
+`publish.sh` requires a previously authenticated GitHub CLI (`gh auth status`) and creates `Chreece/HA-Air-Quality-Advisor` if absent. It **never force-pushes** or mutates other repositories. GitHub Actions only runs on manual dispatch or an intentional change to `.github/release-request.json`, avoiding normal development-push notifications. See [RELEASING.md](RELEASING.md); a versioned HACS release is published only after tests, translation generation, Hassfest and HACS checks succeed.
 
 ## Known limitations
 

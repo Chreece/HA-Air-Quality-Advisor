@@ -18,9 +18,11 @@ from .const import (
     CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_LANGUAGE,
     CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
+    CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED,
 )
+from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .discovery import entity_area, reading, rooms, warning, weather
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
@@ -219,6 +221,23 @@ class AirQualityManager:
             if areas is not None and rec.area_id not in areas:
                 continue
             title, message = announcement(rec, localized)
+            # AI can only refine the direct announcement text. The deterministic
+            # recommendation and window targeting are never changed. If Hub is
+            # selected, it remains the authoritative announcement pipeline.
+            use_hub = bool(config.get(CONF_HUB, False)) and self.hub_available
+            has_direct_receiver = (
+                (visual and bool(self._targets_in_room(
+                    config.get(CONF_NOTIFY_TARGETS, []), rec.area_id
+                ))) or
+                (speech and bool(config.get(CONF_TTS_ENGINE)) and bool(
+                    self._targets_in_room(config.get(CONF_MEDIA_PLAYERS, []), rec.area_id)
+                ))
+            )
+            if ai_effectively_enabled(config) and has_direct_receiver:
+                message = await async_rewrite_announcement(
+                    self.hass, rec, message, localized,
+                    str(config.get(CONF_AI_AGENT, DEFAULT_AGENT)),
+                )
             hub_data = {
                 "title": title,
                 "output": [rec.area_id],
@@ -231,7 +250,6 @@ class AirQualityManager:
                 hub_data["text_notify"] = message
             if requested_language != "auto":
                 hub_data["language"] = requested_language
-            use_hub = config.get(CONF_HUB, False) and self.hub_available
             if use_hub:
                 try:
                     await self.hass.services.async_call(

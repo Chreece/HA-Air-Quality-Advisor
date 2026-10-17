@@ -9,6 +9,15 @@
 - Check regional Portuguese and Chinese script handling and sampled spoken messages.
 - Some uncommon configuration error details still use English fallback pending native-speaker review.
 
+## v0.2.1 optional AI checks
+
+- Verify the Announcements editor offers an opt-in AI checkbox and a single-agent selector with Home Assistant default preselected.
+- Confirm every agent choice originates from a `conversation.*` entity (except the default option), and that stale saved selections can be changed.
+- Test direct notification and TTS message rewriting with the same text; configured Announcement Hub must bypass the AI call.
+- Test `conversation.process` errors, no agent, empty replies, added numbers, changed windows/rooms, wrong action, agent tool-action response and eight-second timeout. All failures must return the original message.
+- Run translation generation and check the extra field keys across all 38 languages. Verify real delivery against configured HA conversation agents; do not claim physical TTS/notifier success from unit tests.
+- Warn that conversation agents with exposed HA actions might execute tool calls; text-only usage is requested but cannot be enforced by this integration.
+
 ## Verification gates
 
 The repository's `.github/workflows/validate.yml` runs on manual dispatch or an explicit release-request change, not on every push, pull request or schedule. Checks:

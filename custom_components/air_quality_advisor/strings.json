@@ -64,7 +64,9 @@
           "use_announcement_hub": "Use Announcement Hub if available",
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
-          "media_players": "Direct TTS media players"
+          "media_players": "Direct TTS media players",
+          "ai_rewrite_announcements": "Rewrite direct announcements with AI",
+          "ai_conversation_agent": "Conversation agent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -73,7 +75,9 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "ai_rewrite_announcements": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
+          "ai_conversation_agent": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting."
         }
       },
       "thresholds": {
@@ -115,7 +119,9 @@
       "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
       "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
       "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -198,7 +204,9 @@
           "use_announcement_hub": "Use Announcement Hub if available",
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
-          "media_players": "Direct TTS media players"
+          "media_players": "Direct TTS media players",
+          "ai_rewrite_announcements": "Rewrite direct announcements with AI",
+          "ai_conversation_agent": "Conversation agent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
@@ -207,7 +215,9 @@
           "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting."
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "ai_rewrite_announcements": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
+          "ai_conversation_agent": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting."
         }
       },
       "thresholds": {
@@ -249,7 +259,9 @@
       "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
       "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
       "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms."
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
     }
   },
   "entity": {

@@ -17,6 +17,8 @@ CONF_NOTIFY_TARGETS = "notify_entities"
 CONF_TTS_ENGINE = "tts_engine"
 CONF_MEDIA_PLAYERS = "media_players"
 CONF_LANGUAGE = "language"
+CONF_AI_REWRITE = "ai_rewrite_announcements"
+CONF_AI_AGENT = "ai_conversation_agent"
 CONF_THRESHOLDS = "thresholds"
 
 from .languages import SUPPORTED_LANGUAGE_TAGS
