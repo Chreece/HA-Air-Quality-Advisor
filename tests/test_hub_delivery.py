@@ -99,20 +99,32 @@ def test_true_and_false_ai_overrides_are_forwarded_and_agent_optional():
     assert default["use_ai"] is True and "ai_agent" not in default
 
 
-def test_hub_acknowledgement_and_output_routes_required():
-    good, reg = home(reply={"accepted": True, "notify_outputs": ["notify.phone"]})
+def test_hub_queue_acknowledgement_is_the_only_success_criterion():
     payload = {"text_notify": "hello"}
-    assert asyncio.run(async_submit_hub(good, payload))
-    assert reg.calls[0] == ("notify", "announcement_hub", payload,
-                            {"blocking": True, "return_response": True})
-
     for response in (
-        None,
-        {"accepted": False},
-        {"accepted": True, "notify_outputs": [], "room_tts_players": []},
+        {"accepted": True, "job_id": "test-1", "status": "pending",
+         "notify_outputs": [], "room_tts_players": [], "tts_engines": []},
+        {"accepted": True, "job_id": "test-2", "status": "processing"},
+        {"accepted": True},
     ):
-        hass, reg = home(reply=response)
+        good, reg = home(reply=response)
+        assert asyncio.run(async_submit_hub(good, payload))
+        assert reg.calls == [("notify", "announcement_hub", payload,
+                             {"blocking": True, "return_response": True})]
+
+    for response in (None, {"accepted": False}, {"status": "pending"}):
+        hass, _ = home(reply=response)
         assert not asyncio.run(async_submit_hub(hass, payload))
+
+
+def test_hub_allows_slow_acknowledgements_before_falling_back():
+    import custom_components.air_quality_advisor.hub_delivery as delivery
+    assert delivery.HUB_RESPONSE_TIMEOUT >= 90  # Hub may rewrite before queueing.
+    async def delayed_acceptance():
+        await asyncio.sleep(0.025)
+        return {"accepted": True, "job_id": "slow-accepted", "status": "pending"}
+    hass, _ = home(fail=delayed_acceptance)
+    assert asyncio.run(async_submit_hub(hass, {"text_notify": "hello"}))
 
 
 def test_unconfigured_or_unavailable_hub_never_called():

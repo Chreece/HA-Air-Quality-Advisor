@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.5 — Respect Announcement Hub queue acknowledgements
+
+- When Announcement Hub is running, Air Quality Advisor submits the selected notification/TTS channels and explicit AI settings, then trusts Hub's `accepted: true` response as successful queue handoff.
+- Stop interpreting empty Hub route lists as a delivery failure after the job was accepted. Prevent duplicate local notifications when Hub owns the queued job.
+- Raise Advisor's **acknowledgement safety timeout** from 20 to 120 seconds because current Hub performs optional AI rewriting before returning its queue acknowledgement. This is not an AI timeout; AI, routing, retry and actual delivery remain Hub responsibilities.
+- Keep native Home Assistant fallback only when Hub is unavailable, rejects the request, returns no acknowledgement or does not respond within the safety bound.
+- Add direct and manager-level regression tests for queued jobs with no immediately listed outputs. No configuration migration, sensor, thresholds or window logic changes.
+
+
 ## 0.2.4 — Full Home Assistant configuration translation audit
 
 - Fix Hassfest compliance for regional/script language-selector translation keys (lowercase only); saved `pt-BR`, `zh-Hans` and `zh-Hant` continue to round-trip as canonical BCP47 values.

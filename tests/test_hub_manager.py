@@ -170,15 +170,19 @@ def test_unconfigured_hub_service_cannot_receive_a_message(delivery_module):
     assert all(action != "announcement_hub" for domain, action, *_ in services.calls)
 
 
-def test_accepted_hub_job_with_no_outputs_falls_back(delivery_module):
-    services = Services(hub_response={"accepted": True, "notify_outputs": [], "tts_engines": []},
-                        direct=False, tts=False)
+def test_accepted_hub_job_never_triggers_duplicate_home_assistant_fallback(delivery_module):
+    services = Services(hub_response={"accepted": True, "job_id": "queued-1",
+                                     "status": "pending", "notify_outputs": [],
+                                     "tts_engines": []}, direct=False, tts=False)
     manager, calls = advisor(delivery_module, {"notify_entities": [],
         "tts_engine": None, "media_players": [],
         "ai_rewrite_announcements": False}, services=services)
     result = asyncio.run(manager.async_announce(channels="notification"))
     assert result["submitted"] == 1
-    assert calls.calls[-1][:2] == ("persistent_notification", "create")
+    assert result["errors"] == []
+    assert [(domain, action) for domain, action, *_ in calls.calls] == [
+        ("notify", "announcement_hub"),
+    ]
 
 
 def test_missing_all_system_fallback_services_returns_error(delivery_module):

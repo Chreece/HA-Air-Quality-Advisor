@@ -13,7 +13,7 @@ from typing import Any
 _LOGGER = logging.getLogger(__name__)
 HUB_DOMAIN = "announcement_hub"
 HUB_ACTION = "announcement_hub"
-HUB_RESPONSE_TIMEOUT = 20
+HUB_RESPONSE_TIMEOUT = 120  # Safety bound for Hub acknowledgement, not an AI limit.
 
 
 def _hub_entries(hass: Any) -> list[Any]:
@@ -73,10 +73,12 @@ def make_hub_payload(
 
 
 async def async_submit_hub(hass: Any, payload: dict[str, Any]) -> bool:
-    """Return True only when Hub actually accepts a routed job.
+    """Return True when Hub acknowledges acceptance into its queue.
 
-    The Hub acknowledgement is about *queue acceptance*, not eventual physical
-    delivery. Once accepted, the Hub owns any later output retries.
+    Hub's accepted=True is authoritative; do not inspect its routes or AI
+    result. Hub currently rewrites before acknowledgement, so allow time for
+    a slow conversation agent. The timeout here is only an acknowledgement
+    fail-safe, never an AI processing deadline.
     """
     if not hub_available(hass):
         return False
@@ -96,15 +98,14 @@ async def async_submit_hub(hass: Any, payload: dict[str, Any]) -> bool:
     if not isinstance(reply, dict) or reply.get("accepted") is not True:
         _LOGGER.warning("Announcement Hub did not acknowledge a queued announcement")
         return False
-    route_fields = (
-        "notify_outputs", "tts_engines", "room_tts_players",
-        "snapcast_clients", "companion_tts_entries",
+    # Hub is the delivery authority. Its acknowledgement means the job has
+    # been queued, regardless of output details (which Hub may resolve later).
+    # Never retry locally after accepted=True: that would duplicate alerts.
+    _LOGGER.debug(
+        "Announcement Hub accepted queued job %s (status=%s)",
+        reply.get("job_id", "unknown"),
+        reply.get("status", "unknown"),
     )
-    if any(field in reply for field in route_fields) and not any(
-        reply.get(field) for field in route_fields
-    ):
-        _LOGGER.warning("Announcement Hub accepted a job without eligible outputs; using Home Assistant")
-        return False
     return True
 
 
