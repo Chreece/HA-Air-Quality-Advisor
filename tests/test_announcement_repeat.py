@@ -166,6 +166,48 @@ def test_urgent_closing_announces_immediately_and_reminds_if_still_open(monkeypa
     asyncio.run(scenario())
 
 
+
+@pytest.mark.parametrize("action, delay", [("close", 0), ("open", 90)])
+def test_automatic_timer_callbacks_are_event_loop_safe(
+    monkeypatch, delivery_module, action, delay,
+):
+    """Home Assistant sends unmarked timer callbacks to worker threads.
+
+    Mimic the real HA @callback marker to prevent thread-unsafe calls to
+    hass.async_create_task in the immediate and repeating timers.
+    """
+    def ha_callback(function):
+        function.__hass_callback = True
+        return function
+
+    monkeypatch.setattr(delivery_module, "callback", ha_callback)
+    clock = Clock()
+
+    async def scenario():
+        condition = "rainy" if action == "close" else None
+        manager, _, deliveries = prepare(
+            delivery_module, monkeypatch, clock,
+            state(recommendation(action=action, condition=condition)),
+        )
+        manager._recalculate()
+        pending = clock.outstanding(delay)
+        assert len(pending) == 1
+        assert getattr(pending[0]["callback"], "__hass_callback", False)
+
+        await clock.fire(delay)
+        assert len(deliveries) == 1
+
+        reminders = clock.outstanding(600)
+        assert len(reminders) == 1
+        assert getattr(reminders[0]["callback"], "__hass_callback", False)
+
+        await clock.fire(600)
+        assert len(deliveries) == 2
+        await manager.async_stop()
+
+    asyncio.run(scenario())
+
+
 def test_preexisting_open_recommendation_waits_for_interval_on_startup(monkeypatch, delivery_module):
     clock = Clock()
     async def scenario():

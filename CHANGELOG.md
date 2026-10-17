@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.6 — Fix automatic weather/window announcements (Home Assistant event-loop safety)
+
+- Fix `RuntimeError: ... hass.async_create_task from a thread other than the event loop` seen when automatic window warnings fired. Home Assistant dispatched the integration's undecorated timer lambdas to a SyncWorker thread instead of the event loop.
+- Mark both the initial announcement timer and the repeating-reminder timer with Home Assistant's `callback()` so they run safely on the event loop.
+- Add two regression cases that require event-loop callback markers for immediate `close` alerts, stable `open` alerts, and their 10-minute repeats. Existing announcement behavior remains unchanged.
+- Keep Announcement Hub handoff and AI processing untouched. No setting changes, migrations, weather-entity edits, or Home Assistant restarts are performed by the integration update itself.
+
+
 ## 0.2.5 — Respect Announcement Hub queue acknowledgements
 
 - When Announcement Hub is running, Air Quality Advisor submits the selected notification/TTS channels and explicit AI settings, then trusts Hub's `accepted: true` response as successful queue handoff.

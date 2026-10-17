@@ -1,13 +1,12 @@
 {
-  "version": "0.2.5",
+  "version": "0.2.6",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Trust Announcement Hub accepted=true job acknowledgements without inspecting downstream output routes",
-    "Avoid duplicate Home Assistant fallback after Announcement Hub has already queued a job",
-    "Allow up to 120 seconds for the queue acknowledgement when Hub performs slow AI processing before enqueuing",
-    "Preserve direct Home Assistant fallback on unavailable, rejected or nonresponsive Hub",
-    "Add queue-acceptance and timeout regression coverage; keep Hub AI and delivery logic entirely inside Hub"
+    "Fix Home Assistant thread-safety errors that prevent automatic close-window and open-window notifications",
+    "Mark immediate and repeat timer handlers with the Home Assistant callback decorator so they execute on the event loop",
+    "Add regression coverage verifying event-loop safe callbacks for immediate, delayed and repeating announcements",
+    "Keep Announcement Hub queue handoff, AI settings, thresholds, weather decisions and configuration unchanged"
   ]
 }

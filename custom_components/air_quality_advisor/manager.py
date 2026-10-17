@@ -200,7 +200,7 @@ class AirQualityManager:
         delay = 0 if action == "close" else ANNOUNCE_OPEN_STABLE_SECONDS
         self._pending_unsubs[area_id] = async_call_later(
             self.hass, delay,
-            lambda _now: self._execute_automatic(area_id, action_key, reason_key),
+            callback(lambda _now: self._execute_automatic(area_id, action_key, reason_key)),
         )
 
     @callback
@@ -217,9 +217,9 @@ class AirQualityManager:
             return
         self._repeat_unsubs[area_id] = async_call_later(
             self.hass, minutes * 60,
-            lambda _now: self._execute_automatic(
+            callback(lambda _now: self._execute_automatic(
                 area_id, action_key, reason_key, repeat=True
-            ),
+            )),
         )
 
     @callback
