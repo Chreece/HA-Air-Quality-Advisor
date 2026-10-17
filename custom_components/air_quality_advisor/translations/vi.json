@@ -6,10 +6,12 @@
         "title": "Phòng",
         "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Phòng"
+          "areas": "Phòng",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Chọn: Phòng · 🪟 binary_sensor (device_class: window)."
+          "areas": "Chọn: Phòng · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Loại trừ cảm biến không khí trong nhà",
-        "description": "Phòng: {area_name} ({position}/{total}). Loại trừ cảm biến không khí trong nhà. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Phòng · Chỉ số nấm mốc",
+        "description": "Phòng: {area_name} ({position}/{total}). 🌡️ 🧊 Chỉ số nấm mốc · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà"
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà",
+          "mold_indoor_temperature": "Phòng · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Chỉ số nấm mốc · 🧊 °C",
+          "mold_recalibrate": "Chỉ số nấm mốc · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Phòng: 🌡️ °C/°F · Chỉ số nấm mốc.",
+          "mold_critical_temperature_c": "🧊 Chỉ số nấm mốc · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Chỉ số nấm mốc · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Ngoài trời · °C (≤)",
           "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
           "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
-          "max_age_minutes": "⏱ · Mở (min, ≤)"
+          "max_age_minutes": "⏱ · Mở (min, ≤)",
+          "indoor_mold": "Chỉ số nấm mốc · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Kiểm tra: Phòng · Đo lường (0).",
       "invalid_repeat_minutes": "Lựa chọn không hợp lệ: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Không khả dụng: conversation.process.",
-      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*."
+      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*.",
+      "invalid_mold_temperature_sensor": "Phòng · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Phòng · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Chỉ số nấm mốc · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Chỉ số nấm mốc · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Chỉ số nấm mốc · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — đã được cấu hình."
@@ -137,8 +151,8 @@
         "description": "Chọn: Phòng / Thời tiết và cảnh báo / Thông báo (tùy chọn) / Ngưỡng nâng cao",
         "menu_options": {
           "areas": "Phòng",
+          "indoor_sensors": "Phòng · Chỉ số nấm mốc",
           "window_sensors": "Loại trừ cảm biến cửa sổ",
-          "indoor_sensors": "Loại trừ cảm biến không khí trong nhà",
           "outdoor": "Chất lượng không khí ngoài trời",
           "weather": "Thời tiết và cảnh báo",
           "delivery": "Thông báo (tùy chọn)",
@@ -159,20 +173,28 @@
         "title": "Phòng",
         "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Phòng"
+          "areas": "Phòng",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Chọn: Phòng · 🪟 binary_sensor (device_class: window)."
+          "areas": "Chọn: Phòng · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Loại trừ cảm biến không khí trong nhà",
-        "description": "Phòng: {area_name} ({position}/{total}). Loại trừ cảm biến không khí trong nhà. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Phòng · Chỉ số nấm mốc",
+        "description": "Phòng: {area_name} ({position}/{total}). 🌡️ 🧊 Chỉ số nấm mốc · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà"
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà",
+          "mold_indoor_temperature": "Phòng · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Chỉ số nấm mốc · 🧊 °C",
+          "mold_recalibrate": "Chỉ số nấm mốc · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Phòng: 🌡️ °C/°F · Chỉ số nấm mốc.",
+          "mold_critical_temperature_c": "🧊 Chỉ số nấm mốc · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Chỉ số nấm mốc · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Ngoài trời · °C (≤)",
           "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
           "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
-          "max_age_minutes": "⏱ · Mở (min, ≤)"
+          "max_age_minutes": "⏱ · Mở (min, ≤)",
+          "indoor_mold": "Chỉ số nấm mốc · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Kiểm tra: Phòng · Đo lường (0).",
       "invalid_repeat_minutes": "Lựa chọn không hợp lệ: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Không khả dụng: conversation.process.",
-      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*."
+      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*.",
+      "invalid_mold_temperature_sensor": "Phòng · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Phòng · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Chỉ số nấm mốc · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Chỉ số nấm mốc · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Chỉ số nấm mốc · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

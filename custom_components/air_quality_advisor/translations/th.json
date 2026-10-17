@@ -6,10 +6,12 @@
         "title": "ห้อง",
         "description": "1 · 🪟 ห้อง. binary_sensor (device_class: window).",
         "data": {
-          "areas": "ห้อง"
+          "areas": "ห้อง",
+          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "เลือก: ห้อง · 🪟 binary_sensor (device_class: window)."
+          "areas": "เลือก: ห้อง · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "ยกเว้นเซ็นเซอร์อากาศภายใน",
-        "description": "ห้อง: {area_name} ({position}/{total}). ยกเว้นเซ็นเซอร์อากาศภายใน. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "ห้อง · ตัวชี้วัดเชื้อรา",
+        "description": "ห้อง: {area_name} ({position}/{total}). 🌡️ 🧊 ตัวชี้วัดเชื้อรา · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน"
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน",
+          "mold_indoor_temperature": "ห้อง · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "ตัวชี้วัดเชื้อรา · 🧊 °C",
+          "mold_recalibrate": "ตัวชี้วัดเชื้อรา · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "เลือก: ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "เลือก: ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "ห้อง: 🌡️ °C/°F · ตัวชี้วัดเชื้อรา.",
+          "mold_critical_temperature_c": "🧊 ตัวชี้วัดเชื้อรา · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ ตัวชี้วัดเชื้อรา · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "ภายนอก · °C (≤)",
           "max_outdoor_humidity": "ภายนอก · RH (%) (≤)",
           "max_wind_kmh": "สภาพอากาศและคำเตือน · km/h (≤)",
-          "max_age_minutes": "⏱ · เปิด (min, ≤)"
+          "max_age_minutes": "⏱ · เปิด (min, ≤)",
+          "indoor_mold": "ตัวชี้วัดเชื้อรา · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "ตรวจสอบ: ห้อง · ค่าที่วัด (0).",
       "invalid_repeat_minutes": "ตัวเลือกไม่ถูกต้อง: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "ไม่พร้อมใช้งาน: conversation.process.",
-      "invalid_ai_agent": "ตัวเลือกไม่ถูกต้อง: conversation.*."
+      "invalid_ai_agent": "ตัวเลือกไม่ถูกต้อง: conversation.*.",
+      "invalid_mold_temperature_sensor": "ห้อง · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "ห้อง · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "ตัวชี้วัดเชื้อรา · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "ตัวชี้วัดเชื้อรา · 🧊 °C ⚠",
+      "invalid_mold_calibration": "ตัวชี้วัดเชื้อรา · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — ตั้งค่าแล้ว."
@@ -137,8 +151,8 @@
         "description": "เลือก: ห้อง / สภาพอากาศและคำเตือน / การประกาศ (ไม่บังคับ) / ค่าขีดจำกัดขั้นสูง",
         "menu_options": {
           "areas": "ห้อง",
+          "indoor_sensors": "ห้อง · ตัวชี้วัดเชื้อรา",
           "window_sensors": "ยกเว้นเซ็นเซอร์หน้าต่าง",
-          "indoor_sensors": "ยกเว้นเซ็นเซอร์อากาศภายใน",
           "outdoor": "คุณภาพอากาศภายนอก",
           "weather": "สภาพอากาศและคำเตือน",
           "delivery": "การประกาศ (ไม่บังคับ)",
@@ -159,20 +173,28 @@
         "title": "ห้อง",
         "description": "1 · 🪟 ห้อง. binary_sensor (device_class: window).",
         "data": {
-          "areas": "ห้อง"
+          "areas": "ห้อง",
+          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "เลือก: ห้อง · 🪟 binary_sensor (device_class: window)."
+          "areas": "เลือก: ห้อง · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "ยกเว้นเซ็นเซอร์อากาศภายใน",
-        "description": "ห้อง: {area_name} ({position}/{total}). ยกเว้นเซ็นเซอร์อากาศภายใน. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "ห้อง · ตัวชี้วัดเชื้อรา",
+        "description": "ห้อง: {area_name} ({position}/{total}). 🌡️ 🧊 ตัวชี้วัดเชื้อรา · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน"
+          "excluded_indoor_entities": "ยกเว้นเซ็นเซอร์อากาศภายใน",
+          "mold_indoor_temperature": "ห้อง · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "ตัวชี้วัดเชื้อรา · 🧊 °C",
+          "mold_recalibrate": "ตัวชี้วัดเชื้อรา · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "เลือก: ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "เลือก: ยกเว้นเซ็นเซอร์อากาศภายใน · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "ห้อง: 🌡️ °C/°F · ตัวชี้วัดเชื้อรา.",
+          "mold_critical_temperature_c": "🧊 ตัวชี้วัดเชื้อรา · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ ตัวชี้วัดเชื้อรา · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "ภายนอก · °C (≤)",
           "max_outdoor_humidity": "ภายนอก · RH (%) (≤)",
           "max_wind_kmh": "สภาพอากาศและคำเตือน · km/h (≤)",
-          "max_age_minutes": "⏱ · เปิด (min, ≤)"
+          "max_age_minutes": "⏱ · เปิด (min, ≤)",
+          "indoor_mold": "ตัวชี้วัดเชื้อรา · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "ตรวจสอบ: ห้อง · ค่าที่วัด (0).",
       "invalid_repeat_minutes": "ตัวเลือกไม่ถูกต้อง: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "ไม่พร้อมใช้งาน: conversation.process.",
-      "invalid_ai_agent": "ตัวเลือกไม่ถูกต้อง: conversation.*."
+      "invalid_ai_agent": "ตัวเลือกไม่ถูกต้อง: conversation.*.",
+      "invalid_mold_temperature_sensor": "ห้อง · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "ห้อง · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "ตัวชี้วัดเชื้อรา · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "ตัวชี้วัดเชื้อรา · 🧊 °C ⚠",
+      "invalid_mold_calibration": "ตัวชี้วัดเชื้อรา · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

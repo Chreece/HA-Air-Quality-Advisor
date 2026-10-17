@@ -6,10 +6,12 @@
         "title": "Camere",
         "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Camere"
+          "areas": "Camere",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window)."
+          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Exclude senzori de aer interior",
-        "description": "Camere: {area_name} ({position}/{total}). Exclude senzori de aer interior. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Camere · Indicator de mucegai",
+        "description": "Camere: {area_name} ({position}/{total}). 🌡️ 🧊 Indicator de mucegai · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Exclude senzori de aer interior"
+          "excluded_indoor_entities": "Exclude senzori de aer interior",
+          "mold_indoor_temperature": "Camere · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicator de mucegai · 🧊 °C",
+          "mold_recalibrate": "Indicator de mucegai · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Camere: 🌡️ °C/°F · Indicator de mucegai.",
+          "mold_critical_temperature_c": "🧊 Indicator de mucegai · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicator de mucegai · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Exterior · °C (≤)",
           "max_outdoor_humidity": "Exterior · RH (%) (≤)",
           "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
-          "max_age_minutes": "⏱ · Deschideți (min, ≤)"
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)",
+          "indoor_mold": "Indicator de mucegai · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Verificați: Camere · Măsurători (0).",
       "invalid_repeat_minutes": "Selecție invalidă: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Indisponibil: conversation.process.",
-      "invalid_ai_agent": "Selecție invalidă: conversation.*."
+      "invalid_ai_agent": "Selecție invalidă: conversation.*.",
+      "invalid_mold_temperature_sensor": "Camere · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Camere · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicator de mucegai · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicator de mucegai · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — deja configurat."
@@ -137,8 +151,8 @@
         "description": "Alegeți: Camere / Vreme și avertizări / Anunțuri (opțional) / Praguri avansate",
         "menu_options": {
           "areas": "Camere",
+          "indoor_sensors": "Camere · Indicator de mucegai",
           "window_sensors": "Exclude senzori de fereastră",
-          "indoor_sensors": "Exclude senzori de aer interior",
           "outdoor": "Calitatea aerului exterior",
           "weather": "Vreme și avertizări",
           "delivery": "Anunțuri (opțional)",
@@ -159,20 +173,28 @@
         "title": "Camere",
         "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Camere"
+          "areas": "Camere",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window)."
+          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Exclude senzori de aer interior",
-        "description": "Camere: {area_name} ({position}/{total}). Exclude senzori de aer interior. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Camere · Indicator de mucegai",
+        "description": "Camere: {area_name} ({position}/{total}). 🌡️ 🧊 Indicator de mucegai · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Exclude senzori de aer interior"
+          "excluded_indoor_entities": "Exclude senzori de aer interior",
+          "mold_indoor_temperature": "Camere · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicator de mucegai · 🧊 °C",
+          "mold_recalibrate": "Indicator de mucegai · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Camere: 🌡️ °C/°F · Indicator de mucegai.",
+          "mold_critical_temperature_c": "🧊 Indicator de mucegai · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicator de mucegai · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Exterior · °C (≤)",
           "max_outdoor_humidity": "Exterior · RH (%) (≤)",
           "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
-          "max_age_minutes": "⏱ · Deschideți (min, ≤)"
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)",
+          "indoor_mold": "Indicator de mucegai · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Verificați: Camere · Măsurători (0).",
       "invalid_repeat_minutes": "Selecție invalidă: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Indisponibil: conversation.process.",
-      "invalid_ai_agent": "Selecție invalidă: conversation.*."
+      "invalid_ai_agent": "Selecție invalidă: conversation.*.",
+      "invalid_mold_temperature_sensor": "Camere · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Camere · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicator de mucegai · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicator de mucegai · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

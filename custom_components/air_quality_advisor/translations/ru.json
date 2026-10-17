@@ -6,10 +6,12 @@
         "title": "Комнаты",
         "description": "1 · 🪟 Комнаты. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Комнаты"
+          "areas": "Комнаты",
+          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Выберите: Комнаты · 🪟 binary_sensor (device_class: window)."
+          "areas": "Выберите: Комнаты · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Исключить датчики воздуха в помещениях",
-        "description": "Комнаты: {area_name} ({position}/{total}). Исключить датчики воздуха в помещениях. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Комнаты · Индикатор плесени",
+        "description": "Комнаты: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор плесени · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях"
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях",
+          "mold_indoor_temperature": "Комнаты · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор плесени · 🧊 °C",
+          "mold_recalibrate": "Индикатор плесени · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Выберите: Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Выберите: Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Комнаты: 🌡️ °C/°F · Индикатор плесени.",
+          "mold_critical_temperature_c": "🧊 Индикатор плесени · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор плесени · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Снаружи · °C (≤)",
           "max_outdoor_humidity": "Снаружи · RH (%) (≤)",
           "max_wind_kmh": "Погода и предупреждения · km/h (≤)",
-          "max_age_minutes": "⏱ · Откройте (min, ≤)"
+          "max_age_minutes": "⏱ · Откройте (min, ≤)",
+          "indoor_mold": "Индикатор плесени · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Проверьте: Комнаты · Измерения (0).",
       "invalid_repeat_minutes": "Неверный выбор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неверный выбор: conversation.*."
+      "invalid_ai_agent": "Неверный выбор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Комнаты · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Комнаты · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор плесени · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор плесени · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор плесени · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — уже настроено."
@@ -137,8 +151,8 @@
         "description": "Выберите: Комнаты / Погода и предупреждения / Оповещения (необязательно) / Дополнительные пороги",
         "menu_options": {
           "areas": "Комнаты",
+          "indoor_sensors": "Комнаты · Индикатор плесени",
           "window_sensors": "Исключить датчики окон",
-          "indoor_sensors": "Исключить датчики воздуха в помещениях",
           "outdoor": "Качество воздуха снаружи",
           "weather": "Погода и предупреждения",
           "delivery": "Оповещения (необязательно)",
@@ -159,20 +173,28 @@
         "title": "Комнаты",
         "description": "1 · 🪟 Комнаты. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Комнаты"
+          "areas": "Комнаты",
+          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Выберите: Комнаты · 🪟 binary_sensor (device_class: window)."
+          "areas": "Выберите: Комнаты · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Исключить датчики воздуха в помещениях",
-        "description": "Комнаты: {area_name} ({position}/{total}). Исключить датчики воздуха в помещениях. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Комнаты · Индикатор плесени",
+        "description": "Комнаты: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор плесени · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях"
+          "excluded_indoor_entities": "Исключить датчики воздуха в помещениях",
+          "mold_indoor_temperature": "Комнаты · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор плесени · 🧊 °C",
+          "mold_recalibrate": "Индикатор плесени · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Выберите: Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Выберите: Исключить датчики воздуха в помещениях · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Комнаты: 🌡️ °C/°F · Индикатор плесени.",
+          "mold_critical_temperature_c": "🧊 Индикатор плесени · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор плесени · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Снаружи · °C (≤)",
           "max_outdoor_humidity": "Снаружи · RH (%) (≤)",
           "max_wind_kmh": "Погода и предупреждения · km/h (≤)",
-          "max_age_minutes": "⏱ · Откройте (min, ≤)"
+          "max_age_minutes": "⏱ · Откройте (min, ≤)",
+          "indoor_mold": "Индикатор плесени · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Проверьте: Комнаты · Измерения (0).",
       "invalid_repeat_minutes": "Неверный выбор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неверный выбор: conversation.*."
+      "invalid_ai_agent": "Неверный выбор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Комнаты · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Комнаты · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор плесени · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор плесени · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор плесени · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

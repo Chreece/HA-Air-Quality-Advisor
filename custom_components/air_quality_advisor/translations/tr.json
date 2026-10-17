@@ -6,10 +6,12 @@
         "title": "Odalar",
         "description": "1 · 🪟 Odalar. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Odalar"
+          "areas": "Odalar",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window)."
+          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "İç ortam hava sensörlerini hariç tut",
-        "description": "Odalar: {area_name} ({position}/{total}). İç ortam hava sensörlerini hariç tut. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Odalar · Küf göstergesi",
+        "description": "Odalar: {area_name} ({position}/{total}). 🌡️ 🧊 Küf göstergesi · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut"
+          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut",
+          "mold_indoor_temperature": "Odalar · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Küf göstergesi · 🧊 °C",
+          "mold_recalibrate": "Küf göstergesi · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Odalar: 🌡️ °C/°F · Küf göstergesi.",
+          "mold_critical_temperature_c": "🧊 Küf göstergesi · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Küf göstergesi · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Dışarısı · °C (≤)",
           "max_outdoor_humidity": "Dışarısı · RH (%) (≤)",
           "max_wind_kmh": "Hava durumu ve uyarılar · km/h (≤)",
-          "max_age_minutes": "⏱ · Açın (min, ≤)"
+          "max_age_minutes": "⏱ · Açın (min, ≤)",
+          "indoor_mold": "Küf göstergesi · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Kontrol edin: Odalar · Ölçümler (0).",
       "invalid_repeat_minutes": "Geçersiz seçim: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Kullanılamıyor: conversation.process.",
-      "invalid_ai_agent": "Geçersiz seçim: conversation.*."
+      "invalid_ai_agent": "Geçersiz seçim: conversation.*.",
+      "invalid_mold_temperature_sensor": "Odalar · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Odalar · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Küf göstergesi · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Küf göstergesi · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — zaten yapılandırılmış."
@@ -137,8 +151,8 @@
         "description": "Seçin: Odalar / Hava durumu ve uyarılar / Duyurular (isteğe bağlı) / Gelişmiş eşikler",
         "menu_options": {
           "areas": "Odalar",
+          "indoor_sensors": "Odalar · Küf göstergesi",
           "window_sensors": "Pencere sensörlerini hariç tut",
-          "indoor_sensors": "İç ortam hava sensörlerini hariç tut",
           "outdoor": "Dış hava kalitesi",
           "weather": "Hava durumu ve uyarılar",
           "delivery": "Duyurular (isteğe bağlı)",
@@ -159,20 +173,28 @@
         "title": "Odalar",
         "description": "1 · 🪟 Odalar. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Odalar"
+          "areas": "Odalar",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window)."
+          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "İç ortam hava sensörlerini hariç tut",
-        "description": "Odalar: {area_name} ({position}/{total}). İç ortam hava sensörlerini hariç tut. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Odalar · Küf göstergesi",
+        "description": "Odalar: {area_name} ({position}/{total}). 🌡️ 🧊 Küf göstergesi · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut"
+          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut",
+          "mold_indoor_temperature": "Odalar · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Küf göstergesi · 🧊 °C",
+          "mold_recalibrate": "Küf göstergesi · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Odalar: 🌡️ °C/°F · Küf göstergesi.",
+          "mold_critical_temperature_c": "🧊 Küf göstergesi · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Küf göstergesi · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Dışarısı · °C (≤)",
           "max_outdoor_humidity": "Dışarısı · RH (%) (≤)",
           "max_wind_kmh": "Hava durumu ve uyarılar · km/h (≤)",
-          "max_age_minutes": "⏱ · Açın (min, ≤)"
+          "max_age_minutes": "⏱ · Açın (min, ≤)",
+          "indoor_mold": "Küf göstergesi · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Kontrol edin: Odalar · Ölçümler (0).",
       "invalid_repeat_minutes": "Geçersiz seçim: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Kullanılamıyor: conversation.process.",
-      "invalid_ai_agent": "Geçersiz seçim: conversation.*."
+      "invalid_ai_agent": "Geçersiz seçim: conversation.*.",
+      "invalid_mold_temperature_sensor": "Odalar · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Odalar · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Küf göstergesi · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Küf göstergesi · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

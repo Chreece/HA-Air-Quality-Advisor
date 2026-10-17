@@ -6,10 +6,12 @@
         "title": "Кімнати",
         "description": "1 · 🪟 Кімнати. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Кімнати"
+          "areas": "Кімнати",
+          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window)."
+          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Виключити датчики повітря в приміщенні",
-        "description": "Кімнати: {area_name} ({position}/{total}). Виключити датчики повітря в приміщенні. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Кімнати · Індикатор цвілі",
+        "description": "Кімнати: {area_name} ({position}/{total}). 🌡️ 🧊 Індикатор цвілі · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні",
+          "mold_indoor_temperature": "Кімнати · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Індикатор цвілі · 🧊 °C",
+          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Кімнати: 🌡️ °C/°F · Індикатор цвілі.",
+          "mold_critical_temperature_c": "🧊 Індикатор цвілі · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Індикатор цвілі · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Надворі · °C (≤)",
           "max_outdoor_humidity": "Надворі · RH (%) (≤)",
           "max_wind_kmh": "Погода та попередження · km/h (≤)",
-          "max_age_minutes": "⏱ · Відкрийте (min, ≤)"
+          "max_age_minutes": "⏱ · Відкрийте (min, ≤)",
+          "indoor_mold": "Індикатор цвілі · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Перевірте: Кімнати · Вимірювання (0).",
       "invalid_repeat_minutes": "Неправильний вибір: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неправильний вибір: conversation.*."
+      "invalid_ai_agent": "Неправильний вибір: conversation.*.",
+      "invalid_mold_temperature_sensor": "Кімнати · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Кімнати · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Індикатор цвілі · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Індикатор цвілі · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Індикатор цвілі · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — уже налаштовано."
@@ -137,8 +151,8 @@
         "description": "Оберіть: Кімнати / Погода та попередження / Оголошення (необов’язково) / Додаткові пороги",
         "menu_options": {
           "areas": "Кімнати",
+          "indoor_sensors": "Кімнати · Індикатор цвілі",
           "window_sensors": "Виключити датчики вікон",
-          "indoor_sensors": "Виключити датчики повітря в приміщенні",
           "outdoor": "Якість повітря надворі",
           "weather": "Погода та попередження",
           "delivery": "Оголошення (необов’язково)",
@@ -159,20 +173,28 @@
         "title": "Кімнати",
         "description": "1 · 🪟 Кімнати. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Кімнати"
+          "areas": "Кімнати",
+          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window)."
+          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Виключити датчики повітря в приміщенні",
-        "description": "Кімнати: {area_name} ({position}/{total}). Виключити датчики повітря в приміщенні. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Кімнати · Індикатор цвілі",
+        "description": "Кімнати: {area_name} ({position}/{total}). 🌡️ 🧊 Індикатор цвілі · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
+          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні",
+          "mold_indoor_temperature": "Кімнати · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Індикатор цвілі · 🧊 °C",
+          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Кімнати: 🌡️ °C/°F · Індикатор цвілі.",
+          "mold_critical_temperature_c": "🧊 Індикатор цвілі · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Індикатор цвілі · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Надворі · °C (≤)",
           "max_outdoor_humidity": "Надворі · RH (%) (≤)",
           "max_wind_kmh": "Погода та попередження · km/h (≤)",
-          "max_age_minutes": "⏱ · Відкрийте (min, ≤)"
+          "max_age_minutes": "⏱ · Відкрийте (min, ≤)",
+          "indoor_mold": "Індикатор цвілі · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Перевірте: Кімнати · Вимірювання (0).",
       "invalid_repeat_minutes": "Неправильний вибір: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неправильний вибір: conversation.*."
+      "invalid_ai_agent": "Неправильний вибір: conversation.*.",
+      "invalid_mold_temperature_sensor": "Кімнати · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Кімнати · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Індикатор цвілі · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Індикатор цвілі · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Індикатор цвілі · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

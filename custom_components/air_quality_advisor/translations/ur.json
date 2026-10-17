@@ -6,10 +6,12 @@
         "title": "کمرے",
         "description": "1 · 🪟 کمرے. binary_sensor (device_class: window).",
         "data": {
-          "areas": "کمرے"
+          "areas": "کمرے",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window)."
+          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "اندرونی ہوا کے سینسر خارج کریں",
-        "description": "کمرے: {area_name} ({position}/{total}). اندرونی ہوا کے سینسر خارج کریں. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "کمرے · پھپھوندی کی نشاندہی",
+        "description": "کمرے: {area_name} ({position}/{total}). 🌡️ 🧊 پھپھوندی کی نشاندہی · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں"
+          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں",
+          "mold_indoor_temperature": "کمرے · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "پھپھوندی کی نشاندہی · 🧊 °C",
+          "mold_recalibrate": "پھپھوندی کی نشاندہی · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "کمرے: 🌡️ °C/°F · پھپھوندی کی نشاندہی.",
+          "mold_critical_temperature_c": "🧊 پھپھوندی کی نشاندہی · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ پھپھوندی کی نشاندہی · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "باہر · °C (≤)",
           "max_outdoor_humidity": "باہر · RH (%) (≤)",
           "max_wind_kmh": "موسم اور انتباہات · km/h (≤)",
-          "max_age_minutes": "⏱ · کھولیں (min, ≤)"
+          "max_age_minutes": "⏱ · کھولیں (min, ≤)",
+          "indoor_mold": "پھپھوندی کی نشاندہی · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "چیک کریں: کمرے · پیمائشیں (0).",
       "invalid_repeat_minutes": "غلط انتخاب: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "دستیاب نہیں: conversation.process.",
-      "invalid_ai_agent": "غلط انتخاب: conversation.*."
+      "invalid_ai_agent": "غلط انتخاب: conversation.*.",
+      "invalid_mold_temperature_sensor": "کمرے · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "کمرے · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "پھپھوندی کی نشاندہی · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "پھپھوندی کی نشاندہی · 🧊 °C ⚠",
+      "invalid_mold_calibration": "پھپھوندی کی نشاندہی · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — پہلے سے ترتیب دیا گیا."
@@ -137,8 +151,8 @@
         "description": "منتخب کریں: کمرے / موسم اور انتباہات / اعلانات (اختیاری) / اعلیٰ حدود",
         "menu_options": {
           "areas": "کمرے",
+          "indoor_sensors": "کمرے · پھپھوندی کی نشاندہی",
           "window_sensors": "کھڑکی کے سینسر خارج کریں",
-          "indoor_sensors": "اندرونی ہوا کے سینسر خارج کریں",
           "outdoor": "بیرونی ہوا کا معیار",
           "weather": "موسم اور انتباہات",
           "delivery": "اعلانات (اختیاری)",
@@ -159,20 +173,28 @@
         "title": "کمرے",
         "description": "1 · 🪟 کمرے. binary_sensor (device_class: window).",
         "data": {
-          "areas": "کمرے"
+          "areas": "کمرے",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window)."
+          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "اندرونی ہوا کے سینسر خارج کریں",
-        "description": "کمرے: {area_name} ({position}/{total}). اندرونی ہوا کے سینسر خارج کریں. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "کمرے · پھپھوندی کی نشاندہی",
+        "description": "کمرے: {area_name} ({position}/{total}). 🌡️ 🧊 پھپھوندی کی نشاندہی · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں"
+          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں",
+          "mold_indoor_temperature": "کمرے · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "پھپھوندی کی نشاندہی · 🧊 °C",
+          "mold_recalibrate": "پھپھوندی کی نشاندہی · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "کمرے: 🌡️ °C/°F · پھپھوندی کی نشاندہی.",
+          "mold_critical_temperature_c": "🧊 پھپھوندی کی نشاندہی · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ پھپھوندی کی نشاندہی · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "باہر · °C (≤)",
           "max_outdoor_humidity": "باہر · RH (%) (≤)",
           "max_wind_kmh": "موسم اور انتباہات · km/h (≤)",
-          "max_age_minutes": "⏱ · کھولیں (min, ≤)"
+          "max_age_minutes": "⏱ · کھولیں (min, ≤)",
+          "indoor_mold": "پھپھوندی کی نشاندہی · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "چیک کریں: کمرے · پیمائشیں (0).",
       "invalid_repeat_minutes": "غلط انتخاب: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "دستیاب نہیں: conversation.process.",
-      "invalid_ai_agent": "غلط انتخاب: conversation.*."
+      "invalid_ai_agent": "غلط انتخاب: conversation.*.",
+      "invalid_mold_temperature_sensor": "کمرے · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "کمرے · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "پھپھوندی کی نشاندہی · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "پھپھوندی کی نشاندہی · 🧊 °C ⚠",
+      "invalid_mold_calibration": "پھپھوندی کی نشاندہی · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

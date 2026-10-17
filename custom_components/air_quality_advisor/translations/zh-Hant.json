@@ -6,10 +6,12 @@
         "title": "房間",
         "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
         "data": {
-          "areas": "房間"
+          "areas": "房間",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "請選擇: 房間 · 🪟 binary_sensor (device_class: window)."
+          "areas": "請選擇: 房間 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 黴菌指標 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "排除室內空氣感測器",
-        "description": "房間: {area_name} ({position}/{total}). 排除室內空氣感測器. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "房間 · 黴菌指標",
+        "description": "房間: {area_name} ({position}/{total}). 🌡️ 🧊 黴菌指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "排除室內空氣感測器"
+          "excluded_indoor_entities": "排除室內空氣感測器",
+          "mold_indoor_temperature": "房間 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "黴菌指標 · 🧊 °C",
+          "mold_recalibrate": "黴菌指標 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "房間: 🌡️ °C/°F · 黴菌指標.",
+          "mold_critical_temperature_c": "🧊 黴菌指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ 黴菌指標 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "室外 · °C (≤)",
           "max_outdoor_humidity": "室外 · RH (%) (≤)",
           "max_wind_kmh": "天氣與警報 · km/h (≤)",
-          "max_age_minutes": "⏱ · 開啟 (min, ≤)"
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)",
+          "indoor_mold": "黴菌指標 · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "請檢查: 房間 · 測量值 (0).",
       "invalid_repeat_minutes": "選擇無效: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "無法使用: conversation.process.",
-      "invalid_ai_agent": "選擇無效: conversation.*."
+      "invalid_ai_agent": "選擇無效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房間 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房間 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "黴菌指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "黴菌指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — 已設定."
@@ -137,8 +151,8 @@
         "description": "請選擇: 房間 / 天氣與警報 / 播報（選用） / 進階閾值",
         "menu_options": {
           "areas": "房間",
+          "indoor_sensors": "房間 · 黴菌指標",
           "window_sensors": "排除窗戶感測器",
-          "indoor_sensors": "排除室內空氣感測器",
           "outdoor": "室外空氣品質",
           "weather": "天氣與警報",
           "delivery": "播報（選用）",
@@ -159,20 +173,28 @@
         "title": "房間",
         "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
         "data": {
-          "areas": "房間"
+          "areas": "房間",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "請選擇: 房間 · 🪟 binary_sensor (device_class: window)."
+          "areas": "請選擇: 房間 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 黴菌指標 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "排除室內空氣感測器",
-        "description": "房間: {area_name} ({position}/{total}). 排除室內空氣感測器. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "房間 · 黴菌指標",
+        "description": "房間: {area_name} ({position}/{total}). 🌡️ 🧊 黴菌指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "排除室內空氣感測器"
+          "excluded_indoor_entities": "排除室內空氣感測器",
+          "mold_indoor_temperature": "房間 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "黴菌指標 · 🧊 °C",
+          "mold_recalibrate": "黴菌指標 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "房間: 🌡️ °C/°F · 黴菌指標.",
+          "mold_critical_temperature_c": "🧊 黴菌指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ 黴菌指標 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "室外 · °C (≤)",
           "max_outdoor_humidity": "室外 · RH (%) (≤)",
           "max_wind_kmh": "天氣與警報 · km/h (≤)",
-          "max_age_minutes": "⏱ · 開啟 (min, ≤)"
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)",
+          "indoor_mold": "黴菌指標 · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "請檢查: 房間 · 測量值 (0).",
       "invalid_repeat_minutes": "選擇無效: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "無法使用: conversation.process.",
-      "invalid_ai_agent": "選擇無效: conversation.*."
+      "invalid_ai_agent": "選擇無效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房間 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房間 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "黴菌指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "黴菌指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

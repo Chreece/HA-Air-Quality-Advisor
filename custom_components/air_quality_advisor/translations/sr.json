@@ -6,10 +6,12 @@
         "title": "Собе",
         "description": "1 · 🪟 Собе. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Собе"
+          "areas": "Собе",
+          "use_mold_indicator": "Индикатор буђи · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window)."
+          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор буђи · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Изузми сензоре унутрашњег ваздуха",
-        "description": "Собе: {area_name} ({position}/{total}). Изузми сензоре унутрашњег ваздуха. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Собе · Индикатор буђи",
+        "description": "Собе: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор буђи · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха"
+          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха",
+          "mold_indoor_temperature": "Собе · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор буђи · 🧊 °C",
+          "mold_recalibrate": "Индикатор буђи · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Собе: 🌡️ °C/°F · Индикатор буђи.",
+          "mold_critical_temperature_c": "🧊 Индикатор буђи · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор буђи · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Напољу · °C (≤)",
           "max_outdoor_humidity": "Напољу · RH (%) (≤)",
           "max_wind_kmh": "Време и упозорења · km/h (≤)",
-          "max_age_minutes": "⏱ · Отворите (min, ≤)"
+          "max_age_minutes": "⏱ · Отворите (min, ≤)",
+          "indoor_mold": "Индикатор буђи · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Проверите: Собе · Мерења (0).",
       "invalid_repeat_minutes": "Неважећи избор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неважећи избор: conversation.*."
+      "invalid_ai_agent": "Неважећи избор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Собе · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Собе · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор буђи · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор буђи · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор буђи · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — већ подешено."
@@ -137,8 +151,8 @@
         "description": "Изаберите: Собе / Време и упозорења / Обавештења (опционо) / Напредни прагови",
         "menu_options": {
           "areas": "Собе",
+          "indoor_sensors": "Собе · Индикатор буђи",
           "window_sensors": "Изузми сензоре прозора",
-          "indoor_sensors": "Изузми сензоре унутрашњег ваздуха",
           "outdoor": "Квалитет спољног ваздуха",
           "weather": "Време и упозорења",
           "delivery": "Обавештења (опционо)",
@@ -159,20 +173,28 @@
         "title": "Собе",
         "description": "1 · 🪟 Собе. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Собе"
+          "areas": "Собе",
+          "use_mold_indicator": "Индикатор буђи · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window)."
+          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор буђи · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Изузми сензоре унутрашњег ваздуха",
-        "description": "Собе: {area_name} ({position}/{total}). Изузми сензоре унутрашњег ваздуха. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Собе · Индикатор буђи",
+        "description": "Собе: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор буђи · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха"
+          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха",
+          "mold_indoor_temperature": "Собе · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор буђи · 🧊 °C",
+          "mold_recalibrate": "Индикатор буђи · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Собе: 🌡️ °C/°F · Индикатор буђи.",
+          "mold_critical_temperature_c": "🧊 Индикатор буђи · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор буђи · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Напољу · °C (≤)",
           "max_outdoor_humidity": "Напољу · RH (%) (≤)",
           "max_wind_kmh": "Време и упозорења · km/h (≤)",
-          "max_age_minutes": "⏱ · Отворите (min, ≤)"
+          "max_age_minutes": "⏱ · Отворите (min, ≤)",
+          "indoor_mold": "Индикатор буђи · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Проверите: Собе · Мерења (0).",
       "invalid_repeat_minutes": "Неважећи избор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недоступно: conversation.process.",
-      "invalid_ai_agent": "Неважећи избор: conversation.*."
+      "invalid_ai_agent": "Неважећи избор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Собе · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Собе · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор буђи · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор буђи · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор буђи · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

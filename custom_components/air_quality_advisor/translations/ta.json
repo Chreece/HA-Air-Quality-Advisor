@@ -6,10 +6,12 @@
         "title": "அறைகள்",
         "description": "1 · 🪟 அறைகள். binary_sensor (device_class: window).",
         "data": {
-          "areas": "அறைகள்"
+          "areas": "அறைகள்",
+          "use_mold_indicator": "பூஞ்சை குறியீடு · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window)."
+          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 பூஞ்சை குறியீடு · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "உட்புற காற்று உணரிகளை விலக்கு",
-        "description": "அறைகள்: {area_name} ({position}/{total}). உட்புற காற்று உணரிகளை விலக்கு. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "அறைகள் · பூஞ்சை குறியீடு",
+        "description": "அறைகள்: {area_name} ({position}/{total}). 🌡️ 🧊 பூஞ்சை குறியீடு · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு"
+          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு",
+          "mold_indoor_temperature": "அறைகள் · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "பூஞ்சை குறியீடு · 🧊 °C",
+          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "அறைகள்: 🌡️ °C/°F · பூஞ்சை குறியீடு.",
+          "mold_critical_temperature_c": "🧊 பூஞ்சை குறியீடு · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ பூஞ்சை குறியீடு · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "வெளியே · °C (≤)",
           "max_outdoor_humidity": "வெளியே · RH (%) (≤)",
           "max_wind_kmh": "வானிலை மற்றும் எச்சரிக்கைகள் · km/h (≤)",
-          "max_age_minutes": "⏱ · திறக்கவும் (min, ≤)"
+          "max_age_minutes": "⏱ · திறக்கவும் (min, ≤)",
+          "indoor_mold": "பூஞ்சை குறியீடு · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "சரிபார்க்கவும்: அறைகள் · அளவீடுகள் (0).",
       "invalid_repeat_minutes": "தவறான தேர்வு: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "கிடைக்கவில்லை: conversation.process.",
-      "invalid_ai_agent": "தவறான தேர்வு: conversation.*."
+      "invalid_ai_agent": "தவறான தேர்வு: conversation.*.",
+      "invalid_mold_temperature_sensor": "அறைகள் · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "அறைகள் · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "பூஞ்சை குறியீடு · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "பூஞ்சை குறியீடு · 🧊 °C ⚠",
+      "invalid_mold_calibration": "பூஞ்சை குறியீடு · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — ஏற்கெனவே அமைக்கப்பட்டது."
@@ -137,8 +151,8 @@
         "description": "தேர்ந்தெடுக்கவும்: அறைகள் / வானிலை மற்றும் எச்சரிக்கைகள் / அறிவிப்புகள் (விருப்பம்) / மேம்பட்ட வரம்புகள்",
         "menu_options": {
           "areas": "அறைகள்",
+          "indoor_sensors": "அறைகள் · பூஞ்சை குறியீடு",
           "window_sensors": "சாளர உணரிகளை விலக்கு",
-          "indoor_sensors": "உட்புற காற்று உணரிகளை விலக்கு",
           "outdoor": "வெளிப்புறக் காற்றுத் தரம்",
           "weather": "வானிலை மற்றும் எச்சரிக்கைகள்",
           "delivery": "அறிவிப்புகள் (விருப்பம்)",
@@ -159,20 +173,28 @@
         "title": "அறைகள்",
         "description": "1 · 🪟 அறைகள். binary_sensor (device_class: window).",
         "data": {
-          "areas": "அறைகள்"
+          "areas": "அறைகள்",
+          "use_mold_indicator": "பூஞ்சை குறியீடு · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window)."
+          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 பூஞ்சை குறியீடு · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "உட்புற காற்று உணரிகளை விலக்கு",
-        "description": "அறைகள்: {area_name} ({position}/{total}). உட்புற காற்று உணரிகளை விலக்கு. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "அறைகள் · பூஞ்சை குறியீடு",
+        "description": "அறைகள்: {area_name} ({position}/{total}). 🌡️ 🧊 பூஞ்சை குறியீடு · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு"
+          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு",
+          "mold_indoor_temperature": "அறைகள் · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "பூஞ்சை குறியீடு · 🧊 °C",
+          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "அறைகள்: 🌡️ °C/°F · பூஞ்சை குறியீடு.",
+          "mold_critical_temperature_c": "🧊 பூஞ்சை குறியீடு · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ பூஞ்சை குறியீடு · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "வெளியே · °C (≤)",
           "max_outdoor_humidity": "வெளியே · RH (%) (≤)",
           "max_wind_kmh": "வானிலை மற்றும் எச்சரிக்கைகள் · km/h (≤)",
-          "max_age_minutes": "⏱ · திறக்கவும் (min, ≤)"
+          "max_age_minutes": "⏱ · திறக்கவும் (min, ≤)",
+          "indoor_mold": "பூஞ்சை குறியீடு · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "சரிபார்க்கவும்: அறைகள் · அளவீடுகள் (0).",
       "invalid_repeat_minutes": "தவறான தேர்வு: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "கிடைக்கவில்லை: conversation.process.",
-      "invalid_ai_agent": "தவறான தேர்வு: conversation.*."
+      "invalid_ai_agent": "தவறான தேர்வு: conversation.*.",
+      "invalid_mold_temperature_sensor": "அறைகள் · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "அறைகள் · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "பூஞ்சை குறியீடு · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "பூஞ்சை குறியீடு · 🧊 °C ⚠",
+      "invalid_mold_calibration": "பூஞ்சை குறியீடு · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {
