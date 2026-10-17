@@ -1,15 +1,12 @@
 {
-  "version": "0.2.7",
+  "version": "0.2.8",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Opt-in per-room Mold Indicator replaces raw RH as ventilation trigger using HA's cold-surface temperature calibration formula",
-    "Initial Rooms step enables mold mode; Room settings is the second options entry with per-room sensor exclusions and measured coldest-surface temperature",
-    "Average all included physically valid nonzero RH readings per room, ignoring unavailable, stale, nonnumeric, zero and values above 100%",
-    "Preserve the original calibration factor across subsequent weather or sensor updates; explicit recalibration after new measurement",
-    "Derived estimated surface humidity (70% initial warning threshold) and calibration diagnostics included in dashboard and localized messages",
-    "New mode is off by default; existing RH, CO2, weather warnings and Announcement Hub behavior remain intact",
-    "Expanded regression coverage for mold math, option flow, missing data, averaging and frontend; translated configuration in all 38 languages"
+    "Fix README hero banner, support badge, diagrams, four dashboard screenshots and preview images failing to render in HACS",
+    "Replace all nine relative repository image sources with absolute HTTPS raw.githubusercontent.com URLs",
+    "Add regression test checking HACS-compatible absolute image URLs and local image-asset existence",
+    "No sensor, automation, announcement, calibration, configuration, or runtime behavior changes"
   ]
 }

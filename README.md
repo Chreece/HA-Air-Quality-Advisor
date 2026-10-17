@@ -1,9 +1,9 @@
 <p align="center">
-  <img src=".github/assets/air-quality-advisor-banner.jpg" alt="Air Quality Advisor — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/air-quality-advisor-banner.jpg" alt="Air Quality Advisor — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
-  <a href="https://ko-fi.com/chreece"><img src=".github/assets/ko-fi-banner.svg" alt="Support Chreece on Ko-fi" width="480"></a>
+  <a href="https://ko-fi.com/chreece"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/ko-fi-banner.svg" alt="Support Chreece on Ko-fi" width="480"></a>
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
 
-<p align="center"><img src=".github/assets/how-it-works.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/how-it-works.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
 
 ## Dashboard screenshots
 
@@ -34,13 +34,13 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
 ### Desktop overview — light theme
 
 <p align="center">
-  <img src=".github/assets/screenshots/dashboard-overview-light.png" alt="Air Quality Advisor light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-overview-light.png" alt="Air Quality Advisor light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
 </p>
 
 ### Greek localization — dark theme
 
 <p align="center">
-  <img src=".github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Air Quality Advisor dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Air Quality Advisor dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
 </p>
 
 ### Mobile view and outdoor warning
@@ -51,8 +51,8 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
     <td align="center"><b>Unsafe outdoor conditions — close windows</b></td>
   </tr>
   <tr>
-    <td valign="top" align="center"><img src=".github/assets/screenshots/dashboard-mobile.png" alt="Air Quality Advisor mobile dashboard with room cards and sensor gauges" width="340"></td>
-    <td valign="top" align="center"><img src=".github/assets/screenshots/dashboard-outdoor-alert.png" alt="Air Quality Advisor dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-mobile.png" alt="Air Quality Advisor mobile dashboard with room cards and sensor gauges" width="340"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-outdoor-alert.png" alt="Air Quality Advisor dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
   </tr>
 </table>
 
@@ -182,7 +182,7 @@ Only **non-excluded** `binary_sensor` entities with device class `window` count 
 
 ## Air Quality Advisor dashboard card
 
-<p align="center"><img src=".github/assets/dashboard-card-preview.svg" alt="Illustrative Air Quality Advisor Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/dashboard-card-preview.svg" alt="Illustrative Air Quality Advisor Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
 
 **Add it from the dashboard card picker**: Edit your dashboard → **Add card** → **Air Quality Advisor**. The integration registers the card JavaScript automatically after a Home Assistant restart, and the card discovers the recommendation sensor if you have exactly one Air Quality Advisor instance. The card picker also suggests it for your recommendation entity. A built-in graphical editor lets you select the sensor, rename the card and toggle the outdoor panel and detailed metrics.
 
@@ -209,7 +209,7 @@ If the card doesn't appear after updating via HACS, **restart Home Assistant**, 
 
 ## The one sensor
 
-<p align="center"><img src=".github/assets/recommendation-preview.svg" alt="Illustrative Air Quality Advisor close-window recommendation" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/recommendation-preview.svg" alt="Illustrative Air Quality Advisor close-window recommendation" width="100%"></p>
 
 Typical state when CO₂ is high but outdoor air and weather are good:
 

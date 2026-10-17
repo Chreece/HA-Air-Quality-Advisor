@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.8 — Restore README images in HACS
+
+- Replace all nine repository-local image references in `README.md` with absolute `https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/` image URLs. This fixes broken cover, Ko-fi artwork, architecture diagrams, four dashboard screenshots and illustrative previews in HACS's README renderer while preserving GitHub rendering.
+- Add a regression test that requires absolute HTTPS image URLs, checks referenced local assets actually exist and prevents broken relative `src` links from returning.
+- Documentation-only correction; no sensor logic, mold estimation, announcements, Home Assistant configuration or runtime services are changed.
+
+
 ## 0.2.7 — Optional calibrated mold indication instead of raw humidity
 
 - Add a **Use mold indication instead of room RH** checkbox to the first Rooms configuration page. Default remains **off** for existing installations, retaining the previous room humidity threshold and all pollution/weather safeguards.
