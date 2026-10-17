@@ -92,11 +92,13 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
+**v0.2.4 localization fixes are on `main` pending a manually launched release workflow.** They are not yet a published HACS update.
+
 **Latest published stable release: [v0.2.2](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.2)** · [Release notes](.github/releases/v0.2.2.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
 
 Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
 
-Regular development pushes stay quiet. A dedicated release-request change triggers Python and JavaScript validation, HACS Action and Hassfest before publishing a tag and full GitHub Release.
+GitHub Actions is **manual-only**: push all code and translations, then explicitly run **Validate and release (on demand)** from GitHub Actions. Leave **Publish release** unchecked for validation only, or enable it after all changes are committed to publish the new version after successful tests, HACS and Hassfest.
 
 ## Internationalization — 38 languages
 
@@ -106,9 +108,15 @@ Air Quality Advisor supports **38 Home Assistant language choices**, including 3
 
 BCP47 support distinguishes `pt-BR` from `pt-PT`, and `zh-Hans` from `zh-Hant` (`zh-CN` and `zh-TW` are also recognized). Unsupported locales fall back to English. The dashboard uses right-to-left layout for Arabic, Hebrew, Persian and Urdu.
 
-**Translation maturity:** Existing English, German, Greek, French and Spanish detailed setup text is retained. Additional locales have translated interface labels, core instructions, states and recommendations, but some rare validation messages currently fall back to English rather than risk an inaccurate safety warning. Sensor/device names, weather-provider conditions and measurement units remain those supplied by Home Assistant. Speech voices are **not bundled**; your installed TTS engine must support the language.
+**Translation audit (v0.2.4):** All 38 language files now provide localized configuration and Reconfigure field labels, help text, validation errors, the settings-selection menu, abort messages, and the language selector's **Home Assistant default** option. Greek, German, French and Spanish include fully translated advanced-threshold labels and detailed explanations. The other 33 languages use short translated safety guidance and error messages with technical terms and symbols; native-speaker review is welcome. **Dynamic weather warnings, device names, room names, geographic names, sensor readings and IDs come from the user's Home Assistant or the weather provider and are not translated by this integration.** Actual spoken language still depends on the installed TTS voice.
 
-Locale source lives under `custom_components/air_quality_advisor/locale_pack_*.py`; edit the source then run `python generate_translations.py` and check the generated `translations/<language>.json` files. Native-speaker translation improvements are welcome.
+Locale sources are in `custom_components/air_quality_advisor/locale_pack_*.py` and the reviewed, centralized `config_i18n_overrides.json` file. After editing either source, run `python generate_translations.py` and `python -m pytest -q tests/test_config_i18n_audit.py`. The generator applies the localized overrides **last**, so it cannot silently restore English helper text. Native-speaker improvements are welcome.
+
+### Config-flow translation quality assurance
+
+The full UI localization audit checks **all seven setup/Reconfigure sections**: Rooms, Window sensor exclusions, Per-room indoor sensors, Outdoor air, Weather/warnings, Announcements and Advanced thresholds. It also covers every helper description, every validation/abort message, the independent Options menu and dropdown option labels.
+
+For example, the Greek Weather page explains directly that at least one weather provider is required, that unsafe weather prevents opening, and that active/unavailable warnings block opening. German, French, Spanish and the additional language packs receive corresponding localized instructions. [Audit details](TRANSLATION_AUDIT.md).
 
 ## Guided configuration and reconfiguration
 

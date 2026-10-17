@@ -9,7 +9,7 @@
           "areas": "Собе"
         },
         "data_description": {
-          "areas": "1 · 🪟 Собе. binary_sensor (device_class: window)."
+          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "Изузми сензоре прозора"
         },
         "data_description": {
-          "excluded_window_entities": "Изузми сензоре прозора · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "Изаберите: Изузми сензоре прозора · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "Квалитет спољног ваздуха"
         },
         "data_description": {
-          "outdoor_sensors": "Квалитет спољног ваздуха. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "Изаберите: Квалитет спољног ваздуха · AQI, CO₂, PM2.5, PM10, VOC. Недоступно: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "Временска упозорења"
         },
         "data_description": {
-          "weather_entities": "Време и упозорења. weather.*",
-          "weather_warnings": "Време и упозорења. weather.*"
+          "weather_entities": "Изаберите: Време и упозорења · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "Време и упозорења · ⚠ (Недоступно) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · Језик"
         },
         "data_description": {
-          "language": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "automatic_tts": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "automatic_notifications": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "tts_engine": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "media_players": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · Обавештења (опционо) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "Језик: Home Assistant (Подразумевано).",
+          "automatic_tts": "Подразумевано: ⛔ · Аутоматска говорна обавештења · 🪟 90 s.",
+          "automatic_notifications": "Подразумевано: ⛔ · Аутоматска обавештења.",
+          "announcement_repeat_minutes": "Подразумевано: 10 min · 0 = никада · Док исти узрок траје · Собе.",
+          "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
+          "notify_entities": "Изаберите: notify.* · Аутоматска обавештења.",
+          "tts_engine": "Изаберите: tts.* · Аутоматска говорна обавештења.",
+          "media_players": "Изаберите: media_player.* · Аутоматска говорна обавештења.",
+          "ai_rewrite_announcements": "AI · Обавештења (опционо) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Изаберите: conversation.* (Home Assistant · Подразумевано)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "Неважећи избор: Квалитет спољног ваздуха (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Недоступно: Квалитет спољног ваздуха (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Неважећи избор: Време и упозорења (weather.*).",
+      "invalid_warning": "Неважећи избор: Време и упозорења ⚠.",
+      "missing_notify": "Изаберите: Announcement Hub / notify.*.",
+      "missing_tts": "Изаберите: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Неважећи избор: °C min < max.",
+      "no_areas": "Изаберите: Собе.",
+      "no_window_areas": "Недоступно: Мерења (binary_sensor, window).",
+      "invalid_areas": "Неважећи избор: Собе.",
+      "invalid_window_exclusions": "Неважећи избор: Изузми сензоре прозора.",
+      "invalid_indoor_exclusions": "Неважећи избор: Изузми сензоре унутрашњег ваздуха.",
+      "no_windows_after_exclusions": "Оставите бар један сензор прозора.",
+      "review_areas_after_exclusions": "Проверите: Собе · Мерења (0).",
+      "invalid_repeat_minutes": "Неважећи избор: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Недоступно: conversation.process.",
+      "invalid_ai_agent": "Неважећи избор: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — већ подешено."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Напредни прагови",
-        "description": "Собе · Изузми сензоре прозора · Изузми сензоре унутрашњег ваздуха · Квалитет спољног ваздуха · Време и упозорења · Обавештења (опционо) · Напредни прагови",
+        "title": "⚙️ Изаберите",
+        "description": "Изаберите: Собе / Време и упозорења / Обавештења (опционо) / Напредни прагови",
         "menu_options": {
           "areas": "Собе",
           "window_sensors": "Изузми сензоре прозора",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "Изузми сензоре прозора"
         },
         "data_description": {
-          "excluded_window_entities": "Изузми сензоре прозора · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "Изаберите: Изузми сензоре прозора · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "Собе"
         },
         "data_description": {
-          "areas": "1 · 🪟 Собе. binary_sensor (device_class: window)."
+          "areas": "Изаберите: Собе · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "Изаберите: Изузми сензоре унутрашњег ваздуха · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "Квалитет спољног ваздуха"
         },
         "data_description": {
-          "outdoor_sensors": "Квалитет спољног ваздуха. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "Изаберите: Квалитет спољног ваздуха · AQI, CO₂, PM2.5, PM10, VOC. Недоступно: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "Временска упозорења"
         },
         "data_description": {
-          "weather_entities": "Време и упозорења. weather.*",
-          "weather_warnings": "Време и упозорења. weather.*"
+          "weather_entities": "Изаберите: Време и упозорења · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "Време и упозорења · ⚠ (Недоступно) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · Језик"
         },
         "data_description": {
-          "language": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "automatic_tts": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "automatic_notifications": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "tts_engine": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "media_players": "Обавештења (опционо). Аутоматска обавештења · Аутоматска говорна обавештења. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · Обавештења (опционо) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "Језик: Home Assistant (Подразумевано).",
+          "automatic_tts": "Подразумевано: ⛔ · Аутоматска говорна обавештења · 🪟 90 s.",
+          "automatic_notifications": "Подразумевано: ⛔ · Аутоматска обавештења.",
+          "announcement_repeat_minutes": "Подразумевано: 10 min · 0 = никада · Док исти узрок траје · Собе.",
+          "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
+          "notify_entities": "Изаберите: notify.* · Аутоматска обавештења.",
+          "tts_engine": "Изаберите: tts.* · Аутоматска говорна обавештења.",
+          "media_players": "Изаберите: media_player.* · Аутоматска говорна обавештења.",
+          "ai_rewrite_announcements": "AI · Обавештења (опционо) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Изаберите: conversation.* (Home Assistant · Подразумевано)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "Неважећи избор: Квалитет спољног ваздуха (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Недоступно: Квалитет спољног ваздуха (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Неважећи избор: Време и упозорења (weather.*).",
+      "invalid_warning": "Неважећи избор: Време и упозорења ⚠.",
+      "missing_notify": "Изаберите: Announcement Hub / notify.*.",
+      "missing_tts": "Изаберите: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Неважећи избор: °C min < max.",
+      "no_areas": "Изаберите: Собе.",
+      "no_window_areas": "Недоступно: Мерења (binary_sensor, window).",
+      "invalid_areas": "Неважећи избор: Собе.",
+      "invalid_window_exclusions": "Неважећи избор: Изузми сензоре прозора.",
+      "invalid_indoor_exclusions": "Неважећи избор: Изузми сензоре унутрашњег ваздуха.",
+      "no_windows_after_exclusions": "Оставите бар један сензор прозора.",
+      "review_areas_after_exclusions": "Проверите: Собе · Мерења (0).",
+      "invalid_repeat_minutes": "Неважећи избор: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Недоступно: conversation.process.",
+      "invalid_ai_agent": "Неважећи избор: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "Собе",
           "description": "Собе"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Подразумевано",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

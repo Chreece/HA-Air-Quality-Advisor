@@ -9,7 +9,7 @@
           "areas": "الغرف"
         },
         "data_description": {
-          "areas": "1 · 🪟 الغرف. binary_sensor (device_class: window)."
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "استبعاد مستشعرات النوافذ"
         },
         "data_description": {
-          "excluded_window_entities": "استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "اختر: استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
         },
         "data_description": {
-          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "جودة الهواء الخارجي"
         },
         "data_description": {
-          "outdoor_sensors": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "تحذيرات الطقس"
         },
         "data_description": {
-          "weather_entities": "الطقس والتحذيرات. weather.*",
-          "weather_warnings": "الطقس والتحذيرات. weather.*"
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · اللغة"
         },
         "data_description": {
-          "language": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "automatic_tts": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "automatic_notifications": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "tts_engine": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "media_players": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "اللغة: Home Assistant (افتراضي).",
+          "automatic_tts": "افتراضي: ⛔ · إعلانات صوتية تلقائية · 🪟 90 s.",
+          "automatic_notifications": "افتراضي: ⛔ · إشعارات تلقائية.",
+          "announcement_repeat_minutes": "افتراضي: 10 min · 0 = أبدًا · ما دام السبب نفسه مستمرًا · الغرف.",
+          "use_announcement_hub": "Announcement Hub · غير متاح → Home Assistant.",
+          "notify_entities": "اختر: notify.* · إشعارات تلقائية.",
+          "tts_engine": "اختر: tts.* · إعلانات صوتية تلقائية.",
+          "media_players": "اختر: media_player.* · إعلانات صوتية تلقائية.",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "اختر: conversation.* (Home Assistant · افتراضي)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "اختيار غير صالح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "غير متاح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "اختيار غير صالح: الطقس والتحذيرات (weather.*).",
+      "invalid_warning": "اختيار غير صالح: الطقس والتحذيرات ⚠.",
+      "missing_notify": "اختر: Announcement Hub / notify.*.",
+      "missing_tts": "اختر: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "اختيار غير صالح: °C min < max.",
+      "no_areas": "اختر: الغرف.",
+      "no_window_areas": "غير متاح: القياسات (binary_sensor, window).",
+      "invalid_areas": "اختيار غير صالح: الغرف.",
+      "invalid_window_exclusions": "اختيار غير صالح: استبعاد مستشعرات النوافذ.",
+      "invalid_indoor_exclusions": "اختيار غير صالح: استبعاد مستشعرات الهواء الداخلي.",
+      "no_windows_after_exclusions": "اترك مستشعر نافذة واحدًا على الأقل.",
+      "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
+      "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "غير متاح: conversation.process.",
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — تم الإعداد مسبقًا."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "حدود متقدمة",
-        "description": "الغرف · استبعاد مستشعرات النوافذ · استبعاد مستشعرات الهواء الداخلي · جودة الهواء الخارجي · الطقس والتحذيرات · الإعلانات (اختياري) · حدود متقدمة",
+        "title": "⚙️ اختر",
+        "description": "اختر: الغرف / الطقس والتحذيرات / الإعلانات (اختياري) / حدود متقدمة",
         "menu_options": {
           "areas": "الغرف",
           "window_sensors": "استبعاد مستشعرات النوافذ",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "استبعاد مستشعرات النوافذ"
         },
         "data_description": {
-          "excluded_window_entities": "استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "اختر: استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "الغرف"
         },
         "data_description": {
-          "areas": "1 · 🪟 الغرف. binary_sensor (device_class: window)."
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
         },
         "data_description": {
-          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "جودة الهواء الخارجي"
         },
         "data_description": {
-          "outdoor_sensors": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "تحذيرات الطقس"
         },
         "data_description": {
-          "weather_entities": "الطقس والتحذيرات. weather.*",
-          "weather_warnings": "الطقس والتحذيرات. weather.*"
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · اللغة"
         },
         "data_description": {
-          "language": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "automatic_tts": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "automatic_notifications": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "tts_engine": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "media_players": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "اللغة: Home Assistant (افتراضي).",
+          "automatic_tts": "افتراضي: ⛔ · إعلانات صوتية تلقائية · 🪟 90 s.",
+          "automatic_notifications": "افتراضي: ⛔ · إشعارات تلقائية.",
+          "announcement_repeat_minutes": "افتراضي: 10 min · 0 = أبدًا · ما دام السبب نفسه مستمرًا · الغرف.",
+          "use_announcement_hub": "Announcement Hub · غير متاح → Home Assistant.",
+          "notify_entities": "اختر: notify.* · إشعارات تلقائية.",
+          "tts_engine": "اختر: tts.* · إعلانات صوتية تلقائية.",
+          "media_players": "اختر: media_player.* · إعلانات صوتية تلقائية.",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "اختر: conversation.* (Home Assistant · افتراضي)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "اختيار غير صالح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "غير متاح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "اختيار غير صالح: الطقس والتحذيرات (weather.*).",
+      "invalid_warning": "اختيار غير صالح: الطقس والتحذيرات ⚠.",
+      "missing_notify": "اختر: Announcement Hub / notify.*.",
+      "missing_tts": "اختر: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "اختيار غير صالح: °C min < max.",
+      "no_areas": "اختر: الغرف.",
+      "no_window_areas": "غير متاح: القياسات (binary_sensor, window).",
+      "invalid_areas": "اختيار غير صالح: الغرف.",
+      "invalid_window_exclusions": "اختيار غير صالح: استبعاد مستشعرات النوافذ.",
+      "invalid_indoor_exclusions": "اختيار غير صالح: استبعاد مستشعرات الهواء الداخلي.",
+      "no_windows_after_exclusions": "اترك مستشعر نافذة واحدًا على الأقل.",
+      "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
+      "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "غير متاح: conversation.process.",
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "الغرف",
           "description": "الغرف"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — افتراضي",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

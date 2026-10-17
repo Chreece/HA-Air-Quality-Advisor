@@ -39,7 +39,7 @@
           "outdoor_sensors": "Sensores de aire exterior"
         },
         "data_description": {
-          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+          "outdoor_sensors": "Elige sensores realmente situados fuera. Las lecturas superiores a los límites impiden abrir; las desconocidas, no disponibles o antiguas se muestran como datos incompletos."
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "Sensores de alerta meteorológica (opcional)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
-          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+          "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir.",
+          "weather_warnings": "Opcional. Las alertas seleccionadas activas o no disponibles impiden abrir las ventanas."
         }
       },
       "delivery": {
@@ -70,13 +70,13 @@
           "ai_conversation_agent": "Agente de conversación"
         },
         "data_description": {
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
-          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
+          "automatic_tts": "Desactivado de forma predeterminada. Las nuevas recomendaciones de apertura requieren 90 segundos de condiciones estables.",
+          "automatic_notifications": "Desactivado de forma predeterminada. No se envía una alerta por cada nueva medición del sensor.",
           "use_announcement_hub": "Aparece solo cuando Announcement Hub está configurado. Si no funciona o rechaza el mensaje, se usan las salidas directas de Home Assistant o una notificación persistente.",
-          "notify_entities": "Direct outputs when Announcement Hub is not used.",
-          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
+          "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
+          "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
           "announcement_repeat_minutes": "Predeterminado: 10 minutos. 0 = no repetir nunca. Solo se repite cuando persisten la misma recomendación y su causa. Cada habitación usa un temporizador independiente. Requiere notificaciones automáticas o TTS.",
           "ai_rewrite_announcements": "Una sola opción de IA para ambos métodos. Con Announcement Hub se envía use_ai: true/false; si no, la IA reformula las notificaciones y el TTS directos. Las recomendaciones sobre ventanas no cambian.",
           "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub."
@@ -86,24 +86,24 @@
         "title": "Umbrales avanzados",
         "description": "Los límites se aplican a lecturas instantáneas, no a normas médicas. El AQI predeterminado usa la escala estadounidense 0–500.",
         "data": {
-          "outdoor_aqi": "Maximum outdoor AQI",
-          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
-          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
-          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
-          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
-          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
-          "indoor_aqi": "Indoor AQI triggering ventilation",
-          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
-          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
-          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
-          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
-          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
-          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
-          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
-          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
-          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
-          "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "outdoor_aqi": "AQI exterior máximo",
+          "outdoor_co2": "CO₂ exterior máximo (ppm)",
+          "outdoor_pm25": "PM2.5 exterior máximo (µg/m³)",
+          "outdoor_pm10": "PM10 exterior máximo (µg/m³)",
+          "outdoor_voc": "COV exterior máximo (µg/m³)",
+          "outdoor_voc_parts": "COV exterior máximo (ppb)",
+          "indoor_aqi": "Umbral de AQI interior que activa la ventilación",
+          "indoor_co2": "Umbral de CO₂ interior que activa la ventilación (ppm)",
+          "indoor_pm25": "Umbral de PM2.5 interior que activa la ventilación (µg/m³)",
+          "indoor_pm10": "Umbral de PM10 interior que activa la ventilación (µg/m³)",
+          "indoor_voc": "Umbral de COV interior que activa la ventilación (µg/m³)",
+          "indoor_voc_parts": "Umbral de COV interior que activa la ventilación (ppb)",
+          "indoor_humidity": "Umbral de humedad interior que activa la ventilación (%)",
+          "min_outdoor_temp": "Temperatura exterior mínima (°C)",
+          "max_outdoor_temp": "Temperatura exterior máxima (°C)",
+          "max_outdoor_humidity": "Humedad exterior máxima (%)",
+          "max_wind_kmh": "Velocidad máxima del viento (km/h)",
+          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)"
         }
       }
     },
@@ -127,14 +127,14 @@
       "invalid_ai_agent": "Selecciona un agente de conversación compatible de Home Assistant."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor ya está configurado."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Elegir ajustes para editar",
-        "description": "Elige una sección. El resto de ajustes no cambiará.",
+        "description": "Elige una sección. El resto de ajustes permanecerá sin cambios.",
         "menu_options": {
           "areas": "Áreas",
           "window_sensors": "Excluir sensores de ventana",
@@ -182,7 +182,7 @@
           "outdoor_sensors": "Sensores de aire exterior"
         },
         "data_description": {
-          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+          "outdoor_sensors": "Elige sensores realmente situados fuera. Las lecturas superiores a los límites impiden abrir; las desconocidas, no disponibles o antiguas se muestran como datos incompletos."
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "Sensores de alerta meteorológica (opcional)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
-          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+          "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir.",
+          "weather_warnings": "Opcional. Las alertas seleccionadas activas o no disponibles impiden abrir las ventanas."
         }
       },
       "delivery": {
@@ -213,13 +213,13 @@
           "ai_conversation_agent": "Agente de conversación"
         },
         "data_description": {
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
-          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
+          "automatic_tts": "Desactivado de forma predeterminada. Las nuevas recomendaciones de apertura requieren 90 segundos de condiciones estables.",
+          "automatic_notifications": "Desactivado de forma predeterminada. No se envía una alerta por cada nueva medición del sensor.",
           "use_announcement_hub": "Aparece solo cuando Announcement Hub está configurado. Si no funciona o rechaza el mensaje, se usan las salidas directas de Home Assistant o una notificación persistente.",
-          "notify_entities": "Direct outputs when Announcement Hub is not used.",
-          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
+          "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
+          "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
           "announcement_repeat_minutes": "Predeterminado: 10 minutos. 0 = no repetir nunca. Solo se repite cuando persisten la misma recomendación y su causa. Cada habitación usa un temporizador independiente. Requiere notificaciones automáticas o TTS.",
           "ai_rewrite_announcements": "Una sola opción de IA para ambos métodos. Con Announcement Hub se envía use_ai: true/false; si no, la IA reformula las notificaciones y el TTS directos. Las recomendaciones sobre ventanas no cambian.",
           "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub."
@@ -229,24 +229,24 @@
         "title": "Umbrales avanzados",
         "description": "Los límites se aplican a lecturas instantáneas, no a normas médicas. El AQI predeterminado usa la escala estadounidense 0–500.",
         "data": {
-          "outdoor_aqi": "Maximum outdoor AQI",
-          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
-          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
-          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
-          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
-          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
-          "indoor_aqi": "Indoor AQI triggering ventilation",
-          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
-          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
-          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
-          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
-          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
-          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
-          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
-          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
-          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
-          "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "outdoor_aqi": "AQI exterior máximo",
+          "outdoor_co2": "CO₂ exterior máximo (ppm)",
+          "outdoor_pm25": "PM2.5 exterior máximo (µg/m³)",
+          "outdoor_pm10": "PM10 exterior máximo (µg/m³)",
+          "outdoor_voc": "COV exterior máximo (µg/m³)",
+          "outdoor_voc_parts": "COV exterior máximo (ppb)",
+          "indoor_aqi": "Umbral de AQI interior que activa la ventilación",
+          "indoor_co2": "Umbral de CO₂ interior que activa la ventilación (ppm)",
+          "indoor_pm25": "Umbral de PM2.5 interior que activa la ventilación (µg/m³)",
+          "indoor_pm10": "Umbral de PM10 interior que activa la ventilación (µg/m³)",
+          "indoor_voc": "Umbral de COV interior que activa la ventilación (µg/m³)",
+          "indoor_voc_parts": "Umbral de COV interior que activa la ventilación (ppb)",
+          "indoor_humidity": "Umbral de humedad interior que activa la ventilación (%)",
+          "min_outdoor_temp": "Temperatura exterior mínima (°C)",
+          "max_outdoor_temp": "Temperatura exterior máxima (°C)",
+          "max_outdoor_humidity": "Humedad exterior máxima (%)",
+          "max_wind_kmh": "Velocidad máxima del viento (km/h)",
+          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)"
         }
       }
     },
@@ -300,6 +300,51 @@
           "name": "Solo estas áreas (opcional)",
           "description": "Solo estas áreas (opcional)"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Predeterminado de Home Assistant",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

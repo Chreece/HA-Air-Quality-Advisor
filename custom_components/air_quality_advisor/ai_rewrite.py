@@ -11,6 +11,8 @@ import asyncio
 import json
 import logging
 import re
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from .languages import resolve_language
@@ -29,6 +31,16 @@ _CONTROL = re.compile(r"[\x00-\x1f\x7f]")
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)*")
 
 
+@lru_cache(maxsize=1)
+def _agent_labels() -> dict[str, str]:
+    """Default-agent choices in all supported languages, not only five."""
+    root = Path(__file__).parent / "config_i18n_overrides.json"
+    return {
+        code: item["agent"]
+        for code, item in json.loads(root.read_text(encoding="utf-8")).items()
+    }
+
+
 def conversation_agent_choices(hass: Any, saved: str | None = None) -> list[dict[str, str]]:
     """Only Home Assistant conversation entities, plus the default option."""
     agents: dict[str, str] = {}
@@ -39,13 +51,7 @@ def conversation_agent_choices(hass: Any, saved: str | None = None) -> list[dict
         agents.setdefault(saved, f"⚠ {saved}")
     configured_language = getattr(getattr(hass, "config", None), "language", "en")
     language = resolve_language(configured_language)
-    default_label = {
-        "en": "Home Assistant default",
-        "de": "Home Assistant Standard",
-        "el": "Προεπιλεγμένος πράκτορας Home Assistant",
-        "fr": "Agent Home Assistant par défaut",
-        "es": "Agente predeterminado de Home Assistant",
-    }.get(language, "Home Assistant default")
+    default_label = _agent_labels().get(language, "Home Assistant default")
     return [
         {"value": DEFAULT_AGENT, "label": default_label},
         *({"value": entity_id, "label": f"{name} · {entity_id}"}

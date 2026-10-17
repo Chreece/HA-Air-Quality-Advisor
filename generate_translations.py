@@ -346,3 +346,9 @@ for code,v in lang.items():
 # Extend the standard five translations without changing their existing text.
 from generate_extra_translations import generate_extended
 generate_extended(root)
+
+# Final, language-specific help text/error messages and selector labels.
+# This is the single reviewed source: regenerating must never restore English
+# descriptions to Greek or other localized configuration forms.
+from apply_config_i18n import apply_config_overrides
+apply_config_overrides(root)

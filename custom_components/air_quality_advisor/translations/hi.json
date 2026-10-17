@@ -9,7 +9,7 @@
           "areas": "कमरे"
         },
         "data_description": {
-          "areas": "1 · 🪟 कमरे. binary_sensor (device_class: window)."
+          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "खिड़की सेंसर बाहर रखें"
         },
         "data_description": {
-          "excluded_window_entities": "खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "चुनें: खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
         },
         "data_description": {
-          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "बाहरी वायु गुणवत्ता"
         },
         "data_description": {
-          "outdoor_sensors": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "चुनें: बाहरी वायु गुणवत्ता · AQI, CO₂, PM2.5, PM10, VOC. उपलब्ध नहीं: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "मौसम चेतावनियाँ"
         },
         "data_description": {
-          "weather_entities": "मौसम और चेतावनियाँ. weather.*",
-          "weather_warnings": "मौसम और चेतावनियाँ. weather.*"
+          "weather_entities": "चुनें: मौसम और चेतावनियाँ · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "मौसम और चेतावनियाँ · ⚠ (उपलब्ध नहीं) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · भाषा"
         },
         "data_description": {
-          "language": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "automatic_tts": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "automatic_notifications": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "tts_engine": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "media_players": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "भाषा: Home Assistant (डिफ़ॉल्ट).",
+          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित ध्वनि घोषणाएँ · 🪟 90 s.",
+          "automatic_notifications": "डिफ़ॉल्ट: ⛔ · स्वचालित सूचनाएँ.",
+          "announcement_repeat_minutes": "डिफ़ॉल्ट: 10 min · 0 = कभी नहीं · जब तक वही कारण बना रहे · कमरे.",
+          "use_announcement_hub": "Announcement Hub · उपलब्ध नहीं → Home Assistant.",
+          "notify_entities": "चुनें: notify.* · स्वचालित सूचनाएँ.",
+          "tts_engine": "चुनें: tts.* · स्वचालित ध्वनि घोषणाएँ.",
+          "media_players": "चुनें: media_player.* · स्वचालित ध्वनि घोषणाएँ.",
+          "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "अमान्य चयन: बाहरी वायु गुणवत्ता (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "उपलब्ध नहीं: बाहरी वायु गुणवत्ता (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "अमान्य चयन: मौसम और चेतावनियाँ (weather.*).",
+      "invalid_warning": "अमान्य चयन: मौसम और चेतावनियाँ ⚠.",
+      "missing_notify": "चुनें: Announcement Hub / notify.*.",
+      "missing_tts": "चुनें: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "अमान्य चयन: °C min < max.",
+      "no_areas": "चुनें: कमरे.",
+      "no_window_areas": "उपलब्ध नहीं: माप (binary_sensor, window).",
+      "invalid_areas": "अमान्य चयन: कमरे.",
+      "invalid_window_exclusions": "अमान्य चयन: खिड़की सेंसर बाहर रखें.",
+      "invalid_indoor_exclusions": "अमान्य चयन: इनडोर वायु सेंसर बाहर रखें.",
+      "no_windows_after_exclusions": "कम से कम एक खिड़की सेंसर सक्रिय रखें.",
+      "review_areas_after_exclusions": "जाँचें: कमरे · माप (0).",
+      "invalid_repeat_minutes": "अमान्य चयन: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "उपलब्ध नहीं: conversation.process.",
+      "invalid_ai_agent": "अमान्य चयन: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — पहले से कॉन्फ़िगर है."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "उन्नत सीमाएँ",
-        "description": "कमरे · खिड़की सेंसर बाहर रखें · इनडोर वायु सेंसर बाहर रखें · बाहरी वायु गुणवत्ता · मौसम और चेतावनियाँ · घोषणाएँ (वैकल्पिक) · उन्नत सीमाएँ",
+        "title": "⚙️ चुनें",
+        "description": "चुनें: कमरे / मौसम और चेतावनियाँ / घोषणाएँ (वैकल्पिक) / उन्नत सीमाएँ",
         "menu_options": {
           "areas": "कमरे",
           "window_sensors": "खिड़की सेंसर बाहर रखें",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "खिड़की सेंसर बाहर रखें"
         },
         "data_description": {
-          "excluded_window_entities": "खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "चुनें: खिड़की सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "कमरे"
         },
         "data_description": {
-          "areas": "1 · 🪟 कमरे. binary_sensor (device_class: window)."
+          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
         },
         "data_description": {
-          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "बाहरी वायु गुणवत्ता"
         },
         "data_description": {
-          "outdoor_sensors": "बाहरी वायु गुणवत्ता. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "चुनें: बाहरी वायु गुणवत्ता · AQI, CO₂, PM2.5, PM10, VOC. उपलब्ध नहीं: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "मौसम चेतावनियाँ"
         },
         "data_description": {
-          "weather_entities": "मौसम और चेतावनियाँ. weather.*",
-          "weather_warnings": "मौसम और चेतावनियाँ. weather.*"
+          "weather_entities": "चुनें: मौसम और चेतावनियाँ · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "मौसम और चेतावनियाँ · ⚠ (उपलब्ध नहीं) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · भाषा"
         },
         "data_description": {
-          "language": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "automatic_tts": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "automatic_notifications": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "tts_engine": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "media_players": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "भाषा: Home Assistant (डिफ़ॉल्ट).",
+          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित ध्वनि घोषणाएँ · 🪟 90 s.",
+          "automatic_notifications": "डिफ़ॉल्ट: ⛔ · स्वचालित सूचनाएँ.",
+          "announcement_repeat_minutes": "डिफ़ॉल्ट: 10 min · 0 = कभी नहीं · जब तक वही कारण बना रहे · कमरे.",
+          "use_announcement_hub": "Announcement Hub · उपलब्ध नहीं → Home Assistant.",
+          "notify_entities": "चुनें: notify.* · स्वचालित सूचनाएँ.",
+          "tts_engine": "चुनें: tts.* · स्वचालित ध्वनि घोषणाएँ.",
+          "media_players": "चुनें: media_player.* · स्वचालित ध्वनि घोषणाएँ.",
+          "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "अमान्य चयन: बाहरी वायु गुणवत्ता (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "उपलब्ध नहीं: बाहरी वायु गुणवत्ता (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "अमान्य चयन: मौसम और चेतावनियाँ (weather.*).",
+      "invalid_warning": "अमान्य चयन: मौसम और चेतावनियाँ ⚠.",
+      "missing_notify": "चुनें: Announcement Hub / notify.*.",
+      "missing_tts": "चुनें: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "अमान्य चयन: °C min < max.",
+      "no_areas": "चुनें: कमरे.",
+      "no_window_areas": "उपलब्ध नहीं: माप (binary_sensor, window).",
+      "invalid_areas": "अमान्य चयन: कमरे.",
+      "invalid_window_exclusions": "अमान्य चयन: खिड़की सेंसर बाहर रखें.",
+      "invalid_indoor_exclusions": "अमान्य चयन: इनडोर वायु सेंसर बाहर रखें.",
+      "no_windows_after_exclusions": "कम से कम एक खिड़की सेंसर सक्रिय रखें.",
+      "review_areas_after_exclusions": "जाँचें: कमरे · माप (0).",
+      "invalid_repeat_minutes": "अमान्य चयन: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "उपलब्ध नहीं: conversation.process.",
+      "invalid_ai_agent": "अमान्य चयन: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "कमरे",
           "description": "कमरे"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — डिफ़ॉल्ट",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

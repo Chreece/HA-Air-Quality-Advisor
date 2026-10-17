@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigFlowResult, OptionsFlowWithReload
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
-from .languages import LANGUAGE_OPTIONS
+from .languages import SUPPORTED_LANGUAGE_TAGS
 
 from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
 from .hub_delivery import hub_installed
@@ -323,10 +323,11 @@ class _FlowMixin:
         fields: dict[Any, Any] = {
             _marker(CONF_LANGUAGE, self._values.get(CONF_LANGUAGE, "auto"), required=True):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=[
-                        {"value": "auto", "label": "Home Assistant default"},
-                        *LANGUAGE_OPTIONS,
-                    ], mode=selector.SelectSelectorMode.DROPDOWN,
+                    # translation_key uses the current HA UI locale, not the
+                    # server's configured language, unlike hardcoded labels.
+                    options=["auto", *SUPPORTED_LANGUAGE_TAGS],
+                    translation_key="output_language",
+                    mode=selector.SelectSelectorMode.DROPDOWN,
                 )),
             _marker(CONF_AUTO_NOTIFY, self._values.get(CONF_AUTO_NOTIFY, False)):
                 selector.BooleanSelector(),

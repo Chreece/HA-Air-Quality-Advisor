@@ -9,7 +9,7 @@
           "areas": "חדרים"
         },
         "data_description": {
-          "areas": "1 · 🪟 חדרים. binary_sensor (device_class: window)."
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "החרגת חיישני חלונות"
         },
         "data_description": {
-          "excluded_window_entities": "החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "בחרו: החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
         },
         "data_description": {
-          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "איכות האוויר בחוץ"
         },
         "data_description": {
-          "outdoor_sensors": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "אזהרות מזג אוויר"
         },
         "data_description": {
-          "weather_entities": "מזג אוויר ואזהרות. weather.*",
-          "weather_warnings": "מזג אוויר ואזהרות. weather.*"
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · שפה"
         },
         "data_description": {
-          "language": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "automatic_tts": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "automatic_notifications": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "tts_engine": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "media_players": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "שפה: Home Assistant (ברירת מחדל).",
+          "automatic_tts": "ברירת מחדל: ⛔ · הודעות קוליות אוטומטיות · 🪟 90 s.",
+          "automatic_notifications": "ברירת מחדל: ⛔ · התראות אוטומטיות.",
+          "announcement_repeat_minutes": "ברירת מחדל: 10 min · 0 = לעולם לא · כל עוד אותה סיבה נמשכת · חדרים.",
+          "use_announcement_hub": "Announcement Hub · לא זמין → Home Assistant.",
+          "notify_entities": "בחרו: notify.* · התראות אוטומטיות.",
+          "tts_engine": "בחרו: tts.* · הודעות קוליות אוטומטיות.",
+          "media_players": "בחרו: media_player.* · הודעות קוליות אוטומטיות.",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "בחירה לא תקינה: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "לא זמין: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "בחירה לא תקינה: מזג אוויר ואזהרות (weather.*).",
+      "invalid_warning": "בחירה לא תקינה: מזג אוויר ואזהרות ⚠.",
+      "missing_notify": "בחרו: Announcement Hub / notify.*.",
+      "missing_tts": "בחרו: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "בחירה לא תקינה: °C min < max.",
+      "no_areas": "בחרו: חדרים.",
+      "no_window_areas": "לא זמין: מדידות (binary_sensor, window).",
+      "invalid_areas": "בחירה לא תקינה: חדרים.",
+      "invalid_window_exclusions": "בחירה לא תקינה: החרגת חיישני חלונות.",
+      "invalid_indoor_exclusions": "בחירה לא תקינה: החרגת חיישני אוויר פנימיים.",
+      "no_windows_after_exclusions": "השאירו לפחות חיישן חלון אחד פעיל.",
+      "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
+      "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "לא זמין: conversation.process.",
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — כבר הוגדר."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "ספי התראה מתקדמים",
-        "description": "חדרים · החרגת חיישני חלונות · החרגת חיישני אוויר פנימיים · איכות האוויר בחוץ · מזג אוויר ואזהרות · הודעות (אופציונלי) · ספי התראה מתקדמים",
+        "title": "⚙️ בחרו",
+        "description": "בחרו: חדרים / מזג אוויר ואזהרות / הודעות (אופציונלי) / ספי התראה מתקדמים",
         "menu_options": {
           "areas": "חדרים",
           "window_sensors": "החרגת חיישני חלונות",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "החרגת חיישני חלונות"
         },
         "data_description": {
-          "excluded_window_entities": "החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "בחרו: החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "חדרים"
         },
         "data_description": {
-          "areas": "1 · 🪟 חדרים. binary_sensor (device_class: window)."
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
         },
         "data_description": {
-          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "איכות האוויר בחוץ"
         },
         "data_description": {
-          "outdoor_sensors": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "אזהרות מזג אוויר"
         },
         "data_description": {
-          "weather_entities": "מזג אוויר ואזהרות. weather.*",
-          "weather_warnings": "מזג אוויר ואזהרות. weather.*"
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · שפה"
         },
         "data_description": {
-          "language": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "automatic_tts": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "automatic_notifications": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "tts_engine": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "media_players": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "שפה: Home Assistant (ברירת מחדל).",
+          "automatic_tts": "ברירת מחדל: ⛔ · הודעות קוליות אוטומטיות · 🪟 90 s.",
+          "automatic_notifications": "ברירת מחדל: ⛔ · התראות אוטומטיות.",
+          "announcement_repeat_minutes": "ברירת מחדל: 10 min · 0 = לעולם לא · כל עוד אותה סיבה נמשכת · חדרים.",
+          "use_announcement_hub": "Announcement Hub · לא זמין → Home Assistant.",
+          "notify_entities": "בחרו: notify.* · התראות אוטומטיות.",
+          "tts_engine": "בחרו: tts.* · הודעות קוליות אוטומטיות.",
+          "media_players": "בחרו: media_player.* · הודעות קוליות אוטומטיות.",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "בחירה לא תקינה: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "לא זמין: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "בחירה לא תקינה: מזג אוויר ואזהרות (weather.*).",
+      "invalid_warning": "בחירה לא תקינה: מזג אוויר ואזהרות ⚠.",
+      "missing_notify": "בחרו: Announcement Hub / notify.*.",
+      "missing_tts": "בחרו: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "בחירה לא תקינה: °C min < max.",
+      "no_areas": "בחרו: חדרים.",
+      "no_window_areas": "לא זמין: מדידות (binary_sensor, window).",
+      "invalid_areas": "בחירה לא תקינה: חדרים.",
+      "invalid_window_exclusions": "בחירה לא תקינה: החרגת חיישני חלונות.",
+      "invalid_indoor_exclusions": "בחירה לא תקינה: החרגת חיישני אוויר פנימיים.",
+      "no_windows_after_exclusions": "השאירו לפחות חיישן חלון אחד פעיל.",
+      "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
+      "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "לא זמין: conversation.process.",
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "חדרים",
           "description": "חדרים"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — ברירת מחדל",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

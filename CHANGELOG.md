@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.4 — Full Home Assistant configuration translation audit
+
+- Audit all **38** supported languages across initial setup and Reconfigure: step titles, page explanations, per-field help, validation/abort text, seven menu choices and advanced-threshold labels.
+- Fix the untranslated Greek Weather/warnings explanations shown under the weather provider and warning-entity selectors; also correct outdoor sensor and Announcements help.
+- Translate all 18 advanced limit labels in Greek, German, French and Spanish; maintain the complete original English set.
+- Replace English validation-error/abort fallbacks in the 33 newer languages with concise translated, action-oriented messages and explanatory symbols. No hardcoded English helper strings remain in non-English config/options pages.
+- Localize **Home Assistant default** for language selection via the supported Home Assistant `SelectSelectorConfig.translation_key` mechanism and corresponding per-language `selector` dictionaries. Localize conversation-agent default labels too.
+- Add a single reviewed translation overlay source applied **after** generation, preventing old English explanations returning in future releases. Add full-coverage tests to detect missing or English-regressed setup/option strings.
+- Keep real weather-provider alerts, device names, geographic locations and entities untouched; those are supplied by Home Assistant/other integrations, not Air Quality Advisor.
+- GitHub Actions remains **manual-only**, with release publication explicitly opt-in after all changes are pushed. Existing configuration and recommendation logic are unchanged.
+
 ## 0.2.3 — Configurable, per-room repeat reminders and manual-only CI
 
 - Add **Repeat announcements (minutes)** under Announcements, with **10 minutes default** and **0 = no repeats** (0–1440 whole minutes).

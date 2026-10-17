@@ -9,7 +9,7 @@
           "areas": "কক্ষ"
         },
         "data_description": {
-          "areas": "1 · 🪟 কক্ষ. binary_sensor (device_class: window)."
+          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "জানালার সেন্সর বাদ দিন"
         },
         "data_description": {
-          "excluded_window_entities": "জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "নির্বাচন করুন: জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
         },
         "data_description": {
-          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "বাইরের বায়ুর মান"
         },
         "data_description": {
-          "outdoor_sensors": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "নির্বাচন করুন: বাইরের বায়ুর মান · AQI, CO₂, PM2.5, PM10, VOC. পাওয়া যাচ্ছে না: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "আবহাওয়ার সতর্কতা"
         },
         "data_description": {
-          "weather_entities": "আবহাওয়া ও সতর্কতা. weather.*",
-          "weather_warnings": "আবহাওয়া ও সতর্কতা. weather.*"
+          "weather_entities": "নির্বাচন করুন: আবহাওয়া ও সতর্কতা · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "আবহাওয়া ও সতর্কতা · ⚠ (পাওয়া যাচ্ছে না) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · ভাষা"
         },
         "data_description": {
-          "language": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "automatic_tts": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "automatic_notifications": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "tts_engine": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "media_players": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "ভাষা: Home Assistant (ডিফল্ট).",
+          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় ভয়েস ঘোষণা · 🪟 90 s.",
+          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "announcement_repeat_minutes": "ডিফল্ট: 10 min · 0 = কখনো নয় · একই কারণ বজায় থাকলে · কক্ষ.",
+          "use_announcement_hub": "Announcement Hub · পাওয়া যাচ্ছে না → Home Assistant.",
+          "notify_entities": "নির্বাচন করুন: notify.* · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "tts_engine": "নির্বাচন করুন: tts.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "media_players": "নির্বাচন করুন: media_player.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "ভুল নির্বাচন: বাইরের বায়ুর মান (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "পাওয়া যাচ্ছে না: বাইরের বায়ুর মান (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "ভুল নির্বাচন: আবহাওয়া ও সতর্কতা (weather.*).",
+      "invalid_warning": "ভুল নির্বাচন: আবহাওয়া ও সতর্কতা ⚠.",
+      "missing_notify": "নির্বাচন করুন: Announcement Hub / notify.*.",
+      "missing_tts": "নির্বাচন করুন: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "ভুল নির্বাচন: °C min < max.",
+      "no_areas": "নির্বাচন করুন: কক্ষ.",
+      "no_window_areas": "পাওয়া যাচ্ছে না: পরিমাপ (binary_sensor, window).",
+      "invalid_areas": "ভুল নির্বাচন: কক্ষ.",
+      "invalid_window_exclusions": "ভুল নির্বাচন: জানালার সেন্সর বাদ দিন.",
+      "invalid_indoor_exclusions": "ভুল নির্বাচন: ঘরের বায়ু সেন্সর বাদ দিন.",
+      "no_windows_after_exclusions": "অন্তত একটি জানালার সেন্সর সক্রিয় রাখুন.",
+      "review_areas_after_exclusions": "পরীক্ষা করুন: কক্ষ · পরিমাপ (0).",
+      "invalid_repeat_minutes": "ভুল নির্বাচন: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "পাওয়া যাচ্ছে না: conversation.process.",
+      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — আগেই সেট করা হয়েছে."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "উন্নত সীমা",
-        "description": "কক্ষ · জানালার সেন্সর বাদ দিন · ঘরের বায়ু সেন্সর বাদ দিন · বাইরের বায়ুর মান · আবহাওয়া ও সতর্কতা · ঘোষণা (ঐচ্ছিক) · উন্নত সীমা",
+        "title": "⚙️ নির্বাচন করুন",
+        "description": "নির্বাচন করুন: কক্ষ / আবহাওয়া ও সতর্কতা / ঘোষণা (ঐচ্ছিক) / উন্নত সীমা",
         "menu_options": {
           "areas": "কক্ষ",
           "window_sensors": "জানালার সেন্সর বাদ দিন",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "জানালার সেন্সর বাদ দিন"
         },
         "data_description": {
-          "excluded_window_entities": "জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "নির্বাচন করুন: জানালার সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "কক্ষ"
         },
         "data_description": {
-          "areas": "1 · 🪟 কক্ষ. binary_sensor (device_class: window)."
+          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
         },
         "data_description": {
-          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "বাইরের বায়ুর মান"
         },
         "data_description": {
-          "outdoor_sensors": "বাইরের বায়ুর মান. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "নির্বাচন করুন: বাইরের বায়ুর মান · AQI, CO₂, PM2.5, PM10, VOC. পাওয়া যাচ্ছে না: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "আবহাওয়ার সতর্কতা"
         },
         "data_description": {
-          "weather_entities": "আবহাওয়া ও সতর্কতা. weather.*",
-          "weather_warnings": "আবহাওয়া ও সতর্কতা. weather.*"
+          "weather_entities": "নির্বাচন করুন: আবহাওয়া ও সতর্কতা · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "আবহাওয়া ও সতর্কতা · ⚠ (পাওয়া যাচ্ছে না) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · ভাষা"
         },
         "data_description": {
-          "language": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "automatic_tts": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "automatic_notifications": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "tts_engine": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "media_players": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "ভাষা: Home Assistant (ডিফল্ট).",
+          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় ভয়েস ঘোষণা · 🪟 90 s.",
+          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "announcement_repeat_minutes": "ডিফল্ট: 10 min · 0 = কখনো নয় · একই কারণ বজায় থাকলে · কক্ষ.",
+          "use_announcement_hub": "Announcement Hub · পাওয়া যাচ্ছে না → Home Assistant.",
+          "notify_entities": "নির্বাচন করুন: notify.* · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "tts_engine": "নির্বাচন করুন: tts.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "media_players": "নির্বাচন করুন: media_player.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "ভুল নির্বাচন: বাইরের বায়ুর মান (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "পাওয়া যাচ্ছে না: বাইরের বায়ুর মান (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "ভুল নির্বাচন: আবহাওয়া ও সতর্কতা (weather.*).",
+      "invalid_warning": "ভুল নির্বাচন: আবহাওয়া ও সতর্কতা ⚠.",
+      "missing_notify": "নির্বাচন করুন: Announcement Hub / notify.*.",
+      "missing_tts": "নির্বাচন করুন: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "ভুল নির্বাচন: °C min < max.",
+      "no_areas": "নির্বাচন করুন: কক্ষ.",
+      "no_window_areas": "পাওয়া যাচ্ছে না: পরিমাপ (binary_sensor, window).",
+      "invalid_areas": "ভুল নির্বাচন: কক্ষ.",
+      "invalid_window_exclusions": "ভুল নির্বাচন: জানালার সেন্সর বাদ দিন.",
+      "invalid_indoor_exclusions": "ভুল নির্বাচন: ঘরের বায়ু সেন্সর বাদ দিন.",
+      "no_windows_after_exclusions": "অন্তত একটি জানালার সেন্সর সক্রিয় রাখুন.",
+      "review_areas_after_exclusions": "পরীক্ষা করুন: কক্ষ · পরিমাপ (0).",
+      "invalid_repeat_minutes": "ভুল নির্বাচন: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "পাওয়া যাচ্ছে না: conversation.process.",
+      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "কক্ষ",
           "description": "কক্ষ"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — ডিফল্ট",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

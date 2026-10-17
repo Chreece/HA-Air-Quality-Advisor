@@ -39,7 +39,7 @@
           "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
         },
         "data_description": {
-          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+          "outdoor_sensors": "Επίλεξε πραγματικούς εξωτερικούς αισθητήρες. Μετρήσεις πάνω από το όριο αποτρέπουν το άνοιγμα. Άγνωστες, μη διαθέσιμες ή παλιές τιμές εμφανίζονται ως ελλιπή δεδομένα."
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "Αισθητήρες προειδοποιήσεων καιρού (προαιρετικά)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
-          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+          "weather_entities": "Απαιτείται τουλάχιστον μία οντότητα καιρού. Βροχή, καταιγίδα, ισχυρός άνεμος και ακραίες θερμοκρασίες εμποδίζουν το άνοιγμα.",
+          "weather_warnings": "Προαιρετικό. Ενεργές ή μη διαθέσιμες επιλεγμένες προειδοποιήσεις εμποδίζουν το άνοιγμα των παραθύρων."
         }
       },
       "delivery": {
@@ -70,13 +70,13 @@
           "ai_conversation_agent": "Πράκτορας συνομιλίας"
         },
         "data_description": {
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
-          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "language": "Η αυτόματη επιλογή χρησιμοποιεί τη γλώσσα του Home Assistant. Η χειροκίνητη ενέργεια μπορεί να επιλέξει άλλη γλώσσα.",
+          "automatic_tts": "Απενεργοποιημένο αρχικά. Οι νέες συστάσεις ανοίγματος απαιτούν 90 δευτερόλεπτα σταθερών συνθηκών.",
+          "automatic_notifications": "Απενεργοποιημένο αρχικά. Δεν αποστέλλεται νέα ειδοποίηση σε κάθε μέτρηση αισθητήρα.",
           "use_announcement_hub": "Εμφανίζεται μόνο όταν το Announcement Hub έχει ρυθμιστεί. Αν δεν λειτουργεί ή απορρίψει μήνυμα, γίνεται μετάβαση στις εξόδους του Home Assistant ή σε μόνιμη ειδοποίηση.",
-          "notify_entities": "Direct outputs when Announcement Hub is not used.",
-          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "notify_entities": "Άμεσες οντότητες ειδοποιήσεων όταν δεν χρησιμοποιείται το Announcement Hub.",
+          "tts_engine": "Μηχανή σύνθεσης ομιλίας για απευθείας ανακοινώσεις εκτός Announcement Hub.",
+          "media_players": "Συσκευές αναπαραγωγής άμεσων ανακοινώσεων. Η αντιστοίχιση χώρου καθορίζει τους παραλήπτες.",
           "announcement_repeat_minutes": "Προεπιλογή: 10 λεπτά. Με 0 δεν επαναλαμβάνονται ποτέ. Η υπενθύμιση γίνεται μόνο όσο ισχύει η ίδια σύσταση και αιτία για το παράθυρο. Κάθε δωμάτιο έχει ανεξάρτητο χρονόμετρο. Απαιτούνται αυτόματες ειδοποιήσεις ή TTS.",
           "ai_rewrite_announcements": "Μία επιλογή AI και για τις δύο μεθόδους. Με Announcement Hub αποστέλλεται use_ai: true/false· διαφορετικά το AI αναδιατυπώνει τις άμεσες ειδοποιήσεις και το TTS. Οι συστάσεις παραθύρων δεν αλλάζουν.",
           "ai_conversation_agent": "Προεπιλέγεται το Home Assistant default. Άλλος πράκτορας αποστέλλεται στο Hub ή χρησιμοποιείται απευθείας· η προεπιλογή διατηρεί τον πράκτορα που έχει οριστεί στο Hub."
@@ -86,24 +86,24 @@
         "title": "Προχωρημένα όρια",
         "description": "Τα όρια εφαρμόζονται σε στιγμιαίες μετρήσεις, όχι σε ιατρικά πρότυπα έκθεσης. Ο AQI χρησιμοποιεί αρχικά την κλίμακα ΗΠΑ 0–500· προσαρμόστε τον σε άλλες κλίμακες.",
         "data": {
-          "outdoor_aqi": "Maximum outdoor AQI",
-          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
-          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
-          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
-          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
-          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
-          "indoor_aqi": "Indoor AQI triggering ventilation",
-          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
-          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
-          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
-          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
-          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
-          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
-          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
-          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
-          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
-          "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "outdoor_aqi": "Μέγιστος εξωτερικός AQI",
+          "outdoor_co2": "Μέγιστο εξωτερικό CO₂ (ppm)",
+          "outdoor_pm25": "Μέγιστο εξωτερικό PM2.5 (µg/m³)",
+          "outdoor_pm10": "Μέγιστο εξωτερικό PM10 (µg/m³)",
+          "outdoor_voc": "Μέγιστο εξωτερικό VOC (µg/m³)",
+          "outdoor_voc_parts": "Μέγιστο εξωτερικό VOC (ppb)",
+          "indoor_aqi": "Όριο εσωτερικού AQI για αερισμό",
+          "indoor_co2": "Όριο εσωτερικού CO₂ για αερισμό (ppm)",
+          "indoor_pm25": "Όριο εσωτερικού PM2.5 για αερισμό (µg/m³)",
+          "indoor_pm10": "Όριο εσωτερικού PM10 για αερισμό (µg/m³)",
+          "indoor_voc": "Όριο εσωτερικού VOC για αερισμό (µg/m³)",
+          "indoor_voc_parts": "Όριο εσωτερικού VOC για αερισμό (ppb)",
+          "indoor_humidity": "Όριο εσωτερικής υγρασίας για αερισμό (%)",
+          "min_outdoor_temp": "Ελάχιστη εξωτερική θερμοκρασία (°C)",
+          "max_outdoor_temp": "Μέγιστη εξωτερική θερμοκρασία (°C)",
+          "max_outdoor_humidity": "Μέγιστη εξωτερική υγρασία (%)",
+          "max_wind_kmh": "Μέγιστη ταχύτητα ανέμου (km/h)",
+          "max_age_minutes": "Μέγιστη ηλικία εξωτερικής μέτρησης (λεπτά)"
         }
       }
     },
@@ -127,14 +127,14 @@
       "invalid_ai_agent": "Επίλεξε έναν υποστηριζόμενο πράκτορα συνομιλίας του Home Assistant."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Το Air Quality Advisor έχει ήδη ρυθμιστεί."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Επιλογή ρυθμίσεων",
-        "description": "Επίλεξε μία ενότητα. Όλες οι υπόλοιπες ρυθμίσεις παραμένουν ως έχουν.",
+        "description": "Επίλεξε μία ενότητα. Όλες οι υπόλοιπες ρυθμίσεις παραμένουν αμετάβλητες.",
         "menu_options": {
           "areas": "Χώροι",
           "window_sensors": "Εξαίρεση αισθητήρων παραθύρων",
@@ -182,7 +182,7 @@
           "outdoor_sensors": "Αισθητήρες εξωτερικού αέρα"
         },
         "data_description": {
-          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+          "outdoor_sensors": "Επίλεξε πραγματικούς εξωτερικούς αισθητήρες. Μετρήσεις πάνω από το όριο αποτρέπουν το άνοιγμα. Άγνωστες, μη διαθέσιμες ή παλιές τιμές εμφανίζονται ως ελλιπή δεδομένα."
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "Αισθητήρες προειδοποιήσεων καιρού (προαιρετικά)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
-          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+          "weather_entities": "Απαιτείται τουλάχιστον μία οντότητα καιρού. Βροχή, καταιγίδα, ισχυρός άνεμος και ακραίες θερμοκρασίες εμποδίζουν το άνοιγμα.",
+          "weather_warnings": "Προαιρετικό. Ενεργές ή μη διαθέσιμες επιλεγμένες προειδοποιήσεις εμποδίζουν το άνοιγμα των παραθύρων."
         }
       },
       "delivery": {
@@ -213,13 +213,13 @@
           "ai_conversation_agent": "Πράκτορας συνομιλίας"
         },
         "data_description": {
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
-          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "language": "Η αυτόματη επιλογή χρησιμοποιεί τη γλώσσα του Home Assistant. Η χειροκίνητη ενέργεια μπορεί να επιλέξει άλλη γλώσσα.",
+          "automatic_tts": "Απενεργοποιημένο αρχικά. Οι νέες συστάσεις ανοίγματος απαιτούν 90 δευτερόλεπτα σταθερών συνθηκών.",
+          "automatic_notifications": "Απενεργοποιημένο αρχικά. Δεν αποστέλλεται νέα ειδοποίηση σε κάθε μέτρηση αισθητήρα.",
           "use_announcement_hub": "Εμφανίζεται μόνο όταν το Announcement Hub έχει ρυθμιστεί. Αν δεν λειτουργεί ή απορρίψει μήνυμα, γίνεται μετάβαση στις εξόδους του Home Assistant ή σε μόνιμη ειδοποίηση.",
-          "notify_entities": "Direct outputs when Announcement Hub is not used.",
-          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "notify_entities": "Άμεσες οντότητες ειδοποιήσεων όταν δεν χρησιμοποιείται το Announcement Hub.",
+          "tts_engine": "Μηχανή σύνθεσης ομιλίας για απευθείας ανακοινώσεις εκτός Announcement Hub.",
+          "media_players": "Συσκευές αναπαραγωγής άμεσων ανακοινώσεων. Η αντιστοίχιση χώρου καθορίζει τους παραλήπτες.",
           "announcement_repeat_minutes": "Προεπιλογή: 10 λεπτά. Με 0 δεν επαναλαμβάνονται ποτέ. Η υπενθύμιση γίνεται μόνο όσο ισχύει η ίδια σύσταση και αιτία για το παράθυρο. Κάθε δωμάτιο έχει ανεξάρτητο χρονόμετρο. Απαιτούνται αυτόματες ειδοποιήσεις ή TTS.",
           "ai_rewrite_announcements": "Μία επιλογή AI και για τις δύο μεθόδους. Με Announcement Hub αποστέλλεται use_ai: true/false· διαφορετικά το AI αναδιατυπώνει τις άμεσες ειδοποιήσεις και το TTS. Οι συστάσεις παραθύρων δεν αλλάζουν.",
           "ai_conversation_agent": "Προεπιλέγεται το Home Assistant default. Άλλος πράκτορας αποστέλλεται στο Hub ή χρησιμοποιείται απευθείας· η προεπιλογή διατηρεί τον πράκτορα που έχει οριστεί στο Hub."
@@ -229,24 +229,24 @@
         "title": "Προχωρημένα όρια",
         "description": "Τα όρια εφαρμόζονται σε στιγμιαίες μετρήσεις, όχι σε ιατρικά πρότυπα έκθεσης. Ο AQI χρησιμοποιεί αρχικά την κλίμακα ΗΠΑ 0–500· προσαρμόστε τον σε άλλες κλίμακες.",
         "data": {
-          "outdoor_aqi": "Maximum outdoor AQI",
-          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
-          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
-          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
-          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
-          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
-          "indoor_aqi": "Indoor AQI triggering ventilation",
-          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
-          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
-          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
-          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
-          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
-          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
-          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
-          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
-          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
-          "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "outdoor_aqi": "Μέγιστος εξωτερικός AQI",
+          "outdoor_co2": "Μέγιστο εξωτερικό CO₂ (ppm)",
+          "outdoor_pm25": "Μέγιστο εξωτερικό PM2.5 (µg/m³)",
+          "outdoor_pm10": "Μέγιστο εξωτερικό PM10 (µg/m³)",
+          "outdoor_voc": "Μέγιστο εξωτερικό VOC (µg/m³)",
+          "outdoor_voc_parts": "Μέγιστο εξωτερικό VOC (ppb)",
+          "indoor_aqi": "Όριο εσωτερικού AQI για αερισμό",
+          "indoor_co2": "Όριο εσωτερικού CO₂ για αερισμό (ppm)",
+          "indoor_pm25": "Όριο εσωτερικού PM2.5 για αερισμό (µg/m³)",
+          "indoor_pm10": "Όριο εσωτερικού PM10 για αερισμό (µg/m³)",
+          "indoor_voc": "Όριο εσωτερικού VOC για αερισμό (µg/m³)",
+          "indoor_voc_parts": "Όριο εσωτερικού VOC για αερισμό (ppb)",
+          "indoor_humidity": "Όριο εσωτερικής υγρασίας για αερισμό (%)",
+          "min_outdoor_temp": "Ελάχιστη εξωτερική θερμοκρασία (°C)",
+          "max_outdoor_temp": "Μέγιστη εξωτερική θερμοκρασία (°C)",
+          "max_outdoor_humidity": "Μέγιστη εξωτερική υγρασία (%)",
+          "max_wind_kmh": "Μέγιστη ταχύτητα ανέμου (km/h)",
+          "max_age_minutes": "Μέγιστη ηλικία εξωτερικής μέτρησης (λεπτά)"
         }
       }
     },
@@ -300,6 +300,51 @@
           "name": "Μόνο αυτοί οι χώροι (προαιρετικά)",
           "description": "Μόνο αυτοί οι χώροι (προαιρετικά)"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Προεπιλογή Home Assistant",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

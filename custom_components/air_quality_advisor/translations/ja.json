@@ -9,7 +9,7 @@
           "areas": "部屋"
         },
         "data_description": {
-          "areas": "1 · 🪟 部屋. binary_sensor (device_class: window)."
+          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "窓センサーを除外"
         },
         "data_description": {
-          "excluded_window_entities": "窓センサーを除外 · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "選択してください: 窓センサーを除外 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "室内空気センサーを除外"
         },
         "data_description": {
-          "excluded_indoor_entities": "室内空気センサーを除外 · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "屋外の空気質"
         },
         "data_description": {
-          "outdoor_sensors": "屋外の空気質. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "気象警報"
         },
         "data_description": {
-          "weather_entities": "天気と警報. weather.*",
-          "weather_warnings": "天気と警報. weather.*"
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "天気と警報 · ⚠ (利用できません) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · 言語"
         },
         "data_description": {
-          "language": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "automatic_tts": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "automatic_notifications": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "tts_engine": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "media_players": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "言語: Home Assistant (既定).",
+          "automatic_tts": "既定: ⛔ · 自動音声通知 · 🪟 90 s.",
+          "automatic_notifications": "既定: ⛔ · 自動通知.",
+          "announcement_repeat_minutes": "既定: 10 min · 0 = 繰り返さない · 同じ原因が続く間 · 部屋.",
+          "use_announcement_hub": "Announcement Hub · 利用できません → Home Assistant.",
+          "notify_entities": "選択してください: notify.* · 自動通知.",
+          "tts_engine": "選択してください: tts.* · 自動音声通知.",
+          "media_players": "選択してください: media_player.* · 自動音声通知.",
+          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "無効な選択: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "利用できません: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "無効な選択: 天気と警報 (weather.*).",
+      "invalid_warning": "無効な選択: 天気と警報 ⚠.",
+      "missing_notify": "選択してください: Announcement Hub / notify.*.",
+      "missing_tts": "選択してください: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "無効な選択: °C min < max.",
+      "no_areas": "選択してください: 部屋.",
+      "no_window_areas": "利用できません: 測定値 (binary_sensor, window).",
+      "invalid_areas": "無効な選択: 部屋.",
+      "invalid_window_exclusions": "無効な選択: 窓センサーを除外.",
+      "invalid_indoor_exclusions": "無効な選択: 室内空気センサーを除外.",
+      "no_windows_after_exclusions": "窓センサーを少なくとも一つ残してください.",
+      "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
+      "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "利用できません: conversation.process.",
+      "invalid_ai_agent": "無効な選択: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — 設定済みです."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "詳細なしきい値",
-        "description": "部屋 · 窓センサーを除外 · 室内空気センサーを除外 · 屋外の空気質 · 天気と警報 · 通知（任意） · 詳細なしきい値",
+        "title": "⚙️ 選択してください",
+        "description": "選択してください: 部屋 / 天気と警報 / 通知（任意） / 詳細なしきい値",
         "menu_options": {
           "areas": "部屋",
           "window_sensors": "窓センサーを除外",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "窓センサーを除外"
         },
         "data_description": {
-          "excluded_window_entities": "窓センサーを除外 · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "選択してください: 窓センサーを除外 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "部屋"
         },
         "data_description": {
-          "areas": "1 · 🪟 部屋. binary_sensor (device_class: window)."
+          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "室内空気センサーを除外"
         },
         "data_description": {
-          "excluded_indoor_entities": "室内空気センサーを除外 · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "屋外の空気質"
         },
         "data_description": {
-          "outdoor_sensors": "屋外の空気質. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "気象警報"
         },
         "data_description": {
-          "weather_entities": "天気と警報. weather.*",
-          "weather_warnings": "天気と警報. weather.*"
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "天気と警報 · ⚠ (利用できません) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · 言語"
         },
         "data_description": {
-          "language": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "automatic_tts": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "automatic_notifications": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "tts_engine": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "media_players": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "言語: Home Assistant (既定).",
+          "automatic_tts": "既定: ⛔ · 自動音声通知 · 🪟 90 s.",
+          "automatic_notifications": "既定: ⛔ · 自動通知.",
+          "announcement_repeat_minutes": "既定: 10 min · 0 = 繰り返さない · 同じ原因が続く間 · 部屋.",
+          "use_announcement_hub": "Announcement Hub · 利用できません → Home Assistant.",
+          "notify_entities": "選択してください: notify.* · 自動通知.",
+          "tts_engine": "選択してください: tts.* · 自動音声通知.",
+          "media_players": "選択してください: media_player.* · 自動音声通知.",
+          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "無効な選択: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "利用できません: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "無効な選択: 天気と警報 (weather.*).",
+      "invalid_warning": "無効な選択: 天気と警報 ⚠.",
+      "missing_notify": "選択してください: Announcement Hub / notify.*.",
+      "missing_tts": "選択してください: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "無効な選択: °C min < max.",
+      "no_areas": "選択してください: 部屋.",
+      "no_window_areas": "利用できません: 測定値 (binary_sensor, window).",
+      "invalid_areas": "無効な選択: 部屋.",
+      "invalid_window_exclusions": "無効な選択: 窓センサーを除外.",
+      "invalid_indoor_exclusions": "無効な選択: 室内空気センサーを除外.",
+      "no_windows_after_exclusions": "窓センサーを少なくとも一つ残してください.",
+      "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
+      "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "利用できません: conversation.process.",
+      "invalid_ai_agent": "無効な選択: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "部屋",
           "description": "部屋"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — 既定",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

@@ -9,7 +9,7 @@
           "areas": "அறைகள்"
         },
         "data_description": {
-          "areas": "1 · 🪟 அறைகள். binary_sensor (device_class: window)."
+          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "சாளர உணரிகளை விலக்கு"
         },
         "data_description": {
-          "excluded_window_entities": "சாளர உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "தேர்ந்தெடுக்கவும்: சாளர உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு"
         },
         "data_description": {
-          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "வெளிப்புறக் காற்றுத் தரம்"
         },
         "data_description": {
-          "outdoor_sensors": "வெளிப்புறக் காற்றுத் தரம். AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "தேர்ந்தெடுக்கவும்: வெளிப்புறக் காற்றுத் தரம் · AQI, CO₂, PM2.5, PM10, VOC. கிடைக்கவில்லை: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "வானிலை எச்சரிக்கைகள்"
         },
         "data_description": {
-          "weather_entities": "வானிலை மற்றும் எச்சரிக்கைகள். weather.*",
-          "weather_warnings": "வானிலை மற்றும் எச்சரிக்கைகள். weather.*"
+          "weather_entities": "தேர்ந்தெடுக்கவும்: வானிலை மற்றும் எச்சரிக்கைகள் · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "வானிலை மற்றும் எச்சரிக்கைகள் · ⚠ (கிடைக்கவில்லை) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · மொழி"
         },
         "data_description": {
-          "language": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "automatic_tts": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "automatic_notifications": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "tts_engine": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "media_players": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "மொழி: Home Assistant (இயல்புநிலை).",
+          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி குரல் அறிவிப்புகள் · 🪟 90 s.",
+          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி அறிவிப்புகள்.",
+          "announcement_repeat_minutes": "இயல்புநிலை: 10 min · 0 = ஒருபோதும் இல்லை · அதே காரணம் தொடரும் வரை · அறைகள்.",
+          "use_announcement_hub": "Announcement Hub · கிடைக்கவில்லை → Home Assistant.",
+          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · தானியங்கி அறிவிப்புகள்.",
+          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "தேர்ந்தெடுக்கவும்: conversation.* (Home Assistant · இயல்புநிலை)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "தவறான தேர்வு: வெளிப்புறக் காற்றுத் தரம் (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "கிடைக்கவில்லை: வெளிப்புறக் காற்றுத் தரம் (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "தவறான தேர்வு: வானிலை மற்றும் எச்சரிக்கைகள் (weather.*).",
+      "invalid_warning": "தவறான தேர்வு: வானிலை மற்றும் எச்சரிக்கைகள் ⚠.",
+      "missing_notify": "தேர்ந்தெடுக்கவும்: Announcement Hub / notify.*.",
+      "missing_tts": "தேர்ந்தெடுக்கவும்: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "தவறான தேர்வு: °C min < max.",
+      "no_areas": "தேர்ந்தெடுக்கவும்: அறைகள்.",
+      "no_window_areas": "கிடைக்கவில்லை: அளவீடுகள் (binary_sensor, window).",
+      "invalid_areas": "தவறான தேர்வு: அறைகள்.",
+      "invalid_window_exclusions": "தவறான தேர்வு: சாளர உணரிகளை விலக்கு.",
+      "invalid_indoor_exclusions": "தவறான தேர்வு: உட்புற காற்று உணரிகளை விலக்கு.",
+      "no_windows_after_exclusions": "குறைந்தது ஒரு சாளர உணரியைச் செயலில் வைத்திருக்கவும்.",
+      "review_areas_after_exclusions": "சரிபார்க்கவும்: அறைகள் · அளவீடுகள் (0).",
+      "invalid_repeat_minutes": "தவறான தேர்வு: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "கிடைக்கவில்லை: conversation.process.",
+      "invalid_ai_agent": "தவறான தேர்வு: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — ஏற்கெனவே அமைக்கப்பட்டது."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "மேம்பட்ட வரம்புகள்",
-        "description": "அறைகள் · சாளர உணரிகளை விலக்கு · உட்புற காற்று உணரிகளை விலக்கு · வெளிப்புறக் காற்றுத் தரம் · வானிலை மற்றும் எச்சரிக்கைகள் · அறிவிப்புகள் (விருப்பம்) · மேம்பட்ட வரம்புகள்",
+        "title": "⚙️ தேர்ந்தெடுக்கவும்",
+        "description": "தேர்ந்தெடுக்கவும்: அறைகள் / வானிலை மற்றும் எச்சரிக்கைகள் / அறிவிப்புகள் (விருப்பம்) / மேம்பட்ட வரம்புகள்",
         "menu_options": {
           "areas": "அறைகள்",
           "window_sensors": "சாளர உணரிகளை விலக்கு",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "சாளர உணரிகளை விலக்கு"
         },
         "data_description": {
-          "excluded_window_entities": "சாளர உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "தேர்ந்தெடுக்கவும்: சாளர உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "அறைகள்"
         },
         "data_description": {
-          "areas": "1 · 🪟 அறைகள். binary_sensor (device_class: window)."
+          "areas": "தேர்ந்தெடுக்கவும்: அறைகள் · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு"
         },
         "data_description": {
-          "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "வெளிப்புறக் காற்றுத் தரம்"
         },
         "data_description": {
-          "outdoor_sensors": "வெளிப்புறக் காற்றுத் தரம். AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "தேர்ந்தெடுக்கவும்: வெளிப்புறக் காற்றுத் தரம் · AQI, CO₂, PM2.5, PM10, VOC. கிடைக்கவில்லை: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "வானிலை எச்சரிக்கைகள்"
         },
         "data_description": {
-          "weather_entities": "வானிலை மற்றும் எச்சரிக்கைகள். weather.*",
-          "weather_warnings": "வானிலை மற்றும் எச்சரிக்கைகள். weather.*"
+          "weather_entities": "தேர்ந்தெடுக்கவும்: வானிலை மற்றும் எச்சரிக்கைகள் · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "வானிலை மற்றும் எச்சரிக்கைகள் · ⚠ (கிடைக்கவில்லை) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · மொழி"
         },
         "data_description": {
-          "language": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "automatic_tts": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "automatic_notifications": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "tts_engine": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "media_players": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
-          "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "மொழி: Home Assistant (இயல்புநிலை).",
+          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி குரல் அறிவிப்புகள் · 🪟 90 s.",
+          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி அறிவிப்புகள்.",
+          "announcement_repeat_minutes": "இயல்புநிலை: 10 min · 0 = ஒருபோதும் இல்லை · அதே காரணம் தொடரும் வரை · அறைகள்.",
+          "use_announcement_hub": "Announcement Hub · கிடைக்கவில்லை → Home Assistant.",
+          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · தானியங்கி அறிவிப்புகள்.",
+          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "தேர்ந்தெடுக்கவும்: conversation.* (Home Assistant · இயல்புநிலை)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "தவறான தேர்வு: வெளிப்புறக் காற்றுத் தரம் (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "கிடைக்கவில்லை: வெளிப்புறக் காற்றுத் தரம் (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "தவறான தேர்வு: வானிலை மற்றும் எச்சரிக்கைகள் (weather.*).",
+      "invalid_warning": "தவறான தேர்வு: வானிலை மற்றும் எச்சரிக்கைகள் ⚠.",
+      "missing_notify": "தேர்ந்தெடுக்கவும்: Announcement Hub / notify.*.",
+      "missing_tts": "தேர்ந்தெடுக்கவும்: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "தவறான தேர்வு: °C min < max.",
+      "no_areas": "தேர்ந்தெடுக்கவும்: அறைகள்.",
+      "no_window_areas": "கிடைக்கவில்லை: அளவீடுகள் (binary_sensor, window).",
+      "invalid_areas": "தவறான தேர்வு: அறைகள்.",
+      "invalid_window_exclusions": "தவறான தேர்வு: சாளர உணரிகளை விலக்கு.",
+      "invalid_indoor_exclusions": "தவறான தேர்வு: உட்புற காற்று உணரிகளை விலக்கு.",
+      "no_windows_after_exclusions": "குறைந்தது ஒரு சாளர உணரியைச் செயலில் வைத்திருக்கவும்.",
+      "review_areas_after_exclusions": "சரிபார்க்கவும்: அறைகள் · அளவீடுகள் (0).",
+      "invalid_repeat_minutes": "தவறான தேர்வு: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "கிடைக்கவில்லை: conversation.process.",
+      "invalid_ai_agent": "தவறான தேர்வு: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "அறைகள்",
           "description": "அறைகள்"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — இயல்புநிலை",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }

@@ -7,7 +7,7 @@
 - Run the translation generator and ensure shipped JSON files do not change.
 - Verify all 38 Home Assistant BCP47 language files, fallback tags, speech placeholders and RTL card layouts.
 - Check regional Portuguese and Chinese script handling and sampled spoken messages.
-- Some uncommon configuration error details still use English fallback pending native-speaker review.
+- All configuration/Options errors now have localized text, with concise messages for the 33 newer languages; native-speaker review is welcome.
 
 ## v0.2.1 optional AI checks
 
@@ -35,6 +35,15 @@
 - Ensure reminders are emitted only for automatic notification/TTS channels, and each repeat reuses normal Announcement Hub/AI/direct delivery without overlapping calls.
 - Verify the workflow has **only `workflow_dispatch`**, no push/PR/schedule triggers. The **Publish release** boolean is false by default; it must be explicitly enabled after every file is pushed to `main`.
 - Check all 38 translations and independent menu settings; verify one live 10-minute repeat and one case where the window is opened before the next deadline.
+
+## v0.2.4 complete configuration localization audit
+
+- Generate translations with `python generate_translations.py`, then ensure `git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations` reports no generated changes.
+- Run `python -m pytest -q tests/test_config_i18n_audit.py`. All 38 languages must contain identical keys and no remaining English-identical config/option prose or errors.
+- Verify the Greek Weather/warnings screen and the 18 translated Greek threshold labels visually, along with samples in German, French, Spanish and extra languages.
+- Verify the `SelectSelector` `translation_key="output_language"` and localized `selector.output_language.options.auto` work for each HA frontend user language, independent of the server default.
+- User-assigned sensor names, area names and provider-specific weather-warning names remain unchanged. These are dynamic data, not integration UI strings.
+- Push all files before launching GitHub Actions. The workflow must remain **manual-only**, with publish disabled by default.
 
 ## Verification gates
 

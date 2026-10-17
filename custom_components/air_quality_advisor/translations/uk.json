@@ -9,7 +9,7 @@
           "areas": "Кімнати"
         },
         "data_description": {
-          "areas": "1 · 🪟 Кімнати. binary_sensor (device_class: window)."
+          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window)."
         }
       },
       "window_sensors": {
@@ -19,7 +19,7 @@
           "excluded_window_entities": "Виключити датчики вікон"
         },
         "data_description": {
-          "excluded_window_entities": "Виключити датчики вікон · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "Оберіть: Виключити датчики вікон · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "indoor_sensors": {
@@ -29,7 +29,7 @@
           "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
         },
         "data_description": {
-          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -39,7 +39,7 @@
           "outdoor_sensors": "Якість повітря надворі"
         },
         "data_description": {
-          "outdoor_sensors": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "Оберіть: Якість повітря надворі · AQI, CO₂, PM2.5, PM10, VOC. Недоступно: ⚠"
         }
       },
       "weather": {
@@ -50,8 +50,8 @@
           "weather_warnings": "Попередження про погоду"
         },
         "data_description": {
-          "weather_entities": "Погода та попередження. weather.*",
-          "weather_warnings": "Погода та попередження. weather.*"
+          "weather_entities": "Оберіть: Погода та попередження · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "Погода та попередження · ⚠ (Недоступно) → 🪟🔒"
         }
       },
       "delivery": {
@@ -70,16 +70,16 @@
           "ai_conversation_agent": "AI · Мова"
         },
         "data_description": {
-          "language": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "automatic_tts": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "automatic_notifications": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "tts_engine": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "media_players": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "Мова: Home Assistant (Типово).",
+          "automatic_tts": "Типово: ⛔ · Автоматичні голосові оголошення · 🪟 90 s.",
+          "automatic_notifications": "Типово: ⛔ · Автоматичні сповіщення.",
+          "announcement_repeat_minutes": "Типово: 10 min · 0 = ніколи · Доки зберігається та сама причина · Кімнати.",
+          "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
+          "notify_entities": "Оберіть: notify.* · Автоматичні сповіщення.",
+          "tts_engine": "Оберіть: tts.* · Автоматичні голосові оголошення.",
+          "media_players": "Оберіть: media_player.* · Автоматичні голосові оголошення.",
+          "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово)."
         }
       },
       "thresholds": {
@@ -108,33 +108,33 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "Неправильний вибір: Якість повітря надворі (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Недоступно: Якість повітря надворі (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Неправильний вибір: Погода та попередження (weather.*).",
+      "invalid_warning": "Неправильний вибір: Погода та попередження ⚠.",
+      "missing_notify": "Оберіть: Announcement Hub / notify.*.",
+      "missing_tts": "Оберіть: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Неправильний вибір: °C min < max.",
+      "no_areas": "Оберіть: Кімнати.",
+      "no_window_areas": "Недоступно: Вимірювання (binary_sensor, window).",
+      "invalid_areas": "Неправильний вибір: Кімнати.",
+      "invalid_window_exclusions": "Неправильний вибір: Виключити датчики вікон.",
+      "invalid_indoor_exclusions": "Неправильний вибір: Виключити датчики повітря в приміщенні.",
+      "no_windows_after_exclusions": "Залиште хоча б один датчик вікна.",
+      "review_areas_after_exclusions": "Перевірте: Кімнати · Вимірювання (0).",
+      "invalid_repeat_minutes": "Неправильний вибір: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Недоступно: conversation.process.",
+      "invalid_ai_agent": "Неправильний вибір: conversation.*."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor is already configured."
+      "already_configured": "Air Quality Advisor — уже налаштовано."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Додаткові пороги",
-        "description": "Кімнати · Виключити датчики вікон · Виключити датчики повітря в приміщенні · Якість повітря надворі · Погода та попередження · Оголошення (необов’язково) · Додаткові пороги",
+        "title": "⚙️ Оберіть",
+        "description": "Оберіть: Кімнати / Погода та попередження / Оголошення (необов’язково) / Додаткові пороги",
         "menu_options": {
           "areas": "Кімнати",
           "window_sensors": "Виключити датчики вікон",
@@ -152,7 +152,7 @@
           "excluded_window_entities": "Виключити датчики вікон"
         },
         "data_description": {
-          "excluded_window_entities": "Виключити датчики вікон · ☑ 🚫 · ☐ ✓"
+          "excluded_window_entities": "Оберіть: Виключити датчики вікон · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
         }
       },
       "areas": {
@@ -162,7 +162,7 @@
           "areas": "Кімнати"
         },
         "data_description": {
-          "areas": "1 · 🪟 Кімнати. binary_sensor (device_class: window)."
+          "areas": "Оберіть: Кімнати · 🪟 binary_sensor (device_class: window)."
         }
       },
       "indoor_sensors": {
@@ -172,7 +172,7 @@
           "excluded_indoor_entities": "Виключити датчики повітря в приміщенні"
         },
         "data_description": {
-          "excluded_indoor_entities": "Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓"
+          "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
         }
       },
       "outdoor": {
@@ -182,7 +182,7 @@
           "outdoor_sensors": "Якість повітря надворі"
         },
         "data_description": {
-          "outdoor_sensors": "Якість повітря надворі. AQI, CO₂, PM2.5, PM10, VOC."
+          "outdoor_sensors": "Оберіть: Якість повітря надворі · AQI, CO₂, PM2.5, PM10, VOC. Недоступно: ⚠"
         }
       },
       "weather": {
@@ -193,8 +193,8 @@
           "weather_warnings": "Попередження про погоду"
         },
         "data_description": {
-          "weather_entities": "Погода та попередження. weather.*",
-          "weather_warnings": "Погода та попередження. weather.*"
+          "weather_entities": "Оберіть: Погода та попередження · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_warnings": "Погода та попередження · ⚠ (Недоступно) → 🪟🔒"
         }
       },
       "delivery": {
@@ -213,16 +213,16 @@
           "ai_conversation_agent": "AI · Мова"
         },
         "data_description": {
-          "language": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "automatic_tts": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "automatic_notifications": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "announcement_repeat_minutes": "Default: 10 minutes. 0 = never repeat. Repeat only if the same window action and cause persist; each room is independent.",
-          "use_announcement_hub": "Available only with configured Announcement Hub. Unavailable Hub → Home Assistant fallback.",
-          "notify_entities": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "tts_engine": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "media_players": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
-          "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub use_ai / Home Assistant TTS.",
-          "ai_conversation_agent": "Home Assistant default · conversation.*"
+          "language": "Мова: Home Assistant (Типово).",
+          "automatic_tts": "Типово: ⛔ · Автоматичні голосові оголошення · 🪟 90 s.",
+          "automatic_notifications": "Типово: ⛔ · Автоматичні сповіщення.",
+          "announcement_repeat_minutes": "Типово: 10 min · 0 = ніколи · Доки зберігається та сама причина · Кімнати.",
+          "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
+          "notify_entities": "Оберіть: notify.* · Автоматичні сповіщення.",
+          "tts_engine": "Оберіть: tts.* · Автоматичні голосові оголошення.",
+          "media_players": "Оберіть: media_player.* · Автоматичні голосові оголошення.",
+          "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово)."
         }
       },
       "thresholds": {
@@ -251,23 +251,23 @@
       }
     },
     "error": {
-      "invalid_outdoor": "Select at least one supported outdoor sensor.",
-      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
-      "invalid_weather": "Select at least one weather entity.",
-      "invalid_warning": "A weather-warning sensor is no longer supported.",
-      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
-      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
-      "temperature_range": "The minimum temperature must be lower than the maximum.",
-      "no_areas": "Select at least one area.",
-      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
-      "invalid_areas": "An area is no longer available as a window area.",
-      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
-      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
-      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
-      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
-      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes; 0 disables reminders.",
-      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_outdoor": "Неправильний вибір: Якість повітря надворі (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Недоступно: Якість повітря надворі (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Неправильний вибір: Погода та попередження (weather.*).",
+      "invalid_warning": "Неправильний вибір: Погода та попередження ⚠.",
+      "missing_notify": "Оберіть: Announcement Hub / notify.*.",
+      "missing_tts": "Оберіть: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Неправильний вибір: °C min < max.",
+      "no_areas": "Оберіть: Кімнати.",
+      "no_window_areas": "Недоступно: Вимірювання (binary_sensor, window).",
+      "invalid_areas": "Неправильний вибір: Кімнати.",
+      "invalid_window_exclusions": "Неправильний вибір: Виключити датчики вікон.",
+      "invalid_indoor_exclusions": "Неправильний вибір: Виключити датчики повітря в приміщенні.",
+      "no_windows_after_exclusions": "Залиште хоча б один датчик вікна.",
+      "review_areas_after_exclusions": "Перевірте: Кімнати · Вимірювання (0).",
+      "invalid_repeat_minutes": "Неправильний вибір: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Недоступно: conversation.process.",
+      "invalid_ai_agent": "Неправильний вибір: conversation.*."
     }
   },
   "entity": {
@@ -300,6 +300,51 @@
           "name": "Кімнати",
           "description": "Кімнати"
         }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Типово",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-BR": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-Hans": "简体中文",
+        "zh-Hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
       }
     }
   }
