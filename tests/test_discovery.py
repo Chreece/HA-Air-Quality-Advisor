@@ -345,3 +345,22 @@ def test_device_area_inheritance_for_indoor_selector(adapter):
     assert "Office monitor" in choices[0]["label"]
     assert "Indoor CO2" in choices[0]["label"]
     assert not adapter.indoor_sensor_exclusion_choices(home, "kitchen")
+
+
+def test_mold_temperature_sensor_fahrenheit_conversion_and_staleness(adapter):
+    from custom_components.air_quality_advisor.discovery import (
+        indoor_temperature_choices, temperature_sensor_c,
+    )
+    ha = FakeHass([
+        MockState("sensor.bedroom_temperature", 68, device_class="temperature", unit="°F"),
+        MockState("sensor.bedroom_humidity", 55, device_class="humidity", unit="%"),
+        MockState("sensor.outside_temperature", 12, device_class="temperature", unit="°C"),
+    ], {"sensor.bedroom_temperature": "bedroom",
+        "sensor.bedroom_humidity": "bedroom",
+        "sensor.outside_temperature": "outside"})
+    assert [item["value"] for item in indoor_temperature_choices(ha, "bedroom")] == [
+        "sensor.bedroom_temperature"
+    ]
+    assert temperature_sensor_c(ha, "sensor.bedroom_temperature", 90) == 20
+    ha._values["sensor.bedroom_temperature"].last_reported -= timedelta(hours=3)
+    assert temperature_sensor_c(ha, "sensor.bedroom_temperature", 90) is None

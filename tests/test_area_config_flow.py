@@ -342,7 +342,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     menu = asyncio.run(options.async_step_init())
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
-        "areas", "window_sensors", "indoor_sensors", "outdoor",
+        "areas", "indoor_sensors", "window_sensors", "outdoor",
         "weather", "delivery", "thresholds",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
@@ -598,3 +598,94 @@ def test_existing_repeat_value_is_preserved_on_reconfigure(monkeypatch, adapter)
     assert field.default == 0
     saved = asyncio.run(options.async_step_delivery({"language": "el"}))
     assert saved["completed"]["data"]["announcement_repeat_minutes"] == 0
+
+
+def test_first_page_offers_mold_instead_of_raw_humidity(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([
+        MockState("binary_sensor.living_window", "off", device_class="window")
+    ], {"binary_sensor.living_window": "living"})
+    wizard = Wizard(home)
+    page = asyncio.run(wizard.async_step_areas())
+    assert page["data_schema"]["use_mold_indicator"].default is False
+    next_page = asyncio.run(wizard.async_step_areas({
+        "areas": ["living"], "use_mold_indicator": True,
+    }))
+    assert next_page["step_id"] == "window_sensors"
+    assert wizard._values["use_mold_indicator"] is True
+
+
+def _calibratable_options(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    home = options.hass
+    home._values["sensor.living_temperature"] = MockState(
+        "sensor.living_temperature", 21, device_class="temperature", unit="°C",
+    )
+    home._values["sensor.living_humidity"] = MockState(
+        "sensor.living_humidity", 65, device_class="humidity", unit="%",
+    )
+    home._entity_areas["sensor.living_temperature"] = "living"
+    home._entity_areas["sensor.living_humidity"] = "living"
+    home._values["weather.home"].attributes["temperature"] = 6
+    home._values["weather.home"].attributes["temperature_unit"] = "°C"
+    asyncio.run(options.async_step_init())
+    options._values["use_mold_indicator"] = True
+    return options
+
+
+def test_calibration_saves_live_temperatures_and_is_stable_on_room_edits(monkeypatch, adapter):
+    options = _calibratable_options(monkeypatch, adapter)
+    first = asyncio.run(options.async_step_indoor_sensors())
+    assert first["step_id"] == "indoor_sensors"
+    assert "mold_critical_temperature_c" in first["data_schema"]
+    assert "mold_indoor_temperature" in first["data_schema"]
+    saved = asyncio.run(options.async_step_indoor_sensors({
+        "excluded_indoor_entities": [],
+        "mold_indoor_temperature": "sensor.living_temperature",
+        "mold_critical_temperature_c": 13.5,
+    }))
+    calib = saved["completed"]["data"]["mold_rooms"]["living"]
+    assert calib["calibration_factor"] == 2.0
+    assert calib["outdoor_weather_entity"] == "weather.home"
+    # Changing weather later must NOT reinterpret the old measurement.
+    options.hass._values["weather.home"].attributes["temperature"] = 10
+    asyncio.run(options.async_step_init())
+    options._values["use_mold_indicator"] = True
+    edited = asyncio.run(options.async_step_indoor_sensors({
+        "excluded_indoor_entities": ["sensor.living_co2"],
+        "mold_indoor_temperature": "sensor.living_temperature",
+        "mold_critical_temperature_c": 13.5,
+    }))
+    assert edited["completed"]["data"]["mold_rooms"]["living"] == calib
+
+
+def test_calibration_rejects_unavailable_outdoor_and_unstable_readings(monkeypatch, adapter):
+    options = _calibratable_options(monkeypatch, adapter)
+    options.hass._values["weather.home"].attributes.pop("temperature")
+    invalid = asyncio.run(options.async_step_indoor_sensors({
+        "excluded_indoor_entities": [],
+        "mold_indoor_temperature": "sensor.living_temperature",
+        "mold_critical_temperature_c": 13.5,
+    }))
+    assert invalid["errors"] == {"base": "missing_mold_outdoor_temperature"}
+    assert "mold_rooms" not in options._values
+    options.hass._values["weather.home"].attributes["temperature"] = 20
+    unstable = asyncio.run(options.async_step_indoor_sensors({
+        "excluded_indoor_entities": [],
+        "mold_indoor_temperature": "sensor.living_temperature",
+        "mold_critical_temperature_c": 13.5,
+    }))
+    assert unstable["errors"] == {"base": "invalid_mold_calibration"}
+
+
+def test_initial_wizard_mold_weather_precedes_room_calibration(monkeypatch, adapter):
+    Wizard = _wizard(monkeypatch, adapter)
+    home = FakeHass([
+        MockState("binary_sensor.living_window", "off", device_class="window"),
+    ], {"binary_sensor.living_window": "living"})
+    wizard = Wizard(home)
+    asyncio.run(wizard.async_step_areas({
+        "areas": ["living"], "use_mold_indicator": True,
+    }))
+    result = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
+    assert result == {"next_step": "outdoor"}
