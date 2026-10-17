@@ -1,12 +1,14 @@
 {
-  "version": "0.2.8",
+  "version": "0.2.9",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Fix README hero banner, support badge, diagrams, four dashboard screenshots and preview images failing to render in HACS",
-    "Replace all nine relative repository image sources with absolute HTTPS raw.githubusercontent.com URLs",
-    "Add regression test checking HACS-compatible absolute image URLs and local image-asset existence",
-    "No sensor, automation, announcement, calibration, configuration, or runtime behavior changes"
+    "Fix misleading 'No indoor measurements' label when PM2.5/AQI are valid but the optional mold indicator has not yet been calibrated",
+    "Distinguish never-calibrated mold indication from missing live temperature or RH inputs, without falsely treating the room as safe",
+    "Show 'Partial data' status on room cards when some readings are usable and others are unavailable; preserve backend unknown classification and summary",
+    "Display average valid room RH and contributor count even before coldest-surface calibration",
+    "Translate mold-not-calibrated and mold-inputs-unavailable messages for all 38 card languages, with Greek/German regression checks",
+    "Keep all existing sensor, weather, announcement and calibration behavior unchanged"
   ]
 }

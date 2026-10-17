@@ -143,6 +143,8 @@ estimated_surface_temp = temperature_outdoors
                        + (temperature_indoors - temperature_outdoors) / calibration_factor
 ```
 
+Until the coldest-surface measurement is entered, the mold indication is unavailable. The dashboard explicitly shows **Mold indicator not calibrated**, and a room with otherwise valid PM2.5/AQI readings shows **Partial data** rather than incorrectly claiming there are no indoor measurements. The room remains unverified (not green/safe) until calibration is complete.
+
 The room's humidity sensors are discovered and filtered through the normal per-room exclusion list. **Only valid RH readings above 0% and at most 100% are averaged**; `unknown`, `unavailable`, out-of-range, NaN, stale and excluded readings do not contribute. The indoor average and the room/outdoor temperatures determine dew point and estimated surface RH via the Magnus formula. The dashboard shows the calculated indicator, number of valid RH contributors, their average and estimated surface temperature.
 
 The original calibration factor is **preserved** when sensors, conditions or excluded entities change. Use **Recalibrate** only after physically measuring the surface again. If an indoor temperature, matching outdoor temperature, calibration or all valid RH readings are missing, the mold value is unavailable; the integration never substitutes raw RH or falsely labels the room safe. Rooms can be calibrated later without blocking other air-quality recommendations. Bad weather still takes priority over opening windows.

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.9 — Fix misleading room 'No data' while mold needs calibration
+
+- A room with working PM2.5, AQI or other indoor sensors must not show **No indoor measurements** simply because the optional mold indication is uncalibrated.
+- For incomplete rooms with working air sensors, show **Partial data** in the Lovelace room status. Explain **Mold indicator not calibrated** when the manually measured coldest-surface temperature has not been saved.
+- Distinguish an uncalibrated mold estimator from one whose room temperature, outside weather temperature or humidity inputs are temporarily unavailable. Include the reason in the dashboard data and show it beneath the unavailable indicator.
+- Continue displaying the mean of valid room RH values and contributing sensor count while the mold estimate is unavailable.
+- Preserve safety semantics: a missing required mold estimate still leaves the room classified **unknown**, not green/safe. Existing CO₂, PM, VOC, weather and window actions are unchanged.
+- Add targeted Python and Lovelace frontend regression tests; localize the new mold status messages for all 38 supported card languages. Refresh the bundled JavaScript cache key.
+
+
 ## 0.2.8 — Restore README images in HACS
 
 - Replace all nine repository-local image references in `README.md` with absolute `https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/` image URLs. This fixes broken cover, Ko-fi artwork, architecture diagrams, four dashboard screenshots and illustrative previews in HACS's README renderer while preserving GitHub rendering.
