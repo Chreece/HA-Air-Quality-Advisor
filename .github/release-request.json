@@ -1,7 +1,7 @@
 {
   "version": "0.2.4",
-  "intent": "metadata for manually dispatched validation/release only",
-  "note": "Editing this file does NOT trigger GitHub Actions. Run workflow_dispatch manually after every file is pushed.",
+  "intent": "metadata for automatic post-push validation and release",
+  "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
     "Full configuration & Options localization audit across 38 languages",
@@ -9,6 +9,6 @@
     "Compact localized validation/error text for remaining 33 languages",
     "Home Assistant selector option translations instead of hardcoded language labels",
     "Immutable local-language data source applied after generator and audit tests",
-    "Manual-only release validation after all commits pushed"
+    "Automatic gated release after a complete push to main; stale and duplicate version safeguards"
   ]
 }

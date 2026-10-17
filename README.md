@@ -280,7 +280,7 @@ python -m compileall -q custom_components
 bash ./publish.sh
 ```
 
-`publish.sh` requires a previously authenticated GitHub CLI (`gh auth status`) and creates `Chreece/HA-Air-Quality-Advisor` if absent. It **never force-pushes** or mutates other repositories. **GitHub Actions is now manual-only.** Finish and push all code, translations and release notes first, then choose [Actions → Validate and release (on demand) → Run workflow](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml) on `main`. The default run validates without publishing; enable **Publish release** to create the versioned HACS release *after* all checks pass. Neither pushes nor changes to `.github/release-request.json` start any action. See [RELEASING.md](RELEASING.md).
+`publish.sh` is an optional local publishing script requiring an authenticated GitHub CLI (`gh auth status`). It **never force-pushes** or mutates other repositories. **GitHub Actions automatically validates every completed push to `main`** and creates a new GitHub/HACS Release after Python, JavaScript, translation, HACS and Hassfest checks pass. Superseded commits and already published version tags cannot create duplicate releases. Push the complete code, translations and release notes with matching manifest and release-request versions; no manual action is required. Manual validation remains available through [Actions → Validate and release (after push)](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml), without publishing by default. See [RELEASING.md](RELEASING.md).
 
 ## Known limitations
 
@@ -298,7 +298,7 @@ MIT © 2026 Chreece
 
 - **Home Assistant 2026.10+**; modern UI config/options flow and a bundled Lovelace dashboard card. The component ships local `custom_components/air_quality_advisor/brand/` assets for Home Assistant 2026.3+ as well as repository-level HACS assets.
 - **HACS custom integration repository:** `hacs.json`, `manifest.json` and conventional `custom_components/` layout are included. Public HACS catalog inclusion is a separate community-review process.
-- **Validations:** `pytest`, static syntax checks, JSON checks, HACS action and hassfest are available in a manually triggered GitHub workflow. Actual platform compatibility and output delivery require a Home Assistant integration test; see the [release checklist](RELEASING.md).
+- **Validations:** `pytest`, static syntax checks, JSON checks, HACS action and Hassfest run automatically on each completed push to main (plus optional manual validation). Actual platform compatibility and output delivery require a Home Assistant integration test; see the [release checklist](RELEASING.md).
 - **Versions:** see [CHANGELOG.md](CHANGELOG.md). This release is a first testable version, not an independently verified stable integration. No automatic window opening/closing is performed.
 
 ## Support this project

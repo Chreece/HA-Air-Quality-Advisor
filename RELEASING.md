@@ -28,12 +28,12 @@
 - Check the AI checkbox remains optional and off by default and that Hub AI does not cause an additional local AI rewrite.
 - Run all 38 translation generation/schema tests and execute one manual Hub success plus one stopped-Hub fallback in a real HA instance before considering physical delivery validated.
 
-## v0.2.3 repeat reminders and manual-only workflow checks
+## v0.2.3 repeat reminders and original release workflow checks
 
 - Reconfigure → Announcements: a number selector with default 10, minimum 0, maximum 1440; reject fractional, negative and non-numeric values. Setting 0 disables repeats entirely.
 - Test repeated open and urgent close recommendations, multiple rooms, numeric fluctuations, reason changes, disappearing/recovered conditions, startup behavior, cooldown bypass and clean cancellation on unload.
 - Ensure reminders are emitted only for automatic notification/TTS channels, and each repeat reuses normal Announcement Hub/AI/direct delivery without overlapping calls.
-- Verify the workflow has **only `workflow_dispatch`**, no push/PR/schedule triggers. The **Publish release** boolean is false by default; it must be explicitly enabled after every file is pushed to `main`.
+- Historical note: v0.2.3 introduced manual release dispatch; v0.2.4 supersedes it with automatic post-push validation and release.
 - Check all 38 translations and independent menu settings; verify one live 10-minute repeat and one case where the window is opened before the next deadline.
 
 ## v0.2.4 complete configuration localization audit
@@ -43,29 +43,27 @@
 - Verify the Greek Weather/warnings screen and the 18 translated Greek threshold labels visually, along with samples in German, French, Spanish and extra languages.
 - Verify the `SelectSelector` `translation_key="output_language"` and localized `selector.output_language.options.auto` work for each HA frontend user language, independent of the server default.
 - User-assigned sensor names, area names and provider-specific weather-warning names remain unchanged. These are dynamic data, not integration UI strings.
-- Push all files before launching GitHub Actions. The workflow must remain **manual-only**, with publish disabled by default.
+- Push all source, translations and notes together. The completed push to `main` triggers CI and publishes only the latest tested commit after every gate passes.
 
 ## Verification gates
 
-The repository's `.github/workflows/validate.yml` runs **exclusively on manual dispatch** (`workflow_dispatch`). No push, pull request, tag, release-request change or schedule starts any Actions. The default run validates only; release publication requires explicitly checking **Publish release**. Checks:
+A completed push to `main` automatically starts `.github/workflows/validate.yml`. The workflow also supports `workflow_dispatch` for optional manual validation, with manual publishing off by default. Every push-triggered run automatically publishes a **new, unreleased** manifest version only after all gates succeed:
 
 1. `python -m pytest -q tests` and `python -m compileall -q custom_components`.
 2. `node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js` and `node tests/card_test.cjs`.
-3. JSON, HACS manifest, Home Assistant minimum version and brand checks.
+3. Regenerate translations and compare them with checked-in JSON; validate all JSON.
 4. HACS Action (`hacs/action@main`) and Hassfest (`home-assistant/actions/hassfest@master`).
 
-A failed check **prevents release publication**.
+A failed gate **prevents a release**. Newer pushes cancel superseded runs, and the publish job confirms that its tested SHA is still the head of `main`, even after packaging. Already published versions are skipped without failing CI. An orphaned pre-existing tag blocks publication rather than being silently repointed.
 
-## Release process — manual after the full push
+## Release process — automatic after pushing
 
-1. Finish *all* source, UI translations, tests, README, changelog and `.github/releases/v<VERSION>.md` changes in one commit or series of development commits.
-2. Set the manifest version and matching `.github/release-request.json` metadata version. **This file no longer triggers any workflow.**
-3. Push everything to `main`. Verify the branch head and ensure nobody else is still pushing.
-4. Open **GitHub → Actions → [Validate and release (on demand)](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml) → Run workflow**, choose branch `main`. Leave **Publish release = false** for a validation-only run, or turn it **on** to publish the new HACS release automatically **only if every check passes**.
-5. Confirm the test, HACS and Hassfest jobs succeeded. When publishing was requested, confirm the `v<VERSION>` tag points to the validated commit and the GitHub Release includes the installation ZIP and changelog.
-6. If a test fails, push a correction, then manually run the workflow again. Never assume a development push or changing the version automatically launches Actions.
+1. Commit the complete code, translation, test and documentation changes. Set `manifest.json` and `.github/release-request.json` to the same **new** version and include `.github/releases/v<VERSION>.md`.
+2. Push the complete changes to `main`. This **automatically** starts validation and publishes the versioned GitHub/HACS Release (including the installation ZIP) after every check passes. No manual Actions click or CLI dispatch is necessary.
+3. Inspect the automatic Actions run and resulting GitHub Release only if troubleshooting is needed. If a gate fails, fix it and push again; the next push validates the newer commit. Do not hand-create a tag or overwrite an existing release.
+4. Future changes using the **same version** still run CI, but do not create duplicate releases. Increment the version and prepare notes for the next publish.
 
-A manual run with Publish release disabled cannot publish any release. A failed validation cannot publish a release. Existing installed versions remain available through HACS while a new version waits for its manual run.
+The manual `workflow_dispatch` entry point is retained as an optional fallback. Its default is validation-only and does not publish a version unless **Publish release** is explicitly selected.
 
 Live Home Assistant setup, sensor integration and physical Announcement Hub/TTS/notification output tests remain separate acceptance requirements. The integration never operates windows.
 

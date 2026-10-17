@@ -1,8 +1,11 @@
-name: Validate and release (on demand)
+name: Validate and release (after push)
 
-# No push/PR/schedule triggers. Validate only when manually dispatched after
-# all code, release notes and translations are committed. Publishing is opt-in.
+# A completed push to main starts validation. Only the final validated HEAD
+# gets a release; manual dispatch can run validation without publishing.
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       publish_release:
@@ -16,7 +19,7 @@ permissions:
 
 concurrency:
   group: air-quality-advisor-release-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -71,7 +74,10 @@ jobs:
 
   publish:
     name: Publish versioned HACS release
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish_release == true
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.publish_release == true))
     needs: [test, hassfest, hacs]
     runs-on: ubuntu-latest
     permissions:
@@ -99,7 +105,32 @@ jobs:
               print(f'tag={tag}', file=out)
               print(f'notes={notes}', file=out)
           PY
+      - name: Verify this commit is current and the version is unreleased
+        id: eligibility
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+        run: |
+          set -euo pipefail
+          current_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          if [[ "$current_sha" != "$GITHUB_SHA" ]]; then
+            echo "::notice::Superseded by $current_sha; skipping obsolete release"
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::notice::Release $RELEASE_TAG already exists; no duplicate"
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $RELEASE_TAG already exists without a release; refusing to repoint it"
+            exit 1
+          fi
+          echo "should_publish=true" >> "$GITHUB_OUTPUT"
       - name: Build manual integration ZIP
+        if: steps.eligibility.outputs.should_publish == 'true'
         env:
           RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
         run: |
@@ -107,16 +138,28 @@ jobs:
           zip -q -r "dist/HA-Air-Quality-Advisor-${RELEASE_TAG}.zip" custom_components/air_quality_advisor \
             -x '*__pycache__*' '*.pyc'
       - name: Create release at the validated commit
+        if: steps.eligibility.outputs.should_publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
           RELEASE_NOTES: ${{ steps.metadata.outputs.notes }}
         run: |
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            echo "Release $RELEASE_TAG already exists; refusing to overwrite" >&2
+          set -euo pipefail
+          current_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          if [[ "$current_sha" != "$GITHUB_SHA" ]]; then
+            echo "::notice::New push arrived during packaging; skip obsolete release"
+            exit 0
+          fi
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::notice::Release $RELEASE_TAG already published; no duplicate"
+            exit 0
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $RELEASE_TAG exists without a published release"
             exit 1
           fi
           gh release create "$RELEASE_TAG" "dist/HA-Air-Quality-Advisor-${RELEASE_TAG}.zip#Manual installation ZIP" \
+            --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "Air Quality Advisor ${RELEASE_TAG}" \
             --notes-file "$RELEASE_NOTES" \

@@ -9,16 +9,16 @@
 - Localize **Home Assistant default** for language selection via the supported Home Assistant `SelectSelectorConfig.translation_key` mechanism and corresponding per-language `selector` dictionaries. Localize conversation-agent default labels too.
 - Add a single reviewed translation overlay source applied **after** generation, preventing old English explanations returning in future releases. Add full-coverage tests to detect missing or English-regressed setup/option strings.
 - Keep real weather-provider alerts, device names, geographic locations and entities untouched; those are supplied by Home Assistant/other integrations, not Air Quality Advisor.
-- GitHub Actions remains **manual-only**, with release publication explicitly opt-in after all changes are pushed. Existing configuration and recommendation logic are unchanged.
+- GitHub Actions now **automatically validates completed pushes to main and publishes new versions only after all test, HACS and Hassfest gates succeed**. Superseded commits and already published versions are skipped; the optional manual-dispatch path stays validation-only by default. Existing configuration and recommendation logic are unchanged.
 
-## 0.2.3 — Configurable, per-room repeat reminders and manual-only CI
+## 0.2.3 — Configurable, per-room repeat reminders (unreleased milestone)
 
 - Add **Repeat announcements (minutes)** under Announcements, with **10 minutes default** and **0 = no repeats** (0–1440 whole minutes).
 - Repeat only while the *same actionable window recommendation and underlying reason* persist. Each room has its own timer; changes in one room do not cause duplicate announcements elsewhere.
 - Check sensors and windows again at each reminder deadline; stop immediately when a recommendation clears or its cause changes. Changes in numeric readings while still over the same threshold do not reset the timer.
 - Keep 90 seconds for initial open advice and immediate closing advice. Timed reminders bypass the older 15-minute anti-flapping cooldown; existing startup/urgent behavior is preserved.
 - All delivery methods are supported: Announcement Hub, direct TTS/notify and Home Assistant persistent notifications; no additional entities or window control.
-- **GitHub Actions only runs via `workflow_dispatch` after all files are pushed.** An explicit, default-off **Publish release** input gates versioned releases after tests, translation generation, HACS and Hassfest. No push, PR, tag or release-request triggers.
+- At this milestone CI was temporarily manual-only; **v0.2.4 supersedes this policy** with automatic post-push validation and publication. All release gates remain required.
 - Update all 38 Home Assistant translations, release documentation, and recurrence/cancellation tests. No configuration migration is required.
 
 ## 0.2.2 — Shared AI control, smarter Hub availability and native fallback
