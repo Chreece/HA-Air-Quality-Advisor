@@ -1,6 +1,7 @@
 """Calibrated mold risk and multi-sensor humidity behavior."""
 from __future__ import annotations
 
+from test_discovery import adapter
 from test_hub_manager import delivery_module
 
 from custom_components.air_quality_advisor.mold import (

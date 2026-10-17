@@ -607,7 +607,7 @@ def test_first_page_offers_mold_instead_of_raw_humidity(monkeypatch, adapter):
     ], {"binary_sensor.living_window": "living"})
     wizard = Wizard(home)
     page = asyncio.run(wizard.async_step_areas())
-    assert page["data_schema"]["use_mold_indicator"].default is False
+    assert next(k.default for k in page["data_schema"] if k == "use_mold_indicator") is False
     next_page = asyncio.run(wizard.async_step_areas({
         "areas": ["living"], "use_mold_indicator": True,
     }))
