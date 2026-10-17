@@ -325,13 +325,15 @@ class _FlowMixin:
         }
         if hub_present:
             fields[_marker(CONF_HUB, self._values.get(CONF_HUB, True))] = selector.BooleanSelector()
-        if ai_service_available or hub_present or self._values.get(CONF_AI_REWRITE, False):
-            fields[_marker(CONF_AI_AGENT, self._values.get(CONF_AI_AGENT, DEFAULT_AGENT), required=True)] = (
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=ai_agents, multiple=False, custom_value=False,
-                    mode=selector.SelectSelectorMode.DROPDOWN,
-                ))
-            )
+        # Keep the agent selector visible alongside the general AI checkbox.
+        # With no provider it still defaults to HA; choosing AI then raises
+        # the existing missing_ai_service validation rather than failing later.
+        fields[_marker(CONF_AI_AGENT, self._values.get(CONF_AI_AGENT, DEFAULT_AGENT), required=True)] = (
+            selector.SelectSelector(selector.SelectSelectorConfig(
+                options=ai_agents, multiple=False, custom_value=False,
+                mode=selector.SelectSelectorMode.DROPDOWN,
+            ))
+        )
         if has_notify:
             fields[_marker(CONF_NOTIFY_TARGETS, self._values.get(CONF_NOTIFY_TARGETS, []))] = (
                 selector.EntitySelector(selector.EntitySelectorConfig(domain="notify", multiple=True))
