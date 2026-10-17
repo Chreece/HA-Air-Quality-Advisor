@@ -13,7 +13,7 @@ from homeassistant.config_entries import ConfigFlowResult, OptionsFlowWithReload
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
-from .languages import SUPPORTED_LANGUAGE_TAGS
+from .languages import SUPPORTED_LANGUAGE_TAGS, resolve_language
 
 from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
 from .hub_delivery import hub_installed
@@ -309,6 +309,14 @@ class _FlowMixin:
                 errors = {"base": "invalid_ai_agent"}
             else:
                 self._values.update(user_input)
+                if CONF_LANGUAGE in user_input:
+                    # The translated selector keys must be lowercase for
+                    # Hassfest; restore the canonical BCP47 value on save.
+                    locale = str(user_input[CONF_LANGUAGE]).strip()
+                    self._values[CONF_LANGUAGE] = (
+                        "auto" if locale.lower() == "auto"
+                        else resolve_language(locale)
+                    )
                 self._values[CONF_REPEAT_MINUTES] = int(minutes)
                 self._values.setdefault(CONF_HUB, False)
                 self._values.setdefault(CONF_AUTO_NOTIFY, False)
@@ -321,11 +329,15 @@ class _FlowMixin:
         else:
             errors = {}
         fields: dict[Any, Any] = {
-            _marker(CONF_LANGUAGE, self._values.get(CONF_LANGUAGE, "auto"), required=True):
+            _marker(
+                CONF_LANGUAGE,
+                str(self._values.get(CONF_LANGUAGE) or "auto").lower(),
+                required=True,
+            ):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    # translation_key uses the current HA UI locale, not the
-                    # server's configured language, unlike hardcoded labels.
-                    options=["auto", *SUPPORTED_LANGUAGE_TAGS],
+                    # Translation keys are lowercase, even for regional/
+                    # script tags. Existing saved canonical tags remain valid.
+                    options=["auto", *(tag.lower() for tag in SUPPORTED_LANGUAGE_TAGS)],
                     translation_key="output_language",
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )),

@@ -42,6 +42,7 @@
 - Run `python -m pytest -q tests/test_config_i18n_audit.py`. All 38 languages must contain identical keys and no remaining English-identical config/option prose or errors.
 - Verify the Greek Weather/warnings screen and the 18 translated Greek threshold labels visually, along with samples in German, French, Spanish and extra languages.
 - Verify the `SelectSelector` `translation_key="output_language"` and localized `selector.output_language.options.auto` work for each HA frontend user language, independent of the server default.
+- Hassfest requires lower-case keys under `selector.output_language.options`; test `pt-br`, `zh-hans` and `zh-hant` in the UI while preserving `pt-BR`, `zh-Hans` and `zh-Hant` in saved settings.
 - User-assigned sensor names, area names and provider-specific weather-warning names remain unchanged. These are dynamic data, not integration UI strings.
 - Push all source, translations and notes together. The completed push to `main` triggers CI and publishes only the latest tested commit after every gate passes.
 

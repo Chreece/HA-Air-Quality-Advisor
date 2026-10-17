@@ -47,9 +47,9 @@ def test_all_38_locale_files_are_structurally_complete():
         assert list(doc["options"]["step"]) == list(en["options"]["step"])
         assert set(doc["config"]["error"]) == set(en["config"]["error"])
         assert set(doc["options"]["error"]) == set(en["options"]["error"])
-        assert set(doc["selector"]["output_language"]["options"]) == {
-            "auto", *SUPPORTED_LANGUAGE_TAGS,
-        }
+        option_keys = set(doc["selector"]["output_language"]["options"])
+        assert option_keys == {"auto", *(tag.lower() for tag in SUPPORTED_LANGUAGE_TAGS)}
+        assert all(re.fullmatch(r"[a-z0-9_-]+", key) for key in option_keys)
 
 
 def test_translated_help_thresholds_errors_abort_and_menu_do_not_regress_to_english():
@@ -106,8 +106,24 @@ def test_language_selector_uses_home_assistant_native_translation_key(monkeypatc
     selector = schema["language"]
     assert selector.config.translation_key == "output_language"
     assert selector.config.options[0] == "auto"
-    assert set(selector.config.options[1:]) == set(SUPPORTED_LANGUAGE_TAGS)
-    assert all(isinstance(option, str) for option in selector.config.options)
+    assert set(selector.config.options[1:]) == {
+        tag.lower() for tag in SUPPORTED_LANGUAGE_TAGS
+    }
+    assert all(re.fullmatch(r"[a-z0-9_-]+", option) for option in selector.config.options)
+
+
+def test_regional_language_selector_preserves_existing_settings(monkeypatch, adapter):
+    from test_area_config_flow import _make_options
+
+    for canonical in ("pt-BR", "zh-Hans", "zh-Hant", "auto"):
+        options = _make_options(monkeypatch, adapter)
+        options.config_entry.data["language"] = canonical
+        asyncio.run(options.async_step_init())
+        form = asyncio.run(options.async_step_delivery())
+        marker = next(key for key in form["data_schema"] if key.schema == "language")
+        assert marker.default == canonical.lower()
+        result = asyncio.run(options.async_step_delivery({"language": canonical.lower()}))
+        assert result["completed"]["data"]["language"] == canonical
 
 
 def test_translation_generator_uses_reviewed_overrides_and_provider_names_are_intact():

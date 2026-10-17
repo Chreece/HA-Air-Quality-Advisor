@@ -74,10 +74,14 @@ def apply_config_overrides(root: Path = ROOT) -> None:
         data["options"]["step"]["init"]["title"] = values["menuTitle"]
         data["options"]["step"]["init"]["description"] = values["menu"]
 
-        # The frontend translates a SelectSelector only when translation_key
-        # exists and option values are used instead of hardcoded labels.
+        # Hassfest requires lowercase selector translation keys. The UI
+        # submits lowercase locale tags, while saved settings and messages
+        # preserve canonical BCP47 spellings such as pt-BR and zh-Hant.
+        selector_names = {tag.lower(): name for tag, name in names.items()}
+        if len(selector_names) != len(names):
+            raise ValueError("Ambiguous locale selector keys")
         data.setdefault("selector", {})["output_language"] = {
-            "options": {"auto": values["auto"], **names}
+            "options": {"auto": values["auto"], **selector_names}
         }
         target.write_text(
             json.dumps(data, ensure_ascii=False, indent=2) + "\n",

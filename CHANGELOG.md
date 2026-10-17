@@ -2,6 +2,8 @@
 
 ## 0.2.4 — Full Home Assistant configuration translation audit
 
+- Fix Hassfest compliance for regional/script language-selector translation keys (lowercase only); saved `pt-BR`, `zh-Hans` and `zh-Hant` continue to round-trip as canonical BCP47 values.
+
 - Audit all **38** supported languages across initial setup and Reconfigure: step titles, page explanations, per-field help, validation/abort text, seven menu choices and advanced-threshold labels.
 - Fix the untranslated Greek Weather/warnings explanations shown under the weather provider and warning-entity selectors; also correct outdoor sensor and Announcements help.
 - Translate all 18 advanced limit labels in Greek, German, French and Spanish; maintain the complete original English set.
