@@ -21,7 +21,7 @@
 
 # Air Quality Advisor for Home Assistant
 
-**One recommendation entity and an optional visual dashboard card for all the rooms you select.** It compares indoor CO₂, AQI, particles, VOCs and humidity against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
+**One recommendation entity and an optional visual dashboard card for all the rooms you select.** It compares indoor CO₂, AQI, particles, VOCs and either room RH or an optional calibrated mold indicator against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
 
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
 
@@ -65,6 +65,7 @@ Screenshots are generated with the bundled card source using [`tools/generate_re
 - A single `sensor.air_quality_advisor_window_recommendations` (actual entity ID may vary with user settings). States: `open`, `close`, `idle`, `blocked`.
 - Attributes: `open_windows`, `close_windows`, structured `recommendations` with windows, room/area, sensor reason, value and localised message, `outside_blockers`, `diagnostics`, `outdoor_safe`, `announcement_hub_available`.
 - Event-driven updates and periodic 5-minute freshness checks. No external APIs, daemons, cloud credentials or Home Assistant tokens. Uses existing entities only.
+- **Optional mold indicator instead of raw RH:** per-room measured cold-surface temperature plus a room temperature sensor and an outdoor weather temperature are used to calibrate a surface-humidity estimate. Multiple valid room RH sensors are averaged; unavailable, zero, stale and out-of-range RH values are ignored. Missing calibration never silently means safe.
 - A guided setup with editable, automatically suggested window exclusions, room selection, outdoor measurements and weather warnings. Indoor measurements and genuine window contacts are discovered using HA's entity/device area assignments. Configurable thresholds are tucked into **Configure → Advanced thresholds**.
 - Optional room-aware [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) output (`notify.announcement_hub`), **or** direct `notify.send_message` and `tts.speak` via supported entities. Not installing Announcement Hub does not affect the recommendation sensor.
 - **One optional AI setting** for both delivery paths. With Announcement Hub configured, it explicitly forwards `use_ai: true/false` and optionally `ai_agent`; otherwise the selected Home Assistant conversation agent rewrites direct notification/TTS text. AI never changes the window decisions and is off by default. A stopped or rejecting Hub falls back to Home Assistant direct outputs or a persistent notification.
@@ -92,13 +93,9 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**v0.2.4 localization fixes are on `main` pending a manually launched release workflow.** They are not yet a published HACS update.
+**Latest published stable release:** see [GitHub Releases](https://github.com/Chreece/HA-Air-Quality-Advisor/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
 
-**Latest published stable release: [v0.2.2](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.2)** · [Release notes](.github/releases/v0.2.2.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
-
-Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
-
-GitHub Actions is **manual-only**: push all code and translations, then explicitly run **Validate and release (on demand)** from GitHub Actions. Leave **Publish release** unchecked for validation only, or enable it after all changes are committed to publish the new version after successful tests, HACS and Hassfest.
+Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), then restart Home Assistant. Existing config entries and the single recommendation sensor retain their IDs. The bundled Lovelace card is refreshed automatically.
 
 ## Internationalization — 38 languages
 
@@ -110,7 +107,7 @@ BCP47 support distinguishes `pt-BR` from `pt-PT`, and `zh-Hans` from `zh-Hant` (
 
 **Translation audit (v0.2.4):** All 38 language files now provide localized configuration and Reconfigure field labels, help text, validation errors, the settings-selection menu, abort messages, and the language selector's **Home Assistant default** option. Greek, German, French and Spanish include fully translated advanced-threshold labels and detailed explanations. The other 33 languages use short translated safety guidance and error messages with technical terms and symbols; native-speaker review is welcome. **Dynamic weather warnings, device names, room names, geographic names, sensor readings and IDs come from the user's Home Assistant or the weather provider and are not translated by this integration.** Actual spoken language still depends on the installed TTS voice.
 
-Locale sources are in `custom_components/air_quality_advisor/locale_pack_*.py` and the reviewed, centralized `config_i18n_overrides.json` file. After editing either source, run `python generate_translations.py` and `python -m pytest -q tests/test_config_i18n_audit.py`. The generator applies the localized overrides **last**, so it cannot silently restore English helper text. Native-speaker improvements are welcome.
+Locale sources are in `custom_components/air_quality_advisor/locale_pack_*.py` and the reviewed, centralized `config_i18n_overrides.json` file. After editing either source, run `python generate_translations.py` and `python -m pytest -q tests/test_config_i18n_audit.py`. The generator applies the localized configuration overrides, then the optional mold-room translations, **last**, so it cannot silently restore English helper text. Native-speaker improvements are welcome.
 
 ### Config-flow translation quality assurance
 
@@ -129,9 +126,28 @@ For example, the Greek Weather page explains directly that at least one weather 
 5. **Weather and warnings.** Select one or more `weather.*` entities and optional recognized warning sensors. Unsafe weather and active or unknown warnings block window opening.
 6. **Announcements (optional).** Configure spoken/visual delivery, language and optional [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) routing. Advanced thresholds are edited separately through Configure.
 
-Indoor exclusions are stored **by Home Assistant area**, used for both recommendations and the dashboard snapshot. An excluded indoor sensor remains available in Home Assistant; the integration does not disable, delete or modify it. Areas with no remaining active indoor measurements are shown as **unknown**, never silently marked safe. Only the single existing window-recommendation entity is generated.
+Indoor exclusions and mold calibrations are stored **by Home Assistant area**, used for both recommendations and the dashboard snapshot. An excluded indoor sensor remains available in Home Assistant; the integration does not disable, delete or modify it. Areas with no remaining active indoor measurements are shown as **unknown**, never silently marked safe. Only the single existing window-recommendation entity is generated.
 
 For an installed integration, open **Settings → Devices & services → Integrations → Air Quality Advisor → Configure**. A translated menu lets you choose exactly which section to edit: Rooms, Window sensor exclusions, Per-room indoor air sensors, Outdoor air sensors, Weather and warnings, Announcements, or Advanced thresholds. Only the selected section opens. Indoor sensor exclusions continue room by room, but every other section saves immediately without forcing the rest of setup. Your saved selections are prefilled; cancelling leaves existing settings unchanged. The full flow uses the same five Home Assistant UI languages (English, German, Greek, French and Spanish).
+
+### Mold indication instead of RH (optional)
+
+Check **Use mold indication instead of raw room RH** on the first **Rooms** setup page. The legacy 65% room-RH rule remains unchanged until you enable it. When enabled, raw RH is no longer the ventilation trigger; Advisor estimates the relative humidity **at the coldest surface**. The default alert level is **70% estimated surface RH** (configurable under **Advanced thresholds**). This is a moisture/mold-growth indication, not a probability of having mold.
+
+For each room, open **Room settings — indoor air and mold** (second option in **Configure**), choose a room temperature sensor (°C or °F), and measure the room's **coldest wall surface**, usually an outside corner or window frame, with a contact/infrared thermometer. Enter the measured critical-point temperature in **°C**. Measure at the same time as the room temperature sensor and selected weather entity's outdoor temperature. They should differ by at least 3 °C for a stable calibration. The integration calculates the same factor as Home Assistant's [Mold Indicator](https://www.home-assistant.io/integrations/mold_indicator/):
+
+```text
+calibration_factor = (temperature_indoors - temperature_outdoors)
+                   / (temperature_coldest_surface - temperature_outdoors)
+estimated_surface_temp = temperature_outdoors
+                       + (temperature_indoors - temperature_outdoors) / calibration_factor
+```
+
+The room's humidity sensors are discovered and filtered through the normal per-room exclusion list. **Only valid RH readings above 0% and at most 100% are averaged**; `unknown`, `unavailable`, out-of-range, NaN, stale and excluded readings do not contribute. The indoor average and the room/outdoor temperatures determine dew point and estimated surface RH via the Magnus formula. The dashboard shows the calculated indicator, number of valid RH contributors, their average and estimated surface temperature.
+
+The original calibration factor is **preserved** when sensors, conditions or excluded entities change. Use **Recalibrate** only after physically measuring the surface again. If an indoor temperature, matching outdoor temperature, calibration or all valid RH readings are missing, the mold value is unavailable; the integration never substitutes raw RH or falsely labels the room safe. Rooms can be calibrated later without blocking other air-quality recommendations. Bad weather still takes priority over opening windows.
+
+When mold mode is enabled at initial setup, choose **Outdoor air and Weather** *before* the per-room calibration pages so the temperature readings are available. If converting an existing installation, enable mold under **Configure → Rooms**, save, then visit **Configure → Room settings** for each room.
 
 ### Supported indoor and outdoor measurements
 
@@ -143,7 +159,8 @@ For an installed integration, open **Settings → Devices & services → Integra
 | PM10 | µg/m³ or mg/m³ | 45 | 45 |
 | Total VOC | µg/m³ or mg/m³ | 500 | 500 |
 | VOC concentration (parts) | ppb or ppm | 500 ppb | 500 ppb |
-| Relative humidity | % | — | 65% |
+| Relative humidity (legacy mode) | % | — | 65% |
+| Mold indication (opt-in) | estimated surface RH, % | — | 70% |
 
 Sensor values are normalised to the units above. Outdoor temperatures from weather entities must remain from **5–32 °C**, humidity at most **85%** and wind at most **35 km/h** when those attributes are provided. Supported fair weather states: `sunny`, `clear-night`, `partlycloudy`, `cloudy`. All other states, including rain, snow, thunderstorms, fog and high wind, block opening. Selected warnings that are active **or cannot be verified** also block opening. Weather providers with unknown state block opening. Selected outdoor data older than 90 minutes (using `last_reported` when available) are reported as unavailable, without blocking opening. Adjust the freshness interval by checking **Edit advanced thresholds** on the announcements page.
 

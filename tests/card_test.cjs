@@ -64,3 +64,23 @@ assert.ok(card.shadowRoot.innerHTML.includes('metric-grid'));
 assert.ok(!card.shadowRoot.innerHTML.includes('hass.callService'));
 assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_quality_advisor_recommendations').config.type,'custom:air-quality-advisor-card');
 console.log('Dashboard card frontend tests passed');
+
+
+// Mold mode renders a derived surface estimate and valid-RH sensor average.
+{
+  const mold = JSON.parse(JSON.stringify(input));
+  mold.rooms[0].readings = [{
+    entity_id:'derived.mold_kitchen', metric:'mold', value:82.4,
+    threshold:70, unit:'%', available:true, exceeded:true,
+    details:{average_indoor_humidity:64.8,humidity_sensor_count:2,
+             estimated_surface_c:13.2}
+  }];
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:mold}
+    }
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('Ένδειξη μούχλας'));
+  assert.ok(card.shadowRoot.innerHTML.includes('n=2'));
+  assert.ok(card.shadowRoot.innerHTML.includes('13.2°C'));
+}

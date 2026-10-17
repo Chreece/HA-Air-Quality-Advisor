@@ -274,7 +274,8 @@
     hail:'mdi:weather-hail', snowyrainy:'mdi:weather-snowy-rainy'
   };
   const METRIC_ICON = { co2:'mdi:molecule-co2', aqi:'mdi:air-filter', pm25:'mdi:blur',
-    pm10:'mdi:blur', voc:'mdi:flask-outline', voc_parts:'mdi:flask-outline', humidity:'mdi:water-percent' };
+    pm10:'mdi:blur', voc:'mdi:flask-outline', voc_parts:'mdi:flask-outline',
+    humidity:'mdi:water-percent', mold:'mdi:water-alert-outline' };
   const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
   const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
   const clamp = (num,min,max) => Math.max(min, Math.min(max,num));
@@ -378,6 +379,15 @@
       const level = !available ? 'unknown' : item.exceeded ? 'attention' : 'safe';
       const display = available ? this._format(item.value) : '–';
       const threshold = hasLimit ? `${this._t('limits')} ${this._format(limit)} ${escape(unit)}` : '';
+      const details = item.metric === 'mold' && item.details && typeof item.details === 'object'
+        ? item.details : null;
+      const moldInfo = details && available
+        ? `<div class="metric-limit">
+          RH Ø ${typeof details.average_indoor_humidity === 'number' ? escape(this._format(details.average_indoor_humidity)) + '%' : '–'}
+          · n=${escape(details.humidity_sensor_count ?? 0)}
+          · 🌡️ ${typeof details.estimated_surface_c === 'number' ? escape(this._format(details.estimated_surface_c)) + '°C' : '–'}
+        </div>`
+        : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
           <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)}</span>
@@ -388,6 +398,7 @@
           <span class="meter-fill" style="width:${pct.toFixed(2)}%"></span><span class="meter-limit"></span>
         </div><div class="metric-limit">${threshold}</div>`
           : `<div class="metric-limit">${available ? '' : escape(this._t('missing'))}</div>`}
+        ${moldInfo}
       </div>`;
     }
 
