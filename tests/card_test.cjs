@@ -81,4 +81,59 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   assert.ok(card.shadowRoot.innerHTML.includes('n=2'));
   assert.match(card.shadowRoot.innerHTML, /13[,.]2°C/);
 }
+// A never-calibrated mold indicator must not erase perfectly valid air data.
+{
+  const partial = JSON.parse(JSON.stringify(input));
+  partial.rooms = [{
+    area_id:'living',name:'Wohnzimmer',status:'unknown',
+    status_detail:'mold_not_calibrated',available_count:2,high_count:0,
+    windows:[{name:'Living window',entity_id:'binary_sensor.living_window',opened:false}],
+    readings:[
+      {metric:'pm25',value:1,threshold:25,unit:'µg/m³',available:true,exceeded:false},
+      {metric:'aqi',value:12.9,threshold:100,unit:'AQI',available:true,exceeded:false},
+      {metric:'mold',value:null,threshold:70,unit:'%',available:false,exceeded:false,
+        details:{status:'needs_calibration',average_indoor_humidity:53,
+                 humidity_sensor_count:2}},
+    ],
+  }];
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:partial}
+    }
+  }};
+  const html = card.shadowRoot.innerHTML;
+  assert.ok(html.includes('Η ένδειξη μούχλας δεν έχει βαθμονομηθεί'),
+    'uncalibrated mold should be explained in Greek');
+  assert.ok(html.includes('Ελλιπή δεδομένα'),'valid PM/AQI means partial data');
+  assert.ok(!html.includes('Δεν υπάρχουν εσωτερικές μετρήσεις'),
+    'valid PM and AQI readings must never be called no indoor data');
+  assert.ok(html.includes('PM2.5') && html.includes('AQI'));
+  assert.ok(html.includes('n=2') && html.includes('53%'),
+    'show valid RH average even before calibration');
+
+  // Unavailable inputs *after* calibration are not the same as no calibration.
+  partial.rooms[0].status_detail = 'mold_inputs_unavailable';
+  partial.rooms[0].readings[2].details.status = 'inputs_unavailable';
+  card.hass={language:'de',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:partial}
+    }
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('Messdaten für Schimmelindikator fehlen'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('Schimmelindikator nicht kalibriert'));
+
+  partial.rooms[0].readings = [{
+    metric:'mold',value:null,threshold:70,unit:'%',available:false,exceeded:false,
+    details:{status:'needs_calibration',humidity_sensor_count:0}
+  }];
+  partial.rooms[0].status_detail = 'mold_not_calibrated';
+  card.hass={language:'en',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:partial}
+    }
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('No data'),
+    'a room with zero usable measurements remains unknown');
+  assert.ok(card.shadowRoot.innerHTML.includes('Mold indicator not calibrated'));
+}
 console.log('Dashboard card frontend tests passed');

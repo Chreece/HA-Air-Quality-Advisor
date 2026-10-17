@@ -250,6 +250,15 @@
   for (const [locale, name] of Object.entries(MOLD_NAMES)) {
     if (LANGUAGE[locale]) LANGUAGE[locale].metric_mold = name;
   }
+  // Differentiate a never-calibrated room from temporarily unavailable
+  // measurements. Keep these short status labels localized for every card UI.
+  const MOLD_STATUS_TEXT = {"en":["Mold indicator not calibrated","Mold indicator data unavailable"],"de":["Schimmelindikator nicht kalibriert","Messdaten für Schimmelindikator fehlen"],"el":["Η ένδειξη μούχλας δεν έχει βαθμονομηθεί","Λείπουν δεδομένα για την ένδειξη μούχλας"],"fr":["Indicateur de moisissure non calibré","Données de moisissure indisponibles"],"es":["Indicador de moho sin calibrar","Faltan datos para el indicador de moho"],"ar":["مؤشر العفن غير معاير","بيانات مؤشر العفن غير متاحة"],"bg":["Индикаторът за мухъл не е калибриран","Липсват данни за индикатора за мухъл"],"bn":["ছাঁচের সূচক ক্যালিব্রেট করা হয়নি","ছাঁচের সূচকের তথ্য অনুপলব্ধ"],"cs":["Indikátor plísně není kalibrován","Chybí údaje pro indikátor plísně"],"da":["Skimmelindikator er ikke kalibreret","Data til skimmelindikator mangler"],"fa":["شاخص کپک کالیبره نشده است","داده‌های شاخص کپک در دسترس نیست"],"fi":["Homeindikaattoria ei ole kalibroitu","Homeindikaattorin tiedot puuttuvat"],"he":["מדד העובש לא כויל","חסרים נתונים למדד העובש"],"hi":["फफूंद संकेतक कैलिब्रेट नहीं है","फफूंद संकेतक का डेटा उपलब्ध नहीं"],"hr":["Pokazatelj plijesni nije kalibriran","Nedostaju podaci za pokazatelj plijesni"],"hu":["A penészmutató nincs kalibrálva","Hiányoznak a penészmutató adatai"],"id":["Indikator jamur belum dikalibrasi","Data indikator jamur tidak tersedia"],"it":["Indicatore muffa non calibrato","Dati dell'indicatore muffa non disponibili"],"ja":["カビ指標は未校正です","カビ指標のデータがありません"],"ko":["곰팡이 지표가 보정되지 않았습니다","곰팡이 지표 데이터가 없습니다"],"nb":["Muggindikator er ikke kalibrert","Data for muggindikatoren mangler"],"nl":["Schimmelindicator niet gekalibreerd","Gegevens voor schimmelindicator ontbreken"],"pl":["Wskaźnik pleśni nie został skalibrowany","Brak danych dla wskaźnika pleśni"],"pt":["Indicador de bolor não calibrado","Dados do indicador de bolor indisponíveis"],"pt-br":["Indicador de mofo não calibrado","Dados do indicador de mofo indisponíveis"],"ro":["Indicatorul de mucegai nu este calibrat","Lipsesc date pentru indicatorul de mucegai"],"ru":["Индикатор плесени не откалиброван","Нет данных для индикатора плесени"],"sk":["Indikátor plesní nie je kalibrovaný","Chýbajú údaje indikátora plesní"],"sr":["Индикатор буђи није калибрисан","Недостају подаци за индикатор буђи"],"sv":["Mögelindikatorn är inte kalibrerad","Data för mögelindikatorn saknas"],"ta":["பூஞ்சை குறியீடு அளவுத்திருத்தம் செய்யப்படவில்லை","பூஞ்சை குறியீட்டிற்கான தரவு இல்லை"],"th":["ยังไม่ได้ปรับเทียบตัวชี้วัดเชื้อรา","ไม่มีข้อมูลสำหรับตัวชี้วัดเชื้อรา"],"tr":["Küf göstergesi kalibre edilmedi","Küf göstergesi verileri eksik"],"uk":["Індикатор цвілі не відкалібровано","Немає даних для індикатора цвілі"],"ur":["پھپھوندی کے اشارے کی کیلیبریشن نہیں ہوئی","پھپھوندی کے اشارے کا ڈیٹا دستیاب نہیں"],"vi":["Chỉ số nấm mốc chưa được hiệu chuẩn","Thiếu dữ liệu chỉ số nấm mốc"],"zh-hans":["霉菌指标尚未校准","霉菌指标缺少数据"],"zh-hant":["黴菌指標尚未校準","黴菌指標缺少資料"]};
+  for (const [locale, [needsCalibration, missingInputs]] of Object.entries(MOLD_STATUS_TEXT)) {
+    if (LANGUAGE[locale]) {
+      LANGUAGE[locale].moldNotCalibrated = needsCalibration;
+      LANGUAGE[locale].moldInputsUnavailable = missingInputs;
+    }
+  }
 
   const RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur']);
   function cardLanguage(code) {
@@ -381,11 +390,19 @@
       const threshold = hasLimit ? `${this._t('limits')} ${this._format(limit)} ${escape(unit)}` : '';
       const details = item.metric === 'mold' && item.details && typeof item.details === 'object'
         ? item.details : null;
-      const moldInfo = details && available
+      const moldUnavailableReason = item.metric === 'mold' && !available
+        ? details?.status === 'needs_calibration' ? this._t('moldNotCalibrated')
+          : details?.status === 'inputs_unavailable' ? this._t('moldInputsUnavailable')
+            : this._t('missing')
+        : this._t('missing');
+      // The room can still have valid RH contributors before its coldest
+      // surface has been calibrated. Show that average instead of hiding it.
+      const moldInfo = details && typeof details.average_indoor_humidity === 'number'
         ? `<div class="metric-limit">
-          RH Ø ${typeof details.average_indoor_humidity === 'number' ? escape(this._format(details.average_indoor_humidity)) + '%' : '–'}
+          RH Ø ${escape(this._format(details.average_indoor_humidity))}%
           · n=${escape(details.humidity_sensor_count ?? 0)}
-          · 🌡️ ${typeof details.estimated_surface_c === 'number' ? escape(this._format(details.estimated_surface_c)) + '°C' : '–'}
+          ${typeof details.estimated_surface_c === 'number'
+            ? '· 🌡️ ' + escape(this._format(details.estimated_surface_c)) + '°C' : ''}
         </div>`
         : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
@@ -397,7 +414,7 @@
           aria-valuemin="0" aria-valuemax="${escape(limit)}" aria-valuenow="${available ? escape(item.value) : '0'}">
           <span class="meter-fill" style="width:${pct.toFixed(2)}%"></span><span class="meter-limit"></span>
         </div><div class="metric-limit">${threshold}</div>`
-          : `<div class="metric-limit">${available ? '' : escape(this._t('missing'))}</div>`}
+          : `<div class="metric-limit">${available ? '' : escape(moldUnavailableReason)}</div>`}
         ${moldInfo}
       </div>`;
     }
@@ -507,14 +524,25 @@
           : status === 'attention' && room.high_count > 0 && !room.ventilating
             ? `<div class="advice advice-blocked">${this._icon('mdi:alert-circle-outline')}${escape(this._t('notSafeToOpen'))}</div>`
             : '';
+      const availableCount = safeArray(room.readings).filter((item) =>
+        item.available === true && typeof item.value === 'number'
+      ).length;
+      const roomStatusLabel = status === 'unknown' && availableCount > 0
+        ? this._t('partial') : this._t(status);
       const subheading = room.high_count > 0 ? this._t('indoorHigh')
+        : status === 'unknown' && room.status_detail === 'mold_not_calibrated'
+          ? this._t('moldNotCalibrated')
+        : status === 'unknown' && room.status_detail === 'mold_inputs_unavailable'
+          ? this._t('moldInputsUnavailable')
+        : status === 'unknown' && availableCount > 0
+          ? this._t('partial')
         : status === 'unknown' ? this._t('missingIndoor')
           : this._t('allOkay');
       return `<article class="room room-${status}">
         <div class="room-heading">
-          <div class="room-icon">${this._icon(status === 'safe' ? 'mdi:home-check-outline' : status === 'attention' ? 'mdi:home-alert-outline' : 'mdi:home-question-outline')}</div>
+          <div class="room-icon">${this._icon(status === 'safe' ? 'mdi:home-check-outline' : status === 'attention' ? 'mdi:home-alert-outline' : 'mdi:home-outline')}</div>
           <div class="room-main"><h3>${escape(room.name)}</h3><span>${escape(subheading)}</span></div>
-          <span class="status-tag">${this._icon(ICON[status])}${escape(this._t(status))}</span>
+          <span class="status-tag">${this._icon(ICON[status])}${escape(roomStatusLabel)}</span>
         </div>
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
           : `<div class="empty-measurements">${this._icon('mdi:gauge-empty')} ${escape(this._t('missingIndoor'))}</div>`}
