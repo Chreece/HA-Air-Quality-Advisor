@@ -65,19 +65,19 @@
           "notify_entities": "Destinos directos de notificación",
           "tts_engine": "Motor TTS directo",
           "media_players": "Reproductores TTS directos",
-          "ai_rewrite_announcements": "Hacer más naturales los anuncios directos con IA",
+          "ai_rewrite_announcements": "Usar IA para los anuncios",
           "ai_conversation_agent": "Agente de conversación"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Aparece solo cuando Announcement Hub está configurado. Si no funciona o rechaza el mensaje, se usan las salidas directas de Home Assistant o una notificación persistente.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Opcional. Reformula solo las notificaciones y el TTS directos cuando no se utiliza Announcement Hub. Si la IA falla, se conserva el mensaje original. El agente puede tener acceso a dispositivos según sus permisos.",
-          "ai_conversation_agent": "El agente predeterminado de Home Assistant está preseleccionado. Elige un agente de conversación; el integrado puede no admitir la reformulación libre."
+          "ai_rewrite_announcements": "Una sola opción de IA para ambos métodos. Con Announcement Hub se envía use_ai: true/false; si no, la IA reformula las notificaciones y el TTS directos. Las recomendaciones sobre ventanas no cambian.",
+          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub."
         }
       },
       "thresholds": {
@@ -205,19 +205,19 @@
           "notify_entities": "Destinos directos de notificación",
           "tts_engine": "Motor TTS directo",
           "media_players": "Reproductores TTS directos",
-          "ai_rewrite_announcements": "Hacer más naturales los anuncios directos con IA",
+          "ai_rewrite_announcements": "Usar IA para los anuncios",
           "ai_conversation_agent": "Agente de conversación"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Aparece solo cuando Announcement Hub está configurado. Si no funciona o rechaza el mensaje, se usan las salidas directas de Home Assistant o una notificación persistente.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Opcional. Reformula solo las notificaciones y el TTS directos cuando no se utiliza Announcement Hub. Si la IA falla, se conserva el mensaje original. El agente puede tener acceso a dispositivos según sus permisos.",
-          "ai_conversation_agent": "El agente predeterminado de Home Assistant está preseleccionado. Elige un agente de conversación; el integrado puede no admitir la reformulación libre."
+          "ai_rewrite_announcements": "Una sola opción de IA para ambos métodos. Con Announcement Hub se envía use_ai: true/false; si no, la IA reformula las notificaciones y el TTS directos. Las recomendaciones sobre ventanas no cambian.",
+          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub."
         }
       },
       "thresholds": {

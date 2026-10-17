@@ -23,10 +23,8 @@ MAX_REPLY_CHARS = 480
 
 
 def ai_effectively_enabled(settings: dict[str, Any]) -> bool:
-    """AI is opt-in and only modifies direct delivery, never Hub messages."""
-    return bool(settings.get("ai_rewrite_announcements", False)) and not bool(
-        settings.get("use_announcement_hub", False)
-    )
+    """A single opt-in setting controls Hub AI and direct message rewriting."""
+    return bool(settings.get("ai_rewrite_announcements", False))
 _CONTROL = re.compile(r"[\x00-\x1f\x7f]")
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)*")
 

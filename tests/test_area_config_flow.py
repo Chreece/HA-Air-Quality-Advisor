@@ -491,3 +491,65 @@ def test_disappearing_contacts_cannot_silently_finish_initial_setup(monkeypatch,
     form = asyncio.run(wizard.async_step_window_sensors())
     assert form["step_id"] == "window_sensors"
     assert form["errors"] == {"base": "no_windows_after_exclusions"}
+
+def test_only_configured_announcement_hub_is_offered_on_settings_page(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    # Merely registering notify.announcement_hub is not proof the integration
+    # was installed or has a config entry.
+    options.hass.services = SimpleNamespace(
+        has_service=lambda d, s: (d, s) in (
+            ("notify", "announcement_hub"),
+            ("persistent_notification", "create"),
+        )
+    )
+    asyncio.run(options.async_step_init())
+    without_entry = asyncio.run(options.async_step_delivery())
+    assert "use_announcement_hub" not in without_entry["data_schema"]
+    assert "ai_rewrite_announcements" in without_entry["data_schema"]
+    assert "ai_conversation_agent" in without_entry["data_schema"]
+
+    options.hass.config_entries = SimpleNamespace(
+        async_entries=lambda domain: [SimpleNamespace(state="not_loaded")]
+        if domain == "announcement_hub" else []
+    )
+    with_entry = asyncio.run(options.async_step_delivery())
+    assert "use_announcement_hub" in with_entry["data_schema"]
+    assert next(iter(with_entry["data_schema"][
+        "ai_conversation_agent"].config.options))["value"] == "default"
+
+
+def test_installed_hub_can_use_ai_even_without_local_conversation_service(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    options.hass.services = SimpleNamespace(
+        has_service=lambda domain, service: (
+            (domain, service) == ("notify", "announcement_hub")
+        )
+    )
+    options.hass.config_entries = SimpleNamespace(
+        async_entries=lambda domain: [SimpleNamespace(state="loaded")]
+        if domain == "announcement_hub" else []
+    )
+    asyncio.run(options.async_step_init())
+    done = asyncio.run(options.async_step_delivery({
+        "use_announcement_hub": True,
+        "ai_rewrite_announcements": True,
+        "ai_conversation_agent": "default",
+    }))
+    assert "completed" in done
+    assert done["completed"]["data"]["use_announcement_hub"] is True
+    assert done["completed"]["data"]["ai_rewrite_announcements"] is True
+
+
+def test_direct_notifications_can_use_built_in_persistent_notification(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    options.hass.services = SimpleNamespace(
+        has_service=lambda domain, service: (domain, service) == (
+            "persistent_notification", "create"
+        )
+    )
+    asyncio.run(options.async_step_init())
+    done = asyncio.run(options.async_step_delivery({
+        "automatic_notifications": True, "notify_entities": []
+    }))
+    assert "completed" in done
+    assert done["completed"]["data"]["automatic_notifications"] is True

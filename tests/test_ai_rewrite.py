@@ -28,11 +28,14 @@ def result(text=VALID, response_type="query_answer", data=None):
                          "speech": {"plain": {"speech": text}}}}
 
 
-def test_opt_in_gate_and_announcement_hub_precedence():
+def test_one_ai_option_controls_both_direct_and_announcement_hub():
     assert not ai.ai_effectively_enabled({})
     assert ai.ai_effectively_enabled({"ai_rewrite_announcements": True})
-    assert not ai.ai_effectively_enabled({
+    assert ai.ai_effectively_enabled({
         "ai_rewrite_announcements": True, "use_announcement_hub": True
+    })
+    assert not ai.ai_effectively_enabled({
+        "ai_rewrite_announcements": False, "use_announcement_hub": True
     })
 
 
@@ -206,8 +209,11 @@ def test_invalid_agent_and_missing_conversation_action_rejected(monkeypatch, ada
     assert invalid["errors"] == {"base": "invalid_ai_agent"}
 
 
-def test_ai_is_not_used_on_announcement_hub_path():
+def test_announcement_hub_owns_ai_when_accepted():
     root = Path(__file__).resolve().parents[1] / "custom_components" / "air_quality_advisor"
     manager = (root / "manager.py").read_text(encoding="utf-8")
-    assert "if ai_effectively_enabled(config) and has_direct_receiver:" in manager
+    assert "make_hub_payload(" in manager
+    assert "use_ai=use_ai" in manager
+    assert "async_submit_hub(self.hass, hub_payload)" in manager
+    assert "if use_ai and (can_notify" in manager
     assert "async_rewrite_announcement" in manager

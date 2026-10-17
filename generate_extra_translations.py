@@ -102,6 +102,17 @@ def generate_extended(root: Path = ROOT) -> None:
                         )
                         for field in labels[step]
                     }
+                    if step == "delivery":
+                        item["data_description"]["ai_rewrite_announcements"] = (
+                            f"AI · {ui[5]} → Announcement Hub use_ai / Home Assistant TTS."
+                        )
+                        item["data_description"]["ai_conversation_agent"] = (
+                            "Home Assistant default · conversation.*"
+                        )
+                        item["data_description"]["use_announcement_hub"] = (
+                            "Available only with configured Announcement Hub. "
+                            "Unavailable Hub → Home Assistant fallback."
+                        )
             # Keep English fallback for complex error messages rather than
             # accidentally changing their precise safety meaning.
         obj["options"]["step"]["init"]["title"] = ui[6]

@@ -193,42 +193,47 @@ area_validation = {
 
 AI_REWRITE_TEXT = {
  "en": {
-  "enable": "Rewrite direct announcements with AI",
+  "enable": "Use AI for announcements",
   "agent": "Conversation agent",
-  "explain": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
-  "help": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting.",
+  "explain": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
+  "help": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected.",
+  "hub_help": "Only shown when Announcement Hub is configured. When stopped, unavailable or rejecting a job, the advisor falls back to Home Assistant notification/TTS and a persistent notification if needed.",
   "missing": "The Home Assistant conversation.process action is unavailable.",
   "invalid": "Select a supported Home Assistant conversation agent."
  },
  "de": {
-  "enable": "Direkte Ansagen mit KI natürlicher formulieren",
+  "enable": "KI für Ansagen verwenden",
   "agent": "Konversationsagent",
-  "explain": "Optional. Formuliert nur direkte TTS- und Benachrichtigungstexte um, wenn Announcement Hub nicht ausgewählt ist. Bei Fehlern bleibt die ursprüngliche Empfehlung erhalten. Der Agent kann je nach Berechtigung Geräte steuern.",
-  "help": "Home Assistant Standard ist vorausgewählt. Wähle einen verfügbaren Konversationsagenten; der integrierte Standardagent kann Texte möglicherweise nicht umformulieren.",
+  "explain": "Eine KI-Option für beide Wege. Mit Announcement Hub wird use_ai: true/false übergeben; andernfalls werden direkte Home-Assistant-Meldungen und TTS umformuliert. Die Fensterentscheidung bleibt unverändert.",
+  "help": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten.",
+  "hub_help": "Nur bei eingerichteten Announcement Hub sichtbar. Falls der Hub nicht läuft oder Nachrichten ablehnt, werden direkte Home-Assistant-Ausgaben bzw. eine dauerhafte Benachrichtigung verwendet.",
   "missing": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
   "invalid": "Wähle einen unterstützten Home-Assistant-Konversationsagenten."
  },
  "el": {
-  "enable": "Πιο φυσικές ανακοινώσεις με AI",
+  "enable": "Χρήση AI στις ανακοινώσεις",
   "agent": "Πράκτορας συνομιλίας",
-  "explain": "Προαιρετικό. Αναδιατυπώνει μόνο τις άμεσες ειδοποιήσεις και το TTS όταν δεν χρησιμοποιείται το Announcement Hub. Αν αποτύχει, χρησιμοποιείται η αρχική σύσταση. Ο πράκτορας ενδέχεται να έχει πρόσβαση σε συσκευές ανάλογα με τα δικαιώματά του.",
-  "help": "Προεπιλέγεται ο προεπιλεγμένος πράκτορας του Home Assistant. Επίλεξε έναν διαθέσιμο πράκτορα συνομιλίας· ο ενσωματωμένος ενδέχεται να μην μπορεί να αναδιατυπώνει ελεύθερο κείμενο.",
+  "explain": "Μία επιλογή AI και για τις δύο μεθόδους. Με Announcement Hub αποστέλλεται use_ai: true/false· διαφορετικά το AI αναδιατυπώνει τις άμεσες ειδοποιήσεις και το TTS. Οι συστάσεις παραθύρων δεν αλλάζουν.",
+  "help": "Προεπιλέγεται το Home Assistant default. Άλλος πράκτορας αποστέλλεται στο Hub ή χρησιμοποιείται απευθείας· η προεπιλογή διατηρεί τον πράκτορα που έχει οριστεί στο Hub.",
+  "hub_help": "Εμφανίζεται μόνο όταν το Announcement Hub έχει ρυθμιστεί. Αν δεν λειτουργεί ή απορρίψει μήνυμα, γίνεται μετάβαση στις εξόδους του Home Assistant ή σε μόνιμη ειδοποίηση.",
   "missing": "Η ενέργεια conversation.process του Home Assistant δεν είναι διαθέσιμη.",
   "invalid": "Επίλεξε έναν υποστηριζόμενο πράκτορα συνομιλίας του Home Assistant."
  },
  "fr": {
-  "enable": "Rendre les annonces directes plus naturelles avec l’IA",
+  "enable": "Utiliser l’IA pour les annonces",
   "agent": "Agent conversationnel",
-  "explain": "Facultatif. Reformule uniquement les notifications et la synthèse vocale directes lorsque Announcement Hub n’est pas utilisé. En cas d’échec, le message original est conservé. L’agent peut avoir accès aux appareils selon ses autorisations.",
-  "help": "L’agent par défaut de Home Assistant est présélectionné. Choisissez un agent conversationnel ; l’agent intégré ne sait pas toujours reformuler du texte libre.",
+  "explain": "Une seule option IA pour les deux circuits. Avec Announcement Hub, use_ai: true/false est transmis; sinon l’IA reformule les notifications et la synthèse vocale directes. La décision concernant les fenêtres ne change pas.",
+  "help": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent.",
+  "hub_help": "Affiché uniquement lorsque Announcement Hub est configuré. Si le Hub est arrêté ou refuse une annonce, retour vers les sorties Home Assistant ou une notification persistante.",
   "missing": "L’action Home Assistant conversation.process est indisponible.",
   "invalid": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
  },
  "es": {
-  "enable": "Hacer más naturales los anuncios directos con IA",
+  "enable": "Usar IA para los anuncios",
   "agent": "Agente de conversación",
-  "explain": "Opcional. Reformula solo las notificaciones y el TTS directos cuando no se utiliza Announcement Hub. Si la IA falla, se conserva el mensaje original. El agente puede tener acceso a dispositivos según sus permisos.",
-  "help": "El agente predeterminado de Home Assistant está preseleccionado. Elige un agente de conversación; el integrado puede no admitir la reformulación libre.",
+  "explain": "Una sola opción de IA para ambos métodos. Con Announcement Hub se envía use_ai: true/false; si no, la IA reformula las notificaciones y el TTS directos. Las recomendaciones sobre ventanas no cambian.",
+  "help": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub.",
+  "hub_help": "Aparece solo cuando Announcement Hub está configurado. Si no funciona o rechaza el mensaje, se usan las salidas directas de Home Assistant o una notificación persistente.",
   "missing": "La acción conversation.process de Home Assistant no está disponible.",
   "invalid": "Selecciona un agente de conversación compatible de Home Assistant."
  }
@@ -263,6 +268,7 @@ for code,v in lang.items():
  steps['delivery']['data']['ai_conversation_agent'] = ai['agent']
  steps['delivery']['data_description']['ai_rewrite_announcements'] = ai['explain']
  steps['delivery']['data_description']['ai_conversation_agent'] = ai['help']
+ steps['delivery']['data_description']['use_announcement_hub'] = ai['hub_help']
  steps['areas']['description'] = area_descriptions[code]
  steps['areas']['data_description']['areas'] = area_hints[code]
  errors = {**v['errors'], **area_validation[code],

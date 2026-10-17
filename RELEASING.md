@@ -18,6 +18,16 @@
 - Run translation generation and check the extra field keys across all 38 languages. Verify real delivery against configured HA conversation agents; do not claim physical TTS/notifier success from unit tests.
 - Warn that conversation agents with exposed HA actions might execute tool calls; text-only usage is requested but cannot be enforced by this integration.
 
+## v0.2.2 shared AI and delivery fallback checks
+
+- Confirm **Use AI for announcements** appears once and retains the saved value and existing conversation agent.
+- With a configured running Announcement Hub, submit `notify.announcement_hub` with explicit `use_ai: true/false`, optional `ai_agent` and targeted room IDs.
+- The Hub option must not appear when only an identically named `notify` action is installed; real `announcement_hub` config entry is required.
+- Exercise stopped/unloaded Hub, rejected response, timeout and accepted job with no eligible outputs. Verify direct `notify.send_message` / `tts.speak` fallback followed by persistent notification if nothing succeeds.
+- Avoid duplicate messages after an accepted queued Hub job; downstream output retries remain owned by Hub.
+- Check the AI checkbox remains optional and off by default and that Hub AI does not cause an additional local AI rewrite.
+- Run all 38 translation generation/schema tests and execute one manual Hub success plus one stopped-Hub fallback in a real HA instance before considering physical delivery validated.
+
 ## Verification gates
 
 The repository's `.github/workflows/validate.yml` runs on manual dispatch or an explicit release-request change, not on every push, pull request or schedule. Checks:

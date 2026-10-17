@@ -23,6 +23,7 @@ from .const import (
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
+from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
 from .discovery import entity_area, reading, rooms, warning, weather
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
@@ -56,7 +57,7 @@ class AirQualityManager:
 
     @property
     def hub_available(self) -> bool:
-        return self.hass.services.has_service("notify", "announcement_hub")
+        return hub_available(self.hass)
 
     def get_language(self, language: str | None) -> str:
         selected = language or self.settings.get(CONF_LANGUAGE, "auto")
@@ -221,88 +222,110 @@ class AirQualityManager:
             if areas is not None and rec.area_id not in areas:
                 continue
             title, message = announcement(rec, localized)
-            # AI can only refine the direct announcement text. The deterministic
-            # recommendation and window targeting are never changed. If Hub is
-            # selected, it remains the authoritative announcement pipeline.
-            use_hub = bool(config.get(CONF_HUB, False)) and self.hub_available
-            has_direct_receiver = (
-                (visual and bool(self._targets_in_room(
-                    config.get(CONF_NOTIFY_TARGETS, []), rec.area_id
-                ))) or
-                (speech and bool(config.get(CONF_TTS_ENGINE)) and bool(
-                    self._targets_in_room(config.get(CONF_MEDIA_PLAYERS, []), rec.area_id)
-                ))
-            )
-            if ai_effectively_enabled(config) and has_direct_receiver:
-                message = await async_rewrite_announcement(
-                    self.hass, rec, message, localized,
-                    str(config.get(CONF_AI_AGENT, DEFAULT_AGENT)),
+            prefer_hub = bool(config.get(CONF_HUB, False))
+            use_ai = ai_effectively_enabled(config)
+            agent = str(config.get(CONF_AI_AGENT, DEFAULT_AGENT) or DEFAULT_AGENT)
+
+            # Hub performs its own optional AI rewrite. An explicit boolean
+            # makes this single setting authoritative over Hub defaults.
+            if prefer_hub:
+                hub_payload = make_hub_payload(
+                    rec, title, message, speech=speech, visual=visual,
+                    language=requested_language, use_ai=use_ai, agent_id=agent,
                 )
-            hub_data = {
-                "title": title,
-                "output": [rec.area_id],
-                "level": "warning" if rec.action == "close" else "info",
-                "occupied_only": False,
-            }
-            if speech:
-                hub_data["text_tts"] = message
-            if visual:
-                hub_data["text_notify"] = message
-            if requested_language != "auto":
-                hub_data["language"] = requested_language
-            if use_hub:
-                try:
-                    await self.hass.services.async_call(
-                        "notify", "announcement_hub", hub_data, blocking=False
-                    )
+                if await async_submit_hub(self.hass, hub_payload):
                     sent += 1
                     continue
-                except Exception as ex:  # Do not break sensor evaluation.
-                    _LOGGER.warning("Announcement Hub rejected air-quality message: %s", ex)
+
+            # No Hub, stopped Hub, failed enqueue, or no routed Hub outputs:
+            # deliver using regular Home Assistant services.
+            notify_targets = (
+                self._targets_in_room(config.get(CONF_NOTIFY_TARGETS, []), rec.area_id)
+                if visual else []
+            )
+            tts_engine = config.get(CONF_TTS_ENGINE) if speech else None
+            tts_players = (
+                self._targets_in_room(config.get(CONF_MEDIA_PLAYERS, []), rec.area_id)
+                if speech and tts_engine else []
+            )
+            can_notify = bool(
+                notify_targets and self.hass.services.has_service("notify", "send_message")
+            )
+            can_speak = bool(
+                tts_engine and tts_players and self.hass.services.has_service("tts", "speak")
+            )
+            # HA persistent notifications are the final visual fallback even
+            # when no custom direct outputs are configured.
+            system_available = bool(
+                self.hass.services.has_service("persistent_notification", "create")
+            )
+            if use_ai and (can_notify or can_speak or (prefer_hub and system_available)):
+                message = await async_rewrite_announcement(
+                    self.hass, rec, message, localized, agent,
+                )
+
+            dispatched = False
+            if can_notify:
+                try:
+                    await self.hass.services.async_call(
+                        "notify", "send_message", {"message": message, "title": title},
+                        target={"entity_id": notify_targets}, blocking=True,
+                    )
+                    sent += 1
+                    dispatched = True
+                except Exception as ex:
+                    _LOGGER.warning("Direct notification failed: %s", ex)
                     errors.append(str(ex))
-                    # Best-effort direct fallback only if explicit outputs exist.
 
-            if visual:
-                targets = self._targets_in_room(config.get(CONF_NOTIFY_TARGETS, []), rec.area_id)
-                if targets and self.hass.services.has_service("notify", "send_message"):
-                    try:
-                        await self.hass.services.async_call(
-                            "notify", "send_message", {"message": message, "title": title},
-                            target={"entity_id": targets}, blocking=False,
+            if can_speak:
+                data: dict[str, Any] = {
+                    "media_player_entity_id": tts_players, "message": message
+                }
+                if requested_language != "auto":
+                    state = self.hass.states.get(tts_engine)
+                    supported = (
+                        state.attributes.get("supported_languages", []) if state else []
+                    )
+                    if isinstance(supported, list) and supported:
+                        canonical = lambda value: str(value).replace("_", "-").casefold()
+                        base = canonical(localized).split("-", 1)[0]
+                        exact = next(
+                            (s for s in supported if canonical(s) == canonical(requested_language)),
+                            None,
                         )
-                        sent += 1
-                    except Exception as ex:
-                        _LOGGER.warning("Direct notification failed: %s", ex)
-                        errors.append(str(ex))
-
-            if speech:
-                engine = config.get(CONF_TTS_ENGINE)
-                players = self._targets_in_room(config.get(CONF_MEDIA_PLAYERS, []), rec.area_id)
-                if engine and players and self.hass.services.has_service("tts", "speak"):
-                    data: dict[str, Any] = {"media_player_entity_id": players, "message": message}
-                    if requested_language != "auto":
-                        state = self.hass.states.get(engine)
-                        supported = (state.attributes.get("supported_languages", []) if state else [])
-                        if isinstance(supported, list) and supported:
-                            # Compare canonical BCP47 tags and fall back to the
-                            # primary language when a provider advertises only
-                            # country-specific variants (e.g. pt_BR / pt-PT).
-                            canonical = lambda value: str(value).replace("_", "-").casefold()
-                            base = canonical(localized).split("-", 1)[0]
-                            exact = next((s for s in supported if canonical(s) == canonical(requested_language)), None)
-                            compatible = next((s for s in supported if canonical(s).split("-", 1)[0] == base), None)
-                            if exact or compatible:
-                                data["language"] = exact or compatible
-                            else:
-                                _LOGGER.warning("TTS engine %s does not advertise language %s", engine, requested_language)
+                        compatible = next(
+                            (s for s in supported if canonical(s).split("-", 1)[0] == base),
+                            None,
+                        )
+                        if exact or compatible:
+                            data["language"] = exact or compatible
                         else:
-                            data["language"] = requested_language
-                    try:
-                        await self.hass.services.async_call(
-                            "tts", "speak", data, target={"entity_id": engine}, blocking=False
-                        )
-                        sent += 1
-                    except Exception as ex:
-                        _LOGGER.warning("Direct TTS failed: %s", ex)
-                        errors.append(str(ex))
+                            _LOGGER.warning(
+                                "TTS engine %s does not advertise language %s",
+                                tts_engine, requested_language,
+                            )
+                    else:
+                        data["language"] = requested_language
+                try:
+                    await self.hass.services.async_call(
+                        "tts", "speak", data,
+                        target={"entity_id": tts_engine}, blocking=True,
+                    )
+                    sent += 1
+                    dispatched = True
+                except Exception as ex:
+                    _LOGGER.warning("Direct TTS failed: %s", ex)
+                    errors.append(str(ex))
+
+            if not dispatched and (prefer_hub or visual):
+                # Update one notification per room rather than stacking alerts.
+                if await async_system_notification(
+                    self.hass, title, message, rec.area_id
+                ):
+                    sent += 1
+                    dispatched = True
+            if not dispatched:
+                errors.append(
+                    f"No available Home Assistant fallback output for {rec.area_name}"
+                )
         return {"submitted": sent, "errors": errors}

@@ -65,19 +65,19 @@
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "tts_engine": "Direkte TTS-Engine",
           "media_players": "Direkte TTS-Mediaplayer",
-          "ai_rewrite_announcements": "Direkte Ansagen mit KI natürlicher formulieren",
+          "ai_rewrite_announcements": "KI für Ansagen verwenden",
           "ai_conversation_agent": "Konversationsagent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Nur bei eingerichteten Announcement Hub sichtbar. Falls der Hub nicht läuft oder Nachrichten ablehnt, werden direkte Home-Assistant-Ausgaben bzw. eine dauerhafte Benachrichtigung verwendet.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Optional. Formuliert nur direkte TTS- und Benachrichtigungstexte um, wenn Announcement Hub nicht ausgewählt ist. Bei Fehlern bleibt die ursprüngliche Empfehlung erhalten. Der Agent kann je nach Berechtigung Geräte steuern.",
-          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Wähle einen verfügbaren Konversationsagenten; der integrierte Standardagent kann Texte möglicherweise nicht umformulieren."
+          "ai_rewrite_announcements": "Eine KI-Option für beide Wege. Mit Announcement Hub wird use_ai: true/false übergeben; andernfalls werden direkte Home-Assistant-Meldungen und TTS umformuliert. Die Fensterentscheidung bleibt unverändert.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten."
         }
       },
       "thresholds": {
@@ -205,19 +205,19 @@
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "tts_engine": "Direkte TTS-Engine",
           "media_players": "Direkte TTS-Mediaplayer",
-          "ai_rewrite_announcements": "Direkte Ansagen mit KI natürlicher formulieren",
+          "ai_rewrite_announcements": "KI für Ansagen verwenden",
           "ai_conversation_agent": "Konversationsagent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Nur bei eingerichteten Announcement Hub sichtbar. Falls der Hub nicht läuft oder Nachrichten ablehnt, werden direkte Home-Assistant-Ausgaben bzw. eine dauerhafte Benachrichtigung verwendet.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Optional. Formuliert nur direkte TTS- und Benachrichtigungstexte um, wenn Announcement Hub nicht ausgewählt ist. Bei Fehlern bleibt die ursprüngliche Empfehlung erhalten. Der Agent kann je nach Berechtigung Geräte steuern.",
-          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Wähle einen verfügbaren Konversationsagenten; der integrierte Standardagent kann Texte möglicherweise nicht umformulieren."
+          "ai_rewrite_announcements": "Eine KI-Option für beide Wege. Mit Announcement Hub wird use_ai: true/false übergeben; andernfalls werden direkte Home-Assistant-Meldungen und TTS umformuliert. Die Fensterentscheidung bleibt unverändert.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten."
         }
       },
       "thresholds": {

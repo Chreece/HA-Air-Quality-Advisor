@@ -65,19 +65,19 @@
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
           "media_players": "Direct TTS media players",
-          "ai_rewrite_announcements": "Rewrite direct announcements with AI",
+          "ai_rewrite_announcements": "Use AI for announcements",
           "ai_conversation_agent": "Conversation agent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Only shown when Announcement Hub is configured. When stopped, unavailable or rejecting a job, the advisor falls back to Home Assistant notification/TTS and a persistent notification if needed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
-          "ai_conversation_agent": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting."
+          "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
         }
       },
       "thresholds": {
@@ -205,19 +205,19 @@
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
           "media_players": "Direct TTS media players",
-          "ai_rewrite_announcements": "Rewrite direct announcements with AI",
+          "ai_rewrite_announcements": "Use AI for announcements",
           "ai_conversation_agent": "Conversation agent"
         },
         "data_description": {
           "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
           "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
           "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
-          "use_announcement_hub": "Uses the existing room-aware routing when Announcement Hub is installed.",
+          "use_announcement_hub": "Only shown when Announcement Hub is configured. When stopped, unavailable or rejecting a job, the advisor falls back to Home Assistant notification/TTS and a persistent notification if needed.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
-          "ai_rewrite_announcements": "Optional. Rephrases direct TTS and notifications only when Announcement Hub is not selected. The original safety advice is used if AI fails. The selected agent may access devices depending on its HA permissions.",
-          "ai_conversation_agent": "Home Assistant default is preselected. Select any available conversation agent; the built-in default may not support free-text rewriting."
+          "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
         }
       },
       "thresholds": {

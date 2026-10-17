@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.2 — Shared AI control, smarter Hub availability and native fallback
+
+- Use **one AI checkbox** for both delivery paths, preserving the existing `ai_rewrite_announcements` and `ai_conversation_agent` settings without migration.
+- When Announcement Hub is selected, pass explicit `use_ai: true/false` and a custom `ai_agent` when configured; skip local rewriting for accepted Hub jobs.
+- Show the **Use Announcement Hub** setting only when Home Assistant has a real Announcement Hub config entry; distinguish installed from currently running.
+- Await Hub's queue acknowledgement. Fall back on absent/stopped Hub, rejected calls, timeouts or no eligible Hub outputs.
+- Prefer configured direct Home Assistant notifications/TTS, with `persistent_notification.create` as the final visual fallback; don't silently lose announcements if no outputs are configured.
+- On fallback, use the same AI checkbox for direct conversation rewriting when an agent is available. Preserve deterministic window decisions, room targeting and existing alert timing.
+- Update all 38 translation files and add tests for Hub detection, AI routing and system fallback. No changes to entity IDs, thresholds or dashboard.
+
 ## 0.2.1 — Optional AI-rewritten direct announcements
 
 - Add an opt-in **Rewrite direct announcements with AI** checkbox and a Home Assistant conversation-agent dropdown, with **Home Assistant default** preselected.

@@ -15,6 +15,7 @@ from homeassistant.helpers import selector
 from .languages import LANGUAGE_OPTIONS
 
 from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
+from .hub_delivery import hub_installed
 from .const import (
     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
@@ -267,7 +268,9 @@ class _FlowMixin:
         return self.async_show_form(step_id="weather", data_schema=probatio.Schema(schema), errors=errors)
 
     async def async_step_delivery(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        hub_present = self.hass.services.has_service("notify", "announcement_hub")
+        # A notify action can be registered without a loaded/configured Hub.
+        # Only an actual Announcement Hub config entry enables this choice.
+        hub_present = hub_installed(self.hass)
         ai_service_available = self.hass.services.has_service("conversation", "process")
         ai_agents = conversation_agent_choices(self.hass, self._values.get(CONF_AI_AGENT))
         valid_ai_agents = {choice["value"] for choice in ai_agents}
@@ -279,7 +282,9 @@ class _FlowMixin:
             selected = dict(self._values)
             selected.update(user_input)
             hub = hub_present and bool(selected.get(CONF_HUB, False))
-            if selected.get(CONF_AUTO_NOTIFY) and not hub and not selected.get(CONF_NOTIFY_TARGETS):
+            if (selected.get(CONF_AUTO_NOTIFY) and not hub
+                and not selected.get(CONF_NOTIFY_TARGETS)
+                and not self.hass.services.has_service("persistent_notification", "create")):
                 errors = {"base": "missing_notify"}
             elif selected.get(CONF_AUTO_TTS) and not hub and not (
                 selected.get(CONF_TTS_ENGINE) and selected.get(CONF_MEDIA_PLAYERS)
@@ -318,9 +323,9 @@ class _FlowMixin:
             _marker(CONF_AI_REWRITE, self._values.get(CONF_AI_REWRITE, False)):
                 selector.BooleanSelector(),
         }
-        if hub_present or self._values.get(CONF_HUB):
-            fields[_marker(CONF_HUB, self._values.get(CONF_HUB, hub_present))] = selector.BooleanSelector()
-        if ai_service_available or self._values.get(CONF_AI_REWRITE, False):
+        if hub_present:
+            fields[_marker(CONF_HUB, self._values.get(CONF_HUB, True))] = selector.BooleanSelector()
+        if ai_service_available or hub_present or self._values.get(CONF_AI_REWRITE, False):
             fields[_marker(CONF_AI_AGENT, self._values.get(CONF_AI_AGENT, DEFAULT_AGENT), required=True)] = (
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=ai_agents, multiple=False, custom_value=False,
