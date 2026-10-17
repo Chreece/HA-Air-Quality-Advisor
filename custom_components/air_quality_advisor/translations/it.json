@@ -6,10 +6,12 @@
         "title": "Stanze",
         "description": "1 · 🪟 Stanze. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Stanze"
+          "areas": "Stanze",
+          "use_mold_indicator": "Indicatore muffa · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Seleziona: Stanze · 🪟 binary_sensor (device_class: window)."
+          "areas": "Seleziona: Stanze · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicatore muffa · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Escludi sensori dell'aria interna",
-        "description": "Stanze: {area_name} ({position}/{total}). Escludi sensori dell'aria interna. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Stanze · Indicatore muffa",
+        "description": "Stanze: {area_name} ({position}/{total}). 🌡️ 🧊 Indicatore muffa · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Escludi sensori dell'aria interna"
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna",
+          "mold_indoor_temperature": "Stanze · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicatore muffa · 🧊 °C",
+          "mold_recalibrate": "Indicatore muffa · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Seleziona: Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Seleziona: Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Stanze: 🌡️ °C/°F · Indicatore muffa.",
+          "mold_critical_temperature_c": "🧊 Indicatore muffa · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicatore muffa · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Esterno · °C (≤)",
           "max_outdoor_humidity": "Esterno · RH (%) (≤)",
           "max_wind_kmh": "Meteo e allerte · km/h (≤)",
-          "max_age_minutes": "⏱ · Apri (min, ≤)"
+          "max_age_minutes": "⏱ · Apri (min, ≤)",
+          "indoor_mold": "Indicatore muffa · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Controlla: Stanze · Misurazioni (0).",
       "invalid_repeat_minutes": "Selezione non valida: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Non disponibile: conversation.process.",
-      "invalid_ai_agent": "Selezione non valida: conversation.*."
+      "invalid_ai_agent": "Selezione non valida: conversation.*.",
+      "invalid_mold_temperature_sensor": "Stanze · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Stanze · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicatore muffa · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicatore muffa · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicatore muffa · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — già configurato."
@@ -137,8 +151,8 @@
         "description": "Seleziona: Stanze / Meteo e allerte / Annunci (facoltativi) / Soglie avanzate",
         "menu_options": {
           "areas": "Stanze",
+          "indoor_sensors": "Stanze · Indicatore muffa",
           "window_sensors": "Escludi sensori finestra",
-          "indoor_sensors": "Escludi sensori dell'aria interna",
           "outdoor": "Qualità dell'aria esterna",
           "weather": "Meteo e allerte",
           "delivery": "Annunci (facoltativi)",
@@ -159,20 +173,28 @@
         "title": "Stanze",
         "description": "1 · 🪟 Stanze. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Stanze"
+          "areas": "Stanze",
+          "use_mold_indicator": "Indicatore muffa · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Seleziona: Stanze · 🪟 binary_sensor (device_class: window)."
+          "areas": "Seleziona: Stanze · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicatore muffa · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Escludi sensori dell'aria interna",
-        "description": "Stanze: {area_name} ({position}/{total}). Escludi sensori dell'aria interna. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Stanze · Indicatore muffa",
+        "description": "Stanze: {area_name} ({position}/{total}). 🌡️ 🧊 Indicatore muffa · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Escludi sensori dell'aria interna"
+          "excluded_indoor_entities": "Escludi sensori dell'aria interna",
+          "mold_indoor_temperature": "Stanze · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicatore muffa · 🧊 °C",
+          "mold_recalibrate": "Indicatore muffa · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Seleziona: Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Seleziona: Escludi sensori dell'aria interna · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Stanze: 🌡️ °C/°F · Indicatore muffa.",
+          "mold_critical_temperature_c": "🧊 Indicatore muffa · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicatore muffa · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Esterno · °C (≤)",
           "max_outdoor_humidity": "Esterno · RH (%) (≤)",
           "max_wind_kmh": "Meteo e allerte · km/h (≤)",
-          "max_age_minutes": "⏱ · Apri (min, ≤)"
+          "max_age_minutes": "⏱ · Apri (min, ≤)",
+          "indoor_mold": "Indicatore muffa · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Controlla: Stanze · Misurazioni (0).",
       "invalid_repeat_minutes": "Selezione non valida: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Non disponibile: conversation.process.",
-      "invalid_ai_agent": "Selezione non valida: conversation.*."
+      "invalid_ai_agent": "Selezione non valida: conversation.*.",
+      "invalid_mold_temperature_sensor": "Stanze · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Stanze · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicatore muffa · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicatore muffa · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicatore muffa · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

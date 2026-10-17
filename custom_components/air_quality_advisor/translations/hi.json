@@ -6,10 +6,12 @@
         "title": "कमरे",
         "description": "1 · 🪟 कमरे. binary_sensor (device_class: window).",
         "data": {
-          "areas": "कमरे"
+          "areas": "कमरे",
+          "use_mold_indicator": "फफूंद संकेतक · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window)."
+          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 फफूंद संकेतक · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "इनडोर वायु सेंसर बाहर रखें",
-        "description": "कमरे: {area_name} ({position}/{total}). इनडोर वायु सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "कमरे · फफूंद संकेतक",
+        "description": "कमरे: {area_name} ({position}/{total}). 🌡️ 🧊 फफूंद संकेतक · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें",
+          "mold_indoor_temperature": "कमरे · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "फफूंद संकेतक · 🧊 °C",
+          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "कमरे: 🌡️ °C/°F · फफूंद संकेतक.",
+          "mold_critical_temperature_c": "🧊 फफूंद संकेतक · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ फफूंद संकेतक · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "बाहर · °C (≤)",
           "max_outdoor_humidity": "बाहर · RH (%) (≤)",
           "max_wind_kmh": "मौसम और चेतावनियाँ · km/h (≤)",
-          "max_age_minutes": "⏱ · खोलें (min, ≤)"
+          "max_age_minutes": "⏱ · खोलें (min, ≤)",
+          "indoor_mold": "फफूंद संकेतक · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "जाँचें: कमरे · माप (0).",
       "invalid_repeat_minutes": "अमान्य चयन: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "उपलब्ध नहीं: conversation.process.",
-      "invalid_ai_agent": "अमान्य चयन: conversation.*."
+      "invalid_ai_agent": "अमान्य चयन: conversation.*.",
+      "invalid_mold_temperature_sensor": "कमरे · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "कमरे · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "फफूंद संकेतक · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "फफूंद संकेतक · 🧊 °C ⚠",
+      "invalid_mold_calibration": "फफूंद संकेतक · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — पहले से कॉन्फ़िगर है."
@@ -137,8 +151,8 @@
         "description": "चुनें: कमरे / मौसम और चेतावनियाँ / घोषणाएँ (वैकल्पिक) / उन्नत सीमाएँ",
         "menu_options": {
           "areas": "कमरे",
+          "indoor_sensors": "कमरे · फफूंद संकेतक",
           "window_sensors": "खिड़की सेंसर बाहर रखें",
-          "indoor_sensors": "इनडोर वायु सेंसर बाहर रखें",
           "outdoor": "बाहरी वायु गुणवत्ता",
           "weather": "मौसम और चेतावनियाँ",
           "delivery": "घोषणाएँ (वैकल्पिक)",
@@ -159,20 +173,28 @@
         "title": "कमरे",
         "description": "1 · 🪟 कमरे. binary_sensor (device_class: window).",
         "data": {
-          "areas": "कमरे"
+          "areas": "कमरे",
+          "use_mold_indicator": "फफूंद संकेतक · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window)."
+          "areas": "चुनें: कमरे · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 फफूंद संकेतक · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "इनडोर वायु सेंसर बाहर रखें",
-        "description": "कमरे: {area_name} ({position}/{total}). इनडोर वायु सेंसर बाहर रखें. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "कमरे · फफूंद संकेतक",
+        "description": "कमरे: {area_name} ({position}/{total}). 🌡️ 🧊 फफूंद संकेतक · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें"
+          "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें",
+          "mold_indoor_temperature": "कमरे · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "फफूंद संकेतक · 🧊 °C",
+          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "कमरे: 🌡️ °C/°F · फफूंद संकेतक.",
+          "mold_critical_temperature_c": "🧊 फफूंद संकेतक · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ फफूंद संकेतक · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "बाहर · °C (≤)",
           "max_outdoor_humidity": "बाहर · RH (%) (≤)",
           "max_wind_kmh": "मौसम और चेतावनियाँ · km/h (≤)",
-          "max_age_minutes": "⏱ · खोलें (min, ≤)"
+          "max_age_minutes": "⏱ · खोलें (min, ≤)",
+          "indoor_mold": "फफूंद संकेतक · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "जाँचें: कमरे · माप (0).",
       "invalid_repeat_minutes": "अमान्य चयन: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "उपलब्ध नहीं: conversation.process.",
-      "invalid_ai_agent": "अमान्य चयन: conversation.*."
+      "invalid_ai_agent": "अमान्य चयन: conversation.*.",
+      "invalid_mold_temperature_sensor": "कमरे · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "कमरे · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "फफूंद संकेतक · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "फफूंद संकेतक · 🧊 °C ⚠",
+      "invalid_mold_calibration": "फफूंद संकेतक · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

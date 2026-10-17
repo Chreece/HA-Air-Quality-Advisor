@@ -6,10 +6,12 @@
         "title": "방",
         "description": "1 · 🪟 방. binary_sensor (device_class: window).",
         "data": {
-          "areas": "방"
+          "areas": "방",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "선택하세요: 방 · 🪟 binary_sensor (device_class: window)."
+          "areas": "선택하세요: 방 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 곰팡이 지표 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "실내 공기 센서 제외",
-        "description": "방: {area_name} ({position}/{total}). 실내 공기 센서 제외. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "방 · 곰팡이 지표",
+        "description": "방: {area_name} ({position}/{total}). 🌡️ 🧊 곰팡이 지표 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "실내 공기 센서 제외"
+          "excluded_indoor_entities": "실내 공기 센서 제외",
+          "mold_indoor_temperature": "방 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "곰팡이 지표 · 🧊 °C",
+          "mold_recalibrate": "곰팡이 지표 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "방: 🌡️ °C/°F · 곰팡이 지표.",
+          "mold_critical_temperature_c": "🧊 곰팡이 지표 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ 곰팡이 지표 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "실외 · °C (≤)",
           "max_outdoor_humidity": "실외 · RH (%) (≤)",
           "max_wind_kmh": "날씨 및 경보 · km/h (≤)",
-          "max_age_minutes": "⏱ · 열기 (min, ≤)"
+          "max_age_minutes": "⏱ · 열기 (min, ≤)",
+          "indoor_mold": "곰팡이 지표 · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "확인하세요: 방 · 측정값 (0).",
       "invalid_repeat_minutes": "잘못된 선택: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "사용할 수 없음: conversation.process.",
-      "invalid_ai_agent": "잘못된 선택: conversation.*."
+      "invalid_ai_agent": "잘못된 선택: conversation.*.",
+      "invalid_mold_temperature_sensor": "방 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "방 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "곰팡이 지표 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "곰팡이 지표 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — 이미 설정됨."
@@ -137,8 +151,8 @@
         "description": "선택하세요: 방 / 날씨 및 경보 / 알림(선택 사항) / 고급 임계값",
         "menu_options": {
           "areas": "방",
+          "indoor_sensors": "방 · 곰팡이 지표",
           "window_sensors": "창문 센서 제외",
-          "indoor_sensors": "실내 공기 센서 제외",
           "outdoor": "실외 공기질",
           "weather": "날씨 및 경보",
           "delivery": "알림(선택 사항)",
@@ -159,20 +173,28 @@
         "title": "방",
         "description": "1 · 🪟 방. binary_sensor (device_class: window).",
         "data": {
-          "areas": "방"
+          "areas": "방",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "선택하세요: 방 · 🪟 binary_sensor (device_class: window)."
+          "areas": "선택하세요: 방 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 곰팡이 지표 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "실내 공기 센서 제외",
-        "description": "방: {area_name} ({position}/{total}). 실내 공기 센서 제외. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "방 · 곰팡이 지표",
+        "description": "방: {area_name} ({position}/{total}). 🌡️ 🧊 곰팡이 지표 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "실내 공기 센서 제외"
+          "excluded_indoor_entities": "실내 공기 센서 제외",
+          "mold_indoor_temperature": "방 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "곰팡이 지표 · 🧊 °C",
+          "mold_recalibrate": "곰팡이 지표 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "방: 🌡️ °C/°F · 곰팡이 지표.",
+          "mold_critical_temperature_c": "🧊 곰팡이 지표 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ 곰팡이 지표 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "실외 · °C (≤)",
           "max_outdoor_humidity": "실외 · RH (%) (≤)",
           "max_wind_kmh": "날씨 및 경보 · km/h (≤)",
-          "max_age_minutes": "⏱ · 열기 (min, ≤)"
+          "max_age_minutes": "⏱ · 열기 (min, ≤)",
+          "indoor_mold": "곰팡이 지표 · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "확인하세요: 방 · 측정값 (0).",
       "invalid_repeat_minutes": "잘못된 선택: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "사용할 수 없음: conversation.process.",
-      "invalid_ai_agent": "잘못된 선택: conversation.*."
+      "invalid_ai_agent": "잘못된 선택: conversation.*.",
+      "invalid_mold_temperature_sensor": "방 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "방 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "곰팡이 지표 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "곰팡이 지표 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

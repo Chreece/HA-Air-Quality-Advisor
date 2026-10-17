@@ -6,10 +6,12 @@
         "title": "Kamers",
         "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Kamers"
+          "areas": "Kamers",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window)."
+          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Binnenluchtsensoren uitsluiten",
-        "description": "Kamers: {area_name} ({position}/{total}). Binnenluchtsensoren uitsluiten. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Kamers · Schimmelindicator",
+        "description": "Kamers: {area_name} ({position}/{total}). 🌡️ 🧊 Schimmelindicator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten"
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten",
+          "mold_indoor_temperature": "Kamers · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Schimmelindicator · 🧊 °C",
+          "mold_recalibrate": "Schimmelindicator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Kamers: 🌡️ °C/°F · Schimmelindicator.",
+          "mold_critical_temperature_c": "🧊 Schimmelindicator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Schimmelindicator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Buiten · °C (≤)",
           "max_outdoor_humidity": "Buiten · RH (%) (≤)",
           "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
-          "max_age_minutes": "⏱ · Open (min, ≤)"
+          "max_age_minutes": "⏱ · Open (min, ≤)",
+          "indoor_mold": "Schimmelindicator · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Controleer: Kamers · Metingen (0).",
       "invalid_repeat_minutes": "Ongeldige selectie: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Niet beschikbaar: conversation.process.",
-      "invalid_ai_agent": "Ongeldige selectie: conversation.*."
+      "invalid_ai_agent": "Ongeldige selectie: conversation.*.",
+      "invalid_mold_temperature_sensor": "Kamers · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Kamers · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Schimmelindicator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Schimmelindicator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — al ingesteld."
@@ -137,8 +151,8 @@
         "description": "Kies: Kamers / Weer en waarschuwingen / Meldingen (optioneel) / Geavanceerde grenswaarden",
         "menu_options": {
           "areas": "Kamers",
+          "indoor_sensors": "Kamers · Schimmelindicator",
           "window_sensors": "Raamsensoren uitsluiten",
-          "indoor_sensors": "Binnenluchtsensoren uitsluiten",
           "outdoor": "Buitenluchtkwaliteit",
           "weather": "Weer en waarschuwingen",
           "delivery": "Meldingen (optioneel)",
@@ -159,20 +173,28 @@
         "title": "Kamers",
         "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Kamers"
+          "areas": "Kamers",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window)."
+          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Binnenluchtsensoren uitsluiten",
-        "description": "Kamers: {area_name} ({position}/{total}). Binnenluchtsensoren uitsluiten. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Kamers · Schimmelindicator",
+        "description": "Kamers: {area_name} ({position}/{total}). 🌡️ 🧊 Schimmelindicator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten"
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten",
+          "mold_indoor_temperature": "Kamers · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Schimmelindicator · 🧊 °C",
+          "mold_recalibrate": "Schimmelindicator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Kamers: 🌡️ °C/°F · Schimmelindicator.",
+          "mold_critical_temperature_c": "🧊 Schimmelindicator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Schimmelindicator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Buiten · °C (≤)",
           "max_outdoor_humidity": "Buiten · RH (%) (≤)",
           "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
-          "max_age_minutes": "⏱ · Open (min, ≤)"
+          "max_age_minutes": "⏱ · Open (min, ≤)",
+          "indoor_mold": "Schimmelindicator · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Controleer: Kamers · Metingen (0).",
       "invalid_repeat_minutes": "Ongeldige selectie: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Niet beschikbaar: conversation.process.",
-      "invalid_ai_agent": "Ongeldige selectie: conversation.*."
+      "invalid_ai_agent": "Ongeldige selectie: conversation.*.",
+      "invalid_mold_temperature_sensor": "Kamers · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Kamers · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Schimmelindicator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Schimmelindicator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

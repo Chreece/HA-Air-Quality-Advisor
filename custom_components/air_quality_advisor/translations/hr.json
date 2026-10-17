@@ -6,10 +6,12 @@
         "title": "Prostorije",
         "description": "1 · 🪟 Prostorije. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Prostorije"
+          "areas": "Prostorije",
+          "use_mold_indicator": "Pokazatelj plijesni · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Odaberite: Prostorije · 🪟 binary_sensor (device_class: window)."
+          "areas": "Odaberite: Prostorije · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Pokazatelj plijesni · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Isključi senzore zraka u zatvorenom",
-        "description": "Prostorije: {area_name} ({position}/{total}). Isključi senzore zraka u zatvorenom. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Prostorije · Pokazatelj plijesni",
+        "description": "Prostorije: {area_name} ({position}/{total}). 🌡️ 🧊 Pokazatelj plijesni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom"
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom",
+          "mold_indoor_temperature": "Prostorije · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Pokazatelj plijesni · 🧊 °C",
+          "mold_recalibrate": "Pokazatelj plijesni · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Odaberite: Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Odaberite: Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Prostorije: 🌡️ °C/°F · Pokazatelj plijesni.",
+          "mold_critical_temperature_c": "🧊 Pokazatelj plijesni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Pokazatelj plijesni · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Vani · °C (≤)",
           "max_outdoor_humidity": "Vani · RH (%) (≤)",
           "max_wind_kmh": "Vrijeme i upozorenja · km/h (≤)",
-          "max_age_minutes": "⏱ · Otvorite (min, ≤)"
+          "max_age_minutes": "⏱ · Otvorite (min, ≤)",
+          "indoor_mold": "Pokazatelj plijesni · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Provjerite: Prostorije · Mjerenja (0).",
       "invalid_repeat_minutes": "Nevažeći odabir: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nedostupno: conversation.process.",
-      "invalid_ai_agent": "Nevažeći odabir: conversation.*."
+      "invalid_ai_agent": "Nevažeći odabir: conversation.*.",
+      "invalid_mold_temperature_sensor": "Prostorije · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Prostorije · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Pokazatelj plijesni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Pokazatelj plijesni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Pokazatelj plijesni · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — već postavljeno."
@@ -137,8 +151,8 @@
         "description": "Odaberite: Prostorije / Vrijeme i upozorenja / Obavijesti (neobavezno) / Napredni pragovi",
         "menu_options": {
           "areas": "Prostorije",
+          "indoor_sensors": "Prostorije · Pokazatelj plijesni",
           "window_sensors": "Isključi senzore prozora",
-          "indoor_sensors": "Isključi senzore zraka u zatvorenom",
           "outdoor": "Kvaliteta vanjskog zraka",
           "weather": "Vrijeme i upozorenja",
           "delivery": "Obavijesti (neobavezno)",
@@ -159,20 +173,28 @@
         "title": "Prostorije",
         "description": "1 · 🪟 Prostorije. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Prostorije"
+          "areas": "Prostorije",
+          "use_mold_indicator": "Pokazatelj plijesni · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Odaberite: Prostorije · 🪟 binary_sensor (device_class: window)."
+          "areas": "Odaberite: Prostorije · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Pokazatelj plijesni · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Isključi senzore zraka u zatvorenom",
-        "description": "Prostorije: {area_name} ({position}/{total}). Isključi senzore zraka u zatvorenom. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Prostorije · Pokazatelj plijesni",
+        "description": "Prostorije: {area_name} ({position}/{total}). 🌡️ 🧊 Pokazatelj plijesni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom"
+          "excluded_indoor_entities": "Isključi senzore zraka u zatvorenom",
+          "mold_indoor_temperature": "Prostorije · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Pokazatelj plijesni · 🧊 °C",
+          "mold_recalibrate": "Pokazatelj plijesni · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Odaberite: Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Odaberite: Isključi senzore zraka u zatvorenom · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Prostorije: 🌡️ °C/°F · Pokazatelj plijesni.",
+          "mold_critical_temperature_c": "🧊 Pokazatelj plijesni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Pokazatelj plijesni · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Vani · °C (≤)",
           "max_outdoor_humidity": "Vani · RH (%) (≤)",
           "max_wind_kmh": "Vrijeme i upozorenja · km/h (≤)",
-          "max_age_minutes": "⏱ · Otvorite (min, ≤)"
+          "max_age_minutes": "⏱ · Otvorite (min, ≤)",
+          "indoor_mold": "Pokazatelj plijesni · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Provjerite: Prostorije · Mjerenja (0).",
       "invalid_repeat_minutes": "Nevažeći odabir: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nedostupno: conversation.process.",
-      "invalid_ai_agent": "Nevažeći odabir: conversation.*."
+      "invalid_ai_agent": "Nevažeći odabir: conversation.*.",
+      "invalid_mold_temperature_sensor": "Prostorije · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Prostorije · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Pokazatelj plijesni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Pokazatelj plijesni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Pokazatelj plijesni · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

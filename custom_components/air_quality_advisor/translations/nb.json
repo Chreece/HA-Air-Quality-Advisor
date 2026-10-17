@@ -6,10 +6,12 @@
         "title": "Rom",
         "description": "1 · 🪟 Rom. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rom"
+          "areas": "Rom",
+          "use_mold_indicator": "Muggindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Velg: Rom · 🪟 binary_sensor (device_class: window)."
+          "areas": "Velg: Rom · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Muggindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Ekskluder inneklimasensorer",
-        "description": "Rom: {area_name} ({position}/{total}). Ekskluder inneklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Rom · Muggindikator",
+        "description": "Rom: {area_name} ({position}/{total}). 🌡️ 🧊 Muggindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Ekskluder inneklimasensorer"
+          "excluded_indoor_entities": "Ekskluder inneklimasensorer",
+          "mold_indoor_temperature": "Rom · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Muggindikator · 🧊 °C",
+          "mold_recalibrate": "Muggindikator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Velg: Ekskluder inneklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Velg: Ekskluder inneklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Rom: 🌡️ °C/°F · Muggindikator.",
+          "mold_critical_temperature_c": "🧊 Muggindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Muggindikator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Ute · °C (≤)",
           "max_outdoor_humidity": "Ute · RH (%) (≤)",
           "max_wind_kmh": "Vær og varsler · km/h (≤)",
-          "max_age_minutes": "⏱ · Åpne (min, ≤)"
+          "max_age_minutes": "⏱ · Åpne (min, ≤)",
+          "indoor_mold": "Muggindikator · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Kontroller: Rom · Målinger (0).",
       "invalid_repeat_minutes": "Ugyldig valg: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ikke tilgjengelig: conversation.process.",
-      "invalid_ai_agent": "Ugyldig valg: conversation.*."
+      "invalid_ai_agent": "Ugyldig valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rom · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rom · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Muggindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Muggindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Muggindikator · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — allerede konfigurert."
@@ -137,8 +151,8 @@
         "description": "Velg: Rom / Vær og varsler / Kunngjøringer (valgfritt) / Avanserte grenseverdier",
         "menu_options": {
           "areas": "Rom",
+          "indoor_sensors": "Rom · Muggindikator",
           "window_sensors": "Ekskluder vindussensorer",
-          "indoor_sensors": "Ekskluder inneklimasensorer",
           "outdoor": "Luftkvalitet ute",
           "weather": "Vær og varsler",
           "delivery": "Kunngjøringer (valgfritt)",
@@ -159,20 +173,28 @@
         "title": "Rom",
         "description": "1 · 🪟 Rom. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rom"
+          "areas": "Rom",
+          "use_mold_indicator": "Muggindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Velg: Rom · 🪟 binary_sensor (device_class: window)."
+          "areas": "Velg: Rom · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Muggindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Ekskluder inneklimasensorer",
-        "description": "Rom: {area_name} ({position}/{total}). Ekskluder inneklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Rom · Muggindikator",
+        "description": "Rom: {area_name} ({position}/{total}). 🌡️ 🧊 Muggindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Ekskluder inneklimasensorer"
+          "excluded_indoor_entities": "Ekskluder inneklimasensorer",
+          "mold_indoor_temperature": "Rom · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Muggindikator · 🧊 °C",
+          "mold_recalibrate": "Muggindikator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Velg: Ekskluder inneklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Velg: Ekskluder inneklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Rom: 🌡️ °C/°F · Muggindikator.",
+          "mold_critical_temperature_c": "🧊 Muggindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Muggindikator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Ute · °C (≤)",
           "max_outdoor_humidity": "Ute · RH (%) (≤)",
           "max_wind_kmh": "Vær og varsler · km/h (≤)",
-          "max_age_minutes": "⏱ · Åpne (min, ≤)"
+          "max_age_minutes": "⏱ · Åpne (min, ≤)",
+          "indoor_mold": "Muggindikator · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Kontroller: Rom · Målinger (0).",
       "invalid_repeat_minutes": "Ugyldig valg: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ikke tilgjengelig: conversation.process.",
-      "invalid_ai_agent": "Ugyldig valg: conversation.*."
+      "invalid_ai_agent": "Ugyldig valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rom · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rom · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Muggindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Muggindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Muggindikator · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

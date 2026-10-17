@@ -6,10 +6,12 @@
         "title": "Pomieszczenia",
         "description": "1 · 🪟 Pomieszczenia. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Pomieszczenia"
+          "areas": "Pomieszczenia",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window)."
+          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Wyklucz czujniki powietrza wewnętrznego",
-        "description": "Pomieszczenia: {area_name} ({position}/{total}). Wyklucz czujniki powietrza wewnętrznego. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Pomieszczenia · Wskaźnik pleśni",
+        "description": "Pomieszczenia: {area_name} ({position}/{total}). 🌡️ 🧊 Wskaźnik pleśni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego"
+          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego",
+          "mold_indoor_temperature": "Pomieszczenia · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Wskaźnik pleśni · 🧊 °C",
+          "mold_recalibrate": "Wskaźnik pleśni · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Pomieszczenia: 🌡️ °C/°F · Wskaźnik pleśni.",
+          "mold_critical_temperature_c": "🧊 Wskaźnik pleśni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Wskaźnik pleśni · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Na zewnątrz · °C (≤)",
           "max_outdoor_humidity": "Na zewnątrz · RH (%) (≤)",
           "max_wind_kmh": "Pogoda i ostrzeżenia · km/h (≤)",
-          "max_age_minutes": "⏱ · Otwórz (min, ≤)"
+          "max_age_minutes": "⏱ · Otwórz (min, ≤)",
+          "indoor_mold": "Wskaźnik pleśni · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Sprawdź: Pomieszczenia · Pomiary (0).",
       "invalid_repeat_minutes": "Nieprawidłowy wybór: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Niedostępne: conversation.process.",
-      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*."
+      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*.",
+      "invalid_mold_temperature_sensor": "Pomieszczenia · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Pomieszczenia · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Wskaźnik pleśni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Wskaźnik pleśni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — już skonfigurowano."
@@ -137,8 +151,8 @@
         "description": "Wybierz: Pomieszczenia / Pogoda i ostrzeżenia / Komunikaty (opcjonalnie) / Zaawansowane progi",
         "menu_options": {
           "areas": "Pomieszczenia",
+          "indoor_sensors": "Pomieszczenia · Wskaźnik pleśni",
           "window_sensors": "Wyklucz czujniki okien",
-          "indoor_sensors": "Wyklucz czujniki powietrza wewnętrznego",
           "outdoor": "Jakość powietrza na zewnątrz",
           "weather": "Pogoda i ostrzeżenia",
           "delivery": "Komunikaty (opcjonalnie)",
@@ -159,20 +173,28 @@
         "title": "Pomieszczenia",
         "description": "1 · 🪟 Pomieszczenia. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Pomieszczenia"
+          "areas": "Pomieszczenia",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window)."
+          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Wyklucz czujniki powietrza wewnętrznego",
-        "description": "Pomieszczenia: {area_name} ({position}/{total}). Wyklucz czujniki powietrza wewnętrznego. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Pomieszczenia · Wskaźnik pleśni",
+        "description": "Pomieszczenia: {area_name} ({position}/{total}). 🌡️ 🧊 Wskaźnik pleśni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego"
+          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego",
+          "mold_indoor_temperature": "Pomieszczenia · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Wskaźnik pleśni · 🧊 °C",
+          "mold_recalibrate": "Wskaźnik pleśni · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Pomieszczenia: 🌡️ °C/°F · Wskaźnik pleśni.",
+          "mold_critical_temperature_c": "🧊 Wskaźnik pleśni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Wskaźnik pleśni · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Na zewnątrz · °C (≤)",
           "max_outdoor_humidity": "Na zewnątrz · RH (%) (≤)",
           "max_wind_kmh": "Pogoda i ostrzeżenia · km/h (≤)",
-          "max_age_minutes": "⏱ · Otwórz (min, ≤)"
+          "max_age_minutes": "⏱ · Otwórz (min, ≤)",
+          "indoor_mold": "Wskaźnik pleśni · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Sprawdź: Pomieszczenia · Pomiary (0).",
       "invalid_repeat_minutes": "Nieprawidłowy wybór: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Niedostępne: conversation.process.",
-      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*."
+      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*.",
+      "invalid_mold_temperature_sensor": "Pomieszczenia · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Pomieszczenia · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Wskaźnik pleśni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Wskaźnik pleśni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

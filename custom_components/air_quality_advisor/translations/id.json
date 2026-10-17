@@ -6,10 +6,12 @@
         "title": "Ruangan",
         "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Ruangan"
+          "areas": "Ruangan",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Pilih: Ruangan · 🪟 binary_sensor (device_class: window)."
+          "areas": "Pilih: Ruangan · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Kecualikan sensor udara dalam ruangan",
-        "description": "Ruangan: {area_name} ({position}/{total}). Kecualikan sensor udara dalam ruangan. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Ruangan · Indikator jamur",
+        "description": "Ruangan: {area_name} ({position}/{total}). 🌡️ 🧊 Indikator jamur · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan"
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan",
+          "mold_indoor_temperature": "Ruangan · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikator jamur · 🧊 °C",
+          "mold_recalibrate": "Indikator jamur · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Ruangan: 🌡️ °C/°F · Indikator jamur.",
+          "mold_critical_temperature_c": "🧊 Indikator jamur · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indikator jamur · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Di luar · °C (≤)",
           "max_outdoor_humidity": "Di luar · RH (%) (≤)",
           "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
-          "max_age_minutes": "⏱ · Buka (min, ≤)"
+          "max_age_minutes": "⏱ · Buka (min, ≤)",
+          "indoor_mold": "Indikator jamur · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Periksa: Ruangan · Pengukuran (0).",
       "invalid_repeat_minutes": "Pilihan tidak valid: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Tidak tersedia: conversation.process.",
-      "invalid_ai_agent": "Pilihan tidak valid: conversation.*."
+      "invalid_ai_agent": "Pilihan tidak valid: conversation.*.",
+      "invalid_mold_temperature_sensor": "Ruangan · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Ruangan · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikator jamur · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikator jamur · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — sudah dikonfigurasi."
@@ -137,8 +151,8 @@
         "description": "Pilih: Ruangan / Cuaca dan peringatan / Pengumuman (opsional) / Ambang batas lanjutan",
         "menu_options": {
           "areas": "Ruangan",
+          "indoor_sensors": "Ruangan · Indikator jamur",
           "window_sensors": "Kecualikan sensor jendela",
-          "indoor_sensors": "Kecualikan sensor udara dalam ruangan",
           "outdoor": "Kualitas udara luar",
           "weather": "Cuaca dan peringatan",
           "delivery": "Pengumuman (opsional)",
@@ -159,20 +173,28 @@
         "title": "Ruangan",
         "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Ruangan"
+          "areas": "Ruangan",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Pilih: Ruangan · 🪟 binary_sensor (device_class: window)."
+          "areas": "Pilih: Ruangan · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Kecualikan sensor udara dalam ruangan",
-        "description": "Ruangan: {area_name} ({position}/{total}). Kecualikan sensor udara dalam ruangan. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Ruangan · Indikator jamur",
+        "description": "Ruangan: {area_name} ({position}/{total}). 🌡️ 🧊 Indikator jamur · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan"
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan",
+          "mold_indoor_temperature": "Ruangan · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikator jamur · 🧊 °C",
+          "mold_recalibrate": "Indikator jamur · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Ruangan: 🌡️ °C/°F · Indikator jamur.",
+          "mold_critical_temperature_c": "🧊 Indikator jamur · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indikator jamur · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Di luar · °C (≤)",
           "max_outdoor_humidity": "Di luar · RH (%) (≤)",
           "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
-          "max_age_minutes": "⏱ · Buka (min, ≤)"
+          "max_age_minutes": "⏱ · Buka (min, ≤)",
+          "indoor_mold": "Indikator jamur · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Periksa: Ruangan · Pengukuran (0).",
       "invalid_repeat_minutes": "Pilihan tidak valid: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Tidak tersedia: conversation.process.",
-      "invalid_ai_agent": "Pilihan tidak valid: conversation.*."
+      "invalid_ai_agent": "Pilihan tidak valid: conversation.*.",
+      "invalid_mold_temperature_sensor": "Ruangan · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Ruangan · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikator jamur · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikator jamur · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

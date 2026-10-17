@@ -6,10 +6,12 @@
         "title": "חדרים",
         "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
         "data": {
-          "areas": "חדרים"
+          "areas": "חדרים",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window)."
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 מדד עובש · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "החרגת חיישני אוויר פנימיים",
-        "description": "חדרים: {area_name} ({position}/{total}). החרגת חיישני אוויר פנימיים. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "חדרים · מדד עובש",
+        "description": "חדרים: {area_name} ({position}/{total}). 🌡️ 🧊 מדד עובש · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים",
+          "mold_indoor_temperature": "חדרים · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "מדד עובש · 🧊 °C",
+          "mold_recalibrate": "מדד עובש · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "חדרים: 🌡️ °C/°F · מדד עובש.",
+          "mold_critical_temperature_c": "🧊 מדד עובש · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ מדד עובש · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "בחוץ · °C (≤)",
           "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
           "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
-          "max_age_minutes": "⏱ · פתחו (min, ≤)"
+          "max_age_minutes": "⏱ · פתחו (min, ≤)",
+          "indoor_mold": "מדד עובש · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
       "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "לא זמין: conversation.process.",
-      "invalid_ai_agent": "בחירה לא תקינה: conversation.*."
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*.",
+      "invalid_mold_temperature_sensor": "חדרים · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "חדרים · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "מדד עובש · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "מדד עובש · 🧊 °C ⚠",
+      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — כבר הוגדר."
@@ -137,8 +151,8 @@
         "description": "בחרו: חדרים / מזג אוויר ואזהרות / הודעות (אופציונלי) / ספי התראה מתקדמים",
         "menu_options": {
           "areas": "חדרים",
+          "indoor_sensors": "חדרים · מדד עובש",
           "window_sensors": "החרגת חיישני חלונות",
-          "indoor_sensors": "החרגת חיישני אוויר פנימיים",
           "outdoor": "איכות האוויר בחוץ",
           "weather": "מזג אוויר ואזהרות",
           "delivery": "הודעות (אופציונלי)",
@@ -159,20 +173,28 @@
         "title": "חדרים",
         "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
         "data": {
-          "areas": "חדרים"
+          "areas": "חדרים",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window)."
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 מדד עובש · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "החרגת חיישני אוויר פנימיים",
-        "description": "חדרים: {area_name} ({position}/{total}). החרגת חיישני אוויר פנימיים. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "חדרים · מדד עובש",
+        "description": "חדרים: {area_name} ({position}/{total}). 🌡️ 🧊 מדד עובש · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים"
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים",
+          "mold_indoor_temperature": "חדרים · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "מדד עובש · 🧊 °C",
+          "mold_recalibrate": "מדד עובש · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "חדרים: 🌡️ °C/°F · מדד עובש.",
+          "mold_critical_temperature_c": "🧊 מדד עובש · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ מדד עובש · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "בחוץ · °C (≤)",
           "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
           "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
-          "max_age_minutes": "⏱ · פתחו (min, ≤)"
+          "max_age_minutes": "⏱ · פתחו (min, ≤)",
+          "indoor_mold": "מדד עובש · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
       "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "לא זמין: conversation.process.",
-      "invalid_ai_agent": "בחירה לא תקינה: conversation.*."
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*.",
+      "invalid_mold_temperature_sensor": "חדרים · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "חדרים · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "מדד עובש · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "מדד עובש · 🧊 °C ⚠",
+      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

@@ -6,10 +6,12 @@
         "title": "部屋",
         "description": "1 · 🪟 部屋. binary_sensor (device_class: window).",
         "data": {
-          "areas": "部屋"
+          "areas": "部屋",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window)."
+          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 カビ指標 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "室内空気センサーを除外",
-        "description": "部屋: {area_name} ({position}/{total}). 室内空気センサーを除外. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "部屋 · カビ指標",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "室内空気センサーを除外"
+          "excluded_indoor_entities": "室内空気センサーを除外",
+          "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "カビ指標 · 🧊 °C",
+          "mold_recalibrate": "カビ指標 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "部屋: 🌡️ °C/°F · カビ指標.",
+          "mold_critical_temperature_c": "🧊 カビ指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ カビ指標 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "屋外 · °C (≤)",
           "max_outdoor_humidity": "屋外 · RH (%) (≤)",
           "max_wind_kmh": "天気と警報 · km/h (≤)",
-          "max_age_minutes": "⏱ · 開ける (min, ≤)"
+          "max_age_minutes": "⏱ · 開ける (min, ≤)",
+          "indoor_mold": "カビ指標 · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
       "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "利用できません: conversation.process.",
-      "invalid_ai_agent": "無効な選択: conversation.*."
+      "invalid_ai_agent": "無効な選択: conversation.*.",
+      "invalid_mold_temperature_sensor": "部屋 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "部屋 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "カビ指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "カビ指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — 設定済みです."
@@ -137,8 +151,8 @@
         "description": "選択してください: 部屋 / 天気と警報 / 通知（任意） / 詳細なしきい値",
         "menu_options": {
           "areas": "部屋",
+          "indoor_sensors": "部屋 · カビ指標",
           "window_sensors": "窓センサーを除外",
-          "indoor_sensors": "室内空気センサーを除外",
           "outdoor": "屋外の空気質",
           "weather": "天気と警報",
           "delivery": "通知（任意）",
@@ -159,20 +173,28 @@
         "title": "部屋",
         "description": "1 · 🪟 部屋. binary_sensor (device_class: window).",
         "data": {
-          "areas": "部屋"
+          "areas": "部屋",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window)."
+          "areas": "選択してください: 部屋 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 カビ指標 · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "室内空気センサーを除外",
-        "description": "部屋: {area_name} ({position}/{total}). 室内空気センサーを除外. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "部屋 · カビ指標",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "室内空気センサーを除外"
+          "excluded_indoor_entities": "室内空気センサーを除外",
+          "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "カビ指標 · 🧊 °C",
+          "mold_recalibrate": "カビ指標 · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "部屋: 🌡️ °C/°F · カビ指標.",
+          "mold_critical_temperature_c": "🧊 カビ指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ カビ指標 · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "屋外 · °C (≤)",
           "max_outdoor_humidity": "屋外 · RH (%) (≤)",
           "max_wind_kmh": "天気と警報 · km/h (≤)",
-          "max_age_minutes": "⏱ · 開ける (min, ≤)"
+          "max_age_minutes": "⏱ · 開ける (min, ≤)",
+          "indoor_mold": "カビ指標 · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
       "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "利用できません: conversation.process.",
-      "invalid_ai_agent": "無効な選択: conversation.*."
+      "invalid_ai_agent": "無効な選択: conversation.*.",
+      "invalid_mold_temperature_sensor": "部屋 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "部屋 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "カビ指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "カビ指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

@@ -6,10 +6,12 @@
         "title": "Helyiségek",
         "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Helyiségek"
+          "areas": "Helyiségek",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window)."
+          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Beltéri levegőérzékelők kizárása",
-        "description": "Helyiségek: {area_name} ({position}/{total}). Beltéri levegőérzékelők kizárása. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Helyiségek · Penészesedési mutató",
+        "description": "Helyiségek: {area_name} ({position}/{total}). 🌡️ 🧊 Penészesedési mutató · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása"
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása",
+          "mold_indoor_temperature": "Helyiségek · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Penészesedési mutató · 🧊 °C",
+          "mold_recalibrate": "Penészesedési mutató · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Helyiségek: 🌡️ °C/°F · Penészesedési mutató.",
+          "mold_critical_temperature_c": "🧊 Penészesedési mutató · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Penészesedési mutató · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Kint · °C (≤)",
           "max_outdoor_humidity": "Kint · RH (%) (≤)",
           "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
-          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)"
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)",
+          "indoor_mold": "Penészesedési mutató · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Ellenőrizd: Helyiségek · Mérések (0).",
       "invalid_repeat_minutes": "Érvénytelen választás: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nem érhető el: conversation.process.",
-      "invalid_ai_agent": "Érvénytelen választás: conversation.*."
+      "invalid_ai_agent": "Érvénytelen választás: conversation.*.",
+      "invalid_mold_temperature_sensor": "Helyiségek · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Helyiségek · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Penészesedési mutató · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Penészesedési mutató · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — már be van állítva."
@@ -137,8 +151,8 @@
         "description": "Válassz: Helyiségek / Időjárás és riasztások / Értesítések (opcionális) / Speciális határértékek",
         "menu_options": {
           "areas": "Helyiségek",
+          "indoor_sensors": "Helyiségek · Penészesedési mutató",
           "window_sensors": "Ablakérzékelők kizárása",
-          "indoor_sensors": "Beltéri levegőérzékelők kizárása",
           "outdoor": "Kültéri levegőminőség",
           "weather": "Időjárás és riasztások",
           "delivery": "Értesítések (opcionális)",
@@ -159,20 +173,28 @@
         "title": "Helyiségek",
         "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Helyiségek"
+          "areas": "Helyiségek",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window)."
+          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Beltéri levegőérzékelők kizárása",
-        "description": "Helyiségek: {area_name} ({position}/{total}). Beltéri levegőérzékelők kizárása. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Helyiségek · Penészesedési mutató",
+        "description": "Helyiségek: {area_name} ({position}/{total}). 🌡️ 🧊 Penészesedési mutató · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása"
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása",
+          "mold_indoor_temperature": "Helyiségek · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Penészesedési mutató · 🧊 °C",
+          "mold_recalibrate": "Penészesedési mutató · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Helyiségek: 🌡️ °C/°F · Penészesedési mutató.",
+          "mold_critical_temperature_c": "🧊 Penészesedési mutató · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Penészesedési mutató · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Kint · °C (≤)",
           "max_outdoor_humidity": "Kint · RH (%) (≤)",
           "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
-          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)"
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)",
+          "indoor_mold": "Penészesedési mutató · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Ellenőrizd: Helyiségek · Mérések (0).",
       "invalid_repeat_minutes": "Érvénytelen választás: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nem érhető el: conversation.process.",
-      "invalid_ai_agent": "Érvénytelen választás: conversation.*."
+      "invalid_ai_agent": "Érvénytelen választás: conversation.*.",
+      "invalid_mold_temperature_sensor": "Helyiségek · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Helyiségek · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Penészesedési mutató · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Penészesedési mutató · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

@@ -6,10 +6,12 @@
         "title": "Cômodos",
         "description": "1 · 🪟 Cômodos. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Cômodos"
+          "areas": "Cômodos",
+          "use_mold_indicator": "Indicador de mofo · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Selecione: Cômodos · 🪟 binary_sensor (device_class: window)."
+          "areas": "Selecione: Cômodos · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicador de mofo · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Excluir sensores do ar interno",
-        "description": "Cômodos: {area_name} ({position}/{total}). Excluir sensores do ar interno. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Cômodos · Indicador de mofo",
+        "description": "Cômodos: {area_name} ({position}/{total}). 🌡️ 🧊 Indicador de mofo · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Excluir sensores do ar interno"
+          "excluded_indoor_entities": "Excluir sensores do ar interno",
+          "mold_indoor_temperature": "Cômodos · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicador de mofo · 🧊 °C",
+          "mold_recalibrate": "Indicador de mofo · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Selecione: Excluir sensores do ar interno · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Selecione: Excluir sensores do ar interno · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Cômodos: 🌡️ °C/°F · Indicador de mofo.",
+          "mold_critical_temperature_c": "🧊 Indicador de mofo · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicador de mofo · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Área externa · °C (≤)",
           "max_outdoor_humidity": "Área externa · RH (%) (≤)",
           "max_wind_kmh": "Clima e alertas · km/h (≤)",
-          "max_age_minutes": "⏱ · Abra (min, ≤)"
+          "max_age_minutes": "⏱ · Abra (min, ≤)",
+          "indoor_mold": "Indicador de mofo · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Verifique: Cômodos · Medições (0).",
       "invalid_repeat_minutes": "Seleção inválida: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Indisponível: conversation.process.",
-      "invalid_ai_agent": "Seleção inválida: conversation.*."
+      "invalid_ai_agent": "Seleção inválida: conversation.*.",
+      "invalid_mold_temperature_sensor": "Cômodos · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Cômodos · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicador de mofo · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicador de mofo · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicador de mofo · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — já configurado."
@@ -137,8 +151,8 @@
         "description": "Selecione: Cômodos / Clima e alertas / Avisos (opcional) / Limites avançados",
         "menu_options": {
           "areas": "Cômodos",
+          "indoor_sensors": "Cômodos · Indicador de mofo",
           "window_sensors": "Excluir sensores de janela",
-          "indoor_sensors": "Excluir sensores do ar interno",
           "outdoor": "Qualidade do ar externo",
           "weather": "Clima e alertas",
           "delivery": "Avisos (opcional)",
@@ -159,20 +173,28 @@
         "title": "Cômodos",
         "description": "1 · 🪟 Cômodos. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Cômodos"
+          "areas": "Cômodos",
+          "use_mold_indicator": "Indicador de mofo · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Selecione: Cômodos · 🪟 binary_sensor (device_class: window)."
+          "areas": "Selecione: Cômodos · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicador de mofo · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Excluir sensores do ar interno",
-        "description": "Cômodos: {area_name} ({position}/{total}). Excluir sensores do ar interno. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Cômodos · Indicador de mofo",
+        "description": "Cômodos: {area_name} ({position}/{total}). 🌡️ 🧊 Indicador de mofo · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Excluir sensores do ar interno"
+          "excluded_indoor_entities": "Excluir sensores do ar interno",
+          "mold_indoor_temperature": "Cômodos · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicador de mofo · 🧊 °C",
+          "mold_recalibrate": "Indicador de mofo · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Selecione: Excluir sensores do ar interno · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Selecione: Excluir sensores do ar interno · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Cômodos: 🌡️ °C/°F · Indicador de mofo.",
+          "mold_critical_temperature_c": "🧊 Indicador de mofo · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indicador de mofo · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Área externa · °C (≤)",
           "max_outdoor_humidity": "Área externa · RH (%) (≤)",
           "max_wind_kmh": "Clima e alertas · km/h (≤)",
-          "max_age_minutes": "⏱ · Abra (min, ≤)"
+          "max_age_minutes": "⏱ · Abra (min, ≤)",
+          "indoor_mold": "Indicador de mofo · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Verifique: Cômodos · Medições (0).",
       "invalid_repeat_minutes": "Seleção inválida: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Indisponível: conversation.process.",
-      "invalid_ai_agent": "Seleção inválida: conversation.*."
+      "invalid_ai_agent": "Seleção inválida: conversation.*.",
+      "invalid_mold_temperature_sensor": "Cômodos · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Cômodos · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicador de mofo · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicador de mofo · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicador de mofo · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {
