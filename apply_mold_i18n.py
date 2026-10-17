@@ -127,7 +127,7 @@ def translated_fields(code: str, doc: dict) -> dict:
     mold = MOLD_NAMES[code]
     return {
         "enable": f"{mold} · RH (%) → 70%",
-        "enable_help": f"🧱 {mold} · RH (%) → εκτίμηση / 70% · 🌡️ 🧊",
+        "enable_help": f"🧱 {mold} · RH (%) → ≈70% · 🌡️ 🧊",
         "room_title": f"{room_label} · {mold}",
         "room_desc": (
             f"{room_label}: {{area_name}} ({{position}}/{{total}}). "
@@ -138,7 +138,7 @@ def translated_fields(code: str, doc: dict) -> dict:
         "critical": f"{mold} · 🧊 °C",
         "critical_help": (
             f"🧊 {mold} · 🌡️ °C · ΔT ≥ 3°C. "
-            f"Σημείο / punkt / point · 🌡️ ↻"
+            f"🧊 ↔ 🌡️ · ↻"
         ),
         "recal": f"{mold} · ↻ 🌡️",
         "recal_help": f"↻ {mold} · 🌡️ °C",
