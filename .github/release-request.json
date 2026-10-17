@@ -1,13 +1,13 @@
 {
-  "version": "0.2.1",
+  "version": "0.2.2",
   "intent": "publish GitHub release after validation",
   "note": "Only a deliberate change to this file triggers release checks.",
-  "validation_attempt": 2,
+  "validation_attempt": 1,
   "changes": [
-    "Optional AI rewrite checkbox with Home Assistant conversation agent dropdown",
-    "Rewriting is restricted to non-Announcement-Hub direct notify and TTS outputs",
-    "Deterministic fallback after wrong action, changed entities/measurements, agent errors and timeout",
-    "38 translations synchronized; AI tests plus HACS/Hassfest gates",
-    "Fix shared unit-test fixtures and assert guarded direct-output path"
+    "One AI checkbox for both direct delivery and Announcement Hub use_ai:true/false",
+    "Hub option shown only when a configured Announcement Hub instance exists",
+    "Wait for Hub queue acknowledgement and use Home Assistant fallback if it rejects, fails, times out, or is unready",
+    "System persistent notification if direct notify/TTS cannot deliver",
+    "38 UI translations synchronized with generators and routing regressions"
   ]
 }
