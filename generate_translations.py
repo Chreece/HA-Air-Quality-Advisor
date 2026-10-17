@@ -352,3 +352,7 @@ generate_extended(root)
 # descriptions to Greek or other localized configuration forms.
 from apply_config_i18n import apply_config_overrides
 apply_config_overrides(root)
+
+# Optional mold indication and per-room calibration in all 38 languages.
+from apply_mold_i18n import apply_mold_i18n
+apply_mold_i18n(root)
