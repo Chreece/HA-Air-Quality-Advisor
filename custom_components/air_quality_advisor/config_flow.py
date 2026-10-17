@@ -23,11 +23,15 @@ from .const import (
     CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES, MAX_REPEAT_MINUTES,
     CONF_AI_REWRITE, CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
-    DEFAULT_THRESHOLDS, DOMAIN,
+    DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
+    CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
 )
+from .mold import calibration_factor
+
 from .discovery import (
     indoor_sensor_exclusion_choices, outdoor_choices, suggested_window_exclusions, warning_choices,
     window_area_choices, window_exclusion_choices,
+    indoor_temperature_choices, temperature_sensor_c, weather as current_weather,
 )
 
 
@@ -105,7 +109,7 @@ class _FlowMixin:
                         return await self.async_step_areas()
                 if not errors:
                     self._values[CONF_EXCLUDED_WINDOWS] = selected
-                    return await self._advance("indoor_sensors")
+                    return await self._advance("outdoor" if self._values.get(CONF_USE_MOLD) else "indoor_sensors")
         elif not choices:
             if not getattr(self, "_menu_mode", False) and self._values.get(CONF_AREAS):
                 # Contacts vanished between the Rooms and Exclusions pages.
@@ -113,7 +117,7 @@ class _FlowMixin:
                 errors["base"] = "no_windows_after_exclusions"
             else:
                 self._values.setdefault(CONF_EXCLUDED_WINDOWS, [])
-                return await self._advance("indoor_sensors")
+                return await self._advance("outdoor" if self._values.get(CONF_USE_MOLD) else "indoor_sensors")
         return self.async_show_form(
             step_id="window_sensors",
             data_schema=probatio.Schema({
@@ -151,10 +155,13 @@ class _FlowMixin:
                 errors["base"] = "invalid_areas"
             else:
                 self._values[CONF_AREAS] = selected
+                self._values[CONF_USE_MOLD] = bool(
+                    user_input.get(CONF_USE_MOLD, self._values.get(CONF_USE_MOLD, False))
+                )
                 self._indoor_index = 0
                 if reviewing:
                     self._review_areas_after_exclusions = False
-                    return await self._advance("indoor_sensors")
+                    return await self._advance("outdoor" if self._values.get(CONF_USE_MOLD) else "indoor_sensors")
                 return await self._advance("window_sensors")
         elif not choices:
             errors["base"] = "no_window_areas"
@@ -163,51 +170,163 @@ class _FlowMixin:
         return self.async_show_form(step_id="areas", data_schema=probatio.Schema({
             _marker(CONF_AREAS, user_input.get(CONF_AREAS, []) if user_input is not None
                     else default_areas, required=True): _multi(choices),
+            _marker(CONF_USE_MOLD, (
+                user_input.get(CONF_USE_MOLD, self._values.get(CONF_USE_MOLD, False))
+                if user_input is not None else self._values.get(CONF_USE_MOLD, False)
+            )): selector.BooleanSelector(),
         }), errors=errors)
 
     async def async_step_indoor_sensors(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Review all supported air sensors (including humidity), one area at a time.
-
-        Missing selected sensors are retained and removable during reconfigure.
-        Skipping rooms with no candidates avoids presenting an empty selector.
-        """
+        """Room settings: per-room air exclusions and optional mold calibration."""
         area_ids = list(self._values.get(CONF_AREAS, []))
         previous = self._values.get(CONF_EXCLUDED_INDOOR, {})
         if not isinstance(previous, dict):
             previous = {}
+        mold_on = bool(self._values.get(CONF_USE_MOLD, False))
+        saved_rooms = self._values.get(CONF_MOLD_ROOMS, {})
+        if not isinstance(saved_rooms, dict):
+            saved_rooms = {}
         index = getattr(self, "_indoor_index", 0)
         while index < len(area_ids):
             area_id = area_ids[index]
             choices = indoor_sensor_exclusion_choices(
                 self.hass, area_id, previous.get(area_id, [])
             )
-            if choices:
+            if choices or mold_on:
                 break
             index += 1
         self._indoor_index = index
         if index >= len(area_ids):
-            return await self._advance("outdoor")
+            return await self._advance("delivery" if mold_on else "outdoor")
 
         known = {choice["value"] for choice in choices}
+        current = saved_rooms.get(area_id, {})
+        if not isinstance(current, dict):
+            current = {}
+        room_sensors = (
+            indoor_temperature_choices(
+                self.hass, area_id, current.get("indoor_temperature_entity"),
+            ) if mold_on else []
+        )
+        sensor_ids = {item["value"] for item in room_sensors}
         errors: dict[str, str] = {}
+
         if user_input is not None:
             selected = list(dict.fromkeys(user_input.get(CONF_EXCLUDED_INDOOR, [])))
             if any(entity_id not in known for entity_id in selected):
                 errors["base"] = "invalid_indoor_exclusions"
-            else:
-                # An empty list is a deliberate choice, never a signal to
-                # restore previous exclusions or auto-select humidity.
+
+            updated_calibration: dict[str, Any] | None = None
+            if mold_on and not errors:
+                indoor_entity = user_input.get(
+                    CONF_MOLD_ROOM_SENSOR, current.get("indoor_temperature_entity"),
+                )
+                raw_surface = user_input.get(
+                    CONF_MOLD_CRITICAL_TEMP, current.get("critical_temperature_c"),
+                )
+                if raw_surface is None or raw_surface == "":
+                    updated_calibration = {}
+                elif indoor_entity not in sensor_ids:
+                    errors["base"] = "invalid_mold_temperature_sensor"
+                else:
+                    try:
+                        surface = float(raw_surface)
+                    except (TypeError, ValueError, OverflowError):
+                        surface = float("nan")
+                    if not math.isfinite(surface) or not -60 <= surface <= 85:
+                        errors["base"] = "invalid_mold_surface_temperature"
+                    elif (
+                        current.get("indoor_temperature_entity") == indoor_entity
+                        and current.get("critical_temperature_c") == surface
+                        and current.get("calibration_factor") is not None
+                        and not user_input.get(CONF_MOLD_RECALIBRATE, False)
+                    ):
+                        # Editing exclusions must never re-calibrate an old
+                        # measurement under different weather conditions.
+                        updated_calibration = dict(current)
+                    else:
+                        max_age = {
+                            **DEFAULT_THRESHOLDS,
+                            **self._values.get(CONF_THRESHOLDS, {}),
+                        }["max_age_minutes"]
+                        indoor_c = temperature_sensor_c(self.hass, indoor_entity, max_age)
+                        if indoor_c is None:
+                            errors["base"] = "missing_mold_indoor_temperature"
+                        else:
+                            outdoor = next(
+                                (
+                                    wx for entity_id in self._values.get(CONF_WEATHER, [])
+                                    if (wx := current_weather(self.hass, entity_id, max_age)).temperature_c
+                                    is not None
+                                ),
+                                None,
+                            )
+                            if outdoor is None:
+                                errors["base"] = "missing_mold_outdoor_temperature"
+                            else:
+                                factor = calibration_factor(
+                                    indoor_c, outdoor.temperature_c, surface
+                                )
+                                if factor is None:
+                                    errors["base"] = "invalid_mold_calibration"
+                                else:
+                                    updated_calibration = {
+                                        "indoor_temperature_entity": indoor_entity,
+                                        "outdoor_weather_entity": outdoor.entity_id,
+                                        "critical_temperature_c": surface,
+                                        "calibration_factor": factor,
+                                        "calibrated_indoor_c": indoor_c,
+                                        "calibrated_outdoor_c": outdoor.temperature_c,
+                                    }
+
+            if not errors:
                 per_area = dict(previous)
                 per_area[area_id] = selected
                 self._values[CONF_EXCLUDED_INDOOR] = per_area
+                if mold_on and updated_calibration is not None:
+                    all_calibrations = dict(saved_rooms)
+                    if updated_calibration:
+                        all_calibrations[area_id] = updated_calibration
+                    else:
+                        all_calibrations.pop(area_id, None)
+                    self._values[CONF_MOLD_ROOMS] = all_calibrations
                 self._indoor_index += 1
                 return await self.async_step_indoor_sensors()
 
         from homeassistant.helpers import area_registry as ar
         registered_area = ar.async_get(self.hass).async_get_area(area_id)
         area_name = registered_area.name if registered_area else area_id
+        fields: dict[Any, Any] = {
+            _marker(
+                CONF_EXCLUDED_INDOOR,
+                user_input.get(CONF_EXCLUDED_INDOOR, []) if user_input is not None
+                else list(previous.get(area_id, [])),
+            ): _multi(choices),
+        }
+        if mold_on:
+            selected_sensor = current.get("indoor_temperature_entity")
+            if room_sensors:
+                fields[_marker(
+                    CONF_MOLD_ROOM_SENSOR,
+                    user_input.get(CONF_MOLD_ROOM_SENSOR, selected_sensor or room_sensors[0]["value"])
+                    if user_input is not None else selected_sensor or room_sensors[0]["value"],
+                )] = selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=room_sensors, multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                ))
+            fields[_marker(
+                CONF_MOLD_CRITICAL_TEMP,
+                user_input.get(CONF_MOLD_CRITICAL_TEMP, current.get("critical_temperature_c"))
+                if user_input is not None else current.get("critical_temperature_c"),
+            )] = selector.NumberSelector(selector.NumberSelectorConfig(
+                min=-60, max=85, step=0.1, unit_of_measurement="°C",
+                mode=selector.NumberSelectorMode.BOX,
+            ))
+            if current:
+                fields[_marker(CONF_MOLD_RECALIBRATE, False)] = selector.BooleanSelector()
+
         return self.async_show_form(
             step_id="indoor_sensors",
             description_placeholders={
@@ -215,13 +334,7 @@ class _FlowMixin:
                 "position": str(index + 1),
                 "total": str(len(area_ids)),
             },
-            data_schema=probatio.Schema({
-                _marker(
-                    CONF_EXCLUDED_INDOOR,
-                    user_input.get(CONF_EXCLUDED_INDOOR, [])
-                    if user_input is not None else list(previous.get(area_id, [])),
-                ): _multi(choices),
-            }),
+            data_schema=probatio.Schema(fields),
             errors=errors,
         )
 
@@ -258,6 +371,9 @@ class _FlowMixin:
             else:
                 self._values[CONF_WEATHER] = weather_entities
                 self._values[CONF_WARNINGS] = warnings
+                if self._values.get(CONF_USE_MOLD, False):
+                    self._indoor_index = 0
+                    return await self._advance("indoor_sensors")
                 return await self._advance("delivery")
         schema: dict[Any, Any] = {
             _marker(CONF_WEATHER, self._values.get(CONF_WEATHER, []), required=True):
@@ -398,7 +514,9 @@ class _FlowMixin:
             schema[_marker(key, default, required=True)] = selector.NumberSelector(
                 selector.NumberSelectorConfig(
                     min=-40 if is_temp else 1,
-                    max=100000 if key == "max_age_minutes" else 10000,
+                    max=100 if key in ("indoor_mold", "indoor_humidity") else (
+                        100000 if key == "max_age_minutes" else 10000
+                    ),
                     step=1,
                     mode=selector.NumberSelectorMode.BOX,
                 )
@@ -438,7 +556,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         return self.async_show_menu(
             step_id="init",
             menu_options=[
-                "areas", "window_sensors", "indoor_sensors", "outdoor",
+                "areas", "indoor_sensors", "window_sensors", "outdoor",
                 "weather", "delivery", "thresholds",
             ],
         )
