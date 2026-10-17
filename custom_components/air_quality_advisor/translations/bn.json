@@ -6,10 +6,12 @@
         "title": "কক্ষ",
         "description": "1 · 🪟 কক্ষ. binary_sensor (device_class: window).",
         "data": {
-          "areas": "কক্ষ"
+          "areas": "কক্ষ",
+          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window)."
+          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "ঘরের বায়ু সেন্সর বাদ দিন",
-        "description": "কক্ষ: {area_name} ({position}/{total}). ঘরের বায়ু সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "কক্ষ · ছাঁচের সূচক",
+        "description": "কক্ষ: {area_name} ({position}/{total}). 🌡️ 🧊 ছাঁচের সূচক · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন",
+          "mold_indoor_temperature": "কক্ষ · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "ছাঁচের সূচক · 🧊 °C",
+          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "কক্ষ: 🌡️ °C/°F · ছাঁচের সূচক.",
+          "mold_critical_temperature_c": "🧊 ছাঁচের সূচক · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ ছাঁচের সূচক · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "বাইরে · °C (≤)",
           "max_outdoor_humidity": "বাইরে · RH (%) (≤)",
           "max_wind_kmh": "আবহাওয়া ও সতর্কতা · km/h (≤)",
-          "max_age_minutes": "⏱ · খুলুন (min, ≤)"
+          "max_age_minutes": "⏱ · খুলুন (min, ≤)",
+          "indoor_mold": "ছাঁচের সূচক · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "পরীক্ষা করুন: কক্ষ · পরিমাপ (0).",
       "invalid_repeat_minutes": "ভুল নির্বাচন: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "পাওয়া যাচ্ছে না: conversation.process.",
-      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*."
+      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*.",
+      "invalid_mold_temperature_sensor": "কক্ষ · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "কক্ষ · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "ছাঁচের সূচক · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "ছাঁচের সূচক · 🧊 °C ⚠",
+      "invalid_mold_calibration": "ছাঁচের সূচক · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — আগেই সেট করা হয়েছে."
@@ -137,8 +151,8 @@
         "description": "নির্বাচন করুন: কক্ষ / আবহাওয়া ও সতর্কতা / ঘোষণা (ঐচ্ছিক) / উন্নত সীমা",
         "menu_options": {
           "areas": "কক্ষ",
+          "indoor_sensors": "কক্ষ · ছাঁচের সূচক",
           "window_sensors": "জানালার সেন্সর বাদ দিন",
-          "indoor_sensors": "ঘরের বায়ু সেন্সর বাদ দিন",
           "outdoor": "বাইরের বায়ুর মান",
           "weather": "আবহাওয়া ও সতর্কতা",
           "delivery": "ঘোষণা (ঐচ্ছিক)",
@@ -159,20 +173,28 @@
         "title": "কক্ষ",
         "description": "1 · 🪟 কক্ষ. binary_sensor (device_class: window).",
         "data": {
-          "areas": "কক্ষ"
+          "areas": "কক্ষ",
+          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window)."
+          "areas": "নির্বাচন করুন: কক্ষ · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "ঘরের বায়ু সেন্সর বাদ দিন",
-        "description": "কক্ষ: {area_name} ({position}/{total}). ঘরের বায়ু সেন্সর বাদ দিন. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "কক্ষ · ছাঁচের সূচক",
+        "description": "কক্ষ: {area_name} ({position}/{total}). 🌡️ 🧊 ছাঁচের সূচক · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন"
+          "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন",
+          "mold_indoor_temperature": "কক্ষ · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "ছাঁচের সূচক · 🧊 °C",
+          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "কক্ষ: 🌡️ °C/°F · ছাঁচের সূচক.",
+          "mold_critical_temperature_c": "🧊 ছাঁচের সূচক · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ ছাঁচের সূচক · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "বাইরে · °C (≤)",
           "max_outdoor_humidity": "বাইরে · RH (%) (≤)",
           "max_wind_kmh": "আবহাওয়া ও সতর্কতা · km/h (≤)",
-          "max_age_minutes": "⏱ · খুলুন (min, ≤)"
+          "max_age_minutes": "⏱ · খুলুন (min, ≤)",
+          "indoor_mold": "ছাঁচের সূচক · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "পরীক্ষা করুন: কক্ষ · পরিমাপ (0).",
       "invalid_repeat_minutes": "ভুল নির্বাচন: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "পাওয়া যাচ্ছে না: conversation.process.",
-      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*."
+      "invalid_ai_agent": "ভুল নির্বাচন: conversation.*.",
+      "invalid_mold_temperature_sensor": "কক্ষ · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "কক্ষ · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "ছাঁচের সূচক · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "ছাঁচের সূচক · 🧊 °C ⚠",
+      "invalid_mold_calibration": "ছাঁচের সূচক · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

@@ -6,10 +6,12 @@
         "title": "Rum",
         "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rum"
+          "areas": "Rum",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Vælg: Rum · 🪟 binary_sensor (device_class: window)."
+          "areas": "Vælg: Rum · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Udeluk indeklimasensorer",
-        "description": "Rum: {area_name} ({position}/{total}). Udeluk indeklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Rum · Skimmelindikator",
+        "description": "Rum: {area_name} ({position}/{total}). 🌡️ 🧊 Skimmelindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Udeluk indeklimasensorer"
+          "excluded_indoor_entities": "Udeluk indeklimasensorer",
+          "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Skimmelindikator · 🧊 °C",
+          "mold_recalibrate": "Skimmelindikator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Rum: 🌡️ °C/°F · Skimmelindikator.",
+          "mold_critical_temperature_c": "🧊 Skimmelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Skimmelindikator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Udenfor · °C (≤)",
           "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
           "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
-          "max_age_minutes": "⏱ · Åbn (min, ≤)"
+          "max_age_minutes": "⏱ · Åbn (min, ≤)",
+          "indoor_mold": "Skimmelindikator · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Kontrollér: Rum · Målinger (0).",
       "invalid_repeat_minutes": "Ugyldigt valg: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ikke tilgængelig: conversation.process.",
-      "invalid_ai_agent": "Ugyldigt valg: conversation.*."
+      "invalid_ai_agent": "Ugyldigt valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rum · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Skimmelindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Skimmelindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — allerede konfigureret."
@@ -137,8 +151,8 @@
         "description": "Vælg: Rum / Vejr og advarsler / Meddelelser (valgfrit) / Avancerede grænser",
         "menu_options": {
           "areas": "Rum",
+          "indoor_sensors": "Rum · Skimmelindikator",
           "window_sensors": "Udeluk vinduessensorer",
-          "indoor_sensors": "Udeluk indeklimasensorer",
           "outdoor": "Udendørs luftkvalitet",
           "weather": "Vejr og advarsler",
           "delivery": "Meddelelser (valgfrit)",
@@ -159,20 +173,28 @@
         "title": "Rum",
         "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rum"
+          "areas": "Rum",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Vælg: Rum · 🪟 binary_sensor (device_class: window)."
+          "areas": "Vælg: Rum · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Udeluk indeklimasensorer",
-        "description": "Rum: {area_name} ({position}/{total}). Udeluk indeklimasensorer. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Rum · Skimmelindikator",
+        "description": "Rum: {area_name} ({position}/{total}). 🌡️ 🧊 Skimmelindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Udeluk indeklimasensorer"
+          "excluded_indoor_entities": "Udeluk indeklimasensorer",
+          "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Skimmelindikator · 🧊 °C",
+          "mold_recalibrate": "Skimmelindikator · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Rum: 🌡️ °C/°F · Skimmelindikator.",
+          "mold_critical_temperature_c": "🧊 Skimmelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Skimmelindikator · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Udenfor · °C (≤)",
           "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
           "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
-          "max_age_minutes": "⏱ · Åbn (min, ≤)"
+          "max_age_minutes": "⏱ · Åbn (min, ≤)",
+          "indoor_mold": "Skimmelindikator · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Kontrollér: Rum · Målinger (0).",
       "invalid_repeat_minutes": "Ugyldigt valg: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ikke tilgængelig: conversation.process.",
-      "invalid_ai_agent": "Ugyldigt valg: conversation.*."
+      "invalid_ai_agent": "Ugyldigt valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rum · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Skimmelindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Skimmelindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

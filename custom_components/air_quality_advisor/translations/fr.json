@@ -6,10 +6,12 @@
         "title": "Pièces",
         "description": "Choisissez d’abord les pièces à surveiller. Celles avec un capteur binaire de classe Fenêtre sont présélectionnées ; les volets ne comptent pas. Examinez ensuite les exclusions. Si une pièce n’a plus de contact utilisable, révisez la sélection.",
         "data": {
-          "areas": "Zones à surveiller"
+          "areas": "Zones à surveiller",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
         },
         "data_description": {
-          "areas": "Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite."
+          "areas": "Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Exclure des capteurs d’air intérieur",
-        "description": "Pièce : {area_name} ({position}/{total}). Sélectionnez les capteurs de qualité de l’air ou d’humidité à EXCLURE de cette pièce. Chaque entrée affiche le nom de l’appareil, le nom de l’entité et son ID. Laissez vide pour surveiller tous les capteurs compatibles.",
+        "title": "Paramètres des pièces — air et moisissure",
+        "description": "Pièce : {area_name} ({position}/{total}). Excluez les capteurs de cette pièce. Pour l’indicateur de moisissure, mesurez maintenant la température du point le plus froid (coin de mur extérieur ou cadre de fenêtre), quand les températures intérieure et extérieure sont stables. Saisissez °C ou laissez vide pour plus tard.",
         "data": {
-          "excluded_indoor_entities": "Capteurs à exclure pour cette pièce"
+          "excluded_indoor_entities": "Capteurs à exclure pour cette pièce",
+          "mold_indoor_temperature": "Sonde de température intérieure pour l’étalonnage",
+          "mold_critical_temperature_c": "Température mesurée de la surface la plus froide (°C)",
+          "mold_recalibrate": "Recalibrer avec les températures actuelles"
         },
         "data_description": {
-          "excluded_indoor_entities": "Ces capteurs seront ignorés pour cette pièce dans les recommandations et le tableau de bord. Humidité, CO₂, AQI, PM2.5, PM10 et COV sont pris en charge."
+          "excluded_indoor_entities": "Ces capteurs seront ignorés pour cette pièce dans les recommandations et le tableau de bord. Humidité, CO₂, AQI, PM2.5, PM10 et COV sont pris en charge.",
+          "mold_indoor_temperature": "Choisissez une sonde de température de cette pièce (°C/°F). Les températures intérieure et extérieure sont relevées au moment de la calibration.",
+          "mold_critical_temperature_c": "Mesurez simultanément la surface la plus froide, l’intérieur et l’extérieur, avec au moins 3°C de différence. Cette mesure définit un facteur d’étalonnage durable, pas une température de surface fixe. Effacez pour supprimer l’étalonnage.",
+          "mold_recalibrate": "Cochez uniquement après une nouvelle mesure du point froid. Modifier les capteurs exclus ne doit pas recalibrer automatiquement."
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Température extérieure maximale (°C)",
           "max_outdoor_humidity": "Humidité extérieure maximale (%)",
           "max_wind_kmh": "Vitesse maximale du vent (km/h)",
-          "max_age_minutes": "Âge maximal d'une mesure extérieure (minutes)"
+          "max_age_minutes": "Âge maximal d'une mesure extérieure (minutes)",
+          "indoor_mold": "Seuil de moisissure pour aérer (humidité de surface estimée, %)"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces.",
       "invalid_repeat_minutes": "Saisissez un nombre entier entre 0 et 1440 minutes ; 0 désactive les répétitions.",
       "missing_ai_service": "L’action Home Assistant conversation.process est indisponible.",
-      "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
+      "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge.",
+      "invalid_mold_temperature_sensor": "Choisissez une sonde de température valide de cette pièce.",
+      "missing_mold_indoor_temperature": "La sonde intérieure ne fournit aucune température récente et valide.",
+      "missing_mold_outdoor_temperature": "Aucune entité météo sélectionnée ne fournit de température extérieure récente.",
+      "invalid_mold_surface_temperature": "Saisissez une température de surface mesurée valide en °C.",
+      "invalid_mold_calibration": "Mesurez simultanément les températures intérieure, extérieure et de surface, avec au moins 3°C d’écart intérieur/extérieur."
     },
     "abort": {
       "already_configured": "Air Quality Advisor est déjà configuré."
@@ -137,8 +151,8 @@
         "description": "Choisissez une rubrique. Les autres paramètres restent inchangés.",
         "menu_options": {
           "areas": "Pièces",
+          "indoor_sensors": "Paramètres des pièces — air et moisissure",
           "window_sensors": "Exclure des capteurs de fenêtre",
-          "indoor_sensors": "Exclure des capteurs d’air intérieur",
           "outdoor": "Qualité de l’air extérieur",
           "weather": "Météo et alertes",
           "delivery": "Annonces (facultatif)",
@@ -159,20 +173,28 @@
         "title": "Pièces",
         "description": "Choisissez d’abord les pièces à surveiller. Celles avec un capteur binaire de classe Fenêtre sont présélectionnées ; les volets ne comptent pas. Examinez ensuite les exclusions. Si une pièce n’a plus de contact utilisable, révisez la sélection.",
         "data": {
-          "areas": "Zones à surveiller"
+          "areas": "Zones à surveiller",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
         },
         "data_description": {
-          "areas": "Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite."
+          "areas": "Les pièces d’abord. Seuls les capteurs binaires Fenêtre sont pris en compte, pas les volets. Exclusions et éventuelle révision ensuite.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
         }
       },
       "indoor_sensors": {
-        "title": "Exclure des capteurs d’air intérieur",
-        "description": "Pièce : {area_name} ({position}/{total}). Sélectionnez les capteurs de qualité de l’air ou d’humidité à EXCLURE de cette pièce. Chaque entrée affiche le nom de l’appareil, le nom de l’entité et son ID. Laissez vide pour surveiller tous les capteurs compatibles.",
+        "title": "Paramètres des pièces — air et moisissure",
+        "description": "Pièce : {area_name} ({position}/{total}). Excluez les capteurs de cette pièce. Pour l’indicateur de moisissure, mesurez maintenant la température du point le plus froid (coin de mur extérieur ou cadre de fenêtre), quand les températures intérieure et extérieure sont stables. Saisissez °C ou laissez vide pour plus tard.",
         "data": {
-          "excluded_indoor_entities": "Capteurs à exclure pour cette pièce"
+          "excluded_indoor_entities": "Capteurs à exclure pour cette pièce",
+          "mold_indoor_temperature": "Sonde de température intérieure pour l’étalonnage",
+          "mold_critical_temperature_c": "Température mesurée de la surface la plus froide (°C)",
+          "mold_recalibrate": "Recalibrer avec les températures actuelles"
         },
         "data_description": {
-          "excluded_indoor_entities": "Ces capteurs seront ignorés pour cette pièce dans les recommandations et le tableau de bord. Humidité, CO₂, AQI, PM2.5, PM10 et COV sont pris en charge."
+          "excluded_indoor_entities": "Ces capteurs seront ignorés pour cette pièce dans les recommandations et le tableau de bord. Humidité, CO₂, AQI, PM2.5, PM10 et COV sont pris en charge.",
+          "mold_indoor_temperature": "Choisissez une sonde de température de cette pièce (°C/°F). Les températures intérieure et extérieure sont relevées au moment de la calibration.",
+          "mold_critical_temperature_c": "Mesurez simultanément la surface la plus froide, l’intérieur et l’extérieur, avec au moins 3°C de différence. Cette mesure définit un facteur d’étalonnage durable, pas une température de surface fixe. Effacez pour supprimer l’étalonnage.",
+          "mold_recalibrate": "Cochez uniquement après une nouvelle mesure du point froid. Modifier les capteurs exclus ne doit pas recalibrer automatiquement."
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Température extérieure maximale (°C)",
           "max_outdoor_humidity": "Humidité extérieure maximale (%)",
           "max_wind_kmh": "Vitesse maximale du vent (km/h)",
-          "max_age_minutes": "Âge maximal d'une mesure extérieure (minutes)"
+          "max_age_minutes": "Âge maximal d'une mesure extérieure (minutes)",
+          "indoor_mold": "Seuil de moisissure pour aérer (humidité de surface estimée, %)"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces.",
       "invalid_repeat_minutes": "Saisissez un nombre entier entre 0 et 1440 minutes ; 0 désactive les répétitions.",
       "missing_ai_service": "L’action Home Assistant conversation.process est indisponible.",
-      "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
+      "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge.",
+      "invalid_mold_temperature_sensor": "Choisissez une sonde de température valide de cette pièce.",
+      "missing_mold_indoor_temperature": "La sonde intérieure ne fournit aucune température récente et valide.",
+      "missing_mold_outdoor_temperature": "Aucune entité météo sélectionnée ne fournit de température extérieure récente.",
+      "invalid_mold_surface_temperature": "Saisissez une température de surface mesurée valide en °C.",
+      "invalid_mold_calibration": "Mesurez simultanément les températures intérieure, extérieure et de surface, avec au moins 3°C d’écart intérieur/extérieur."
     }
   },
   "entity": {

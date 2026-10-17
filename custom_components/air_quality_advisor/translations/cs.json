@@ -6,10 +6,12 @@
         "title": "Místnosti",
         "description": "1 · 🪟 Místnosti. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Místnosti"
+          "areas": "Místnosti",
+          "use_mold_indicator": "Indikátor plísní · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Vyberte: Místnosti · 🪟 binary_sensor (device_class: window)."
+          "areas": "Vyberte: Místnosti · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikátor plísní · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Vyloučit senzory vzduchu uvnitř",
-        "description": "Místnosti: {area_name} ({position}/{total}). Vyloučit senzory vzduchu uvnitř. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Místnosti · Indikátor plísní",
+        "description": "Místnosti: {area_name} ({position}/{total}). 🌡️ 🧊 Indikátor plísní · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Vyloučit senzory vzduchu uvnitř"
+          "excluded_indoor_entities": "Vyloučit senzory vzduchu uvnitř",
+          "mold_indoor_temperature": "Místnosti · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikátor plísní · 🧊 °C",
+          "mold_recalibrate": "Indikátor plísní · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Vyberte: Vyloučit senzory vzduchu uvnitř · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Vyberte: Vyloučit senzory vzduchu uvnitř · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Místnosti: 🌡️ °C/°F · Indikátor plísní.",
+          "mold_critical_temperature_c": "🧊 Indikátor plísní · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indikátor plísní · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Venku · °C (≤)",
           "max_outdoor_humidity": "Venku · RH (%) (≤)",
           "max_wind_kmh": "Počasí a výstrahy · km/h (≤)",
-          "max_age_minutes": "⏱ · Otevřete (min, ≤)"
+          "max_age_minutes": "⏱ · Otevřete (min, ≤)",
+          "indoor_mold": "Indikátor plísní · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Zkontrolujte: Místnosti · Měření (0).",
       "invalid_repeat_minutes": "Neplatný výběr: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nedostupné: conversation.process.",
-      "invalid_ai_agent": "Neplatný výběr: conversation.*."
+      "invalid_ai_agent": "Neplatný výběr: conversation.*.",
+      "invalid_mold_temperature_sensor": "Místnosti · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Místnosti · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikátor plísní · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikátor plísní · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikátor plísní · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — již nastaveno."
@@ -137,8 +151,8 @@
         "description": "Vyberte: Místnosti / Počasí a výstrahy / Oznámení (volitelně) / Pokročilé limity",
         "menu_options": {
           "areas": "Místnosti",
+          "indoor_sensors": "Místnosti · Indikátor plísní",
           "window_sensors": "Vyloučit senzory oken",
-          "indoor_sensors": "Vyloučit senzory vzduchu uvnitř",
           "outdoor": "Kvalita venkovního vzduchu",
           "weather": "Počasí a výstrahy",
           "delivery": "Oznámení (volitelně)",
@@ -159,20 +173,28 @@
         "title": "Místnosti",
         "description": "1 · 🪟 Místnosti. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Místnosti"
+          "areas": "Místnosti",
+          "use_mold_indicator": "Indikátor plísní · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Vyberte: Místnosti · 🪟 binary_sensor (device_class: window)."
+          "areas": "Vyberte: Místnosti · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikátor plísní · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Vyloučit senzory vzduchu uvnitř",
-        "description": "Místnosti: {area_name} ({position}/{total}). Vyloučit senzory vzduchu uvnitř. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Místnosti · Indikátor plísní",
+        "description": "Místnosti: {area_name} ({position}/{total}). 🌡️ 🧊 Indikátor plísní · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Vyloučit senzory vzduchu uvnitř"
+          "excluded_indoor_entities": "Vyloučit senzory vzduchu uvnitř",
+          "mold_indoor_temperature": "Místnosti · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikátor plísní · 🧊 °C",
+          "mold_recalibrate": "Indikátor plísní · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Vyberte: Vyloučit senzory vzduchu uvnitř · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Vyberte: Vyloučit senzory vzduchu uvnitř · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Místnosti: 🌡️ °C/°F · Indikátor plísní.",
+          "mold_critical_temperature_c": "🧊 Indikátor plísní · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Indikátor plísní · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Venku · °C (≤)",
           "max_outdoor_humidity": "Venku · RH (%) (≤)",
           "max_wind_kmh": "Počasí a výstrahy · km/h (≤)",
-          "max_age_minutes": "⏱ · Otevřete (min, ≤)"
+          "max_age_minutes": "⏱ · Otevřete (min, ≤)",
+          "indoor_mold": "Indikátor plísní · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Zkontrolujte: Místnosti · Měření (0).",
       "invalid_repeat_minutes": "Neplatný výběr: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Nedostupné: conversation.process.",
-      "invalid_ai_agent": "Neplatný výběr: conversation.*."
+      "invalid_ai_agent": "Neplatný výběr: conversation.*.",
+      "invalid_mold_temperature_sensor": "Místnosti · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Místnosti · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikátor plísní · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikátor plísní · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikátor plísní · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

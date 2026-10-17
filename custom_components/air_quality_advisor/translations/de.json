@@ -6,10 +6,12 @@
         "title": "Bereiche",
         "description": "Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.",
         "data": {
-          "areas": "Zu überwachende Bereiche"
+          "areas": "Zu überwachende Bereiche",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
         },
         "data_description": {
-          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl."
+          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Raumluftsensoren ausschließen",
-        "description": "Raum: {area_name} ({position}/{total}). Wähle Luftqualitäts- und Feuchtesensoren, die in diesem Raum AUSGESCHLOSSEN werden sollen. Angezeigt werden Gerätename, Entitätsname und ID. Ohne Auswahl bleiben alle unterstützten Sensoren aktiv.",
+        "title": "Raumeinstellungen – Innenluft und Schimmel",
+        "description": "Raum: {area_name} ({position}/{total}). Hier Luftsensoren ausschließen. Für die Schimmelanzeige die kälteste Oberfläche (z. B. Außenwandecke oder Fensterrahmen) jetzt mit einem Thermometer messen, während Raum- und Außentemperatur stabil sind. Temperatur unten in °C eingeben; leer lassen, um später zu kalibrieren.",
         "data": {
-          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren"
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
+          "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
+          "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren"
         },
         "data_description": {
-          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC."
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
+          "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
+          "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben."
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Maximale Außentemperatur (°C)",
           "max_outdoor_humidity": "Maximale Außenluftfeuchte (%)",
           "max_wind_kmh": "Maximale Windgeschwindigkeit (km/h)",
-          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)"
+          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)",
+          "indoor_mold": "Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl.",
       "invalid_repeat_minutes": "Eine ganze Zahl zwischen 0 und 1440 Minuten eingeben; 0 deaktiviert die Wiederholung.",
       "missing_ai_service": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
-      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten."
+      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten.",
+      "invalid_mold_temperature_sensor": "Wähle einen gültigen Temperatursensor dieses Raums.",
+      "missing_mold_indoor_temperature": "Der Raumtemperatursensor liefert keinen gültigen aktuellen Messwert.",
+      "missing_mold_outdoor_temperature": "Keine gewählte Wetterentität liefert eine aktuelle Außentemperatur.",
+      "invalid_mold_surface_temperature": "Gib eine gültige gemessene Oberflächentemperatur in °C ein.",
+      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied."
     },
     "abort": {
       "already_configured": "Air Quality Advisor ist bereits eingerichtet."
@@ -137,8 +151,8 @@
         "description": "Wähle eine Einstellungsgruppe. Alle anderen Einstellungen bleiben unverändert.",
         "menu_options": {
           "areas": "Bereiche",
+          "indoor_sensors": "Raumeinstellungen – Innenluft und Schimmel",
           "window_sensors": "Fenstersensoren ausschließen",
-          "indoor_sensors": "Raumluftsensoren ausschließen",
           "outdoor": "Außenluftqualität",
           "weather": "Wetter und Warnungen",
           "delivery": "Ansagen (optional)",
@@ -159,20 +173,28 @@
         "title": "Bereiche",
         "description": "Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.",
         "data": {
-          "areas": "Zu überwachende Bereiche"
+          "areas": "Zu überwachende Bereiche",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
         },
         "data_description": {
-          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl."
+          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
         }
       },
       "indoor_sensors": {
-        "title": "Raumluftsensoren ausschließen",
-        "description": "Raum: {area_name} ({position}/{total}). Wähle Luftqualitäts- und Feuchtesensoren, die in diesem Raum AUSGESCHLOSSEN werden sollen. Angezeigt werden Gerätename, Entitätsname und ID. Ohne Auswahl bleiben alle unterstützten Sensoren aktiv.",
+        "title": "Raumeinstellungen – Innenluft und Schimmel",
+        "description": "Raum: {area_name} ({position}/{total}). Hier Luftsensoren ausschließen. Für die Schimmelanzeige die kälteste Oberfläche (z. B. Außenwandecke oder Fensterrahmen) jetzt mit einem Thermometer messen, während Raum- und Außentemperatur stabil sind. Temperatur unten in °C eingeben; leer lassen, um später zu kalibrieren.",
         "data": {
-          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren"
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
+          "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
+          "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren"
         },
         "data_description": {
-          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC."
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
+          "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
+          "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben."
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Maximale Außentemperatur (°C)",
           "max_outdoor_humidity": "Maximale Außenluftfeuchte (%)",
           "max_wind_kmh": "Maximale Windgeschwindigkeit (km/h)",
-          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)"
+          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)",
+          "indoor_mold": "Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl.",
       "invalid_repeat_minutes": "Eine ganze Zahl zwischen 0 und 1440 Minuten eingeben; 0 deaktiviert die Wiederholung.",
       "missing_ai_service": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
-      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten."
+      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten.",
+      "invalid_mold_temperature_sensor": "Wähle einen gültigen Temperatursensor dieses Raums.",
+      "missing_mold_indoor_temperature": "Der Raumtemperatursensor liefert keinen gültigen aktuellen Messwert.",
+      "missing_mold_outdoor_temperature": "Keine gewählte Wetterentität liefert eine aktuelle Außentemperatur.",
+      "invalid_mold_surface_temperature": "Gib eine gültige gemessene Oberflächentemperatur in °C ein.",
+      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied."
     }
   },
   "entity": {

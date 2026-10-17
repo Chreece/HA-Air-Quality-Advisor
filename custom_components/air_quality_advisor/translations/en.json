@@ -6,10 +6,12 @@
         "title": "Areas",
         "description": "First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.",
         "data": {
-          "areas": "Areas to monitor"
+          "areas": "Areas to monitor",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
         },
         "data_description": {
-          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed."
+          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Indoor air quality exclusions",
-        "description": "Room: {area_name} ({position}/{total}). Choose the air-quality and humidity sensors to EXCLUDE from this room. Each choice identifies its device, entity name and ID. Leave everything unselected to monitor all supported sensors.",
+        "title": "Room settings — indoor air and mold",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.",
         "data": {
-          "excluded_indoor_entities": "Sensors to exclude in this room"
+          "excluded_indoor_entities": "Sensors to exclude in this room",
+          "mold_indoor_temperature": "Room temperature sensor for mold calibration",
+          "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings"
         },
         "data_description": {
-          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all."
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
+          "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
+          "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration."
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Maximum outdoor temperature (°C)",
           "max_outdoor_humidity": "Maximum outdoor humidity (%)",
           "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)",
+          "indoor_mold": "Mold indication triggering ventilation (estimated surface RH, %)"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
       "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
       "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent.",
+      "invalid_mold_temperature_sensor": "Choose a valid temperature sensor assigned to this room.",
+      "missing_mold_indoor_temperature": "The room temperature sensor has no valid recent Celsius/Fahrenheit reading. Try again when it is available.",
+      "missing_mold_outdoor_temperature": "No selected weather entity supplies a valid recent outdoor temperature. Configure weather first or wait for a valid measurement.",
+      "invalid_mold_surface_temperature": "Enter a finite measured surface temperature in °C.",
+      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings."
     },
     "abort": {
       "already_configured": "Air Quality Advisor is already configured."
@@ -137,8 +151,8 @@
         "description": "Choose one section. All other settings stay unchanged.",
         "menu_options": {
           "areas": "Areas",
+          "indoor_sensors": "Room settings — indoor air and mold",
           "window_sensors": "Window sensor exclusions",
-          "indoor_sensors": "Indoor air quality exclusions",
           "outdoor": "Outdoor air quality",
           "weather": "Weather and warnings",
           "delivery": "Announcements (optional)",
@@ -159,20 +173,28 @@
         "title": "Areas",
         "description": "First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.",
         "data": {
-          "areas": "Areas to monitor"
+          "areas": "Areas to monitor",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
         },
         "data_description": {
-          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed."
+          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
         }
       },
       "indoor_sensors": {
-        "title": "Indoor air quality exclusions",
-        "description": "Room: {area_name} ({position}/{total}). Choose the air-quality and humidity sensors to EXCLUDE from this room. Each choice identifies its device, entity name and ID. Leave everything unselected to monitor all supported sensors.",
+        "title": "Room settings — indoor air and mold",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.",
         "data": {
-          "excluded_indoor_entities": "Sensors to exclude in this room"
+          "excluded_indoor_entities": "Sensors to exclude in this room",
+          "mold_indoor_temperature": "Room temperature sensor for mold calibration",
+          "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings"
         },
         "data_description": {
-          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all."
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
+          "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
+          "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration."
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Maximum outdoor temperature (°C)",
           "max_outdoor_humidity": "Maximum outdoor humidity (%)",
           "max_wind_kmh": "Maximum wind speed (km/h)",
-          "max_age_minutes": "Maximum age of any outdoor reading (minutes)"
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)",
+          "indoor_mold": "Mold indication triggering ventilation (estimated surface RH, %)"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
       "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
       "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
-      "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent.",
+      "invalid_mold_temperature_sensor": "Choose a valid temperature sensor assigned to this room.",
+      "missing_mold_indoor_temperature": "The room temperature sensor has no valid recent Celsius/Fahrenheit reading. Try again when it is available.",
+      "missing_mold_outdoor_temperature": "No selected weather entity supplies a valid recent outdoor temperature. Configure weather first or wait for a valid measurement.",
+      "invalid_mold_surface_temperature": "Enter a finite measured surface temperature in °C.",
+      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings."
     }
   },
   "entity": {

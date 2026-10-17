@@ -6,10 +6,12 @@
         "title": "اتاق‌ها",
         "description": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window).",
         "data": {
-          "areas": "اتاق‌ها"
+          "areas": "اتاق‌ها",
+          "use_mold_indicator": "شاخص کپک · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "انتخاب کنید: اتاق‌ها · 🪟 binary_sensor (device_class: window)."
+          "areas": "انتخاب کنید: اتاق‌ها · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 شاخص کپک · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "حذف حسگرهای هوای داخل",
-        "description": "اتاق‌ها: {area_name} ({position}/{total}). حذف حسگرهای هوای داخل. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "اتاق‌ها · شاخص کپک",
+        "description": "اتاق‌ها: {area_name} ({position}/{total}). 🌡️ 🧊 شاخص کپک · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "حذف حسگرهای هوای داخل"
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل",
+          "mold_indoor_temperature": "اتاق‌ها · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "شاخص کپک · 🧊 °C",
+          "mold_recalibrate": "شاخص کپک · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "انتخاب کنید: حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "انتخاب کنید: حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "اتاق‌ها: 🌡️ °C/°F · شاخص کپک.",
+          "mold_critical_temperature_c": "🧊 شاخص کپک · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ شاخص کپک · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "بیرون · °C (≤)",
           "max_outdoor_humidity": "بیرون · RH (%) (≤)",
           "max_wind_kmh": "آب‌وهوا و هشدارها · km/h (≤)",
-          "max_age_minutes": "⏱ · باز کنید (min, ≤)"
+          "max_age_minutes": "⏱ · باز کنید (min, ≤)",
+          "indoor_mold": "شاخص کپک · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "بررسی کنید: اتاق‌ها · اندازه‌گیری‌ها (0).",
       "invalid_repeat_minutes": "انتخاب نامعتبر: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "در دسترس نیست: conversation.process.",
-      "invalid_ai_agent": "انتخاب نامعتبر: conversation.*."
+      "invalid_ai_agent": "انتخاب نامعتبر: conversation.*.",
+      "invalid_mold_temperature_sensor": "اتاق‌ها · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "اتاق‌ها · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "شاخص کپک · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "شاخص کپک · 🧊 °C ⚠",
+      "invalid_mold_calibration": "شاخص کپک · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — قبلاً تنظیم شده."
@@ -137,8 +151,8 @@
         "description": "انتخاب کنید: اتاق‌ها / آب‌وهوا و هشدارها / اعلان‌ها (اختیاری) / آستانه‌های پیشرفته",
         "menu_options": {
           "areas": "اتاق‌ها",
+          "indoor_sensors": "اتاق‌ها · شاخص کپک",
           "window_sensors": "حذف حسگرهای پنجره",
-          "indoor_sensors": "حذف حسگرهای هوای داخل",
           "outdoor": "کیفیت هوای بیرون",
           "weather": "آب‌وهوا و هشدارها",
           "delivery": "اعلان‌ها (اختیاری)",
@@ -159,20 +173,28 @@
         "title": "اتاق‌ها",
         "description": "1 · 🪟 اتاق‌ها. binary_sensor (device_class: window).",
         "data": {
-          "areas": "اتاق‌ها"
+          "areas": "اتاق‌ها",
+          "use_mold_indicator": "شاخص کپک · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "انتخاب کنید: اتاق‌ها · 🪟 binary_sensor (device_class: window)."
+          "areas": "انتخاب کنید: اتاق‌ها · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 شاخص کپک · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "حذف حسگرهای هوای داخل",
-        "description": "اتاق‌ها: {area_name} ({position}/{total}). حذف حسگرهای هوای داخل. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "اتاق‌ها · شاخص کپک",
+        "description": "اتاق‌ها: {area_name} ({position}/{total}). 🌡️ 🧊 شاخص کپک · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "حذف حسگرهای هوای داخل"
+          "excluded_indoor_entities": "حذف حسگرهای هوای داخل",
+          "mold_indoor_temperature": "اتاق‌ها · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "شاخص کپک · 🧊 °C",
+          "mold_recalibrate": "شاخص کپک · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "انتخاب کنید: حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "انتخاب کنید: حذف حسگرهای هوای داخل · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "اتاق‌ها: 🌡️ °C/°F · شاخص کپک.",
+          "mold_critical_temperature_c": "🧊 شاخص کپک · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ شاخص کپک · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "بیرون · °C (≤)",
           "max_outdoor_humidity": "بیرون · RH (%) (≤)",
           "max_wind_kmh": "آب‌وهوا و هشدارها · km/h (≤)",
-          "max_age_minutes": "⏱ · باز کنید (min, ≤)"
+          "max_age_minutes": "⏱ · باز کنید (min, ≤)",
+          "indoor_mold": "شاخص کپک · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "بررسی کنید: اتاق‌ها · اندازه‌گیری‌ها (0).",
       "invalid_repeat_minutes": "انتخاب نامعتبر: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "در دسترس نیست: conversation.process.",
-      "invalid_ai_agent": "انتخاب نامعتبر: conversation.*."
+      "invalid_ai_agent": "انتخاب نامعتبر: conversation.*.",
+      "invalid_mold_temperature_sensor": "اتاق‌ها · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "اتاق‌ها · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "شاخص کپک · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "شاخص کپک · 🧊 °C ⚠",
+      "invalid_mold_calibration": "شاخص کپک · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

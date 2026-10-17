@@ -6,10 +6,12 @@
         "title": "Huoneet",
         "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Huoneet"
+          "areas": "Huoneet",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window)."
+          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Ohita sisäilma-anturit",
-        "description": "Huoneet: {area_name} ({position}/{total}). Ohita sisäilma-anturit. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Huoneet · Homeindikaattori",
+        "description": "Huoneet: {area_name} ({position}/{total}). 🌡️ 🧊 Homeindikaattori · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Ohita sisäilma-anturit"
+          "excluded_indoor_entities": "Ohita sisäilma-anturit",
+          "mold_indoor_temperature": "Huoneet · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Homeindikaattori · 🧊 °C",
+          "mold_recalibrate": "Homeindikaattori · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Huoneet: 🌡️ °C/°F · Homeindikaattori.",
+          "mold_critical_temperature_c": "🧊 Homeindikaattori · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Homeindikaattori · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Ulkona · °C (≤)",
           "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
           "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
-          "max_age_minutes": "⏱ · Avaa (min, ≤)"
+          "max_age_minutes": "⏱ · Avaa (min, ≤)",
+          "indoor_mold": "Homeindikaattori · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Tarkista: Huoneet · Mittaukset (0).",
       "invalid_repeat_minutes": "Virheellinen valinta: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ei saatavilla: conversation.process.",
-      "invalid_ai_agent": "Virheellinen valinta: conversation.*."
+      "invalid_ai_agent": "Virheellinen valinta: conversation.*.",
+      "invalid_mold_temperature_sensor": "Huoneet · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Huoneet · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Homeindikaattori · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Homeindikaattori · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Homeindikaattori · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — on jo määritetty."
@@ -137,8 +151,8 @@
         "description": "Valitse: Huoneet / Sää ja varoitukset / Ilmoitukset (valinnainen) / Lisäraja-arvot",
         "menu_options": {
           "areas": "Huoneet",
+          "indoor_sensors": "Huoneet · Homeindikaattori",
           "window_sensors": "Ohita ikkuna-anturit",
-          "indoor_sensors": "Ohita sisäilma-anturit",
           "outdoor": "Ulkoilman laatu",
           "weather": "Sää ja varoitukset",
           "delivery": "Ilmoitukset (valinnainen)",
@@ -159,20 +173,28 @@
         "title": "Huoneet",
         "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Huoneet"
+          "areas": "Huoneet",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window)."
+          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Ohita sisäilma-anturit",
-        "description": "Huoneet: {area_name} ({position}/{total}). Ohita sisäilma-anturit. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Huoneet · Homeindikaattori",
+        "description": "Huoneet: {area_name} ({position}/{total}). 🌡️ 🧊 Homeindikaattori · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Ohita sisäilma-anturit"
+          "excluded_indoor_entities": "Ohita sisäilma-anturit",
+          "mold_indoor_temperature": "Huoneet · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Homeindikaattori · 🧊 °C",
+          "mold_recalibrate": "Homeindikaattori · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Huoneet: 🌡️ °C/°F · Homeindikaattori.",
+          "mold_critical_temperature_c": "🧊 Homeindikaattori · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Homeindikaattori · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Ulkona · °C (≤)",
           "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
           "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
-          "max_age_minutes": "⏱ · Avaa (min, ≤)"
+          "max_age_minutes": "⏱ · Avaa (min, ≤)",
+          "indoor_mold": "Homeindikaattori · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Tarkista: Huoneet · Mittaukset (0).",
       "invalid_repeat_minutes": "Virheellinen valinta: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Ei saatavilla: conversation.process.",
-      "invalid_ai_agent": "Virheellinen valinta: conversation.*."
+      "invalid_ai_agent": "Virheellinen valinta: conversation.*.",
+      "invalid_mold_temperature_sensor": "Huoneet · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Huoneet · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Homeindikaattori · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Homeindikaattori · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Homeindikaattori · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

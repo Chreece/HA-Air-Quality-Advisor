@@ -6,10 +6,12 @@
         "title": "الغرف",
         "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
         "data": {
-          "areas": "الغرف"
+          "areas": "الغرف",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window)."
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "استبعاد مستشعرات الهواء الداخلي",
-        "description": "الغرف: {area_name} ({position}/{total}). استبعاد مستشعرات الهواء الداخلي. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "الغرف · مؤشر العفن",
+        "description": "الغرف: {area_name} ({position}/{total}). 🌡️ 🧊 مؤشر العفن · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي",
+          "mold_indoor_temperature": "الغرف · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "مؤشر العفن · 🧊 °C",
+          "mold_recalibrate": "مؤشر العفن · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "الغرف: 🌡️ °C/°F · مؤشر العفن.",
+          "mold_critical_temperature_c": "🧊 مؤشر العفن · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ مؤشر العفن · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "الخارج · °C (≤)",
           "max_outdoor_humidity": "الخارج · RH (%) (≤)",
           "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
-          "max_age_minutes": "⏱ · افتح (min, ≤)"
+          "max_age_minutes": "⏱ · افتح (min, ≤)",
+          "indoor_mold": "مؤشر العفن · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
       "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "غير متاح: conversation.process.",
-      "invalid_ai_agent": "اختيار غير صالح: conversation.*."
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*.",
+      "invalid_mold_temperature_sensor": "الغرف · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "الغرف · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "مؤشر العفن · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "مؤشر العفن · 🧊 °C ⚠",
+      "invalid_mold_calibration": "مؤشر العفن · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — تم الإعداد مسبقًا."
@@ -137,8 +151,8 @@
         "description": "اختر: الغرف / الطقس والتحذيرات / الإعلانات (اختياري) / حدود متقدمة",
         "menu_options": {
           "areas": "الغرف",
+          "indoor_sensors": "الغرف · مؤشر العفن",
           "window_sensors": "استبعاد مستشعرات النوافذ",
-          "indoor_sensors": "استبعاد مستشعرات الهواء الداخلي",
           "outdoor": "جودة الهواء الخارجي",
           "weather": "الطقس والتحذيرات",
           "delivery": "الإعلانات (اختياري)",
@@ -159,20 +173,28 @@
         "title": "الغرف",
         "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
         "data": {
-          "areas": "الغرف"
+          "areas": "الغرف",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window)."
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "استبعاد مستشعرات الهواء الداخلي",
-        "description": "الغرف: {area_name} ({position}/{total}). استبعاد مستشعرات الهواء الداخلي. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "الغرف · مؤشر العفن",
+        "description": "الغرف: {area_name} ({position}/{total}). 🌡️ 🧊 مؤشر العفن · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي"
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي",
+          "mold_indoor_temperature": "الغرف · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "مؤشر العفن · 🧊 °C",
+          "mold_recalibrate": "مؤشر العفن · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "الغرف: 🌡️ °C/°F · مؤشر العفن.",
+          "mold_critical_temperature_c": "🧊 مؤشر العفن · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ مؤشر العفن · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "الخارج · °C (≤)",
           "max_outdoor_humidity": "الخارج · RH (%) (≤)",
           "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
-          "max_age_minutes": "⏱ · افتح (min, ≤)"
+          "max_age_minutes": "⏱ · افتح (min, ≤)",
+          "indoor_mold": "مؤشر العفن · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
       "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "غير متاح: conversation.process.",
-      "invalid_ai_agent": "اختيار غير صالح: conversation.*."
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*.",
+      "invalid_mold_temperature_sensor": "الغرف · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "الغرف · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "مؤشر العفن · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "مؤشر العفن · 🧊 °C ⚠",
+      "invalid_mold_calibration": "مؤشر العفن · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

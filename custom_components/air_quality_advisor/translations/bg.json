@@ -6,10 +6,12 @@
         "title": "Стаи",
         "description": "1 · 🪟 Стаи. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Стаи"
+          "areas": "Стаи",
+          "use_mold_indicator": "Индикатор за мухъл · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Изберете: Стаи · 🪟 binary_sensor (device_class: window)."
+          "areas": "Изберете: Стаи · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор за мухъл · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Изключване на датчици за въздух на закрито",
-        "description": "Стаи: {area_name} ({position}/{total}). Изключване на датчици за въздух на закрито. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Стаи · Индикатор за мухъл",
+        "description": "Стаи: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор за мухъл · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито"
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито",
+          "mold_indoor_temperature": "Стаи · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор за мухъл · 🧊 °C",
+          "mold_recalibrate": "Индикатор за мухъл · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изберете: Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Изберете: Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Стаи: 🌡️ °C/°F · Индикатор за мухъл.",
+          "mold_critical_temperature_c": "🧊 Индикатор за мухъл · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор за мухъл · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Навън · °C (≤)",
           "max_outdoor_humidity": "Навън · RH (%) (≤)",
           "max_wind_kmh": "Време и предупреждения · km/h (≤)",
-          "max_age_minutes": "⏱ · Отворете (min, ≤)"
+          "max_age_minutes": "⏱ · Отворете (min, ≤)",
+          "indoor_mold": "Индикатор за мухъл · ≥ 70%"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Проверете: Стаи · Измервания (0).",
       "invalid_repeat_minutes": "Невалиден избор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недостъпно: conversation.process.",
-      "invalid_ai_agent": "Невалиден избор: conversation.*."
+      "invalid_ai_agent": "Невалиден избор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Стаи · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Стаи · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор за мухъл · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор за мухъл · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор за мухъл · ΔT ≥ 3°C ⚠"
     },
     "abort": {
       "already_configured": "Air Quality Advisor — вече е настроен."
@@ -137,8 +151,8 @@
         "description": "Изберете: Стаи / Време и предупреждения / Съобщения (по избор) / Разширени прагове",
         "menu_options": {
           "areas": "Стаи",
+          "indoor_sensors": "Стаи · Индикатор за мухъл",
           "window_sensors": "Изключване на датчици за прозорци",
-          "indoor_sensors": "Изключване на датчици за въздух на закрито",
           "outdoor": "Качество на външния въздух",
           "weather": "Време и предупреждения",
           "delivery": "Съобщения (по избор)",
@@ -159,20 +173,28 @@
         "title": "Стаи",
         "description": "1 · 🪟 Стаи. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Стаи"
+          "areas": "Стаи",
+          "use_mold_indicator": "Индикатор за мухъл · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Изберете: Стаи · 🪟 binary_sensor (device_class: window)."
+          "areas": "Изберете: Стаи · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Индикатор за мухъл · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
       "indoor_sensors": {
-        "title": "Изключване на датчици за въздух на закрито",
-        "description": "Стаи: {area_name} ({position}/{total}). Изключване на датчици за въздух на закрито. ☑ 🚫 · ☐ ✓. CO₂, AQI, PM2.5, PM10, VOC, RH.",
+        "title": "Стаи · Индикатор за мухъл",
+        "description": "Стаи: {area_name} ({position}/{total}). 🌡️ 🧊 Индикатор за мухъл · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
         "data": {
-          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито"
+          "excluded_indoor_entities": "Изключване на датчици за въздух на закрито",
+          "mold_indoor_temperature": "Стаи · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Индикатор за мухъл · 🧊 °C",
+          "mold_recalibrate": "Индикатор за мухъл · ↻ 🌡️"
         },
         "data_description": {
-          "excluded_indoor_entities": "Изберете: Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH."
+          "excluded_indoor_entities": "Изберете: Изключване на датчици за въздух на закрито · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Стаи: 🌡️ °C/°F · Индикатор за мухъл.",
+          "mold_critical_temperature_c": "🧊 Индикатор за мухъл · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "↻ Индикатор за мухъл · 🌡️ °C"
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Навън · °C (≤)",
           "max_outdoor_humidity": "Навън · RH (%) (≤)",
           "max_wind_kmh": "Време и предупреждения · km/h (≤)",
-          "max_age_minutes": "⏱ · Отворете (min, ≤)"
+          "max_age_minutes": "⏱ · Отворете (min, ≤)",
+          "indoor_mold": "Индикатор за мухъл · ≥ 70%"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Проверете: Стаи · Измервания (0).",
       "invalid_repeat_minutes": "Невалиден избор: 0–1440 min (0 = ⛔).",
       "missing_ai_service": "Недостъпно: conversation.process.",
-      "invalid_ai_agent": "Невалиден избор: conversation.*."
+      "invalid_ai_agent": "Невалиден избор: conversation.*.",
+      "invalid_mold_temperature_sensor": "Стаи · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Стаи · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Индикатор за мухъл · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Индикатор за мухъл · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Индикатор за мухъл · ΔT ≥ 3°C ⚠"
     }
   },
   "entity": {

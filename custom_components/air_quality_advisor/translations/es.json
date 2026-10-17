@@ -6,10 +6,12 @@
         "title": "Áreas",
         "description": "Primero selecciona las habitaciones. Se preseleccionan las que tienen sensores binarios de clase Ventana; las cubiertas no cuentan. Después revisa las exclusiones. Si una habitación se queda sin contactos útiles, vuelve a revisar la selección.",
         "data": {
-          "areas": "Áreas supervisadas"
+          "areas": "Áreas supervisadas",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
         },
         "data_description": {
-          "areas": "Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección."
+          "areas": "Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
         }
       },
       "window_sensors": {
@@ -23,13 +25,19 @@
         }
       },
       "indoor_sensors": {
-        "title": "Excluir sensores de aire interior",
-        "description": "Habitación: {area_name} ({position}/{total}). Selecciona los sensores de calidad del aire y humedad que deseas EXCLUIR de esta habitación. Se muestran dispositivo, nombre de entidad e ID. Deja la selección vacía para usar todos los sensores compatibles.",
+        "title": "Configuración por habitación — aire y moho",
+        "description": "Habitación: {area_name} ({position}/{total}). Excluye aquí sensores del aire. Para el indicador de moho, mide ahora la superficie más fría (esquina exterior o marco de ventana) con un termómetro, con las temperaturas interior y exterior estables. Introduce los °C o deja vacío para calibrar después.",
         "data": {
-          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación"
+          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación",
+          "mold_indoor_temperature": "Sensor de temperatura interior para calibración",
+          "mold_critical_temperature_c": "Temperatura medida de la superficie más fría (°C)",
+          "mold_recalibrate": "Recalibrar con las temperaturas actuales"
         },
         "data_description": {
-          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV."
+          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV.",
+          "mold_indoor_temperature": "Elige un sensor de temperatura de esta habitación (°C/°F). La temperatura interior y exterior se capturan al guardar una calibración nueva.",
+          "mold_critical_temperature_c": "Mide a la vez la superficie más fría y las temperaturas interior y exterior. Debe haber al menos 3°C de diferencia interior-exterior. Se calcula un factor de calibración persistente, no una temperatura de superficie fija. Borra el valor para eliminar la calibración.",
+          "mold_recalibrate": "Actívalo solo después de medir de nuevo la superficie más fría. Cambiar sensores excluidos no altera la calibración anterior."
         }
       },
       "outdoor": {
@@ -103,7 +111,8 @@
           "max_outdoor_temp": "Temperatura exterior máxima (°C)",
           "max_outdoor_humidity": "Humedad exterior máxima (%)",
           "max_wind_kmh": "Velocidad máxima del viento (km/h)",
-          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)"
+          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)",
+          "indoor_mold": "Umbral de moho para ventilar (humedad superficial estimada, %)"
         }
       }
     },
@@ -124,7 +133,12 @@
       "review_areas_after_exclusions": "Algunas habitaciones seleccionadas ya no tienen contactos de ventana tras las exclusiones. Revisa la selección.",
       "invalid_repeat_minutes": "Introduce un número entero entre 0 y 1440 minutos; 0 desactiva las repeticiones.",
       "missing_ai_service": "La acción conversation.process de Home Assistant no está disponible.",
-      "invalid_ai_agent": "Selecciona un agente de conversación compatible de Home Assistant."
+      "invalid_ai_agent": "Selecciona un agente de conversación compatible de Home Assistant.",
+      "invalid_mold_temperature_sensor": "Selecciona un sensor de temperatura válido de esta habitación.",
+      "missing_mold_indoor_temperature": "El sensor interior no tiene una medida reciente válida.",
+      "missing_mold_outdoor_temperature": "Ninguna entidad meteorológica elegida dispone de temperatura exterior reciente.",
+      "invalid_mold_surface_temperature": "Introduce una temperatura superficial medida válida en °C.",
+      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera."
     },
     "abort": {
       "already_configured": "Air Quality Advisor ya está configurado."
@@ -137,8 +151,8 @@
         "description": "Elige una sección. El resto de ajustes permanecerá sin cambios.",
         "menu_options": {
           "areas": "Áreas",
+          "indoor_sensors": "Configuración por habitación — aire y moho",
           "window_sensors": "Excluir sensores de ventana",
-          "indoor_sensors": "Excluir sensores de aire interior",
           "outdoor": "Calidad del aire exterior",
           "weather": "Tiempo y alertas",
           "delivery": "Anuncios (opcional)",
@@ -159,20 +173,28 @@
         "title": "Áreas",
         "description": "Primero selecciona las habitaciones. Se preseleccionan las que tienen sensores binarios de clase Ventana; las cubiertas no cuentan. Después revisa las exclusiones. Si una habitación se queda sin contactos útiles, vuelve a revisar la selección.",
         "data": {
-          "areas": "Áreas supervisadas"
+          "areas": "Áreas supervisadas",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
         },
         "data_description": {
-          "areas": "Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección."
+          "areas": "Primero las habitaciones. Solo sensores binarios de clase Ventana, no cubiertas. Después exclusiones y, si es necesario, nueva selección.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
         }
       },
       "indoor_sensors": {
-        "title": "Excluir sensores de aire interior",
-        "description": "Habitación: {area_name} ({position}/{total}). Selecciona los sensores de calidad del aire y humedad que deseas EXCLUIR de esta habitación. Se muestran dispositivo, nombre de entidad e ID. Deja la selección vacía para usar todos los sensores compatibles.",
+        "title": "Configuración por habitación — aire y moho",
+        "description": "Habitación: {area_name} ({position}/{total}). Excluye aquí sensores del aire. Para el indicador de moho, mide ahora la superficie más fría (esquina exterior o marco de ventana) con un termómetro, con las temperaturas interior y exterior estables. Introduce los °C o deja vacío para calibrar después.",
         "data": {
-          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación"
+          "excluded_indoor_entities": "Sensores que se excluyen en esta habitación",
+          "mold_indoor_temperature": "Sensor de temperatura interior para calibración",
+          "mold_critical_temperature_c": "Temperatura medida de la superficie más fría (°C)",
+          "mold_recalibrate": "Recalibrar con las temperaturas actuales"
         },
         "data_description": {
-          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV."
+          "excluded_indoor_entities": "Se ignorarán únicamente en esta habitación al calcular recomendaciones y mostrar el panel. Son compatibles humedad, CO₂, AQI, PM2.5, PM10 y COV.",
+          "mold_indoor_temperature": "Elige un sensor de temperatura de esta habitación (°C/°F). La temperatura interior y exterior se capturan al guardar una calibración nueva.",
+          "mold_critical_temperature_c": "Mide a la vez la superficie más fría y las temperaturas interior y exterior. Debe haber al menos 3°C de diferencia interior-exterior. Se calcula un factor de calibración persistente, no una temperatura de superficie fija. Borra el valor para eliminar la calibración.",
+          "mold_recalibrate": "Actívalo solo después de medir de nuevo la superficie más fría. Cambiar sensores excluidos no altera la calibración anterior."
         }
       },
       "outdoor": {
@@ -246,7 +268,8 @@
           "max_outdoor_temp": "Temperatura exterior máxima (°C)",
           "max_outdoor_humidity": "Humedad exterior máxima (%)",
           "max_wind_kmh": "Velocidad máxima del viento (km/h)",
-          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)"
+          "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)",
+          "indoor_mold": "Umbral de moho para ventilar (humedad superficial estimada, %)"
         }
       }
     },
@@ -267,7 +290,12 @@
       "review_areas_after_exclusions": "Algunas habitaciones seleccionadas ya no tienen contactos de ventana tras las exclusiones. Revisa la selección.",
       "invalid_repeat_minutes": "Introduce un número entero entre 0 y 1440 minutos; 0 desactiva las repeticiones.",
       "missing_ai_service": "La acción conversation.process de Home Assistant no está disponible.",
-      "invalid_ai_agent": "Selecciona un agente de conversación compatible de Home Assistant."
+      "invalid_ai_agent": "Selecciona un agente de conversación compatible de Home Assistant.",
+      "invalid_mold_temperature_sensor": "Selecciona un sensor de temperatura válido de esta habitación.",
+      "missing_mold_indoor_temperature": "El sensor interior no tiene una medida reciente válida.",
+      "missing_mold_outdoor_temperature": "Ninguna entidad meteorológica elegida dispone de temperatura exterior reciente.",
+      "invalid_mold_surface_temperature": "Introduce una temperatura superficial medida válida en °C.",
+      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera."
     }
   },
   "entity": {
