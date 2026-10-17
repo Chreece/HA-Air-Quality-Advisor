@@ -63,9 +63,6 @@ assert.ok(card.shadowRoot.innerHTML.includes('donut'));
 assert.ok(card.shadowRoot.innerHTML.includes('metric-grid'));
 assert.ok(!card.shadowRoot.innerHTML.includes('hass.callService'));
 assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_quality_advisor_recommendations').config.type,'custom:air-quality-advisor-card');
-console.log('Dashboard card frontend tests passed');
-
-
 // Mold mode renders a derived surface estimate and valid-RH sensor average.
 {
   const mold = JSON.parse(JSON.stringify(input));
@@ -82,5 +79,6 @@ console.log('Dashboard card frontend tests passed');
   }};
   assert.ok(card.shadowRoot.innerHTML.includes('Ένδειξη μούχλας'));
   assert.ok(card.shadowRoot.innerHTML.includes('n=2'));
-  assert.ok(card.shadowRoot.innerHTML.includes('13.2°C'));
+  assert.match(card.shadowRoot.innerHTML, /13[,.]2°C/);
 }
+console.log('Dashboard card frontend tests passed');

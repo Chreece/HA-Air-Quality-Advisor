@@ -1,6 +1,8 @@
 """Calibrated mold risk and multi-sensor humidity behavior."""
 from __future__ import annotations
 
+from test_hub_manager import delivery_module
+
 from custom_components.air_quality_advisor.mold import (
     calibration_factor, estimate_mold, estimate_mold_for_room,
     mean_valid_humidity,
@@ -80,3 +82,88 @@ def test_mold_does_not_overrule_bad_weather_closing():
                     (Weather("weather.home","rainy",6),),(),
                     (Room(room.area_id,room.name,(window,),(mold,)),))
     assert plan.status == "close"
+
+
+def test_manager_mold_mode_follows_valid_room_humidity_and_ignores_zero(
+    delivery_module,
+):
+    """Real manager capture preserves RH subscriptions and replaces RH with mold."""
+    from types import SimpleNamespace
+    from test_discovery import FakeHass, MockState
+    source = [
+        MockState("binary_sensor.bedroom_window", "off", device_class="window"),
+        MockState("sensor.bedroom_temp", 21, device_class="temperature", unit="°C"),
+        MockState("sensor.bedroom_humidity_a", 60, device_class="humidity", unit="%"),
+        MockState("sensor.bedroom_humidity_b", 80, device_class="humidity", unit="%"),
+        MockState("sensor.bedroom_humidity_broken", 0, device_class="humidity", unit="%"),
+        MockState("sensor.outside_pm25", 8, device_class="pm25", unit="µg/m³"),
+        MockState("weather.home", "sunny"),
+    ]
+    source[-1].attributes.update({"temperature": 6, "temperature_unit": "°C"})
+    assignment = {
+        state.entity_id: "bedroom" for state in source
+        if state.entity_id.startswith("sensor.bedroom") or "window" in state.entity_id
+    }
+    home = FakeHass(source, assignment)
+    entry = SimpleNamespace(entry_id="mold-test", options={}, data={
+        "areas": ["bedroom"],
+        "excluded_window_entities": [],
+        "excluded_indoor_entities": {"bedroom": []},
+        "outdoor_sensors": ["sensor.outside_pm25"],
+        "weather_entities": ["weather.home"],
+        "weather_warnings": [],
+        "use_mold_indicator": True,
+        "mold_rooms": {
+            "bedroom": {
+                "indoor_temperature_entity": "sensor.bedroom_temp",
+                "outdoor_weather_entity": "weather.home",
+                "critical_temperature_c": 13.5,
+                "calibration_factor": 2.0,
+            }
+        },
+    })
+    manager = delivery_module.AirQualityManager(home, entry)
+    state = manager._capture()
+    values = state.rooms[0].readings
+    assert len(values) == 1 and values[0].metric == "mold"
+    assert values[0].details["humidity_sensor_count"] == 2
+    assert values[0].details["average_indoor_humidity"] == 70
+    assert "sensor.bedroom_humidity_a" in manager._tracked
+    assert "sensor.bedroom_humidity_b" in manager._tracked
+    assert "sensor.bedroom_temp" in manager._tracked
+    assert state.status == "open"
+
+    home._values["sensor.bedroom_humidity_a"].state = "unknown"
+    home._values["sensor.bedroom_humidity_b"].state = "0"
+    state = manager._capture()
+    assert state.rooms[0].readings[0].value is None
+    assert state.status == "idle"
+    assert ("bedroom", "mold_indicator_unavailable") in state.diagnostics
+
+
+def test_manager_original_rh_rule_remains_active_without_opt_in(delivery_module):
+    from types import SimpleNamespace
+    from test_discovery import FakeHass, MockState
+    source = [
+        MockState("binary_sensor.bedroom_window", "off", device_class="window"),
+        MockState("sensor.bedroom_humidity", 70, device_class="humidity", unit="%"),
+        MockState("sensor.outside_pm25", 8, device_class="pm25", unit="µg/m³"),
+        MockState("weather.home", "sunny"),
+    ]
+    home = FakeHass(source, {
+        "binary_sensor.bedroom_window": "bedroom",
+        "sensor.bedroom_humidity": "bedroom",
+    })
+    manager = delivery_module.AirQualityManager(home, SimpleNamespace(
+        entry_id="rh-test", options={}, data={
+            "areas": ["bedroom"],
+            "excluded_window_entities": [],
+            "outdoor_sensors": ["sensor.outside_pm25"],
+            "weather_entities": ["weather.home"],
+            "weather_warnings": [],
+        }
+    ))
+    state = manager._capture()
+    assert state.status == "open"
+    assert state.recommendations[0].reasons[0].code == "inside_humidity"
+    assert state.rooms[0].readings[0].metric == "humidity"
