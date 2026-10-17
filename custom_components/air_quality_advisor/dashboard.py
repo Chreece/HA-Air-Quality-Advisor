@@ -30,6 +30,7 @@ def _reading(reading: Reading, threshold: float | None, *, indoor: bool) -> dict
         "value": value,
         "threshold": threshold,
         "available": value is not None,
+        **({"details": reading.details} if reading.details else {}),
         "exceeded": (
             value is not None and threshold is not None
             and (value >= threshold if indoor else value > threshold)

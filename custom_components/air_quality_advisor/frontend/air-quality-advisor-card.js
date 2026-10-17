@@ -27,7 +27,7 @@
       conditions:'Conditions', measured:'measured', activeWindows:'windows open',
       action:'Recommendation', noAttention:'Everything looks good',
       metric_aqi:'AQI', metric_co2:'CO₂', metric_pm25:'PM2.5',metric_pm10:'PM10',
-      metric_voc:'TVOC', metric_voc_parts:'VOC', metric_humidity:'Humidity',
+      metric_voc:'TVOC', metric_voc_parts:'VOC', metric_humidity:'Humidity', metric_mold:'Mold indication',
       wx_sunny:'Sunny', wx_clearNight:'Clear night', wx_partlycloudy:'Partly cloudy',
       wx_cloudy:'Cloudy', wx_rainy:'Rainy', wx_pouring:'Heavy rain',
       wx_lightning:'Thunderstorm', wx_fog:'Fog', wx_snowy:'Snow', wx_windy:'Windy',
@@ -57,7 +57,7 @@
       indoorHigh:'Innenwert über Grenzwert',notSafeToOpen:'Draußen nicht zum Lüften geeignet',
       conditions:'Bedingungen',measured:'gemessen',activeWindows:'Fenster offen',
       action:'Empfehlung',noAttention:'Alles sieht gut aus',
-      metric_humidity:'Luftfeuchtigkeit',wx_sunny:'Sonnig',wx_clearNight:'Klare Nacht',
+      metric_humidity:'Luftfeuchtigkeit',metric_mold:'Schimmelindikator',wx_sunny:'Sonnig',wx_clearNight:'Klare Nacht',
       wx_partlycloudy:'Teilweise bewölkt',wx_cloudy:'Bewölkt',wx_rainy:'Regnerisch',
       wx_pouring:'Starkregen',wx_lightning:'Gewitter',wx_fog:'Nebel',wx_snowy:'Schnee',
       wx_windy:'Windig',sourceData:'Basierend auf den eingerichteten Home-Assistant-Sensoren',
@@ -85,7 +85,7 @@
       indoorHigh:'Υπέρβαση ορίου σε εσωτερική μέτρηση',notSafeToOpen:'Οι εξωτερικές συνθήκες δεν επιτρέπουν αερισμό',
       conditions:'Συνθήκες',measured:'μετρήσεις',activeWindows:'ανοιχτά παράθυρα',
       action:'Πρόταση',noAttention:'Όλα φαίνονται καλά',
-      metric_humidity:'Υγρασία',wx_sunny:'Ηλιοφάνεια',wx_clearNight:'Ξαστεριά',
+      metric_humidity:'Υγρασία',metric_mold:'Ένδειξη μούχλας',wx_sunny:'Ηλιοφάνεια',wx_clearNight:'Ξαστεριά',
       wx_partlycloudy:'Λίγες νεφώσεις',wx_cloudy:'Συννεφιά',wx_rainy:'Βροχή',
       wx_pouring:'Ισχυρή βροχή',wx_lightning:'Καταιγίδα',wx_fog:'Ομίχλη',
       wx_snowy:'Χιόνι',wx_windy:'Άνεμος',sourceData:'Βάσει των ρυθμισμένων αισθητήρων Home Assistant',
@@ -113,7 +113,7 @@
       allOkay:'Air intérieur sous les seuils',indoorHigh:'Seuil intérieur dépassé',
       notSafeToOpen:'Conditions extérieures défavorables',conditions:'Conditions',
       measured:'mesurés',activeWindows:'fenêtres ouvertes',action:'Conseil',
-      noAttention:'Tout semble bon',metric_humidity:'Humidité',wx_sunny:'Ensoleillé',
+      noAttention:'Tout semble bon',metric_humidity:'Humidité',metric_mold:'Indicateur de moisissure',wx_sunny:'Ensoleillé',
       wx_clearNight:'Nuit claire',wx_partlycloudy:'Partiellement nuageux',wx_cloudy:'Nuageux',
       wx_rainy:'Pluvieux',wx_pouring:'Fortes pluies',wx_lightning:'Orage',
       wx_fog:'Brouillard',wx_snowy:'Neige',wx_windy:'Venteux',
@@ -140,7 +140,7 @@
       allOkay:'Aire interior dentro de los límites',indoorHigh:'Límite interior superado',
       notSafeToOpen:'Las condiciones exteriores impiden ventilar',conditions:'Condiciones',
       measured:'medidos',activeWindows:'ventanas abiertas',action:'Recomendación',
-      noAttention:'Todo parece correcto',metric_humidity:'Humedad',wx_sunny:'Soleado',
+      noAttention:'Todo parece correcto',metric_humidity:'Humedad',metric_mold:'Indicador de moho',wx_sunny:'Soleado',
       wx_clearNight:'Noche despejada',wx_partlycloudy:'Parcialmente nublado',wx_cloudy:'Nublado',
       wx_rainy:'Lluvioso',wx_pouring:'Lluvia intensa',wx_lightning:'Tormenta',
       wx_fog:'Niebla',wx_snowy:'Nieve',wx_windy:'Ventoso',
@@ -339,7 +339,13 @@
       }).format(value); } catch { return String(value); }
     }
 
-    _metricName(metric) { return this._t(`metric_${metric}`); }
+    _metricName(metric) {
+      if (metric === 'mold') {
+        const translated = this._t('metric_mold');
+        return translated === 'metric_mold' ? 'Mold indication' : translated;
+      }
+      return this._t(`metric_${metric}`);
+    }
 
     _weatherName(condition) {
       if (!condition) return this._t('missing');

@@ -6,7 +6,12 @@ PLATFORMS = ["sensor"]
 
 CONF_AREAS = "areas"
 CONF_EXCLUDED_WINDOWS = "excluded_window_entities"
-CONF_EXCLUDED_INDOOR = "excluded_indoor_entities"  # Map Home Assistant area_id -> entity_id list.
+CONF_EXCLUDED_INDOOR = "excluded_indoor_entities"
+CONF_USE_MOLD = "use_mold_indicator"
+CONF_MOLD_ROOMS = "mold_rooms"
+CONF_MOLD_ROOM_SENSOR = "mold_indoor_temperature"
+CONF_MOLD_CRITICAL_TEMP = "mold_critical_temperature_c"
+CONF_MOLD_RECALIBRATE = "mold_recalibrate"  # Map Home Assistant area_id -> entity_id list.
 CONF_OUTDOOR = "outdoor_sensors"
 CONF_WEATHER = "weather_entities"
 CONF_WARNINGS = "weather_warnings"
@@ -44,7 +49,8 @@ DEFAULT_THRESHOLDS = {
     "indoor_pm10": 45.0,
     "indoor_voc": 500.0,
     "indoor_voc_parts": 500.0,
-    "indoor_humidity": 65.0,  # % relative humidity.
+    "indoor_humidity": 65.0,
+    "indoor_mold": 70.0,  # Critical-surface relative humidity; risk from ~70%.  # % relative humidity.
     "min_outdoor_temp": 5.0,  # °C.
     "max_outdoor_temp": 32.0,
     "max_outdoor_humidity": 85.0,  # %.
@@ -53,6 +59,7 @@ DEFAULT_THRESHOLDS = {
 }
 
 UNIT_LABEL = {
+    "mold": "%",
     "aqi": "AQI",
     "co2": "ppm",
     "pm25": "µg/m³",

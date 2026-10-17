@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from dataclasses import replace
 from datetime import timedelta
 from time import monotonic
 from typing import Any
@@ -22,11 +23,12 @@ from .const import (
     CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
-    DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED,
+    DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
-from .discovery import entity_area, reading, rooms, warning, weather
+from .discovery import entity_area, reading, rooms, warning, weather, temperature_sensor_c
+from .mold import estimate_mold_for_room
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -93,15 +95,58 @@ class AirQualityManager:
                 | excluded_indoor
             ),
         )
+        current_weather = tuple(
+            weather(self.hass, ent, max_age) for ent in config.get(CONF_WEATHER, [])
+        )
+        mold_temperature_entities: set[str] = set()
+        if config.get(CONF_USE_MOLD, False):
+            calibrations = config.get(CONF_MOLD_ROOMS, {})
+            if not isinstance(calibrations, dict):
+                calibrations = {}
+            updated_rooms = []
+            for room in selected_rooms:
+                calibration = calibrations.get(room.area_id, {})
+                if not isinstance(calibration, dict):
+                    calibration = {}
+                sensor_id = calibration.get("indoor_temperature_entity")
+                if isinstance(sensor_id, str):
+                    mold_temperature_entities.add(sensor_id)
+                indoor_c = (
+                    temperature_sensor_c(self.hass, sensor_id, max_age)
+                    if isinstance(sensor_id, str) else None
+                )
+                mold_reading = estimate_mold_for_room(
+                    room, indoor_c, current_weather, calibration,
+                )
+                # In mold mode, replace raw RH *as a recommendation metric*.
+                # All included RH sensors remain inputs to the room average.
+                updated_rooms.append(replace(
+                    room,
+                    readings=tuple(r for r in room.readings if r.metric != "humidity")
+                             + (mold_reading,),
+                ))
+            selected_rooms = tuple(updated_rooms)
         self._tracked = (
             selected_outdoor
             | set(config.get(CONF_WEATHER, []))
             | set(config.get(CONF_WARNINGS, []))
-            | {s.entity_id for room in selected_rooms for s in (*room.windows, *room.readings)}
+            | mold_temperature_entities
+            | {s.entity_id for room in selected_rooms for s in (*room.windows, *room.readings)
+               if s.metric != "mold"}
         )
+        # Mold mode must also track RH inputs that are hidden as raw metrics.
+        if config.get(CONF_USE_MOLD, False):
+            for state in self.hass.states.async_all("sensor"):
+                if (
+                    entity_area(self.hass, state.entity_id) in monitored_areas
+                    and state.entity_id not in excluded_indoor
+                    and state.entity_id not in selected_outdoor
+                    and state.attributes.get("device_class") == "humidity"
+                ):
+                    self._tracked.add(state.entity_id)
         return evaluate(
             tuple(reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)),
-            tuple(weather(self.hass, ent, max_age) for ent in config.get(CONF_WEATHER, [])),
+            current_weather,
             tuple(warning(self.hass, ent, max_age) for ent in config.get(CONF_WARNINGS, [])),
             selected_rooms,
             self.thresholds,

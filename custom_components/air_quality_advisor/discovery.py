@@ -126,6 +126,46 @@ def is_stale(state: State | None, max_age_minutes: float) -> bool:
     return dt_util.utcnow() - last > timedelta(minutes=max_age_minutes)
 
 
+def indoor_temperature_choices(
+    hass: HomeAssistant, area_id: str, previous: str | None = None,
+) -> list[dict[str, str]]:
+    """Select only room temperature sensors with supported Celsius/Fahrenheit units."""
+    choices = []
+    seen = set()
+    for state in hass.states.async_all("sensor"):
+        if entity_area(hass, state.entity_id) != area_id:
+            continue
+        name = state.entity_id.casefold()
+        if _device_class(hass, state) != "temperature" and not (
+            name.endswith("_temperature") or name.endswith("_temp")
+        ):
+            continue
+        if _temperature_c(20.0, state.attributes.get("unit_of_measurement")) is None:
+            continue
+        choices.append({"value": state.entity_id,
+                        "label": f"{state.name or state.entity_id} · {state.entity_id}"})
+        seen.add(state.entity_id)
+    if previous and previous not in seen and previous.startswith("sensor."):
+        choices.append({"value": previous, "label": f"⚠ {previous}"})
+    return sorted(choices, key=lambda option: option["label"].casefold())
+
+
+def temperature_sensor_c(
+    hass: HomeAssistant, entity_id: str, max_age_minutes: float,
+) -> float | None:
+    """Read a current indoor temperature in Celsius; stale/invalid is unavailable."""
+    state = hass.states.get(entity_id)
+    if state is None or is_stale(state, max_age_minutes):
+        return None
+    if _device_class(hass, state) != "temperature" and not (
+        entity_id.casefold().endswith("_temperature")
+        or entity_id.casefold().endswith("_temp")
+    ):
+        return None
+    value = _numeric(state.state)
+    return _temperature_c(value, state.attributes.get("unit_of_measurement"))
+
+
 def reading(hass: HomeAssistant, entity_id: str, max_age_minutes: float, *, outdoor: bool) -> Reading:
     state = hass.states.get(entity_id)
     if state is None:

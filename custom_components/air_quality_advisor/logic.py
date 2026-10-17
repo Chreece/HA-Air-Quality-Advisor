@@ -14,6 +14,7 @@ class Reading:
     name: str
     metric: str
     value: float | None  # Normalized to the units documented in const.py.
+    details: dict[str, float | int | str] | None = None  # Derived mold data only.
 
 
 @dataclass(frozen=True)
@@ -201,6 +202,8 @@ def evaluate(
             if reading.value >= limit:
                 indoor_reasons.append(_reading_reason("inside", reading))
 
+        if any(reading.metric == "mold" and reading.value is None for reading in room.readings):
+            diagnostics.append((room.name, "mold_indicator_unavailable"))
         if not any(reading.value is not None for reading in room.readings):
             diagnostics.append((room.name, "no_indoor_data"))
         elif indoor_reasons and closed and not opened:
