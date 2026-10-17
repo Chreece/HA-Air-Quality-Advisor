@@ -78,10 +78,28 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     else:
         status = "safe"
 
+    missing_mold = next(
+        (item for item in readings if item["metric"] == "mold" and not item["available"]),
+        None,
+    )
+    mold_data_status = (missing_mold or {}).get("details", {}).get("status")
+    if status == "unknown":
+        if mold_data_status == "needs_calibration":
+            status_detail = "mold_not_calibrated"
+        elif mold_data_status == "inputs_unavailable":
+            status_detail = "mold_inputs_unavailable"
+        elif known:
+            status_detail = "partial_indoor_data"
+        else:
+            status_detail = "no_indoor_data"
+    else:
+        status_detail = None
+
     return {
         "area_id": room.area_id,
         "name": room.name,
         "status": status,
+        "status_detail": status_detail,
         "action": recommended.action if recommended else None,
         "action_window_ids": [w.entity_id for w in recommended.windows] if recommended else [],
         "open_count": len(opened),

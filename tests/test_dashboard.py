@@ -94,3 +94,47 @@ def test_metric_units_and_weather_are_serialized():
     assert data["rooms"][0]["readings"][0]["unit"] == "ppm"
     assert data["outdoor"]["readings"][0]["unit"] == "µg/m³"
     assert data["outdoor"]["weather"][0]["temperature_c"] == 22
+
+
+def test_uncalibrated_mold_preserves_valid_pm25_and_aqi_as_partial_indoor_data():
+    living = room("Living", (
+        Reading("sensor.pm25","PM2.5","pm25",1.0),
+        Reading("sensor.aqi","AQI","aqi",12.9),
+        Reading("derived.mold_living","Mold indication","mold",None,{
+            "status":"needs_calibration","humidity_sensor_count":2,
+            "average_indoor_humidity":52.3,
+        }),
+    ))
+    data = snapshot((living,))
+    item = data["rooms"][0]
+    assert item["status"] == "unknown"  # Never falsely green before calibration
+    assert item["status_detail"] == "mold_not_calibrated"
+    assert item["available_count"] == 2
+    assert item["high_count"] == 0
+    assert [(r["metric"],r["value"]) for r in item["readings"]] == [
+        ("pm25",1.0),("aqi",12.9),("mold",None)
+    ]
+    assert item["readings"][2]["details"]["average_indoor_humidity"] == 52.3
+    assert data["summary"]["unknown"] == 1 and data["summary"]["safe"] == 0
+
+
+def test_calibrated_mold_with_missing_sensor_is_not_labeled_uncalibrated():
+    item = snapshot((room("Bedroom", (
+        Reading("sensor.co2","CO₂","co2",620),
+        Reading("derived.mold_bedroom","Mold indication","mold",None,{
+            "status":"inputs_unavailable","humidity_sensor_count":0,
+        }),
+    )),))["rooms"][0]
+    assert item["status"] == "unknown"
+    assert item["status_detail"] == "mold_inputs_unavailable"
+    assert item["available_count"] == 1
+
+
+def test_missing_unrelated_indoor_sensor_is_partial_and_all_missing_is_no_data():
+    partial = snapshot((room("Kitchen", (
+        Reading("sensor.co2","CO₂","co2",600),
+        Reading("sensor.pm25","PM2.5","pm25",None),
+    )),))["rooms"][0]
+    assert partial["status_detail"] == "partial_indoor_data"
+    unavailable = snapshot((room("Kitchen", ()),))["rooms"][0]
+    assert unavailable["status_detail"] == "no_indoor_data"

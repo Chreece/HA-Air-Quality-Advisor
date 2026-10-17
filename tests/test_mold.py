@@ -66,6 +66,8 @@ def test_missing_calibration_or_weather_is_unknown_not_safe_or_open():
         room,21,(Weather("weather.home","sunny",None),),
         {"calibration_factor":2,"outdoor_weather_entity":"weather.home"})
     assert missing.value is None and absent.value is None
+    assert missing.details["status"] == "needs_calibration"
+    assert absent.details["status"] == "inputs_unavailable"
     for sample in (missing,absent):
         plan = evaluate((Reading("sensor.out","Outside","pm25",8),),
                         (Weather("weather.home","sunny",6),),(),
@@ -168,3 +170,28 @@ def test_manager_original_rh_rule_remains_active_without_opt_in(delivery_module)
     assert state.status == "open"
     assert state.recommendations[0].reasons[0].code == "inside_humidity"
     assert state.rooms[0].readings[0].metric == "humidity"
+
+
+def test_mold_explains_missing_inputs_even_when_rh_average_is_valid():
+    room = Room("living", "Living room", (), (rh(52,"first"), rh(68,"second"),rh(0,"bad")))
+    weather = (Weather("weather.home","sunny",8),)
+    missing = estimate_mold_for_room(room, 22, weather, {})
+    assert missing.value is None
+    assert missing.details == {
+        "humidity_sensor_count": 2,
+        "status": "needs_calibration",
+        "average_indoor_humidity": 60,
+    }
+    calibrated_but_missing = estimate_mold_for_room(
+        room, None, weather,
+        {"calibration_factor":2.0,"outdoor_weather_entity":"weather.home"},
+    )
+    assert calibrated_but_missing.value is None
+    assert calibrated_but_missing.details["status"] == "inputs_unavailable"
+
+    healthy = estimate_mold_for_room(
+        room, 22, weather,
+        {"calibration_factor":2.0,"outdoor_weather_entity":"weather.home"},
+    )
+    assert healthy.value is not None
+    assert healthy.details["status"] == "ready"

@@ -109,7 +109,26 @@ def estimate_mold_for_room(
     )
     avg, count = mean_valid_humidity(room.readings)
     result = estimate_mold(indoor_c, outdoor_c, avg, factor)
-    details: dict[str, float | int | str] = {"humidity_sensor_count": count}
+
+    # Distinguish a calibration that has not been supplied from a calibrated
+    # room whose live sensors are temporarily unavailable. The presentation
+    # must never mistake either case for "no indoor measurements".
+    try:
+        factor_number = float(factor)
+    except (ValueError, TypeError, OverflowError):
+        factor_number = float("nan")
+    calibrated = (
+        isinstance(outdoor_id, str) and bool(outdoor_id)
+        and math.isfinite(factor_number) and 0.5 <= abs(factor_number) <= 20
+    )
+    data_status = (
+        "needs_calibration" if not calibrated else
+        "inputs_unavailable" if result is None else "ready"
+    )
+    details: dict[str, float | int | str] = {
+        "humidity_sensor_count": count,
+        "status": data_status,
+    }
     if avg is not None:
         details["average_indoor_humidity"] = round(avg, 1)
     if result:
