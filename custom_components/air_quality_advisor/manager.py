@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import timedelta
+from time import monotonic
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -17,6 +18,7 @@ from .const import (
     ANNOUNCE_COOLDOWN_SECONDS, ANNOUNCE_OPEN_STABLE_SECONDS, CONF_AREAS,
     CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_LANGUAGE,
+    CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES, MAX_REPEAT_MINUTES,
     CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
@@ -40,8 +42,11 @@ class AirQualityManager:
         self.plan = Plan("blocked", False, (), (), ())
         self._tracked: set[str] = set()
         self._unsubs: list[Any] = []
-        self._pending_unsub: Any | None = None
-        self._previous_signature = ""
+        # Timers are per room; unrelated sensor changes must not postpone
+        # reminders in another room. Values are (action key, reason key).
+        self._active_actions: dict[str, tuple[str, str]] = {}
+        self._pending_unsubs: dict[str, Any] = {}
+        self._repeat_unsubs: dict[str, Any] = {}
         self._last_sent: dict[str, float] = {}
         self._active = False
         self._tasks: set[asyncio.Task[Any]] = set()
@@ -127,6 +132,21 @@ class AirQualityManager:
         if event.data.get("entity_id") in self._tracked:
             self._recalculate()
 
+    def _automatic_channels_enabled(self) -> bool:
+        """Automatic announcements are independent from AI/Hub selection."""
+        settings = self.settings
+        return bool(settings.get(CONF_AUTO_NOTIFY) or settings.get(CONF_AUTO_TTS))
+
+    @property
+    def repeat_minutes(self) -> int:
+        """Missing options from older installs inherit ten minutes."""
+        raw = self.settings.get(CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES)
+        try:
+            value = int(raw)
+        except (TypeError, ValueError, OverflowError):
+            return DEFAULT_REPEAT_MINUTES
+        return value if 0 <= value <= MAX_REPEAT_MINUTES else DEFAULT_REPEAT_MINUTES
+
     @callback
     def _recalculate(self, *, initial: bool = False) -> None:
         if not self._active:
@@ -135,54 +155,155 @@ class AirQualityManager:
         if new_plan != self.plan:
             self.plan = new_plan
             async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
-        signature = new_plan.signature
-        if signature != self._previous_signature or initial:
-            self._previous_signature = signature
-            self._cancel_pending()
-            # An already open window under unsafe conditions is urgent, even
-            # immediately after a Home Assistant restart.
-            if signature and (not initial or new_plan.status == "close"):
-                self._queue_automatic(signature, new_plan.status)
+
+        previous = self._active_actions
+        current = {
+            rec.area_id: (rec.action_signature, rec.reason_signature)
+            for rec in new_plan.recommendations
+        }
+        for area_id in previous.keys() - current.keys():
+            self._cancel_pending(area_id)
+            self._cancel_repeat(area_id)
+        # Install the current keys before arming timers, so callbacks always
+        # recheck the latest action and cause.
+        self._active_actions = current
+        for rec in new_plan.recommendations:
+            area_id = rec.area_id
+            new_keys = current[area_id]
+            old_keys = previous.get(area_id)
+            if old_keys is None or old_keys[0] != new_keys[0]:
+                self._cancel_pending(area_id)
+                self._cancel_repeat(area_id)
+                if not initial or rec.action == "close":
+                    # Urgent close is immediate; opening needs 90 seconds
+                    # of stable conditions (same as before).
+                    self._queue_automatic(area_id, *new_keys, action=rec.action)
+                else:
+                    # A pre-existing open recommendation at HA startup should
+                    # not announce immediately, but it can remind later.
+                    self._schedule_repeat(area_id, *new_keys)
+            elif old_keys[1] != new_keys[1]:
+                # A different cause must persist for a *new* full interval.
+                self._cancel_repeat(area_id)
+                if area_id in self._pending_unsubs:
+                    self._cancel_pending(area_id)
+                    self._queue_automatic(area_id, *new_keys, action=rec.action)
+                else:
+                    self._schedule_repeat(area_id, *new_keys)
 
     @callback
-    def _queue_automatic(self, signature: str, status: str) -> None:
-        if not (self.settings.get(CONF_AUTO_NOTIFY) or self.settings.get(CONF_AUTO_TTS)):
+    def _queue_automatic(
+        self, area_id: str, action_key: str, reason_key: str, *, action: str
+    ) -> None:
+        if not self._automatic_channels_enabled():
             return
-        delay = 0 if status == "close" else ANNOUNCE_OPEN_STABLE_SECONDS
-        self._pending_unsub = async_call_later(
-            self.hass, delay, lambda _now: self._execute_automatic(signature)
+        delay = 0 if action == "close" else ANNOUNCE_OPEN_STABLE_SECONDS
+        self._pending_unsubs[area_id] = async_call_later(
+            self.hass, delay,
+            lambda _now: self._execute_automatic(area_id, action_key, reason_key),
         )
 
     @callback
-    def _execute_automatic(self, signature: str) -> None:
-        self._pending_unsub = None
-        if not self._active or signature != self.plan.signature:
+    def _schedule_repeat(
+        self, area_id: str, action_key: str, reason_key: str
+    ) -> None:
+        minutes = self.repeat_minutes
+        if (
+            minutes == 0 or not self._active
+            or not self._automatic_channels_enabled()
+            or self._active_actions.get(area_id) != (action_key, reason_key)
+            or area_id in self._repeat_unsubs
+        ):
             return
-        # Home Assistant monotonic time is not a persistence contract; use the
-        # event loop for short per-process cooldowns, never the wall clock.
-        from time import monotonic
+        self._repeat_unsubs[area_id] = async_call_later(
+            self.hass, minutes * 60,
+            lambda _now: self._execute_automatic(
+                area_id, action_key, reason_key, repeat=True
+            ),
+        )
 
-        now = monotonic()
-        # Re-opening a window during unsafe weather is a new urgent event:
-        # do not suppress that close warning just because the same window had
-        # been closed minutes earlier. Only safe-to-open nudges are cooled down.
-        if (self.plan.status != "close" and
-            now - self._last_sent.get(signature, float("-inf")) < ANNOUNCE_COOLDOWN_SECONDS):
+    @callback
+    def _execute_automatic(
+        self, area_id: str, action_key: str, reason_key: str,
+        *, repeat: bool = False,
+    ) -> None:
+        """Re-evaluate at the deadline before announcing a persistent cause."""
+        (self._repeat_unsubs if repeat else self._pending_unsubs).pop(area_id, None)
+        if not self._active:
             return
-        self._last_sent[signature] = now
-        task = self.hass.async_create_task(self.async_announce(channels="auto"))
+        self._recalculate()
+        if (
+            self._active_actions.get(area_id) != (action_key, reason_key)
+            or not self._automatic_channels_enabled()
+        ):
+            return
+        rec = next(
+            (rec for rec in self.plan.recommendations if rec.area_id == area_id),
+            None,
+        )
+        if rec is None:
+            return
+        if (
+            not repeat and rec.action == "open"
+            and monotonic() - self._last_sent.get(action_key, float("-inf"))
+            < ANNOUNCE_COOLDOWN_SECONDS
+        ):
+            # Keep the existing anti-flapping cooldown for *new* open events.
+            # Timed reminders deliberately bypass it (10 < 15 minutes).
+            self._schedule_repeat(area_id, action_key, reason_key)
+            return
+        task = self.hass.async_create_task(
+            self._send_automatic(area_id, action_key, reason_key)
+        )
         self._tasks.add(task)
         task.add_done_callback(self._tasks.discard)
 
+    async def _send_automatic(
+        self, area_id: str, action_key: str, reason_key: str
+    ) -> None:
+        """Serialize each room's reminder relative to completed submission."""
+        try:
+            if self._active_actions.get(area_id) != (action_key, reason_key):
+                return
+            result = await self.async_announce(channels="auto", areas=[area_id])
+            if result.get("submitted", 0):
+                self._last_sent[action_key] = monotonic()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            _LOGGER.exception("Air quality announcement failed for room %s", area_id)
+        finally:
+            # No overlapping sends, and no delayed reminders for resolved or
+            # changed causes. Failed outputs are retried at most once/interval.
+            self._schedule_repeat(area_id, action_key, reason_key)
+
     @callback
-    def _cancel_pending(self) -> None:
-        if self._pending_unsub is not None:
-            self._pending_unsub()
-            self._pending_unsub = None
+    def _cancel_pending(self, area_id: str | None = None) -> None:
+        selected = (
+            list(self._pending_unsubs)
+            if area_id is None else [area_id]
+        )
+        for key in selected:
+            unsubscribe = self._pending_unsubs.pop(key, None)
+            if unsubscribe is not None:
+                unsubscribe()
+
+    @callback
+    def _cancel_repeat(self, area_id: str | None = None) -> None:
+        selected = (
+            list(self._repeat_unsubs)
+            if area_id is None else [area_id]
+        )
+        for key in selected:
+            unsubscribe = self._repeat_unsubs.pop(key, None)
+            if unsubscribe is not None:
+                unsubscribe()
 
     async def async_stop(self) -> None:
         self._active = False
         self._cancel_pending()
+        self._cancel_repeat()
+        self._active_actions.clear()
         for unsubscribe in self._unsubs:
             unsubscribe()
         self._unsubs.clear()

@@ -65,6 +65,7 @@
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
           "media_players": "Direct TTS media players",
+          "announcement_repeat_minutes": "Repeat announcements (minutes)",
           "ai_rewrite_announcements": "Use AI for announcements",
           "ai_conversation_agent": "Conversation agent"
         },
@@ -76,6 +77,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Default 10 minutes. Set to 0 to never repeat. The same window recommendation and reason must still apply. Each room has its own timer; sensor fluctuations above the same limit do not reset it. Requires automatic notifications or TTS.",
           "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
           "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
         }
@@ -120,6 +122,7 @@
       "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
       "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
       "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
       "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
       "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
     },
@@ -205,6 +208,7 @@
           "notify_entities": "Direct notification entities",
           "tts_engine": "Direct TTS engine",
           "media_players": "Direct TTS media players",
+          "announcement_repeat_minutes": "Repeat announcements (minutes)",
           "ai_rewrite_announcements": "Use AI for announcements",
           "ai_conversation_agent": "Conversation agent"
         },
@@ -216,6 +220,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Default 10 minutes. Set to 0 to never repeat. The same window recommendation and reason must still apply. Each room has its own timer; sensor fluctuations above the same limit do not reset it. Requires automatic notifications or TTS.",
           "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
           "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
         }
@@ -260,6 +265,7 @@
       "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
       "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
       "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
       "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
       "invalid_ai_agent": "Select a supported Home Assistant conversation agent."
     }

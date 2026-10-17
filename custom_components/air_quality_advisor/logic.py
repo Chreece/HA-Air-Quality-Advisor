@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
 
 from .const import DEFAULT_THRESHOLDS, WEATHER_CLEAR
 
@@ -60,6 +61,30 @@ class Recommendation:
     area_name: str
     windows: tuple[Window, ...]
     reasons: tuple[Reason, ...]
+
+    @property
+    def action_signature(self) -> str:
+        """Stable identity of the window action, independent of measurements."""
+        return json.dumps(
+            [self.action, self.area_id, sorted(w.entity_id for w in self.windows)],
+            ensure_ascii=False, separators=(",", ":"),
+        )
+
+    @property
+    def reason_signature(self) -> str:
+        """Identity of an ongoing cause, ignoring numeric sensor oscillations.
+
+        A different pollutant or warning starts a fresh reminder interval;
+        fluctuating CO₂ or wind values above the same threshold do not.
+        Weather-condition text is categorical and therefore significant.
+        """
+        reasons = sorted(
+            [reason.code, reason.label,
+             reason.value if reason.code == "weather_condition" else ""]
+            for reason in self.reasons
+        )
+        return json.dumps([self.action_signature, reasons], ensure_ascii=False,
+                          separators=(",", ":"))
 
 
 @dataclass(frozen=True)

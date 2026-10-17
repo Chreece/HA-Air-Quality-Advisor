@@ -92,7 +92,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**Latest stable release: [v0.2.2](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.2)** · [Release notes](.github/releases/v0.2.2.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
+**Latest published stable release: [v0.2.2](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.2.2)** · [Release notes](.github/releases/v0.2.2.md) · [Full changelog](CHANGELOG.md). The first published version was v0.1.8.
 
 Install or update through the [HACS Integration repository](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), select the versioned release, then restart Home Assistant. The Lovelace card is bundled; no separate card repository or `www` copy is required. Upgrades keep the same config entry and recommendation sensor unique ID.
 
@@ -212,6 +212,17 @@ attributes:
 
 The system automatically updates this entity. You can display `recommendations`, `open_windows`, `close_windows` and `outside_blockers` in dashboards or automations. No duplicate per-area sensors.
 
+## Repeating persistent window recommendations (v0.2.3 — awaiting manual release)
+
+Under **Air Quality Advisor → Configure → Announcements**, set **Repeat announcements (minutes)** to any whole number from **0 to 1440**. The default is **10 minutes** for new and existing installations; **0 means never repeat**. This applies only if automatic notifications or automatic TTS are enabled. Manually invoked announcements are not scheduled for repetition.
+
+- A **new open-window** recommendation still waits 90 seconds for stable conditions; a **close-window** recommendation is announced immediately. Repeats run at the configured interval **after the previous automatic submission finishes**, so slower AI/Hub calls do not cause overlapping reminders.
+- A reminder is sent only while **the same room, window action and cause remain actionable**. Before each reminder, the sensors and window contacts are checked again. When the window is opened/closed or air/weather conditions recover, remaining timers are cancelled.
+- Each monitored **room has its own reminder timer**. A CO₂ value fluctuating above its threshold does not reset the timer, but a different sensor reason or weather category starts a fresh interval. The existing 15-minute anti-flapping cooldown applies only to newly reappearing open-window recommendations; it **does not block timed reminders**.
+- On Home Assistant restart, an already-urgent close recommendation still announces immediately; an existing open recommendation receives its first reminder after one full repeat interval rather than immediately on boot.
+
+The setting works with Announcement Hub, direct TTS, native notification entities and persistent Home Assistant notifications. It does not alter pollutant thresholds, AI permissions or actual window control.
+
 ## AI-enhanced announcements and fallback
 
 Open **Air Quality Advisor → Configure → Announcements**. **Use AI for announcements** is a single checkbox for both routes, off by default. The automatic notification and TTS switches still independently control whether anything is announced. Existing saved AI settings are preserved during upgrades.
@@ -261,7 +272,7 @@ python -m compileall -q custom_components
 bash ./publish.sh
 ```
 
-`publish.sh` requires a previously authenticated GitHub CLI (`gh auth status`) and creates `Chreece/HA-Air-Quality-Advisor` if absent. It **never force-pushes** or mutates other repositories. GitHub Actions only runs on manual dispatch or an intentional change to `.github/release-request.json`, avoiding normal development-push notifications. See [RELEASING.md](RELEASING.md); a versioned HACS release is published only after tests, translation generation, Hassfest and HACS checks succeed.
+`publish.sh` requires a previously authenticated GitHub CLI (`gh auth status`) and creates `Chreece/HA-Air-Quality-Advisor` if absent. It **never force-pushes** or mutates other repositories. **GitHub Actions is now manual-only.** Finish and push all code, translations and release notes first, then choose [Actions → Validate and release (on demand) → Run workflow](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml) on `main`. The default run validates without publishing; enable **Publish release** to create the versioned HACS release *after* all checks pass. Neither pushes nor changes to `.github/release-request.json` start any action. See [RELEASING.md](RELEASING.md).
 
 ## Known limitations
 

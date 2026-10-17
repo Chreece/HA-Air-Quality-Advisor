@@ -1,12 +1,15 @@
 name: Validate and release (on demand)
 
-# Development pushes/PRs do not run CI. Explicit release request starts gates.
+# No push/PR/schedule triggers. Validate only when manually dispatched after
+# all code, release notes and translations are committed. Publishing is opt-in.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/release-request.json'
+    inputs:
+      publish_release:
+        description: 'Publish the versioned GitHub/HACS release after all checks pass'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -68,7 +71,7 @@ jobs:
 
   publish:
     name: Publish versioned HACS release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish_release == true
     needs: [test, hassfest, hacs]
     runs-on: ubuntu-latest
     permissions:

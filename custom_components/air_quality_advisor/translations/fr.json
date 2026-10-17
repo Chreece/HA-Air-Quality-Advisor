@@ -65,6 +65,7 @@
           "notify_entities": "Destinations de notification directes",
           "tts_engine": "Moteur TTS direct",
           "media_players": "Lecteurs média TTS directs",
+          "announcement_repeat_minutes": "Répéter les annonces (minutes)",
           "ai_rewrite_announcements": "Utiliser l’IA pour les annonces",
           "ai_conversation_agent": "Agent conversationnel"
         },
@@ -76,6 +77,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Par défaut : 10 minutes. 0 = ne jamais répéter. Une annonce n'est répétée que si la même recommandation et la même cause persistent. Minuterie indépendante par pièce. Les notifications automatiques ou la synthèse vocale doivent être activées.",
           "ai_rewrite_announcements": "Une seule option IA pour les deux circuits. Avec Announcement Hub, use_ai: true/false est transmis; sinon l’IA reformule les notifications et la synthèse vocale directes. La décision concernant les fenêtres ne change pas.",
           "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent."
         }
@@ -120,6 +122,7 @@
       "invalid_indoor_exclusions": "Un capteur sélectionné n’est pas compatible avec cette pièce.",
       "no_windows_after_exclusions": "Ces exclusions supprimeraient tous les contacts de fenêtre utilisables. Conservez au moins un contact.",
       "review_areas_after_exclusions": "Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces.",
+      "invalid_repeat_minutes": "Saisissez un nombre entier entre 0 et 1440 minutes ; 0 désactive les répétitions.",
       "missing_ai_service": "L’action Home Assistant conversation.process est indisponible.",
       "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
     },
@@ -205,6 +208,7 @@
           "notify_entities": "Destinations de notification directes",
           "tts_engine": "Moteur TTS direct",
           "media_players": "Lecteurs média TTS directs",
+          "announcement_repeat_minutes": "Répéter les annonces (minutes)",
           "ai_rewrite_announcements": "Utiliser l’IA pour les annonces",
           "ai_conversation_agent": "Agent conversationnel"
         },
@@ -216,6 +220,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Par défaut : 10 minutes. 0 = ne jamais répéter. Une annonce n'est répétée que si la même recommandation et la même cause persistent. Minuterie indépendante par pièce. Les notifications automatiques ou la synthèse vocale doivent être activées.",
           "ai_rewrite_announcements": "Une seule option IA pour les deux circuits. Avec Announcement Hub, use_ai: true/false est transmis; sinon l’IA reformule les notifications et la synthèse vocale directes. La décision concernant les fenêtres ne change pas.",
           "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent."
         }
@@ -260,6 +265,7 @@
       "invalid_indoor_exclusions": "Un capteur sélectionné n’est pas compatible avec cette pièce.",
       "no_windows_after_exclusions": "Ces exclusions supprimeraient tous les contacts de fenêtre utilisables. Conservez au moins un contact.",
       "review_areas_after_exclusions": "Certaines pièces sélectionnées n’ont plus de contact de fenêtre après les exclusions. Revoyez les pièces.",
+      "invalid_repeat_minutes": "Saisissez un nombre entier entre 0 et 1440 minutes ; 0 désactive les répétitions.",
       "missing_ai_service": "L’action Home Assistant conversation.process est indisponible.",
       "invalid_ai_agent": "Sélectionnez un agent conversationnel Home Assistant pris en charge."
     }

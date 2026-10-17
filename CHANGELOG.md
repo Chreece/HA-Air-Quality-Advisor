@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.3 — Configurable, per-room repeat reminders and manual-only CI
+
+- Add **Repeat announcements (minutes)** under Announcements, with **10 minutes default** and **0 = no repeats** (0–1440 whole minutes).
+- Repeat only while the *same actionable window recommendation and underlying reason* persist. Each room has its own timer; changes in one room do not cause duplicate announcements elsewhere.
+- Check sensors and windows again at each reminder deadline; stop immediately when a recommendation clears or its cause changes. Changes in numeric readings while still over the same threshold do not reset the timer.
+- Keep 90 seconds for initial open advice and immediate closing advice. Timed reminders bypass the older 15-minute anti-flapping cooldown; existing startup/urgent behavior is preserved.
+- All delivery methods are supported: Announcement Hub, direct TTS/notify and Home Assistant persistent notifications; no additional entities or window control.
+- **GitHub Actions only runs via `workflow_dispatch` after all files are pushed.** An explicit, default-off **Publish release** input gates versioned releases after tests, translation generation, HACS and Hassfest. No push, PR, tag or release-request triggers.
+- Update all 38 Home Assistant translations, release documentation, and recurrence/cancellation tests. No configuration migration is required.
+
 ## 0.2.2 — Shared AI control, smarter Hub availability and native fallback
 
 - Use **one AI checkbox** for both delivery paths, preserving the existing `ai_rewrite_announcements` and `ai_conversation_agent` settings without migration.

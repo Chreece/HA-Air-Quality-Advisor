@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+import math
 
 import probatio
 
@@ -19,6 +20,7 @@ from .hub_delivery import hub_installed
 from .const import (
     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
+    CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES, MAX_REPEAT_MINUTES,
     CONF_AI_REWRITE, CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN,
@@ -282,7 +284,16 @@ class _FlowMixin:
             selected = dict(self._values)
             selected.update(user_input)
             hub = hub_present and bool(selected.get(CONF_HUB, False))
-            if (selected.get(CONF_AUTO_NOTIFY) and not hub
+            raw_repeat = selected.get(CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES)
+            try:
+                minutes = float(raw_repeat)
+            except (TypeError, ValueError, OverflowError):
+                minutes = float("nan")
+            if (isinstance(raw_repeat, bool) or not math.isfinite(minutes)
+                    or minutes != int(minutes)
+                    or not 0 <= minutes <= MAX_REPEAT_MINUTES):
+                errors = {"base": "invalid_repeat_minutes"}
+            elif (selected.get(CONF_AUTO_NOTIFY) and not hub
                 and not selected.get(CONF_NOTIFY_TARGETS)
                 and not self.hass.services.has_service("persistent_notification", "create")):
                 errors = {"base": "missing_notify"}
@@ -298,6 +309,7 @@ class _FlowMixin:
                 errors = {"base": "invalid_ai_agent"}
             else:
                 self._values.update(user_input)
+                self._values[CONF_REPEAT_MINUTES] = int(minutes)
                 self._values.setdefault(CONF_HUB, False)
                 self._values.setdefault(CONF_AUTO_NOTIFY, False)
                 self._values.setdefault(CONF_AUTO_TTS, False)
@@ -320,6 +332,15 @@ class _FlowMixin:
                 selector.BooleanSelector(),
             _marker(CONF_AUTO_TTS, self._values.get(CONF_AUTO_TTS, False)):
                 selector.BooleanSelector(),
+            _marker(
+                CONF_REPEAT_MINUTES,
+                self._values.get(CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES),
+                required=True,
+            ): selector.NumberSelector(selector.NumberSelectorConfig(
+                min=0, max=MAX_REPEAT_MINUTES, step=1,
+                unit_of_measurement="min",
+                mode=selector.NumberSelectorMode.BOX,
+            )),
             _marker(CONF_AI_REWRITE, self._values.get(CONF_AI_REWRITE, False)):
                 selector.BooleanSelector(),
         }

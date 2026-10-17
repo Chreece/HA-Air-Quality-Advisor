@@ -28,9 +28,17 @@
 - Check the AI checkbox remains optional and off by default and that Hub AI does not cause an additional local AI rewrite.
 - Run all 38 translation generation/schema tests and execute one manual Hub success plus one stopped-Hub fallback in a real HA instance before considering physical delivery validated.
 
+## v0.2.3 repeat reminders and manual-only workflow checks
+
+- Reconfigure → Announcements: a number selector with default 10, minimum 0, maximum 1440; reject fractional, negative and non-numeric values. Setting 0 disables repeats entirely.
+- Test repeated open and urgent close recommendations, multiple rooms, numeric fluctuations, reason changes, disappearing/recovered conditions, startup behavior, cooldown bypass and clean cancellation on unload.
+- Ensure reminders are emitted only for automatic notification/TTS channels, and each repeat reuses normal Announcement Hub/AI/direct delivery without overlapping calls.
+- Verify the workflow has **only `workflow_dispatch`**, no push/PR/schedule triggers. The **Publish release** boolean is false by default; it must be explicitly enabled after every file is pushed to `main`.
+- Check all 38 translations and independent menu settings; verify one live 10-minute repeat and one case where the window is opened before the next deadline.
+
 ## Verification gates
 
-The repository's `.github/workflows/validate.yml` runs on manual dispatch or an explicit release-request change, not on every push, pull request or schedule. Checks:
+The repository's `.github/workflows/validate.yml` runs **exclusively on manual dispatch** (`workflow_dispatch`). No push, pull request, tag, release-request change or schedule starts any Actions. The default run validates only; release publication requires explicitly checking **Publish release**. Checks:
 
 1. `python -m pytest -q tests` and `python -m compileall -q custom_components`.
 2. `node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js` and `node tests/card_test.cjs`.
@@ -39,16 +47,16 @@ The repository's `.github/workflows/validate.yml` runs on manual dispatch or an 
 
 A failed check **prevents release publication**.
 
-## Release process
+## Release process — manual after the full push
 
-1. Update the `version` in `custom_components/air_quality_advisor/manifest.json` and compatible HACS `hacs.json` minimum.
-2. Update `CHANGELOG.md`, README, and `.github/releases/v<VERSION>.md` with current release notes.
-3. Test locally; optionally trigger the manual validation action (manual runs never publish).
-4. Commit an intentional update to `.github/release-request.json` containing `{"version":"<VERSION>"}` on `main`. This one file is the only automatic release trigger.
-5. If **every** validation job passes, the workflow creates `v<VERSION>` pointing to the exact tested commit, a published GitHub Release with Markdown notes, and an optional integration-only ZIP.
-6. Check that the published release (not just a tag) appears in HACS and the ZIP contains the correct manifest version and built-in dashboard card.
+1. Finish *all* source, UI translations, tests, README, changelog and `.github/releases/v<VERSION>.md` changes in one commit or series of development commits.
+2. Set the manifest version and matching `.github/release-request.json` metadata version. **This file no longer triggers any workflow.**
+3. Push everything to `main`. Verify the branch head and ensure nobody else is still pushing.
+4. Open **GitHub → Actions → [Validate and release (on demand)](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml) → Run workflow**, choose branch `main`. Leave **Publish release = false** for a validation-only run, or turn it **on** to publish the new HACS release automatically **only if every check passes**.
+5. Confirm the test, HACS and Hassfest jobs succeeded. When publishing was requested, confirm the `v<VERSION>` tag points to the validated commit and the GitHub Release includes the installation ZIP and changelog.
+6. If a test fails, push a correction, then manually run the workflow again. Never assume a development push or changing the version automatically launches Actions.
 
-If checks fail, fix the issue and change the request file again for one new attempt. Leave normal development pushes quiet, and do not call failed releases published.
+A manual run with Publish release disabled cannot publish any release. A failed validation cannot publish a release. Existing installed versions remain available through HACS while a new version waits for its manual run.
 
 Live Home Assistant setup, sensor integration and physical Announcement Hub/TTS/notification output tests remain separate acceptance requirements. The integration never operates windows.
 

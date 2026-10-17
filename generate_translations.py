@@ -191,6 +191,34 @@ area_validation = {
  },
 }
 
+REPEAT_TEXT = {
+ "en": [
+  "Repeat announcements (minutes)",
+  "Default 10 minutes. Set to 0 to never repeat. The same window recommendation and reason must still apply. Each room has its own timer; sensor fluctuations above the same limit do not reset it. Requires automatic notifications or TTS.",
+  "Enter a whole number from 0 to 1440 minutes (0 disables repeats)."
+ ],
+ "de": [
+  "Ansagen wiederholen (Minuten)",
+  "Standard: 10 Minuten. 0 = niemals wiederholen. Eine Erinnerung erfolgt nur, solange dieselbe Fensterempfehlung und Ursache bestehen. Jeder Raum hat einen eigenen Timer. Automatische Benachrichtigungen oder TTS müssen aktiv sein.",
+  "Eine ganze Zahl zwischen 0 und 1440 Minuten eingeben; 0 deaktiviert die Wiederholung."
+ ],
+ "el": [
+  "Επανάληψη ανακοινώσεων (λεπτά)",
+  "Προεπιλογή: 10 λεπτά. Με 0 δεν επαναλαμβάνονται ποτέ. Η υπενθύμιση γίνεται μόνο όσο ισχύει η ίδια σύσταση και αιτία για το παράθυρο. Κάθε δωμάτιο έχει ανεξάρτητο χρονόμετρο. Απαιτούνται αυτόματες ειδοποιήσεις ή TTS.",
+  "Δώσε ακέραιο από 0 έως 1440 λεπτά. Το 0 απενεργοποιεί τις επαναλήψεις."
+ ],
+ "fr": [
+  "Répéter les annonces (minutes)",
+  "Par défaut : 10 minutes. 0 = ne jamais répéter. Une annonce n'est répétée que si la même recommandation et la même cause persistent. Minuterie indépendante par pièce. Les notifications automatiques ou la synthèse vocale doivent être activées.",
+  "Saisissez un nombre entier entre 0 et 1440 minutes ; 0 désactive les répétitions."
+ ],
+ "es": [
+  "Repetir anuncios (minutos)",
+  "Predeterminado: 10 minutos. 0 = no repetir nunca. Solo se repite cuando persisten la misma recomendación y su causa. Cada habitación usa un temporizador independiente. Requiere notificaciones automáticas o TTS.",
+  "Introduce un número entero entre 0 y 1440 minutos; 0 desactiva las repeticiones."
+ ]
+}
+
 AI_REWRITE_TEXT = {
  "en": {
   "enable": "Use AI for announcements",
@@ -264,6 +292,8 @@ for code,v in lang.items():
    }
    steps[sid]['data_description']={field:helps.get(field, stepdata[field]) for field in stepdata}
  ai = AI_REWRITE_TEXT[code]
+ steps['delivery']['data']['announcement_repeat_minutes'] = REPEAT_TEXT[code][0]
+ steps['delivery']['data_description']['announcement_repeat_minutes'] = REPEAT_TEXT[code][1]
  steps['delivery']['data']['ai_rewrite_announcements'] = ai['enable']
  steps['delivery']['data']['ai_conversation_agent'] = ai['agent']
  steps['delivery']['data_description']['ai_rewrite_announcements'] = ai['explain']
@@ -272,6 +302,7 @@ for code,v in lang.items():
  steps['areas']['description'] = area_descriptions[code]
  steps['areas']['data_description']['areas'] = area_hints[code]
  errors = {**v['errors'], **area_validation[code],
+           'invalid_repeat_minutes': REPEAT_TEXT[code][2],
            'missing_ai_service': ai['missing'], 'invalid_ai_agent': ai['invalid']}
  section = {'step':{sid:steps[sid] for sid in initial_stepids},'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
  # Configure selects a single section from a localized options menu.

@@ -1,14 +1,13 @@
 {
-  "version": "0.2.2",
-  "intent": "publish GitHub release after validation",
-  "note": "Only a deliberate change to this file triggers release checks.",
-  "validation_attempt": 2,
+  "version": "0.2.3",
+  "intent": "metadata for manually dispatched validation/release only",
+  "note": "Editing this file does NOT trigger GitHub Actions. Run workflow_dispatch manually after every file is pushed.",
+  "validation_attempt": 0,
   "changes": [
-    "One AI checkbox for both direct delivery and Announcement Hub use_ai:true/false",
-    "Hub option shown only when a configured Announcement Hub instance exists",
-    "Wait for Hub queue acknowledgement and use Home Assistant fallback if it rejects, fails, times out, or is unready",
-    "System persistent notification if direct notify/TTS cannot deliver",
-    "38 UI translations synchronized with generators and routing regressions",
-    "Keep the AI conversation-agent dropdown visible with Home Assistant default preselected"
+    "Repeat ongoing actionable window recommendations every configured minutes (default 10; 0 = never repeat)",
+    "Independent per-room timers and reason fingerprints ignore numeric fluctuations above thresholds",
+    "Stop/cancel timers when the same window advice or reason no longer persists",
+    "Keep immediate close and 90-second stable-open behavior; repeat bypasses anti-flapping cooldown",
+    "GitHub Actions exclusively workflow_dispatch; publish_release explicitly optional, default false"
   ]
 }

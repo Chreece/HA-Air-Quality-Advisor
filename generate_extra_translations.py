@@ -49,6 +49,7 @@ def generate_extended(root: Path = ROOT) -> None:
             "delivery": {
                 "language": ui[17], "automatic_tts": ui[16],
                 "automatic_notifications": ui[15],
+                "announcement_repeat_minutes": f"{ui[5]} · 0–1440 min",
                 "use_announcement_hub": "Announcement Hub",
                 "notify_entities": ui[15], "tts_engine": ui[16],
                 "media_players": ui[16],
@@ -103,6 +104,10 @@ def generate_extended(root: Path = ROOT) -> None:
                         for field in labels[step]
                     }
                     if step == "delivery":
+                        item["data_description"]["announcement_repeat_minutes"] = (
+                            "Default: 10 minutes. 0 = never repeat. Repeat only if the "
+                            "same window action and cause persist; each room is independent."
+                        )
                         item["data_description"]["ai_rewrite_announcements"] = (
                             f"AI · {ui[5]} → Announcement Hub use_ai / Home Assistant TTS."
                         )
@@ -115,6 +120,10 @@ def generate_extended(root: Path = ROOT) -> None:
                         )
             # Keep English fallback for complex error messages rather than
             # accidentally changing their precise safety meaning.
+        for scope in ("config", "options"):
+            obj[scope]["error"]["invalid_repeat_minutes"] = (
+                "Enter a whole number from 0 to 1440 minutes; 0 disables reminders."
+            )
         obj["options"]["step"]["init"]["title"] = ui[6]
         obj["options"]["step"]["init"]["description"] = " · ".join(ui[:7])
         obj["options"]["step"]["init"]["menu_options"] = titles.copy()

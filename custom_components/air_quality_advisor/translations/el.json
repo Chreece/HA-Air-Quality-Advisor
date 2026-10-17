@@ -65,6 +65,7 @@
           "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
           "tts_engine": "Μηχανή άμεσης ομιλίας",
           "media_players": "Συσκευές αναπαραγωγής ομιλίας",
+          "announcement_repeat_minutes": "Επανάληψη ανακοινώσεων (λεπτά)",
           "ai_rewrite_announcements": "Χρήση AI στις ανακοινώσεις",
           "ai_conversation_agent": "Πράκτορας συνομιλίας"
         },
@@ -76,6 +77,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Προεπιλογή: 10 λεπτά. Με 0 δεν επαναλαμβάνονται ποτέ. Η υπενθύμιση γίνεται μόνο όσο ισχύει η ίδια σύσταση και αιτία για το παράθυρο. Κάθε δωμάτιο έχει ανεξάρτητο χρονόμετρο. Απαιτούνται αυτόματες ειδοποιήσεις ή TTS.",
           "ai_rewrite_announcements": "Μία επιλογή AI και για τις δύο μεθόδους. Με Announcement Hub αποστέλλεται use_ai: true/false· διαφορετικά το AI αναδιατυπώνει τις άμεσες ειδοποιήσεις και το TTS. Οι συστάσεις παραθύρων δεν αλλάζουν.",
           "ai_conversation_agent": "Προεπιλέγεται το Home Assistant default. Άλλος πράκτορας αποστέλλεται στο Hub ή χρησιμοποιείται απευθείας· η προεπιλογή διατηρεί τον πράκτορα που έχει οριστεί στο Hub."
         }
@@ -120,6 +122,7 @@
       "invalid_indoor_exclusions": "Ένας επιλεγμένος αισθητήρας δεν υποστηρίζεται σε αυτόν τον χώρο.",
       "no_windows_after_exclusions": "Με αυτές τις εξαιρέσεις δεν απομένει κανένας διαθέσιμος αισθητήρας παραθύρου. Διατήρησε τουλάχιστον μία επαφή.",
       "review_areas_after_exclusions": "Κάποιοι επιλεγμένοι χώροι έμειναν χωρίς επαφή παραθύρου μετά τις εξαιρέσεις. Έλεγξε ξανά τους χώρους.",
+      "invalid_repeat_minutes": "Δώσε ακέραιο από 0 έως 1440 λεπτά. Το 0 απενεργοποιεί τις επαναλήψεις.",
       "missing_ai_service": "Η ενέργεια conversation.process του Home Assistant δεν είναι διαθέσιμη.",
       "invalid_ai_agent": "Επίλεξε έναν υποστηριζόμενο πράκτορα συνομιλίας του Home Assistant."
     },
@@ -205,6 +208,7 @@
           "notify_entities": "Οντότητες άμεσων ειδοποιήσεων",
           "tts_engine": "Μηχανή άμεσης ομιλίας",
           "media_players": "Συσκευές αναπαραγωγής ομιλίας",
+          "announcement_repeat_minutes": "Επανάληψη ανακοινώσεων (λεπτά)",
           "ai_rewrite_announcements": "Χρήση AI στις ανακοινώσεις",
           "ai_conversation_agent": "Πράκτορας συνομιλίας"
         },
@@ -216,6 +220,7 @@
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Προεπιλογή: 10 λεπτά. Με 0 δεν επαναλαμβάνονται ποτέ. Η υπενθύμιση γίνεται μόνο όσο ισχύει η ίδια σύσταση και αιτία για το παράθυρο. Κάθε δωμάτιο έχει ανεξάρτητο χρονόμετρο. Απαιτούνται αυτόματες ειδοποιήσεις ή TTS.",
           "ai_rewrite_announcements": "Μία επιλογή AI και για τις δύο μεθόδους. Με Announcement Hub αποστέλλεται use_ai: true/false· διαφορετικά το AI αναδιατυπώνει τις άμεσες ειδοποιήσεις και το TTS. Οι συστάσεις παραθύρων δεν αλλάζουν.",
           "ai_conversation_agent": "Προεπιλέγεται το Home Assistant default. Άλλος πράκτορας αποστέλλεται στο Hub ή χρησιμοποιείται απευθείας· η προεπιλογή διατηρεί τον πράκτορα που έχει οριστεί στο Hub."
         }
@@ -260,6 +265,7 @@
       "invalid_indoor_exclusions": "Ένας επιλεγμένος αισθητήρας δεν υποστηρίζεται σε αυτόν τον χώρο.",
       "no_windows_after_exclusions": "Με αυτές τις εξαιρέσεις δεν απομένει κανένας διαθέσιμος αισθητήρας παραθύρου. Διατήρησε τουλάχιστον μία επαφή.",
       "review_areas_after_exclusions": "Κάποιοι επιλεγμένοι χώροι έμειναν χωρίς επαφή παραθύρου μετά τις εξαιρέσεις. Έλεγξε ξανά τους χώρους.",
+      "invalid_repeat_minutes": "Δώσε ακέραιο από 0 έως 1440 λεπτά. Το 0 απενεργοποιεί τις επαναλήψεις.",
       "missing_ai_service": "Η ενέργεια conversation.process του Home Assistant δεν είναι διαθέσιμη.",
       "invalid_ai_agent": "Επίλεξε έναν υποστηριζόμενο πράκτορα συνομιλίας του Home Assistant."
     }

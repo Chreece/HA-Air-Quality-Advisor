@@ -553,3 +553,48 @@ def test_direct_notifications_can_use_built_in_persistent_notification(monkeypat
     }))
     assert "completed" in done
     assert done["completed"]["data"]["automatic_notifications"] is True
+
+def test_repeat_interval_defaults_to_ten_minutes_and_uses_number_selector(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_delivery())
+    field = next(k for k in form["data_schema"] if k == "announcement_repeat_minutes")
+    assert field.default == 10
+    selector = form["data_schema"][field]
+    assert selector.config.min == 0
+    assert selector.config.max == 1440
+    assert selector.config.step == 1
+    assert selector.config.unit_of_measurement == "min"
+
+
+def test_repeat_interval_can_be_disabled_or_set_in_minutes(monkeypatch, adapter):
+    for minutes in (0, 1, 10, 1440):
+        options = _make_options(monkeypatch, adapter)
+        asyncio.run(options.async_step_init())
+        saved = asyncio.run(options.async_step_delivery({
+            "announcement_repeat_minutes": minutes,
+        }))
+        assert saved["completed"]["data"]["announcement_repeat_minutes"] == minutes
+        assert saved["completed"]["data"]["areas"] == ["living"]
+
+
+def test_invalid_repeat_intervals_are_rejected_without_changing_stored_setting(monkeypatch, adapter):
+    for invalid in (-1, 1441, 5.5, "bad", None, float("inf"), float("nan"), True):
+        options = _make_options(monkeypatch, adapter)
+        asyncio.run(options.async_step_init())
+        error = asyncio.run(options.async_step_delivery({
+            "announcement_repeat_minutes": invalid,
+        }))
+        assert error["errors"] == {"base": "invalid_repeat_minutes"}
+        assert "announcement_repeat_minutes" not in options._values
+
+
+def test_existing_repeat_value_is_preserved_on_reconfigure(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    options.config_entry.data["announcement_repeat_minutes"] = 0
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_delivery())
+    field = next(k for k in form["data_schema"] if k == "announcement_repeat_minutes")
+    assert field.default == 0
+    saved = asyncio.run(options.async_step_delivery({"language": "el"}))
+    assert saved["completed"]["data"]["announcement_repeat_minutes"] == 0
