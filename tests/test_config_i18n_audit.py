@@ -120,7 +120,8 @@ def test_regional_language_selector_preserves_existing_settings(monkeypatch, ada
         options.config_entry.data["language"] = canonical
         asyncio.run(options.async_step_init())
         form = asyncio.run(options.async_step_delivery())
-        marker = next(key for key in form["data_schema"] if key.schema == "language")
+        # Language is the first field in the delivery form (probatio.Field).
+        marker = next(iter(form["data_schema"]))
         assert marker.default == canonical.lower()
         result = asyncio.run(options.async_step_delivery({"language": canonical.lower()}))
         assert result["completed"]["data"]["language"] == canonical
