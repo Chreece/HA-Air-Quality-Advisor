@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.7 — Optional calibrated mold indication instead of raw humidity
+
+- Add a **Use mold indication instead of room RH** checkbox to the first Rooms configuration page. Default remains **off** for existing installations, retaining the previous room humidity threshold and all pollution/weather safeguards.
+- Rename the per-room indoor sensor options page to **Room settings — indoor air and mold**, and place it second in Configure. The existing room-specific sensor exclusion picker remains available.
+- In mold mode, select each room's ambient temperature sensor and enter a measured temperature in °C for the **coldest surface** (critical point), measured at the same time as the outdoor temperature. Calculate and persist Home Assistant's compatible calibration factor; an explicit recalibration option prevents inadvertent changes from later weather or sensor updates.
+- Average all **nonzero, finite, fresh RH values within 0–100%** from included room sensors. Invalid, excluded and unavailable humidity readings do not contribute. Convert indoor/outdoor temperatures to Celsius before estimating surface relative humidity via dew point; expose the result as one room indicator.
+- Set the default **indoor mold surface-RH warning threshold to 70%**, adjustable in Advanced thresholds. Missing sensors or calibration remain **unknown**, never silently safe, and never fall back to raw RH. Air quality and unsafe-weather decisions retain precedence.
+- Show the estimated surface RH, average valid room RH, contributor count and surface temperature in the dashboard; localize mold reasons and configuration into all 38 supported languages, including detailed Greek/German calibration instructions.
+- Add unit, setup, integration and frontend regression tests. No extra cloud requests, Home Assistant services, persistent sensors or Announcement Hub changes.
+
+
 ## 0.2.6 — Fix automatic weather/window announcements (Home Assistant event-loop safety)
 
 - Fix `RuntimeError: ... hass.async_create_task from a thread other than the event loop` seen when automatic window warnings fired. Home Assistant dispatched the integration's undecorated timer lambdas to a SyncWorker thread instead of the event loop.
