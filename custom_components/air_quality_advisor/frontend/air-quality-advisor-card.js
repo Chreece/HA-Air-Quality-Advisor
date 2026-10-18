@@ -288,6 +288,7 @@
   const METRIC_ICON = { co2:'mdi:molecule-co2', aqi:'mdi:air-filter', pm25:'mdi:blur',
     pm10:'mdi:blur', voc:'mdi:flask-outline', voc_parts:'mdi:flask-outline',
     humidity:'mdi:water-percent', mold:'mdi:water-alert-outline' };
+  const RH_FALLBACK_TEXT = {"en":"RH fallback active","de":"RH-Ersatzwert aktiv","el":"Ενεργή εφεδρική χρήση σχετικής υγρασίας","fr":"Repli sur l’humidité relative actif","es":"Respaldo de humedad relativa activo","ar":"الاعتماد الاحتياطي على الرطوبة النسبية نشط","bg":"Активно заместване с относителна влажност","bn":"আপেক্ষিক আর্দ্রতার বিকল্প সক্রিয়","cs":"Aktivní náhradní relativní vlhkost","da":"RH-reservemåling aktiv","fa":"جایگزین رطوبت نسبی فعال است","fi":"Suhteellisen kosteuden varatila käytössä","he":"גיבוי לחות יחסית פעיל","hi":"सापेक्ष आर्द्रता का बैकअप सक्रिय","hr":"Aktivna zamjena relativnom vlagom","hu":"Relatív páratartalom tartalékmód aktív","id":"Cadangan kelembapan relatif aktif","it":"Fallback umidità relativa attivo","ja":"相対湿度の代替値を使用中","ko":"상대습도 대체값 사용 중","nb":"RH-reservemåling aktiv","nl":"RH-terugval actief","pl":"Aktywna rezerwowa wilgotność względna","pt":"Alternativa por humidade relativa ativa","pt-br":"Fallback de umidade relativa ativo","ro":"Mod de rezervă cu umiditate relativă activ","ru":"Используется резервная относительная влажность","sk":"Aktívna náhradná relatívna vlhkosť","sr":"Активна резервна релативна влажност","sv":"Reservvärde för relativ luftfuktighet aktivt","ta":"ஒப்பீட்டு ஈரப்பத மாற்று செயலில் உள்ளது","th":"ใช้ค่าความชื้นสัมพัทธ์สำรอง","tr":"Bağıl nem yedek ölçümü etkin","uk":"Активна резервна відносна вологість","ur":"نسبتی نمی کی متبادل پیمائش فعال ہے","vi":"Đang dùng độ ẩm tương đối dự phòng","zh-hans":"已启用相对湿度回退","zh-hant":"已啟用相對濕度備援"};
   const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
   const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
   const clamp = (num,min,max) => Math.max(min, Math.min(max,num));
@@ -395,7 +396,8 @@
     }
 
     _metric(item, miniature = false) {
-      const metric = this._metricName(item.metric);
+      const metric = item.details?.fallback_for_mold
+        ? `${this._t('humidity')} Ø (RH)` : this._metricName(item.metric);
       const available = item.available && typeof item.value === 'number';
       const limit = item.threshold;
       const hasLimit = typeof limit === 'number' && limit > 0;
@@ -525,6 +527,13 @@
       const readings = safeArray(room.readings);
       const windows = safeArray(room.windows);
       const moldReading = readings.find((item) => item.metric === 'mold' && !item.available);
+      const rhFallback = room.rh_fallback?.active === true
+        ? `<div class="rh-fallback" role="note">
+          ${this._icon('mdi:water-percent')}
+          <span><b>${escape(RH_FALLBACK_TEXT[this._language()] || RH_FALLBACK_TEXT.en)}</b>
+          · ${escape(this._format(room.rh_fallback.value))}%
+          · ${escape(this._t('limits'))} ${escape(this._format(room.rh_fallback.threshold))}%</span>
+        </div>` : '';
       const moldWarnings = safeArray(room.mold_warnings).filter(
         (code) => ['calibration','indoor_temperature','outdoor_temperature',
                    'humidity','calculation'].includes(code)
@@ -583,6 +592,7 @@
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
           : `<div class="empty-measurements">${this._icon('mdi:gauge-empty')} ${escape(this._t('missingIndoor'))}</div>`}
         ${button}
+        ${rhFallback}
         ${warningList}
         <div class="window-section">
           <span class="field-label">${this._icon('mdi:window-closed-variant')}${escape(this._t('windows'))}</span>
@@ -711,6 +721,12 @@
       .status-tag ha-icon{--mdc-icon-size:13px}
       .room-attention .status-tag{color:var(--aqa-amber);background:color-mix(in srgb,var(--aqa-amber),transparent 88%)}
       .room-unknown .status-tag{color:var(--aqa-muted);background:color-mix(in srgb,var(--aqa-muted),transparent 88%)}
+      .rh-fallback{display:flex;align-items:flex-start;gap:7px;margin:10px 0;
+        padding:9px 10px;border-radius:10px;font-size:11px;line-height:1.4;
+        border:1px solid color-mix(in srgb,var(--aqa-blue),transparent 70%);
+        background:color-mix(in srgb,var(--aqa-blue),transparent 93%)}
+      .rh-fallback ha-icon{flex:0 0 auto;--mdc-icon-size:16px;color:var(--aqa-blue)}
+      .rh-fallback b{font-weight:700}
       .mold-warnings{display:grid;gap:6px;margin:11px 0;padding:10px;border-radius:10px;
         background:color-mix(in srgb,var(--aqa-amber),transparent 91%);
         border:1px solid color-mix(in srgb,var(--aqa-amber),transparent 72%)}

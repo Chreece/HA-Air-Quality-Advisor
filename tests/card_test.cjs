@@ -193,4 +193,56 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   }};
   assert.ok(!card.shadowRoot.innerHTML.includes('class="mold-warning"'));
 }
+// When mold is unavailable, surface RH must not be implied: make the
+// alternate averaged room humidity and its *own* 65% threshold explicit.
+{
+  const sample = JSON.parse(JSON.stringify(input));
+  sample.rooms = [{
+    area_id:'living',name:'Wohnzimmer',status:'unknown',
+    status_detail:'mold_not_calibrated',available_count:3,high_count:0,
+    rh_fallback:{active:true,value:55,threshold:65,humidity_sensor_count:2},
+    mold_warnings:['calibration'],
+    windows:[{name:'Window',entity_id:'binary_sensor.window',opened:false}],
+    readings:[
+      {metric:'humidity',value:55,threshold:65,unit:'%',available:true,exceeded:false,
+       details:{fallback_for_mold:true,humidity_sensor_count:2}},
+      {metric:'pm25',value:1,threshold:25,unit:'µg/m³',available:true,exceeded:false},
+      {metric:'aqi',value:12.9,threshold:100,unit:'AQI',available:true,exceeded:false},
+      {metric:'mold',value:null,threshold:70,unit:'%',available:false,exceeded:false,
+       details:{status:'needs_calibration',missing_inputs:['calibration']}}
+    ],
+  }];
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{state:'idle',attributes:{dashboard:sample}}
+  }};
+  const gr = card.shadowRoot.innerHTML;
+  assert.ok(gr.includes('Ενεργή εφεδρική χρήση σχετικής υγρασίας'));
+  assert.ok(gr.includes('Υγρασία Ø (RH)'));
+  assert.ok(gr.includes('55%'));
+  assert.ok(gr.includes('65%'));
+  assert.ok(gr.includes('Ένδειξη μούχλας'));
+  assert.ok(gr.includes('mold-warnings'));
+  assert.ok(gr.includes('PM2.5') && gr.includes('AQI'));
+  assert.ok(!gr.includes('Δεν υπάρχουν εσωτερικές μετρήσεις'));
+
+  card.hass={language:'de',states:{
+    'sensor.air_quality_advisor_recommendations':{state:'idle',attributes:{dashboard:sample}}
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('RH-Ersatzwert aktiv'));
+
+  sample.rooms[0].rh_fallback = {active:false};
+  sample.rooms[0].mold_warnings = [];
+  sample.rooms[0].status = 'safe';
+  sample.rooms[0].status_detail = null;
+  sample.rooms[0].readings=[{
+    metric:'mold',value:57,threshold:70,unit:'%',available:true,exceeded:false,
+    details:{status:'ready',missing_inputs:[]}
+  }];
+  card.hass={language:'en',states:{
+    'sensor.air_quality_advisor_recommendations':{state:'idle',attributes:{dashboard:sample}}
+  }};
+  assert.ok(!card.shadowRoot.innerHTML.includes('class="rh-fallback"'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('RH fallback active'));
+  assert.ok(card.shadowRoot.innerHTML.includes('Mold indication'));
+}
 console.log('Dashboard card frontend tests passed');

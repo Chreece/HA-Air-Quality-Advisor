@@ -172,3 +172,53 @@ def test_missing_mold_inputs_remain_diagnostic_even_if_rain_blocks_ventilation()
     assert ("Bedroom", "mold_indicator_unavailable") in plan.diagnostics
     for key in ("indoor_temperature","outdoor_temperature","humidity"):
         assert ("Bedroom", f"mold_{key}_unavailable") in plan.diagnostics
+
+
+def test_rh_fallback_uses_normal_65_percent_humidity_threshold_without_new_causes():
+    room = Room("living", "Living", (
+        Window("binary_sensor.win","Window",False),
+    ), (
+        Reading("derived.rh_fallback_living", "Average RH","humidity",68,{
+            "fallback_for_mold": True,
+            "humidity_sensor_count": 2,
+        }),
+        Reading("derived.mold_living","Mold","mold",None,{
+            "status":"needs_calibration",
+            "missing_inputs":["calibration"],
+        }),
+    ))
+    result = plan(areas=(room,))
+    assert result.status == "open"
+    assert [r.code for r in result.recommendations[0].reasons] == [
+        "inside_humidity"
+    ]
+    assert all(r.code != "inside_mold" for r in result.recommendations[0].reasons)
+
+    # A missing mold reading never causes window openings by itself.
+    only_mold = Room(room.area_id,room.name,room.windows,(room.readings[1],))
+    assert plan(areas=(only_mold,)).status == "idle"
+
+    # Rain still closes an open window even while an RH fallback is active.
+    opened = Room(room.area_id,room.name,(
+        Window("binary_sensor.win","Window",True),
+    ),room.readings)
+    closing = plan(areas=(opened,),conditions=(Weather("weather.home","rainy",8),))
+    assert closing.status == "close"
+    assert closing.recommendations[0].action == "close"
+    assert all(r.code != "inside_humidity" for r in closing.recommendations[0].reasons)
+
+
+def test_rh_fallback_custom_humidity_threshold_is_respected():
+    room = Room("living","Living",ROOM.windows,(
+        Reading("derived.rh_fallback_living","RH","humidity",68,{
+            "fallback_for_mold": True,
+        }),
+        Reading("derived.mold_living","Mold","mold",None,{
+            "status":"needs_calibration","missing_inputs":["calibration"],
+        }),
+    ))
+    result = evaluate(GOOD,FAIR,(),(room,),{"indoor_humidity":72})
+    assert result.status == "idle"
+    result = evaluate(GOOD,FAIR,(),(room,),{"indoor_humidity":60})
+    assert result.status == "open"
+    assert result.recommendations[0].reasons[0].code == "inside_humidity"

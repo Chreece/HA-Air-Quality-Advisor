@@ -377,3 +377,51 @@ def test_manager_fallback_triggers_only_one_rh_reason_then_prefers_recovered_mol
         "outdoor_temperature"
     ]
     assert unavailable.recommendations[0].reasons[0].code == "inside_humidity"
+
+
+def test_excluded_humidity_sensor_not_averaged_into_rh_fallback(delivery_module):
+    from types import SimpleNamespace
+    from test_discovery import FakeHass, MockState
+    states=[
+        MockState("binary_sensor.kitchen_window","off",device_class="window"),
+        MockState("sensor.kitchen_humidity_one",40,device_class="humidity",unit="%"),
+        MockState("sensor.kitchen_humidity_two",95,device_class="humidity",unit="%"),
+        MockState("sensor.outside_pm25",8,device_class="pm25",unit="µg/m³"),
+        MockState("weather.home","sunny"),
+    ]
+    hass=FakeHass(states,{
+        "binary_sensor.kitchen_window":"kitchen",
+        "sensor.kitchen_humidity_one":"kitchen",
+        "sensor.kitchen_humidity_two":"kitchen",
+    })
+    settings={
+        "areas":["kitchen"],
+        "excluded_window_entities":[],
+        "excluded_indoor_entities":{"kitchen":["sensor.kitchen_humidity_two"]},
+        "outdoor_sensors":["sensor.outside_pm25"],
+        "weather_entities":["weather.home"],
+        "weather_warnings":[],
+        "use_mold_indicator":True,
+        "mold_rooms":{},
+    }
+    manager=delivery_module.AirQualityManager(
+        hass,SimpleNamespace(entry_id="exclusions",options={},data=settings),
+    )
+    state=manager._capture()
+    assert [item.metric for item in state.rooms[0].readings]==["humidity","mold"]
+    assert state.rooms[0].readings[0].value == 40
+    assert state.rooms[0].readings[0].details["humidity_sensor_count"] == 1
+    assert state.status == "idle"
+    assert "sensor.kitchen_humidity_two" not in manager._tracked
+
+
+def test_calibrated_mold_below_limit_does_not_fallback_to_high_raw_rh():
+    room=Room("bedroom","Bedroom",(),(rh(85),))
+    weather=(Weather("weather.home","sunny",6),)
+    # Example with warm surface equal to room temperature: surface RH=room RH
+    # and no fallback is created. A distinct mold limit can be configured.
+    reading=estimate_mold_for_room(room,21,weather,{
+        "outdoor_weather_entity":"weather.home", "calibration_factor":1.0,
+    })
+    assert reading.value is not None
+    assert rh_fallback_for_room(room,reading) is None
