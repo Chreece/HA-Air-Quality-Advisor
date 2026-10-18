@@ -141,9 +141,9 @@ def estimate_mold_for_room(
     missing_inputs: list[str] = []
     if not calibrated:
         missing_inputs.append("calibration")
-    if indoor_c is None:
+    if _temperature(indoor_c) is None:
         missing_inputs.append("indoor_temperature")
-    if outdoor_c is None:
+    if _temperature(outdoor_c) is None:
         missing_inputs.append("outdoor_temperature")
     if avg is None:
         missing_inputs.append("humidity")

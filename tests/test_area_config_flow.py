@@ -719,3 +719,12 @@ def test_weather_status_preview_hidden_when_mold_option_is_off(monkeypatch, adap
     asyncio.run(options.async_step_init())
     result = asyncio.run(options.async_step_weather())
     assert result["description_placeholders"]["mold_weather_notice"] == ""
+
+
+def test_out_of_range_weather_temperature_shows_warning_in_options(monkeypatch, adapter):
+    options = _calibratable_options(monkeypatch, adapter)
+    options.hass._values["weather.home"].attributes["temperature"] = 1000
+    form = asyncio.run(options.async_step_weather())
+    note = form["description_placeholders"]["mold_weather_notice"]
+    assert "⚠️" in note
+    assert "weather.home" in note

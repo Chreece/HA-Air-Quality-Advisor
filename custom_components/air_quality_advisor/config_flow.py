@@ -78,7 +78,12 @@ class _FlowMixin:
             current_weather(self.hass, entity, self._mold_source_age())
             for entity in entity_ids
         ]
-        valid = [item for item in sources if item.temperature_c is not None]
+        valid = [
+            item for item in sources
+            if item.temperature_c is not None
+            and math.isfinite(item.temperature_c)
+            and -60 <= item.temperature_c <= 85
+        ]
         if valid:
             return "✓ 🌡️ " + " · ".join(
                 f"{item.entity_id}: {item.temperature_c:.1f} °C"

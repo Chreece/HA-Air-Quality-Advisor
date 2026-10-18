@@ -254,3 +254,16 @@ def test_weather_preview_before_calibration_reports_actual_missing_inputs():
     assert without_temperature.details["missing_inputs"] == [
         "calibration", "outdoor_temperature"
     ]
+
+
+def test_out_of_range_temperatures_are_specific_missing_inputs():
+    room = Room("living","Living",(),(rh(60),))
+    calibration = {"calibration_factor":2.0,"outdoor_weather_entity":"weather.home"}
+    invalid_room = estimate_mold_for_room(room, 999,
+        (Weather("weather.home","sunny", 10),),calibration)
+    assert invalid_room.value is None
+    assert invalid_room.details["missing_inputs"] == ["indoor_temperature"]
+    invalid_weather = estimate_mold_for_room(room, 22,
+        (Weather("weather.home","sunny", -90),),calibration)
+    assert invalid_weather.value is None
+    assert invalid_weather.details["missing_inputs"] == ["outdoor_temperature"]
