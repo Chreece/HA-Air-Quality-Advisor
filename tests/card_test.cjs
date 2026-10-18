@@ -220,8 +220,15 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   assert.ok(gr.includes('Υγρασία Ø (RH)'));
   assert.ok(gr.includes('55%'));
   assert.ok(gr.includes('65%'));
-  assert.ok(gr.includes('Ένδειξη μούχλας'));
+  // Compact layout shows actionable RH, PM2.5 and AQI; the missing mold
+  // gauge is available through "More details", while its warning is visible.
   assert.ok(gr.includes('mold-warnings'));
+  assert.ok(gr.includes('Μέτρησε και αποθήκευσε'));
+  card._expanded.add('living');
+  card._render(true);
+  assert.ok(card.shadowRoot.innerHTML.includes('Ένδειξη μούχλας'));
+  card._expanded.delete('living');
+  card._render(true);
   assert.ok(gr.includes('PM2.5') && gr.includes('AQI'));
   assert.ok(!gr.includes('Δεν υπάρχουν εσωτερικές μετρήσεις'));
 
