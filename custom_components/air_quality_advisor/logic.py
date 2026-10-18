@@ -14,7 +14,7 @@ class Reading:
     name: str
     metric: str
     value: float | None  # Normalized to the units documented in const.py.
-    details: dict[str, float | int | str] | None = None  # Derived mold data only.
+    details: dict[str, float | int | str | list[str]] | None = None  # Derived mold data only.
 
 
 @dataclass(frozen=True)
@@ -187,6 +187,19 @@ def evaluate(
         if unknown:
             diagnostics.append((room.name, "unknown_window_state"))
 
+        # Input diagnostics must be visible even during rain, storms or
+        # unavailable outdoor conditions, when opening is deliberately blocked.
+        for item in room.readings:
+            if item.metric != "mold" or item.value is not None:
+                continue
+            diagnostics.append((room.name, "mold_indicator_unavailable"))
+            for missing in (item.details or {}).get("missing_inputs", []):
+                if missing in (
+                    "calibration", "indoor_temperature",
+                    "outdoor_temperature", "humidity", "calculation",
+                ):
+                    diagnostics.append((room.name, f"mold_{missing}_unavailable"))
+
         if not outdoor_safe:
             if opened:
                 recommendations.append(
@@ -202,8 +215,6 @@ def evaluate(
             if reading.value >= limit:
                 indoor_reasons.append(_reading_reason("inside", reading))
 
-        if any(reading.metric == "mold" and reading.value is None for reading in room.readings):
-            diagnostics.append((room.name, "mold_indicator_unavailable"))
         if not any(reading.value is not None for reading in room.readings):
             diagnostics.append((room.name, "no_indoor_data"))
         elif indoor_reasons and closed and not opened:

@@ -154,3 +154,21 @@ def test_messages_translated_and_include_reasons():
     assert "Άνοιξε" in announcement(rec, "el_GR")[1]
     assert "Abre" in announcement(rec, "es")[1]
     assert explain(rec.reasons[0], "fr").startswith("CO₂")
+
+
+def test_missing_mold_inputs_remain_diagnostic_even_if_rain_blocks_ventilation():
+    room = Room("bedroom", "Bedroom", (
+        Window("binary_sensor.window", "Window", False),
+    ), (
+        Reading("sensor.co2","CO₂","co2",600),
+        Reading("derived.mold_bedroom","Mold indication","mold",None,{
+            "status":"inputs_unavailable",
+            "missing_inputs":["indoor_temperature","outdoor_temperature","humidity"],
+        }),
+    ))
+    plan = evaluate((Reading("sensor.out", "Outside", "pm25", 7),),
+                    (Weather("weather.home", "rainy", 10),), (), (room,))
+    assert plan.status == "blocked"
+    assert ("Bedroom", "mold_indicator_unavailable") in plan.diagnostics
+    for key in ("indoor_temperature","outdoor_temperature","humidity"):
+        assert ("Bedroom", f"mold_{key}_unavailable") in plan.diagnostics

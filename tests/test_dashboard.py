@@ -138,3 +138,42 @@ def test_missing_unrelated_indoor_sensor_is_partial_and_all_missing_is_no_data()
     assert partial["status_detail"] == "partial_indoor_data"
     unavailable = snapshot((room("Kitchen", ()),))["rooms"][0]
     assert unavailable["status_detail"] == "no_indoor_data"
+
+
+def test_mold_missing_inputs_expose_room_warnings_without_hiding_valid_air_data():
+    living = room("Living", (
+        Reading("sensor.pm","PM2.5","pm25",1),
+        Reading("sensor.aqi","AQI","aqi",12.9),
+        Reading("derived.mold_living","Mold indication","mold",None,{
+            "status":"needs_calibration",
+            "missing_inputs":["calibration","indoor_temperature","outdoor_temperature","humidity"],
+            "humidity_sensor_count":0,
+        }),
+    ))
+    data = snapshot((living,))
+    selected = data["rooms"][0]
+    assert selected["status"] == "unknown"
+    assert selected["mold_warnings"] == [
+        "calibration","indoor_temperature","outdoor_temperature","humidity"]
+    assert selected["available_count"] == 2
+    assert data["summary"]["unknown"] == 1
+    assert ("Living", "mold_calibration_unavailable") in (
+        (p["area"],p["problem"]) for p in
+        [{"area": name,"problem": issue} for name,issue in
+            evaluate((Reading("sensor.out", "outside","pm25",8),),
+                     (Weather("weather.home","rainy",20),),(),(living,)).diagnostics]
+    )
+    # Changing outside weather to unsafe never hides missing-input warnings.
+    bad_weather = snapshot((living,), weather=(Weather("weather.home","rainy",20),))
+    assert bad_weather["rooms"][0]["mold_warnings"] == selected["mold_warnings"]
+
+
+def test_successful_mold_has_no_input_warnings():
+    sample = room("Bedroom", (
+        Reading("derived.mold_bedroom","Mold","mold",62,{
+            "status":"ready","missing_inputs":[],
+        }),
+    ))
+    item = snapshot((sample,))["rooms"][0]
+    assert item["mold_warnings"] == []
+    assert item["status"] == "safe"

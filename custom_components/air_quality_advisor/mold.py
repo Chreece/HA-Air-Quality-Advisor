@@ -125,10 +125,32 @@ def estimate_mold_for_room(
         "needs_calibration" if not calibrated else
         "inputs_unavailable" if result is None else "ready"
     )
-    details: dict[str, float | int | str] = {
+
+    # Report *every* unavailable input, not only the first one encountered.
+    # These are presentation/diagnostic warnings, never TTS events or
+    # additional conditions for triggering open/close window announcements.
+    missing_inputs: list[str] = []
+    if not calibrated:
+        missing_inputs.append("calibration")
+    if indoor_c is None:
+        missing_inputs.append("indoor_temperature")
+    if outdoor_c is None:
+        missing_inputs.append("outdoor_temperature")
+    if avg is None:
+        missing_inputs.append("humidity")
+    if result is None and not missing_inputs:
+        missing_inputs.append("calculation")
+
+    details: dict[str, float | int | str | list[str]] = {
         "humidity_sensor_count": count,
         "status": data_status,
+        "missing_inputs": missing_inputs,
     }
+    if isinstance(outdoor_id, str):
+        details["outdoor_weather_entity"] = outdoor_id
+    indoor_sensor = calibration.get("indoor_temperature_entity")
+    if isinstance(indoor_sensor, str):
+        details["indoor_temperature_entity"] = indoor_sensor
     if avg is not None:
         details["average_indoor_humidity"] = round(avg, 1)
     if result:
