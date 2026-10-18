@@ -175,9 +175,9 @@ def apply_mold_i18n(root: Path = ROOT) -> None:
             areas["data"]["use_mold_indicator"] = translations["enable"]
             areas["data_description"]["use_mold_indicator"] = translations["enable_help"]
             room["title"] = translations["room_title"]
-            room["description"] = translations["room_desc"] + "\\n\\n{mold_room_notice}"
+            room["description"] = translations["room_desc"] + "\n\n{mold_room_notice}"
             weather = doc[scope]["step"]["weather"]
-            weather["description"] += "\\n\\n{mold_weather_notice}"
+            weather["description"] += "\n\n{mold_weather_notice}"
             weather["data_description"]["weather_entities"] += (
                 " " + MOLD_WEATHER_HELP.get(
                     code,
