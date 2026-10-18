@@ -153,6 +153,15 @@ def translated_fields(code: str, doc: dict) -> dict:
     }
 
 
+MOLD_WEATHER_HELP = {
+    "en": "Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
+    "de": "Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
+    "el": "Η ένδειξη μούχλας χρησιμοποιεί το τρέχον γνώρισμα temperature (°C/°F) μιας επιλεγμένης οντότητας καιρού ως εξωτερική θερμοκρασία. Επίλεξε πηγή που δίνει θερμοκρασία.",
+    "fr": "L'indicateur de moisissure utilise l'attribut temperature (°C/°F) d'une entité météo sélectionnée comme température extérieure. Sélectionnez une source qui fournit une température.",
+    "es": "El indicador de moho obtiene la temperatura exterior del atributo temperature (°C/°F) de una entidad meteorológica seleccionada. Elige una fuente que proporcione la temperatura.",
+}
+
+
 def apply_mold_i18n(root: Path = ROOT) -> None:
     if set(MOLD_NAMES) != set(native_languages()):
         raise ValueError("Missing mold locale names")
@@ -166,7 +175,15 @@ def apply_mold_i18n(root: Path = ROOT) -> None:
             areas["data"]["use_mold_indicator"] = translations["enable"]
             areas["data_description"]["use_mold_indicator"] = translations["enable_help"]
             room["title"] = translations["room_title"]
-            room["description"] = translations["room_desc"]
+            room["description"] = translations["room_desc"] + "\\n\\n{mold_room_notice}"
+            weather = doc[scope]["step"]["weather"]
+            weather["description"] += "\\n\\n{mold_weather_notice}"
+            weather["data_description"]["weather_entities"] += (
+                " " + MOLD_WEATHER_HELP.get(
+                    code,
+                    "🌡️ weather.* · temperature (°C/°F) → 🧊",
+                )
+            )
             for key, value in (
                 ("mold_indoor_temperature", translations["sensor"]),
                 ("mold_critical_temperature_c", translations["critical"]),
@@ -188,8 +205,8 @@ def apply_mold_i18n(root: Path = ROOT) -> None:
         menu["indoor_sensors"] = translations["room_title"]
         doc["options"]["step"]["init"]["menu_options"] = {
             sid: menu[sid]
-            for sid in ("areas", "indoor_sensors", "window_sensors",
-                        "outdoor", "weather", "delivery", "thresholds")
+            for sid in ("areas", "weather", "indoor_sensors",
+                        "window_sensors", "outdoor", "delivery", "thresholds")
         }
         content = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
         target.write_text(content, encoding="utf-8")

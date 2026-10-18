@@ -144,3 +144,16 @@ def test_translation_generator_uses_reviewed_overrides_and_provider_names_are_in
     assert 'state.name or entity_id' in discovery
     assert 'area.name' in discovery
     assert 'state.name or state.entity_id' in discovery
+
+
+def test_all_locales_include_live_mold_weather_and_room_readiness_hints():
+    for code, doc in _translations().items():
+        assert list(doc["options"]["step"]["init"]["menu_options"])[1:3] == [
+            "weather", "indoor_sensors"
+        ], code
+        for context in ("config", "options"):
+            weather = doc[context]["step"]["weather"]
+            room = doc[context]["step"]["indoor_sensors"]
+            assert "{mold_weather_notice}" in weather["description"], code
+            assert "{mold_room_notice}" in room["description"], code
+            assert "temperature" in weather["data_description"]["weather_entities"], code
