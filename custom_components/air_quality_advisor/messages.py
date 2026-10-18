@@ -138,10 +138,26 @@ def language_code(language: str | None) -> str:
     return resolve_language(language)
 
 
+RH_FALLBACK_REASON_NAMES = {
+    "en": "average room relative humidity (RH fallback)",
+    "de": "mittlere relative Raumfeuchte (RH-Ersatzwert)",
+    "el": "μέση σχετική υγρασία χώρου (εφεδρική μέτρηση)",
+    "fr": "humidité relative moyenne (valeur de secours)",
+    "es": "humedad relativa media (valor de respaldo)",
+}
+RH_FALLBACK_SOURCE_LABEL = "Average room relative humidity (fallback)"
+
+
 def explain(reason: Reason, language: str) -> str:
     if reason.code == "inside_mold":
         return f"{MOLD_NAMES.get(language_code(language), MOLD_NAMES['en'])}: {reason.value}"
     dictionary = TEXT[language_code(language)]
+    if (reason.code == "inside_humidity"
+            and reason.label == RH_FALLBACK_SOURCE_LABEL):
+        return dictionary["inside"].format(
+            name=RH_FALLBACK_REASON_NAMES.get(language_code(language), "RH"),
+            value=reason.value,
+        )
     template = dictionary.get(reason.code)
     if template is None:
         if reason.code.startswith("inside_"):

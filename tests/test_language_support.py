@@ -90,3 +90,20 @@ def test_all_spoken_announcement_placeholders_and_reasons_work():
         assert "1,200 ppm" in message, locale
         assert title
         assert "{" not in message and "}" not in message
+
+
+def test_rh_fallback_announcements_use_localized_reason_name():
+    from custom_components.air_quality_advisor.messages import explain
+    value = Reason("inside_humidity", "Average room relative humidity (fallback)", "70 %")
+    assert "μέση σχετική υγρασία" in explain(value, "el_GR")
+    assert "mittlere relative Raumfeuchte" in explain(value, "de")
+    assert "valeur de secours" in explain(value, "fr")
+    assert "average room relative humidity" in explain(value, "en")
+    # A normal nonfallback sensor must retain its actual name.
+    regular = Reason("inside_humidity", "Wohnzimmer Hygrometer", "70 %")
+    assert "Wohnzimmer Hygrometer" in explain(regular, "de")
+
+    for language in SUPPORTED_LANGUAGE_TAGS:
+        rendered = explain(value, language)
+        assert "70 %" in rendered
+        assert "Average room relative humidity (fallback)" not in rendered or language == "en"
