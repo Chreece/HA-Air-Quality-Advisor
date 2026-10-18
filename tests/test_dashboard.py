@@ -235,3 +235,25 @@ def test_no_available_mold_and_no_rh_cannot_activate_fallback():
     assert item["rh_fallback"] == {"active":False}
     assert item["status"] == "unknown"
     assert item["mold_warnings"] == ["calibration","humidity"]
+
+
+def test_dashboard_preserves_raw_mold_factor_and_current_calculation_temperatures():
+    saved_factor = 2.370123456789
+    room_data = room("Living", (
+        Reading("derived.mold_living","Mold indication","mold",71.9,{
+            "calibration_factor":saved_factor,
+            "indoor_temperature_c":21.7,
+            "outdoor_temperature_c":8.5,
+            "estimated_surface_c":17.1,
+            "average_indoor_humidity":55.0,
+            "humidity_sensor_count":2,
+            "status":"ready",
+        }),
+    ))
+    data = snapshot((room_data,))["rooms"][0]["readings"][0]
+    assert data["details"]["calibration_factor"] == saved_factor
+    assert data["details"]["indoor_temperature_c"] == 21.7
+    assert data["details"]["outdoor_temperature_c"] == 8.5
+    assert data["details"]["estimated_surface_c"] == 17.1
+    assert data["details"]["humidity_sensor_count"] == 2
+    assert data["metric"] == "mold"

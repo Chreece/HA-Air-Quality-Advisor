@@ -446,3 +446,36 @@ def test_rh_fallback_comparison_keeps_full_sensor_precision():
         (Weather("weather.home","sunny",20),),(),(selected,),
     )
     assert no_open.status == "idle"
+
+
+def test_mold_details_expose_calibration_factor_at_full_float_precision():
+    sample = Room("living", "Living", (), (rh(55), rh(65)))
+    saved_factor = 2.370123456789
+    weather = (Weather("weather.home", "sunny", 8.5),)
+    result = estimate_mold_for_room(sample, 21.7, weather, {
+        "calibration_factor": saved_factor,
+        "outdoor_weather_entity": "weather.home",
+        "indoor_temperature_entity": "sensor.living_temperature",
+    })
+    assert result.value is not None
+    assert result.details["calibration_factor"] == saved_factor
+    assert result.details["indoor_temperature_c"] == 21.7
+    assert result.details["outdoor_temperature_c"] == 8.5
+    assert result.details["estimated_surface_c"] is not None
+    # Calculation must use the original unrounded factor.
+    expected_surface = 8.5 + (21.7 - 8.5) / saved_factor
+    assert abs(result.details["estimated_surface_c"] - expected_surface) <= 0.0051
+    assert result.value == estimate_mold(21.7, 8.5, 60, saved_factor).surface_humidity
+
+    unavailable = estimate_mold_for_room(sample, 21.7,
+        (Weather("weather.home", "sunny", None),), {
+            "calibration_factor": saved_factor,
+            "outdoor_weather_entity": "weather.home",
+        })
+    assert unavailable.value is None
+    assert unavailable.details["calibration_factor"] == saved_factor
+    assert unavailable.details["missing_inputs"] == ["outdoor_temperature"]
+
+    uncalibrated = estimate_mold_for_room(sample, 21.7, weather, {})
+    assert uncalibrated.value is None
+    assert "calibration_factor" not in uncalibrated.details

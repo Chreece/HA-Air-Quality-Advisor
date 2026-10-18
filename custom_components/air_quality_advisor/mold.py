@@ -155,6 +155,10 @@ def estimate_mold_for_room(
         "status": data_status,
         "missing_inputs": missing_inputs,
     }
+    if calibrated:
+        # Preserve the exact saved floating-point factor; rounding is a
+        # presentation concern only and must not alter mold calculations.
+        details["calibration_factor"] = factor_number
     if isinstance(outdoor_id, str):
         details["outdoor_weather_entity"] = outdoor_id
     indoor_sensor = calibration.get("indoor_temperature_entity")
