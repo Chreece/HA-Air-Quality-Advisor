@@ -78,8 +78,11 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
     }
   }};
   assert.ok(card.shadowRoot.innerHTML.includes('Ένδειξη μούχλας'));
-  assert.ok(card.shadowRoot.innerHTML.includes('n=2'));
+  assert.ok(card.shadowRoot.innerHTML.includes('Μέση υγρασία:'));
+  assert.ok(card.shadowRoot.innerHTML.includes('2 αισθητήρες'));
+  assert.ok(card.shadowRoot.innerHTML.includes('Εκτιμώμενη επιφάνεια:'));
   assert.match(card.shadowRoot.innerHTML, /13[,.]2°C/);
+  assert.ok(!card.shadowRoot.innerHTML.includes('n=2'));
 }
 // A never-calibrated mold indicator must not erase perfectly valid air data.
 {
@@ -108,7 +111,7 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   assert.ok(!html.includes('Δεν υπάρχουν εσωτερικές μετρήσεις'),
     'valid PM and AQI readings must never be called no indoor data');
   assert.ok(html.includes('PM2.5') && html.includes('AQI'));
-  assert.ok(html.includes('n=2') && html.includes('53%'),
+  assert.ok(html.includes('2 αισθητήρες') && html.includes('53%'),
     'show valid RH average even before calibration');
 
   // Unavailable inputs *after* calibration are not the same as no calibration.
@@ -251,5 +254,86 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   assert.ok(!card.shadowRoot.innerHTML.includes('class="rh-fallback"'));
   assert.ok(!card.shadowRoot.innerHTML.includes('RH fallback active'));
   assert.ok(card.shadowRoot.innerHTML.includes('Mold indication'));
+}
+// Exactly three measurement tiles must still offer More details for calibration.
+{
+  const sample=JSON.parse(JSON.stringify(input));
+  sample.rooms[0].readings=[
+    {metric:'aqi',value:12.9,threshold:100,unit:'AQI',available:true,exceeded:false},
+    {metric:'pm25',value:1,threshold:25,unit:'µg/m³',available:true,exceeded:false},
+    {metric:'mold',value:71.9,threshold:70,unit:'%',available:true,exceeded:true,
+      details:{status:'ready',average_indoor_humidity:55,humidity_sensor_count:2,
+        estimated_surface_c:17.1,calibration_factor:2.370123456789,
+        indoor_temperature_c:21.7,outdoor_temperature_c:8.5}}
+  ];
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:sample}
+    }
+  }};
+  const compact=card.shadowRoot.innerHTML;
+  assert.ok(compact.includes('Μέση υγρασία: 55%'));
+  assert.ok(compact.includes('2 αισθητήρες'));
+  assert.ok(compact.includes('Εκτιμώμενη επιφάνεια: 17,1°C'));
+  assert.ok(!compact.includes('n=2'));
+  assert.ok(compact.includes('data-expand="kitchen"'));
+  assert.ok(!compact.includes('class="mold-calibration-details"'));
+  card._expanded.add('kitchen');
+  card._render(true);
+  const open=card.shadowRoot.innerHTML;
+  assert.ok(open.includes('aria-expanded="true"'));
+  assert.ok(open.includes('class="mold-calibration-details"'));
+  assert.ok(open.includes('Συντελεστής βαθμονόμησης'));
+  assert.ok(open.includes('2,370123'));
+  assert.ok(open.includes('title="2.370123456789"'));
+  assert.ok(open.includes('Εσωτερική θερμοκρασία'));
+  assert.ok(open.includes('21,7°C'));
+  assert.ok(open.includes('Εξωτερική θερμοκρασία'));
+  assert.ok(open.includes('8,5°C'));
+  card._expanded.delete('kitchen');
+  card._render(true);
+
+  sample.rooms[0].readings[2].details.humidity_sensor_count=1;
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:sample}
+    }
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('1 αισθητήρας'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('1 αισθητήρες'));
+
+  card.hass={language:'de',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:sample}
+    }
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('Durchschnittliche Luftfeuchte'));
+  assert.ok(card.shadowRoot.innerHTML.includes('Geschätzte Oberflächentemperatur'));
+
+  sample.rooms[0].readings[2].details.calibration_factor=2;
+  card.hass={language:'en',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:sample}
+    }
+  }};
+  card._expanded.add('kitchen');
+  card._render(true);
+  assert.ok(card.shadowRoot.innerHTML.includes('Calibration factor'));
+  assert.ok(card.shadowRoot.innerHTML.includes('2.00'));
+  card._expanded.delete('kitchen');
+  card._render(true);
+
+  card.setConfig({entity:'sensor.air_quality_advisor_recommendations',show_metrics:false});
+  assert.ok(!card.shadowRoot.innerHTML.includes('class="mold-calibration-details"'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('data-expand="kitchen"'));
+
+  card.setConfig({entity:'sensor.air_quality_advisor_recommendations'});
+  sample.rooms[0].readings[2].details.calibration_factor=null;
+  card.hass={language:'en',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:sample}
+    }
+  }};
+  assert.ok(!card.shadowRoot.innerHTML.includes('data-expand="kitchen"'));
 }
 console.log('Dashboard card frontend tests passed');
