@@ -26,7 +26,7 @@
       },
       "indoor_sensors": {
         "title": "部屋 · カビ指標",
-        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
         "data": {
           "excluded_indoor_entities": "室内空気センサーを除外",
           "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
@@ -52,13 +52,13 @@
       },
       "weather": {
         "title": "天気と警報",
-        "description": "天気と警報. weather.*",
+        "description": "天気と警報. weather.*\n\n{mold_weather_notice}",
         "data": {
           "weather_entities": "天気と警報",
           "weather_warnings": "気象警報"
         },
         "data_description": {
-          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
           "weather_warnings": "天気と警報 · ⚠ (利用できません) → 🪟🔒"
         }
       },
@@ -151,10 +151,10 @@
         "description": "選択してください: 部屋 / 天気と警報 / 通知（任意） / 詳細なしきい値",
         "menu_options": {
           "areas": "部屋",
+          "weather": "天気と警報",
           "indoor_sensors": "部屋 · カビ指標",
           "window_sensors": "窓センサーを除外",
           "outdoor": "屋外の空気質",
-          "weather": "天気と警報",
           "delivery": "通知（任意）",
           "thresholds": "詳細なしきい値"
         }
@@ -183,7 +183,7 @@
       },
       "indoor_sensors": {
         "title": "部屋 · カビ指標",
-        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
         "data": {
           "excluded_indoor_entities": "室内空気センサーを除外",
           "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
@@ -209,13 +209,13 @@
       },
       "weather": {
         "title": "天気と警報",
-        "description": "天気と警報. weather.*",
+        "description": "天気と警報. weather.*\n\n{mold_weather_notice}",
         "data": {
           "weather_entities": "天気と警報",
           "weather_warnings": "気象警報"
         },
         "data_description": {
-          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒",
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
           "weather_warnings": "天気と警報 · ⚠ (利用できません) → 🪟🔒"
         }
       },
