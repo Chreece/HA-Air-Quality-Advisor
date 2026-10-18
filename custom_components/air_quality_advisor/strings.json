@@ -26,7 +26,7 @@
       },
       "indoor_sensors": {
         "title": "Room settings — indoor air and mold",
-        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.\n\n{mold_room_notice}",
         "data": {
           "excluded_indoor_entities": "Sensors to exclude in this room",
           "mold_indoor_temperature": "Room temperature sensor for mold calibration",
@@ -52,13 +52,13 @@
       },
       "weather": {
         "title": "Weather and warnings",
-        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.\n\n{mold_weather_notice}",
         "data": {
           "weather_entities": "Weather entities",
           "weather_warnings": "Weather warning sensors (optional)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
           "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
         }
       },
@@ -151,10 +151,10 @@
         "description": "Choose one section. All other settings stay unchanged.",
         "menu_options": {
           "areas": "Areas",
+          "weather": "Weather and warnings",
           "indoor_sensors": "Room settings — indoor air and mold",
           "window_sensors": "Window sensor exclusions",
           "outdoor": "Outdoor air quality",
-          "weather": "Weather and warnings",
           "delivery": "Announcements (optional)",
           "thresholds": "Advanced thresholds"
         }
@@ -183,7 +183,7 @@
       },
       "indoor_sensors": {
         "title": "Room settings — indoor air and mold",
-        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.\n\n{mold_room_notice}",
         "data": {
           "excluded_indoor_entities": "Sensors to exclude in this room",
           "mold_indoor_temperature": "Room temperature sensor for mold calibration",
@@ -209,13 +209,13 @@
       },
       "weather": {
         "title": "Weather and warnings",
-        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.\n\n{mold_weather_notice}",
         "data": {
           "weather_entities": "Weather entities",
           "weather_warnings": "Weather warning sensors (optional)"
         },
         "data_description": {
-          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening.",
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
           "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
         }
       },
