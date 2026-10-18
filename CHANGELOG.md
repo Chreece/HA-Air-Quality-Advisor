@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.12 — Clarify mold sensor count and show calibration details
+
+- Replace ambiguous `RH Ø 55% · n=2 · 🌡️ 17.1°C` text in the mold gauge with localized, readable lines: **Average humidity: 55% · 2 sensors** and **Estimated surface: 17.1°C**.
+- Add a dedicated **More details** panel for the mold indicator with the **actual calibration factor** and **current indoor and outdoor temperatures** used by the estimate. The panel is available with as few as three room measurement tiles, and is hidden until expanded.
+- Preserve the exact saved floating-point calibration factor in the backend dashboard data; UI display uses 2–6 fractional digits and includes the full numeric factor in the tooltip. No precision changes to the underlying Magnus/mold calculations.
+- Localize the humidity average, one/multiple sensor labels, surface temperature and calibration field labels across the 38 supported UI languages, including Greek and German.
+- Support partially unavailable readings by showing any existing calibration factor with a dash for a missing temperature, without inventing sensor values. No new sensors, configuration options, automation triggers or Announcement Hub changes.
+- Extend backend metadata and frontend tests covering calibration precision, locale rendering, expanded/collapsed layout and rooms with three measurement cards.
+
+
 ## 0.2.11 — Automatic per-room RH fallback when mold indication is unavailable
 
 - While the optional mold indicator is enabled, **use calibrated estimated surface humidity whenever it is calculable**. If not, automatically use **one averaged valid room RH measurement** as the humidity ventilation trigger; no additional configuration toggle is necessary.

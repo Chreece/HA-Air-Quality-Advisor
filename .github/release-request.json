@@ -1,15 +1,15 @@
 {
-  "version": "0.2.11",
+  "version": "0.2.12",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Prefer valid calibrated mold surface humidity; when unavailable, fall back automatically per room to the average of included valid RH sensors",
-    "Use indoor_humidity default 65% threshold only for RH fallback and indoor_mold default 70% only for a valid mold reading",
-    "Exclude invalid, 0%, stale and unavailable RH; preserve room exclusions and compare fallback values at full precision",
-    "Keep unavailable mold reading with detailed warnings and a partially verified room status rather than assuming mold safety",
-    "Label active RH fallback, source count, mean and threshold in the room card in 38 languages and dashboard attributes",
-    "Localize RH fallback spoken reasons, preserving existing automatic announcement timing and Announcement Hub ownership",
-    "Regression tests for active/absent fallback, restoration of mold calculation, unsafe-weather close, sensor exclusion and no duplicated humidity triggers"
+    "Replace mold gauge's ambiguous n=2 abbreviation with explicitly localized average RH and sensor count",
+    "Display estimated cold surface temperature on its own readable line",
+    "Add expandable mold calibration details with saved factor and current indoor/outdoor temperatures, including when only three room measurements exist",
+    "Preserve full precision of saved calibration factor in backend dashboard attributes; format only for card display",
+    "Support singular sensor labels and 38 UI locales; keep missing measurements unavailable",
+    "Regression tests for factor precision and Greek/German/English expanded/collapsed card rendering",
+    "No change to RH fallback, calculations, environmental recommendations, weather or Announcement Hub delivery"
   ]
 }
