@@ -52,8 +52,8 @@ def test_every_ui_locale_ships_complete_home_assistant_json():
         assert set(translation["config"]["step"]) == steps
         assert set(translation["options"]["step"]) == set(english["options"]["step"])
         assert list(translation["options"]["step"]["init"]["menu_options"]) == [
-            "areas", "indoor_sensors", "window_sensors", "outdoor",
-            "weather", "delivery", "thresholds",
+            "areas", "weather", "indoor_sensors", "window_sensors",
+            "outdoor", "delivery", "thresholds",
         ]
         assert set(translation["config"]["error"]) == set(english["config"]["error"])
         assert set(translation["options"]["error"]) == set(english["options"]["error"])

@@ -342,8 +342,8 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     menu = asyncio.run(options.async_step_init())
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
-        "areas", "indoor_sensors", "window_sensors", "outdoor",
-        "weather", "delivery", "thresholds",
+        "areas", "weather", "indoor_sensors", "window_sensors",
+        "outdoor", "delivery", "thresholds",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -690,3 +690,32 @@ def test_initial_wizard_mold_weather_precedes_room_calibration(monkeypatch, adap
     }))
     result = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
     assert result == {"next_step": "outdoor"}
+
+
+def test_weather_options_second_and_source_status_before_room_measurements(
+    monkeypatch, adapter,
+):
+    options = _calibratable_options(monkeypatch, adapter)
+    menu = asyncio.run(options.async_step_init())
+    assert menu["menu_options"][:3] == ["areas","weather","indoor_sensors"]
+    weather = asyncio.run(options.async_step_weather())
+    assert weather["step_id"] == "weather"
+    assert "weather.home" in weather["description_placeholders"]["mold_weather_notice"]
+    assert "6.0 °C" in weather["description_placeholders"]["mold_weather_notice"]
+    room = asyncio.run(options.async_step_indoor_sensors())
+    notice = room["description_placeholders"]["mold_room_notice"]
+    assert "⚠️" in notice and "🧊" in notice
+
+    options.hass._values["weather.home"].attributes.pop("temperature")
+    weather_unavailable = asyncio.run(options.async_step_weather())
+    notice = weather_unavailable["description_placeholders"]["mold_weather_notice"]
+    assert "⚠️" in notice and "weather.home" in notice
+    room_unavailable = asyncio.run(options.async_step_indoor_sensors())
+    assert "🌤️" in room_unavailable["description_placeholders"]["mold_room_notice"]
+
+
+def test_weather_status_preview_hidden_when_mold_option_is_off(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    result = asyncio.run(options.async_step_weather())
+    assert result["description_placeholders"]["mold_weather_notice"] == ""

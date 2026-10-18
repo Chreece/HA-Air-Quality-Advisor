@@ -26,12 +26,13 @@ from .const import (
     DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
 )
-from .mold import calibration_factor
+from .mold import calibration_factor, estimate_mold_for_room
 
 from .discovery import (
     indoor_sensor_exclusion_choices, outdoor_choices, suggested_window_exclusions, warning_choices,
     window_area_choices, window_exclusion_choices,
     indoor_temperature_choices, temperature_sensor_c, weather as current_weather,
+    rooms as discover_rooms,
 )
 
 
@@ -61,6 +62,65 @@ class _FlowMixin:
     """Use the same pages in initial setup and reconfiguration."""
 
     _values: dict[str, Any]
+
+    def _mold_source_age(self) -> float:
+        """Use the normal configured freshness threshold for calibration previews."""
+        thresholds = self._values.get(CONF_THRESHOLDS, {})
+        if not isinstance(thresholds, dict):
+            thresholds = {}
+        return {**DEFAULT_THRESHOLDS, **thresholds}["max_age_minutes"]
+
+    def _mold_weather_notice(self, entity_ids: list[str]) -> str:
+        """Non-blocking, live weather-temperature source status in the UI."""
+        if not self._values.get(CONF_USE_MOLD, False):
+            return ""
+        sources = [
+            current_weather(self.hass, entity, self._mold_source_age())
+            for entity in entity_ids
+        ]
+        valid = [item for item in sources if item.temperature_c is not None]
+        if valid:
+            return "✓ 🌡️ " + " · ".join(
+                f"{item.entity_id}: {item.temperature_c:.1f} °C"
+                for item in valid
+            )
+        return "⚠️ 🌤️ 🌡️ °C ∅ : " + (
+            ", ".join(entity_ids) if entity_ids else "weather.*"
+        )
+
+    def _mold_room_notice(
+        self, area_id: str, calibration: dict[str, Any],
+        excluded: list[str],
+    ) -> str:
+        """Show every missing mold input without preventing later calibration."""
+        if not self._values.get(CONF_USE_MOLD, False):
+            return ""
+        room = discover_rooms(
+            self.hass, [area_id], self._mold_source_age(),
+            excluded_entities=set(excluded) |
+                set(self._values.get(CONF_EXCLUDED_WINDOWS, [])),
+        )[0]
+        indoor_sensor = calibration.get("indoor_temperature_entity")
+        indoor_c = (
+            temperature_sensor_c(self.hass, indoor_sensor, self._mold_source_age())
+            if isinstance(indoor_sensor, str) else None
+        )
+        current = tuple(
+            current_weather(self.hass, entity, self._mold_source_age())
+            for entity in self._values.get(CONF_WEATHER, [])
+        )
+        estimate = estimate_mold_for_room(room, indoor_c, current, calibration)
+        missing = (estimate.details or {}).get("missing_inputs", [])
+        names = {
+            "calibration": "🧊 °C",
+            "indoor_temperature": "🏠 🌡️ °C",
+            "outdoor_temperature": "🌤️ 🌡️ °C",
+            "humidity": "RH (%)",
+            "calculation": "∑ RH (%)",
+        }
+        if not missing:
+            return "✓ 🌡️ °C · RH (%)"
+        return "⚠️ " + " · ".join(names.get(code, code) for code in missing)
 
     async def _advance(self, next_step: str) -> ConfigFlowResult:
         """Finish a selected options section; initial setup continues normally."""
@@ -333,6 +393,11 @@ class _FlowMixin:
                 "area_name": area_name,
                 "position": str(index + 1),
                 "total": str(len(area_ids)),
+                "mold_room_notice": self._mold_room_notice(
+                    area_id, current,
+                    user_input.get(CONF_EXCLUDED_INDOOR, [])
+                    if user_input is not None else previous.get(area_id, []),
+                ),
             },
             data_schema=probatio.Schema(fields),
             errors=errors,
@@ -383,7 +448,15 @@ class _FlowMixin:
             schema[_marker(CONF_WARNINGS, [
                 w for w in self._values.get(CONF_WARNINGS, []) if w in known_alerts
             ])] = _multi(alerts)
-        return self.async_show_form(step_id="weather", data_schema=probatio.Schema(schema), errors=errors)
+        return self.async_show_form(
+            step_id="weather", data_schema=probatio.Schema(schema), errors=errors,
+            description_placeholders={
+                "mold_weather_notice": self._mold_weather_notice(
+                    user_input.get(CONF_WEATHER, [])
+                    if user_input is not None else self._values.get(CONF_WEATHER, []),
+                ),
+            },
+        )
 
     async def async_step_delivery(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         # A notify action can be registered without a loaded/configured Hub.
@@ -556,8 +629,8 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         return self.async_show_menu(
             step_id="init",
             menu_options=[
-                "areas", "indoor_sensors", "window_sensors", "outdoor",
-                "weather", "delivery", "thresholds",
+                "areas", "weather", "indoor_sensors", "window_sensors",
+                "outdoor", "delivery", "thresholds",
             ],
         )
 

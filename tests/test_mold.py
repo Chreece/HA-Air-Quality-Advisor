@@ -67,7 +67,7 @@ def test_missing_calibration_or_weather_is_unknown_not_safe_or_open():
         {"calibration_factor":2,"outdoor_weather_entity":"weather.home"})
     assert missing.value is None and absent.value is None
     assert missing.details["status"] == "needs_calibration"
-    assert missing.details["missing_inputs"] == ["calibration", "outdoor_temperature"]
+    assert missing.details["missing_inputs"] == ["calibration"]
     assert absent.details["status"] == "inputs_unavailable"
     assert absent.details["missing_inputs"] == ["outdoor_temperature"]
     for sample in (missing,absent):
@@ -182,7 +182,7 @@ def test_mold_explains_missing_inputs_even_when_rh_average_is_valid():
     assert missing.details == {
         "humidity_sensor_count": 2,
         "status": "needs_calibration",
-        "missing_inputs": ["calibration", "outdoor_temperature"],
+        "missing_inputs": ["calibration"],
         "average_indoor_humidity": 60,
     }
     calibrated_but_missing = estimate_mold_for_room(
@@ -241,3 +241,16 @@ def test_removed_calibration_weather_provider_requires_weather_warning():
     assert reading.value is None
     assert reading.details["missing_inputs"] == ["outdoor_temperature"]
     assert reading.details["outdoor_weather_entity"] == "weather.old"
+
+
+def test_weather_preview_before_calibration_reports_actual_missing_inputs():
+    room = Room("living", "Living", (), (rh(60),))
+    with_temperature = estimate_mold_for_room(room, 22,
+        (Weather("weather.home", "cloudy", 12),), {})
+    assert with_temperature.value is None
+    assert with_temperature.details["missing_inputs"] == ["calibration"]
+    without_temperature = estimate_mold_for_room(room, 22,
+        (Weather("weather.home", "cloudy", None),), {})
+    assert without_temperature.details["missing_inputs"] == [
+        "calibration", "outdoor_temperature"
+    ]

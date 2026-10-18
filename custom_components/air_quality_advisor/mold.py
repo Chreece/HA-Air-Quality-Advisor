@@ -107,6 +107,15 @@ def estimate_mold_for_room(
         (item.temperature_c for item in weather if item.entity_id == outdoor_id),
         None,
     )
+    if not outdoor_id:
+        # A not-yet-calibrated room can still show whether any selected
+        # weather provider supplies the outdoor temperature needed for setup.
+        # Once calibrated, the original provider is pinned, never silently
+        # replaced with another weather source.
+        outdoor_c = next(
+            (item.temperature_c for item in weather if item.temperature_c is not None),
+            None,
+        )
     avg, count = mean_valid_humidity(room.readings)
     result = estimate_mold(indoor_c, outdoor_c, avg, factor)
 
