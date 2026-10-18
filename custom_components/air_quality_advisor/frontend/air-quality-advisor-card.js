@@ -259,6 +259,9 @@
       LANGUAGE[locale].moldInputsUnavailable = missingInputs;
     }
   }
+  // Full guidance in the five main UI languages; other locales retain their
+  // localized measurement names and show universally understood sensor units.
+  const MOLD_INPUT_WARNING_LABELS = {"en":{"calibration":"Measure and save the coldest-surface temperature in Room settings","indoor_temperature":"Room temperature sensor has no valid reading","outdoor_temperature":"Selected weather entity has no usable outdoor temperature","humidity":"No valid nonzero room humidity readings available","calculation":"Mold estimate cannot be calculated from current values"},"de":{"calibration":"Temperatur der kältesten Oberfläche in den Raumeinstellungen messen und speichern","indoor_temperature":"Raumtemperatursensor liefert keinen gültigen Messwert","outdoor_temperature":"Ausgewählte Wetterentität liefert keine gültige Außentemperatur","humidity":"Keine gültigen Raumfeuchtewerte über 0 % verfügbar","calculation":"Schimmelindikator kann nicht berechnet werden"},"el":{"calibration":"Μέτρησε και αποθήκευσε τη θερμοκρασία της πιο κρύας επιφάνειας στις ρυθμίσεις χώρου","indoor_temperature":"Δεν υπάρχει έγκυρη μέτρηση θερμοκρασίας δωματίου","outdoor_temperature":"Η επιλεγμένη οντότητα καιρού δεν δίνει έγκυρη εξωτερική θερμοκρασία","humidity":"Δεν υπάρχουν έγκυρες μετρήσεις υγρασίας δωματίου πάνω από 0%","calculation":"Δεν είναι δυνατός ο υπολογισμός της ένδειξης μούχλας"},"fr":{"calibration":"Mesurez et enregistrez la température du point le plus froid dans les paramètres de la pièce","indoor_temperature":"Aucune température intérieure valide n'est disponible","outdoor_temperature":"L'entité météo choisie ne fournit pas de température extérieure valide","humidity":"Aucune humidité ambiante valide supérieure à 0 % disponible","calculation":"Impossible de calculer l'indicateur de moisissure"},"es":{"calibration":"Mide y guarda la temperatura de la superficie más fría en la configuración de la habitación","indoor_temperature":"No hay una lectura válida de temperatura interior","outdoor_temperature":"La entidad meteorológica seleccionada no proporciona temperatura exterior válida","humidity":"No hay humedad interior válida superior al 0 % disponible","calculation":"No se puede calcular el indicador de moho"}};
 
   const RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur']);
   function cardLanguage(code) {
@@ -376,6 +379,19 @@
 
     _icon(icon, extraClass = '') {
       return `<ha-icon class="${extraClass}" icon="${escape(icon)}" aria-hidden="true"></ha-icon>`;
+    }
+
+    _moldInputWarning(code) {
+      const localized = MOLD_INPUT_WARNING_LABELS[this._language()]?.[code];
+      if (localized) return localized;
+      const missing = this._t('missing');
+      return {
+        calibration: this._t('moldNotCalibrated'),
+        indoor_temperature: '🏠 🌡️ °C · ' + missing,
+        outdoor_temperature: this._t('weather') + ' · 🌡️ °C · ' + missing,
+        humidity: this._t('humidity') + ' RH (%) · ' + missing,
+        calculation: this._t('moldInputsUnavailable'),
+      }[code] || missing;
     }
 
     _metric(item, miniature = false) {
@@ -508,6 +524,26 @@
       const status = ['safe','attention','unknown'].includes(room.status) ? room.status : 'unknown';
       const readings = safeArray(room.readings);
       const windows = safeArray(room.windows);
+      const moldReading = readings.find((item) => item.metric === 'mold' && !item.available);
+      const moldWarnings = safeArray(room.mold_warnings).filter(
+        (code) => ['calibration','indoor_temperature','outdoor_temperature',
+                   'humidity','calculation'].includes(code)
+      );
+      const sourceDetails = moldReading?.details || {};
+      const warningList = moldWarnings.length
+        ? `<div class="mold-warnings" role="status">
+          ${moldWarnings.map((code) => {
+            const source = code === 'outdoor_temperature'
+              ? sourceDetails.outdoor_weather_entity
+              : code === 'indoor_temperature'
+                ? sourceDetails.indoor_temperature_entity : null;
+            return `<div class="mold-warning">
+              ${this._icon('mdi:alert-outline')}
+              <span>${escape(this._moldInputWarning(code))}${source
+                ? ` <small>(${escape(source)})</small>` : ''}</span>
+            </div>`;
+          }).join('')}
+        </div>` : '';
       const expanded = this._expanded.has(String(room.area_id));
       const shown = expanded ? readings : readings.slice(0,3);
       const button = readings.length > 3 && this._config.show_metrics !== false ? `<button type="button" class="expand" data-expand="${escape(room.area_id)}"
@@ -547,6 +583,7 @@
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
           : `<div class="empty-measurements">${this._icon('mdi:gauge-empty')} ${escape(this._t('missingIndoor'))}</div>`}
         ${button}
+        ${warningList}
         <div class="window-section">
           <span class="field-label">${this._icon('mdi:window-closed-variant')}${escape(this._t('windows'))}</span>
           ${windows.length ? `<div class="window-list">${windows.map((window) => this._window(window)).join('')}</div>`
@@ -674,6 +711,12 @@
       .status-tag ha-icon{--mdc-icon-size:13px}
       .room-attention .status-tag{color:var(--aqa-amber);background:color-mix(in srgb,var(--aqa-amber),transparent 88%)}
       .room-unknown .status-tag{color:var(--aqa-muted);background:color-mix(in srgb,var(--aqa-muted),transparent 88%)}
+      .mold-warnings{display:grid;gap:6px;margin:11px 0;padding:10px;border-radius:10px;
+        background:color-mix(in srgb,var(--aqa-amber),transparent 91%);
+        border:1px solid color-mix(in srgb,var(--aqa-amber),transparent 72%)}
+      .mold-warning{display:flex;align-items:flex-start;gap:7px;color:var(--aqa-text);font-size:11px;line-height:1.4}
+      .mold-warning ha-icon{flex:0 0 auto;--mdc-icon-size:15px;color:var(--aqa-amber)}
+      .mold-warning small{color:var(--aqa-muted)}
       .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:9px}
       .metric{border-radius:11px;background:color-mix(in srgb,var(--aqa-muted),transparent 96%);border:1px solid var(--aqa-edge);padding:10px;min-width:0}
       .metric-attention{border-color:color-mix(in srgb,var(--aqa-amber),transparent 66%)}

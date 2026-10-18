@@ -136,4 +136,61 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
     'a room with zero usable measurements remains unknown');
   assert.ok(card.shadowRoot.innerHTML.includes('Mold indicator not calibrated'));
 }
+// All unavailable mold inputs must produce explicit warnings without turning
+// healthy particulate measurements into false "No data" or an alert action.
+{
+  const diagnostic = JSON.parse(JSON.stringify(input));
+  diagnostic.rooms=[{
+    area_id:'living',name:'Wohnzimmer',status:'unknown',
+    status_detail:'mold_not_calibrated',available_count:2,
+    windows:[{name:'Window',entity_id:'binary_sensor.window',opened:false}],
+    readings:[
+      {metric:'pm25',value:1,threshold:25,unit:'µg/m³',available:true,exceeded:false},
+      {metric:'aqi',value:12.9,threshold:100,unit:'AQI',available:true,exceeded:false},
+      {metric:'mold',value:null,threshold:70,unit:'%',available:false,exceeded:false,
+       details:{status:'needs_calibration',
+        missing_inputs:['calibration','indoor_temperature','outdoor_temperature','humidity'],
+        outdoor_weather_entity:'weather.zuhause',
+        indoor_temperature_entity:'sensor.wohnzimmer_temperature'}}
+    ],
+    mold_warnings:['calibration','indoor_temperature','outdoor_temperature','humidity'],
+  }];
+  card.hass={language:'el',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:diagnostic}
+    }
+  }};
+  let html=card.shadowRoot.innerHTML;
+  assert.ok(html.includes('mold-warnings'));
+  assert.equal((html.match(/class="mold-warning"/g)||[]).length,4);
+  assert.ok(html.includes('Μέτρησε και αποθήκευσε'));
+  assert.ok(html.includes('Δεν υπάρχει έγκυρη μέτρηση θερμοκρασίας'));
+  assert.ok(html.includes('δεν δίνει έγκυρη εξωτερική'));
+  assert.ok(html.includes('μετρήσεις υγρασίας'));
+  assert.ok(html.includes('weather.zuhause'));
+  assert.ok(html.includes('sensor.wohnzimmer_temperature'));
+  assert.ok(html.includes('Ελλιπή δεδομένα'));
+  assert.ok(html.includes('PM2.5') && html.includes('AQI'));
+  diagnostic.rooms[0].readings[2].details.missing_inputs=[];
+  diagnostic.rooms[0].mold_warnings=['outdoor_temperature'];
+  card.hass={language:'de',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:diagnostic}
+    }
+  }};
+  html=card.shadowRoot.innerHTML;
+  assert.equal((html.match(/class="mold-warning"/g)||[]).length,1);
+  assert.ok(html.includes('Wetterentität'));
+  diagnostic.rooms[0].readings[2].value=61;
+  diagnostic.rooms[0].readings[2].available=true;
+  diagnostic.rooms[0].mold_warnings=[];
+  diagnostic.rooms[0].status='safe';
+  diagnostic.rooms[0].status_detail=null;
+  card.hass={language:'en',states:{
+    'sensor.air_quality_advisor_recommendations':{
+      state:'idle',attributes:{dashboard:diagnostic}
+    }
+  }};
+  assert.ok(!card.shadowRoot.innerHTML.includes('class="mold-warning"'));
+}
 console.log('Dashboard card frontend tests passed');

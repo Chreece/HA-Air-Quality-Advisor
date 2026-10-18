@@ -83,6 +83,16 @@ class AirQualityRecommendation(SensorEntity):
             "diagnostics": [
                 {"area": name, "problem": problem} for name, problem in plan.diagnostics
             ],
+            "mold_input_warnings": [
+                {
+                    "area_id": room.area_id,
+                    "area": room.name,
+                    "missing_inputs": list(item.details.get("missing_inputs", [])),
+                }
+                for room in plan.rooms for item in room.readings
+                if item.metric == "mold" and item.value is None
+                and item.details and item.details.get("missing_inputs")
+            ],
             "language": language,
             "announcement_hub_available": self._manager.hub_available,
             "dashboard": dashboard_snapshot(plan, self._manager.thresholds),
