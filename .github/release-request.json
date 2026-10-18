@@ -1,15 +1,15 @@
 {
-  "version": "0.2.10",
+  "version": "0.2.11",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Weather & warnings is now the second Configure section, before the room cold-surface calibration page",
-    "Make weather temperature source and current availability explicit on the weather configuration page",
-    "Provide visible per-room setup warnings for missing calibration, room temperature, outdoor temperature and usable humidity",
-    "List every missing input independently in dashboard warning lines and sensor diagnostics even when weather blocks opening",
-    "Distinguish an uncalibrated room's available weather temperature from missing outdoor data",
-    "Keep original calibrated weather provider pinned; do not automatically switch or recalibrate",
-    "Regression tests and translated setup hints across 38 languages; no change to Announcement Hub routing or automatic reminders"
+    "Prefer valid calibrated mold surface humidity; when unavailable, fall back automatically per room to the average of included valid RH sensors",
+    "Use indoor_humidity default 65% threshold only for RH fallback and indoor_mold default 70% only for a valid mold reading",
+    "Exclude invalid, 0%, stale and unavailable RH; preserve room exclusions and compare fallback values at full precision",
+    "Keep unavailable mold reading with detailed warnings and a partially verified room status rather than assuming mold safety",
+    "Label active RH fallback, source count, mean and threshold in the room card in 38 languages and dashboard attributes",
+    "Localize RH fallback spoken reasons, preserving existing automatic announcement timing and Announcement Hub ownership",
+    "Regression tests for active/absent fallback, restoration of mold calculation, unsafe-weather close, sensor exclusion and no duplicated humidity triggers"
   ]
 }

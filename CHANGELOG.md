@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.11 — Automatic per-room RH fallback when mold indication is unavailable
+
+- While the optional mold indicator is enabled, **use calibrated estimated surface humidity whenever it is calculable**. If not, automatically use **one averaged valid room RH measurement** as the humidity ventilation trigger; no additional configuration toggle is necessary.
+- Apply the existing `indoor_humidity` threshold (default **65% RH**) only to the fallback and the independent `indoor_mold` threshold (default **70% surface RH**) only to a valid mold indicator. Switching between methods is automatic and avoids counting both measurements simultaneously.
+- Ignore unavailable/stale RH sources, zero, negative, NaN and readings above 100%; honor each room's selected sensor exclusions and do not count multiple RH sources as separate threshold exceedances.
+- Retain the unavailable mold reading and every specific warning. Rooms using RH fallback remain **partially verified/unknown** when mold is not calculable rather than falsely marked fully safe.
+- Show localized **RH fallback active** (38 card languages), the actual averaged RH and current RH threshold in the room card, and expose structured `rh_fallback` state in the dashboard attributes. The fallback uses a visible humidity metric rather than a misleading mold percentage.
+- Recognize the fallback in spoken recommendations, with natural localized cause text for the five primary speech languages. Missing calibration alone is not an announcement trigger; a valid RH average above the configured threshold can trigger the existing open-window workflow.
+- Preserve unsafe-weather closure priorities and Announcement Hub routing. No new entities, system services, network calls, or setup requirements are introduced. Extend regression coverage for recovery, per-room isolation, exclusions, precision and the Lovelace UI.
+
+
 ## 0.2.10 — Weather source first; report every missing mold input
 
 - Place **Weather and warnings** second in Configure, ahead of the third **Room settings — indoor air and mold** page. The initial setup wizard continues selecting weather before cold-surface calibration.
