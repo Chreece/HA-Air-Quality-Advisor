@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.13 — Hand room names and routing ownership entirely to Announcement Hub
+
+- For Hub-bound announcements, send the **real Home Assistant area display name** from the recommendation snapshot, not the internal slug/area ID. Example: `output: [Küche]` rather than `output: [kouzina]`. Hub supports both and resolves room names itself.
+- Forward the original recommendation through Hub's primary `text` field whenever both visual and TTS channels are enabled. For single-channel requests retain the relevant `text_notify` or `text_tts` field without enabling the other channel. Preserve explicit AI override, language, severity and optional title.
+- Stop forcing `occupied_only: false` so Hub's own occupancy/area policy controls physical delivery. Advisor never selects Hub devices, forces route fallbacks or broadcasts to other rooms.
+- **When Announcement Hub is running, never issue direct Home Assistant notifications, TTS, or `persistent_notification.create`** even if Hub rejects a request, has no matching output, returns no acknowledgement or times out. Hub owns its own errors and output selection. Return a truthful manual action result (`submitted: 0` plus error) when Hub did not queue the job.
+- Keep the previous direct Home Assistant and persistent-notification fallback only when Hub is disabled or genuinely unavailable before attempted handoff.
+- Add contract-level regression tests for renamed/Unicode room names, text fields, single-channel selection, accepted Hub jobs, route rejection, timeout and offline Hub fallback. No changes to mold indication, RH fallback, weather decisions or automatic timer behavior.
+
+
 ## 0.2.12 — Clarify mold sensor count and show calibration details
 
 - Replace ambiguous `RH Ø 55% · n=2 · 🌡️ 17.1°C` text in the mold gauge with localized, readable lines: **Average humidity: 55% · 2 sensors** and **Estimated surface: 17.1°C**.

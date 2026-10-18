@@ -1,15 +1,14 @@
 {
-  "version": "0.2.12",
+  "version": "0.2.13",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Replace mold gauge's ambiguous n=2 abbreviation with explicitly localized average RH and sensor count",
-    "Display estimated cold surface temperature on its own readable line",
-    "Add expandable mold calibration details with saved factor and current indoor/outdoor temperatures, including when only three room measurements exist",
-    "Preserve full precision of saved calibration factor in backend dashboard attributes; format only for card display",
-    "Support singular sensor labels and 38 UI locales; keep missing measurements unavailable",
-    "Regression tests for factor precision and Greek/German/English expanded/collapsed card rendering",
-    "No change to RH fallback, calculations, environmental recommendations, weather or Announcement Hub delivery"
+    "Use the Home Assistant Area Registry's actual room display name in Announcement Hub output, not the internal area_id slug",
+    "Send original announcement text through Hub's primary text field for both channels, retain channel-only variants as appropriate",
+    "Leave occupancy filtering and matching physical output selection to Announcement Hub",
+    "Never trigger native Home Assistant notification or TTS fallback when Hub is running, even if Hub rejects or times out",
+    "Report unaccepted Hub jobs truthfully as submitted=0 with errors; preserve local fallback only when Hub is disabled or not running",
+    "Regression tests for Küche/kouzina names, AI forwarding, channels, Hub rejection, timeout, acceptance and unavailable Hub"
   ]
 }
