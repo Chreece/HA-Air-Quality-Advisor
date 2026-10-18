@@ -236,7 +236,10 @@ def test_indoor_room_page_lists_only_supported_sensors_with_device_and_entity(mo
     assert exclusions["step_id"] == "window_sensors"
     result = asyncio.run(wizard.async_step_window_sensors({"excluded_window_entities": []}))
     assert result["step_id"] == "indoor_sensors"
-    assert result["description_placeholders"] == {"area_name":"kitchen", "position":"1", "total":"1"}
+    assert all(result["description_placeholders"][key] == expected for key, expected in {
+        "area_name":"kitchen", "position":"1", "total":"1",
+    }.items())
+    assert result["description_placeholders"]["mold_room_notice"] == ""
     choices = result["data_schema"]["excluded_indoor_entities"].config.options
     assert {option["value"] for option in choices} == {co2, humidity}
     text = next(option["label"] for option in choices if option["value"] == co2)
@@ -696,6 +699,9 @@ def test_weather_options_second_and_source_status_before_room_measurements(
     monkeypatch, adapter,
 ):
     options = _calibratable_options(monkeypatch, adapter)
+    # Reopening Configure must read the saved opt-in, not just the transient
+    # values of the previous edit.
+    options.config_entry.options["use_mold_indicator"] = True
     menu = asyncio.run(options.async_step_init())
     assert menu["menu_options"][:3] == ["areas","weather","indoor_sensors"]
     weather = asyncio.run(options.async_step_weather())
