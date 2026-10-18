@@ -397,6 +397,38 @@
       }[code] || missing;
     }
 
+    _moldLabels() {
+      return MOLD_DETAIL_LABELS[this._language()] || MOLD_DETAIL_LABELS.en;
+    }
+
+    _formatCalibration(value) {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return '–';
+      // Display precision only: this never changes the stored numeric factor.
+      try {
+        return new Intl.NumberFormat(this._hass?.language || 'en', {
+          minimumFractionDigits: 2, maximumFractionDigits: 6, useGrouping: false
+        }).format(value);
+      } catch { return String(value); }
+    }
+
+    _moldCalibrationDetails(moldReading) {
+      const details = moldReading?.details;
+      if (typeof details?.calibration_factor !== 'number' ||
+          !Number.isFinite(details.calibration_factor)) return '';
+      const labels = this._moldLabels();
+      const temperature = (value) => typeof value === 'number' && Number.isFinite(value)
+        ? `${escape(this._format(value))}°C` : '–';
+      return `<section class="mold-calibration-details" role="group"
+          aria-label="${escape(labels[4])}">
+        <div><span>${escape(labels[4])}</span>
+          <strong title="${escape(String(details.calibration_factor))}">${escape(this._formatCalibration(details.calibration_factor))}</strong></div>
+        <div><span>${escape(labels[5])}</span>
+          <strong>${temperature(details.indoor_temperature_c)}</strong></div>
+        <div><span>${escape(labels[6])}</span>
+          <strong>${temperature(details.outdoor_temperature_c)}</strong></div>
+      </section>`;
+    }
+
     _metric(item, miniature = false) {
       const metric = item.details?.fallback_for_mold
         ? `${this._t('humidity')} Ø (RH)` : this._metricName(item.metric);
@@ -417,14 +449,21 @@
         : this._t('missing');
       // The room can still have valid RH contributors before its coldest
       // surface has been calibrated. Show that average instead of hiding it.
-      const moldInfo = details && typeof details.average_indoor_humidity === 'number'
-        ? `<div class="metric-limit">
-          RH Ø ${escape(this._format(details.average_indoor_humidity))}%
-          · n=${escape(details.humidity_sensor_count ?? 0)}
-          ${typeof details.estimated_surface_c === 'number'
-            ? '· 🌡️ ' + escape(this._format(details.estimated_surface_c)) + '°C' : ''}
-        </div>`
+      const moldLabels = this._moldLabels();
+      const count = details?.humidity_sensor_count;
+      const average = details && typeof details.average_indoor_humidity === 'number'
+        && Number.isFinite(details.average_indoor_humidity)
+        ? `<div>${escape(moldLabels[0])}: ${escape(this._format(details.average_indoor_humidity))}%
+          ${Number.isInteger(count) && count > 0
+            ? ` · ${escape(count)} ${escape(count === 1 ? moldLabels[1] : moldLabels[2])}`
+            : ''}</div>`
         : '';
+      const surface = details && typeof details.estimated_surface_c === 'number'
+        && Number.isFinite(details.estimated_surface_c)
+        ? `<div>${escape(moldLabels[3])}: ${escape(this._format(details.estimated_surface_c))}°C</div>`
+        : '';
+      const moldInfo = average || surface
+        ? `<div class="mold-summary">${average}${surface}</div>` : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
           <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)}</span>
@@ -529,6 +568,9 @@
       const readings = safeArray(room.readings);
       const windows = safeArray(room.windows);
       const moldReading = readings.find((item) => item.metric === 'mold' && !item.available);
+      const moldCalibration = readings.find((item) => item.metric === 'mold' &&
+        typeof item.details?.calibration_factor === 'number' &&
+        Number.isFinite(item.details.calibration_factor));
       const rhFallback = room.rh_fallback?.active === true
         ? `<div class="rh-fallback" role="note">
           ${this._icon('mdi:water-percent')}
@@ -557,7 +599,8 @@
         </div>` : '';
       const expanded = this._expanded.has(String(room.area_id));
       const shown = expanded ? readings : readings.slice(0,3);
-      const button = readings.length > 3 && this._config.show_metrics !== false ? `<button type="button" class="expand" data-expand="${escape(room.area_id)}"
+      const button = (readings.length > 3 || moldCalibration) &&
+        this._config.show_metrics !== false ? `<button type="button" class="expand" data-expand="${escape(room.area_id)}"
         aria-expanded="${expanded}">${escape(this._t(expanded ? 'less' : 'more'))} ${this._icon(expanded ? 'mdi:chevron-up' : 'mdi:chevron-down')}</button>` : '';
       const urgent = room.action === 'close';
       const actionable = room.action === 'open' || urgent;
@@ -594,6 +637,8 @@
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
           : `<div class="empty-measurements">${this._icon('mdi:gauge-empty')} ${escape(this._t('missingIndoor'))}</div>`}
         ${button}
+        ${expanded && this._config.show_metrics !== false
+          ? this._moldCalibrationDetails(moldCalibration) : ''}
         ${rhFallback}
         ${warningList}
         <div class="window-section">
@@ -748,6 +793,16 @@
       .metric-attention .meter-fill{background:var(--aqa-amber)}
       .meter-limit{position:absolute;right:1px;top:0;height:100%;width:1px;background:var(--aqa-text);opacity:.24}
       .metric-limit{color:var(--aqa-muted);font-size:9px;line-height:1.3;margin-top:5px}
+      .mold-summary{display:grid;gap:3px;margin-top:7px;color:var(--aqa-muted);
+        font-size:9px;line-height:1.4;overflow-wrap:anywhere}
+      .mold-calibration-details{display:grid;gap:7px;margin-top:9px;padding:10px;
+        border:1px solid var(--aqa-edge);border-radius:10px;
+        background:color-mix(in srgb,var(--aqa-muted),transparent 96%);font-size:11px}
+      .mold-calibration-details>div{display:flex;align-items:baseline;
+        justify-content:space-between;gap:10px;flex-wrap:wrap}
+      .mold-calibration-details span{color:var(--aqa-muted)}
+      .mold-calibration-details strong{font-weight:700;color:var(--aqa-text);
+        overflow-wrap:anywhere;word-break:break-word}
       .expand{display:inline-flex;gap:3px;align-items:center;margin:10px 0 0;padding:4px 2px;
         background:none;border:0;color:var(--primary-color,var(--aqa-blue));cursor:pointer;font-size:11px;font-weight:700}
       .expand ha-icon{--mdc-icon-size:15px}
