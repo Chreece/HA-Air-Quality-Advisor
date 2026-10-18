@@ -170,3 +170,27 @@ def estimate_mold_for_room(
             "outdoor_temperature_c": round(float(outdoor_c), 2),
         })
     return Reading(entity, label, "mold", result.surface_humidity if result else None, details)
+
+
+def rh_fallback_for_room(room: Room, mold_reading: Reading) -> Reading | None:
+    """Use averaged *valid included* room RH only while mold is unavailable.
+
+    Fallback is the same 65% legacy indoor humidity metric, never a mold
+    percentage and never a separate sensor or calibration factor. Once a
+    valid mold estimate exists, it takes priority over any room RH.
+    """
+    if mold_reading.value is not None:
+        return None
+    mean, count = mean_valid_humidity(room.readings)
+    if mean is None:
+        return None
+    return Reading(
+        f"derived.rh_fallback_{room.area_id}",
+        "Average room relative humidity (fallback)",
+        "humidity",
+        round(mean, 1),
+        {
+            "fallback_for_mold": True,
+            "humidity_sensor_count": count,
+        },
+    )

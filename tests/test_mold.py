@@ -6,7 +6,7 @@ from test_hub_manager import delivery_module
 
 from custom_components.air_quality_advisor.mold import (
     calibration_factor, estimate_mold, estimate_mold_for_room,
-    mean_valid_humidity,
+    mean_valid_humidity, rh_fallback_for_room,
 )
 from custom_components.air_quality_advisor.logic import (
     Reading, Room, Weather, Window, evaluate,
@@ -267,3 +267,113 @@ def test_out_of_range_temperatures_are_specific_missing_inputs():
         (Weather("weather.home","sunny", -90),),calibration)
     assert invalid_weather.value is None
     assert invalid_weather.details["missing_inputs"] == ["outdoor_temperature"]
+
+
+def test_mold_invalid_uses_single_valid_rh_mean_as_fallback():
+    room = Room("living", "Living", (), (
+        rh(50, "first"), rh(80, "second"), rh(0, "zero"),
+        rh(None, "offline"), rh(150, "invalid"),
+    ))
+    mold = estimate_mold_for_room(room, 22,
+        (Weather("weather.home", "sunny", 10),), {})
+    assert mold.value is None
+    fallback = rh_fallback_for_room(room, mold)
+    assert fallback is not None
+    assert fallback.metric == "humidity"
+    assert fallback.entity_id == "derived.rh_fallback_living"
+    assert fallback.value == 65
+    assert fallback.details == {
+        "fallback_for_mold": True,
+        "humidity_sensor_count": 2,
+    }
+
+
+def test_fallback_is_immediately_disabled_when_calibrated_mold_recovers():
+    room = Room("living", "Living", (), (rh(85),))
+    usable = estimate_mold_for_room(room, 21,
+        (Weather("weather.home", "sunny", 6),),
+        {"calibration_factor": 2.0, "outdoor_weather_entity": "weather.home"})
+    assert usable.value is not None
+    assert rh_fallback_for_room(room, usable) is None
+
+    missing = estimate_mold_for_room(room, 21,
+        (Weather("weather.home", "sunny", None),),
+        {"calibration_factor": 2.0, "outdoor_weather_entity": "weather.home"})
+    assert missing.value is None
+    assert rh_fallback_for_room(room, missing).value == 85
+
+
+def test_no_valid_rh_leaves_fallback_unavailable():
+    room = Room("kitchen", "Kitchen", (), (
+        rh(0), rh(None), rh(float("nan")), rh(-4), rh(150),
+    ))
+    mold = estimate_mold_for_room(room, None, (Weather("weather.home","sunny", 9),), {})
+    assert rh_fallback_for_room(room, mold) is None
+
+
+def test_manager_fallback_triggers_only_one_rh_reason_then_prefers_recovered_mold(
+    delivery_module,
+):
+    from types import SimpleNamespace
+    from test_discovery import FakeHass, MockState
+    states = [
+        MockState("binary_sensor.living_window", "off", device_class="window"),
+        MockState("sensor.living_temperature", 21, device_class="temperature", unit="°C"),
+        MockState("sensor.living_humidity_a", 60, device_class="humidity", unit="%"),
+        MockState("sensor.living_humidity_b", 80, device_class="humidity", unit="%"),
+        MockState("sensor.living_humidity_zero", 0, device_class="humidity", unit="%"),
+        MockState("sensor.outside_pm25", 8, device_class="pm25", unit="µg/m³"),
+        MockState("weather.home", "sunny"),
+    ]
+    states[-1].attributes.update({"temperature": 6, "temperature_unit": "°C"})
+    area_assignments = {
+        value.entity_id: "living" for value in states
+        if value.entity_id.startswith("sensor.living") or "window" in value.entity_id
+    }
+    hass = FakeHass(states, area_assignments)
+    settings = {
+        "areas": ["living"],
+        "excluded_window_entities": [],
+        "excluded_indoor_entities": {"living": []},
+        "outdoor_sensors": ["sensor.outside_pm25"],
+        "weather_entities": ["weather.home"],
+        "weather_warnings": [],
+        "use_mold_indicator": True,
+        "mold_rooms": {},
+    }
+    entry = SimpleNamespace(entry_id="fallback-test", data=settings, options={})
+    manager = delivery_module.AirQualityManager(hass, entry)
+    no_calibration = manager._capture()
+    readings = no_calibration.rooms[0].readings
+    assert [r.metric for r in readings] == ["humidity", "mold"]
+    assert readings[0].value == 70
+    assert readings[0].details["humidity_sensor_count"] == 2
+    assert readings[1].value is None
+    assert readings[1].details["missing_inputs"] == ["calibration"]
+    assert no_calibration.status == "open"
+    assert [reason.code for reason in no_calibration.recommendations[0].reasons] == [
+        "inside_humidity"
+    ]
+    assert "sensor.living_humidity_a" in manager._tracked
+    assert "sensor.living_humidity_b" in manager._tracked
+
+    # A newly valid calibration wins immediately, even though both raw
+    # humidity sources still exceed the legacy 65% fallback threshold.
+    settings["mold_rooms"] = {"living": {
+        "calibration_factor": 1.0,
+        "outdoor_weather_entity": "weather.home",
+        "indoor_temperature_entity": "sensor.living_temperature",
+    }}
+    recovered = manager._capture()
+    assert [r.metric for r in recovered.rooms[0].readings] == ["mold"]
+    assert recovered.rooms[0].readings[0].value is not None
+    assert recovered.recommendations[0].reasons[0].code == "inside_mold"
+
+    # If the pinned weather input goes away, the valid RH average resumes.
+    hass._values["weather.home"].attributes.pop("temperature")
+    unavailable = manager._capture()
+    assert [r.metric for r in unavailable.rooms[0].readings] == ["humidity", "mold"]
+    assert unavailable.rooms[0].readings[1].details["missing_inputs"] == [
+        "outdoor_temperature"
+    ]
+    assert unavailable.recommendations[0].reasons[0].code == "inside_humidity"

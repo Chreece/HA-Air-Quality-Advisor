@@ -28,7 +28,7 @@ from .const import (
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
 from .discovery import entity_area, reading, rooms, warning, weather, temperature_sensor_c
-from .mold import estimate_mold_for_room
+from .mold import estimate_mold_for_room, rh_fallback_for_room
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -124,12 +124,19 @@ class AirQualityManager:
                 mold_reading = estimate_mold_for_room(
                     room, indoor_c, current_weather, calibration,
                 )
-                # In mold mode, replace raw RH *as a recommendation metric*.
-                # All included RH sensors remain inputs to the room average.
+                # Prefer surface mold RH when calculable. If unavailable,
+                # substitute exactly ONE averaged valid RH reading per room
+                # (legacy indoor_humidity threshold). Keep the unavailable
+                # mold reading for explicit calibration/source warnings. Put
+                # RH fallback first so it is visible in compact room cards.
+                fallback = rh_fallback_for_room(room, mold_reading)
                 updated_rooms.append(replace(
                     room,
-                    readings=tuple(r for r in room.readings if r.metric != "humidity")
-                             + (mold_reading,),
+                    readings=(
+                        ((fallback,) if fallback else ())
+                        + tuple(r for r in room.readings if r.metric != "humidity")
+                        + (mold_reading,)
+                    ),
                 ))
             selected_rooms = tuple(updated_rooms)
         self._tracked = (

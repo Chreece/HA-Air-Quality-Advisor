@@ -177,3 +177,61 @@ def test_successful_mold_has_no_input_warnings():
     item = snapshot((sample,))["rooms"][0]
     assert item["mold_warnings"] == []
     assert item["status"] == "safe"
+
+
+def test_active_rh_fallback_is_visible_and_never_falsely_green_when_mold_missing():
+    sample = room("Living", (
+        Reading("derived.rh_fallback_living","RH fallback","humidity",71,{
+            "fallback_for_mold": True, "humidity_sensor_count":2,
+        }),
+        Reading("sensor.pm25","PM2.5","pm25",1),
+        Reading("sensor.aqi","AQI","aqi",12.9),
+        Reading("derived.mold_living","Mold","mold",None,{
+            "status":"needs_calibration", "missing_inputs":["calibration"],
+            "average_indoor_humidity":71, "humidity_sensor_count":2,
+        }),
+    ))
+    data = snapshot((sample,))
+    item = data["rooms"][0]
+    assert item["rh_fallback"] == {
+        "active": True, "value": 71, "threshold":65,
+        "humidity_sensor_count":2,
+    }
+    assert item["mold_warnings"] == ["calibration"]
+    assert item["status"] == "attention"
+    assert item["readings"][0]["metric"] == "humidity"
+    assert item["readings"][0]["exceeded"]
+    assert data["summary"]["attention"] == 1
+    assert data["summary"]["safe"] == 0
+
+
+def test_inactive_rh_fallback_does_not_hide_missing_mold_warning():
+    sample = room("Living", (
+        Reading("derived.rh_fallback_living","RH fallback","humidity",51,{
+            "fallback_for_mold": True, "humidity_sensor_count":1,
+        }),
+        Reading("sensor.aqi","AQI","aqi",12.9),
+        Reading("derived.mold_living","Mold","mold",None,{
+            "status":"inputs_unavailable",
+            "missing_inputs":["outdoor_temperature"],
+            "average_indoor_humidity":51,
+        }),
+    ))
+    item = snapshot((sample,))["rooms"][0]
+    assert item["status"] == "unknown"
+    assert item["rh_fallback"]["active"] is True
+    assert item["mold_warnings"] == ["outdoor_temperature"]
+    assert item["available_count"] == 2
+
+
+def test_no_available_mold_and_no_rh_cannot_activate_fallback():
+    sample = room("Living", (
+        Reading("sensor.pm25","PM2.5","pm25",1),
+        Reading("derived.mold_living","Mold","mold",None,{
+            "status":"needs_calibration","missing_inputs":["calibration","humidity"],
+        }),
+    ))
+    item = snapshot((sample,))["rooms"][0]
+    assert item["rh_fallback"] == {"active":False}
+    assert item["status"] == "unknown"
+    assert item["mold_warnings"] == ["calibration","humidity"]

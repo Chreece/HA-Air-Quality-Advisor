@@ -91,6 +91,16 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
             "outdoor_temperature", "humidity", "calculation",
         }
     ]
+    # The fallback is a measured room RH average, not a calculated surface
+    # RH reading. The dashboard must label the substitution explicitly and
+    # retain mold diagnostics even if the fallback itself is healthy.
+    fallback = next(
+        (item for item in readings
+         if item["metric"] == "humidity"
+         and (item.get("details") or {}).get("fallback_for_mold")
+         and item["available"]),
+        None,
+    )
     if status == "unknown":
         if mold_data_status == "needs_calibration":
             status_detail = "mold_not_calibrated"
@@ -109,6 +119,15 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
         "status": status,
         "status_detail": status_detail,
         "mold_warnings": mold_warnings,
+        "rh_fallback": (
+            {
+                "active": True,
+                "value": fallback["value"],
+                "threshold": fallback["threshold"],
+                "humidity_sensor_count": fallback["details"]["humidity_sensor_count"],
+            }
+            if fallback else {"active": False}
+        ),
         "action": recommended.action if recommended else None,
         "action_window_ids": [w.entity_id for w in recommended.windows] if recommended else [],
         "open_count": len(opened),
