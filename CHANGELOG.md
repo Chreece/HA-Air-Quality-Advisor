@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.10 — Weather source first; report every missing mold input
+
+- Place **Weather and warnings** second in Configure, ahead of the third **Room settings — indoor air and mold** page. The initial setup wizard continues selecting weather before cold-surface calibration.
+- Clarify that outdoor temperature for mold estimation comes from the configured weather entity's live `temperature` attribute, not from outdoor PM2.5/AQI sensors.
+- Show a current valid weather-temperature source or a visible warning for missing outdoor temperature on the Weather configuration page; show missing-input clues on every room calibration page.
+- Expose separate diagnostic codes for missing **calibration, indoor temperature, outdoor temperature, usable room RH, and calculation failures**. Warnings appear as localized lines in the dashboard and in the recommendation sensor's `mold_input_warnings` attribute, even during bad weather.
+- Preserve pinned weather providers after calibration; if the original provider is removed, warn instead of silently substituting another provider. Before calibration, a working selected provider is correctly recognized as available.
+- Preserve the previous sensor aggregation, 70% surface humidity threshold, no-false-safe room status, and Announcement Hub delivery. No alert spam or additional automatic announcements on a missing mold input.
+- Add regression tests for missing-input combinations, different weather-source states, configuration menu order, translated setup hints, and frontend warnings.
+
+
 ## 0.2.9 — Fix misleading room 'No data' while mold needs calibration
 
 - A room with working PM2.5, AQI or other indoor sensors must not show **No indoor measurements** simply because the optional mold indication is uncalibrated.

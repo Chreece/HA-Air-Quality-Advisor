@@ -1,14 +1,15 @@
 {
-  "version": "0.2.9",
+  "version": "0.2.10",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Fix misleading 'No indoor measurements' label when PM2.5/AQI are valid but the optional mold indicator has not yet been calibrated",
-    "Distinguish never-calibrated mold indication from missing live temperature or RH inputs, without falsely treating the room as safe",
-    "Show 'Partial data' status on room cards when some readings are usable and others are unavailable; preserve backend unknown classification and summary",
-    "Display average valid room RH and contributor count even before coldest-surface calibration",
-    "Translate mold-not-calibrated and mold-inputs-unavailable messages for all 38 card languages, with Greek/German regression checks",
-    "Keep all existing sensor, weather, announcement and calibration behavior unchanged"
+    "Weather & warnings is now the second Configure section, before the room cold-surface calibration page",
+    "Make weather temperature source and current availability explicit on the weather configuration page",
+    "Provide visible per-room setup warnings for missing calibration, room temperature, outdoor temperature and usable humidity",
+    "List every missing input independently in dashboard warning lines and sensor diagnostics even when weather blocks opening",
+    "Distinguish an uncalibrated room's available weather temperature from missing outdoor data",
+    "Keep original calibrated weather provider pinned; do not automatically switch or recalibrate",
+    "Regression tests and translated setup hints across 38 languages; no change to Announcement Hub routing or automatic reminders"
   ]
 }
