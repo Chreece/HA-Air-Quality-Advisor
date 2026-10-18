@@ -418,10 +418,29 @@ def test_excluded_humidity_sensor_not_averaged_into_rh_fallback(delivery_module)
 def test_calibrated_mold_below_limit_does_not_fallback_to_high_raw_rh():
     room=Room("bedroom","Bedroom",(),(rh(85),))
     weather=(Weather("weather.home","sunny",6),)
-    # Example with warm surface equal to room temperature: surface RH=room RH
-    # and no fallback is created. A distinct mold limit can be configured.
+    # An unusually warm surface can produce a low mold surface RH even when
+    # room RH exceeds its 65% fallback threshold. In that case the valid
+    # calibrated mold estimate takes priority, without an RH fallback.
     reading=estimate_mold_for_room(room,21,weather,{
-        "outdoor_weather_entity":"weather.home", "calibration_factor":1.0,
+        "outdoor_weather_entity":"weather.home", "calibration_factor":0.5,
     })
-    assert reading.value is not None
+    assert reading.value is not None and reading.value < 70
     assert rh_fallback_for_room(room,reading) is None
+
+
+def test_rh_fallback_comparison_keeps_full_sensor_precision():
+    from custom_components.air_quality_advisor.logic import evaluate
+    room=Room("living","Living",(
+        Window("binary_sensor.window","Window",False),
+    ),(rh(64.97,"one"),rh(65.01,"two")))
+    fallback=rh_fallback_for_room(room,
+        Reading("derived.mold_living","Mold","mold",None))
+    assert fallback is not None
+    assert fallback.value == (64.97+65.01)/2
+    assert fallback.value < 65
+    selected=Room(room.area_id,room.name,room.windows,(fallback,))
+    no_open=evaluate(
+        (Reading("sensor.outside","Outside","pm25",8),),
+        (Weather("weather.home","sunny",20),),(),(selected,),
+    )
+    assert no_open.status == "idle"

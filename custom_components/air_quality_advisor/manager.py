@@ -147,7 +147,8 @@ class AirQualityManager:
             | humidity_entities
             | {window.entity_id for room in selected_rooms for window in room.windows}
             | {item.entity_id for room in selected_rooms for item in room.readings
-               if item.metric != "mold"}
+               if item.metric != "mold"
+               and not (item.details or {}).get("fallback_for_mold")}
         )
         return evaluate(
             tuple(reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)),

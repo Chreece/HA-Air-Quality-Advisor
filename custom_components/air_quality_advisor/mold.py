@@ -188,7 +188,7 @@ def rh_fallback_for_room(room: Room, mold_reading: Reading) -> Reading | None:
         f"derived.rh_fallback_{room.area_id}",
         "Average room relative humidity (fallback)",
         "humidity",
-        round(mean, 1),
+        mean,  # Compare with threshold at full precision; formatting is UI-only.
         {
             "fallback_for_mold": True,
             "humidity_sensor_count": count,
