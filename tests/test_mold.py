@@ -349,7 +349,9 @@ def test_manager_fallback_triggers_only_one_rh_reason_then_prefers_recovered_mol
     assert readings[0].value == 70
     assert readings[0].details["humidity_sensor_count"] == 2
     assert readings[1].value is None
-    assert readings[1].details["missing_inputs"] == ["calibration"]
+    assert readings[1].details["missing_inputs"] == [
+        "calibration", "indoor_temperature",
+    ]
     assert no_calibration.status == "open"
     assert [reason.code for reason in no_calibration.recommendations[0].reasons] == [
         "inside_humidity"
