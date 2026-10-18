@@ -85,18 +85,25 @@ def test_true_and_false_ai_overrides_are_forwarded_and_agent_optional():
                                language="el", use_ai=True, agent_id="conversation.ai")
     assert enabled["use_ai"] is True
     assert enabled["ai_agent"] == "conversation.ai"
-    assert enabled["text_tts"] == enabled["text_notify"] == "Good fresh air"
-    assert enabled["output"] == ["living"]
-    assert enabled["occupied_only"] is False
+    assert enabled["text"] == "Good fresh air"
+    assert "text_tts" not in enabled and "text_notify" not in enabled
+    assert enabled["output"] == ["Living room"]
+    assert "occupied_only" not in enabled  # Hub owns occupancy/routing.
+    assert "service" not in enabled  # Do not override Hub route planning.
     assert enabled["language"] == "el"
     disabled = make_hub_payload(REC, "Open", "Original", speech=False, visual=True,
                                 language="auto", use_ai=False, agent_id="conversation.ai")
     assert disabled["use_ai"] is False
+    assert disabled["output"] == ["Living room"]
+    assert disabled["text_notify"] == "Original"
+    assert "text" not in disabled and "text_tts" not in disabled
     assert "ai_agent" not in disabled
     assert "language" not in disabled
     default = make_hub_payload(REC, "Open", "Original", speech=True, visual=False,
                                language="en", use_ai=True, agent_id="default")
     assert default["use_ai"] is True and "ai_agent" not in default
+    assert default["text_tts"] == "Original"
+    assert "text_notify" not in default and "text" not in default
 
 
 def test_hub_queue_acknowledgement_is_the_only_success_criterion():
@@ -170,3 +177,35 @@ def test_system_notification_uses_stable_room_id_and_catches_failures():
         raise RuntimeError("offline")
     reg.async_call = failing
     assert not asyncio.run(async_system_notification(hass, "T", "M", "living"))
+
+
+def test_uses_actual_ha_area_display_name_not_slug_or_translated_name():
+    # Area IDs may retain a Greek slug after the user renamed their HA room
+    # to Küche. Forward the registry-provided name verbatim; Hub resolves it.
+    rec = Recommendation(
+        "close", "kouzina", "Küche",
+        (Window("binary_sensor.kitchen_window","Kitchen window",True),),
+        (Reason("weather_condition","weather.home","rainy"),),
+    )
+    payload = make_hub_payload(
+        rec, "Window alert", "Fenster in der Küche schließen",
+        speech=True, visual=True, language="de", use_ai=True, agent_id="default",
+    )
+    assert payload["output"] == ["Küche"]
+    assert payload["text"] == "Fenster in der Küche schließen"
+    assert payload["level"] == "warning"
+    assert payload["language"] == "de"
+    assert "occupied_only" not in payload
+    assert "service" not in payload
+
+    greek = Recommendation(
+        "open", "wohnzimmer", "Καθιστικό",
+        rec.windows, rec.reasons,
+    )
+    translated = make_hub_payload(
+        greek, "Title", "Άνοιξε τα παράθυρα",
+        speech=True, visual=True, language="el", use_ai=False, agent_id="",
+    )
+    assert translated["output"] == ["Καθιστικό"]
+    assert translated["text"] == "Άνοιξε τα παράθυρα"
+    assert translated["level"] == "info"

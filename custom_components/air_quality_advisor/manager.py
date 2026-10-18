@@ -405,12 +405,21 @@ class AirQualityManager:
                     rec, title, message, speech=speech, visual=visual,
                     language=requested_language, use_ai=use_ai, agent_id=agent,
                 )
-                if await async_submit_hub(self.hass, hub_payload):
-                    sent += 1
+                if hub_available(self.hass):
+                    # Hub is the delivery authority while running, including
+                    # its own routing failures and queue rejections. Never send
+                    # duplicate or unwanted HA notifications in these cases.
+                    if await async_submit_hub(self.hass, hub_payload):
+                        sent += 1
+                    else:
+                        errors.append(
+                            f"Announcement Hub did not queue the announcement for "
+                            f"{rec.area_name}; routing and recovery belong to Hub"
+                        )
                     continue
 
-            # No Hub, stopped Hub, failed enqueue, or no routed Hub outputs:
-            # deliver using regular Home Assistant services.
+            # Only an unavailable or disabled Hub allows local HA delivery.
+            # If Hub was running but rejected the job, we already continued.
             notify_targets = (
                 self._targets_in_room(config.get(CONF_NOTIFY_TARGETS, []), rec.area_id)
                 if visual else []
@@ -426,8 +435,8 @@ class AirQualityManager:
             can_speak = bool(
                 tts_engine and tts_players and self.hass.services.has_service("tts", "speak")
             )
-            # HA persistent notifications are the final visual fallback even
-            # when no custom direct outputs are configured.
+            # HA persistent notifications are the final visual fallback only
+            # when Hub is not configured/running for this call.
             system_available = bool(
                 self.hass.services.has_service("persistent_notification", "create")
             )

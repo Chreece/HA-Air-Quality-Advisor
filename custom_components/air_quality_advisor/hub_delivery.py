@@ -1,8 +1,9 @@
-"""Optional Announcement Hub integration with a deterministic HA fallback.
+"""Air Quality Advisor-to-Announcement Hub message handoff.
 
-A registered notify action alone is insufficient: Announcement Hub registers
-its action before an integration instance is fully configured. Only offer the
-Hub when a matching config entry exists and route through it when loaded.
+The Advisor owns the actionable recommendation, text, and Home Assistant room
+name, but never selects a Hub device, room-policy fallback, or occupancy
+restriction. When Hub is running, rejected submissions are errors under Hub
+ownership, not instructions to send a parallel HA notification.
 """
 from __future__ import annotations
 
@@ -53,17 +54,26 @@ def make_hub_payload(
     speech: bool, visual: bool, language: str,
     use_ai: bool, agent_id: str,
 ) -> dict[str, Any]:
-    """Explicit AI override is authoritative even if Hub defaults differ."""
+    """Forward original text and the room's actual HA name to Hub.
+
+    Hub accepts both IDs and names. Use the area name already resolved by
+    Advisor's HA area registry, preserving umlauts and user renames. Hub owns
+    physical outputs, fallback routing, AI, queueing and occupancy policy.
+    The shared "text" field is used whenever both channels were selected;
+    single-channel calls retain channel-specific fields so one cannot
+    accidentally enable the other via Hub's shared-text semantics.
+    """
     data: dict[str, Any] = {
         "title": title,
-        "output": [recommendation.area_id],
+        "output": [recommendation.area_name],
         "level": "warning" if recommendation.action == "close" else "info",
-        "occupied_only": False,
         "use_ai": bool(use_ai),
     }
-    if speech:
+    if speech and visual:
+        data["text"] = message
+    elif speech:
         data["text_tts"] = message
-    if visual:
+    elif visual:
         data["text_notify"] = message
     if language and language != "auto":
         data["language"] = language
@@ -73,12 +83,12 @@ def make_hub_payload(
 
 
 async def async_submit_hub(hass: Any, payload: dict[str, Any]) -> bool:
-    """Return True when Hub acknowledges acceptance into its queue.
+    """Report whether Hub actually queued the submitted message.
 
     Hub's accepted=True is authoritative; do not inspect its routes or AI
     result. Hub currently rewrites before acknowledgement, so allow time for
-    a slow conversation agent. The timeout here is only an acknowledgement
-    fail-safe, never an AI processing deadline.
+    a slow conversation agent. A rejection returns False but must NEVER make
+    Advisor produce an additional native notification while Hub is live.
     """
     if not hub_available(hass):
         return False
@@ -93,10 +103,10 @@ async def async_submit_hub(hass: Any, payload: dict[str, Any]) -> bool:
     except asyncio.CancelledError:
         raise
     except Exception as err:
-        _LOGGER.warning("Announcement Hub submission failed; using Home Assistant: %s", err)
+        _LOGGER.warning("Announcement Hub did not accept announcement (no Advisor fallback while Hub is running): %s", err)
         return False
     if not isinstance(reply, dict) or reply.get("accepted") is not True:
-        _LOGGER.warning("Announcement Hub did not acknowledge a queued announcement")
+        _LOGGER.warning("Announcement Hub did not acknowledge queue acceptance; native fallback suppressed while Hub is running")
         return False
     # Hub is the delivery authority. Its acknowledgement means the job has
     # been queued, regardless of output details (which Hub may resolve later).

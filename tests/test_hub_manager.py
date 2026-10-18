@@ -121,12 +121,16 @@ def test_true_and_false_hub_ai_forwarding_without_local_rewrite(monkeypatch, del
     data = s.calls[0][2]
     assert data["use_ai"] is True
     assert data["ai_agent"] == "conversation.my_ai"
-    assert data["text_tts"] == data["text_notify"]
-    assert data["output"] == ["living"]
+    assert "text" in data and data["text"]
+    assert "text_tts" not in data and "text_notify" not in data
+    assert data["output"] == ["Living room"]
+    assert "occupied_only" not in data
 
     m, s = advisor(module, {"ai_rewrite_announcements": False})
     assert asyncio.run(m.async_announce(channels="notification"))["submitted"] == 1
     assert s.calls[0][2]["use_ai"] is False
+    assert s.calls[0][2]["text_notify"]
+    assert "text" not in s.calls[0][2]
     assert "ai_agent" not in s.calls[0][2]
 
 
@@ -148,18 +152,17 @@ def test_hub_is_configured_but_stopped_routes_to_direct_notify_and_tts(monkeypat
     assert len(counter) == 1
 
 
-def test_hub_rejected_call_falls_back_to_native_persistent_notification(delivery_module):
+def test_hub_rejected_call_is_hub_owned_no_native_persistent_notification(delivery_module):
     services = Services(hub_failure=ValueError("Hub rejected use_ai"), direct=False, tts=False)
     manager, s = advisor(delivery_module, {
         "notify_entities": [], "tts_engine": None, "media_players": [],
         "ai_rewrite_announcements": False,
     }, services=services)
     outcome = asyncio.run(manager.async_announce(channels="notification"))
-    assert outcome["submitted"] == 1
-    assert [(a, b) for a, b, *_ in s.calls] == [
-        ("notify", "announcement_hub"), ("persistent_notification", "create"),
-    ]
-    assert s.calls[-1][2]["notification_id"] == "air_quality_advisor_living"
+    assert outcome["submitted"] == 0  # Rejected is NOT claimed as queued.
+    assert len(outcome["errors"]) == 1 and "did not queue" in outcome["errors"][0]
+    assert [(a, b) for a, b, *_ in s.calls] == [("notify", "announcement_hub")]
+    assert not any(a == "persistent_notification" for a, *_ in s.calls)
 
 
 def test_unconfigured_hub_service_cannot_receive_a_message(delivery_module):
@@ -192,3 +195,61 @@ def test_missing_all_system_fallback_services_returns_error(delivery_module):
     response = asyncio.run(manager.async_announce(channels="both"))
     assert response["submitted"] == 0
     assert response["errors"]
+
+
+@pytest.mark.parametrize("reply, failure", [
+    ({"accepted": False}, None),
+    (None, None),
+    (None, ValueError("The selected text has no configured matching output")),
+    (None, RuntimeError("Hub queue full")),
+])
+def test_live_hub_rejections_never_trigger_direct_or_system_notifications(
+    delivery_module, reply, failure,
+):
+    # Matches the real routing rejection observed in the user's logs.
+    calls = Services(hub_response=reply, hub_failure=failure,
+                     direct=True, tts=True, persistent=True)
+    manager, services = advisor(delivery_module, services=calls)
+    result = asyncio.run(manager.async_announce(channels="both"))
+    assert result["submitted"] == 0
+    assert len(result["errors"]) == 1
+    assert [(a, b) for a, b, *_ in services.calls] == [
+        ("notify", "announcement_hub"),
+    ]
+
+
+def test_live_hub_timeout_does_not_create_native_notification(
+    monkeypatch, delivery_module,
+):
+    import custom_components.air_quality_advisor.hub_delivery as delivery
+    async def slow_service(*args, **kwargs):
+        await asyncio.sleep(0.05)
+        return {"accepted":True,"job_id":"eventually"}
+    calls = Services(direct=True, tts=True, persistent=True)
+    calls.async_call = slow_service
+    manager, _ = advisor(delivery_module, services=calls)
+    monkeypatch.setattr(delivery, "HUB_RESPONSE_TIMEOUT", 0.001)
+    result = asyncio.run(manager.async_announce(channels="both"))
+    assert result["submitted"] == 0
+    assert result["errors"]
+
+
+def test_live_hub_uses_current_ha_area_name_from_recommendation(
+    delivery_module,
+):
+    calls = Services(hub_response={"accepted":True, "job_id":"kitchen-queued"})
+    manager, actual = advisor(delivery_module, services=calls)
+    kitchen = Recommendation(
+        "close", "kouzina", "Küche",
+        (Window("binary_sensor.kuche_window","Fenster Küche",True),),
+        (Reason("weather_condition","weather.home","rainy"),),
+    )
+    manager.plan = Plan("close",False,(),(kitchen,),())
+    result = asyncio.run(manager.async_announce(channels="both"))
+    assert result["submitted"] == 1 and result["errors"] == []
+    assert [(a,b) for a,b,*_ in actual.calls] == [("notify","announcement_hub")]
+    payload = actual.calls[0][2]
+    assert payload["output"] == ["Küche"]
+    assert payload["text"]
+    assert "occupied_only" not in payload
+    assert "service" not in payload
