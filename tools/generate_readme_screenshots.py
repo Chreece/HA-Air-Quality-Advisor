@@ -90,9 +90,10 @@ def room(key: str, name: str, status: str, readings: list[dict],
                     "climate_plan":{
                         "status":"ready", "profile":"home",
                         "occupancy":"occupied", "away":"home",
-                        "mode":"heat", "temperature_target_c":21.0,
-                        "reason":"heating_demand",
-                        "actuation":{"status":"holding","mode":"heat"},
+                        "mode":"heat_cool","temperature_target_c":None,
+                        "low_target_c":20.0,"high_target_c":26.0,
+                        "reason":"native_heat_cool_range",
+                        "actuation":{"status":"native_range_commanded","mode":"heat_cool"},
                     },
                     "climate_pid":{
                         "status":"controlling", "mode":"heat",

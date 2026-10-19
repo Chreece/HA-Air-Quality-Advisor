@@ -546,6 +546,7 @@ thermostat with a relay:
 | Equipment and strategy | Commands | Hard limitations |
 | --- | --- | --- |
 | Built-in thermostat (`climate.*`) | `climate.set_temperature`; optionally `climate.set_hvac_mode` | Requires TARGET_TEMPERATURE support. Automatic heat/cool mode changes need a *second* explicit opt-in, minimum mode dwell and acknowledgement. An OFF thermostat is not restarted. |
+| Native heat/cool range thermostat (`climate.*`) | `climate.set_temperature` with both `target_temp_low` and `target_temp_high` | Requires TARGET_TEMPERATURE_RANGE feature and an *already active* `heat_cool` mode; preserves device's compressor safety, bounds both setpoints and pauses on manual range changes. |
 | Existing v0.5 setpoint PID (`climate.*`) | Rate-limited `climate.set_temperature` only | Can never run alongside another enabled room controller. |
 | Non-compressor heating/cooling relay (`switch.*`) | `switch.turn_on`/`turn_off` | Explicit non-compressor/independent-protection attestation, room ownership, hysteresis, minimum ON/OFF intervals and maximum ON watchdog. |
 | Slow thermal PWM relay (`switch.*`) | Bounded time-proportioning ON/OFF | Only loads documented as safe for repeated switching; fixed PWM period and minimum pulse durations. **Never attach a compressor or unprotected resistive heater.** |
