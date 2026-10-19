@@ -231,6 +231,7 @@ class AirQualityManager:
                     prior_mode=prior,comfort_target_c=comfort,
                     outdoor_safe=base_plan.outdoor_safe,
                     duplicate_equipment=duplicate_devices,
+                    require_window_contact=monitored.area_id in monitored_areas,
                 )
                 state["target_source"]=settings.get("target_source","temperature")
                 state["comfort_target_evidence"]=pmv_air.get("status","not_configured")
