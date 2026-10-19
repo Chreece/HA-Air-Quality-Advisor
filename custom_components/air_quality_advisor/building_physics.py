@@ -308,3 +308,58 @@ def co2_decay_ach(samples: Sequence[dict], now: float, outdoor_co2: float | None
     return {"status": "estimate", "ach_per_hour": round(ach, 2),
             "assumptions": "vacant_well_mixed_stable_flow",
             "duration_minutes": round((data[-1]["t"] - data[0]["t"]) / 60, 1)}
+
+
+def nighttime_overheating_exposure(samples: Sequence[dict], now: float,
+                                  local_timezone: str = "UTC",
+                                  *, threshold_c: float = 26.0) -> dict[str, Any]:
+    """Observed hot sleeping hours (22:00–07:00), NOT TM59 compliance.
+
+    The CIBSE TM59 design method requires dynamic simulation and occupancy
+    assumptions. This is only an observed air-temperature duration indicator.
+    """
+    from datetime import datetime, timezone
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
+    try:
+        zone = ZoneInfo(local_timezone)
+    except (ZoneInfoNotFoundError, ValueError, TypeError):
+        zone = timezone.utc
+    since = now - WEEK_S
+    observed, above = 0.0, 0.0
+    valid = [s for s in samples if isinstance(s, dict) and
+             isinstance(s.get("t"), (float, int))]
+    valid.sort(key=lambda s: s["t"])
+    for a, b in zip(valid, valid[1:]):
+        try:
+            t1, t2 = float(a["t"]), float(b["t"])
+        except (TypeError, ValueError, OverflowError):
+            continue
+        if not 0 < t2 - t1 <= MAX_GAP_S:
+            continue
+        va, vb = _valid(a.get("temperature_c"), -10, 55), _valid(b.get("temperature_c"), -10, 55)
+        if va is None or vb is None:
+            continue
+        left, right = max(since, t1), min(now, t2)
+        if right <= left:
+            continue
+        mid = datetime.fromtimestamp((left + right) / 2, zone)
+        if not (mid.hour >= 22 or mid.hour < 7):
+            continue
+        x = va + (vb - va) * (left - t1) / (t2 - t1)
+        y = va + (vb - va) * (right - t1) / (t2 - t1)
+        fraction = (1 if x >= threshold_c and y >= threshold_c else
+                    0 if x < threshold_c and y < threshold_c else
+                    max(0.0, min(1.0, (max(x, y) - threshold_c) / abs(y - x))))
+        observed += right - left
+        above += fraction * (right - left)
+    # Seven nights at nominal nine hours; DST may vary, so only an estimate.
+    nominal_s = 7 * 9 * 3600
+    return {"status": "ready" if observed >= 0.8 * nominal_s else "insufficient_coverage",
+            "above_threshold_hours": round(above / 3600, 2),
+            "observed_hours": round(observed / 3600, 2),
+            "threshold_c": threshold_c,
+            "timezone": local_timezone,
+            "method": "observed_22_to_07_not_tm59_compliance"}
+
+
