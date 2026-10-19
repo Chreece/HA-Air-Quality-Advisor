@@ -123,7 +123,7 @@ def choose_profile(room_presence: str, home_presence: str, *,
                    sleeping: bool = False) -> str:
     # A positive local presence report dominates a conflicting stale global tracker.
     if room_presence == "occupied":
-        return "occupied"
+        return "sleep" if sleeping else "occupied"
     if home_presence == "away":
         return "away"
     if sleeping and home_presence != "away":

@@ -50,6 +50,7 @@ class ZoneRuntime:
     vacancy_since: float | None = None
     away_since: float | None = None
     profile_override: str = "auto"
+    last_demand_percent: float | None = None
 
 
 class ClimateAutomationCoordinator:
@@ -447,7 +448,8 @@ class ClimateAutomationCoordinator:
             recorded=self._output.get(area,{}).get(entity)
             if recorded and recorded.get("on") and entity.startswith(("switch.","input_boolean.")):
                 await self._relay_command(area,entity,False,now,force_off=True)
-        self._status(area,reason)
+        if area not in self._paused:
+            self._status(area,reason)
 
     async def _climate_mode(self,area: str,entity: str,mode: str,cfg: dict,now: float) -> bool:
         state,status=self._current(area,entity)
@@ -470,7 +472,8 @@ class ClimateAutomationCoordinator:
 
     async def _device_control(self,area: str,cfg: dict,mode: str,target: float,
                               heat: float,cool: float,now: float,
-                              *, pid_demand: float|None=None) -> None:
+                              *, pid_demand: float|None=None,
+                              measured: float, profile: str) -> None:
         entity=cfg.get("climate_entity")
         state,status=self._current(area,entity)
         if status!="ready" or not entity.startswith("climate."):
@@ -521,20 +524,21 @@ class ClimateAutomationCoordinator:
                                              device_max=max_native,device_step=device_step)
         if state_action=="no_meaningful_change":
             self._status(area,"at_target",mode=mode,target_c=round(target,2),
-                         measured_c=self._measured,profile=self._profile_name)
+                         measured_c=round(measured,2),profile=profile)
             return
         if state_action!="command":
             self._status(area,state_action)
             return
         if await self._service(area,"climate","set_temperature",entity,{"temperature":native}):
             self._record(area,entity,"temperature",native,now)
-            self._status(area,"controlling",mode=mode,profile=self._profile_name,
-                         target_c=round(target,2),measured_c=self._measured,
+            self._status(area,"controlling",mode=mode,profile=profile,
+                         target_c=round(target,2),measured_c=round(measured,2),
                          requested_setpoint=native,demand_percent=pid_demand)
 
     async def _power_control(self,area: str,cfg: dict,mode: str,target: float,
                              now: float,zone: ZoneRuntime,
-                             demand_percent: float|None) -> None:
+                             demand_percent: float|None, measured: float,
+                             profile: str) -> None:
         strategy=cfg["strategy"]
         heat,cool=cfg.get("heat_entity"),cfg.get("cool_entity")
         active=heat if mode=="heat" else cool if mode=="cool" else None
@@ -549,6 +553,9 @@ class ClimateAutomationCoordinator:
                 self._status(area,"cooldown_after_opposite_off")
                 return
         if mode=="idle" or not active:
+            if active is None and mode in ("heat","cool"):
+                self._status(area,"missing_mode_actuator",mode=mode)
+                return
             await self._safe_off(area,cfg,now,"idle_or_no_actuator")
             return
         state,status=self._current(area,active)
@@ -594,7 +601,7 @@ class ClimateAutomationCoordinator:
                 return
             if await self._service(area,domain,svc,active,payload):
                 self._record(area,active,"percent",target_native,now)
-                self._status(area,"controlling",mode=mode,profile=self._profile_name,
+                self._status(area,"controlling",mode=mode,profile=profile,
                              demand_percent=round(wanted,1),actuator=active)
             return
         if strategy=="pwm" and domain not in ("switch","input_boolean"):
@@ -613,10 +620,18 @@ class ClimateAutomationCoordinator:
             if actual not in ("off","heat","cool"):
                 self._status(area,"unsupported_climate_state")
                 return
-            desired_on=hysteresis_demand(self._measured,target,mode,
+            desired_on=hysteresis_demand(round(measured,2),target,mode,
                                          was_on=(actual==mode),hysteresis_c=cfg["hysteresis_c"])
             recorded=self._output.setdefault(area,{}).get(active)
-            elapsed=now-recorded["when"] if recorded else None
+            if recorded is None:
+                if actual!="off":
+                    await self._pause(area,"external_climate_already_running")
+                    return
+                self._output[area][active]={"on":False,"when":now}
+                self._save()
+                self._status(area,"initial_off_lockout",entity=active)
+                return
+            elapsed=now-recorded["when"]
             decision=onoff_decision(desired_on,actual==mode,
                                     seconds_since_switch=elapsed,
                                     min_on_seconds=cfg["min_on_seconds"],
@@ -624,10 +639,18 @@ class ClimateAutomationCoordinator:
                                     max_on_seconds=cfg["max_on_seconds"])
             if decision.status=="change" or decision.status=="max_on_cutoff":
                 new_mode=mode if decision.desired_on else "off"
-                await self._climate_mode(area,active,new_mode,cfg,now)
-                self._output.setdefault(area,{})[active]={"on":decision.desired_on,"when":now}
-                self._save()
-            self._status(area,decision.status,mode=mode,profile=self._profile_name)
+                if state.state!=new_mode and (
+                    cfg["allow_hvac_mode_change"] and
+                    new_mode in (state.attributes.get("hvac_modes") or [])
+                ):
+                    if await self._service(area,"climate","set_hvac_mode",active,{"hvac_mode":new_mode}):
+                        self._record(area,active,"mode",new_mode,now)
+                        self._output.setdefault(area,{})[active]={"on":decision.desired_on,"when":now}
+                        self._save()
+                else:
+                    self._status(area,"climate_hvac_mode_unavailable")
+                    return
+            self._status(area,decision.status,mode=mode,profile=profile)
             return
         actual=str(state.state).lower()
         if actual not in ("on","off"):
@@ -641,7 +664,7 @@ class ClimateAutomationCoordinator:
             self._status(area,"waiting_actuator_ack")
             return
         if strategy=="on_off":
-            desired=hysteresis_demand(self._measured,target,mode,was_on=(actual=="on"),
+            desired=hysteresis_demand(round(measured,2),target,mode,was_on=(actual=="on"),
                                       hysteresis_c=cfg["hysteresis_c"])
         else:
             if demand_percent is None:
@@ -656,15 +679,23 @@ class ClimateAutomationCoordinator:
                 return
             desired=pwm["desired_on"]
         last=self._output.get(area,{}).get(active)
-        elapsed=now-last["when"] if last else None
+        if last is None:
+            if actual=="on":
+                await self._pause(area,"external_actuator_already_on")
+                return
+            self._output.setdefault(area,{})[active]={"on":False,"when":now}
+            self._save()
+            self._status(area,"initial_off_lockout",entity=active)
+            return
+        elapsed=now-last["when"]
         edge=onoff_decision(desired,actual=="on",seconds_since_switch=elapsed,
                             min_on_seconds=cfg["min_on_seconds"],
                             min_off_seconds=cfg["min_off_seconds"],
                             max_on_seconds=cfg["max_on_seconds"])
         if edge.status=="change" or edge.status=="max_on_cutoff":
             await self._relay_command(area,active,edge.desired_on,now)
-        self._status(area,edge.status,mode=mode,profile=self._profile_name,
-                     measured_c=self._measured,target_c=round(target,2),
+        self._status(area,edge.status,mode=mode,profile=profile,
+                     measured_c=round(measured,2),target_c=round(target,2),
                      demand_percent=demand_percent,actuator=active)
 
     async def _tick(self,area: str,room: Any,cfg: dict,now: float) -> None:
@@ -698,9 +729,8 @@ class ClimateAutomationCoordinator:
         if measured is None or not math.isfinite(measured) or measured < -10 or measured > 50:
             await self._safe_off(area,cfg,now,"temperature_missing_or_stale")
             return
-        self._measured=round(measured,2)
+        # Room temperatures stay local to each concurrent controller task.
         profile,room_presence,home_presence=self._profile(area,cfg,now)
-        self._profile_name=profile
         try:
             heat,cool=targets_for_profile(cfg,profile)
         except (ValueError,TypeError):
@@ -740,10 +770,11 @@ class ClimateAutomationCoordinator:
                 zone.pid=pid.memory
                 if pid.status!="ready":
                     self._status(area,"pid_"+pid.status,mode=mode,profile=profile,
-                                 measured_c=self._measured,target_c=target)
+                                 measured_c=round(measured,2),target_c=target)
                     return
                 demand=pid.demand_percent
-            await self._device_control(area,cfg,mode,target,heat,cool,now,pid_demand=demand)
+            await self._device_control(area,cfg,mode,target,heat,cool,now,
+                                       pid_demand=demand,measured=measured,profile=profile)
         else:
             target=heat if mode=="heat" else cool
             demand=None
@@ -755,7 +786,11 @@ class ClimateAutomationCoordinator:
                     self._status(area,"pid_"+pid.status,profile=profile)
                 if pid.status=="ready":
                     demand=pid.demand_percent
-            await self._power_control(area,cfg,mode,target,now,zone,demand)
+                    zone.last_demand_percent=demand
+                elif pid.status=="waiting_sample":
+                    demand=zone.last_demand_percent
+            await self._power_control(area,cfg,mode,target,now,zone,demand,
+                                      measured=measured,profile=profile)
         if self.statuses.get(area,{}).get("status")!="paused":
             self.statuses[area].update({
                 "profile":profile,"room_occupancy":room_presence,"home_presence":home_presence,
