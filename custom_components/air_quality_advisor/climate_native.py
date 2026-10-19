@@ -196,10 +196,16 @@ class NativeClimateControl:
         # Explicitly opted in to automatic HVAC mode switching; do not turn
         # hardware off within the deadband. Enforce full dwell period.
         if state.state!=mode:
+            # An OFF thermostat is a user/hardware stop. Never autonomously
+            # restart it even when automatic heat/cool mode selection is opted in.
+            if state.state=="off":
+                self.paused[area]="thermostat_turned_off"
+                self._save()
+                return
             if settings.get("auto_switch_hvac") is not True:
                 self.statuses[area]={"status":"mode_mismatch_auto_switch_disabled"}
                 return
-            if now-self.last_mode.get(area,now)<MODE_DWELL_SECONDS:
+            if now-self.last_mode.get(area,self.started or now)<MODE_DWELL_SECONDS:
                 self.statuses[area]={"status":"mode_dwell"}
                 return
             if not self.hass.services.has_service("climate","set_hvac_mode"):
