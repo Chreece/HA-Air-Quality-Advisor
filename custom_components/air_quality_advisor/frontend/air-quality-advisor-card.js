@@ -293,6 +293,24 @@
   // Calibration and humidity summary labels in all 38 supported card locales.
   const MOLD_DETAIL_LABELS = {"en":["Average humidity","sensor","sensors","Estimated surface","Calibration factor","Indoor temperature","Outdoor temperature"],"de":["Durchschnittliche Luftfeuchte","Sensor","Sensoren","Geschätzte Oberflächentemperatur","Kalibrierfaktor","Raumtemperatur","Außentemperatur"],"el":["Μέση υγρασία","αισθητήρας","αισθητήρες","Εκτιμώμενη επιφάνεια","Συντελεστής βαθμονόμησης","Εσωτερική θερμοκρασία","Εξωτερική θερμοκρασία"],"fr":["Humidité moyenne","capteur","capteurs","Surface estimée","Facteur de calibration","Température intérieure","Température extérieure"],"es":["Humedad media","sensor","sensores","Superficie estimada","Factor de calibración","Temperatura interior","Temperatura exterior"],"ar":["متوسط الرطوبة","مستشعر","مستشعرات","السطح المقدّر","معامل المعايرة","درجة الحرارة الداخلية","درجة الحرارة الخارجية"],"bg":["Средна влажност","сензор","сензора","Оценена температура на повърхността","Калибрационен коефициент","Вътрешна температура","Външна температура"],"bn":["গড় আর্দ্রতা","সেন্সর","সেন্সর","আনুমানিক পৃষ্ঠের তাপমাত্রা","ক্রমাঙ্কন গুণক","ভেতরের তাপমাত্রা","বাইরের তাপমাত্রা"],"cs":["Průměrná vlhkost","senzor","senzory","Odhadovaná teplota povrchu","Kalibrační faktor","Vnitřní teplota","Venkovní teplota"],"da":["Gennemsnitlig luftfugtighed","sensor","sensorer","Estimeret overfladetemperatur","Kalibreringsfaktor","Indetemperatur","Udetemperatur"],"fa":["میانگین رطوبت","حسگر","حسگر","دمای تخمینی سطح","ضریب کالیبراسیون","دمای داخل","دمای بیرون"],"fi":["Keskimääräinen ilmankosteus","anturi","anturia","Arvioitu pintalämpötila","Kalibrointikerroin","Sisälämpötila","Ulkolämpötila"],"he":["לחות ממוצעת","חיישן","חיישנים","טמפרטורת משטח משוערת","מקדם כיול","טמפרטורה פנימית","טמפרטורה חיצונית"],"hi":["औसत आर्द्रता","सेंसर","सेंसर","अनुमानित सतह तापमान","अंशांकन गुणांक","अंदर का तापमान","बाहर का तापमान"],"hr":["Prosječna vlažnost","senzor","senzora","Procijenjena temperatura površine","Faktor kalibracije","Unutarnja temperatura","Vanjska temperatura"],"hu":["Átlagos páratartalom","érzékelő","érzékelő","Becsült felületi hőmérséklet","Kalibrációs tényező","Beltéri hőmérséklet","Kültéri hőmérséklet"],"id":["Kelembapan rata-rata","sensor","sensor","Perkiraan suhu permukaan","Faktor kalibrasi","Suhu dalam ruangan","Suhu luar ruangan"],"it":["Umidità media","sensore","sensori","Temperatura superficiale stimata","Fattore di calibrazione","Temperatura interna","Temperatura esterna"],"ja":["平均湿度","センサー","センサー","推定表面温度","校正係数","室内温度","屋外温度"],"ko":["평균 습도","센서","센서","예상 표면 온도","보정 계수","실내 온도","실외 온도"],"nb":["Gjennomsnittlig luftfuktighet","sensor","sensorer","Estimert overflatetemperatur","Kalibreringsfaktor","Innetemperatur","Utetemperatur"],"nl":["Gemiddelde luchtvochtigheid","sensor","sensoren","Geschatte oppervlaktetemperatuur","Kalibratiefactor","Binnentemperatuur","Buitentemperatuur"],"pl":["Średnia wilgotność","czujnik","czujniki","Szacowana temperatura powierzchni","Współczynnik kalibracji","Temperatura wewnętrzna","Temperatura zewnętrzna"],"pt":["Humidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interior","Temperatura exterior"],"pt-br":["Umidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interna","Temperatura externa"],"ro":["Umiditate medie","senzor","senzori","Temperatura estimată a suprafeței","Factor de calibrare","Temperatura interioară","Temperatura exterioară"],"ru":["Средняя влажность","датчик","датчика","Оценочная температура поверхности","Калибровочный коэффициент","Температура внутри","Температура снаружи"],"sk":["Priemerná vlhkosť","senzor","senzory","Odhadovaná teplota povrchu","Kalibračný faktor","Vnútorná teplota","Vonkajšia teplota"],"sr":["Просечна влажност","сензор","сензора","Процењена температура површине","Фактор калибрације","Унутрашња температура","Спољашња температура"],"sv":["Genomsnittlig luftfuktighet","sensor","sensorer","Uppskattad yttemperatur","Kalibreringsfaktor","Inomhustemperatur","Utomhustemperatur"],"ta":["சராசரி ஈரப்பதம்","சென்சார்","சென்சார்கள்","மதிப்பிடப்பட்ட மேற்பரப்பு வெப்பநிலை","அளவுத்திருத்த காரணி","உட்புற வெப்பநிலை","வெளிப்புற வெப்பநிலை"],"th":["ความชื้นเฉลี่ย","เซนเซอร์","เซนเซอร์","อุณหภูมิพื้นผิวโดยประมาณ","ค่าปรับเทียบ","อุณหภูมิภายใน","อุณหภูมิภายนอก"],"tr":["Ortalama nem","sensör","sensör","Tahmini yüzey sıcaklığı","Kalibrasyon katsayısı","İç sıcaklık","Dış sıcaklık"],"uk":["Середня вологість","датчик","датчики","Оцінена температура поверхні","Калібрувальний коефіцієнт","Температура всередині","Температура зовні"],"ur":["اوسط نمی","سینسر","سینسر","سطح کا اندازاً درجہ حرارت","کیلیبریشن عامل","اندرونی درجہ حرارت","بیرونی درجہ حرارت"],"vi":["Độ ẩm trung bình","cảm biến","cảm biến","Nhiệt độ bề mặt ước tính","Hệ số hiệu chuẩn","Nhiệt độ trong nhà","Nhiệt độ ngoài trời"],"zh-hans":["平均湿度","传感器","传感器","估算表面温度","校准系数","室内温度","室外温度"],"zh-hant":["平均濕度","感測器","感測器","估算表面溫度","校正係數","室內溫度","室外溫度"]};
 
+  const PID_LABELS = {
+    en:{title:'Climate PID',active:'Setpoint regulation active',paused:'Paused: manual action required',
+        pending:'Waiting for safe conditions',effort:'PID effort',target:'Room target',requested:'Requested setpoint',
+        pause:'Pause PID',resume:'Resume PID',caution:'Controls setpoint only; does not change HVAC mode.'},
+    de:{title:'Klima-PID',active:'Sollwertregelung aktiv',paused:'Pausiert: manueller Eingriff nötig',
+        pending:'Wartet auf sichere Bedingungen',effort:'PID-Ausgang',target:'Raumziel',requested:'Thermostat-Sollwert',
+        pause:'PID pausieren',resume:'PID fortsetzen',caution:'Ändert nur den Sollwert, nicht den Heiz-/Kühlmodus.'},
+    el:{title:'Κλιματικός PID',active:'Ενεργή ρύθμιση θερμοστάτη',paused:'Παύση: απαιτείται ενέργεια',
+        pending:'Αναμονή ασφαλών συνθηκών',effort:'Έξοδος PID',target:'Στόχος δωματίου',requested:'Επιθυμητή θερμοκρασία',
+        pause:'Παύση PID',resume:'Συνέχιση PID',caution:'Αλλάζει μόνο το setpoint, όχι τη λειτουργία HVAC.'},
+    fr:{title:'PID climatique',active:'Réglage de consigne actif',paused:'En pause : action manuelle',
+        pending:'En attente de conditions sûres',effort:'Effort PID',target:'Cible',requested:'Consigne demandée',
+        pause:'Pause PID',resume:'Reprendre PID',caution:'Ne modifie que la consigne, jamais le mode HVAC.'},
+    es:{title:'PID climático',active:'Regulación de consigna activa',paused:'Pausado: intervención manual',
+        pending:'Esperando condiciones seguras',effort:'Esfuerzo PID',target:'Objetivo',requested:'Consigna solicitada',
+        pause:'Pausar PID',resume:'Reanudar PID',caution:'Solo modifica la consigna; no cambia el modo HVAC.'},
+  };
+
   const SCIENCE_LABELS = {
     en: {title:'Building physics · estimates',drying:'Outdoor air is drier',humidifying:'Outdoor air carries more moisture',
       neutral:'Similar moisture content',predicted:'Outside air, warmed to room temperature',
@@ -377,6 +395,16 @@
       this._lastState = null;
       this._lastConfigKey = null;
       this.shadowRoot.addEventListener('click', (event) => {
+        const pid = event.target.closest?.('[data-pid-action]');
+        if (pid) {
+          const area = pid.getAttribute('data-pid-area');
+          const action = pid.getAttribute('data-pid-action');
+          if (area && ['pause','resume'].includes(action) && this._hass?.callService) {
+            Promise.resolve(this._hass.callService('home_environment_manager','pid_control',{area,action}))
+              .catch((error)=>console.error('Home Environment Manager PID action failed',error));
+          }
+          return;
+        }
         const button = event.target.closest?.('[data-expand]');
         if (!button) return;
         const area = button.getAttribute('data-expand');
@@ -710,6 +738,28 @@
         '</strong></div>';
     }
 
+    _pidPanel(room) {
+      const pid = room?.environment?.climate_pid || {};
+      if (!pid.status || pid.status === 'disabled') return '';
+      const l = PID_LABELS[this._language()] || PID_LABELS.en;
+      const active = ['controlling','at_device_setpoint'].includes(pid.status);
+      const paused = pid.status === 'paused';
+      const title = paused ? l.paused : active ? l.active : l.pending;
+      const metrics = [];
+      const show = (title,value)=> metrics.push('<span class="pid-metric">'+escape(title)+
+                                              ': <strong>'+escape(value)+'</strong></span>');
+      if (typeof pid.target_c === 'number') show(l.target,this._format(pid.target_c)+' °C');
+      if (typeof pid.demand_percent === 'number') show(l.effort,this._format(pid.demand_percent)+'%');
+      if (typeof pid.desired_setpoint_c === 'number') show(l.requested,this._format(pid.desired_setpoint_c)+' °C');
+      const action = paused ? 'resume' : 'pause';
+      const button = paused || active ? '<button type="button" class="pid-button" data-pid-area="' +
+        escape(room.area_id) + '" data-pid-action="'+action+'">'+escape(paused ? l.resume : l.pause)+'</button>' : '';
+      return '<section class="pid-panel"><div class="pid-title">' +
+        this._icon('mdi:thermostat')+'<strong>'+escape(l.title)+'</strong><span>'+escape(title)+
+        '</span></div><div class="pid-metrics">'+metrics.join('')+'</div>'+
+        '<small>'+escape(l.caution)+'</small>'+button+'</section>';
+    }
+
     _room(room) {
       const status = ['safe','attention','unknown'].includes(room.status) ? room.status : 'unknown';
       const readings = safeArray(room.readings);
@@ -786,6 +836,7 @@
         ${button}
         ${expanded && this._config.show_metrics !== false
           ? this._moldCalibrationDetails(moldCalibration) : ''}
+        ${this._pidPanel(room)}
         ${this._config.show_science === false ? '' : this._environmentReport(room)}
         ${rhFallback}
         ${warningList}
@@ -932,6 +983,13 @@
       .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:9px}
       .pollen-indicator{display:flex;align-items:center;gap:7px;margin:12px 0;color:var(--aqa-text);padding:8px 12px;border:1px solid var(--aqa-edge);border-radius:11px;font-size:11px;background:color-mix(in srgb,var(--aqa-amber),transparent 96%)}
       .pollen-indicator ha-icon{color:var(--aqa-amber);--mdc-icon-size:18px}
+      .pid-panel{border:1px solid var(--aqa-edge);border-radius:12px;padding:11px;margin:10px 0;background:color-mix(in srgb,var(--aqa-blue),transparent 94%)}
+      .pid-title{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:12px}
+      .pid-title span{margin-inline-start:auto;color:var(--aqa-muted);font-size:11px}
+      .pid-metrics{display:flex;flex-wrap:wrap;gap:7px 14px;margin:8px 0;font-size:11px}
+      .pid-panel small{font-size:10px;line-height:1.4;color:var(--aqa-muted);display:block}
+      .pid-button{padding:6px 10px;border:1px solid var(--aqa-edge);background:var(--aqa-surface);color:var(--aqa-text);border-radius:8px;cursor:pointer;margin-top:9px}
+      .pid-button:focus-visible{outline:2px solid var(--aqa-blue)}
       .science-section{margin:10px 0 12px;padding:11px 12px;border:1px solid var(--aqa-edge);border-radius:12px;background:color-mix(in srgb,var(--aqa-blue),transparent 97%)}
       .science-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 12px;margin-top:8px}
       .science-line{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;border-bottom:1px solid var(--aqa-edge);padding:5px 0}
