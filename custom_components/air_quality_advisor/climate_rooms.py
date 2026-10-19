@@ -45,7 +45,8 @@ def _presence_ids(hass:Any,area:str,config:dict) -> list[str]:
 
 def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
            now:float|None=None,comfort_target_c:float|None=None,
-           outdoor_safe:bool|None=None,duplicate_equipment:dict|None=None)->tuple[dict,set[str]]:
+           outdoor_safe:bool|None=None,duplicate_equipment:dict|None=None,
+           require_window_contact:bool=False)->tuple[dict,set[str]]:
     """Expose what should happen, with provenance, without operating devices."""
     if not isinstance(settings,dict) or not settings.get("enabled"):
         return {"status":"disabled"},set()
@@ -109,8 +110,11 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
                 capability[mode]=(valid and attrs.get("unit_of_measurement")=="%"
                     and attrs.get("min")==0 and attrs.get("max")==100)
         cap=capability
-    window_safe=all(win.opened is False for win in room.windows)
-    window_evidence=("no_contact_configured" if not room.windows else
+    window_safe=all(win.opened is False for win in room.windows) and (
+        bool(room.windows) or not require_window_contact
+    )
+    window_evidence=("missing_required_contact" if not room.windows and require_window_contact
+                     else "no_contact_configured" if not room.windows else
                      "all_contacts_closed" if window_safe else "open_or_unavailable_contact")
     time_zone=getattr(getattr(hass,"config",None),"time_zone",None) or "UTC"
     sleeping,sleep_evidence=scheduled_sleep(
