@@ -34,6 +34,7 @@ from .environment import build_environment
 from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
 from .climate_rooms import gather as climate_room_plan
+from .climate_coordination import duplicate_owners
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
 from .environment_extended import global_pollen, global_aqi
@@ -201,7 +202,19 @@ class AirQualityManager:
         environment["__outside__"] = {"pollen": pollen}
         room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
         if isinstance(room_climate_configs,dict):
-            for monitored in selected_rooms:
+            # Climate may be configured in any real HA area; window monitoring
+            # remains scoped to CONF_AREAS so notification routes never widen.
+            extra_areas=[area for area in room_climate_configs
+                         if isinstance(area,str) and area not in monitored_areas]
+            climate_only=rooms(
+                self.hass,extra_areas,max_age,
+                excluded_entities=(selected_outdoor |
+                                   set(config.get(CONF_EXCLUDED_WINDOWS,[]))),
+            ) if extra_areas else ()
+            raw_for_climate={r.area_id:r for r in raw_rooms}
+            raw_for_climate.update({r.area_id:r for r in climate_only})
+            duplicate_devices=duplicate_owners(room_climate_configs)
+            for monitored in (*selected_rooms,*climate_only):
                 settings=room_climate_configs.get(monitored.area_id,{})
                 prior = (
                     self.direct_climate._rooms.get(monitored.area_id).mode
@@ -214,12 +227,29 @@ class AirQualityManager:
                 comfort=pmv_air.get("air_temperature_target_c") if (
                     pmv_air.get("status")=="estimate") else None
                 state,tracked=climate_room_plan(
-                    self.hass,monitored,settings,prior_mode=prior,
-                    comfort_target_c=comfort,
+                    self.hass,raw_for_climate[monitored.area_id],settings,
+                    prior_mode=prior,comfort_target_c=comfort,
+                    outdoor_safe=base_plan.outdoor_safe,
+                    duplicate_equipment=duplicate_devices,
                 )
                 state["target_source"]=settings.get("target_source","temperature")
                 state["comfort_target_evidence"]=pmv_air.get("status","not_configured")
                 if isinstance(settings,dict) and settings.get("enabled"):
+                    equipment=state.get("equipment_plan",{})
+                    thermal=equipment.get("thermal",{})
+                    # Never issue commands for an unowned, shared or competing
+                    # appliance. Secondary equipment needs a dedicated driver.
+                    if equipment.get("status")=="duplicate_equipment_owner":
+                        state["status"]="hold"
+                        state["reason"]="duplicate_equipment_owner"
+                    elif thermal.get("status")=="opposing_equipment_active":
+                        state["status"]="hold"
+                        state["reason"]="opposing_equipment_active"
+                    elif (thermal.get("status")=="selected" and
+                          thermal.get("entity_id")!=settings.get("climate_entity") and
+                          settings.get("controller")=="device"):
+                        state["status"]="hold"
+                        state["reason"]="secondary_thermal_driver_pending"
                     state["automatic_actuation_enabled"] = (
                         settings.get("allow_actuation") is True and
                         settings.get("controller") == "device"
@@ -231,6 +261,8 @@ class AirQualityManager:
                     )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
+                    self._tracked.update(r.entity_id for r in raw_for_climate[
+                        monitored.area_id].readings)
         pid_configs = config.get(CONF_PID_ROOMS, {})
         if not isinstance(pid_configs, dict):
             pid_configs = {}
