@@ -72,7 +72,30 @@ def room(key: str, name: str, status: str, readings: list[dict],
             "high_count":sum(bool(v["exceeded"]) for v in readings),
             "available_count":len(readings),"ventilating":opened and action!="close",
             "window_count":1,"open_count":int(opened),"readings":readings,
-            "windows":[contact],"reasons":[]}
+            "windows":[contact],"reasons":[],
+            "environment": (
+                {
+                    "moisture":{"status":"drying","drying_potential_g_kg":3.4,
+                        "outside_air_rh_when_warmed_percent":39.5},
+                    "thermal_comfort":{"status":"within_band","lower_80_c":20.5,
+                        "upper_80_c":27.5},
+                    "passive_cooling":{"status":"cooling_opportunity",
+                        "cooling_delta_c":4.3},
+                    "condensation":{"status":"lower_surface_humidity",
+                        "condensation_margin_c":4.1},
+                    "pm25_24h":{"status":"ready","mean":12.0},
+                    "pm10_24h":{"status":"ready","mean":21.0},
+                    "co2_trend":{"status":"ready","trend_ppm_per_hour":-260},
+                    "heat_per_full_air_exchange_wh_m3":1.4,
+                    "international":{
+                        "air_purification":{"status":"running","nominal_particle_clean_air_changes_h":4.5},
+                        "ventilation_learning":{"status":"indicative","estimated_minutes_to_target":12},
+                        "formaldehyde_30min":{"status":"ready","mean":18},
+                        "pmv_ppd":{"status":"estimate","pmv":-0.1,"ppd_percent":5.2},
+                        "overheating_degree_hours":{"status":"ready","degree_hours_over_reference":2.5},
+                    },
+                } if key == "living" else {}
+            )}
 
 GOOD_ROOMS = [
     room("living","Living room","attention",
@@ -90,7 +113,8 @@ GOOD_OUTSIDE = {
     "readings":[reading("pm25",8,15,"µg/m³"),reading("aqi",28,50,"AQI")],
     "weather":[{"entity_id":"weather.demo","condition":"partlycloudy",
                 "temperature_c":21.4,"humidity":49,"wind_kmh":9}],
-    "warnings":[],"blockers":[],"unavailable_sensors":[]}
+    "warnings":[],"blockers":[],"unavailable_sensors":[],
+    "pollen":{"status":"provider_defined","value":2,"max_scale":5,"high":False}}
 BAD_OUTSIDE = {
     "status":"unsafe","safe_to_ventilate":False,"data_complete":True,
     "readings":[reading("pm25",34,15,"µg/m³"),reading("aqi",91,50,"AQI")],
@@ -107,6 +131,10 @@ SCENARIOS = [
      "ΕΛΛΗΝΙΚΑ · ΣΚΟΥΡΟ ΘΕΜΑ", GOOD_ROOMS[:3], GOOD_OUTSIDE),
     ("dashboard-mobile.png", 396, "light", "en",
      "MOBILE · RESPONSIVE CARD", GOOD_ROOMS[:3], GOOD_OUTSIDE),
+    ("dashboard-science-desktop.png", 1000, "light", "en",
+     "ENVIRONMENT SCIENCE · DESKTOP", GOOD_ROOMS[:2], GOOD_OUTSIDE),
+    ("dashboard-science-mobile.png", 396, "dark", "de",
+     "UMWELTANALYSE · MOBIL", GOOD_ROOMS[:1], GOOD_OUTSIDE),
     ("dashboard-outdoor-alert.png", 900, "dark", "en",
      "OUTDOOR WARNING · CLOSE WINDOWS", [
          room("living","Living room","attention",

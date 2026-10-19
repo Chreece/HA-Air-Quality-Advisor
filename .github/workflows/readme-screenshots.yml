@@ -4,7 +4,7 @@ name: Generate README card screenshots (on request only)
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, 'feat/home-environment-*']
     paths:
       - '.github/screenshot-request.json'
 
@@ -37,7 +37,8 @@ jobs:
           root=Path('.github/assets/screenshots')
           names=(
              'dashboard-overview-light.png','dashboard-greek-dark.png',
-             'dashboard-mobile.png','dashboard-outdoor-alert.png'
+             'dashboard-mobile.png','dashboard-outdoor-alert.png',
+             'dashboard-science-desktop.png','dashboard-science-mobile.png'
           )
           for name in names:
               path=root/name
@@ -58,6 +59,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'Screenshots unchanged'
           else
-            git commit -m 'docs: update rendered Air Quality Advisor screenshots'
-            git push origin HEAD:main
+            git commit -m 'docs: update rendered Home Environment Manager screenshots'
+            git push origin HEAD:"${GITHUB_REF_NAME}"
           fi

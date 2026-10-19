@@ -49,4 +49,4 @@ def test_all_readme_images_use_absolute_https_urls_for_hacs() -> None:
             assert file.suffix.lower() in {".png", ".jpg", ".jpeg", ".svg"}
             local_images += 1
 
-    assert local_images == 9, "Check all repository-owned README images"
+    assert local_images == 11, "Check all repository-owned README images"
