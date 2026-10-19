@@ -247,8 +247,8 @@ class DirectClimateControl:
             return
         temp=temperature_sensor_c(self.hass,source,MAX_SENSOR_AGE_MINUTES)
         if temp is None:
+            can_run=False
             self._status(area,"stale_temperature")
-            return
         heat=cfg.get("heat_actuator")
         cool=cfg.get("cool_actuator")
         active=heat if mode=="heat" else cool if mode=="cool" else None
@@ -313,7 +313,11 @@ class DirectClimateControl:
             self._rooms.pop(area,None)
             self.mode_changed[area]=now
             self._persist()
-        if now-self.mode_changed.get(area,now)<float(cfg.get("mode_dwell_s",900)):
+        mode_dwell=finite(cfg.get("mode_dwell_s",900),300,7200)
+        if mode_dwell is None:
+            self._status(area,"invalid_mode_dwell")
+            return
+        if now-self.mode_changed.get(area,self._started if self._started is not None else now)<mode_dwell:
             self._status(area,"mode_transfer_dwell")
             return
         # Exclusivity: opposing output is stopped and confirmed OFF
@@ -407,15 +411,30 @@ class DirectClimateControl:
                 if now_last is not None and now-now_last < sample:
                     self._status(area,"proportional_rate_limit")
                     return
-                await self._send(area,active,desired,percentage=True,now=now)
-                self._status(area,"modulating",demand_percent=demand,
-                             commanded_percent=desired)
+                if await self._send(area,active,desired,percentage=True,now=now):
+                    self._status(area,"modulating",demand_percent=demand,
+                                 commanded_percent=desired)
+                return
+        last=self.transitions.get(active)
+        max_on=finite(cfg.get("max_on_s",7200),300,86400)
+        if max_on is None:
+            self._status(area,"invalid_maximum_runtime")
+            return
+        # Enforce the maximum continuously-ON interval even when the PID keeps
+        # requesting ON; never bypass the watchdog through an early return.
+        if measured[active] is True and last is not None:
+            on_since=finite(last.get("when"),0,1e13)
+            if on_since is None or now<on_since:
+                self._pause(area,"invalid_on_duration")
+                return
+            if now-on_since>=max_on:
+                if await self._send(area,active,False,now=now):
+                    self._pause(area,"maximum_on_runtime_exceeded")
                 return
         if desired == measured[active]:
             self._status(area,"holding",mode=mode,
                          demand_percent=cycle.pid_percent)
             return
-        last=self.transitions.get(active)
         if last is None:
             # On first observation from an already-OFF actuator, honor a
             # complete OFF minimum interval after startup before energizing.
@@ -425,7 +444,7 @@ class DirectClimateControl:
             last_changed=float(last["when"]),
             min_on_s=float(cfg.get("min_on_s",120)),
             min_off_s=float(cfg.get("min_off_s",180)),
-            maximum_on_s=float(cfg.get("max_on_s",7200)))
+            maximum_on_s=max_on)
         if change_status=="maximum_runtime_exceeded":
             # A verified direct heating relay overrun is an emergency OFF
             # and a latched pause; never automatically energize it again.
