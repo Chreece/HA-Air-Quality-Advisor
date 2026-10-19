@@ -146,3 +146,17 @@ output state; dehumidifying vs cooling priority; and safe upgrade from v0.5.
 Keep the internal integration domain `air_quality_advisor`, existing entities
 and legacy announce services. The public product name remains Home Environment
 Manager. Independent devices keep their own hardwired safety protections.
+
+## Python 3.14 / Alpine compatibility
+
+PMV/PPD uses the bundled scalar Fanger equation in `pmv_core.py`, tested
+against `pythermalcomfort` 4.6.2 reference values. The integration no longer
+installs pythermalcomfort, Numba, llvmlite, SciPy or NumPy. This avoids an
+Alpine/musl LLVM source-build failure during Home Assistant startup.
+
+The scalar model retains ISO 7730 input limits, rejects non-finite results and
+supplies the existing PMV-derived comfort target bisection. All required
+radiant temperature, relative air movement, activity and clothing parameters
+remain explicit. The algorithm is an engineering estimate, not evidence of
+ISO-compliant certification. The adapted reference model's MIT notice is
+included in `docs/licenses/pythermalcomfort-MIT.txt`.

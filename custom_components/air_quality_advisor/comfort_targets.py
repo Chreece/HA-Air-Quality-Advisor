@@ -28,10 +28,7 @@ def solve_pmv_air_temperature(
     if any(x is None for x in inputs) or desired is None:
         return {"status":"insufficient_physical_inputs"}
     if evaluator is None:
-        try:
-            from pythermalcomfort.models import pmv_ppd_iso
-        except ImportError:
-            return {"status":"dependency_unavailable"}
+        from .pmv_core import pmv_ppd_iso
         evaluator=pmv_ppd_iso
 
     def calculate(temperature:float) -> float | None:

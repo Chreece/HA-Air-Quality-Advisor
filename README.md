@@ -115,7 +115,7 @@ Users supply and explicitly identify which scale and units each sensor uses.
 | Formaldehyde | Verified real HCHO measurement, µg/m³ or mg/m³ | 30-minute observed concentration; comparison is disabled for cheap estimated HCHO/eCO₂ proxies. |
 | Acoustic environment | Calibrated A-weighted equivalent sound readings in dB(A) | Proper logarithmic acoustic-energy averaging, optionally the preceding local nighttime period for sleeping rooms. Peak-only meters are unsuitable. |
 | Lighting | Calibrated photopic lux measurements; independently measured melanopic EDI only | Daylight-exposure history. Ordinary lux is **never** converted into a fake circadian/melanopic result. |
-| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD using pinned `pythermalcomfort`, where applicable. Missing inputs suppress the result. |
+| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD computed locally using an independently verified scalar Fanger model, without Numba or LLVM. Missing inputs suppress the result. |
 | Overheating | Time history of room temperature | Observed temperature degree-hours above a chosen reference, not TM52/TM59 building-certification compliance. |
 
 Existing modules from v0.3.0 remain, including humidity-ratio calculations,
@@ -596,7 +596,7 @@ Two target-selection modes are supported:
 - **ISO 7730 PMV:** when enabled in the room's advanced environmental
   measurements, require a genuine mean radiant temperature, humidity,
   measured/explicit air speed, clothing insulation (clo), and activity (met).
-  The pinned `pythermalcomfort` implementation solves a bounded air
+  The bundled dependency-free Fanger implementation solves a bounded air
   temperature corresponding approximately to PMV 0. The correction to the
   owner's chosen temperature bands is capped; without valid current physical
   inputs the fixed profile targets remain in force. No PMV-based correction
