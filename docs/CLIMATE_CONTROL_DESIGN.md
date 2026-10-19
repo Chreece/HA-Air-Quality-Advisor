@@ -42,6 +42,46 @@ underway. Unsupported device capabilities must produce diagnostics rather
 than automatic guessing or a generic service broadcast. One physical
 actuator cannot be controlled by two enabled room controllers.
 
+
+## Multi-device room coordination (new development checkpoint)
+
+The room climate wizard now accepts any existing Home Assistant area with
+supported equipment, even without a window contact. This does **not** widen
+air-quality window announcements to additional rooms. If a room is already
+monitored for windows and its expected contact disappears, HVAC plans still
+fail closed.
+
+Each room may explicitly assign:
+- Primary `climate.*` thermostat, and optional separate climate entities for
+  heating, cooling, native DRY and FAN_ONLY capabilities.
+- `humidifier.*` entities for humidification and dehumidification, verified
+  using Home Assistant's *device_class* rather than the entity name.
+- `fan.*` extraction/ventilation and particle-purification equipment.
+- One same-room humidity sensor and customizable low/high RH thresholds with
+  Schmitt hysteresis. Multiple humidity sensors are not silently blended;
+  choose the source used for humidity management.
+
+The new `climate_coordination.py` is a **pure advisory planner**. It verifies
+area and domain, supported HVAC modes, whether equipment is available, active
+opposing heat/cool operation, and cross-room duplicate hardware ownership.
+Explicitly selected dedicated equipment cannot silently fall back to another
+device. Native thermostat control is permitted only on its existing primary
+device driver when its safety policy is satisfied; extra heat/cool, DRY,
+humidifier, extraction and purification roles do not yet issue service calls.
+
+Only a single role may own a command at a time. Drying an AC while the same
+reversible compressor is regulating temperature is prohibited until explicit
+model-aware transition logic and independent device commissioning exist.
+Humidity advice must not be confused with a guarantee of effective moisture
+removal: outdoor *absolute moisture* and source control matter, and extractor
+fan operation depends on safe outdoor evidence.
+
+**Important:** Choosing a device in the extra-equipment wizard enables
+inventory, scientific advisories and conflict diagnostics. It does not
+authorize unattended on/off or native mode transitions. This avoids silently
+energizing an unknown compressor or fan and keeps user-operated equipment
+under manual control pending the next tested driver release.
+
 ## Occupancy / away
 
 - HA Area Registry assigns each occupancy/presence sensor to a room; use all
