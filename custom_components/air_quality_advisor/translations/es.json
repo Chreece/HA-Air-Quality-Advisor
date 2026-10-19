@@ -634,6 +634,38 @@
           "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
       },
+      "climate_equipment": {
+        "title": "Climate — additional equipment and humidity",
+        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "data": {
+          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
+          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
+          "climate_dry_climate_entity": "Optional climate with native DRY mode",
+          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
+          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
+          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
+          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
+          "climate_purifier_fan_entity": "Optional air purifier fan",
+          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
+          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
+          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
+          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
       "climate_profiles": {
         "title": "Clima — temperaturas por modo",
         "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
