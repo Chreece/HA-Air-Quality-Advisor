@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 import math
+from .climate_equipment import classify_hvac
 
 
 @dataclass(frozen=True)
@@ -111,10 +112,14 @@ def capabilities(attributes: dict, current_mode: str) -> dict:
     dual=bool(feature&2)
     heat="heat" in modes
     cool="cool" in modes
+    equipment=classify_hvac(attributes,current_mode)
     return {"kind":"climate","current":current_mode,"heat":heat,"cool":cool,
             "setpoint":single,"range":dual,
             "auto":("heat_cool" in modes or "auto" in modes),
-            "modes":modes}
+            "modes":modes,"equipment":equipment,
+            "dry":equipment.get("drying",False),
+            "fan_only":equipment.get("fan_only",False),
+            "humidity_setpoint":equipment.get("target_humidity",False)}
 
 
 def auto_mode(temp_c:float|None, heat_c:float, cool_c:float,
