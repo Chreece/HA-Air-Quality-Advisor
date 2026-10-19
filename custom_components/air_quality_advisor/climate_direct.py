@@ -226,6 +226,9 @@ class DirectClimateControl:
                 self._status(area,"paused",reason=self.paused[area])
                 continue
             entities=self._entities(raw)
+            if (pid_rooms or {}).get(area,{}).get("enabled"):
+                self._status(area,"conflicting_pid_room")
+                continue
             if not entities or len(entities)>MAX_DIRECT_OUTPUTS or any(
                 owner_counts.get(x)!=1 or x in native_targets or x in active_pid_targets
                 for x in entities
