@@ -24,6 +24,7 @@ from .const import (
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
@@ -31,6 +32,8 @@ from .discovery import entity_area, reading, rooms, warning, weather, temperatur
 from .mold import estimate_mold_for_room, rh_fallback_for_room
 from .environment import build_environment
 from .environment_history import EnvironmentHistory
+from .environment_extended import global_pollen, global_aqi
+from .logic import Reading, Reason
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -155,17 +158,44 @@ class AirQualityManager:
                if item.metric != "mold"
                and not (item.details or {}).get("fallback_for_mold")}
         )
-        outdoor_readings = tuple(
-            reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)
-        )
+        environment_global = config.get(CONF_ENVIRONMENT_GLOBAL, {})
+        if not isinstance(environment_global, dict):
+            environment_global = {}
+        environment_rooms = config.get(CONF_ENVIRONMENT_ROOMS, {})
+        if not isinstance(environment_rooms, dict):
+            environment_rooms = {}
+        normalized_outdoor = []
+        for ent in sorted(selected_outdoor):
+            item = reading(self.hass, ent, max_age, outdoor=True)
+            if item.metric == "aqi" and item.value is not None:
+                aqi = global_aqi(item, environment_global)
+                item = Reading(item.entity_id, item.name, item.metric, item.value,
+                               {"aqi": aqi})
+            normalized_outdoor.append(item)
+        outdoor_readings = tuple(normalized_outdoor)
+        pollen, pollen_sources = global_pollen(self.hass, environment_global, max_age)
+        self._tracked.update(pollen_sources)
+        extra_outside = ()
+        if pollen.get("avoid_ventilation"):
+            extra_outside = (Reason("outside_pollen", "Pollen forecast",
+                                    f'{pollen["value"]:g} / {pollen["max_scale"]:g}'),)
         warnings = tuple(warning(self.hass, ent, max_age) for ent in config.get(CONF_WARNINGS, []))
-        base_plan = evaluate(outdoor_readings, current_weather, warnings, selected_rooms, self.thresholds)
+        base_plan = evaluate(outdoor_readings, current_weather, warnings, selected_rooms,
+                             self.thresholds, extra_outside=extra_outside)
         environment, changed = build_environment(
             self.hass, raw_rooms, selected_rooms, current_weather, outdoor_readings,
             history=self._environment_history, max_age_minutes=max_age,
             mold_calibrations=config.get(CONF_MOLD_ROOMS, {}),
+            room_profiles=environment_rooms,
             outside_safe=base_plan.outdoor_safe,
         )
+        environment["__outside__"] = {"pollen": pollen}
+        for profile in environment_rooms.values():
+            if not isinstance(profile, dict):
+                continue
+            for key, entity in profile.items():
+                if key.endswith("_entity") and isinstance(entity, str):
+                    self._tracked.add(entity)
         for report in environment.values():
             source = report.get("sources", {}).get("indoor_temperature_entity")
             if isinstance(source, str):
@@ -183,6 +213,7 @@ class AirQualityManager:
         return evaluate(
             outdoor_readings, current_weather, warnings, selected_rooms,
             self.thresholds, environment=environment,
+            extra_outside=extra_outside,
         )
 
     async def async_start(self) -> None:

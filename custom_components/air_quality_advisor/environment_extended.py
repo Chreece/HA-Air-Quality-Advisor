@@ -120,8 +120,9 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
     ) if volume is not None or cadr is not None else {"status": "not_configured"}
     extractor = entity_on(hass, profile.get("extractor_entity"))
     moisture = moisture_event(samples, now, extractor_on=extractor)
-    ventilation = ventilation_learning(samples, now, target_co2=float(
-        profile.get("co2_target_ppm", 1000)))
+    ventilation = (ventilation_learning(samples, now, target_co2=float(
+        profile.get("co2_target_ppm", 1000))) if profile.get("co2_ndir_verified")
+        else {"status":"co2_sensor_verification_required"})
     qualified = bool(profile.get("formaldehyde_sensor_verified"))
     hcho = hcho_30min(samples, now, verified=qualified) if profile.get("formaldehyde_entity") else {"status": "not_configured"}
     calibrated_noise = bool(profile.get("noise_sensor_calibrated"))
@@ -144,8 +145,7 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
         radon = {"status": "sensor_verification_required" if radon_id else "not_configured"}
     pmv = {"status": "not_configured"}
     if profile.get("enable_pmv"):
-        radiant, radiant_source_status = measurement(
-            hass, profile.get("radiant_temperature_entity"), 90, "unused",area_id=area_id) if False else (None,"not_selected")
+        radiant = None
         if profile.get("radiant_temperature_entity"):
             radiant = temperature_sensor_c(
                 hass, profile["radiant_temperature_entity"], 90,

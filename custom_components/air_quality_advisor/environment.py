@@ -18,6 +18,7 @@ from .building_physics import (
 )
 from .discovery import entity_area, indoor_temperature_choices, is_stale, temperature_sensor_c
 from .environment_history import EnvironmentHistory
+from .environment_extended import extend_room_inputs, room_science
 
 
 def _single_value(readings: Any, metric: str) -> float | None:
@@ -36,8 +37,9 @@ def _single_value(readings: Any, metric: str) -> float | None:
     return round(sum(values) / len(values), 3)
 
 
-def _room_temperature(hass: Any, area_id: str, calibration: dict, max_age: float) -> tuple[float | None, str | None, str]:
-    configured = calibration.get("indoor_temperature_entity")
+def _room_temperature(hass: Any, area_id: str, calibration: dict, max_age: float,
+                      explicit: str | None = None) -> tuple[float | None, str | None, str]:
+    configured = explicit or calibration.get("indoor_temperature_entity")
     if isinstance(configured, str) and configured:
         return temperature_sensor_c(hass, configured, max_age), configured, "configured"
     choices = indoor_temperature_choices(hass, area_id)
@@ -74,6 +76,7 @@ def build_environment(
     outdoor_readings: tuple, *,
     history: EnvironmentHistory, max_age_minutes: float,
     mold_calibrations: dict[str, Any] | None = None,
+    room_profiles: dict[str, Any] | None = None,
     outside_safe: bool = False, now: float | None = None,
 ) -> tuple[dict[str, dict], bool]:
     """Return scientific diagnostics for dashboard and whether history changed."""
@@ -93,14 +96,21 @@ def build_environment(
     timezone_name = getattr(getattr(hass, "config", None), "time_zone", None) or "UTC"
     readings_after_mold = {room.area_id: room for room in rooms_with_mold}
     settings = mold_calibrations if isinstance(mold_calibrations, dict) else {}
+    profiles = room_profiles if isinstance(room_profiles, dict) else {}
     result: dict[str, dict] = {}
     for room in raw_rooms:
         raw_mold = readings_after_mold.get(room.area_id)
         calibrated = settings.get(room.area_id, {})
         if not isinstance(calibrated, dict):
             calibrated = {}
+        profile = profiles.get(room.area_id, {})
+        if not isinstance(profile, dict):
+            profile = {}
         indoor_t, temp_source, temp_source_status = _room_temperature(
-            hass, room.area_id, calibrated, max_age_minutes
+            hass, room.area_id, calibrated, max_age_minutes, profile.get("temperature_entity")
+        )
+        optional_data, optional_sources, _optional_tracked = extend_room_inputs(
+            hass, room.area_id, profile, max_age=max_age_minutes,
         )
         indoor_rh = _single_value(room.readings, "humidity")
         pm25 = _single_value(room.readings, "pm25")
@@ -123,6 +133,7 @@ def build_environment(
             "pm25": pm25, "pm10": pm10, "co2": co2,
             "surface_rh": surface_rh,
             "window_open": window_open, "occupied": occupied,
+            **optional_data,
         }, now=stamp) or changed
         samples = history.samples(room.area_id)
         moisture = moisture_potential(indoor_t, indoor_rh, outdoor_t, outdoor_rh)
@@ -134,7 +145,7 @@ def build_environment(
         pm10_24h = weighted_window(samples, "pm10", stamp, DAY_S)
         co2_data = co2_trend(samples, stamp)
         ach = co2_decay_ach(samples, stamp, outdoor_co2)
-        result[room.area_id] = {
+        base_report = {
             "moisture": moisture,
             "thermal_comfort": comfort,
             "passive_cooling": cooling,
@@ -158,6 +169,14 @@ def build_environment(
                 "co2_sensor_technology_verified": False,
                 "co2_sensor_note": "Verify NDIR technology manually; eCO2 is not true CO2",
                 "pm_high_humidity_interference_caution": indoor_rh is not None and indoor_rh >= 85,
+                "optional_entity_sources": optional_sources,
             },
         }
+        extra, daily_saved = room_science(
+            hass, room.area_id, profile, samples, stamp,
+            history=history, outside_safe=outside_safe, existing=base_report,
+        )
+        base_report["international"] = extra
+        changed = daily_saved or changed
+        result[room.area_id] = base_report
     return result, changed

@@ -12,7 +12,8 @@ from .const import UNIT_LABEL
 from .logic import Plan, Reading, Reason, Room, Weather, Warning
 
 _MISSING_OUTSIDE = frozenset({
-    "no_outdoor_data", "no_weather_data", "unavailable_weather", "unavailable_warning"
+    "no_outdoor_data", "no_weather_data", "unavailable_weather", "unavailable_warning",
+    "aqi_scale_unconfigured"
 })
 
 
@@ -22,18 +23,28 @@ def _reason(reason: Reason) -> dict[str, str]:
 
 def _reading(reading: Reading, threshold: float | None, *, indoor: bool) -> dict[str, Any]:
     value = reading.value
+    aqi = (reading.details or {}).get("aqi", {}) if reading.metric == "aqi" else {}
+    if aqi:
+        threshold = aqi.get("custom_limit") if aqi.get("scale") == "custom" else (
+            100 if aqi.get("scale") == "us_epa" else
+            3 if aqi.get("scale") == "eea_category" else None
+        )
     return {
         "entity_id": reading.entity_id,
         "name": reading.name,
         "metric": reading.metric,
-        "unit": UNIT_LABEL.get(reading.metric, ""),
+        "unit": ("US AQI" if aqi.get("scale") == "us_epa"
+                 else "EEA category" if aqi.get("scale") == "eea_category"
+                 else UNIT_LABEL.get(reading.metric, "")),
         "value": value,
         "threshold": threshold,
         "available": value is not None,
         **({"details": reading.details} if reading.details else {}),
         "exceeded": (
-            value is not None and threshold is not None
-            and (value >= threshold if indoor else value > threshold)
+            bool(aqi.get("operational_unsafe"))
+            if aqi else
+            (value is not None and threshold is not None
+             and (value >= threshold if indoor else value > threshold))
         ),
     }
 
@@ -174,6 +185,7 @@ def dashboard_snapshot(plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
         "rooms": room_data,
         "outdoor": {
             "status": outside_status,
+            "pollen": plan.environment.get("__outside__", {}).get("pollen", {"status":"not_configured"}),
             "safe_to_ventilate": plan.outdoor_safe,
             "data_complete": not missing_conditions,
             "readings": [

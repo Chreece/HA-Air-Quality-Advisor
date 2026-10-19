@@ -137,11 +137,12 @@ def evaluate(
     rooms: tuple[Room, ...],
     limits: dict[str, float] | None = None,
     environment: dict[str, dict[str, Any]] | None = None,
+    extra_outside: tuple[Reason, ...] = (),
 ) -> Plan:
     """Block on known outdoor hazards; report missing AQ data separately."""
     thresholds = {**DEFAULT_THRESHOLDS, **(limits or {})}
     environmental = environment or {}
-    outside: list[Reason] = []
+    outside: list[Reason] = list(extra_outside)
     unavailable_outdoor: list[str] = []
 
     # No configured sensors at all is a setup error, distinct from a selected
@@ -149,6 +150,15 @@ def evaluate(
     if not outdoor:
         outside.append(Reason("no_outdoor_data"))
     for reading in outdoor:
+        if reading.metric == "aqi" and reading.value is not None:
+            classification = (reading.details or {}).get("aqi", {})
+            if classification.get("status") != "ready":
+                unavailable_outdoor.append(reading.entity_id)
+                outside.append(Reason("aqi_scale_unconfigured", reading.name))
+                continue
+            if classification.get("operational_unsafe"):
+                outside.append(_reading_reason("outside", reading))
+            continue
         limit = thresholds.get(f"outdoor_{reading.metric}")
         if reading.value is None or limit is None:
             unavailable_outdoor.append(reading.entity_id)

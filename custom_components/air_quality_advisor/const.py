@@ -1,7 +1,7 @@
 """Constants and cautious defaults for the Air Quality Advisor integration."""
 
 DOMAIN = "air_quality_advisor"
-NAME = "Air Quality Advisor"
+NAME = "Home Environment Advisor"
 PLATFORMS = ["sensor"]
 
 CONF_AREAS = "areas"
@@ -28,11 +28,13 @@ CONF_LANGUAGE = "language"
 CONF_AI_REWRITE = "ai_rewrite_announcements"
 CONF_AI_AGENT = "ai_conversation_agent"
 CONF_THRESHOLDS = "thresholds"
+CONF_ENVIRONMENT_GLOBAL = "environment_global"
+CONF_ENVIRONMENT_ROOMS = "environment_rooms"
 
 from .languages import SUPPORTED_LANGUAGE_TAGS
 
 LANGUAGES = ("auto", *SUPPORTED_LANGUAGE_TAGS)
-SUPPORTED_AIR_METRICS = ("aqi", "co2", "pm25", "pm10", "voc", "voc_parts")
+SUPPORTED_AIR_METRICS = ("aqi", "co2", "pm25", "pm10", "voc", "voc_parts", "no2", "o3", "so2")
 INDOOR_METRICS = (*SUPPORTED_AIR_METRICS, "humidity")
 WEATHER_CLEAR = frozenset(("sunny", "clear-night", "partlycloudy", "cloudy"))
 
@@ -46,6 +48,9 @@ DEFAULT_THRESHOLDS = {
     "outdoor_pm10": 45.0,
     "outdoor_voc": 500.0,     # µg/m³.
     "outdoor_voc_parts": 500.0,  # ppb.
+    "outdoor_no2": 25.0,  # Optional operational screening, not WHO 24-hour equivalence.
+    "outdoor_o3": 100.0,  # EEA hourly fair/moderate screen, user configurable.
+    "outdoor_so2": 40.0,  # EEA hourly fair/moderate screen, user configurable.
     "indoor_aqi": 100.0,
     "indoor_co2": 1000.0,     # ppm.
     "indoor_pm25": 25.0,
@@ -69,6 +74,10 @@ UNIT_LABEL = {
     "pm10": "µg/m³",
     "voc": "µg/m³",
     "voc_parts": "ppb",
+    "no2": "µg/m³",
+    "o3": "µg/m³",
+    "so2": "µg/m³",
+    "hcho": "µg/m³",
     "humidity": "%",
 }
 
