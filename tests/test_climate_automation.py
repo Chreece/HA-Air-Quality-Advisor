@@ -241,3 +241,86 @@ def test_duplicate_target_fails_closed(env_runtime):
         assert not hass.services.calls
         await engine.async_stop()
     asyncio.run(scenario())
+
+def test_relay_respects_minimum_on_dwell_in_normal_deadband(env_runtime):
+    async def scenario():
+        hass,room=home(with_relay=True,temp=18)
+        now=[1000.]
+        engine=env_runtime(hass,"min-on",changed=lambda:None,clock=lambda:now[0])
+        await engine.async_start()
+        cfg=conf(strategy="on_off",relay_hardware_confirmed=True,
+                 heat_entity="switch.living_heat",climate_entity=None)
+        now[0]=1600;await run(engine,room,cfg,now)
+        now[0]=1920;await run(engine,room,cfg,now)
+        assert hass.states.get("switch.living_heat").state=="on"
+        hass.states.get("sensor.living_temperature").state="23"
+        now[0]=2100;await run(engine,room,cfg,now)
+        assert hass.states.get("switch.living_heat").state=="on"
+        assert engine.statuses["living"]["status"]=="minimum_on_dwell"
+        now[0]=2300;await run(engine,room,cfg,now)
+        assert hass.states.get("switch.living_heat").state=="off"
+        await engine.async_stop()
+    asyncio.run(scenario())
+
+
+def test_onoff_climate_can_enter_heat_then_off_with_explicit_permission(env_runtime):
+    async def scenario():
+        hass,room=home(mode="off",temp=18)
+        now=[1000.]
+        engine=env_runtime(hass,"climate-onoff",changed=lambda:None,clock=lambda:now[0])
+        await engine.async_start()
+        cfg=conf(strategy="on_off",climate_entity=None,
+                 heat_entity="climate.living_thermostat",
+                 relay_hardware_confirmed=True,
+                 allow_hvac_mode_change=True,allow_turn_off=True)
+        now[0]=1600;await run(engine,room,cfg,now)
+        assert hass.states.get("climate.living_thermostat").state=="off"
+        now[0]=1920;await run(engine,room,cfg,now)
+        assert hass.states.get("climate.living_thermostat").state=="heat"
+        hass.states.get("sensor.living_temperature").state="24"
+        now[0]=2300;await run(engine,room,cfg,now)
+        assert hass.states.get("climate.living_thermostat").state=="off"
+        await engine.async_stop()
+    asyncio.run(scenario())
+
+
+def test_pwm_runs_on_confirmed_switch_and_not_on_climate(env_runtime):
+    async def scenario():
+        hass,room=home(with_relay=True,temp=18)
+        now=[1000.]
+        engine=env_runtime(hass,"pwm-ok",changed=lambda:None,clock=lambda:now[0])
+        await engine.async_start()
+        cfg=conf(strategy="pwm",heat_entity="switch.living_heat",climate_entity=None,
+                 relay_hardware_confirmed=True,pwm_hardware_confirmed=True)
+        now[0]=1600;await run(engine,room,cfg,now)
+        now[0]=1900;await run(engine,room,cfg,now)
+        now[0]=2260;await run(engine,room,cfg,now)
+        assert hass.states.get("switch.living_heat").state=="on"
+        assert all(domain=="switch" for domain,_,_,_ in hass.services.calls)
+        open_room=Room("living","Living",(Window("binary_sensor.window","Window",True),),())
+        now[0]=2420;await run(engine,open_room,cfg,now)
+        assert hass.states.get("switch.living_heat").state=="off"
+        await engine.async_stop()
+    asyncio.run(scenario())
+
+
+def test_proportional_number_must_have_real_zero_off_and_shutdown(env_runtime):
+    async def scenario():
+        hass,room=home(with_relay=True,temp=18)
+        output=MockState("number.living_heater","0")
+        output.attributes.update({"min":0,"max":100})
+        hass._values[output.entity_id]=output
+        hass._entity_areas[output.entity_id]="living"
+        now=[1000.]
+        engine=env_runtime(hass,"analog",changed=lambda:None,clock=lambda:now[0])
+        await engine.async_start()
+        cfg=conf(strategy="proportional",heat_entity=output.entity_id,
+                 climate_entity=None)
+        now[0]=1600;await run(engine,room,cfg,now)
+        now[0]=1900;await run(engine,room,cfg,now)
+        assert float(output.state)>0
+        hass.states.get("sensor.living_temperature").state="23"
+        now[0]=2300;await run(engine,room,cfg,now)
+        assert float(output.state)==0
+        await engine.async_stop()
+    asyncio.run(scenario())
