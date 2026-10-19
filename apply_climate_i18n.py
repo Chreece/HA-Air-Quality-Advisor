@@ -30,10 +30,33 @@ BASE={
  "climate_occupancy_invalid":"An occupancy sensor does not belong to this room.",
  "climate_away_invalid":"Select a valid people/tracker entity.",
  "climate_deadband_invalid":"Cooling target must be at least 1°C above heating target in every profile.",
+ "climate_attestation_required":"Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
+ "climate_direct_targets_invalid":"Select one or two real, unique and room-assigned actuator entities of the required device type.",
+ "climate_proportional_requires_percent":"Proportional actuators must report a real number entity with a verified 0–100% range and resolution.",
+ "climate_direct_timing_invalid":"Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+ "climate_actuators":"Direct actuators — verify the equipment and limits",
+ "direct_hardware_confirmed":"I confirm these are non-compressor thermal actuators with independent overtemperature protection",
+ "heat_actuator":"Heating switch or proportional output",
+ "cool_actuator":"Cooling switch or proportional output",
+ "min_on_s":"Minimum energized interval (seconds)",
+ "min_off_s":"Minimum de-energized interval (seconds)",
+ "max_on_s":"Maximum continuous energized runtime (seconds)",
+ "mode_dwell_s":"Minimum delay between heating and cooling (seconds)",
+ "kp":"PID proportional gain (percentage points/°C)",
+ "ki":"PID integral gain (percentage points/(°C·minute))",
+ "kd":"PID derivative gain (percentage points·minute/°C)",
+ "sample_seconds":"PID sampling period (seconds)",
+ "pwm_period_s":"PWM cycle duration for slow thermal loads (seconds)",
+ "max_demand_change":"Maximum percentage-point change per cycle",
+ "min_demand_change":"Minimum meaningful percentage-point change",
 }
 LABELS={
  "de":{"climate":"Klima — Raum auswählen","climate_room":"Klima — Regelung, Anwesenheit und Abwesenheit",
        "climate_profiles":"Klima — Temperaturbereiche je Betriebsart",
+       "climate_actuators":"Direktaktoren — Geräte und sichere Schaltzeiten",
+       "direct_hardware_confirmed":"Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt",
+       "heat_actuator":"Heizaktor (Schalter oder Prozentwert)",
+       "cool_actuator":"Kühlaktor (Schalter oder Prozentwert)",
        "climate_enabled":"Klimaplaner für diesen Raum aktivieren",
        "climate_allow_actuation":"Thermostat-Sollwertbefehle erlauben (separate Zustimmung)",
        "climate_auto_switch_hvac":"Automatischen Heiz-/Kühlmoduswechsel erlauben",
@@ -41,6 +64,10 @@ LABELS={
        "climate_away_entities":"Personen und Tracker für Zuhause/Abwesend"},
  "el":{"climate":"Κλίμα — επιλογή δωματίου","climate_room":"Κλίμα — ελεγκτής, παρουσία και απουσία",
        "climate_profiles":"Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
+       "climate_actuators":"Άμεσοι ενεργοποιητές — υλικό και όρια ασφαλείας",
+       "direct_hardware_confirmed":"Επιβεβαιώνω ανεξάρτητη προστασία και απουσία συμπιεστή",
+       "heat_actuator":"Ενεργοποιητής θέρμανσης",
+       "cool_actuator":"Ενεργοποιητής ψύξης",
        "climate_enabled":"Ενεργοποίηση σχεδίου κλίματος δωματίου",
        "climate_allow_actuation":"Να επιτρέπονται εντολές στον επιλεγμένο θερμοστάτη (ξεχωριστή άδεια)",
        "climate_auto_switch_hvac":"Αυτόματη αλλαγή θέρμανσης/ψύξης (ξεχωριστή άδεια)",
@@ -67,13 +94,20 @@ def apply_climate_i18n(root:Path)->None:
              "climate_occupancy_sensors","climate_away_entities","climate_hysteresis_c"]),
           "climate_profiles":("climate_profiles",[f"{p}_{kind}" for p in
               ("home","unoccupied","away","sleep") for kind in ("heat","cool")]),
+          "climate_actuators":("climate_actuators",[
+              "direct_hardware_confirmed","heat_actuator","cool_actuator",
+              "min_on_s","min_off_s","max_on_s","mode_dwell_s",
+              "kp","ki","kd","sample_seconds","pwm_period_s",
+              "max_demand_change","min_demand_change",
+          ]),
         }
         for key,(title,fields) in descriptors.items():
             steps[key]={
                 "title":vocab[title],
                 "description":("Configure each selected room independently. "
-                    "A real temperature measurement and explicit supported climate device are required. "
-                    "All new direct relay/PWM modes are blocked pending actuator testing. "
+                    "A fresh room temperature sensor and exact room-assigned actuators are required. "
+                    "Direct relay/PWM is permitted only for independently protected non-compressor loads, "
+                    "with confirmed on/off limits and explicit actuation opt-in. "
                     "Occupied, unoccupied, away and sleep heating/cooling targets are independent."),
                 "data":{field:vocab.get(field,
                     field.replace("_"," ").capitalize()) for field in fields},
