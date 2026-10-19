@@ -45,7 +45,8 @@ def next_fan_speed(observed: Any, desired: Any, step: Any) -> tuple[str,int|None
         return "already_sufficient_speed",None
     # Quantize to the next supported positive percentage; never overshoot the
     # user-permitted target or exceed one ten-point change per cycle.
-    index=int(current//size)+1
+    ceiling=min(target,current+MAX_STEP_PERCENT)
+    index=int((ceiling+1e-8)//size)
     candidate=round(index*size)
     if candidate<=current or candidate-current>MAX_STEP_PERCENT or candidate>target:
         return "incompatible_speed_quantization",None
