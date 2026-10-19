@@ -4,7 +4,7 @@ from typing import Any
 from datetime import datetime, timezone
 import time
 from .climate_schedule import scheduled_sleep
-from .climate_equipment import humidity_advice
+from .climate_coordination import assigned_entities, room_equipment_plan
 
 from .climate_strategy import (capabilities,home_away_evidence,occupied_evidence,
                                policy)
@@ -44,7 +44,8 @@ def _presence_ids(hass:Any,area:str,config:dict) -> list[str]:
 
 
 def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
-           now:float|None=None,comfort_target_c:float|None=None)->tuple[dict,set[str]]:
+           now:float|None=None,comfort_target_c:float|None=None,
+           outdoor_safe:bool|None=None,duplicate_equipment:dict|None=None)->tuple[dict,set[str]]:
     """Expose what should happen, with provenance, without operating devices."""
     if not isinstance(settings,dict) or not settings.get("enabled"):
         return {"status":"disabled"},set()
@@ -108,7 +109,9 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
                 capability[mode]=(valid and attrs.get("unit_of_measurement")=="%"
                     and attrs.get("min")==0 and attrs.get("max")==100)
         cap=capability
-    window_safe=bool(room.windows) and all(win.opened is False for win in room.windows)
+    window_safe=all(win.opened is False for win in room.windows)
+    window_evidence=("no_contact_configured" if not room.windows else
+                     "all_contacts_closed" if window_safe else "open_or_unavailable_contact")
     time_zone=getattr(getattr(hass,"config",None),"time_zone",None) or "UTC"
     sleeping,sleep_evidence=scheduled_sleep(
         settings,time.time() if now is None else now,time_zone,
@@ -118,15 +121,16 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
                   manual_profile=settings.get("manual_profile"),prior_mode=prior_mode,
                   window_safe=window_safe,comfort_target_c=comfort_target_c)
 
-    humidity_values=[r.value for r in room.readings
-                     if r.metric=="humidity" and isinstance(r.value,(int,float))]
-    humidity_plan=humidity_advice(
-        humidity_values[-1] if humidity_values else None,
-        drying_available=bool(cap.get("dry")),
+    temperature_intent={"status":result.state,"mode":result.desired_hvac_mode,
+                        "window_safe":window_safe}
+    equipment=room_equipment_plan(
+        hass,area,settings,temperature_intent,room.readings,
+        outdoor_safe=outdoor_safe,duplicates=duplicate_equipment,
     )
 
     return {
-        "humidity_management":humidity_plan,
+        "humidity_management":equipment.get("humidity", {"status":"unavailable"}),
+        "equipment_plan":equipment,
         "status":result.state,
         "profile":result.profile,"mode":result.desired_hvac_mode,
         "temperature_target_c":result.temperature_c,
@@ -141,10 +145,13 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "climate_entity":climate_id,"climate_capabilities":cap,
         "temperature_entity":temperature_id,"temperature_c":temp,
         "window_safe":window_safe,
+        "window_evidence":window_evidence,
         "automatic_actuation_enabled": bool(
             settings.get("allow_actuation") and
             (strategy in ("device","on_off","pwm","proportional")) and
             (strategy=="device" or settings.get("direct_hardware_confirmed"))
         ),
         "note":"Only explicitly authorized same-room actuators are controllable; equipment safety remains external",
-    },set(sensors+trackers+[x for x in (temperature_id,climate_id) if isinstance(x,str)])
+    },(set(sensors+trackers+[x for x in (temperature_id,climate_id)
+                           if isinstance(x,str)]) | assigned_entities(settings) |
+          ({settings["humidity_entity"]} if isinstance(settings.get("humidity_entity"),str) else set())))
