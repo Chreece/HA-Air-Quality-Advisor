@@ -774,9 +774,16 @@
       const actuator=p.actuation || {};
       const actual=actuator.status || 'advisory_only';
       const blocked=['hold','unavailable','unsupported_mode','unsupported_device'].includes(p.status);
-      const target=typeof p.temperature_target_c==='number' ?
+      const target=(typeof p.low_target_c==='number' &&
+                    typeof p.high_target_c==='number') ?
+        this._format(p.low_target_c)+'–'+this._format(p.high_target_c)+' °C' :
+        typeof p.temperature_target_c==='number' ?
         this._format(p.temperature_target_c)+' °C' : '—';
-      const title=actual==='advisory_only' ? l.advisory : l.active;
+      const activelyControlling=['setpoint_commanded','native_range_commanded',
+        'at_setpoint','native_range_at_setpoint','holding','commanded','modulating',
+        'mode_commanded'].includes(actual);
+      const title=actual==='advisory_only' ? l.advisory :
+        activelyControlling ? l.active : l.holding;
       const action=actual==='paused'?'resume':'pause';
       const controls=actual==='advisory_only' ? '' :
         '<button type="button" class="pid-button" data-climate-area="'+escape(room.area_id)+
@@ -786,7 +793,7 @@
         '</strong><span>'+escape(title)+'</span></div>'+
         '<div class="pid-metrics"><span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
         '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>'+
-        '<span>'+escape(p.profile||'home')+'</span></div>'+
+        '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span></div>'+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
         '<small>'+escape(p.reason||'')+'</small>'+controls+'</section>';
     }
