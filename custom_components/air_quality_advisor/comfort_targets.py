@@ -39,25 +39,36 @@ def solve_pmv_air_temperature(
             result=evaluator(
                 tdb=temperature, tr=inputs[0], rh=inputs[1],
                 vr=inputs[2], met=inputs[3], clo=inputs[4],
-                model="7730-2025",limit_inputs=True,
+                model="7730-2025",limit_inputs=True,round_output=False,
             )
             pmv=float(result.pmv)
         except (AttributeError,TypeError,ValueError,OverflowError):
             return None
         return pmv if math.isfinite(pmv) else None
 
-    low,high=16.0,30.0
-    p_low,p_high=calculate(low),calculate(high)
-    if p_low is None or p_high is None:
-        return {"status":"model_outside_valid_domain"}
-    if p_low>desired or p_high<desired or p_high<=p_low:
+    # ISO 7730 excludes exact 30°C and PMV values outside [-2,2].
+    # Scan for a finite sign-changing bracket rather than rejecting a valid
+    # neutral target just because one extreme endpoint is outside its domain.
+    bracket=None
+    previous=None
+    for i in range(29):
+        t=16.0+i*0.5
+        value=calculate(t)
+        if value is None:
+            continue
+        if previous is not None and previous[1]<=desired<=value and previous[1]<value:
+            bracket=(previous[0],t)
+            break
+        previous=(t,value)
+    if bracket is None:
         return {"status":"target_not_bracketed"}
-    for _ in range(30):
+    low,high=bracket
+    for _ in range(20):
         mid=(low+high)/2
-        p=calculate(mid)
-        if p is None:
+        value=calculate(mid)
+        if value is None:
             return {"status":"model_unavailable_within_band"}
-        if p<desired:
+        if value<desired:
             low=mid
         else:
             high=mid
