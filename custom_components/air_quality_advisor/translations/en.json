@@ -161,7 +161,8 @@
           "delivery": "Announcements (optional)",
           "thresholds": "Advanced thresholds",
           "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science"
+          "environment_room": "Choose a room for environmental science",
+          "pid": "Climate PID — select a room"
         }
       },
       "window_sensors": {
@@ -505,6 +506,62 @@
           "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
           "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
         }
+      },
+      "pid": {
+        "title": "Climate PID — select a room",
+        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "data": {
+          "pid_area": "Monitored room to configure"
+        },
+        "data_description": {
+          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+        }
+      },
+      "pid_room": {
+        "title": "Climate PID in {area_name} — devices and comfort target",
+        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "data": {
+          "pid_enabled": "Enable supervisory climate PID for this room",
+          "pid_climate_entities": "Authorized climate devices",
+          "pid_temperature_entity": "Independent room temperature sensor",
+          "pid_mode": "Existing thermostat mode",
+          "pid_target_c": "Desired room temperature (°C)",
+          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+        },
+        "data_description": {
+          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
+          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
+          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
+          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
+          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
+          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+        }
+      },
+      "pid_tuning": {
+        "title": "Climate PID in {area_name} — advanced safety and tuning",
+        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "data": {
+          "pid_kp": "Proportional gain Kp (% per °C)",
+          "pid_ki": "Integral gain Ki (% per °C-minute)",
+          "pid_kd": "Derivative gain Kd (%·minute per °C)",
+          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
+          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
+          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
+          "pid_sample_seconds": "PID measurement cycle (seconds)",
+          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
+          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+        },
+        "data_description": {
+          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
+          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
+          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
+          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
+          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
+          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
+          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
+          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
+          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+        }
       }
     },
     "error": {
@@ -532,7 +589,12 @@
       "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings.",
       "invalid_environment_scale": "Select a supported AQI/pollen scale and a valid threshold; no scale is guessed automatically.",
       "invalid_environment_measurement": "Check this room's numeric values and allowed units/ranges.",
-      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them."
+      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them.",
+      "pid_climate_required": "Select at least one supported, explicitly authorized climate entity for this room.",
+      "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
+      "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
+      "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits."
     }
   },
   "entity": {
@@ -564,6 +626,20 @@
         "areas": {
           "name": "Only these areas (optional)",
           "description": "Only these areas (optional)"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
         }
       }
     }

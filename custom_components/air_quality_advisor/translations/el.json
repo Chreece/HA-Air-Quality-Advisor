@@ -161,7 +161,8 @@
           "delivery": "Ανακοινώσεις (προαιρετικά)",
           "thresholds": "Προχωρημένα όρια",
           "environment": "Διεθνείς πηγές ποιότητας αέρα και γύρης",
-          "environment_room": "Επιλογή δωματίου για περιβαλλοντικές μετρήσεις"
+          "environment_room": "Επιλογή δωματίου για περιβαλλοντικές μετρήσεις",
+          "pid": "Κλιματικός PID — επιλογή δωματίου"
         }
       },
       "window_sensors": {
@@ -505,6 +506,62 @@
           "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
           "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
         }
+      },
+      "pid": {
+        "title": "Κλιματικός PID — επιλογή δωματίου",
+        "description": "Προαιρετικό, αρχικά απενεργοποιημένο. Επίλεξε ένα δωμάτιο. Δεν ελέγχονται συσκευές άλλων χώρων.",
+        "data": {
+          "pid_area": "Δωμάτιο προς ρύθμιση"
+        },
+        "data_description": {
+          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+        }
+      },
+      "pid_room": {
+        "title": "Κλιματικός PID στο {area_name} — συσκευές και στόχος",
+        "description": "Ενεργοποίησε μόνο με πραγματικό αισθητήρα θερμοκρασίας και ρητά επιλεγμένες συσκευές climate. Η θέρμανση/ψύξη πρέπει να είναι ήδη ενεργή. Με ανοιχτά ή άγνωστα παράθυρα ο PID αναστέλλεται. Δεν αλλάζει τρόπους HVAC ή συμπιεστές.",
+        "data": {
+          "pid_enabled": "Ενεργοποίηση κλιματικού PID σε αυτό το δωμάτιο",
+          "pid_climate_entities": "Ρητά επιτρεπόμενες συσκευές climate",
+          "pid_temperature_entity": "Αισθητήρας θερμοκρασίας (έως 10 λεπτά παλαιός)",
+          "pid_mode": "Τρέχουσα λειτουργία θέρμανσης/ψύξης",
+          "pid_target_c": "Επιθυμητή θερμοκρασία δωματίου (°C)",
+          "pid_pause_on_window_open": "Παύση όταν παράθυρο είναι ανοιχτό ή άγνωστο"
+        },
+        "data_description": {
+          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
+          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
+          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
+          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
+          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
+          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+        }
+      },
+      "pid_tuning": {
+        "title": "Κλιματικός PID στο {area_name} — προηγμένες ρυθμίσεις και ασφάλεια",
+        "description": "Kp: %/°C, Ki: %/(°C·λεπτό), Kd: %·λεπτό/°C. Ελεγχόμενη αλλαγή μόνο του setpoint. Ξεκίνησε με τις προεπιλογές. Χειροκίνητη αλλαγή του θερμοστάτη διακόπτει τον PID μέχρι ρητή συνέχιση.",
+        "data": {
+          "pid_kp": "Αναλογικός συντελεστής Kp (%/°C)",
+          "pid_ki": "Ολοκληρωτικός συντελεστής Ki (%/(°C·λεπτό))",
+          "pid_kd": "Διαφορικός συντελεστής Kd (%·λεπτό/°C)",
+          "pid_offset_c": "Μέγιστη μεταβολή επιθυμητής θερμοκρασίας (°C)",
+          "pid_min_setpoint_c": "Κατώτατο επιτρεπόμενο setpoint (°C)",
+          "pid_max_setpoint_c": "Ανώτατο επιτρεπόμενο setpoint (°C)",
+          "pid_sample_seconds": "Διάστημα δειγματοληψίας PID (δευτ.)",
+          "pid_max_change_c": "Μέγιστη αλλαγή ανά κύκλο (°C)",
+          "pid_min_change_c": "Ελάχιστη ουσιαστική αλλαγή (°C)"
+        },
+        "data_description": {
+          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
+          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
+          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
+          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
+          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
+          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
+          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
+          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
+          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+        }
       }
     },
     "error": {
@@ -532,7 +589,12 @@
       "invalid_mold_calibration": "Μέτρησε ταυτόχρονα θερμοκρασία χώρου, έξω και κρύας επιφάνειας, με διαφορά τουλάχιστον 3°C μέσα–έξω.",
       "invalid_environment_scale": "Select a supported AQI/pollen scale and a valid threshold; no scale is guessed automatically.",
       "invalid_environment_measurement": "Check this room's numeric values and allowed units/ranges.",
-      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them."
+      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them.",
+      "pid_climate_required": "Select at least one supported, explicitly authorized climate entity for this room.",
+      "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
+      "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
+      "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits."
     }
   },
   "entity": {
@@ -564,6 +626,20 @@
         "areas": {
           "name": "Μόνο αυτοί οι χώροι (προαιρετικά)",
           "description": "Μόνο αυτοί οι χώροι (προαιρετικά)"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
         }
       }
     }
