@@ -291,6 +291,37 @@
   const RH_FALLBACK_TEXT = {"en":"RH fallback active","de":"RH-Ersatzwert aktiv","el":"Ενεργή εφεδρική χρήση σχετικής υγρασίας","fr":"Repli sur l’humidité relative actif","es":"Respaldo de humedad relativa activo","ar":"الاعتماد الاحتياطي على الرطوبة النسبية نشط","bg":"Активно заместване с относителна влажност","bn":"আপেক্ষিক আর্দ্রতার বিকল্প সক্রিয়","cs":"Aktivní náhradní relativní vlhkost","da":"RH-reservemåling aktiv","fa":"جایگزین رطوبت نسبی فعال است","fi":"Suhteellisen kosteuden varatila käytössä","he":"גיבוי לחות יחסית פעיל","hi":"सापेक्ष आर्द्रता का बैकअप सक्रिय","hr":"Aktivna zamjena relativnom vlagom","hu":"Relatív páratartalom tartalékmód aktív","id":"Cadangan kelembapan relatif aktif","it":"Fallback umidità relativa attivo","ja":"相対湿度の代替値を使用中","ko":"상대습도 대체값 사용 중","nb":"RH-reservemåling aktiv","nl":"RH-terugval actief","pl":"Aktywna rezerwowa wilgotność względna","pt":"Alternativa por humidade relativa ativa","pt-br":"Fallback de umidade relativa ativo","ro":"Mod de rezervă cu umiditate relativă activ","ru":"Используется резервная относительная влажность","sk":"Aktívna náhradná relatívna vlhkosť","sr":"Активна резервна релативна влажност","sv":"Reservvärde för relativ luftfuktighet aktivt","ta":"ஒப்பீட்டு ஈரப்பத மாற்று செயலில் உள்ளது","th":"ใช้ค่าความชื้นสัมพัทธ์สำรอง","tr":"Bağıl nem yedek ölçümü etkin","uk":"Активна резервна відносна вологість","ur":"نسبتی نمی کی متبادل پیمائش فعال ہے","vi":"Đang dùng độ ẩm tương đối dự phòng","zh-hans":"已启用相对湿度回退","zh-hant":"已啟用相對濕度備援"};
   // Calibration and humidity summary labels in all 38 supported card locales.
   const MOLD_DETAIL_LABELS = {"en":["Average humidity","sensor","sensors","Estimated surface","Calibration factor","Indoor temperature","Outdoor temperature"],"de":["Durchschnittliche Luftfeuchte","Sensor","Sensoren","Geschätzte Oberflächentemperatur","Kalibrierfaktor","Raumtemperatur","Außentemperatur"],"el":["Μέση υγρασία","αισθητήρας","αισθητήρες","Εκτιμώμενη επιφάνεια","Συντελεστής βαθμονόμησης","Εσωτερική θερμοκρασία","Εξωτερική θερμοκρασία"],"fr":["Humidité moyenne","capteur","capteurs","Surface estimée","Facteur de calibration","Température intérieure","Température extérieure"],"es":["Humedad media","sensor","sensores","Superficie estimada","Factor de calibración","Temperatura interior","Temperatura exterior"],"ar":["متوسط الرطوبة","مستشعر","مستشعرات","السطح المقدّر","معامل المعايرة","درجة الحرارة الداخلية","درجة الحرارة الخارجية"],"bg":["Средна влажност","сензор","сензора","Оценена температура на повърхността","Калибрационен коефициент","Вътрешна температура","Външна температура"],"bn":["গড় আর্দ্রতা","সেন্সর","সেন্সর","আনুমানিক পৃষ্ঠের তাপমাত্রা","ক্রমাঙ্কন গুণক","ভেতরের তাপমাত্রা","বাইরের তাপমাত্রা"],"cs":["Průměrná vlhkost","senzor","senzory","Odhadovaná teplota povrchu","Kalibrační faktor","Vnitřní teplota","Venkovní teplota"],"da":["Gennemsnitlig luftfugtighed","sensor","sensorer","Estimeret overfladetemperatur","Kalibreringsfaktor","Indetemperatur","Udetemperatur"],"fa":["میانگین رطوبت","حسگر","حسگر","دمای تخمینی سطح","ضریب کالیبراسیون","دمای داخل","دمای بیرون"],"fi":["Keskimääräinen ilmankosteus","anturi","anturia","Arvioitu pintalämpötila","Kalibrointikerroin","Sisälämpötila","Ulkolämpötila"],"he":["לחות ממוצעת","חיישן","חיישנים","טמפרטורת משטח משוערת","מקדם כיול","טמפרטורה פנימית","טמפרטורה חיצונית"],"hi":["औसत आर्द्रता","सेंसर","सेंसर","अनुमानित सतह तापमान","अंशांकन गुणांक","अंदर का तापमान","बाहर का तापमान"],"hr":["Prosječna vlažnost","senzor","senzora","Procijenjena temperatura površine","Faktor kalibracije","Unutarnja temperatura","Vanjska temperatura"],"hu":["Átlagos páratartalom","érzékelő","érzékelő","Becsült felületi hőmérséklet","Kalibrációs tényező","Beltéri hőmérséklet","Kültéri hőmérséklet"],"id":["Kelembapan rata-rata","sensor","sensor","Perkiraan suhu permukaan","Faktor kalibrasi","Suhu dalam ruangan","Suhu luar ruangan"],"it":["Umidità media","sensore","sensori","Temperatura superficiale stimata","Fattore di calibrazione","Temperatura interna","Temperatura esterna"],"ja":["平均湿度","センサー","センサー","推定表面温度","校正係数","室内温度","屋外温度"],"ko":["평균 습도","센서","센서","예상 표면 온도","보정 계수","실내 온도","실외 온도"],"nb":["Gjennomsnittlig luftfuktighet","sensor","sensorer","Estimert overflatetemperatur","Kalibreringsfaktor","Innetemperatur","Utetemperatur"],"nl":["Gemiddelde luchtvochtigheid","sensor","sensoren","Geschatte oppervlaktetemperatuur","Kalibratiefactor","Binnentemperatuur","Buitentemperatuur"],"pl":["Średnia wilgotność","czujnik","czujniki","Szacowana temperatura powierzchni","Współczynnik kalibracji","Temperatura wewnętrzna","Temperatura zewnętrzna"],"pt":["Humidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interior","Temperatura exterior"],"pt-br":["Umidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interna","Temperatura externa"],"ro":["Umiditate medie","senzor","senzori","Temperatura estimată a suprafeței","Factor de calibrare","Temperatura interioară","Temperatura exterioară"],"ru":["Средняя влажность","датчик","датчика","Оценочная температура поверхности","Калибровочный коэффициент","Температура внутри","Температура снаружи"],"sk":["Priemerná vlhkosť","senzor","senzory","Odhadovaná teplota povrchu","Kalibračný faktor","Vnútorná teplota","Vonkajšia teplota"],"sr":["Просечна влажност","сензор","сензора","Процењена температура површине","Фактор калибрације","Унутрашња температура","Спољашња температура"],"sv":["Genomsnittlig luftfuktighet","sensor","sensorer","Uppskattad yttemperatur","Kalibreringsfaktor","Inomhustemperatur","Utomhustemperatur"],"ta":["சராசரி ஈரப்பதம்","சென்சார்","சென்சார்கள்","மதிப்பிடப்பட்ட மேற்பரப்பு வெப்பநிலை","அளவுத்திருத்த காரணி","உட்புற வெப்பநிலை","வெளிப்புற வெப்பநிலை"],"th":["ความชื้นเฉลี่ย","เซนเซอร์","เซนเซอร์","อุณหภูมิพื้นผิวโดยประมาณ","ค่าปรับเทียบ","อุณหภูมิภายใน","อุณหภูมิภายนอก"],"tr":["Ortalama nem","sensör","sensör","Tahmini yüzey sıcaklığı","Kalibrasyon katsayısı","İç sıcaklık","Dış sıcaklık"],"uk":["Середня вологість","датчик","датчики","Оцінена температура поверхні","Калібрувальний коефіцієнт","Температура всередині","Температура зовні"],"ur":["اوسط نمی","سینسر","سینسر","سطح کا اندازاً درجہ حرارت","کیلیبریشن عامل","اندرونی درجہ حرارت","بیرونی درجہ حرارت"],"vi":["Độ ẩm trung bình","cảm biến","cảm biến","Nhiệt độ bề mặt ước tính","Hệ số hiệu chuẩn","Nhiệt độ trong nhà","Nhiệt độ ngoài trời"],"zh-hans":["平均湿度","传感器","传感器","估算表面温度","校准系数","室内温度","室外温度"],"zh-hant":["平均濕度","感測器","感測器","估算表面溫度","校正係數","室內溫度","室外溫度"]};
+
+  const SCIENCE_LABELS = {
+    en: {title:'Building physics · estimates',drying:'Outdoor air is drier',humidifying:'Outdoor air carries more moisture',
+      neutral:'Similar moisture content',predicted:'Outside air, warmed to room temperature',
+      band:'Adaptive comfort band',heat:'Above the comfort band',cool:'Below the comfort band',
+      normal:'Within the comfort band',unknown:'Needs seven days of outdoor history',
+      cooling:'Passive cooling opportunity',surface:'Surface condensation margin',
+      exposure:'Surface humidity above 80% (24 h)',pm25:'PM2.5 mean (24 h)',
+      pm10:'PM10 mean (24 h)',co2:'CO₂ trend',ach:'Estimated air changes',
+      energy:'Heat per complete air exchange (per m³)',unverified:'CO₂ sensor technology must be verified separately',
+      estimated:'Estimates depend on sensor accuracy and model assumptions.'},
+    de: {title:'Bauphysik · Schätzwerte',drying:'Außenluft ist trockener',humidifying:'Außenluft enthält mehr Feuchtigkeit',
+      neutral:'Ähnlicher Feuchtegehalt',predicted:'Außenluft auf Raumtemperatur erwärmt',
+      band:'Adaptiver Komfortbereich',heat:'Oberhalb des Komfortbereichs',cool:'Unterhalb des Komfortbereichs',
+      normal:'Im Komfortbereich',unknown:'Sieben Tage Außenverlauf erforderlich',
+      cooling:'Passive Kühlung möglich',surface:'Abstand zur Kondensation an Oberfläche',
+      exposure:'Oberflächenfeuchte über 80 % (24 h)',pm25:'PM2.5-Mittel (24 h)',
+      pm10:'PM10-Mittel (24 h)',co2:'CO₂-Trend',ach:'Geschätzter Luftwechsel',
+      energy:'Wärme pro vollständigem Luftaustausch (je m³)',unverified:'CO₂-Sensortechnik separat prüfen',
+      estimated:'Schätzungen hängen von Sensoren und Modellannahmen ab.'},
+    el: {title:'Φυσική κτιρίων · εκτιμήσεις',drying:'Ο εξωτερικός αέρας είναι ξηρότερος',humidifying:'Ο εξωτερικός αέρας έχει περισσότερη υγρασία',
+      neutral:'Παρόμοια ποσότητα υγρασίας',predicted:'Εξωτερικός αέρας θερμασμένος στη θερμοκρασία δωματίου',
+      band:'Προσαρμοστική ζώνη άνεσης',heat:'Πάνω από τη ζώνη άνεσης',cool:'Κάτω από τη ζώνη άνεσης',
+      normal:'Εντός της ζώνης άνεσης',unknown:'Απαιτούνται 7 ημέρες εξωτερικών μετρήσεων',
+      cooling:'Δυνατότητα παθητικής ψύξης',surface:'Περιθώριο συμπύκνωσης στην επιφάνεια',
+      exposure:'Υγρασία επιφάνειας πάνω από 80% (24 ώρες)',pm25:'Μέσος όρος PM2.5 (24 ώρες)',
+      pm10:'Μέσος όρος PM10 (24 ώρες)',co2:'Τάση CO₂',ach:'Εκτίμηση ανανεώσεων αέρα',
+      energy:'Θερμότητα ανά πλήρη αλλαγή αέρα (ανά m³)',unverified:'Απαιτείται επαλήθευση του αισθητήρα CO₂',
+      estimated:'Οι εκτιμήσεις εξαρτώνται από τους αισθητήρες και τις παραδοχές.'}
+  };
+
   const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
   const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
   const clamp = (num,min,max) => Math.max(min, Math.min(max,num));
@@ -563,6 +594,57 @@
         </div>`;
     }
 
+
+    _environmentReport(room) {
+      const e = room.environment || {};
+      const m = e.moisture || {};
+      const t = e.thermal_comfort || {};
+      const p = e.passive_cooling || {};
+      const s = e.condensation || {};
+      const h = e.surface_rh_exposure_24h || {};
+      const labels = SCIENCE_LABELS[this._language()] || SCIENCE_LABELS.en;
+      const fmt = (v, digits = 1) => this._format(v, digits);
+      const lines = [];
+      const add = (label, value) => {
+        lines.push('<div class="science-line"><span>' + escape(label) +
+          '</span><strong>' + escape(value) + '</strong></div>');
+      };
+      if (m.status === 'drying' || m.status === 'humidifying' || m.status === 'neutral') {
+        add(m.status === 'drying' ? labels.drying :
+            m.status === 'humidifying' ? labels.humidifying : labels.neutral,
+          fmt(m.drying_potential_g_kg, 2) + ' g/kg');
+        if (typeof m.outside_air_rh_when_warmed_percent === 'number')
+          add(labels.predicted, fmt(m.outside_air_rh_when_warmed_percent) + '% RH');
+      }
+      if (t.status === 'within_band' || t.status === 'above_band' || t.status === 'below_band') {
+        add(labels.band + ' · ' +
+            (t.status === 'above_band' ? labels.heat :
+             t.status === 'below_band' ? labels.cool : labels.normal),
+          fmt(t.lower_80_c) + '–' + fmt(t.upper_80_c) + ' °C');
+      }
+      if (p.status === 'cooling_opportunity')
+        add(labels.cooling, fmt(p.cooling_delta_c) + ' °C');
+      if (s.status && s.status !== 'unavailable')
+        add(labels.surface, fmt(s.condensation_margin_c) + ' °C');
+      if (h.status === 'ready')
+        add(labels.exposure, fmt(h.above_threshold_hours) + ' h');
+      for (const [key, label] of [['pm25_24h', labels.pm25], ['pm10_24h', labels.pm10]]) {
+        const value = e[key] || {};
+        if (value.status === 'ready') add(label, fmt(value.mean) + ' µg/m³');
+      }
+      if (e.co2_trend?.status === 'ready')
+        add(labels.co2, fmt(e.co2_trend.trend_ppm_per_hour) + ' ppm/h');
+      if (e.co2_decay_ach?.status === 'estimate')
+        add(labels.ach, fmt(e.co2_decay_ach.ach_per_hour, 2) + ' h⁻¹');
+      if (typeof e.heat_per_full_air_exchange_wh_m3 === 'number')
+        add(labels.energy, fmt(e.heat_per_full_air_exchange_wh_m3) + ' Wh/m³');
+      if (!lines.length) return '';
+      return '<section class="science-section" aria-label="' + escape(labels.title) + '">' +
+        '<div class="field-label">' + this._icon('mdi:flask-outline') +
+        escape(labels.title) + '</div><div class="science-grid">' + lines.join('') + '</div>' +
+        '<div class="science-caveat">' + escape(labels.estimated) + '</div></section>';
+    }
+
     _room(room) {
       const status = ['safe','attention','unknown'].includes(room.status) ? room.status : 'unknown';
       const readings = safeArray(room.readings);
@@ -639,6 +721,7 @@
         ${button}
         ${expanded && this._config.show_metrics !== false
           ? this._moldCalibrationDetails(moldCalibration) : ''}
+        ${this._environmentReport(room)}
         ${rhFallback}
         ${warningList}
         <div class="window-section">
@@ -781,6 +864,11 @@
       .mold-warning ha-icon{flex:0 0 auto;--mdc-icon-size:15px;color:var(--aqa-amber)}
       .mold-warning small{color:var(--aqa-muted)}
       .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:9px}
+      .science-section{margin:10px 0 12px;padding:11px 12px;border:1px solid var(--aqa-edge);border-radius:12px;background:color-mix(in srgb,var(--aqa-blue),transparent 97%)}
+      .science-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 12px;margin-top:8px}
+      .science-line{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;border-bottom:1px solid var(--aqa-edge);padding:5px 0}
+      .science-line span{color:var(--aqa-muted);line-height:1.3}.science-line strong{font-size:12px;text-align:end;white-space:nowrap}
+      .science-caveat{color:var(--aqa-muted);font-size:10px;line-height:1.3;margin-top:8px}
       .metric{border-radius:11px;background:color-mix(in srgb,var(--aqa-muted),transparent 96%);border:1px solid var(--aqa-edge);padding:10px;min-width:0}
       .metric-attention{border-color:color-mix(in srgb,var(--aqa-amber),transparent 66%)}
       .metric-line{display:flex;align-items:flex-start;gap:7px;justify-content:space-between;flex-wrap:wrap}
