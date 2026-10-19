@@ -581,31 +581,51 @@
           "climate_enabled": "Ενεργοποίηση σχεδίου κλίματος δωματίου",
           "climate_allow_actuation": "Να επιτρέπονται εντολές στον επιλεγμένο θερμοστάτη (ξεχωριστή άδεια)",
           "climate_auto_switch_hvac": "Αυτόματη αλλαγή θέρμανσης/ψύξης (ξεχωριστή άδεια)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
           "climate_controller": "Controller method / device capability",
           "climate_mode": "Heat, cool, off or automatic selection",
           "climate_entity": "Explicit room climate device",
           "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_occupancy_sensors": "Αισθητήρες παρουσίας αυτού του δωματίου",
-          "climate_away_entities": "Άτομα και συσκευές εντοπισμού για σπίτι/απουσία",
           "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
         },
         "data_description": {
           "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_presence": {
+        "title": "Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_occupancy_sensors": "Αισθητήρες παρουσίας αυτού του δωματίου",
+          "climate_away_entities": "Άτομα και συσκευές εντοπισμού για σπίτι/απουσία",
+          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
+          "climate_away_policy": "Whole-house away tracking policy",
+          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
+          "climate_sleep_active": "Sleep profile currently active in this room",
+          "climate_sleep_schedule_enabled": "Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
+          "climate_sleep_start": "Έναρξη ύπνου",
+          "climate_sleep_end": "Λήξη ύπνου",
+          "climate_target_source": "Στόχος θερμοκρασίας ή άνεση ISO 7730",
+          "climate_comfort_adjustment_max_c": "Μέγιστη διόρθωση άνεσης (°C)"
+        },
+        "data_description": {
           "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
           "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
       },
       "climate_profiles": {
