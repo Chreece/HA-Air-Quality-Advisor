@@ -4,6 +4,7 @@ from typing import Any
 from datetime import datetime, timezone
 import time
 from .climate_schedule import scheduled_sleep
+from .climate_hvac_modes import native_air_mode_advice
 from .climate_coordination import (assigned_entities, room_equipment_plan,
                                    device_inventory, planning_capabilities)
 
@@ -135,10 +136,14 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         hass,area,settings,temperature_intent,room.readings,
         outdoor_safe=outdoor_safe,duplicates=duplicate_equipment,
     )
+    native_air=native_air_mode_advice(
+        hass,area,settings,equipment,time.time() if now is None else now,
+    )
 
     return {
         "humidity_management":equipment.get("humidity", {"status":"unavailable"}),
         "equipment_plan":equipment,
+        "native_air_mode_advice":native_air,
         "status":result.state,
         "profile":result.profile,"mode":result.desired_hvac_mode,
         "temperature_target_c":result.temperature_c,
