@@ -147,7 +147,9 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
     pmv = {"status": "not_configured"}
     if profile.get("enable_pmv"):
         radiant = None
-        if profile.get("radiant_temperature_entity"):
+        if profile.get("radiant_temperature_entity") and entity_area(
+            hass, profile["radiant_temperature_entity"]
+        ) in (None, area_id):
             radiant = temperature_sensor_c(
                 hass, profile["radiant_temperature_entity"], 90,
             )

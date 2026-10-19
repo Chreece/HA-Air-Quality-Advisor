@@ -757,11 +757,31 @@ class _FlowMixin:
         """Optional specialist sensors; none are required for installation."""
         current = self._environment_room_data
         if user_input is not None:
+            try:
+                radon_ref = float(user_input.get(
+                    "radon_reference_bq_m3", current.get("radon_reference_bq_m3", 100)
+                ))
+            except (TypeError, ValueError, OverflowError):
+                radon_ref = float("nan")
+            if not math.isfinite(radon_ref) or not 25 <= radon_ref <= 1000:
+                return self.async_show_form(
+                    step_id="environment_room_exposure",
+                    data_schema=self._environment_room_exposure_schema(current),
+                    errors={"base":"invalid_environment_measurement"},
+                    description_placeholders={"area_name":self._environment_area_name()},
+                )
             current.update(user_input)
+            current["radon_reference_bq_m3"] = radon_ref
             return await self.async_step_environment_room_comfort()
+        return self.async_show_form(step_id="environment_room_exposure",
+            data_schema=self._environment_room_exposure_schema(current),
+            description_placeholders={"area_name":self._environment_area_name()})
+
+    def _environment_room_exposure_schema(self, current: dict) -> probatio.Schema:
         fields = {
             _marker("radon_entity",current.get("radon_entity")): _optional_sensor(),
             _marker("radon_sensor_verified",current.get("radon_sensor_verified",False)):selector.BooleanSelector(),
+            _marker("radon_reference_bq_m3",current.get("radon_reference_bq_m3",100)): _real_number(25,1000,"Bq/m³"),
             _marker("formaldehyde_entity",current.get("formaldehyde_entity")): _optional_sensor(),
             _marker("formaldehyde_sensor_verified",current.get("formaldehyde_sensor_verified",False)):selector.BooleanSelector(),
             _marker("noise_entity",current.get("noise_entity")): _optional_sensor(),
@@ -770,9 +790,7 @@ class _FlowMixin:
             _marker("melanopic_edi_entity",current.get("melanopic_edi_entity")): _optional_sensor(),
             _marker("melanopic_spectral_verified",current.get("melanopic_spectral_verified",False)):selector.BooleanSelector(),
         }
-        return self.async_show_form(step_id="environment_room_exposure",
-            data_schema=probatio.Schema(fields),
-            description_placeholders={"area_name":self._environment_area_name()})
+        return probatio.Schema(fields)
 
     async def async_step_environment_room_comfort(
         self, user_input: dict[str, Any] | None = None

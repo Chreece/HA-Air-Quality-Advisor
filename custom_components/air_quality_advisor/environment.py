@@ -41,6 +41,9 @@ def _room_temperature(hass: Any, area_id: str, calibration: dict, max_age: float
                       explicit: str | None = None) -> tuple[float | None, str | None, str]:
     configured = explicit or calibration.get("indoor_temperature_entity")
     if isinstance(configured, str) and configured:
+        assigned = entity_area(hass, configured)
+        if assigned is not None and assigned != area_id:
+            return None, configured, "sensor_assigned_to_another_room"
         return temperature_sensor_c(hass, configured, max_age), configured, "configured"
     choices = indoor_temperature_choices(hass, area_id)
     active = [(item["value"], temperature_sensor_c(hass, item["value"], max_age))
