@@ -380,3 +380,24 @@ def test_two_controllers_cannot_run_same_room_even_for_different_devices(runtime
         assert not hass.services.calls
         await engine.async_stop()
     asyncio.run(case())
+
+def test_proportional_step_quantization_never_overshoots_rate_limit(runtime):
+    async def case():
+        hass=home(proportional=True)
+        hass.states.get("number.living_heat").attributes["step"]=7
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"step7",clock=lambda:clock[0])
+        await driver.async_start()
+        config=settings(controller="proportional",heat_actuator="number.living_heat",
+            max_demand_change=10,min_demand_change=2)
+        clock[0]=2000.
+        await advance(driver,clock,config,planned())
+        clock[0]=2300.
+        await advance(driver,clock,config,planned())
+        assert hass.services.calls[-1][2]["value"]==7.0
+        clock[0]=2600.
+        await advance(driver,clock,config,planned())
+        assert hass.services.calls[-1][2]["value"]==14.0
+        assert all(entry[2]["value"]%7==0 for entry in hass.services.calls)
+        await driver.async_stop()
+    asyncio.run(case())
