@@ -473,3 +473,31 @@ const onlyRoomMarkup=onlyCard.shadowRoot.innerHTML.slice(
 );
 assert.ok(!onlyRoomMarkup.includes('class="empty-measurements"'));
 assert.ok(!onlyRoomMarkup.includes('class="window-section"'));
+
+
+// Native AC DRY/FAN_ONLY is manual advice only; never a mode-control button.
+const dryManual=JSON.parse(JSON.stringify(input));
+dryManual.rooms[0].environment={climate_plan:{
+  status:'ready',profile:'home',mode:'off',
+  actuation:{status:'advisory_only'},secondary_actuation:{status:'advisory_only'},
+  humidity_actuation:{status:'advisory_only'},fan_actuation:{status:'advisory_only'},
+  native_air_mode_advice:{
+    status:'manual_mode_transition_suggested',
+    recommended_mode:'dry',climate_entity:'climate.kitchen_ac',
+    automatic_control:false,
+  },
+}};
+const dryCard=new Card();
+dryCard.setConfig({entity:'sensor.manual_dry'});
+for(const [lang,word] of [
+  ['en','Manual AC mode suggestion'],
+  ['de','Empfohlener Klimamodus'],
+  ['el','Πρόταση χειροκίνητης λειτουργίας'],
+]){
+  dryCard.hass={language:lang,states:{
+    'sensor.manual_dry':{state:'idle',attributes:{dashboard:dryManual}},
+  }};
+  assert.ok(dryCard.shadowRoot.innerHTML.includes(word));
+  assert.ok(dryCard.shadowRoot.innerHTML.includes('climate.kitchen_ac'));
+  assert.ok(!dryCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}

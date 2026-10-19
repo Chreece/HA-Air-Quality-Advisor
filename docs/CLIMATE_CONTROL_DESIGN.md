@@ -209,3 +209,17 @@ status totals. The dashboard appends specially marked `climate_only`
 room cards, without contributing them to air-quality summary counts or
 fabricating window alerts. When a monitored room loses its required contact
 its native setpoint policy still holds, unlike a deliberate HVAC-only room.
+
+
+## Pending native DRY/FAN_ONLY commissioning
+
+`climate_hvac_modes.native_air_mode_advice` is intentionally advisory.
+It checks user-selected AC identity, actual HA `hvac_modes`, room and
+humidity evidence, existing compressor/thermal demand, manual off and native
+30-minute mode stability before proposing an explicit manual switch.
+`automatic_control` is always false; none of its outputs may be passed to
+`climate.set_hvac_mode` without a separately validated device-mode driver.
+Converting this recommendation to automatic control will require verifying
+compressor anti-short-cycle protections, multi-zone priority, restart
+recovery, command acknowledgment and a safe manual override policy on
+representative actual units.

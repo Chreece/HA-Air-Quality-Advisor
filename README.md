@@ -736,3 +736,14 @@ They are not automatically counted as air-quality safe (or unsafe), do not
 receive invented window recommendations, and do not change the number of
 monitored areas or Announcement Hub delivery targets. Existing monitored
 rooms continue to use strict window-contact interlocks.
+
+
+### Native AC dry/fan-only mode advisory (v0.6 development)
+
+For an already-operating air conditioner exposing real `dry` and `fan_only`
+HVAC modes, the room now indicates when a manually selected mode may improve
+humidity and when the drying requirement has resolved. It never changes the
+mode automatically. Advice requires usable humidity evidence, no competing
+thermostat demand, a supported native mode pair, and a confirmed 30-minute
+mode dwell. An OFF unit remains untouched. This prevents silently starting
+compressor operation without verified real-device protection and recovery.
