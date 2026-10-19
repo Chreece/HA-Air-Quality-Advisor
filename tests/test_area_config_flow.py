@@ -912,3 +912,45 @@ def test_climate_extra_equipment_is_room_scoped_and_removable(monkeypatch,adapte
     assert room["cool_climate_entity"]=="climate.ac"
     assert room["humidity_entity"]=="sensor.living_humidity"
     assert room["extraction_fan_entity"]=="fan.extractor"
+
+
+def test_native_humidity_target_needs_separate_permission_and_known_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    states=[
+        MockState("sensor.living_temperature",20,device_class="temperature",unit="°C"),
+        MockState("sensor.living_humidity",67,device_class="humidity",unit="%"),
+        MockState("climate.living","heat"),
+        MockState("humidifier.dryer","on",device_class="dehumidifier"),
+    ]
+    for state in states:
+        h._values[state.entity_id]=state
+        h._entity_areas[state.entity_id]="living"
+    h._values["climate.living"].attributes.update({
+        "hvac_modes":["off","heat"],"supported_features":1,
+    })
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":"climate.living",
+        "climate_temperature_entity":"sensor.living_temperature",
+        "climate_controller":"device","climate_mode":"heat",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    invalid=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_setpoint_auto":True,
+        "climate_dehumidifier_entity":"humidifier.dryer",
+    }))
+    assert invalid["errors"]["base"]=="climate_humidity_control_inputs_missing"
+    next_form=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_setpoint_auto":True,
+        "climate_dehumidifier_entity":"humidifier.dryer",
+        "climate_humidity_entity":"sensor.living_humidity",
+    }))
+    assert next_form["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    climate=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert climate["humidity_setpoint_auto"] is True
+    assert climate["dehumidifier_entity"]=="humidifier.dryer"
+    assert climate["humidity_entity"]=="sensor.living_humidity"
