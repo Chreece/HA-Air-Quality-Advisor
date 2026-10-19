@@ -13,6 +13,7 @@ from typing import Any
 from .building_physics import (
     DAY_S, WEEK_S, adaptive_comfort, co2_decay_ach, co2_trend,
     heat_per_air_exchange_wh_m3, moisture_potential, passive_cooling,
+    nighttime_overheating_exposure,
     surface_condensation, threshold_exposure_hours, weighted_window,
 )
 from .discovery import entity_area, indoor_temperature_choices, is_stale, temperature_sensor_c
@@ -89,6 +90,7 @@ def build_environment(
         stamp, WEEK_S, min_coverage=0.8,
     )
     mean_outdoor = prevailing.get("mean") if prevailing["status"] == "ready" else None
+    timezone_name = getattr(getattr(hass, "config", None), "time_zone", None) or "UTC"
     readings_after_mold = {room.area_id: room for room in rooms_with_mold}
     settings = mold_calibrations if isinstance(mold_calibrations, dict) else {}
     result: dict[str, dict] = {}
@@ -141,6 +143,7 @@ def build_environment(
             "pm25_24h": {**pm25_24h, "who_2021_24h_guideline_ug_m3": 15},
             "pm10_24h": {**pm10_24h, "who_2021_24h_guideline_ug_m3": 45},
             "co2_trend": co2_data,
+            "nighttime_overheating": nighttime_overheating_exposure(samples, stamp, timezone_name),
             "co2_decay_ach": ach,
             "heat_per_full_air_exchange_wh_m3": heat_per_air_exchange_wh_m3(indoor_t, outdoor_t),
             "sources": {
@@ -154,6 +157,7 @@ def build_environment(
                 "outdoor_co2_measured": outdoor_co2 is not None,
                 "co2_sensor_technology_verified": False,
                 "co2_sensor_note": "Verify NDIR technology manually; eCO2 is not true CO2",
+                "pm_high_humidity_interference_caution": indoor_rh is not None and indoor_rh >= 85,
             },
         }
     return result, changed

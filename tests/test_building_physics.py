@@ -10,6 +10,7 @@ from custom_components.air_quality_advisor.building_physics import (
     co2_trend, dew_point_c, heat_per_air_exchange_wh_m3,
     humidity_ratio_g_kg, moisture_potential, passive_cooling,
     surface_condensation, threshold_exposure_hours, weighted_window,
+    nighttime_overheating_exposure,
 )
 from custom_components.air_quality_advisor.environment_history import EnvironmentHistory
 
@@ -114,3 +115,13 @@ def test_history_is_bounded_does_not_fabricate_warming_up_data():
     assert EnvironmentHistory.restore({"version": 1, "areas": {"bad": [{"t": 0}]}},
                                       now=1000000).samples("bad") == []
     assert not h.add("kitchen", {}, now=999999)  # Out-of-order samples rejected.
+
+def test_overheating_uses_local_nighttime_and_does_not_claim_tm59_compliance():
+    now = WEEK_S
+    points = [{"t": t, "temperature_c": 27} for t in range(0, now + 1, 300)]
+    result = nighttime_overheating_exposure(points, now, "Europe/Berlin")
+    assert result["status"] == "ready"
+    assert result["above_threshold_hours"] > 50
+    assert "not_tm59" in result["method"]
+    assert nighttime_overheating_exposure(points[:5], now)["status"] == "insufficient_coverage"
+
