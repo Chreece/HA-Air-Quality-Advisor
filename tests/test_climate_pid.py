@@ -5,9 +5,7 @@ import types
 from types import SimpleNamespace
 
 import pytest
-from custom_components.air_quality_advisor.climate_pid import (
-    ClimatePidCoordinator, DEFAULT_PID,
-)
+from custom_components.air_quality_advisor.pid_math import DEFAULT_PID
 from custom_components.air_quality_advisor.logic import Room, Window
 from test_discovery import MockState, FakeHass, adapter
 
@@ -59,7 +57,9 @@ def pid_store(monkeypatch):
     store=types.ModuleType("homeassistant.helpers.storage")
     store.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",store)
-    return store
+    import importlib
+    controller=importlib.import_module("custom_components.air_quality_advisor.climate_pid")
+    return SimpleNamespace(Store=FakeStore, Coordinator=controller.ClimatePidCoordinator)
 
 
 async def tick(engine,room,profile,clock):
@@ -73,7 +73,7 @@ def test_disabled_climate_never_calls_home_assistant(adapter,pid_store):
     async def scenario():
         hass,room=fake_home()
         clock=[1000.0]
-        engine=ClimatePidCoordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
+        engine=pid_store.Coordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
         await engine.async_start()
         engine.schedule((room,),{"living":{**config(),"enabled":False}})
         assert engine.statuses["living"]["status"]=="disabled"
@@ -87,7 +87,7 @@ def test_pid_controls_setpoint_and_latches_manual_override(adapter,pid_store):
         hass,room=fake_home()
         clock=[1000.0]
         changes=[]
-        engine=ClimatePidCoordinator(hass,"e",report_changed=lambda:changes.append(1),clock=lambda:clock[0])
+        engine=pid_store.Coordinator(hass,"e",report_changed=lambda:changes.append(1),clock=lambda:clock[0])
         await engine.async_start()
         profile=config()
         engine.schedule((room,),{"living":profile},initial=True)
@@ -122,7 +122,7 @@ def test_unsafe_windows_unknown_temperature_and_off_modes_never_call(adapter,pid
     async def scenario(temp_age,hvac,window):
         hass,room=fake_home(temp_age=temp_age,hvac=hvac,window_open=window)
         clock=[1000.]
-        engine=ClimatePidCoordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
+        engine=pid_store.Coordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
         await engine.async_start()
         clock[0]=1600
         await tick(engine,room,config(),clock)
@@ -143,7 +143,7 @@ def test_expected_targets_are_restored_after_restart(adapter,pid_store):
         store.data={"version":1,"paused":{"living":"manual_hvac_mode_change"},
                     "expected":{"living":{"climate.room_thermostat":{"value":21,"when":800}}}}
         pid_store.Store=lambda *_:store
-        engine=ClimatePidCoordinator(hass,"x",report_changed=lambda:None,clock=lambda:clock[0])
+        engine=pid_store.Coordinator(hass,"x",report_changed=lambda:None,clock=lambda:clock[0])
         await engine.async_start()
         assert engine._paused["living"]=="manual_hvac_mode_change"
         clock[0]=2000
@@ -157,7 +157,7 @@ def test_duplicate_climate_target_across_rooms_is_refused(adapter,pid_store):
     async def scenario():
         hass,room=fake_home()
         clock=[1000.]
-        engine=ClimatePidCoordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
+        engine=pid_store.Coordinator(hass,"e",report_changed=lambda:None,clock=lambda:clock[0])
         await engine.async_start()
         second=Room("other","Other",(Window("binary_sensor.o","Other window",False),),())
         both={"living":config(),"other":config()}

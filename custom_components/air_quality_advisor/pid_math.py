@@ -15,6 +15,15 @@ import math
 from typing import Any
 
 
+DEFAULT_PID = {
+    "enabled": False, "mode": "heat", "target_c": 21.0,
+    "kp": 22.0, "ki": 0.25, "kd": 0.0,
+    "offset_c": 1.5, "min_setpoint_c": 16.0, "max_setpoint_c": 27.0,
+    "sample_seconds": 300, "max_change_c": 0.5, "min_change_c": 0.15,
+    "pause_on_window_open": True,
+}
+
+
 @dataclass(frozen=True)
 class Memory:
     integral: float = 0.0

@@ -1,10 +1,9 @@
 """Supervisory PID math: anti-windup, quantization, units, invalid timing."""
 import pytest
 from custom_components.air_quality_advisor.pid_math import (
-    Memory, validate_settings, step, setpoint_c, bounded_command,
+    DEFAULT_PID, Memory, validate_settings, step, setpoint_c, bounded_command,
     target_to_unit, target_from_unit,
 )
-from custom_components.air_quality_advisor.climate_pid import DEFAULT_PID
 
 
 def test_defaults_are_bounded_and_disabled_until_opt_in():

@@ -16,27 +16,12 @@ from typing import Any, Callable
 
 from .discovery import entity_area, temperature_sensor_c
 from .pid_math import (
-    Memory, bounded_command, finite, setpoint_c, step,
+    DEFAULT_PID, Memory, bounded_command, finite, setpoint_c, step,
     target_from_unit, validate_settings,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_PID = {
-    "enabled": False,
-    "mode": "heat",
-    "target_c": 21.0,
-    "kp": 22.0,
-    "ki": 0.25,
-    "kd": 0.0,
-    "offset_c": 1.5,
-    "min_setpoint_c": 16.0,
-    "max_setpoint_c": 27.0,
-    "sample_seconds": 300,
-    "max_change_c": 0.5,
-    "min_change_c": 0.15,
-    "pause_on_window_open": True,
-}
 MANUAL_GRACE_SECONDS = 120
 SENSOR_MAX_AGE_MINUTES = 10
 # 1 = Home Assistant ClimateEntityFeature.TARGET_TEMPERATURE.
