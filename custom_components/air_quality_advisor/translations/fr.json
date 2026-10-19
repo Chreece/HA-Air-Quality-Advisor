@@ -578,7 +578,9 @@
         "title": "Climat — régulation, présence et absence",
         "description": "Configure each selected room independently. A real temperature measurement and explicit supported climate device are required. All new direct relay/PWM modes are blocked pending actuator testing. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
         "data": {
-          "climate_enabled": "Enable room climate planner (no new actuation)",
+          "climate_enabled": "Enable climate planning for this room",
+          "climate_allow_actuation": "Permit commands to the selected native thermostat (opt in)",
+          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
           "climate_controller": "Controller method / device capability",
           "climate_mode": "Heat, cool, off or automatic selection",
           "climate_entity": "Explicit room climate device",
@@ -589,6 +591,8 @@
         },
         "data_description": {
           "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
