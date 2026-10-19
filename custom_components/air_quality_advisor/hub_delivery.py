@@ -65,7 +65,7 @@ def make_hub_payload(
     """
     data: dict[str, Any] = {
         "title": title,
-        "output": [recommendation.area_name],
+        "area": [recommendation.area_name],
         "level": "warning" if recommendation.action == "close" else "info",
         "use_ai": bool(use_ai),
     }

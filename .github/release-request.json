@@ -1,14 +1,14 @@
 {
-  "version": "0.2.13",
+  "version": "0.2.14",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Use the Home Assistant Area Registry's actual room display name in Announcement Hub output, not the internal area_id slug",
-    "Send original announcement text through Hub's primary text field for both channels, retain channel-only variants as appropriate",
-    "Leave occupancy filtering and matching physical output selection to Announcement Hub",
-    "Never trigger native Home Assistant notification or TTS fallback when Hub is running, even if Hub rejects or times out",
-    "Report unaccepted Hub jobs truthfully as submitted=0 with errors; preserve local fallback only when Hub is disabled or not running",
-    "Regression tests for Küche/kouzina names, AI forwarding, channels, Hub rejection, timeout, acceptance and unavailable Hub"
+    "Update Announcement Hub room routing from deprecated output to public area service parameter",
+    "Preserve the actual Home Assistant room name for Hub area resolution, including umlauts and translations",
+    "Keep text, text_tts, text_notify and use_ai routing semantics unchanged",
+    "Preserve Hub-owned occupancy, fallback, queue acceptance and prevention of duplicate native notifications",
+    "Add regression coverage for both channels, notification-only, TTS-only and real HA kitchen area names",
+    "Update documentation to show the current notify.announcement_hub area payload"
   ]
 }

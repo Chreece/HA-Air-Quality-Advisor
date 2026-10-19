@@ -87,14 +87,16 @@ def test_true_and_false_ai_overrides_are_forwarded_and_agent_optional():
     assert enabled["ai_agent"] == "conversation.ai"
     assert enabled["text"] == "Good fresh air"
     assert "text_tts" not in enabled and "text_notify" not in enabled
-    assert enabled["output"] == ["Living room"]
+    assert enabled["area"] == ["Living room"]
+    assert "output" not in enabled
     assert "occupied_only" not in enabled  # Hub owns occupancy/routing.
     assert "service" not in enabled  # Do not override Hub route planning.
     assert enabled["language"] == "el"
     disabled = make_hub_payload(REC, "Open", "Original", speech=False, visual=True,
                                 language="auto", use_ai=False, agent_id="conversation.ai")
     assert disabled["use_ai"] is False
-    assert disabled["output"] == ["Living room"]
+    assert disabled["area"] == ["Living room"]
+    assert "output" not in disabled
     assert disabled["text_notify"] == "Original"
     assert "text" not in disabled and "text_tts" not in disabled
     assert "ai_agent" not in disabled
@@ -104,6 +106,20 @@ def test_true_and_false_ai_overrides_are_forwarded_and_agent_optional():
     assert default["use_ai"] is True and "ai_agent" not in default
     assert default["text_tts"] == "Original"
     assert "text_notify" not in default and "text" not in default
+
+
+@pytest.mark.parametrize(("speech", "visual"), [
+    (True, True), (True, False), (False, True),
+])
+def test_hub_room_routing_uses_public_area_field_for_every_channel(speech, visual):
+    payload = make_hub_payload(
+        REC, "Air", "Open a window", speech=speech, visual=visual,
+        language="de", use_ai=False, agent_id="",
+    )
+    assert payload["area"] == ["Living room"]
+    assert "output" not in payload  # Obsolete hidden Hub compatibility field.
+    assert "occupied_only" not in payload  # Hub owns occupancy and fallback.
+    assert "service" not in payload  # Hub chooses delivery channels.
 
 
 def test_hub_queue_acknowledgement_is_the_only_success_criterion():
@@ -191,7 +207,8 @@ def test_uses_actual_ha_area_display_name_not_slug_or_translated_name():
         rec, "Window alert", "Fenster in der Küche schließen",
         speech=True, visual=True, language="de", use_ai=True, agent_id="default",
     )
-    assert payload["output"] == ["Küche"]
+    assert payload["area"] == ["Küche"]
+    assert "output" not in payload
     assert payload["text"] == "Fenster in der Küche schließen"
     assert payload["level"] == "warning"
     assert payload["language"] == "de"
@@ -206,6 +223,7 @@ def test_uses_actual_ha_area_display_name_not_slug_or_translated_name():
         greek, "Title", "Άνοιξε τα παράθυρα",
         speech=True, visual=True, language="el", use_ai=False, agent_id="",
     )
-    assert translated["output"] == ["Καθιστικό"]
+    assert translated["area"] == ["Καθιστικό"]
+    assert "output" not in translated
     assert translated["text"] == "Άνοιξε τα παράθυρα"
     assert translated["level"] == "info"

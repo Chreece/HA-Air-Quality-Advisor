@@ -287,13 +287,13 @@ Announcement Hub delivery uses the established action:
 action: notify.announcement_hub
 data:
   text: "Schließe das Fenster in Küche wegen schlechten Wetters."
-  output:
+  area:
     - Küche  # HA area display name, not internal ID 'kouzina'
   level: warning
   use_ai: true
 ```
 
-When both channels are enabled, Advisor submits the common `text` field, exactly as in this example. For notification-only or TTS-only settings it sends `text_notify` or `text_tts` respectively so the other channel is not silently activated. In every case, `output` uses the **actual Home Assistant area name** from the Area Registry (`Küche`), while Hub resolves that name back to its internal area ID and decides which devices/routes are eligible. Advisor does **not** override `occupied_only` or manually choose notification or audio devices. The example text is illustrative; live messages contain the real room, window names and sensor reasons.
+When both channels are enabled, Advisor submits the common `text` field, exactly as in this example. For notification-only or TTS-only settings it sends `text_notify` or `text_tts` respectively so the other channel is not silently activated. In every case, `area` uses the **actual Home Assistant area name** from the Area Registry (`Küche`), while Hub resolves that name back to its internal area ID and decides which devices/routes are eligible. Advisor does **not** override `occupied_only` or manually choose notification or audio devices. The example text is illustrative; live messages contain the real room, window names and sensor reasons.
 
 **Important:** Sending `Küche` instead of `kouzina` makes the handoff readable, but does not create a missing Hub output. If Hub reports `The selected text has no configured matching output`, **configure room/global delivery in Announcement Hub**; Advisor will report the refusal without an unwanted native Home Assistant event notification.
 

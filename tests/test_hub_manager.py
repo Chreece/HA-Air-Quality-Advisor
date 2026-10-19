@@ -123,7 +123,8 @@ def test_true_and_false_hub_ai_forwarding_without_local_rewrite(monkeypatch, del
     assert data["ai_agent"] == "conversation.my_ai"
     assert "text" in data and data["text"]
     assert "text_tts" not in data and "text_notify" not in data
-    assert data["output"] == ["Living room"]
+    assert data["area"] == ["Living room"]
+    assert "output" not in data
     assert "occupied_only" not in data
 
     m, s = advisor(module, {"ai_rewrite_announcements": False})
@@ -249,7 +250,8 @@ def test_live_hub_uses_current_ha_area_name_from_recommendation(
     assert result["submitted"] == 1 and result["errors"] == []
     assert [(a,b) for a,b,*_ in actual.calls] == [("notify","announcement_hub")]
     payload = actual.calls[0][2]
-    assert payload["output"] == ["Küche"]
+    assert payload["area"] == ["Küche"]
+    assert "output" not in payload
     assert payload["text"]
     assert "occupied_only" not in payload
     assert "service" not in payload
