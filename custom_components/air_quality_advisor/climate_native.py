@@ -170,6 +170,10 @@ class NativeClimateControl:
             return
         mode=report.get("mode")
         entity=settings.get("climate_entity")
+        if mode=="heat_cool":
+            from .climate_range import async_apply_native_range
+            await async_apply_native_range(self,area,settings,report,now)
+            return
         target=finite(report.get("temperature_target_c"),5,36)
         if mode=="off" or target is None:
             self.statuses[area]={"status":"comfort_deadband_no_command"}
