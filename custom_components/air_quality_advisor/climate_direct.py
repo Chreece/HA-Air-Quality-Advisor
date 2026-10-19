@@ -47,6 +47,9 @@ class DirectClimateControl:
         self.paused: dict[str, str] = {}
         self.expected: dict[str, dict] = {}
         self.transitions: dict[str, dict] = {}
+        # Continuous energized duration is distinct from command timestamps.
+        # Proportional modulation must never reset this watchdog.
+        self.energized_since: dict[str, float] = {}
         self.mode_changed: dict[str, float] = {}
         self._rooms: dict[str, RoomCycle] = {}
         self._tasks: dict[str, asyncio.Task] = {}
@@ -59,6 +62,7 @@ class DirectClimateControl:
     def _snapshot(self) -> dict:
         return {"version": 1, "paused": self.paused,
                 "expected": self.expected, "transitions": self.transitions,
+                "energized_since": self.energized_since,
                 "mode_changed": self.mode_changed}
 
     def _persist(self) -> None:
@@ -91,6 +95,14 @@ class DirectClimateControl:
                 if isinstance(incoming, dict):
                     setattr(self, name, {k: v for k, v in incoming.items()
                                           if isinstance(k, str) and isinstance(v, dict)})
+            active_since = saved.get("energized_since", {})
+            if isinstance(active_since, dict):
+                self.energized_since = {
+                    entity: float(stamp) for entity, stamp in active_since.items()
+                    if isinstance(entity,str) and
+                    entity.startswith(("switch.","number.")) and
+                    finite(stamp,0,1e13) is not None
+                }
             changes = saved.get("mode_changed", {})
             if isinstance(changes, dict):
                 self.mode_changed = {k:float(v) for k,v in changes.items()
@@ -274,9 +286,19 @@ class DirectClimateControl:
             _LOGGER.exception("Direct actuator command failed: %s",entity)
             self._pause(area,"service_failed_or_timeout")
             return False
+        previous=self.expected.get(entity,{}).get("state")
+        new_active=(state is True) or (percentage and float(state)>0)
+        old_active=(previous is True) or (
+            percentage and isinstance(previous,(int,float)) and previous>0
+        )
+        if new_active:
+            if not old_active:
+                self.energized_since[entity]=now
+        else:
+            self.energized_since.pop(entity,None)
         self.expected[entity]={"state":state,"when":now}
-        # The same timestamp gates both relay dwell and bounded percentage
-        # changes. A proportional actuator must not ramp every 30-second poll.
+        # Command timestamp governs minimum dwell and modulation sample rate;
+        # energized_since governs MAXIMUM continuous runtime independently.
         self.transitions[entity]={"state":state,"when":now}
         self._persist()
         return True
@@ -314,6 +336,10 @@ class DirectClimateControl:
         if can_run and active not in all_entities:
             self._status(area,"mode_has_no_verified_actuator")
             return
+        max_on=finite(cfg.get("max_on_s",7200),300,86400)
+        if max_on is None:
+            self._status(area,"invalid_maximum_runtime")
+            return
         measured:dict[str,bool|float]={}
         for e in all_entities:
             state=self.hass.states.get(e)
@@ -344,10 +370,29 @@ class DirectClimateControl:
                     return
                 self._pause(area,"manual_override_or_unacknowledged_output")
                 return
-            if acknowledgement is None and (observed is True or
-                    (strategy=="proportional" and observed>0)):
+            observed_on=(observed is True or
+                         (strategy=="proportional" and observed>0))
+            if acknowledgement is None and observed_on:
                 self._pause(area,"unowned_active_output")
                 return
+            if observed_on and acknowledgement is not None:
+                begun=finite(self.energized_since.get(e),0,1e13)
+                if begun is None or now<begun:
+                    # Historical runtime is unknown after a damaged cache or
+                    # upgrade: stop only an explicitly owned active load.
+                    if not await self._send(area,e,
+                            0.0 if strategy=="proportional" else False,
+                            percentage=strategy=="proportional",now=now):
+                        return
+                    self._pause(area,"continuous_runtime_history_missing")
+                    return
+                if now-begun>=max_on:
+                    if not await self._send(area,e,
+                            0.0 if strategy=="proportional" else False,
+                            percentage=strategy=="proportional",now=now):
+                        return
+                    self._pause(area,"maximum_on_runtime_exceeded")
+                    return
         if not can_run:
             # Fail-safe OFF is allowed for expressly attested non-compressor
             # actuators only; never try to turn equipment on with missing data.
@@ -480,21 +525,6 @@ class DirectClimateControl:
                                  commanded_percent=desired)
                 return
         last=self.transitions.get(active)
-        max_on=finite(cfg.get("max_on_s",7200),300,86400)
-        if max_on is None:
-            self._status(area,"invalid_maximum_runtime")
-            return
-        # Enforce the maximum continuously-ON interval even when the PID keeps
-        # requesting ON; never bypass the watchdog through an early return.
-        if measured[active] is True and last is not None:
-            on_since=finite(last.get("when"),0,1e13)
-            if on_since is None or now<on_since:
-                self._pause(area,"invalid_on_duration")
-                return
-            if now-on_since>=max_on:
-                if await self._send(area,active,False,now=now):
-                    self._pause(area,"maximum_on_runtime_exceeded")
-                return
         if desired == measured[active]:
             self._status(area,"holding",mode=mode,
                          demand_percent=cycle.pid_percent)
