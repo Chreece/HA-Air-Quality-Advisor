@@ -40,6 +40,7 @@ from .climate_direct import DirectClimateControl
 from .climate_humidity_native import HumiditySetpointControl
 from .climate_secondary_native import SecondaryClimateSetpoint
 from .climate_air_actions import air_treatment_plan
+from .climate_fan_native import RunningFanSpeedControl
 from .building_physics import moisture_potential
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
@@ -78,6 +79,9 @@ class AirQualityManager:
         )
         self.secondary_climate = SecondaryClimateSetpoint(
             self.hass,self.entry.entry_id,changed=self._secondary_updated,
+        )
+        self.running_fans = RunningFanSpeedControl(
+            self.hass,self.entry.entry_id,changed=self._fan_updated,
         )
 
     @property
@@ -294,6 +298,9 @@ class AirQualityManager:
                     state["secondary_actuation"] = self.secondary_climate.statuses.get(
                         monitored.area_id,{"status":"advisory_only"}
                     )
+                    state["fan_actuation"] = self.running_fans.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
                     self._tracked.update(r.entity_id for r in raw_for_climate[
@@ -361,6 +368,7 @@ class AirQualityManager:
         await self.direct_climate.async_start()
         await self.native_humidity.async_start()
         await self.secondary_climate.async_start()
+        await self.running_fans.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -402,10 +410,25 @@ class AirQualityManager:
             results["humidity_setpoint"]=await self.native_humidity.command(area,action)
         if profile.get("secondary_climate_setpoint_auto") is True:
             results["secondary_climate"]=await self.secondary_climate.command(area,action)
+        if profile.get("fan_speed_auto") is True:
+            results["fan_speed"]=await self.running_fans.command(area,action)
         if len(results)==1:
             return primary
         return {**primary,**results,
                 "accepted":all(r.get("accepted") is True for r in results.values())}
+
+    @callback
+    def _fan_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.running_fans.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "fan_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
     @callback
     def _secondary_updated(self) -> None:
@@ -473,6 +496,7 @@ class AirQualityManager:
         self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
         self.native_humidity.schedule(settings,plans)
         self.secondary_climate.schedule(settings,plans,pid_rooms=pid_settings)
+        self.running_fans.schedule(settings,plans)
 
     @callback
     def _on_state_changed(self, event: Event) -> None:
@@ -519,6 +543,7 @@ class AirQualityManager:
         self.native_humidity.schedule(native_configs, plans)
         self.secondary_climate.schedule(native_configs, plans,
                                         pid_rooms=configured_pid)
+        self.running_fans.schedule(native_configs,plans)
 
         previous = self._active_actions
         current = {
@@ -670,6 +695,7 @@ class AirQualityManager:
         await self.direct_climate.async_stop()
         await self.native_humidity.async_stop()
         await self.secondary_climate.async_stop()
+        await self.running_fans.async_stop()
         self._cancel_pending()
         self._cancel_repeat()
         self._active_actions.clear()
