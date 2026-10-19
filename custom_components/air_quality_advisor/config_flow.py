@@ -1052,7 +1052,7 @@ class _FlowMixin:
                 self._climate_draft=proposal
                 if proposal.get("controller") in ("on_off","pwm","proportional"):
                     return await self.async_step_climate_actuators()
-                if proposal.get("controller")=="device":
+                if proposal.get("controller")=="device" and proposal.get("enabled"):
                     return await self.async_step_climate_equipment()
                 return await self.async_step_climate_profiles()
         fields={
