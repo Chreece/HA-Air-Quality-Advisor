@@ -54,6 +54,7 @@ class DirectClimateControl:
         self._ready = False
         self._active = False
         self._started: float | None = None
+        self._last_config: dict[str,dict] = {}
 
     def _snapshot(self) -> dict:
         return {"version": 1, "paused": self.paused,
@@ -97,6 +98,8 @@ class DirectClimateControl:
         self._ready = True
 
     async def async_stop(self) -> None:
+        # On Home Assistant reload, deenergize outputs owned by this direct
+        # non-compressor controller BEFORE leaving the feedback loop.
         self._active = False
         running = tuple(self._tasks.values())
         for task in running:
@@ -104,6 +107,13 @@ class DirectClimateControl:
         if running:
             await asyncio.gather(*running, return_exceptions=True)
         self._tasks.clear()
+        if self._ready:
+            for area,settings in self._last_config.items():
+                if (not isinstance(settings,dict) or
+                        not settings.get("direct_hardware_confirmed") or
+                        not settings.get("allow_actuation")):
+                    continue
+                await self._safe_off_owned(area,settings,now=self.clock())
         if self._ready and self._store is not None:
             try:
                 await self._store.async_save(self._snapshot())
@@ -115,6 +125,31 @@ class DirectClimateControl:
         self._rooms.pop(area, None)
         self._persist()
         self._status(area, "paused", reason=reason)
+
+    async def _safe_off_owned(self, area:str,settings:dict,*,now:float)->bool:
+        """Deenergize only outputs this controller is known to own."""
+        percentage=settings.get("controller")=="proportional"
+        for entity in self._entities(settings):
+            state=self.hass.states.get(entity)
+            if state is None or str(state.state).lower() in ("unknown","unavailable"):
+                _LOGGER.warning("Could not confirm output OFF: %s state unavailable",entity)
+                return False
+            observed=finite(state.state,0,100) if percentage else (
+                True if state.state=="on" else False if state.state=="off" else None
+            )
+            if observed is None:
+                return False
+            if observed is True or (percentage and observed>0):
+                known=self.expected.get(entity)
+                if not isinstance(known,dict) or known.get("state")!=observed:
+                    _LOGGER.warning("Output %s active but not owned; refusing to overwrite",entity)
+                    return False
+                if not await self._send(
+                    area,entity,0.0 if percentage else False,
+                    percentage=percentage,now=now,
+                ):
+                    return False
+        return True
 
     async def command(self, area: str, action: str, configurations: dict) -> dict:
         if action not in ("pause", "resume"):
@@ -129,6 +164,12 @@ class DirectClimateControl:
             task.cancel()
             await asyncio.gather(task,return_exceptions=True)
         if action=="pause":
+            if (settings.get("controller") in ("on_off","pwm","proportional")
+                    and settings.get("allow_actuation") and
+                    settings.get("direct_hardware_confirmed")):
+                if not await self._safe_off_owned(area,settings,now=self.clock()):
+                    self._pause(area,"pause_output_unconfirmed")
+                    return {"accepted":False,"reason":"unable_to_confirm_output_safe_off"}
             self._pause(area,"user_paused")
         else:
             self.paused.pop(area,None)
@@ -163,6 +204,12 @@ class DirectClimateControl:
                               if isinstance(v,dict) and v.get("enabled")
                               for t in v.get("climate_entities",[]) if isinstance(t,str)}
         now = self.clock()
+        self._last_config={
+            area:dict(settings) for area,settings in config.items()
+            if isinstance(area,str) and isinstance(settings,dict)
+            and settings.get("enabled")
+            and settings.get("controller") in ("on_off","pwm","proportional")
+        }
         for area, raw in config.items():
             if not isinstance(raw,dict) or not raw.get("enabled"):
                 continue
