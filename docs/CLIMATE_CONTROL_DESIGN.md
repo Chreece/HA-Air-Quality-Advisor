@@ -171,3 +171,30 @@ an intentional primary hold from a secondary setpoint controller that is
 actively operating. Device names and failure reasons are presented as
 traceable diagnostics; controls call only the existing room-specific
 `home_environment_manager.climate_control` action.
+
+
+## Air treatment / running fan speed policy
+
+Per-room air treatment evaluates indoor CO₂, PM2.5, fresh humidity evidence,
+measured indoor/outdoor moisture ratio, and the global outdoor safety state.
+No air-quality guideline for a 24-hour *exposure* is treated as an
+instantaneous switching threshold: the short-term PM2.5 operational trigger
+is an independently configurable policy. Multi-sensor ambiguity and stale
+or unverified readings never authorize commands.
+
+A new `RunningFanSpeedControl` can optionally use an already ON `fan.*`
+entity. For extractor fans, verified NDIR room CO₂, safe outdoor evidence,
+and a user-selected room sensor are mandatory. For particle filtration,
+a verified, explicitly selected PM2.5 sensor and a same-room purifier fan
+are mandatory. The fan must expose `SET_SPEED`, a positive percentage,
+native speed increment and no active preset. The controller ramps UP only,
+by no more than 10% every five minutes, and issues at most one
+`fan.set_percentage` per authorized target per cycle.
+
+**Never** send power, oscillation, direction, preset, compressor or zero speed
+commands via this driver. Incompatible native steps, manual overrides,
+service failures, unknown fan state, duplicates and missing acknowledgements
+hold or pause the driver. Outdoor changes and source events recalculate the
+policy, but real hardware emergency and commissioning safeguards are still
+independently required. Full automatic extraction/dehumidifier power, cooling
+and DRY/FAN_ONLY transitions remain separate future control gates.

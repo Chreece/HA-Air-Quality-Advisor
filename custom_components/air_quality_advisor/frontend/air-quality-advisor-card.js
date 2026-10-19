@@ -302,7 +302,9 @@
       mode:'Selected mode',target:'Active target',device:'Device',
       primary:'Primary HVAC',secondary:'Secondary HVAC',humidity:'Humidity control',
       selectedDevice:'Selected equipment',moistureAction:'Humidity decision',
-      currentHumidity:'Measured RH',sourceStatus:'Sensor evidence'},
+      currentHumidity:'Measured RH',sourceStatus:'Sensor evidence',
+      fan:'Fan-speed control',extraction:'Ventilation/extraction',
+      filtration:'Particle filtration',treatment:'Air treatment'},
     de:{title:'Klima',heat:'Heizsollwert',cool:'Kühlsollwert',occupied:'Belegt',
       unoccupied:'Unbelegt',away:'Abwesend',sleep:'Schlaf',home:'Zuhause',
       holding:'Wartet auf sichere Bedingungen',active:'Native Thermostatregelung',
@@ -310,7 +312,9 @@
       mode:'Aktueller Modus',target:'Aktives Ziel',device:'Gerät',
       primary:'Hauptthermostat',secondary:'Zweites Klimagerät',humidity:'Luftfeuchteregelung',
       selectedDevice:'Ausgewähltes Gerät',moistureAction:'Feuchteentscheidung',
-      currentHumidity:'Gemessene rF',sourceStatus:'Sensornachweis'},
+      currentHumidity:'Gemessene rF',sourceStatus:'Sensornachweis',
+      fan:'Lüfter-Drehzahlregelung',extraction:'Lüftung / Abluft',
+      filtration:'Partikelfiltration',treatment:'Luftbehandlung'},
     el:{title:'Κλίμα',heat:'Στόχος θέρμανσης',cool:'Στόχος ψύξης',occupied:'Παρουσία',
       unoccupied:'Κενό',away:'Απουσία',sleep:'Ύπνος',home:'Σπίτι',
       holding:'Αναμονή ασφαλών συνθηκών',active:'Έλεγχος θερμοστάτη',
@@ -318,7 +322,9 @@
       mode:'Λειτουργία',target:'Ενεργός στόχος',device:'Συσκευή',
       primary:'Κύριος θερμοστάτης',secondary:'Δεύτερη συσκευή κλίματος',humidity:'Ρύθμιση υγρασίας',
       selectedDevice:'Επιλεγμένη συσκευή',moistureAction:'Απόφαση υγρασίας',
-      currentHumidity:'Μετρημένη υγρασία',sourceStatus:'Ποιότητα μετρήσεων'},
+      currentHumidity:'Μετρημένη υγρασία',sourceStatus:'Ποιότητα μετρήσεων',
+      fan:'Ρύθμιση ταχύτητας ανεμιστήρων',extraction:'Εξαερισμός / απαγωγή',
+      filtration:'Φιλτράρισμα σωματιδίων',treatment:'Διαχείριση αέρα'},
   };
 
   const PID_LABELS = {
@@ -783,14 +789,17 @@
       const primary=p.actuation || {};
       const secondary=p.secondary_actuation || {};
       const moisture=p.humidity_actuation || {};
+      const fan=p.fan_actuation || {};
       const controllers=[
         {label:l.primary, status:primary.status || 'advisory_only'},
         {label:l.secondary, status:secondary.status || 'advisory_only'},
         {label:l.humidity, status:moisture.status || 'advisory_only'},
+        {label:l.fan, status:fan.status || 'advisory_only'},
       ];
       const working=['setpoint_commanded','native_range_commanded',
         'at_setpoint','native_range_at_setpoint','holding','commanded',
-        'modulating','mode_commanded','target_commanded'];
+        'modulating','mode_commanded','target_commanded',
+        'fan_speed_increased','at_target_speed'];
       const active=controllers.some((part)=>working.includes(part.status));
       const enabled=controllers.filter((part)=>part.status!=='advisory_only' &&
         part.status!=='disabled');
@@ -827,6 +836,15 @@
           ' · '+escape(l.currentHumidity)+': '+escape(this._format(humidity.measured_rh))+'%' : '')+
         ' · '+escape(l.sourceStatus)+': '+escape(equipment.humidity_evidence||'unknown')+
         '</small>' : '';
+      const air=p.air_actions || {};
+      const extract=air.extraction || {};
+      const filter=air.filtration || {};
+      const airDetails=[
+        extract.status==='recommended' ? l.extraction+': '+
+          (extract.entity_id || l.advisory) : '',
+        filter.status==='recommended' ? l.filtration+': '+
+          (filter.entity_id || l.advisory) : '',
+      ].filter(Boolean).map((v)=>'<small>'+escape(v)+'</small>').join('');
       const reason=(p.reason==='secondary_thermal_driver_pending' && active)
         ? '' : (p.reason || '');
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
@@ -835,7 +853,7 @@
         '<div class="pid-metrics"><span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
         '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>'+
         '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
-        controllerDetails+humidityDetails+
+        controllerDetails+humidityDetails+airDetails+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
         (reason?'<small>'+escape(reason)+'</small>':'')+
         controls+'</section>';

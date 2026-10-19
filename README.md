@@ -700,3 +700,28 @@ room humidity evidence and pause/resume state remain visible with English,
 German and Greek labels. Device ID and diagnostic reason are shown for audit.
 All operations remain entity-targeted and retain the existing climate-control
 pause/resume action; secondary DRY/FAN modes are still advisory.
+
+
+### Climate air-treatment and verified fan speed (v0.6 draft)
+
+The new room air-treatment wizard selects actual same-room CO₂ and PM2.5
+sensors, an explicitly chosen short-term **operational** PM2.5 action threshold
+(not a WHO exposure threshold), and desired upper fan speeds. It records the
+user's NDIR/particle-sensor verification and only provides automatic
+percentage changes after separate consent. Indoor–outdoor moisture-ratio
+evidence determines whether ventilation would remove or add moisture.
+
+The coordinator reports distinct **extraction** and **filtration** intentions.
+When CO₂ is high, extraction is recommended only if outside air was assessed
+safe; verified NDIR inputs and a specific sensor are required for actual fan
+speed control. When PM2.5 indoors exceeds the configured action threshold,
+filtration remains an option even while windows should stay closed.
+Moisture-only extraction remains **advisory** until outdoors sensors and fan
+physical behavior can be commissioned.
+
+An enabled fan speed controller uses `fan.set_percentage` on an already-on
+room fan only, increases by at most 10 percentage points per five-minute
+interval, requires a known native speed step and command acknowledgments,
+pauses on a manual speed change and never sets 0% or sends on/off/preset
+actions. Unverified devices remain advisory and the controller will not
+power any purifier or ventilation equipment on.

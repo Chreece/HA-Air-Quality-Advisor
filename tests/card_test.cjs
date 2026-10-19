@@ -418,3 +418,33 @@ multiCard.hass={language:'en',states:{
   'sensor.multi_device':{state:'idle',attributes:{dashboard:multiDevice}},
 }};
 assert.ok(multiCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Fan speed regulation is a distinct service with independently qualified
+// extraction/filtration evidence; the dashboard never claims it turns fans on.
+const airPanel=JSON.parse(JSON.stringify(input));
+airPanel.rooms[0].environment={climate_plan:{
+  status:'hold',mode:'heat',profile:'home',temperature_target_c:20,
+  actuation:{status:'hold'},
+  secondary_actuation:{status:'advisory_only'},
+  humidity_actuation:{status:'advisory_only'},
+  fan_actuation:{status:'fan_speed_increased',entity_id:'fan.kitchen_filter',
+                 new_percent:50},
+  air_actions:{status:'advisory',filtration:{
+    status:'recommended',entity_id:'fan.kitchen_filter',
+  },extraction:{status:'blocked_outdoor_evidence'}},
+}};
+const airCard=new Card();
+airCard.setConfig({entity:'sensor.air_panel'});
+for(const [lang,label] of [
+  ['en','Particle filtration'],
+  ['de','Partikelfiltration'],
+  ['el','Φιλτράρισμα σωματιδίων'],
+]) {
+  airCard.hass={language:lang,states:{
+    'sensor.air_panel':{state:'idle',attributes:{dashboard:airPanel}},
+  }};
+  assert.ok(airCard.shadowRoot.innerHTML.includes(label));
+  assert.ok(airCard.shadowRoot.innerHTML.includes('fan.kitchen_filter'));
+  assert.ok(airCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
