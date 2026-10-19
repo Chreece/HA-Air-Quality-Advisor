@@ -37,6 +37,7 @@ from .climate_rooms import gather as climate_room_plan
 from .climate_coordination import duplicate_owners
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
+from .climate_humidity_native import HumiditySetpointControl
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
 from .logic import Plan, evaluate
@@ -68,6 +69,9 @@ class AirQualityManager:
         self.native_climate = NativeClimateControl(self.hass, self.entry.entry_id)
         self.direct_climate = DirectClimateControl(
             self.hass, self.entry.entry_id, changed=self._direct_climate_updated,
+        )
+        self.native_humidity = HumiditySetpointControl(
+            self.hass,self.entry.entry_id,changed=self._humidity_updated,
         )
 
     @property
@@ -260,6 +264,9 @@ class AirQualityManager:
                     state["actuation"] = driver.statuses.get(
                         monitored.area_id,{"status":"advisory_only"}
                     )
+                    state["humidity_actuation"] = self.native_humidity.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
                     self._tracked.update(r.entity_id for r in raw_for_climate[
@@ -325,6 +332,7 @@ class AirQualityManager:
         await self.pid.async_start()
         await self.native_climate.async_start()
         await self.direct_climate.async_start()
+        await self.native_humidity.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -358,8 +366,28 @@ class AirQualityManager:
         if profile.get("enabled") is not True or profile.get("allow_actuation") is not True:
             return {"accepted":False,"reason":"climate_control_not_enabled"}
         if profile.get("controller") in ("on_off","pwm","proportional"):
-            return await self.direct_climate.command(area,action,configured)
-        return await self.native_climate.command(area,action)
+            primary=await self.direct_climate.command(area,action,configured)
+        else:
+            primary=await self.native_climate.command(area,action)
+        if profile.get("humidity_setpoint_auto") is True:
+            humidity=await self.native_humidity.command(area,action)
+            return {**primary,"humidity_setpoint":humidity,
+                    "accepted":primary.get("accepted") is True and
+                               humidity.get("accepted") is True}
+        return primary
+
+    @callback
+    def _humidity_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.native_humidity.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "humidity_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
     @callback
     def _direct_climate_updated(self) -> None:
@@ -399,6 +427,7 @@ class AirQualityManager:
                if isinstance(item,dict) and "climate_plan" in item}
         pid_settings=self.settings.get(CONF_PID_ROOMS,{})
         self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
+        self.native_humidity.schedule(settings,plans)
 
     @callback
     def _on_state_changed(self, event: Event) -> None:
@@ -442,6 +471,7 @@ class AirQualityManager:
             native_configs, plans, pid_rooms=configured_pid,
             native_rooms=native_configs,
         )
+        self.native_humidity.schedule(native_configs, plans)
 
         previous = self._active_actions
         current = {
@@ -591,6 +621,7 @@ class AirQualityManager:
         await self.pid.async_stop()
         await self.native_climate.async_stop()
         await self.direct_climate.async_stop()
+        await self.native_humidity.async_stop()
         self._cancel_pending()
         self._cancel_repeat()
         self._active_actions.clear()
