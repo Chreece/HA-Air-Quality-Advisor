@@ -275,8 +275,9 @@ class DirectClimateControl:
             self._pause(area,"service_failed_or_timeout")
             return False
         self.expected[entity]={"state":state,"when":now}
-        if not percentage:
-            self.transitions[entity]={"state":state,"when":now}
+        # The same timestamp gates both relay dwell and bounded percentage
+        # changes. A proportional actuator must not ramp every 30-second poll.
+        self.transitions[entity]={"state":state,"when":now}
         self._persist()
         return True
 
