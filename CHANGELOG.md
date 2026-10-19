@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — Home Environment Manager: international science and future climate-control identity
+
+- Rebrand the public integration, dashboard, configuration and documentation as **Home Environment Manager**; preserve the existing Home Assistant domain, entity unique IDs, service and HACS repository for seamless upgrades. Expose a new Lovelace card alias while retaining the original one.
+- Add explicitly identified international AQI providers, optional pollen policy, additional pollutant screening, ventilation learning, nominal particle CADR effectiveness and optional extraction suggestions.
+- Introduce opt-in, hardware-verified monitoring of long-term radon, formaldehyde, calibrated acoustic exposure, daylight, measured melanopic EDI and ISO 7730 PMV/PPD with pinned Python dependency.
+- Provide qualified overheating degree-hours, night acoustics and descriptive indoor/outdoor particle ratios; carefully distinguish engineering indicators from health or regulatory compliance.
+- Separate optional global and per-room settings into clear guided forms. Rebrand and regenerate international translations, visual documentation, Lovelace screenshots and architecture artwork.
+- **Climate-device PID control is a future release**, not enabled or advertised as operating in v0.4.0.
+
+
 ## 0.3.0 — Research-grounded building physics and time-dependent air-quality context
 
 - Derive room-level humidity ratio, absolute humidity, dew point and real indoor/outdoor drying potential instead of inferring moisture exchange from relative humidity alone.

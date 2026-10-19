@@ -1,16 +1,16 @@
 {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Add study-grounded moisture and psychrometric metrics with conditional humidity-only ventilation suppression",
-    "Add adaptive comfort band, passive cooling opportunities, energy-per-air-exchange and local nighttime overheating indicators",
-    "Add dew-point and surface condensation margin with history of elevated surface RH, without unverified mold growth predictions",
-    "Add 24h PM2.5/PM10 time-weighted averages with 80 percent observation coverage and CO2 slope/strict decay ACH constraints",
-    "Save bounded local history using Home Assistant Store, reset gracefully when missing and never fill large gaps",
-    "Make a Building physics section in existing Lovelace room cards (English, German, Greek)",
-    "Preserve Announcement Hub routing, safety/weather blockers, persistent sensor and config structure",
-    "Add pure mathematical tests, history tests, mocked HA integration tests and sensor validity regressions"
+    "Rebrand all public UX as Home Environment Manager while preserving air_quality_advisor domain, service, entity IDs and HACS migration path",
+    "Add verified international air-quality and pollutant scale handling including US/EU/custom AQI, NO2/O3/SO2 and provider-defined pollen",
+    "Provide room-scoped ventilation learning, purifier CADR, moisture-event advice, particle trends and source-qualified pollutant recommendations",
+    "Support optional verified radon/formaldehyde, calibrated noise/daylight, nighttime acoustics, observed overheating and ISO 7730 PMV/PPD",
+    "Create clean optional global and per-room configuration forms and internationalize all added fields across locale files",
+    "Redesign logo/banner/architecture visualizations, update README and real Lovelace screenshots",
+    "Keep Announcement Hub area targeting, weather safety, historical configurations and no-actuator-by-default behavior unchanged",
+    "Add regression coverage and pass full Python, frontend, translations, hassfest and HACS gates"
   ]
 }

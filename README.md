@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/air-quality-advisor-banner.jpg" alt="Air Quality Advisor — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -15,17 +15,26 @@
 
 <p align="center">
   <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration">
-    <img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open Air Quality Advisor in HACS">
+    <img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open Home Environment Manager in HACS">
   </a>
 </p>
 
-# Air Quality Advisor for Home Assistant
+# Home Environment Manager for Home Assistant
 
-**One recommendation entity and an optional visual dashboard card for all the rooms you select.** It compares indoor CO₂, AQI, particles, VOCs and either room RH or an optional calibrated mold indicator against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
+**Home Environment Manager** combines local sensor data, international environmental sources,
+building physics and optional advanced comfort models to recommend how to keep a room
+comfortable while balancing ventilation, air quality, moisture and potential
+pollutant exposure. **Current release: monitoring and advice only.** Opt-in
+PID-based climate-device control is explicitly reserved for the next version.
+The Home Assistant integration domain, existing entity unique IDs and all
+saved configuration remain `air_quality_advisor` for upgrade compatibility.
+
+
+**One compatibility-preserving Home Assistant recommendation entity and one expandable dashboard card for all selected rooms.** It compares indoor CO₂, AQI, particles, VOCs and either room RH or an optional calibrated mold indicator against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
 
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/how-it-works.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/home-environment-manager-workflow.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
 
 ## Dashboard screenshots
 
@@ -34,13 +43,13 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
 ### Desktop overview — light theme
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-overview-light.png" alt="Air Quality Advisor light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-overview-light.png" alt="Home Environment Manager light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
 </p>
 
 ### Greek localization — dark theme
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Air Quality Advisor dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Home Environment Manager dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
 </p>
 
 ### Mobile view and outdoor warning
@@ -51,14 +60,24 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
     <td align="center"><b>Unsafe outdoor conditions — close windows</b></td>
   </tr>
   <tr>
-    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-mobile.png" alt="Air Quality Advisor mobile dashboard with room cards and sensor gauges" width="340"></td>
-    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-outdoor-alert.png" alt="Air Quality Advisor dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-mobile.png" alt="Home Environment Manager mobile dashboard with room cards and sensor gauges" width="340"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-outdoor-alert.png" alt="Home Environment Manager dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
   </tr>
 </table>
 
 *Demo sensor values are illustrative; actual recommendations always use your configured Home Assistant entities. The card does not operate windows.*
 
 Screenshots are generated with the bundled card source using [`tools/generate_readme_screenshots.py`](tools/generate_readme_screenshots.py). To refresh them after changing the card, run the one-time [README screenshots workflow](.github/workflows/readme-screenshots.yml) manually; it does not run on routine development pushes.
+
+
+### Scientific environment details — desktop and mobile
+
+The following examples show the **actual bundled Lovelace card** with
+illustrative, explicitly simulated sensor values and advanced room analysis.
+They are not screenshots from a live user's home.
+
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-science-desktop.png" width="850" alt="Home Environment Manager Lovelace scientific room metrics for ventilation, comfort, moisture, pollutants and energy"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-science-mobile.png" width="360" alt="Home Environment Manager responsive mobile scientific room card"></p>
 
 ## What it provides
 
@@ -71,14 +90,86 @@ Screenshots are generated with the bundled card source using [`tools/generate_re
 - **One optional AI setting** for both delivery paths. With Announcement Hub configured, it explicitly forwards `use_ai: true/false` and optionally `ai_agent`; otherwise the selected Home Assistant conversation agent rewrites direct notification/TTS text. AI never changes the window decisions and is off by default. Only a **not-running/unavailable Hub** permits Home Assistant direct/persistent notification fallback. A **running Hub** owns room/output routing and rejections; Advisor reports enqueue failure but never creates a second native notification.
 - Auto notifications/TTS can each be enabled or disabled independently. Open announcements wait 90 seconds for conditions to stay stable; close announcements are immediate. Repeated open recommendations have a 15-minute cooldown during the current HA process. New urgent close recommendations are not suppressed by that cooldown, even if the same window was reopened. No notification is generated on every unchanged sensor reading.
 - Manual `air_quality_advisor.announce` action with an independent language override across **38 supported Home Assistant language choices**. Speech requires a compatible TTS voice.
-- A responsive **Air Quality Advisor dashboard card**: safe/attention/unknown room counts, current outdoor weather and pollution, threshold meters, window states, and room-specific advice. Card text follows your **Home Assistant user language**, independently of voice/notification language.
+- A responsive **Home Environment Manager dashboard card**: safe/attention/unknown room counts, current outdoor weather and pollution, threshold meters, window states, and room-specific advice. Card text follows your **Home Assistant user language**, independently of voice/notification language.
+
+## International environmental intelligence (v0.4.0)
+
+**Works internationally:** no German/Greek-only integrations, coordinates, AQI
+scales or pollen sources are hard-coded. All optional provider information
+comes from sensors and integrations *already connected to Home Assistant*.
+Users supply and explicitly identify which scale and units each sensor uses.
+
+### New science available in each room
+
+| Capability | Inputs and methods | Output and evidence limits |
+| --- | --- | --- |
+| Region-specific AQI | Explicit per-entity EPA 0–500, European categorical 1–6, or custom provider scale | Never guesses the country or misuses another scale. Unspecified scales remain *unknown* rather than declaring safe air. |
+| Outdoor gases | Actual NO₂, O₃ and SO₂ sensors in µg/m³ | Configurable operational screening, not equivalent to a regulatory 24-hour or 8-hour mean. |
+| Pollen-aware airing | A user-selected numeric pollen forecast from any HA integration; user declares scale and high threshold | Informational by default. Blocking ventilation on high pollen is an **explicit opt-in** policy, not a global default. |
+| Ventilation learning | Real NDIR CO₂, calibrated history, window contacts | Reports *indicative* declining CO₂ and time to an operational target if the trend remains stable; no arbitrary prediction if windows are closed or data insufficient. |
+| Particle filtration | User-measured room volume and purifier's *particle CADR* (m³/h), optional operation sensor | Nominal equivalent clean-air changes per hour. Does not claim removal of gases, infections, or measured causal benefit. |
+| Moisture events | Time history of indoor RH, optional extractor state | Detects rapid RH rises and suggests checking extraction. A shower/cooking source is **not** inferred from RH alone. |
+| Indoor/outdoor PM | Indoor + outdoor PM2.5 and overlapping 24-hour qualified history | Descriptive concentration ratio, explicitly **not** a calibrated particle infiltration fraction. |
+| Radon | A verified dedicated radon sensor, Bq/m³ or pCi/L | Long-term screening only after about a year of sufficient daily averages. The local monitoring reference is configurable; regulatory levels depend on the jurisdiction. |
+| Formaldehyde | Verified real HCHO measurement, µg/m³ or mg/m³ | 30-minute observed concentration; comparison is disabled for cheap estimated HCHO/eCO₂ proxies. |
+| Acoustic environment | Calibrated A-weighted equivalent sound readings in dB(A) | Proper logarithmic acoustic-energy averaging, optionally the preceding local nighttime period for sleeping rooms. Peak-only meters are unsuitable. |
+| Lighting | Calibrated photopic lux measurements; independently measured melanopic EDI only | Daylight-exposure history. Ordinary lux is **never** converted into a fake circadian/melanopic result. |
+| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD using pinned `pythermalcomfort`, where applicable. Missing inputs suppress the result. |
+| Overheating | Time history of room temperature | Observed temperature degree-hours above a chosen reference, not TM52/TM59 building-certification compliance. |
+
+Existing modules from v0.3.0 remain, including humidity-ratio calculations,
+surface-condensation margin, measured PM 24-hour averages, adaptive comfort,
+passive cooling, controlled CO₂ decay estimation and local bounded history.
+New specialist sensors, comfort assumptions and equipment measurements are
+**optional**. Most households can benefit without buying extra hardware.
+
+### Clear configuration
+
+In **Home Assistant → Settings → Devices & services → Home Environment Manager → Configure**:
+
+1. **Rooms and safety:** retain your window contacts, sensor exclusions, indoor and outdoor readings, optional mold calibration, weather warnings and existing notification settings.
+2. **International air quality & pollen:** choose your outdoor AQI provider's published scale and optionally a pollen forecast. Unknown AQI scales cannot be silently interpreted.
+3. **Room environmental measurements:** select **one room at a time**, then configure optional temperature-source override, actual air volume, purifier CADR, extractor state and real CO₂ technology.
+4. **Specialist measurements:** choose validated radon, formaldehyde, noise and daylight sensors, verifying hardware/calibration where required.
+5. **Advanced comfort:** enable PMV/PPD **only** when all physical inputs exist; otherwise rely on the simpler adaptive comfort indication with its applicability limits.
+
+Every module uses **evidence statuses** such as not configured, invalid units,
+insufficient history, unverified sensing hardware and calculated. Missing
+data never justifies an invented positive health result. All calculations are
+local; selected external forecasts come from Home Assistant's existing providers.
+
+### Compatibility and the upcoming PID phase
+
+The public title, integration manifest and dashboard branding use
+**Home Environment Manager**, but the internal domain remains
+`air_quality_advisor`; its service `air_quality_advisor.announce`,
+existing entity unique IDs, area selections, statistics storage and prior
+configurations are preserved. Existing
+`custom:air-quality-advisor-card` Lovelace dashboards still work; new
+cards may use `custom:home-environment-manager-card`.
+
+**PID-based climate control is not enabled in v0.4.0.** In the next phase,
+climate actuators will need explicit device selection, safety constraints,
+anti-windup, deadbands, duty limits, manual-override respect, safe fallbacks
+and independent validation before any control can be enabled. None of the
+current advice triggers an actuator directly.
+
+**Research and frameworks:**
+[ASHRAE Standard 55](https://www.ashrae.org/technical-resources/bookstore/standard-55-thermal-environmental-conditions-for-human-occupancy),
+[ISO 7730:2025](https://www.iso.org/standard/79804.html),
+[WHO 2021 air-quality guidelines](https://www.who.int/publications/i/item/9789240034228),
+[European Environment Agency air quality index](https://airindex.eea.europa.eu/),
+[US EPA AQI](https://www.airnow.gov/aqi/aqi-basics/),
+[WHO radon](https://www.who.int/news-room/fact-sheets/detail/radon-and-health),
+[CIE S 026](https://cie.co.at/publications/cie-system-metrology-optical-radiation-iprgc-influenced-responses-light-0).
+
 
 ## Installation
 
 ### HACS (versioned releases)
 
 1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Air-Quality-Advisor` and choose **Integration**.
-2. Install **Air Quality Advisor**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**. The dashboard card is bundled and registered automatically when Home Assistant starts; no separate HACS frontend repository or copy to `www` is required.
+2. Install **Home Environment Manager**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**. The dashboard card is bundled and registered automatically when Home Assistant starts; no separate HACS frontend repository or copy to `www` is required.
 3. No YAML configuration is required. After updating from a version that was classified as a Helper, **restart Home Assistant** so the new manifest type takes effect. The existing configuration and entity ID are kept; the integration should now appear under **Settings → Devices & services → Integrations** instead of being categorized under Helpers.
 
 ### Manual
@@ -99,7 +190,7 @@ Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?own
 
 ## Internationalization — 38 languages
 
-Air Quality Advisor supports **38 Home Assistant language choices**, including 33 new locale packs for setup, reconfiguration, room states, notification messages, announcement text and the built-in dashboard card. The card follows the signed-in **Home Assistant user's language**, while `air_quality_advisor.announce` can override message language independently.
+Home Environment Manager supports **38 Home Assistant language choices**, including 33 new locale packs for setup, reconfiguration, room states, notification messages, announcement text and the built-in dashboard card. The card follows the signed-in **Home Assistant user's language**, while `air_quality_advisor.announce` can override message language independently.
 
 **Languages:** English, German, Greek, French, Spanish, Italian, Dutch, Portuguese (Portugal and Brazil), Polish, Russian, Ukrainian, Turkish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Serbian, Swedish, Norwegian Bokmål, Danish, Finnish, Indonesian, Vietnamese, Thai, Hindi, Simplified/Traditional Chinese, Japanese, Korean, Arabic, Hebrew, Persian, Bengali, Urdu and Tamil.
 
@@ -128,7 +219,7 @@ For example, the Greek Weather page explains directly that at least one weather 
 
 Indoor exclusions and mold calibrations are stored **by Home Assistant area**, used for both recommendations and the dashboard snapshot. An excluded indoor sensor remains available in Home Assistant; the integration does not disable, delete or modify it. Areas with no remaining active indoor measurements are shown as **unknown**, never silently marked safe. Only the single existing window-recommendation entity is generated.
 
-For an installed integration, open **Settings → Devices & services → Integrations → Air Quality Advisor → Configure**. A translated menu lets you choose exactly which section to edit: Rooms, Window sensor exclusions, Per-room indoor air sensors, Outdoor air sensors, Weather and warnings, Announcements, or Advanced thresholds. Only the selected section opens. Indoor sensor exclusions continue room by room, but every other section saves immediately without forcing the rest of setup. Your saved selections are prefilled; cancelling leaves existing settings unchanged. The full flow uses the same five Home Assistant UI languages (English, German, Greek, French and Spanish).
+For an installed integration, open **Settings → Devices & services → Integrations → Home Environment Manager → Configure**. A translated menu lets you choose exactly which section to edit: Rooms, Window sensor exclusions, Per-room indoor air sensors, Outdoor air sensors, Weather and warnings, Announcements, or Advanced thresholds. Only the selected section opens. Indoor sensor exclusions continue room by room, but every other section saves immediately without forcing the rest of setup. Your saved selections are prefilled; cancelling leaves existing settings unchanged. The full flow uses the same five Home Assistant UI languages (English, German, Greek, French and Spanish).
 
 ### Mold indication instead of RH (optional)
 
@@ -187,17 +278,17 @@ Sensor values are normalised to the units above. Outdoor temperatures from weath
 
 Only **non-excluded** `binary_sensor` entities with device class `window` count as windows. A `cover` is never counted, even if its device class is `window`. Excluded entities are ignored by room suggestions, window counts, open/close recommendations, automatic announcements, and the dashboard. The automatic suggestions are based on entity and device metadata, **not a guaranteed physical-contact identification**; review them for your hardware. Missing outside readings do not themselves block opening/require closure, but appear in `unavailable_outdoor_sensors` and set `outdoor_data_complete: false`. Missing weather or an unknown weather-warning status still blocks opening.
 
-## Air Quality Advisor dashboard card
+## Home Environment Manager dashboard card
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/dashboard-card-preview.svg" alt="Illustrative Air Quality Advisor Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/dashboard-card-preview.svg" alt="Illustrative Home Environment Manager Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
 
-**Add it from the dashboard card picker**: Edit your dashboard → **Add card** → **Air Quality Advisor**. The integration registers the card JavaScript automatically after a Home Assistant restart, and the card discovers the recommendation sensor if you have exactly one Air Quality Advisor instance. The card picker also suggests it for your recommendation entity. A built-in graphical editor lets you select the sensor, rename the card and toggle the outdoor panel and detailed metrics.
+**Add it from the dashboard card picker**: Edit your dashboard → **Add card** → **Home Environment Manager**. The integration registers the card JavaScript automatically after a Home Assistant restart, and the card discovers the recommendation sensor if you have exactly one Home Environment Manager instance. The card picker also suggests it for your recommendation entity. A built-in graphical editor lets you select the sensor, rename the card and toggle the outdoor panel and detailed metrics.
 
 The equivalent YAML is:
 
 ```yaml
 type: custom:air-quality-advisor-card
-# Optional when exactly one Air Quality Advisor integration exists:
+# Optional when exactly one Home Environment Manager integration exists:
 entity: sensor.air_quality_advisor_window_recommendations
 # Optional card settings:
 show_outside: true
@@ -216,7 +307,7 @@ If the card doesn't appear after updating via HACS, **restart Home Assistant**, 
 
 ## Building-physics and exposure diagnostics
 
-Air Quality Advisor also derives **optional, deterministic environmental context** from
+Home Environment Manager also derives **optional, deterministic environmental context** from
 real Home Assistant measurements. The existing window safety rules, weather alerts
 and Announcement Hub routing remain authoritative. These are **engineering
 indicators**, not a medical assessment, building certification, or an automatic
@@ -278,9 +369,9 @@ material properties), or reliable heat-loss prediction without measured
 airflow/room geometry. Rather than manufacture these quantities from weather
 and RH alone, the advisor displays only the defensible indicators above.
 
-## The one sensor
+## The single backward-compatible recommendation sensor
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/recommendation-preview.svg" alt="Illustrative Air Quality Advisor close-window recommendation" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/recommendation-preview.svg" alt="Illustrative Home Environment Manager close-window recommendation" width="100%"></p>
 
 Typical state when CO₂ is high but outdoor air and weather are good:
 
@@ -308,9 +399,9 @@ attributes:
 
 The system automatically updates this entity. You can display `recommendations`, `open_windows`, `close_windows` and `outside_blockers` in dashboards or automations. No duplicate per-area sensors.
 
-## Repeating persistent window recommendations (v0.2.3 — awaiting manual release)
+## Repeating persistent window recommendations
 
-Under **Air Quality Advisor → Configure → Announcements**, set **Repeat announcements (minutes)** to any whole number from **0 to 1440**. The default is **10 minutes** for new and existing installations; **0 means never repeat**. This applies only if automatic notifications or automatic TTS are enabled. Manually invoked announcements are not scheduled for repetition.
+Under **Home Environment Manager → Configure → Announcements**, set **Repeat announcements (minutes)** to any whole number from **0 to 1440**. The default is **10 minutes** for new and existing installations; **0 means never repeat**. This applies only if automatic notifications or automatic TTS are enabled. Manually invoked announcements are not scheduled for repetition.
 
 - A **new open-window** recommendation still waits 90 seconds for stable conditions; a **close-window** recommendation is announced immediately. Repeats run at the configured interval **after the previous automatic submission finishes**, so slower AI/Hub calls do not cause overlapping reminders.
 - A reminder is sent only while **the same room, window action and cause remain actionable**. Before each reminder, the sensors and window contacts are checked again. When the window is opened/closed or air/weather conditions recover, remaining timers are cancelled.
@@ -321,7 +412,7 @@ The setting works with Announcement Hub, direct TTS, native notification entitie
 
 ## AI-enhanced announcements and fallback
 
-Open **Air Quality Advisor → Configure → Announcements**. **Use AI for announcements** is a single checkbox for both routes, off by default. The automatic notification and TTS switches still independently control whether anything is announced. Existing saved AI settings are preserved during upgrades.
+Open **Home Environment Manager → Configure → Announcements**. **Use AI for announcements** is a single checkbox for both routes, off by default. The automatic notification and TTS switches still independently control whether anything is announced. Existing saved AI settings are preserved during upgrades.
 
 - **Announcement Hub selected:** This checkbox sends an explicit `use_ai: true` (or `use_ai: false` when unchecked) with the room-specific `notify.announcement_hub` action. A custom conversation agent is forwarded as `ai_agent`; leaving **Home Assistant default** selected omits the field so the Hub uses its own configured agent. The Hub performs the rewriting and controls delivery; the advisor does not rewrite the same message again.
 - **Announcement Hub not selected:** The advisor uses `conversation.process` to rewrite the original text before sending it to direct `notify.send_message` and/or `tts.speak` outputs. The agent choice defaults to Home Assistant's default conversation agent; other `conversation.*` entities can be selected. Failed or invalid rewrites use the unchanged original message (up to eight seconds for opening and three seconds for urgent closing recommendations).
