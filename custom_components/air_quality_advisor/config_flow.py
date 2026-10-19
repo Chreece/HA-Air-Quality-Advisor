@@ -25,10 +25,11 @@ from .const import (
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
-    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
 from .mold import calibration_factor, estimate_mold_for_room
 from .climate_pid import DEFAULT_PID, ClimatePidCoordinator
+from .climate_policy import DEFAULT_CLIMATE, merge_config, validate_climate_config, STRATEGIES
 from .pid_math import validate_settings
 from .discovery import entity_area
 
@@ -1023,6 +1024,309 @@ class _FlowMixin:
             data_schema=self._pid_tuning_schema(current),
         )
 
+
+    async def async_step_climate(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """One room at a time; never modify another room's settings."""
+        from homeassistant.helpers import area_registry as ar
+        ids=list(self._values.get(CONF_AREAS, []))
+        if not ids:
+            return await self._finish()
+        registry=ar.async_get(self.hass)
+        choices=[{"value":area,"label":getattr(registry.async_get_area(area),"name",area)}
+                 for area in ids]
+        if user_input is not None:
+            area=user_input.get("climate_area")
+            if area in ids:
+                self._climate_area=area
+                saved=self._values.get(CONF_CLIMATE_ROOMS,{})
+                self._climate_draft=merge_config(saved.get(area) if isinstance(saved,dict) else None)
+                return await self.async_step_climate_device()
+            errors={"base":"invalid_areas"}
+        else:
+            errors={}
+        return self.async_show_form(step_id="climate",errors=errors,
+            data_schema=probatio.Schema({
+                _marker("climate_area",ids[0],required=True):
+                    selector.SelectSelector(selector.SelectSelectorConfig(
+                        options=choices,mode=selector.SelectSelectorMode.DROPDOWN,
+                        multiple=False,custom_value=False)),
+            }))
+
+    def _climate_label(self) -> str:
+        from homeassistant.helpers import area_registry as ar
+        r=ar.async_get(self.hass).async_get_area(self._climate_area)
+        return r.name if r else self._climate_area
+
+    def _climate_actuators(self, strategy: str) -> list[dict[str,str]]:
+        permitted=(
+            ("climate",) if strategy in ("device","setpoint_pid") else
+            ("switch","input_boolean") if strategy=="pwm" else
+            ("number","fan") if strategy=="proportional" else
+            ("switch","input_boolean","climate")
+        )
+        result=[]
+        for domain in permitted:
+            for state in self.hass.states.async_all(domain):
+                if entity_area(self.hass,state.entity_id) in (None,self._climate_area):
+                    result.append({"value":state.entity_id,
+                                   "label":(state.name or state.entity_id)+" · "+state.entity_id})
+        return sorted(result,key=lambda item:item["label"].casefold())
+
+    def _climate_device_schema(self, draft: dict) -> probatio.Schema:
+        strategy=draft.get("strategy","device")
+        sensor_choices=indoor_temperature_choices(
+            self.hass,self._climate_area,draft.get("temperature_entity"),
+        )
+        strategy_names=[
+            {"value":"device","label":"Device-native thermostat (no extra PID)"},
+            {"value":"setpoint_pid","label":"Internal PID adjusting thermostat setpoint"},
+            {"value":"on_off","label":"On/off with hysteresis and minimum cycles"},
+            {"value":"pwm","label":"Time-proportioning PWM for confirmed compatible switches"},
+            {"value":"proportional","label":"Proportional number/fan output"},
+        ]
+        fields={
+            _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
+            _marker("climate_strategy",strategy):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=strategy_names,mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_operation",draft.get("operation","heat")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["heat","cool","auto"],
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_temperature_entity",draft.get("temperature_entity")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=sensor_choices,mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_allow_hvac_mode_change",draft.get("allow_hvac_mode_change",False)):
+                selector.BooleanSelector(),
+            _marker("climate_allow_turn_off",draft.get("allow_turn_off",False)):
+                selector.BooleanSelector(),
+        }
+        actuator_choices=self._climate_actuators(strategy)
+        if strategy in ("device","setpoint_pid"):
+            fields[_marker("climate_climate_entity",draft.get("climate_entity"))]=(
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=actuator_choices,mode=selector.SelectSelectorMode.DROPDOWN))
+            )
+        else:
+            fields[_marker("climate_heat_entity",draft.get("heat_entity"))]=(
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=actuator_choices,mode=selector.SelectSelectorMode.DROPDOWN))
+            )
+            fields[_marker("climate_cool_entity",draft.get("cool_entity"))]=(
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=actuator_choices,mode=selector.SelectSelectorMode.DROPDOWN))
+            )
+        return probatio.Schema(fields)
+
+    async def async_step_climate_device(self, user_input: dict[str,Any]|None=None) -> ConfigFlowResult:
+        draft=self._climate_draft
+        errors={}
+        if user_input is not None:
+            update={
+                "enabled":bool(user_input.get("climate_enabled",draft["enabled"])),
+                "strategy":user_input.get("climate_strategy",draft["strategy"]),
+                "operation":user_input.get("climate_operation",draft["operation"]),
+                "temperature_entity":user_input.get("climate_temperature_entity",draft["temperature_entity"]),
+                "allow_hvac_mode_change":bool(user_input.get(
+                    "climate_allow_hvac_mode_change",draft["allow_hvac_mode_change"])),
+                "allow_turn_off":bool(user_input.get("climate_allow_turn_off",draft["allow_turn_off"])),
+                "climate_entity":user_input.get("climate_climate_entity"),
+                "heat_entity":user_input.get("climate_heat_entity"),
+                "cool_entity":user_input.get("climate_cool_entity"),
+            }
+            draft={**draft,**update}
+            if not draft["enabled"]:
+                self._climate_draft=draft
+                return await self._save_climate()
+            allowed={item["value"] for item in self._climate_actuators(draft["strategy"])}
+            sensor_ids={item["value"] for item in indoor_temperature_choices(
+                self.hass,self._climate_area,draft.get("temperature_entity"),
+            )}
+            if (draft["strategy"] not in STRATEGIES or draft["operation"] not in ("heat","cool","auto")):
+                errors={"base":"invalid_climate_strategy"}
+            elif (draft["temperature_entity"] not in sensor_ids or not draft["temperature_entity"]):
+                errors={"base":"invalid_climate_temperature"}
+            elif (draft["strategy"] in ("device","setpoint_pid") and draft["climate_entity"] not in allowed):
+                errors={"base":"invalid_climate_actuator"}
+            elif (draft["strategy"] not in ("device","setpoint_pid") and
+                  (not any(draft.get(k) in allowed for k in ("heat_entity","cool_entity"))
+                   or any(draft.get(k) not in allowed for k in ("heat_entity","cool_entity")
+                          if draft.get(k)))):
+                errors={"base":"invalid_climate_actuator"}
+            elif draft["strategy"] not in ("device","setpoint_pid") and (
+                  draft.get("heat_entity") and draft.get("cool_entity") and
+                  draft["heat_entity"]==draft["cool_entity"]):
+                errors={"base":"invalid_climate_actuator"}
+            elif draft["operation"]=="auto" and draft["strategy"] in ("device","setpoint_pid") and not draft["allow_hvac_mode_change"]:
+                errors={"base":"climate_auto_requires_optin"}
+            else:
+                existing=self._values.get(CONF_CLIMATE_ROOMS,{})
+                legacy=self._values.get(CONF_PID_ROOMS,{})
+                other_targets=set()
+                if isinstance(existing,dict):
+                    for area,conf in existing.items():
+                        if area!=self._climate_area and isinstance(conf,dict) and conf.get("enabled"):
+                            other_targets.update(e for e in (conf.get("climate_entity"),conf.get("heat_entity"),conf.get("cool_entity")) if e)
+                if isinstance(legacy,dict):
+                    for area,conf in legacy.items():
+                        if area!=self._climate_area and isinstance(conf,dict) and conf.get("enabled"):
+                            other_targets.update(conf.get("climate_entities") or [])
+                if any(e in other_targets for e in (draft.get("climate_entity"),draft.get("heat_entity"),draft.get("cool_entity")) if e):
+                    errors={"base":"climate_duplicate_actuator"}
+            if not errors:
+                self._climate_draft=draft
+                return await self.async_step_climate_targets()
+        return self.async_show_form(step_id="climate_device",
+            description_placeholders={"area_name":self._climate_label()},
+            data_schema=self._climate_device_schema(draft),errors=errors)
+
+    async def async_step_climate_targets(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
+        """Home and occupied comfort targets; never guess from one country's climate."""
+        draft=self._climate_draft
+        if user_input is not None:
+            updates={key.removeprefix("climate_"):value for key,value in user_input.items()}
+            merged={**draft,**updates}
+            bad=any(not isinstance(merged.get(key),(int,float)) or isinstance(merged.get(key),bool)
+                    or not math.isfinite(merged[key]) or not 5<=merged[key]<=40
+                    for key in ("home_heat_c","home_cool_c","occupied_heat_c",
+                                "occupied_cool_c","comfort_heat_c","comfort_cool_c"))
+            if not bad:
+                self._climate_draft=merged
+                return await self.async_step_climate_setbacks()
+            errors={"base":"invalid_climate_targets"}
+        else: errors={}
+        fields={
+            _marker("climate_target_source",draft["target_source"]):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=[
+                        {"value":"temperature","label":"Explicit room temperature targets"},
+                        {"value":"comfort","label":"Custom comfort temperature band (not an ASHRAE certification)"},
+                    ],mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_occupied_uses_comfort",draft["occupied_uses_comfort"]):selector.BooleanSelector(),
+            _marker("climate_heat_cool_deadband_c",draft["heat_cool_deadband_c"]):_real_number(1,8,"°C"),
+        }
+        for key in ("home_heat_c","home_cool_c","occupied_heat_c","occupied_cool_c",
+                    "comfort_heat_c","comfort_cool_c"):
+            fields[_marker("climate_"+key,draft[key])]=_real_number(5,40,"°C")
+        return self.async_show_form(step_id="climate_targets",
+            description_placeholders={"area_name":self._climate_label()},
+            data_schema=probatio.Schema(fields),errors=errors)
+
+    async def async_step_climate_setbacks(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
+        """Energy-conscious setback/bedtime goals; hardware-dependent."""
+        draft=self._climate_draft
+        if user_input is not None:
+            updated={**draft,**{k.removeprefix("climate_"):v for k,v in user_input.items()}}
+            if any(not isinstance(updated.get(k),(float,int)) or isinstance(updated.get(k),bool)
+                   or not math.isfinite(updated[k]) or not 5<=updated[k]<=40
+                   for k in ("unoccupied_heat_c","unoccupied_cool_c",
+                             "away_heat_c","away_cool_c","sleep_heat_c","sleep_cool_c")):
+                errors={"base":"invalid_climate_targets"}
+            else:
+                self._climate_draft=updated
+                return await self.async_step_climate_presence()
+        else: errors={}
+        return self.async_show_form(step_id="climate_setbacks",
+            description_placeholders={"area_name":self._climate_label()},
+            data_schema=probatio.Schema({
+                _marker("climate_"+k,draft[k]):_real_number(5,40,"°C")
+                for k in ("unoccupied_heat_c","unoccupied_cool_c",
+                          "away_heat_c","away_cool_c","sleep_heat_c","sleep_cool_c")
+            }),errors=errors)
+
+    def _climate_presence_schema(self,draft:dict)->probatio.Schema:
+        occupancy=[]
+        people=[]
+        for state in self.hass.states.async_all():
+            domain=state.entity_id.split(".",1)[0]
+            kind=str(state.attributes.get("device_class","")).lower()
+            if domain=="binary_sensor" and kind in ("occupancy","presence") and entity_area(self.hass,state.entity_id)==self._climate_area:
+                occupancy.append({"value":state.entity_id,"label":state.name or state.entity_id})
+            if domain in ("person","device_tracker") or (
+                domain=="binary_sensor" and kind in ("occupancy","presence")
+            ):
+                people.append({"value":state.entity_id,"label":state.name or state.entity_id})
+        fields={
+            _marker("climate_auto_discover_occupancy",draft["auto_discover_occupancy"]):selector.BooleanSelector(),
+            _marker("climate_occupancy_entities",draft.get("occupancy_entities",[])):_multi(occupancy),
+            _marker("climate_home_entities",draft.get("home_entities",[])):_multi(people),
+            _marker("climate_vacancy_delay_seconds",draft["vacancy_delay_seconds"]):_real_number(0,86400,"s"),
+            _marker("climate_away_delay_seconds",draft["away_delay_seconds"]):_real_number(0,86400,"s"),
+            _marker("climate_sleep_enabled",draft["sleep_enabled"]):selector.BooleanSelector(),
+            _marker("climate_sleep_start",draft["sleep_start"]):selector.TextSelector(),
+            _marker("climate_sleep_end",draft["sleep_end"]):selector.TextSelector(),
+        }
+        return probatio.Schema(fields)
+
+    async def async_step_climate_presence(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
+        if user_input is not None:
+            merged={**self._climate_draft,**{k.removeprefix("climate_"):v for k,v in user_input.items()}}
+            from .climate_policy import valid_local_hhmm
+            if not all(valid_local_hhmm(merged[k]) for k in ("sleep_start","sleep_end")):
+                errors={"base":"invalid_climate_sleep_window"}
+            elif any(not isinstance(merged.get(k),(int,float)) or not math.isfinite(merged[k])
+                     or not 0<=merged[k]<=86400
+                     for k in ("vacancy_delay_seconds","away_delay_seconds")):
+                errors={"base":"invalid_climate_presence_delay"}
+            else:
+                self._climate_draft=merged
+                return await self.async_step_climate_safety()
+        else: errors={}
+        return self.async_show_form(step_id="climate_presence",
+            description_placeholders={"area_name":self._climate_label()},
+            data_schema=self._climate_presence_schema(self._climate_draft),errors=errors)
+
+    async def async_step_climate_safety(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
+        draft=self._climate_draft
+        fields={
+            _marker("climate_pause_on_window_open",draft["pause_on_window_open"]):selector.BooleanSelector(),
+            _marker("climate_turn_relay_off_on_bad_data",draft["turn_relay_off_on_bad_data"]):selector.BooleanSelector(),
+            _marker("climate_min_mode_seconds",draft["min_mode_seconds"]):_real_number(300,86400,"s"),
+            _marker("climate_hysteresis_c",draft["hysteresis_c"]):_real_number(.1,3,"°C"),
+            _marker("climate_sample_seconds",draft["sample_seconds"]):_real_number(120,3600,"s"),
+        }
+        if draft["strategy"] in ("on_off","pwm"):
+            fields.update({
+                _marker("climate_relay_hardware_confirmed",draft["relay_hardware_confirmed"]):selector.BooleanSelector(),
+                _marker("climate_min_on_seconds",draft["min_on_seconds"]):_real_number(60,7200,"s"),
+                _marker("climate_min_off_seconds",draft["min_off_seconds"]):_real_number(60,7200,"s"),
+                _marker("climate_max_on_seconds",draft["max_on_seconds"]):_real_number(60,86400,"s"),
+            })
+        if draft["strategy"]=="pwm":
+            fields.update({
+                _marker("climate_pwm_hardware_confirmed",draft["pwm_hardware_confirmed"]):selector.BooleanSelector(),
+                _marker("climate_pwm_period_seconds",draft["pwm_period_seconds"]):_real_number(900,14400,"s"),
+                _marker("climate_pwm_min_pulse_seconds",draft["pwm_min_pulse_seconds"]):_real_number(60,3600,"s"),
+            })
+        if draft["strategy"] in ("setpoint_pid","pwm","proportional"):
+            for key,lo,hi,unit in (
+                ("kp",.01,100,"%/°C"),("ki",0,10,"%/(°C·min)"),
+                ("kd",0,50,"%·min/°C"),("output_min",0,100,"%"),
+                ("output_max",0,100,"%"),("offset_c",.25,5,"°C"),
+                ("min_setpoint_c",5,35,"°C"),("max_setpoint_c",6,40,"°C"),
+                ("max_change_c",.1,2,"°C"),("min_change_c",.05,1,"°C"),
+            ):
+                fields[_marker("climate_"+key,draft[key])]=_real_number(lo,hi,unit)
+        if user_input is not None:
+            merged={**draft,**{key.removeprefix("climate_"):val for key,val in user_input.items()}}
+            ok,reason=validate_climate_config(merged)
+            if not ok:
+                errors={"base":"invalid_climate_safety"}
+            else:
+                self._climate_draft=merged
+                return await self._save_climate()
+        else: errors={}
+        return self.async_show_form(step_id="climate_safety",
+            description_placeholders={"area_name":self._climate_label()},
+            data_schema=probatio.Schema(fields),errors=errors)
+
+    async def _save_climate(self)->ConfigFlowResult:
+        existing=self._values.get(CONF_CLIMATE_ROOMS,{})
+        existing=dict(existing) if isinstance(existing,dict) else {}
+        existing[self._climate_area]=dict(self._climate_draft)
+        self._values[CONF_CLIMATE_ROOMS]=existing
+        return await self._finish()
+
     async def async_step_thresholds(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if user_input is not None:
             if user_input["min_outdoor_temp"] >= user_input["max_outdoor_temp"]:
@@ -1082,7 +1386,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
             step_id="init",
             menu_options=[
                 "areas", "weather", "indoor_sensors", "window_sensors",
-                "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
+                "outdoor", "delivery", "thresholds", "environment", "environment_room", "climate", "pid",
             ],
         )
 
