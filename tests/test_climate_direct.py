@@ -269,3 +269,54 @@ def test_pwm_is_sampled_and_refuses_too_short_pulses(runtime):
         assert all(call[0]=="switch" for call in hass.services.calls)
         await driver.async_stop()
     asyncio.run(case())
+
+def test_pause_explicitly_deenergizes_only_owned_output(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"pause",clock=lambda:clock[0])
+        await driver.async_start()
+        conf=settings()
+        clock[0]=2000.
+        await advance(driver,clock,conf,planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        result=await driver.command("living","pause",{"living":conf})
+        assert result["accepted"] is True
+        assert hass.states.get("switch.living_heat").state=="off"
+        assert hass.services.calls[-1][1]=="turn_off"
+        clock[0]=2300.
+        await advance(driver,clock,conf,planned())
+        assert driver.paused["living"]=="user_paused"
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_unload_switches_off_controller_owned_heat_without_powering_on(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"stop",clock=lambda:clock[0])
+        await driver.async_start()
+        conf=settings()
+        clock[0]=2000.
+        await advance(driver,clock,conf,planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        await driver.async_stop()
+        assert hass.states.get("switch.living_heat").state=="off"
+        assert hass.services.calls[-1][1]=="turn_off"
+    asyncio.run(case())
+
+
+def test_manual_pause_does_not_overwrite_unowned_energized_relay(runtime):
+    async def case():
+        hass=home()
+        hass.states.get("switch.living_heat").state="on"
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"unowned",clock=lambda:clock[0])
+        await driver.async_start()
+        result=await driver.command("living","pause",{"living":settings()})
+        assert not result["accepted"]
+        assert driver.paused["living"]=="pause_output_unconfirmed"
+        assert hass.services.calls==[]
+        await driver.async_stop()
+    asyncio.run(case())
