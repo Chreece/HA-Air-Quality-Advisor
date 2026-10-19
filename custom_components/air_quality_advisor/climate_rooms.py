@@ -1,6 +1,8 @@
 """Room-aware occupancy and climate diagnostics, independent of actuator writes."""
 from __future__ import annotations
 from typing import Any
+import time
+from .climate_schedule import scheduled_sleep
 
 from .climate_strategy import (capabilities,home_away_evidence,occupied_evidence,
                                policy)
@@ -13,10 +15,15 @@ def _bool_state(hass:Any,entity_id:str,*,max_age_minutes:float=15) -> bool|None:
     if s.domain=="binary_sensor":
         if is_stale(s,max_age_minutes): return None
         return True if s.state=="on" else False if s.state=="off" else None
-    if s.domain=="person":
-        return s.state!="not_home" if s.state not in ("unknown","unavailable") else None
-    if s.domain=="device_tracker":
-        return s.state!="not_home" if s.state not in ("unknown","unavailable") else None
+    if s.domain in ("person","device_tracker"):
+        # HA's non-home named zones are away (work, school, etc.).
+        # Only the literal state 'home' counts as home presence.
+        if s.state=="home": return True
+        if s.state=="not_home" or (
+            isinstance(s.state,str) and s.state
+            not in ("home","unknown","unavailable","none")
+        ): return False
+        return None
     return None
 
 
@@ -34,7 +41,8 @@ def _presence_ids(hass:Any,area:str,config:dict) -> list[str]:
     return sorted(result)
 
 
-def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None)->tuple[dict,set[str]]:
+def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
+           now:float|None=None,comfort_target_c:float|None=None)->tuple[dict,set[str]]:
     """Expose what should happen, with provenance, without operating devices."""
     if not isinstance(settings,dict) or not settings.get("enabled"):
         return {"status":"disabled"},set()
@@ -75,10 +83,15 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None)->tuple[di
                     and attrs.get("min")==0 and attrs.get("max")==100)
         cap=capability
     window_safe=bool(room.windows) and all(win.opened is False for win in room.windows)
+    time_zone=getattr(getattr(hass,"config",None),"time_zone",None) or "UTC"
+    sleeping,sleep_evidence=scheduled_sleep(
+        settings,time.time() if now is None else now,time_zone,
+    )
     result=policy(settings,temp_c=temp,capability=cap,at_home=at_home,
-                  occupied=occupied,sleeping=settings.get("sleep_active") is True,
+                  occupied=occupied,sleeping=sleeping,
                   manual_profile=settings.get("manual_profile"),prior_mode=prior_mode,
-                  window_safe=window_safe)
+                  window_safe=window_safe,comfort_target_c=comfort_target_c)
+
     return {
         "status":result.state,
         "profile":result.profile,"mode":result.desired_hvac_mode,
@@ -86,6 +99,7 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None)->tuple[di
         "reason":result.reason,"controller":result.controller,
         "occupancy":occupied,"occupancy_evidence":occ_reason,
         "presence_entities":sensors,"away":at_home,"away_evidence":home_reason,
+        "sleep_schedule_active":sleeping,"sleep_schedule_evidence":sleep_evidence,
         "tracker_entities":trackers,
         "climate_entity":climate_id,"climate_capabilities":cap,
         "temperature_entity":temperature_id,"temperature_c":temp,
