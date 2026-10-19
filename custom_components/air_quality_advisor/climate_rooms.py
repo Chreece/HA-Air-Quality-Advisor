@@ -154,4 +154,4 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "note":"Only explicitly authorized same-room actuators are controllable; equipment safety remains external",
     },(set(sensors+trackers+[x for x in (temperature_id,climate_id)
                            if isinstance(x,str)]) | assigned_entities(settings) |
-          ({settings["humidity_entity"]} if isinstance(settings.get("humidity_entity"),str) else set())))
+          ({settings["humidity_entity"]} if isinstance(settings.get("humidity_entity"),str) else set()))
