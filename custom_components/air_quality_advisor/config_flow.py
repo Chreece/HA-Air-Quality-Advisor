@@ -901,13 +901,9 @@ class _FlowMixin:
                 elif proposal["controller"] in ("device","setpoint_pid") and proposal["climate_entity"] not in {
                         c["value"] for c in climate_choices}:
                     errors["base"]="climate_target_required"
-                elif proposal.get("allow_actuation") and proposal["controller"]!="device":
-                    errors["base"]="climate_actuation_requires_native_device"
-                elif proposal["controller"] in ("pwm","on_off","proportional"):
-                    # Prevent enabling control strategies without a dedicated
-                    # validated direct actuator driver.
-                    errors["base"]="climate_direct_actuator_not_ready"
-                elif proposal["controller"] not in ("device","setpoint_pid"):
+                elif proposal.get("allow_actuation") and proposal["controller"]=="setpoint_pid":
+                    errors["base"]="climate_pid_separate_configuration"
+                elif proposal["controller"] not in ("device","setpoint_pid","on_off","pwm","proportional"):
                     errors["base"]="climate_controller_invalid"
                 elif proposal["manual_profile"] not in ("auto","home","unoccupied","away","sleep"):
                     errors["base"]="climate_mode_invalid"
@@ -921,6 +917,8 @@ class _FlowMixin:
                     errors["base"]="climate_away_invalid"
             if not errors:
                 self._climate_draft=proposal
+                if proposal["controller"] in ("on_off","pwm","proportional"):
+                    return await self.async_step_climate_actuators()
                 return await self.async_step_climate_profiles()
         schema=probatio.Schema({
             _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
@@ -939,9 +937,9 @@ class _FlowMixin:
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},
                              {"value":"setpoint_pid","label":"Outer-loop PID setpoint (separate v0.5 controller)"},
-                             {"value":"on_off","label":"On/off relay (planned; cannot enable)"},
-                             {"value":"pwm","label":"PWM thermal relay (planned; cannot enable)"},
-                             {"value":"proportional","label":"Proportional output (planned; cannot enable)"}],
+                             {"value":"on_off","label":"On/off slow-load relay (requires independent safety)"},
+                             {"value":"pwm","label":"Time-proportioning slow-load relay (non-compressor only)"},
+                             {"value":"proportional","label":"Verified 0–100% modulation output (number entity)"}],
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_mode",draft.get("mode","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
@@ -958,6 +956,127 @@ class _FlowMixin:
         return self.async_show_form(step_id="climate_room",errors=errors,data_schema=schema,
             description_placeholders={"area_name":self._climate_area})
 
+
+    def _direct_actuator_schema(self, draft: dict) -> probatio.Schema:
+        from .discovery import entity_area
+        strategy=draft.get("controller","on_off")
+        domain="number" if strategy=="proportional" else "switch"
+        candidates=[
+            {"value":state.entity_id,
+             "label":(state.name or state.entity_id)+" · "+state.entity_id}
+            for state in self.hass.states.async_all(domain)
+            if entity_area(self.hass,state.entity_id)==self._climate_area
+        ]
+        fields={
+            _marker("direct_hardware_confirmed",draft.get("direct_hardware_confirmed",False)):
+                selector.BooleanSelector(),
+            _marker("heat_actuator",draft.get("heat_actuator")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=candidates,multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("cool_actuator",draft.get("cool_actuator")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=candidates,multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("min_on_s",draft.get("min_on_s",120)):
+                _real_number(60,7200,"s"),
+            _marker("min_off_s",draft.get("min_off_s",180)):
+                _real_number(60,7200,"s"),
+            _marker("max_on_s",draft.get("max_on_s",7200)):
+                _real_number(300,86400,"s"),
+            _marker("mode_dwell_s",draft.get("mode_dwell_s",900)):
+                _real_number(300,7200,"s"),
+        }
+        if strategy in ("pwm","proportional"):
+            fields.update({
+                _marker("kp",draft.get("kp",18.0)):_real_number(0.01,100),
+                _marker("ki",draft.get("ki",0.12)):_real_number(0,10),
+                _marker("kd",draft.get("kd",0.0)):_real_number(0,50),
+                _marker("sample_seconds",draft.get("sample_seconds",300)):
+                    _real_number(120,3600,"s"),
+            })
+        if strategy=="pwm":
+            fields[_marker("pwm_period_s",draft.get("pwm_period_s",900))]=_real_number(300,7200,"s")
+        if strategy=="proportional":
+            fields.update({
+                _marker("max_demand_change",draft.get("max_demand_change",10)):
+                    _real_number(1,50,"%/cycle"),
+                _marker("min_demand_change",draft.get("min_demand_change",2)):
+                    _real_number(0.1,20,"%"),
+            })
+        return probatio.Schema(fields)
+
+    async def async_step_climate_actuators(
+        self,user_input:dict[str,Any]|None=None,
+    )->ConfigFlowResult:
+        """Direct equipment needs explicit hardware attestation and ownership."""
+        from .discovery import entity_area
+        draft=self._climate_draft
+        errors={}
+        if user_input is not None:
+            proposed={**draft,**user_input}
+            proposed["direct_hardware_confirmed"]=bool(user_input.get(
+                "direct_hardware_confirmed",draft.get("direct_hardware_confirmed",False)))
+            strategy=proposed.get("controller")
+            domain="number" if strategy=="proportional" else "switch"
+            targets=[proposed.get(key) for key in ("heat_actuator","cool_actuator")
+                     if proposed.get(key)]
+            if proposed.get("enabled") and proposed.get("allow_actuation"):
+                if not proposed["direct_hardware_confirmed"]:
+                    errors["base"]="climate_attestation_required"
+                elif not targets or len(set(targets))!=len(targets):
+                    errors["base"]="climate_direct_targets_invalid"
+                elif any(not isinstance(ent,str) or not ent.startswith(domain+".")
+                         or entity_area(self.hass,ent)!=self._climate_area
+                         or self.hass.states.get(ent) is None for ent in targets):
+                    errors["base"]="climate_direct_targets_invalid"
+                elif strategy=="proportional" and any(
+                    (state:=self.hass.states.get(ent)).attributes.get("unit_of_measurement")!="%"
+                    or state.attributes.get("min")!=0
+                    or state.attributes.get("max")!=100
+                    or not isinstance(state.attributes.get("step"),(int,float))
+                    for ent in targets):
+                    errors["base"]="climate_proportional_requires_percent"
+            numeric={
+                "min_on_s":(60,7200),"min_off_s":(60,7200),
+                "max_on_s":(300,86400),"mode_dwell_s":(300,7200),
+            }
+            if strategy in ("pwm","proportional"):
+                numeric.update({"kp":(.01,100),"ki":(0,10),"kd":(0,50),
+                                "sample_seconds":(120,3600)})
+            if strategy=="pwm":
+                numeric["pwm_period_s"]=(300,7200)
+            if strategy=="proportional":
+                numeric.update({"max_demand_change":(1,50),
+                                "min_demand_change":(.1,20)})
+            defaults={
+                "min_on_s":120,"min_off_s":180,"max_on_s":7200,
+                "mode_dwell_s":900,"kp":18,"ki":.12,"kd":0,
+                "sample_seconds":300,"pwm_period_s":900,
+                "max_demand_change":10,"min_demand_change":2,
+            }
+            for key,(lo,hi) in numeric.items():
+                val=proposed.get(key,defaults[key])
+                if isinstance(val,bool):
+                    errors["base"]="climate_direct_timing_invalid"
+                    break
+                try: number=float(val)
+                except (ValueError,TypeError,OverflowError): number=float("nan")
+                if not math.isfinite(number) or not lo<=number<=hi:
+                    errors["base"]="climate_direct_timing_invalid"
+                    break
+                proposed[key]=number
+            if not errors and proposed["max_on_s"]<proposed["min_on_s"]:
+                errors["base"]="climate_direct_timing_invalid"
+            if not errors and strategy=="pwm" and proposed["pwm_period_s"]<=(
+                proposed["min_on_s"]+proposed["min_off_s"]):
+                errors["base"]="climate_direct_timing_invalid"
+            if not errors:
+                self._climate_draft=proposed
+                return await self.async_step_climate_profiles()
+        return self.async_show_form(step_id="climate_actuators",errors=errors,
+            data_schema=self._direct_actuator_schema(draft),
+            description_placeholders={"area_name":self._climate_area})
     async def async_step_climate_profiles(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
         """Heating and cooling bands for home, unoccupied, away and sleep."""
         from .climate_strategy import profiles
