@@ -128,6 +128,90 @@ ES = {
 }
 
 
+
+LOCAL_FIELDS = {
+ "de": {
+ "pollen_entity":"Pollenprognose-Sensor (beliebiges Land)",
+ "pollen_high_from":"Pollenindex ab diesem Wert hoch",
+ "pollen_max_scale":"Maximalwert der Pollen-Skala",
+ "pollen_avoid_ventilation":"Bei hoher Pollenbelastung Lüften vermeiden",
+ "environment_area":"Raum auswählen",
+ "temperature_entity":"Temperatursensor im Raum (optional)",
+ "room_volume_m3":"Raumluftvolumen (m³)",
+ "particle_cadr_m3h":"Reinigungsleistung für Partikel, CADR (m³/h)",
+ "purifier_entity":"Luftreiniger: Betriebsstatus",
+ "extractor_entity":"Abluftventilator / Schalter",
+ "co2_ndir_verified":"Echter NDIR-CO₂-Sensor bestätigt",
+ "co2_target_ppm":"CO₂-Zielwert beim Lüften (ppm)",
+ "sleep_room":"Schlafzimmer",
+ "radon_entity":"Echter Radonmesssensor",
+ "radon_sensor_verified":"Radon-Messtechnik bestätigt",
+ "formaldehyde_entity":"Formaldehyd-Messsensor (HCHO)",
+ "formaldehyde_sensor_verified":"HCHO-Messung unabhängig geprüft",
+ "noise_entity":"A-bewerteter Schallpegel (dB(A))",
+ "noise_sensor_calibrated":"Geeignete kalibrierte Schallmessung",
+ "illuminance_entity":"Beleuchtungsstärke (Lux)",
+ "melanopic_edi_entity":"Spektral gemessene melanopische EDI (lx)",
+ "melanopic_spectral_verified":"Spektralmessung für EDI bestätigt",
+ "enable_pmv":"ISO-7730-Komfort PMV/PPD aktivieren",
+ "radiant_temperature_entity":"Mittlere Strahlungstemperatur (°C)",
+ "air_speed_entity":"Gemessene Luftgeschwindigkeit (m/s)",
+ "air_speed_m_s":"Angenommene Luftgeschwindigkeit (m/s)",
+ "met":"Aktivität des Bewohners (met)",
+ "clo":"Bekleidungsisolierung des Bewohners (clo)",
+ },
+ "el": {
+ "pollen_entity":"Αισθητήρας πρόγνωσης γύρης (οποιαδήποτε χώρα)",
+ "pollen_high_from":"Υψηλή γύρη από αυτή την τιμή",
+ "pollen_max_scale":"Μέγιστη τιμή κλίμακας γύρης",
+ "pollen_avoid_ventilation":"Αποφυγή αερισμού με υψηλή γύρη",
+ "environment_area":"Επιλογή δωματίου",
+ "temperature_entity":"Αισθητήρας θερμοκρασίας δωματίου",
+ "room_volume_m3":"Πραγματικός όγκος δωματίου (m³)",
+ "particle_cadr_m3h":"Ονομαστικό CADR σωματιδίων (m³/h)",
+ "purifier_entity":"Οντότητα λειτουργίας καθαριστή αέρα",
+ "extractor_entity":"Εξαεριστήρας / διακόπτης",
+ "co2_ndir_verified":"Επαληθευμένος πραγματικός αισθητήρας NDIR CO₂",
+ "co2_target_ppm":"Στόχος CO₂ αερισμού (ppm)",
+ "sleep_room":"Χώρος ύπνου",
+ "radon_entity":"Πραγματικός αισθητήρας ραδονίου",
+ "radon_sensor_verified":"Επαληθευμένη τεχνολογία ραδονίου",
+ "formaldehyde_entity":"Αισθητήρας φορμαλδεΰδης (HCHO)",
+ "formaldehyde_sensor_verified":"Επαληθευμένη μέτρηση φορμαλδεΰδης",
+ "noise_entity":"Στάθμη θορύβου με στάθμιση Α (dB(A))",
+ "noise_sensor_calibrated":"Βαθμονομημένη μέτρηση θορύβου",
+ "illuminance_entity":"Φωτισμός (lux)",
+ "melanopic_edi_entity":"Φασματικά μετρημένη μελανοπική EDI (lx)",
+ "melanopic_spectral_verified":"Επιβεβαίωση φασματικής μέτρησης EDI",
+ "enable_pmv":"Ενεργοποίηση θερμικής άνεσης ISO 7730 PMV/PPD",
+ "radiant_temperature_entity":"Μέση ακτινοβολούμενη θερμοκρασία (°C)",
+ "air_speed_entity":"Μετρούμενη ταχύτητα αέρα (m/s)",
+ "air_speed_m_s":"Εκτιμώμενη ταχύτητα αέρα (m/s)",
+ "met":"Δραστηριότητα ενοίκου (met)",
+ "clo":"Θερμομόνωση ενδυμάτων (clo)",
+ },
+}
+LOCAL_HELP = {
+ "de": {
+ "room_volume_m3":"Innenfläche × Raumhöhe. Nur bei bekanntem Volumen angeben; nötig für den rechnerischen Luftwechsel des Luftreinigers.",
+ "particle_cadr_m3h":"Nur nachgewiesenen Partikel-CADR bei definierter Leistungsstufe verwenden, nicht den Lüftervolumenstrom; gilt nicht für Gase.",
+ "co2_ndir_verified":"Nur bei nachweislich echtem CO₂-Sensor markieren. eCO₂ aus VOC-Messungen reicht nicht aus.",
+ "radon_entity":"Bq/m³ oder pCi/L; für Jahresmittel sind ausreichend viele gültige Messtage erforderlich.",
+ "formaldehyde_entity":"Nur ein tatsächlicher HCHO-Messsensor mit µg/m³ oder mg/m³. Schätzwerte sind ungeeignet.",
+ "noise_entity":"Nur kalibrierte dB(A)-Zeitreihen; gemessene Spitzenpegel sind kein LAeq.",
+ "enable_pmv":"Nur mit mittlerer Strahlungstemperatur, Luftgeschwindigkeit, Metabolismus (met) und Kleidung (clo).",
+ },
+ "el": {
+ "room_volume_m3":"Εμβαδόν δωματίου × ύψος οροφής. Χρησιμοποιείται μόνο για θεωρητικές ανανεώσεις αέρα φίλτρου.",
+ "particle_cadr_m3h":"Χρησιμοποίησε τεκμηριωμένο CADR σωματιδίων για γνωστή σκάλα λειτουργίας, όχι τυχαία παροχή ανεμιστήρα.",
+ "co2_ndir_verified":"Μόνο για πραγματικό αισθητήρα CO₂ NDIR, όχι υπολογισμό eCO₂ μέσω VOC.",
+ "radon_entity":"Bq/m³ ή pCi/L. Η μακροχρόνια εκτίμηση απαιτεί επαρκείς ημέρες μετρήσεων.",
+ "formaldehyde_entity":"Πραγματική μέτρηση HCHO σε µg/m³ ή mg/m³. Οι εκτιμήσεις δεν είναι αξιόπιστες.",
+ "noise_entity":"Βαθμονομημένες μετρήσεις dB(A)· οι στιγμιαίες κορυφές δεν είναι LAeq.",
+ "enable_pmv":"Απαιτούνται ακτινοβολούμενη θερμοκρασία, ταχύτητα αέρα, δραστηριότητα (met) και ένδυση (clo).",
+ },
+}
+
 def apply_environment_i18n(root: Path) -> None:
     docs = [root / "strings.json", *sorted((root / "translations").glob("*.json"))]
     for path in docs:
@@ -139,7 +223,7 @@ def apply_environment_i18n(root: Path) -> None:
         data["title"] = PRODUCT
         config = data.get("config", {})
         if "abort" in config and "already_configured" in config["abort"]:
-            config["abort"]["already_configured"] = PRODUCT + " is already configured."
+            config["abort"]["already_configured"] = config["abort"]["already_configured"].replace("Air Quality Advisor", PRODUCT)
         opt = data.setdefault("options", {})
         steps = opt.setdefault("step", {})
         init = steps.setdefault("init", {})
@@ -164,8 +248,8 @@ def apply_environment_i18n(root: Path) -> None:
         for step,name,description,keys in forms:
             steps[step] = {
                 "title": label(name), "description": label(description),
-                "data": {key: EN["fields"][key] for key in keys},
-                "data_description": {key: EN["help"][key] for key in keys},
+                "data": {key: LOCAL_FIELDS.get(lang, {}).get(key, EN["fields"][key]) for key in keys},
+                "data_description": {key: LOCAL_HELP.get(lang, {}).get(key, EN["help"][key]) for key in keys},
             }
         for i in range(32):
             for name,value in (

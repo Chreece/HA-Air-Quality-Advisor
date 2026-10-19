@@ -346,7 +346,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds",
+        "outdoor", "delivery", "thresholds", "environment", "environment_room",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -734,3 +734,39 @@ def test_out_of_range_weather_temperature_shows_warning_in_options(monkeypatch, 
     note = form["description_placeholders"]["mold_weather_notice"]
     assert "⚠️" in note
     assert "weather.home" in note
+
+def test_international_environment_options_keep_all_other_configuration(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    form = asyncio.run(options.async_step_environment())
+    assert form["step_id"] == "environment"
+    assert "pollen_entity" in form["data_schema"]
+    done = asyncio.run(options.async_step_environment({
+        "pollen_entity": None, "pollen_high_from": 3,
+        "pollen_max_scale": 5, "pollen_avoid_ventilation": False,
+    }))
+    assert done["completed"]["data"]["environment_global"]["pollen_max_scale"] == 5
+    assert done["completed"]["data"]["thresholds"]["indoor_co2"] == 1200
+
+
+def test_room_environment_uses_explicit_sensor_verification(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    chosen = asyncio.run(options.async_step_environment_room({"environment_area":"living"}))
+    assert chosen["step_id"] == "environment_room_air"
+    next_page = asyncio.run(options.async_step_environment_room_air({
+        "co2_ndir_verified": True,"co2_target_ppm": 1000,
+        "sleep_room": True,
+    }))
+    assert next_page["step_id"] == "environment_room_exposure"
+    next_page = asyncio.run(options.async_step_environment_room_exposure({
+        "formaldehyde_sensor_verified": False,"radon_sensor_verified": False,
+    }))
+    assert next_page["step_id"] == "environment_room_comfort"
+    bad = asyncio.run(options.async_step_environment_room_comfort({"enable_pmv":True}))
+    assert bad["errors"]["base"] == "pmv_requires_explicit_inputs"
+    done = asyncio.run(options.async_step_environment_room_comfort({"enable_pmv":False}))
+    saved = done["completed"]["data"]["environment_rooms"]["living"]
+    assert saved["co2_ndir_verified"] is True
+    assert saved["formaldehyde_sensor_verified"] is False
+    assert saved["sleep_room"] is True
