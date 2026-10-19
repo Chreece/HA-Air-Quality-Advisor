@@ -27,6 +27,7 @@ class NativeClimateControl:
         self.statuses={}
         self.paused={}
         self.expected={}
+        self.expected_hvac={}
         self.last_mode={}
         self.last_write={}
         self._store=None
@@ -55,6 +56,9 @@ class NativeClimateControl:
             ew=loaded.get("expected",{})
             if isinstance(ew,dict):
                 self.expected={k:v for k,v in ew.items() if isinstance(k,str) and isinstance(v,dict)}
+            expected_mode=loaded.get("expected_hvac",{})
+            if isinstance(expected_mode,dict):
+                self.expected_hvac={k:v for k,v in expected_mode.items() if isinstance(k,str) and v in ("heat","cool")}
             lw=loaded.get("last_write",{})
             if isinstance(lw,dict):
                 self.last_write={k:float(v) for k,v in lw.items() if isinstance(v,(float,int))}
@@ -62,7 +66,8 @@ class NativeClimateControl:
 
     def _snapshot(self):
         return {"version":1,"paused":self.paused,"last_mode":self.last_mode,
-                "expected":self.expected,"last_write":self.last_write}
+                "expected":self.expected,"expected_hvac":self.expected_hvac,
+                "last_write":self.last_write}
 
     def _save(self):
         if self._store is not None:
@@ -89,6 +94,7 @@ class NativeClimateControl:
         else:
             self.paused.pop(area,None)
             self.expected.pop(area,None)
+            self.expected_hvac.pop(area,None)
             self.last_write.pop(area,None)
             # Resume always warms up before any new command.
             self.started=self.clock()
@@ -165,6 +171,12 @@ class NativeClimateControl:
             self.statuses[area]={"status":"unavailable"}
             return
         attrs=state.attributes
+        prior_commanded_mode=self.expected_hvac.get(area)
+        if prior_commanded_mode and state.state!=prior_commanded_mode:
+            self.paused[area]="manual_hvac_mode_change_or_unacknowledged_write"
+            self._save()
+            self.statuses[area]={"status":"paused","reason":self.paused[area]}
+            return
         modes=attrs.get("hvac_modes",[])
         if not isinstance(modes,list) or mode not in modes:
             self.statuses[area]={"status":"unsupported_mode"}
@@ -234,6 +246,7 @@ class NativeClimateControl:
                 self._save()
                 return
             self.last_mode[area]=now
+            self.expected_hvac[area]=mode
             self.last_write[area]=now
             self._save()
             self.statuses[area]={"status":"mode_commanded","mode":mode,
