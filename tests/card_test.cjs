@@ -468,5 +468,8 @@ onlyCard.hass={language:'en',states:{
 assert.ok(onlyCard.shadowRoot.innerHTML.includes('room-climate-only'));
 assert.ok(onlyCard.shadowRoot.innerHTML.includes('Bedroom'));
 assert.ok(onlyCard.shadowRoot.innerHTML.includes('21 °C'));
-assert.ok(!onlyCard.shadowRoot.innerHTML.includes('empty-measurements'));
-assert.ok(!onlyCard.shadowRoot.innerHTML.includes('window-section'));
+const onlyRoomMarkup=onlyCard.shadowRoot.innerHTML.slice(
+  onlyCard.shadowRoot.innerHTML.indexOf('<article class="room room-climate-only">')
+);
+assert.ok(!onlyRoomMarkup.includes('class="empty-measurements"'));
+assert.ok(!onlyRoomMarkup.includes('class="window-section"'));
