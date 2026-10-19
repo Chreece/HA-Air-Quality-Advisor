@@ -43,7 +43,7 @@ def test_policy_device_is_conservative_and_capability_gated():
     assert policy({**CFG,"controller":"pwm"},temp_c=19,capability=DEVICE,at_home="home",occupied="occupied").state=="unsupported_device"
     assert policy({**CFG,"controller":"setpoint_pid","native_pid":True},temp_c=19,capability=DEVICE,at_home="home",occupied="occupied").state=="conflicting_controllers"
 def test_comfort_ranges_not_a_universal_medical_target():
-    res=policy(CFG,temp_c=19,capability=DEVICE,at_home="home",occupied="occupied",manual_profile="sleep")
+    res=policy(CFG,temp_c=16,capability=DEVICE,at_home="home",occupied="occupied",manual_profile="sleep")
     assert res.profile=="sleep" and res.temperature_c==18
 def test_device_native_feature_detection():
     caps=capabilities({"supported_features":3,"hvac_modes":["off","heat","cool","heat_cool"]},"heat")
