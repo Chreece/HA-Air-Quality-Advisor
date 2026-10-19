@@ -99,6 +99,7 @@ def test_heat_to_cool_requires_optin_and_mode_dwell(native):
         await scheduled(c,settings(auto_switch_hvac=False),report("cool",25))
         assert not hass.services.calls
         clock[0]=4200
+        hass.services.has_service=lambda domain,action: domain=="climate" and action in ("set_temperature","set_hvac_mode")
         await scheduled(c,settings(auto_switch_hvac=True),report("cool",25))
         assert hass.services.calls[0][1]=="set_hvac_mode"
         assert hass.services.calls[0][2]["hvac_mode"]=="cool"
