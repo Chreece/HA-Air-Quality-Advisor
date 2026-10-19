@@ -76,3 +76,36 @@ pid_control:
             - pause
             - resume
             - reset
+
+climate_control:
+  name: Climate automation
+  description: >-
+    Pause, resume, reset or override the comfort/occupancy profile for exactly
+    one monitored room. Climate automation must have been explicitly enabled.
+    A manual pause is persistent and is never implicitly resumed.
+  fields:
+    area:
+      required: true
+      selector:
+        area:
+          multiple: false
+    action:
+      required: true
+      selector:
+        select:
+          options:
+            - pause
+            - resume
+            - reset
+            - profile
+    profile:
+      required: false
+      selector:
+        select:
+          options:
+            - auto
+            - home
+            - occupied
+            - unoccupied
+            - away
+            - sleep
