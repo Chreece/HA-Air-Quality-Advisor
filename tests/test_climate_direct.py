@@ -401,3 +401,53 @@ def test_proportional_step_quantization_never_overshoots_rate_limit(runtime):
         assert all(entry[2]["value"]%7==0 for entry in hass.services.calls)
         await driver.async_stop()
     asyncio.run(case())
+
+def test_modulation_cannot_reset_continuous_output_watchdog(runtime):
+    async def case():
+        hass=home(proportional=True)
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"modwatch",clock=lambda:clock[0])
+        await driver.async_start()
+        config=settings(controller="proportional",
+            heat_actuator="number.living_heat",max_on_s=900,
+            max_demand_change=10,min_demand_change=2)
+        clock[0]=2000.
+        await advance(driver,clock,config,planned())
+        clock[0]=2300.
+        await advance(driver,clock,config,planned())
+        assert driver.energized_since["number.living_heat"]==2300.
+        clock[0]=2600.
+        await advance(driver,clock,config,planned())
+        assert driver.energized_since["number.living_heat"]==2300.
+        clock[0]=2900.
+        await advance(driver,clock,config,planned())
+        assert driver.energized_since["number.living_heat"]==2300.
+        clock[0]=3201.
+        await advance(driver,clock,config,planned())
+        assert hass.states.get("number.living_heat").state=="0.0"
+        assert driver.paused["living"]=="maximum_on_runtime_exceeded"
+        assert "number.living_heat" not in driver.energized_since
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_missing_continuous_runtime_history_is_fail_safe_even_with_valid_ack(runtime):
+    async def case():
+        hass=home(proportional=True)
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"history",clock=lambda:clock[0])
+        await driver.async_start()
+        config=settings(controller="proportional",
+                        heat_actuator="number.living_heat")
+        clock[0]=2000.
+        await advance(driver,clock,config,planned())
+        clock[0]=2300.
+        await advance(driver,clock,config,planned())
+        assert driver.energized_since
+        driver.energized_since.clear()  # Corrupted/incomplete persisted state
+        clock[0]=2360.
+        await advance(driver,clock,config,planned())
+        assert driver.paused["living"]=="continuous_runtime_history_missing"
+        assert hass.states.get("number.living_heat").state=="0.0"
+        await driver.async_stop()
+    asyncio.run(case())
