@@ -32,22 +32,22 @@ const input={
 };
 const card=new Card();
 card.setConfig({entity:'sensor.air_quality_advisor_recommendations'});
-for(const [lang,needle] of [['el','Ποιότητα αέρα'],['de','Luftqualität'],['fr','Qualité de l’air'],['es','Calidad del aire'],['en','Air quality']]) {
+for(const [lang,needle] of [['el','Home Environment Manager'],['de','Home Environment Manager'],['fr','Home Environment Manager'],['es','Home Environment Manager'],['en','Home Environment Manager']]) {
   card.hass={language:lang,states:{'sensor.air_quality_advisor_recommendations':{state:'open',attributes:{dashboard:input}}}};
   assert.ok(card.shadowRoot.innerHTML.includes(needle), `missing language ${lang}`);
 }
 
 for (const [lang, expected, rtl] of [
-  ['it', 'Qualità dell’aria', false],
-  ['nl', 'Luchtkwaliteit', false],
-  ['pt-BR', 'Qualidade do ar', false],
-  ['zh-Hans', '空气质量', false],
-  ['zh-Hant', '空氣品質', false],
-  ['zh_TW', '空氣品質', false],
-  ['ja', '空気質', false],
-  ['ko', '공기질', false],
-  ['hi', 'वायु गुणवत्ता', false],
-  ['ar', 'جودة الهواء', true],
+  ['it', 'Home Environment Manager', false],
+  ['nl', 'Home Environment Manager', false],
+  ['pt-BR', 'Home Environment Manager', false],
+  ['zh-Hans', 'Home Environment Manager', false],
+  ['zh-Hant', 'Home Environment Manager', false],
+  ['zh_TW', 'Home Environment Manager', false],
+  ['ja', 'Home Environment Manager', false],
+  ['ko', 'Home Environment Manager', false],
+  ['hi', 'Home Environment Manager', false],
+  ['ar', 'Home Environment Manager', true],
   ['he', 'איכות האוויר', true],
   ['ur', 'ہوا کا معیار', true],
 ]) {
@@ -337,3 +337,6 @@ assert.equal(window.customCards[0].getEntitySuggestion(card._hass,'sensor.air_qu
   assert.ok(!card.shadowRoot.innerHTML.includes('data-expand="kitchen"'));
 }
 console.log('Dashboard card frontend tests passed');
+
+assert.equal(registered.has('home-environment-manager-card'),true);
+assert.equal(window.customCards.some((card)=>card.type==='home-environment-manager-card'),true);

@@ -5,6 +5,7 @@
 (() => {
   'use strict';
 
+  const BRAND_TITLE = "Home Environment Manager";
   const LANGUAGE = {
     en: {
       title:'Air quality', subtitle:'Your home at a glance', outside:'Outside',
@@ -322,6 +323,33 @@
       estimated:'Οι εκτιμήσεις εξαρτώνται από τους αισθητήρες και τις παραδοχές.'}
   };
 
+  const EXTRA_LABELS = {
+    en:{pollen:'Pollen forecast',pollenHigh:'High pollen',purification:'Purifier clean-air changes',
+      measuredAch:'Measured ventilation trend',toTarget:'Estimated CO₂ target time',
+      sourceMoisture:'Rapid humidity change',hcho:'Verified formaldehyde (30 min)',
+      radon:'Radon annual average',noise:'Sound exposure (24 h)',nightNoise:'Nighttime sound',
+      light:'Daylight above threshold',melanopic:'Sensor measured melanopic EDI',
+      overheated:'Overheating degree-hours',pmv:'Thermal comfort PMV / PPD',
+      particle:'Indoor / outdoor PM2.5 ratio',unknown:'History or validated hardware required',
+      noActuation:'Informational only · PID climate control is planned, not active.'},
+    de:{pollen:'Pollenprognose',pollenHigh:'Hohe Pollenbelastung',purification:'Partikel-Luftwechsel des Luftreinigers',
+      measuredAch:'Beobachteter Lüftungstrend',toTarget:'Geschätzte CO₂-Zielzeit',
+      sourceMoisture:'Schneller Feuchteanstieg',hcho:'Geprüftes Formaldehyd (30 min)',
+      radon:'Radon-Jahresmittel',noise:'Schallbelastung (24 h)',nightNoise:'Schall im Schlafzimmer',
+      light:'Tageslicht über Schwellenwert',melanopic:'Gemessene melanopische EDI',
+      overheated:'Überhitzungsgradstunden',pmv:'Thermischer Komfort PMV / PPD',
+      particle:'PM2.5-Verhältnis innen / außen',unknown:'Messhistorie oder Sensorprüfung fehlt',
+      noActuation:'Nur Hinweise · PID-Klimaregelung ist geplant, noch nicht aktiv.'},
+    el:{pollen:'Πρόγνωση γύρης',pollenHigh:'Υψηλή γύρη',purification:'Ανανεώσεις καθαρού αέρα φίλτρου',
+      measuredAch:'Παρατηρούμενη τάση αερισμού',toTarget:'Εκτίμηση χρόνου στόχου CO₂',
+      sourceMoisture:'Απότομη αύξηση υγρασίας',hcho:'Επαληθευμένη φορμαλδεΰδη (30 λεπτά)',
+      radon:'Ετήσιος μέσος όρος ραδονίου',noise:'Θόρυβος (24 ώρες)',nightNoise:'Νυχτερινός θόρυβος',
+      light:'Φως ημέρας πάνω από όριο',melanopic:'Μετρημένη μελανοπική EDI',
+      overheated:'Βαθμοώρες υπερθέρμανσης',pmv:'Θερμική άνεση PMV / PPD',
+      particle:'Αναλογία PM2.5 μέσα / έξω',unknown:'Απαιτείται ιστορικό ή επαλήθευση αισθητήρα',
+      noActuation:'Μόνο πληροφορίες · Ο έλεγχος κλίματος PID είναι μελλοντική δυνατότητα.'}
+  };
+
   const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
   const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
   const clamp = (num,min,max) => Math.max(min, Math.min(max,num));
@@ -360,9 +388,9 @@
 
     setConfig(config) {
       if (config.entity && !/^sensor\.[a-z0-9_]+$/.test(config.entity)) {
-        throw new Error('Air Quality Advisor: entity must be a sensor.* entity ID');
+        throw new Error('Home Environment Manager: entity must be a sensor.* entity ID');
       }
-      this._config = {show_outside:true, show_metrics:true, ...config};
+      this._config = {show_outside:true, show_metrics:true, show_science:true, ...config};
       this._lastConfigKey = null;
       this._render(true);
     }
@@ -380,7 +408,7 @@
 
     _t(key) {
       const lang = this._language();
-      return LANGUAGE[lang]?.[key] || LANGUAGE.en[key] || key;
+      return key === "title" ? BRAND_TITLE : (LANGUAGE[lang]?.[key] || LANGUAGE.en[key] || key);
     }
 
     _format(value, digits = 1) {
@@ -638,11 +666,48 @@
         add(labels.ach, fmt(e.co2_decay_ach.ach_per_hour, 2) + ' h⁻¹');
       if (typeof e.heat_per_full_air_exchange_wh_m3 === 'number')
         add(labels.energy, fmt(e.heat_per_full_air_exchange_wh_m3) + ' Wh/m³');
+      const extra = e.international || {};
+      const eLabels = EXTRA_LABELS[this._language()] || EXTRA_LABELS.en;
+      if (extra.air_purification?.nominal_particle_clean_air_changes_h !== undefined)
+        add(eLabels.purification,fmt(extra.air_purification.nominal_particle_clean_air_changes_h,2)+' h⁻¹');
+      if (extra.ventilation_learning?.status === 'indicative')
+        add(eLabels.toTarget,'~'+fmt(extra.ventilation_learning.estimated_minutes_to_target)+' min');
+      if (extra.moisture_event?.status === 'relative_humidity_rise')
+        add(eLabels.sourceMoisture,'+'+fmt(extra.moisture_event.rh_change_percent_points)+' %');
+      if (extra.formaldehyde_30min?.status === 'ready')
+        add(eLabels.hcho,fmt(extra.formaldehyde_30min.mean)+' µg/m³');
+      if (extra.radon?.status === 'annual_screening')
+        add(eLabels.radon,fmt(extra.radon.mean_bq_m3)+' Bq/m³');
+      if (extra.sound_24h?.status === 'indicative_laeq')
+        add(eLabels.noise,fmt(extra.sound_24h.db_a)+' dB(A)');
+      if (extra.sound_last_night?.status === 'indicative_night_laeq')
+        add(eLabels.nightNoise,fmt(extra.sound_last_night.db_a)+' dB(A)');
+      if (extra.daylight?.status === 'descriptive')
+        add(eLabels.light,fmt(extra.daylight.observed_hours_above_threshold)+' h');
+      if (extra.daylight?.melanopic_edi_status === 'sensor_reported_not_from_photopic_lux')
+        add(eLabels.melanopic,fmt(extra.daylight.melanopic_edi_lux)+' lx');
+      if (extra.overheating_degree_hours?.status === 'ready')
+        add(eLabels.overheated,fmt(extra.overheating_degree_hours.degree_hours_over_reference)+' °C·h');
+      if (extra.pmv_ppd?.status === 'estimate')
+        add(eLabels.pmv,fmt(extra.pmv_ppd.pmv,2)+' / '+fmt(extra.pmv_ppd.ppd_percent)+'%');
+      if (extra.particle_indoor_outdoor_ratio?.status === 'descriptive_only')
+        add(eLabels.particle,fmt(extra.particle_indoor_outdoor_ratio.ratio,2));
       if (!lines.length) return '';
       return '<section class="science-section" aria-label="' + escape(labels.title) + '">' +
         '<div class="field-label">' + this._icon('mdi:flask-outline') +
         escape(labels.title) + '</div><div class="science-grid">' + lines.join('') + '</div>' +
         '<div class="science-caveat">' + escape(labels.estimated) + '</div></section>';
+    }
+
+    _pollenIndicator(outdoor) {
+      const p = outdoor?.pollen || {};
+      if (p.status !== 'provider_defined') return '';
+      const title = (EXTRA_LABELS[this._language()] || EXTRA_LABELS.en);
+      return '<div class="pollen-indicator" role="status">' +
+        this._icon('mdi:flower-pollen') +
+        escape(title.pollen) + ': <strong>' + escape(this._format(p.value)) + ' / ' +
+        escape(this._format(p.max_scale)) + (p.high ? ' · ' + escape(title.pollenHigh) : '') +
+        '</strong></div>';
     }
 
     _room(room) {
@@ -721,7 +786,7 @@
         ${button}
         ${expanded && this._config.show_metrics !== false
           ? this._moldCalibrationDetails(moldCalibration) : ''}
-        ${this._environmentReport(room)}
+        ${this._config.show_science === false ? '' : this._environmentReport(room)}
         ${rhFallback}
         ${warningList}
         <div class="window-section">
@@ -758,6 +823,7 @@
         <div class="card-logo">${this._icon('mdi:air-filter')}</div></header>
         <div class="content">
           ${this._outside(data.outdoor || {})}
+          ${this._pollenIndicator(data.outdoor || {})}
           ${this._summary(data.summary || {})}
           <div class="rooms-list">${rooms.length ? rooms.map((room) => this._room(room)).join('')
             : `<div class="empty-rooms">${this._icon('mdi:home-outline')}${escape(this._t('noRooms'))}</div>`}</div>
@@ -864,6 +930,8 @@
       .mold-warning ha-icon{flex:0 0 auto;--mdc-icon-size:15px;color:var(--aqa-amber)}
       .mold-warning small{color:var(--aqa-muted)}
       .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:9px}
+      .pollen-indicator{display:flex;align-items:center;gap:7px;margin:12px 0;color:var(--aqa-text);padding:8px 12px;border:1px solid var(--aqa-edge);border-radius:11px;font-size:11px;background:color-mix(in srgb,var(--aqa-amber),transparent 96%)}
+      .pollen-indicator ha-icon{color:var(--aqa-amber);--mdc-icon-size:18px}
       .science-section{margin:10px 0 12px;padding:11px 12px;border:1px solid var(--aqa-edge);border-radius:12px;background:color-mix(in srgb,var(--aqa-blue),transparent 97%)}
       .science-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 12px;margin-top:8px}
       .science-line{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;border-bottom:1px solid var(--aqa-edge);padding:5px 0}
@@ -940,7 +1008,7 @@
       const lang = cardLanguage(this._hass.language);
       this.setAttribute('dir', RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr');
       const texts = LANGUAGE[lang] || LANGUAGE.en;
-      const t = (key) => texts[key] || LANGUAGE.en[key];
+      const t = (key) => key === "title" ? BRAND_TITLE : (texts[key] || LANGUAGE.en[key]);
       const found = detected(this._hass);
       const chosen = this._config.entity || (found.length===1 ? found[0] : '');
       this.shadowRoot.innerHTML = `<style>:host{display:block;padding:8px 0}label{display:block;margin:10px 0;font:inherit;font-size:13px}
@@ -951,7 +1019,8 @@
         ${found.map((id) => `<option value="${escape(id)}" ${id===chosen?'selected':''}>${escape(this._hass.states[id]?.attributes?.friendly_name || id)}</option>`).join('')}</select></label>
         <label>${escape(t('title'))}<input data-setting="title" type="text" value="${escape(this._config.title || '')}" /></label>
         <label class="tick"><input type="checkbox" data-setting="show_outside" ${this._config.show_outside!==false?'checked':''}>${escape(t('outside'))}</label>
-        <label class="tick"><input type="checkbox" data-setting="show_metrics" ${this._config.show_metrics!==false?'checked':''}>${escape(t('readings'))}</label>`;
+        <label class="tick"><input type="checkbox" data-setting="show_metrics" ${this._config.show_metrics!==false?'checked':''}>${escape(t('readings'))}</label>
+        <label class="tick"><input type="checkbox" data-setting="show_science" ${this._config.show_science!==false?'checked':''}>${escape(SCIENCE_LABELS[lang]?.title || SCIENCE_LABELS.en.title)}</label>`;
       this.shadowRoot.querySelectorAll('[data-setting]').forEach((field) => {
         field.addEventListener('change', () => {
           const prop = field.dataset.setting;
@@ -966,18 +1035,40 @@
 
   if (!customElements.get('air-quality-advisor-card')) customElements.define('air-quality-advisor-card',AirQualityAdvisorCard);
   if (!customElements.get('air-quality-advisor-card-editor')) customElements.define('air-quality-advisor-card-editor',AirQualityAdvisorCardEditor);
+  // New brand alias; old Lovelace YAML configurations keep working unmodified.
+  if (!customElements.get('home-environment-manager-card')) {
+    customElements.define('home-environment-manager-card', class extends AirQualityAdvisorCard {});
+  }
+  if (!customElements.get('home-environment-manager-card-editor')) {
+    customElements.define('home-environment-manager-card-editor', class extends AirQualityAdvisorCardEditor {});
+  }
+  customElements.get('home-environment-manager-card').getConfigElement =
+    () => document.createElement('home-environment-manager-card-editor');
   AirQualityAdvisorCard.getConfigElement = () => document.createElement('air-quality-advisor-card-editor');
   window.customCards = window.customCards || [];
   if (!window.customCards.some((card) => card.type === 'air-quality-advisor-card')) {
     window.customCards.push({
       type:'air-quality-advisor-card',
-      name:'Air Quality Advisor',
-      description:'Live room and outdoor air quality, windows, and ventilation recommendations.',
+      name:BRAND_TITLE,
+      description:'Evidence-grounded room environment, air quality, thermal comfort, ventilation and climate advice. PID control is planned.',
       preview:true,
       documentationURL:'https://github.com/Chreece/HA-Air-Quality-Advisor',
       getEntitySuggestion: (hass,entityId) =>
         hass.states[entityId]?.attributes?.dashboard?.version === 1
           ? {config:{type:'custom:air-quality-advisor-card',entity:entityId}}
+          : null
+    });
+  }
+  if (!window.customCards.some((card) => card.type === 'home-environment-manager-card')) {
+    window.customCards.push({
+      type:'home-environment-manager-card',
+      name:BRAND_TITLE,
+      description:'Indoor air, moisture, thermal comfort, exposure and climate guidance.',
+      preview:true,
+      documentationURL:'https://github.com/Chreece/HA-Air-Quality-Advisor',
+      getEntitySuggestion:(hass,entityId) =>
+        hass.states[entityId]?.attributes?.dashboard?.version === 1
+          ? {config:{type:'custom:home-environment-manager-card',entity:entityId}}
           : null
     });
   }
