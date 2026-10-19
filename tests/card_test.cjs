@@ -360,3 +360,21 @@ assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-action="resume"'));
 pidData.rooms[0].environment.climate_pid={status:'disabled'};
 pidCard.hass={language:'en',states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
 assert.ok(!pidCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
+
+const nativeRange=JSON.parse(JSON.stringify(input));
+nativeRange.rooms[0].environment={climate_plan:{
+  status:'ready',profile:'home',mode:'heat_cool',
+  low_target_c:20,high_target_c:26,
+  actuation:{status:'native_range_commanded'},
+  reason:'device_internal_heat_cool',
+}};
+const rangeCard=new Card();
+rangeCard.setConfig({entity:'sensor.range_demo'});
+for(const [lang,title] of [['en','Climate'],['de','Klima'],['el','Κλίμα']]){
+  rangeCard.hass={language:lang,states:{
+    'sensor.range_demo':{state:'idle',attributes:{dashboard:nativeRange}},
+  }};
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes(title));
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes('20–26 °C'));
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes('data-climate-area="kitchen"'));
+}
