@@ -33,6 +33,11 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     return True
 
 
+NATIVE_CLIMATE_SCHEMA = probatio.Schema({
+    probatio.Required("area"): cv.string,
+    probatio.Required("action"): probatio.In(["pause", "resume"]),
+})
+
 PID_CONTROL_SCHEMA = probatio.Schema({
     probatio.Required("area"): cv.string,
     probatio.Required("action"): probatio.In(["pause", "resume", "reset"]),
@@ -103,6 +108,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     service_domain, "pid_control", async_pid_action,
                     schema=PID_CONTROL_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
                 )
+    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_control"):
+        async def async_native_action(call: ServiceCall) -> ServiceResponse:
+            managers=list(hass.data.get(DOMAIN, {}).values())
+            if not managers:
+                return {"accepted":False,"reason":"not_loaded"}
+            result=await managers[0].async_climate_control(
+                call.data["area"],call.data["action"]
+            )
+            return result if call.return_response else None
+        for domain in (DOMAIN,PUBLIC_ACTION_DOMAIN):
+            if not hass.services.has_service(domain,"climate_control"):
+                hass.services.async_register(
+                    domain,"climate_control",async_native_action,
+                    schema=NATIVE_CLIMATE_SCHEMA,
+                    supports_response=SupportsResponse.OPTIONAL,
+                )
     return True
 
 
@@ -118,4 +139,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN):
             if hass.services.has_service(service_domain, "pid_control"):
                 hass.services.async_remove(service_domain, "pid_control")
+            if hass.services.has_service(service_domain, "climate_control"):
+                hass.services.async_remove(service_domain, "climate_control")
     return True
