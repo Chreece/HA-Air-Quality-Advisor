@@ -340,3 +340,23 @@ console.log('Dashboard card frontend tests passed');
 
 assert.equal(registered.has('home-environment-manager-card'),true);
 assert.equal(window.customCards.some((card)=>card.type==='home-environment-manager-card'),true);
+
+const pidData = JSON.parse(JSON.stringify(input));
+pidData.rooms[0].environment = {climate_pid:{
+  status:'controlling',mode:'heat',target_c:21.5,
+  demand_percent:40,desired_setpoint_c:22.1
+}};
+const pidCard = new Card();
+pidCard.setConfig({entity:'sensor.pid_test'});
+for (const [language,translation] of [['en','Climate PID'],['de','Klima-PID'],['el','Κλιματικός PID']]) {
+  pidCard.hass={language,states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
+  assert.ok(pidCard.shadowRoot.innerHTML.includes(translation), 'PID title not localized: '+language);
+  assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-area="kitchen"'));
+  assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
+}
+pidData.rooms[0].environment.climate_pid={status:'paused',reason:'manual_hvac_mode_change'};
+pidCard.hass={language:'en',states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
+assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-action="resume"'));
+pidData.rooms[0].environment.climate_pid={status:'disabled'};
+pidCard.hass={language:'en',states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
+assert.ok(!pidCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
