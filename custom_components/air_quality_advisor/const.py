@@ -37,6 +37,9 @@ INDOOR_METRICS = (*SUPPORTED_AIR_METRICS, "humidity")
 WEATHER_CLEAR = frozenset(("sunny", "clear-night", "partlycloudy", "cloudy"))
 
 DEFAULT_THRESHOLDS = {
+    # These are configurable *operational screen values* on instantaneous data.
+    # WHO 2021 PM guidance applies to 24-hour means, available separately in
+    # the derived dashboard; 15 / 45 here must NOT be called WHO compliance.
     "outdoor_aqi": 50.0,  # Assumes US AQI (0–500), see README.
     "outdoor_co2": 800.0,
     "outdoor_pm25": 15.0,     # µg/m³; instantaneous guidance, not daily exposure.

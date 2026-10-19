@@ -364,3 +364,13 @@ def test_mold_temperature_sensor_fahrenheit_conversion_and_staleness(adapter):
     assert temperature_sensor_c(ha, "sensor.bedroom_temperature", 90) == 20
     ha._values["sensor.bedroom_temperature"].last_reported -= timedelta(hours=3)
     assert temperature_sensor_c(ha, "sensor.bedroom_temperature", 90) is None
+
+def test_physically_implausible_co2_and_humidity_are_unknown_not_safe(adapter):
+    home = FakeHass([
+        MockState("sensor.co2", 190, device_class="co2", unit="ppm"),
+        MockState("sensor.humidity", 140, device_class="humidity", unit="%"),
+    ])
+    assert adapter.reading(home, "sensor.co2", 90, outdoor=False).value is None
+    assert adapter.reading(home, "sensor.humidity", 90, outdoor=False).value is None
+    home._values["sensor.co2"] = MockState("sensor.co2", 1200, device_class="co2", unit="ppm")
+    assert adapter.reading(home, "sensor.co2", 90, outdoor=False).value == 1200

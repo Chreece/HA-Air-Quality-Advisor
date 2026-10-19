@@ -178,6 +178,13 @@ def reading(hass: HomeAssistant, entity_id: str, max_age_minutes: float, *, outd
     if value is None or value < 0 or is_stale(state, max_age_minutes):
         return Reading(entity_id, name, metric, None)
     normalized = _normalize(metric, value, state.attributes.get("unit_of_measurement"))
+    # Sanity bounds are not calibration. They reject physically implausible
+    # concentrations so a broken low sensor cannot make an unsafe room green.
+    # Keep supported_metric() unit checks independent of value validation.
+    if metric == "co2" and normalized is not None and not 250 <= normalized <= 20000:
+        normalized = None
+    if metric == "humidity" and normalized is not None and not 0 < normalized <= 100:
+        normalized = None
     return Reading(entity_id, name, metric, normalized)
 
 
