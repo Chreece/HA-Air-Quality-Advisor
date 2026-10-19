@@ -6,7 +6,7 @@ from pathlib import Path
 root = Path(__file__).parent / 'custom_components' / 'air_quality_advisor'
 lang = {
 'en': {
- 'title':'Air Quality Advisor',
+ 'title':'Home Environment Manager',
  'steps': [
   ('Areas', 'Areas with Window-class binary sensors are preselected during initial setup; covers are excluded. The detected window count appears beside each area. In reconfiguration, your existing selection is preserved, and areas with missing contacts are marked ⚠.', 'Areas to monitor'),
   ('Outdoor air quality', 'Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.', 'Outdoor air-quality sensors'),
@@ -307,7 +307,7 @@ for code,v in lang.items():
  errors = {**v['errors'], **area_validation[code],
            'invalid_repeat_minutes': REPEAT_TEXT[code][2],
            'missing_ai_service': ai['missing'], 'invalid_ai_agent': ai['invalid']}
- section = {'step':{sid:steps[sid] for sid in initial_stepids},'error':errors, 'abort':{'already_configured':'Air Quality Advisor is already configured.'}}
+ section = {'step':{sid:steps[sid] for sid in initial_stepids},'error':errors, 'abort':{'already_configured':'Home Environment Manager is already configured.'}}
  # Configure selects a single section from a localized options menu.
  menu_titles = {
   'en':'Choose settings to edit', 'el':'Επιλογή ρυθμίσεων',

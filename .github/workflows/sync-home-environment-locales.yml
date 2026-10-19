@@ -1,4 +1,4 @@
-name: Synchronize Home Environment Advisor translations
+name: Synchronize Home Environment Manager translations
 
 on:
   push:
@@ -38,6 +38,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'All translations already synchronized'
           else
-            git commit -m 'i18n: synchronize Home Environment Advisor configuration'
+            git commit -m 'i18n: synchronize Home Environment Manager configuration'
             git push origin HEAD:"${GITHUB_REF_NAME}"
           fi

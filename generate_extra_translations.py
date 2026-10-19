@@ -135,7 +135,7 @@ def generate_extended(root: Path = ROOT) -> None:
             "blocked": card[1],
         }
         service = obj["services"]["announce"]
-        service["name"] = f"{ui[5]} — Air Quality Advisor"
+        service["name"] = f"{ui[5]} — Home Environment Manager"
         service["description"] = f"{ui[5]} · {ui[0]}"
         for key, value in (
             ("language", ui[17]), ("channels", ui[5]), ("areas", ui[0])
