@@ -1,5 +1,5 @@
 {
-  "title": "Asesor de calidad del aire",
+  "title": "Home Environment Advisor",
   "config": {
     "step": {
       "areas": {
@@ -141,7 +141,7 @@
       "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera."
     },
     "abort": {
-      "already_configured": "Air Quality Advisor ya está configurado."
+      "already_configured": "Home Environment Advisor is already configured."
     }
   },
   "options": {
@@ -156,7 +156,9 @@
           "window_sensors": "Excluir sensores de ventana",
           "outdoor": "Calidad del aire exterior",
           "delivery": "Anuncios (opcional)",
-          "thresholds": "Umbrales avanzados"
+          "thresholds": "Umbrales avanzados",
+          "environment": "Fuentes internacionales de calidad del aire y polen",
+          "environment_room": "Elegir habitación para análisis ambiental"
         }
       },
       "window_sensors": {
@@ -271,6 +273,230 @@
           "max_age_minutes": "Antigüedad máxima de una medición exterior (minutos)",
           "indoor_mold": "Umbral de moho para ventilar (humedad superficial estimada, %)"
         }
+      },
+      "environment": {
+        "title": "Fuentes internacionales de calidad del aire y polen",
+        "description": "Opcional. Selecciona la escala de cada AQI: US EPA, categorías europeas o límite personalizado. No se infiere la escala por país.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)",
+          "aqi_scale_0": "AQI sensor #1: source scale",
+          "aqi_custom_limit_0": "AQI sensor #1: custom unsafe threshold",
+          "aqi_scale_1": "AQI sensor #2: source scale",
+          "aqi_custom_limit_1": "AQI sensor #2: custom unsafe threshold",
+          "aqi_scale_2": "AQI sensor #3: source scale",
+          "aqi_custom_limit_2": "AQI sensor #3: custom unsafe threshold",
+          "aqi_scale_3": "AQI sensor #4: source scale",
+          "aqi_custom_limit_3": "AQI sensor #4: custom unsafe threshold",
+          "aqi_scale_4": "AQI sensor #5: source scale",
+          "aqi_custom_limit_4": "AQI sensor #5: custom unsafe threshold",
+          "aqi_scale_5": "AQI sensor #6: source scale",
+          "aqi_custom_limit_5": "AQI sensor #6: custom unsafe threshold",
+          "aqi_scale_6": "AQI sensor #7: source scale",
+          "aqi_custom_limit_6": "AQI sensor #7: custom unsafe threshold",
+          "aqi_scale_7": "AQI sensor #8: source scale",
+          "aqi_custom_limit_7": "AQI sensor #8: custom unsafe threshold",
+          "aqi_scale_8": "AQI sensor #9: source scale",
+          "aqi_custom_limit_8": "AQI sensor #9: custom unsafe threshold",
+          "aqi_scale_9": "AQI sensor #10: source scale",
+          "aqi_custom_limit_9": "AQI sensor #10: custom unsafe threshold",
+          "aqi_scale_10": "AQI sensor #11: source scale",
+          "aqi_custom_limit_10": "AQI sensor #11: custom unsafe threshold",
+          "aqi_scale_11": "AQI sensor #12: source scale",
+          "aqi_custom_limit_11": "AQI sensor #12: custom unsafe threshold",
+          "aqi_scale_12": "AQI sensor #13: source scale",
+          "aqi_custom_limit_12": "AQI sensor #13: custom unsafe threshold",
+          "aqi_scale_13": "AQI sensor #14: source scale",
+          "aqi_custom_limit_13": "AQI sensor #14: custom unsafe threshold",
+          "aqi_scale_14": "AQI sensor #15: source scale",
+          "aqi_custom_limit_14": "AQI sensor #15: custom unsafe threshold",
+          "aqi_scale_15": "AQI sensor #16: source scale",
+          "aqi_custom_limit_15": "AQI sensor #16: custom unsafe threshold",
+          "aqi_scale_16": "AQI sensor #17: source scale",
+          "aqi_custom_limit_16": "AQI sensor #17: custom unsafe threshold",
+          "aqi_scale_17": "AQI sensor #18: source scale",
+          "aqi_custom_limit_17": "AQI sensor #18: custom unsafe threshold",
+          "aqi_scale_18": "AQI sensor #19: source scale",
+          "aqi_custom_limit_18": "AQI sensor #19: custom unsafe threshold",
+          "aqi_scale_19": "AQI sensor #20: source scale",
+          "aqi_custom_limit_19": "AQI sensor #20: custom unsafe threshold",
+          "aqi_scale_20": "AQI sensor #21: source scale",
+          "aqi_custom_limit_20": "AQI sensor #21: custom unsafe threshold",
+          "aqi_scale_21": "AQI sensor #22: source scale",
+          "aqi_custom_limit_21": "AQI sensor #22: custom unsafe threshold",
+          "aqi_scale_22": "AQI sensor #23: source scale",
+          "aqi_custom_limit_22": "AQI sensor #23: custom unsafe threshold",
+          "aqi_scale_23": "AQI sensor #24: source scale",
+          "aqi_custom_limit_23": "AQI sensor #24: custom unsafe threshold",
+          "aqi_scale_24": "AQI sensor #25: source scale",
+          "aqi_custom_limit_24": "AQI sensor #25: custom unsafe threshold",
+          "aqi_scale_25": "AQI sensor #26: source scale",
+          "aqi_custom_limit_25": "AQI sensor #26: custom unsafe threshold",
+          "aqi_scale_26": "AQI sensor #27: source scale",
+          "aqi_custom_limit_26": "AQI sensor #27: custom unsafe threshold",
+          "aqi_scale_27": "AQI sensor #28: source scale",
+          "aqi_custom_limit_27": "AQI sensor #28: custom unsafe threshold",
+          "aqi_scale_28": "AQI sensor #29: source scale",
+          "aqi_custom_limit_28": "AQI sensor #29: custom unsafe threshold",
+          "aqi_scale_29": "AQI sensor #30: source scale",
+          "aqi_custom_limit_29": "AQI sensor #30: custom unsafe threshold",
+          "aqi_scale_30": "AQI sensor #31: source scale",
+          "aqi_custom_limit_30": "AQI sensor #31: custom unsafe threshold",
+          "aqi_scale_31": "AQI sensor #32: source scale",
+          "aqi_custom_limit_31": "AQI sensor #32: custom unsafe threshold"
+        },
+        "data_description": {
+          "pollen_entity": "Select a current numeric pollen-index entity produced by any local HA integration; nothing is fetched from a fixed national service.",
+          "pollen_high_from": "Provider-defined pollen indices are not internationally interchangeable. Check the selected provider's threshold definitions.",
+          "pollen_max_scale": "For example 5 for a 0–5 scale. The numerical maximum is specific to your provider.",
+          "pollen_avoid_ventilation": "If enabled, a high trusted pollen reading becomes an outside blocker. Leave off unless this is appropriate for your household.",
+          "aqi_scale_0": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_0": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_1": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_1": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_2": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_2": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_3": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_3": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_4": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_4": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_5": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_5": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_6": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_6": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_7": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_7": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_8": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_8": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_9": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_9": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_10": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_10": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_11": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_11": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_12": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_12": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_13": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_13": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_14": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_14": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_15": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_15": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_16": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_16": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_17": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_17": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_18": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_18": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_19": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_19": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_20": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_20": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_21": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_21": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_22": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_22": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_23": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_23": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_24": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_24": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_25": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_25": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_26": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_26": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_27": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_27": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_28": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_28": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_29": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_29": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_30": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_30": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_31": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_31": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold."
+        }
+      },
+      "environment_room": {
+        "title": "Elegir habitación para análisis ambiental",
+        "description": "Parámetros opcionales para una habitación.",
+        "data": {
+          "environment_area": "Room to configure"
+        },
+        "data_description": {
+          "environment_area": "Only the selected room is edited. Return here to configure another room."
+        }
+      },
+      "environment_room_air": {
+        "title": "Habitación: {area_name} — ventilación y humedad",
+        "description": "Opcional. Proporciona sensores correctos, volumen real y CADR de partículas. Confirma que el sensor CO₂ es NDIR real.",
+        "data": {
+          "temperature_entity": "Room air temperature sensor (optional override)",
+          "room_volume_m3": "Measured room air volume (m³)",
+          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
+          "purifier_entity": "Air purifier power/fan entity",
+          "extractor_entity": "Mechanical extraction fan/switch entity",
+          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
+          "co2_target_ppm": "CO₂ ventilation target (ppm)",
+          "sleep_room": "This is a sleeping room"
+        },
+        "data_description": {
+          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
+          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
+          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
+          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Advisor does not control the device.",
+          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
+          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
+          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
+          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "Habitación: {area_name} — sensores especializados",
+        "description": "Sensores opcionales de radón, formaldehído, ruido y luz. Los valores de referencia requieren mediciones verificadas.",
+        "data": {
+          "radon_entity": "Dedicated radon sensor",
+          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
+          "formaldehyde_entity": "Dedicated formaldehyde sensor",
+          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
+          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
+          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
+          "illuminance_entity": "Photopic illuminance (lux)",
+          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
+          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+        },
+        "data_description": {
+          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
+          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
+          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
+          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
+          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
+          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
+          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
+          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
+          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "Habitación: {area_name} — confort térmico completo",
+        "description": "ISO 7730 opcional: temperatura radiante, velocidad del aire, actividad y ropa obligatorias.",
+        "data": {
+          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
+          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
+          "air_speed_entity": "Measured local air-speed sensor (m/s)",
+          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
+          "met": "Occupant activity rate (met)",
+          "clo": "Occupant clothing insulation (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
+          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
+          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
+          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
+          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
+          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+        }
       }
     },
     "error": {
@@ -295,7 +521,10 @@
       "missing_mold_indoor_temperature": "El sensor interior no tiene una medida reciente válida.",
       "missing_mold_outdoor_temperature": "Ninguna entidad meteorológica elegida dispone de temperatura exterior reciente.",
       "invalid_mold_surface_temperature": "Introduce una temperatura superficial medida válida en °C.",
-      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera."
+      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera.",
+      "invalid_environment_scale": "Select a supported AQI/pollen scale and a valid threshold; no scale is guessed automatically.",
+      "invalid_environment_measurement": "Check this room's numeric values and allowed units/ranges.",
+      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them."
     }
   },
   "entity": {
