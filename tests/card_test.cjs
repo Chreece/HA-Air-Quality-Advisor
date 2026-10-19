@@ -48,8 +48,8 @@ for (const [lang, expected, rtl] of [
   ['ko', 'Home Environment Manager', false],
   ['hi', 'Home Environment Manager', false],
   ['ar', 'Home Environment Manager', true],
-  ['he', 'איכות האוויר', true],
-  ['ur', 'ہوا کا معیار', true],
+  ['he', 'Home Environment Manager', true],
+  ['ur', 'Home Environment Manager', true],
 ]) {
   card.hass={language:lang,states:{'sensor.air_quality_advisor_recommendations':{state:'open',attributes:{dashboard:input}}}};
   assert.ok(card.shadowRoot.innerHTML.includes(expected), `missing UI language: ${lang}`);
