@@ -11,6 +11,9 @@ BASE={
  "climate_enabled":"Enable climate planning for this room",
  "climate_allow_actuation":"Permit commands to the selected native thermostat (opt in)",
  "climate_auto_switch_hvac":"Automatically switch between supported heat/cool modes (separate opt in)",
+ "climate_sleep_active":"Sleep profile currently active in this room",
+ "climate_manual_profile":"Override occupancy/away profile (auto recommended)",
+ "climate_unknown_occupancy":"If occupancy is unknown: assume occupied or hold",
  "climate_controller":"Controller method / device capability",
  "climate_mode":"Heat, cool, off or automatic selection",
  "climate_entity":"Explicit room climate device",
@@ -58,7 +61,8 @@ def apply_climate_i18n(root:Path)->None:
         steps.setdefault("init",{}).setdefault("menu_options",{})["climate"]=vocab["climate"]
         descriptors={
           "climate":("climate",["climate_area"]),
-          "climate_room":("climate_room",["climate_enabled","climate_allow_actuation","climate_auto_switch_hvac","climate_controller",
+          "climate_room":("climate_room",["climate_enabled","climate_allow_actuation","climate_auto_switch_hvac","climate_sleep_active",
+              "climate_manual_profile","climate_unknown_occupancy","climate_controller",
              "climate_mode","climate_entity","climate_temperature_entity",
              "climate_occupancy_sensors","climate_away_entities","climate_hysteresis_c"]),
           "climate_profiles":("climate_profiles",[f"{p}_{kind}" for p in

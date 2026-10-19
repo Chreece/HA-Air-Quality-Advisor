@@ -891,7 +891,10 @@ class _FlowMixin:
                       "away_entities":user_input.get("climate_away_entities",draft.get("away_entities",[])),
                       "hysteresis_c":user_input.get("climate_hysteresis_c",draft.get("hysteresis_c",0.7)),
                       "allow_actuation":bool(user_input.get("climate_allow_actuation",draft.get("allow_actuation",False))),
-                      "auto_switch_hvac":bool(user_input.get("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)))}
+                      "auto_switch_hvac":bool(user_input.get("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False))),
+                      "sleep_active":bool(user_input.get("climate_sleep_active",draft.get("sleep_active",False))),
+                      "manual_profile":user_input.get("climate_manual_profile",draft.get("manual_profile","auto")),
+                      "unknown_occupancy":user_input.get("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied"))}
             if proposal["enabled"]:
                 if proposal["temperature_entity"] not in {c["value"] for c in temp_choices}:
                     errors["base"]="climate_temperature_required"
@@ -906,6 +909,10 @@ class _FlowMixin:
                     errors["base"]="climate_direct_actuator_not_ready"
                 elif proposal["controller"] not in ("device","setpoint_pid"):
                     errors["base"]="climate_controller_invalid"
+                elif proposal["manual_profile"] not in ("auto","home","unoccupied","away","sleep"):
+                    errors["base"]="climate_mode_invalid"
+                elif proposal["unknown_occupancy"] not in ("occupied","hold"):
+                    errors["base"]="climate_mode_invalid"
                 elif proposal["mode"] not in ("auto","heat","cool","off"):
                     errors["base"]="climate_mode_invalid"
                 elif not all(x in {c["value"] for c in occupant_choices} for x in proposal["occupancy_sensors"]):
@@ -919,6 +926,15 @@ class _FlowMixin:
             _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
             _marker("climate_allow_actuation",draft.get("allow_actuation",False)):selector.BooleanSelector(),
             _marker("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)):selector.BooleanSelector(),
+            _marker("climate_sleep_active",draft.get("sleep_active",False)):selector.BooleanSelector(),
+            _marker("climate_manual_profile",draft.get("manual_profile","auto")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["auto","home","unoccupied","away","sleep"],
+                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["occupied","hold"],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},

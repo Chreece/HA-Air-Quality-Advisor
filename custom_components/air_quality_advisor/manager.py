@@ -201,6 +201,10 @@ class AirQualityManager:
                 settings=room_climate_configs.get(monitored.area_id,{})
                 state,tracked=climate_room_plan(self.hass,monitored,settings)
                 if isinstance(settings,dict) and settings.get("enabled"):
+                    state["automatic_actuation_enabled"] = (
+                        settings.get("allow_actuation") is True and
+                        settings.get("controller") == "device"
+                    )
                     state["actuation"] = self.native_climate.statuses.get(monitored.area_id,{"status":"advisory_only"})
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
