@@ -162,7 +162,8 @@
           "thresholds": "Speciális határértékek",
           "environment": "International air-quality sources and pollen",
           "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room"
+          "pid": "Climate PID — select a room",
+          "climate": "Climate — select room"
         }
       },
       "window_sensors": {
@@ -562,6 +563,64 @@
           "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
           "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
         }
+      },
+      "climate": {
+        "title": "Climate — select room",
+        "description": "Configure each selected room independently. A real temperature measurement and explicit supported climate device are required. All new direct relay/PWM modes are blocked pending actuator testing. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_area": "Room to configure"
+        },
+        "data_description": {
+          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_room": {
+        "title": "Climate — controller, occupancy and away",
+        "description": "Configure each selected room independently. A real temperature measurement and explicit supported climate device are required. All new direct relay/PWM modes are blocked pending actuator testing. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_enabled": "Enable room climate planner (no new actuation)",
+          "climate_controller": "Controller method / device capability",
+          "climate_mode": "Heat, cool, off or automatic selection",
+          "climate_entity": "Explicit room climate device",
+          "climate_temperature_entity": "Fresh independent temperature sensor",
+          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
+          "climate_away_entities": "People or device trackers for home/away",
+          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
+          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
+          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_profiles": {
+        "title": "Climate — temperature bands for each mode",
+        "description": "Configure each selected room independently. A real temperature measurement and explicit supported climate device are required. All new direct relay/PWM modes are blocked pending actuator testing. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "home_heat": "Home heat",
+          "home_cool": "Home cool",
+          "unoccupied_heat": "Unoccupied heat",
+          "unoccupied_cool": "Unoccupied cool",
+          "away_heat": "Away heat",
+          "away_cool": "Away cool",
+          "sleep_heat": "Sleep heat",
+          "sleep_cool": "Sleep cool"
+        },
+        "data_description": {
+          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
       }
     },
     "error": {
@@ -594,7 +653,15 @@
       "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
       "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
       "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
-      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits."
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
+      "climate_temperature_required": "Select a room temperature sensor.",
+      "climate_target_required": "Select a supported climate entity assigned to this room.",
+      "climate_direct_actuator_not_ready": "Relay/PWM/proportional drivers are still under safety testing; they cannot be enabled.",
+      "climate_controller_invalid": "Choose a supported control method.",
+      "climate_mode_invalid": "Choose auto, heat, cool or off.",
+      "climate_occupancy_invalid": "An occupancy sensor does not belong to this room.",
+      "climate_away_invalid": "Select a valid people/tracker entity.",
+      "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile."
     }
   },
   "entity": {
