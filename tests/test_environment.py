@@ -4,7 +4,7 @@ from __future__ import annotations
 from custom_components.air_quality_advisor.building_physics import DAY_S, WEEK_S
 from custom_components.air_quality_advisor.environment_history import EnvironmentHistory
 from custom_components.air_quality_advisor.logic import Reading, Room, Weather, Window, evaluate
-from test_discovery import FakeHass, MockState
+from test_discovery import FakeHass, MockState, adapter
 
 
 def room():
