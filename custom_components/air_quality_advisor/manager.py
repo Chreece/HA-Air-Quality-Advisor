@@ -208,7 +208,17 @@ class AirQualityManager:
                     if monitored.area_id in self.direct_climate._rooms else
                     self.native_climate.expected_hvac.get(monitored.area_id)
                 )
-                state,tracked=climate_room_plan(self.hass,monitored,settings,prior_mode=prior)
+                pmv_air=environment.get(monitored.area_id,{}).get(
+                    "international",{}).get("pmv_air_target",{}
+                )
+                comfort=pmv_air.get("air_temperature_target_c") if (
+                    pmv_air.get("status")=="estimate") else None
+                state,tracked=climate_room_plan(
+                    self.hass,monitored,settings,prior_mode=prior,
+                    comfort_target_c=comfort,
+                )
+                state["target_source"]=settings.get("target_source","temperature")
+                state["comfort_target_evidence"]=pmv_air.get("status","not_configured")
                 if isinstance(settings,dict) and settings.get("enabled"):
                     state["automatic_actuation_enabled"] = (
                         settings.get("allow_actuation") is True and

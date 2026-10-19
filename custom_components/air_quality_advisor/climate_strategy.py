@@ -127,7 +127,8 @@ def auto_mode(temp_c:float|None, heat_c:float, cool_c:float,
 def policy(settings:dict, *, temp_c:float|None,
            capability:dict, at_home:str, occupied:str,
            sleeping:bool=False, manual_profile:str|None=None,
-           prior_mode:str|None=None, window_safe:bool=True) -> Output:
+           prior_mode:str|None=None, window_safe:bool=True,
+           comfort_target_c:float|None=None) -> Output:
     default=Output("disabled","home",None,None,"not_enabled","none")
     if not isinstance(settings,dict) or settings.get("enabled") is not True: return default
     all_profiles,err=profiles(settings)
@@ -162,6 +163,22 @@ def policy(settings:dict, *, temp_c:float|None,
     if desired in ("heat","cool") and not capability.get(desired,False):
         return Output("unsupported_mode",name,None,None,"device_does_not_support_"+desired,strategy)
     target=band.heat_c if desired=="heat" else band.cool_c if desired=="cool" else None
+    # ISO 7730 inverse PMV supplies a *bounded correction*, never replaces
+    # the explicit homeowner-defined comfort band or away/eco setbacks.
+    if (settings.get("target_source")=="pmv" and name in ("home","sleep")
+            and target is not None):
+        comfort=_num(comfort_target_c,16,30)
+        influence=_num(settings.get("comfort_adjustment_max_c",1.5),0,2.5)
+        if comfort is not None and influence is not None:
+            if desired=="heat":
+                target=min(band.heat_c+influence, max(
+                    band.heat_c, min(comfort-0.5, band.cool_c-1.0),
+                ))
+            elif desired=="cool":
+                target=max(band.cool_c-influence, min(
+                    band.cool_c, max(comfort+0.5, band.heat_c+1.0),
+                ))
+            target=round(target,2)
     # Manual setpoint PID must never be stacked over an unknown device's PID.
     if strategy=="setpoint_pid" and settings.get("native_pid",False):
         return Output("conflicting_controllers",name,None,None,"nested_pid_forbidden","none")
