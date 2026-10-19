@@ -29,6 +29,8 @@ from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_ann
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
 from .discovery import entity_area, reading, rooms, warning, weather, temperature_sensor_c
 from .mold import estimate_mold_for_room, rh_fallback_for_room
+from .environment import build_environment
+from .environment_history import EnvironmentHistory
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -52,6 +54,8 @@ class AirQualityManager:
         self._last_sent: dict[str, float] = {}
         self._active = False
         self._tasks: set[asyncio.Task[Any]] = set()
+        self._environment_history = EnvironmentHistory()
+        self._environment_store: Any | None = None
 
     @property
     def settings(self) -> dict[str, Any]:
@@ -98,6 +102,7 @@ class AirQualityManager:
         current_weather = tuple(
             weather(self.hass, ent, max_age) for ent in config.get(CONF_WEATHER, [])
         )
+        raw_rooms = selected_rooms  # Keep source RH before optional mold substitution.
         mold_temperature_entities: set[str] = set()
         # Preserve the exact set of supported, included humidity sensors
         # before replacing them with the derived room mold indicator.
@@ -150,16 +155,51 @@ class AirQualityManager:
                if item.metric != "mold"
                and not (item.details or {}).get("fallback_for_mold")}
         )
+        outdoor_readings = tuple(
+            reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)
+        )
+        warnings = tuple(warning(self.hass, ent, max_age) for ent in config.get(CONF_WARNINGS, []))
+        base_plan = evaluate(outdoor_readings, current_weather, warnings, selected_rooms, self.thresholds)
+        environment, changed = build_environment(
+            self.hass, raw_rooms, selected_rooms, current_weather, outdoor_readings,
+            history=self._environment_history, max_age_minutes=max_age,
+            mold_calibrations=config.get(CONF_MOLD_ROOMS, {}),
+            outside_safe=base_plan.outdoor_safe,
+        )
+        for report in environment.values():
+            source = report.get("sources", {}).get("indoor_temperature_entity")
+            if isinstance(source, str):
+                self._tracked.add(source)
+        # Observe occupancy changes for conditional CO2 decay, but never
+        # treat motion activity as reliable evidence of an unoccupied room.
+        for state in self.hass.states.async_all("binary_sensor"):
+            if (str(state.attributes.get("device_class", "")).casefold() in ("occupancy", "presence")
+                    and entity_area(self.hass, state.entity_id) in monitored_areas):
+                self._tracked.add(state.entity_id)
+        if changed and self._environment_store is not None:
+            self._environment_store.async_delay_save(
+                self._environment_history.snapshot, 300,
+            )
         return evaluate(
-            tuple(reading(self.hass, ent, max_age, outdoor=True) for ent in sorted(selected_outdoor)),
-            current_weather,
-            tuple(warning(self.hass, ent, max_age) for ent in config.get(CONF_WARNINGS, [])),
-            selected_rooms,
-            self.thresholds,
+            outdoor_readings, current_weather, warnings, selected_rooms,
+            self.thresholds, environment=environment,
         )
 
     async def async_start(self) -> None:
         """Track sensor changes and periodically recheck freshness and new entities."""
+        # Home Assistant Store keeps bounded sensor samples through restart.
+        # Pure-logic tests may stub HA without its storage package.
+        try:
+            from homeassistant.helpers.storage import Store
+            self._environment_store = Store(
+                self.hass, 1, f"{DOMAIN}.environment_history_{self.entry.entry_id}",
+            )
+            stored = await self._environment_store.async_load()
+            self._environment_history = EnvironmentHistory.restore(stored)
+        except ImportError:
+            _LOGGER.debug("Home Assistant storage not available in test runtime")
+        except Exception:
+            _LOGGER.exception("Environment history could not be restored; starting empty")
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -365,6 +405,11 @@ class AirQualityManager:
         if pending:
             await asyncio.gather(*pending, return_exceptions=True)
         self._tasks.clear()
+        if self._environment_store is not None:
+            try:
+                await self._environment_store.async_save(self._environment_history.snapshot())
+            except Exception:
+                _LOGGER.exception("Could not flush bounded environment history")
 
     def _targets_in_room(self, configured: list[str], area_id: str) -> list[str]:
         """Only configured room outputs or explicitly unassigned/general ones."""

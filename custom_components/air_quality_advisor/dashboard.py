@@ -119,6 +119,7 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
         "status": status,
         "status_detail": status_detail,
         "mold_warnings": mold_warnings,
+        "environment": plan.environment.get(room.area_id, {}),
         "rh_fallback": (
             {
                 "active": True,

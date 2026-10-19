@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Any
 import json
 
 from .const import DEFAULT_THRESHOLDS, WEATHER_CLEAR
@@ -100,6 +101,8 @@ class Plan:
     outdoor_readings: tuple[Reading, ...] = ()
     weather: tuple[Weather, ...] = ()
     warnings: tuple[Warning, ...] = ()
+    # Informational derived physics; not an additional measured air pollutant.
+    environment: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
     def signature(self) -> str:
@@ -133,9 +136,11 @@ def evaluate(
     warnings: tuple[Warning, ...],
     rooms: tuple[Room, ...],
     limits: dict[str, float] | None = None,
+    environment: dict[str, dict[str, Any]] | None = None,
 ) -> Plan:
     """Block on known outdoor hazards; report missing AQ data separately."""
     thresholds = {**DEFAULT_THRESHOLDS, **(limits or {})}
+    environmental = environment or {}
     outside: list[Reason] = []
     unavailable_outdoor: list[str] = []
 
@@ -208,11 +213,19 @@ def evaluate(
             continue
 
         indoor_reasons: list[Reason] = []
+        moisture_status = environmental.get(room.area_id, {}).get("moisture", {}).get("status")
         for reading in room.readings:
             limit = thresholds.get(f"indoor_{reading.metric}")
             if reading.value is None or limit is None:
                 continue
             if reading.value >= limit:
+                # Never recommend moisture-only airing when measured outdoor
+                # vapor mass is clearly higher, even if outdoor RH looks benign.
+                # CO2, PM and mold are evaluated independently; without
+                # paired, valid temperature/RH data legacy rules still apply.
+                if reading.metric == "humidity" and moisture_status == "humidifying":
+                    diagnostics.append((room.name, "outdoor_more_humid_than_indoor"))
+                    continue
                 indoor_reasons.append(_reading_reason("inside", reading))
 
         if not any(reading.value is not None for reading in room.readings):
@@ -228,5 +241,5 @@ def evaluate(
     return Plan(
         status, outdoor_safe, tuple(outside), tuple(recommendations),
         tuple(diagnostics), tuple(unavailable_outdoor),
-        tuple(rooms), tuple(outdoor), tuple(weather), tuple(warnings),
+        tuple(rooms), tuple(outdoor), tuple(weather), tuple(warnings), environmental,
     )
