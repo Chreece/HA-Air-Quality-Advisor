@@ -281,10 +281,7 @@ def pmv_iso7730(air_c: Any, mean_radiant_c: Any, rh: Any,
               finite(met, 0.81, 3.99), finite(clo, 0.01, 1.99)]
     if any(x is None for x in inputs):
         return {"status": "missing_or_outside_iso7730_inputs"}
-    try:
-        from pythermalcomfort.models import pmv_ppd_iso
-    except ImportError:
-        return {"status": "dependency_unavailable"}
+    from .pmv_core import pmv_ppd_iso
     try:
         response = pmv_ppd_iso(tdb=inputs[0], tr=inputs[1], rh=inputs[2],
                                vr=inputs[3], met=inputs[4], clo=inputs[5],

@@ -1,16 +1,13 @@
 {
-  "version": "0.5.0",
+  "version": "0.5.1",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Introduce opt-in per-room bounded supervisory PID control for explicitly selected climate.* thermostats in heat/cool mode",
-    "Use pure derivative-on-measurement PID math, conditional integral anti-windup, safe sample intervals and conservative setpoint rate limits",
-    "Never toggle compressors or HVAC modes; issue only climate.set_temperature to configured same-room entities",
-    "Pause and persist manual thermostat overrides, service failures and explicit user pause, with manual resume/reset actions",
-    "Stop commands for open/unknown windows, stale temperature sensors, conflicting targets, unsupported modes and invalid temperature steps",
-    "Add optional multi-page PID configuration with safe defaults, user-facing diagnostics and pause/resume buttons to the existing card",
-    "Preserve all monitoring, international science, Home Assistant entities, domain, and Announcement Hub routing",
-    "Expand regression tests, documentation and translations; validate Python, card, Hassfest, HACS and release only after checks pass"
+    "Fix Home Assistant Alpine/musl Python 3.14 installation failure caused by pythermalcomfort pulling Numba/llvmlite source builds",
+    "Bundle dependency-free scalar ISO 7730 Fanger PMV/PPD computation with published reference numerical regression tests",
+    "Remove mandatory external pythermalcomfort/Numba/llvmlite/LLVM requirements without disabling scientific comfort diagnostics",
+    "Maintain original integration domain, entities, configuration, Announcement Hub outputs, and v0.5 PID actuator behavior",
+    "Run tests, translation consistency, Hassfest, and HACS validation; auto-publish versioned v0.5.1 only after all pass"
   ]
 }

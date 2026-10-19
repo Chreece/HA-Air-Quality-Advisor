@@ -115,7 +115,7 @@ Users supply and explicitly identify which scale and units each sensor uses.
 | Formaldehyde | Verified real HCHO measurement, µg/m³ or mg/m³ | 30-minute observed concentration; comparison is disabled for cheap estimated HCHO/eCO₂ proxies. |
 | Acoustic environment | Calibrated A-weighted equivalent sound readings in dB(A) | Proper logarithmic acoustic-energy averaging, optionally the preceding local nighttime period for sleeping rooms. Peak-only meters are unsuitable. |
 | Lighting | Calibrated photopic lux measurements; independently measured melanopic EDI only | Daylight-exposure history. Ordinary lux is **never** converted into a fake circadian/melanopic result. |
-| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD using pinned `pythermalcomfort`, where applicable. Missing inputs suppress the result. |
+| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD using bundled dependency-free Fanger PMV model (numerically checked against pythermalcomfort 4.6.2), where applicable. Missing inputs suppress the result. |
 | Overheating | Time history of room temperature | Observed temperature degree-hours above a chosen reference, not TM52/TM59 building-certification compliance. |
 
 Existing modules from v0.3.0 remain, including humidity-ratio calculations,
@@ -558,3 +558,23 @@ MIT © 2026 Chreece
 ## Support this project
 
 If this integration helps, you can support ongoing development on [Ko-fi](https://ko-fi.com/chreece). Contributions and bug reports are welcome through the repository's [issues](https://github.com/Chreece/HA-Air-Quality-Advisor/issues).
+
+
+### Python 3.14 / Alpine installation compatibility (v0.5.1)
+
+Thermal comfort PMV/PPD now runs on the bundled scalar Fanger ISO 7730
+implementation in `pmv_core.py`. The optional scientific comfort module
+**requires no NumPy, SciPy, Numba, llvmlite, CMake or LLVM installation**.
+The reference equations and published outputs were compared against
+pythermalcomfort 4.6.2, whose MIT notice is bundled in
+`docs/licenses/pythermalcomfort-MIT.txt`.
+
+On Home Assistant's Alpine-based Python 3.14 container, the former
+`pythermalcomfort==4.6.2` dependency could request incompatible binary
+packages and fail during an `llvmlite` source build. This hotfix removes
+that installation barrier for all supported Home Assistant architectures.
+
+PMV requires genuine radiant-temperature, relative air velocity, activity,
+clothing and humidity inputs, and still suppresses results outside ISO 7730
+applicability. It is a population comfort estimate, not a health or
+building-standard certificate. **Room climate PID operation is unchanged.**

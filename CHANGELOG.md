@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 — Python 3.14 / Alpine dependency compatibility
+
+- Remove mandatory `pythermalcomfort` and its Numba/LLVM transitive dependencies; retain self-contained ISO 7730 PMV/PPD with published reference-vector tests.
+- Fix Home Assistant startup installation failure on Alpine Python 3.14 without CMake/LLVM workarounds.
+- Preserve PID, monitoring, announcements, configuration, entities, and versioned HACS release behavior.
+
 ## 0.5.0 — Opt-in bounded climate PID control
 
 - Add per-room PID setpoint control for explicit `climate.*` entities with separate heat/cool tuning and strict safe operating bounds.
