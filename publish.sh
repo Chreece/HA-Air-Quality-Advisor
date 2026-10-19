@@ -17,7 +17,7 @@ if [[ -n "$CURRENT" && "$CURRENT" != "https://github.com/$REPO.git" && "$CURRENT
     exit 2
 fi
 if ! gh repo view "$REPO" >/dev/null 2>&1; then
-    gh repo create "$REPO" --public --description 'Room-aware window ventilation recommendations using indoor/outdoor air quality, weather, alerts and optional TTS.'
+    gh repo create "$REPO" --public --description 'International air quality, indoor comfort, ventilation science, and future climate control for Home Assistant.'
 fi
 if [[ -z "$CURRENT" ]]; then
     git remote add origin "https://github.com/$REPO.git"
@@ -28,7 +28,7 @@ if [[ "$(git branch --show-current)" != 'main' ]]; then
 fi
 git add .
 if ! git diff --cached --quiet; then
-    git commit -m 'feat: add HACS-ready Air Quality Advisor v0.1.0'
+    git commit -m 'feat: add HACS-ready Home Environment Manager v0.1.0'
 fi
 git fetch origin main
 if ! git merge-base --is-ancestor origin/main HEAD; then
@@ -38,6 +38,6 @@ if ! git merge-base --is-ancestor origin/main HEAD; then
 fi
 git push -u origin main
 # Repository metadata is optional for custom HACS, useful for discovery.
-gh repo edit "$REPO" --description 'Room-aware air quality and window ventilation advisor for Home Assistant, with weather alerts and optional announcements.' --enable-issues || true
+gh repo edit "$REPO" --description 'Local international environmental intelligence, thermal comfort, pollution, ventilation, and optional announcements.' --enable-issues || true
 gh repo edit "$REPO" --add-topic 'home-assistant,hacs,custom-integration,air-quality,ventilation,tts,notifications,weather' || true
 printf 'REPOSITORY=https://github.com/%s\nGITHUB_ACTIONS=MANUAL_ONLY\nSSH_SESSION=UNCHANGED\n' "$REPO"

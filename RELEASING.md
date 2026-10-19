@@ -1,4 +1,4 @@
-# Releasing Air Quality Advisor
+# Releasing Home Environment Manager
 
 **First public GitHub/HACS release:** v0.1.8. Earlier 0.1.x changelog entries are development milestones and were not individually tagged.
 

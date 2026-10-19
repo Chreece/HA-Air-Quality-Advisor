@@ -2,7 +2,7 @@
 
 ## Scope
 
-The audit covers the **seven** Air Quality Advisor flow pages (Rooms, Window exclusions, per-room indoor sensor exclusions, Outdoor quality, Weather/warnings, Announcements, Advanced thresholds), their menu labels and descriptions, **all per-field help**, validation and abort messages, the output-language selection, and default conversation agent labels, in **38** BCP47 language catalogs. This is an integration UI-string audit, not an automated translation of data from external providers.
+The audit covers the **nine** Home Environment Manager flow pages (Rooms, Window exclusions, per-room indoor sensor exclusions, Outdoor quality, Weather/warnings, Announcements, Advanced thresholds), their menu labels and descriptions, **all per-field help**, validation and abort messages, the output-language selection, and default conversation agent labels, in **38** BCP47 language catalogs. This is an integration UI-string audit, not an automated translation of data from external providers.
 
 ## Root cause and correction
 
