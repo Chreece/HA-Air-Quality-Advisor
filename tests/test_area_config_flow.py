@@ -905,7 +905,8 @@ def test_climate_extra_equipment_is_room_scoped_and_removable(monkeypatch,adapte
         "climate_humidity_high_rh":60,
         "climate_humidity_hysteresis_rh":3,
     }))
-    assert devices["step_id"]=="climate_profiles"
+    assert devices["step_id"]=="climate_air_strategy"
+    assert asyncio.run(options.async_step_climate_air_strategy({}))["step_id"]=="climate_profiles"
     saved=asyncio.run(options.async_step_climate_profiles({}))
     room=saved["completed"]["data"]["climate_rooms"]["living"]
     assert room["dehumidifier_entity"]=="humidifier.dryer"
@@ -954,3 +955,55 @@ def test_native_humidity_target_needs_separate_permission_and_known_sensor(monke
     assert climate["humidity_setpoint_auto"] is True
     assert climate["dehumidifier_entity"]=="humidifier.dryer"
     assert climate["humidity_entity"]=="sensor.living_humidity"
+
+
+def test_climate_fan_air_wizard_requires_verified_room_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    extra=[
+        MockState("sensor.living_temperature",21,device_class="temperature",unit="°C"),
+        MockState("sensor.living_co2",1580,device_class="co2",unit="ppm"),
+        MockState("sensor.living_pm25",48,device_class="pm25",unit="µg/m³"),
+        MockState("climate.living","heat"),
+        MockState("fan.purifier","on"),
+        MockState("fan.extractor","on"),
+    ]
+    for state in extra:
+        h._values[state.entity_id]=state
+        h._entity_areas[state.entity_id]="living"
+    h._values["climate.living"].attributes.update({
+        "hvac_modes":["off","heat"],"supported_features":1})
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":"climate.living",
+        "climate_temperature_entity":"sensor.living_temperature",
+        "climate_controller":"device","climate_mode":"heat",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    form=asyncio.run(options.async_step_climate_equipment({
+        "climate_purifier_fan_entity":"fan.purifier",
+        "climate_extraction_fan_entity":"fan.extractor",
+    }))
+    assert form["step_id"]=="climate_air_strategy"
+    bad=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_speed_auto":True,
+        "climate_pm25_sensor_verified":False,
+    }))
+    assert bad["errors"]["base"]=="climate_fan_control_inputs_missing"
+    save=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_speed_auto":True,
+        "climate_pm25_sensor_verified":True,
+        "climate_pm25_entity":"sensor.living_pm25",
+        "climate_co2_entity":"sensor.living_co2",
+        "climate_extraction_speed_percent":70,
+        "climate_purifier_speed_percent":75,
+    }))
+    assert save["step_id"]=="climate_profiles"
+    room=asyncio.run(options.async_step_climate_profiles({}))["completed"]["data"]["climate_rooms"]["living"]
+    assert room["fan_speed_auto"] is True
+    assert room["co2_entity"]=="sensor.living_co2"
+    assert room["pm25_entity"]=="sensor.living_pm25"
+    assert room["pm25_sensor_verified"] is True
+    assert room["purifier_speed_percent"]==75

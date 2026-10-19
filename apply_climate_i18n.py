@@ -9,6 +9,7 @@ BASE={
  "climate_profiles":"Climate — temperature bands for each mode",
  "climate_presence":"Climate — occupancy, away, sleep and comfort",
  "climate_equipment":"Climate — additional equipment and humidity",
+ "climate_air_strategy":"Climate — ventilation and air purification",
  "climate_invalid_sleep_schedule":"Choose valid different HH:MM sleep start and end times.",
  "climate_invalid_comfort_adjustment":"Comfort adjustment must be between 0 and 2.5°C.",
  "climate_invalid_occupancy_timing":"Unoccupied settling time must be 0–240 min; sensor freshness must be 10–1440 min.",
@@ -50,6 +51,15 @@ BASE={
  "climate_humidity_setpoint_auto":"Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
  "climate_secondary_climate_setpoint_auto":"Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)",
  "climate_secondary_control_inputs_missing":"Select a different same-room heating or cooling climate entity, enable native climate control, and opt in separately.",
+ "climate_fan_speed_auto":"Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
+ "climate_pm25_sensor_verified":"I have verified this is a real PM2.5 measurement, not an estimated index",
+ "climate_co2_entity":"Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
+ "climate_pm25_entity":"Selected indoor PM2.5 sensor",
+ "climate_pm25_action_ug_m3":"Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
+ "climate_extraction_speed_percent":"Highest target speed for already-on extraction fan (%)",
+ "climate_purifier_speed_percent":"Highest target speed for already-on purifier fan (%)",
+ "climate_fan_control_inputs_missing":"Enable authorized room control and select verified sensors for at least one selected fan.",
+ "climate_fan_sensor_invalid":"Select only same-room CO₂/PM2.5 sensors and valid fan speed limits.",
  "climate_humidity_control_inputs_missing":"Enable authorized climate control and select a same-room humidity sensor plus humidifier/dehumidifier first.",
  "climate_actuation_requires_native_device":"Automated control currently supports only the device-native thermostat driver; separate relay/PWM safety validation is still required.",
  "climate_temperature_required":"Select a room temperature sensor.",
@@ -85,6 +95,16 @@ LABELS={
        "climate_profiles":"Klima — Temperaturbereiche je Betriebsart",
        "climate_presence":"Klima — Anwesenheit, Abwesenheit, Schlaf und Komfort",
        "climate_equipment":"Klima — zusätzliche Geräte und Luftfeuchtigkeit",
+       "climate_air_strategy":"Klima — Lüftung und Luftreinigung",
+       "climate_fan_speed_auto":"Drehzahl bereits laufender Lüfter regeln (separate Freigabe)",
+       "climate_pm25_sensor_verified":"PM2.5-Messsensor überprüft, kein geschätzter Index",
+       "climate_co2_entity":"CO₂-Sensor im Raum (NDIR-Prüfung in Umweltdaten)",
+       "climate_pm25_entity":"PM2.5-Sensor im Raum",
+       "climate_pm25_action_ug_m3":"PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)",
+       "climate_extraction_speed_percent":"Zieldrehzahl laufender Abluftanlage (%)",
+       "climate_purifier_speed_percent":"Zieldrehzahl laufender Luftreinigung (%)",
+       "climate_fan_control_inputs_missing":"Raumsteuerung, Geräte und geprüfte Sensoren auswählen.",
+       "climate_fan_sensor_invalid":"Nur gültige CO₂-/PM2.5-Sensoren und Prozentwerte auswählen.",
        "climate_heat_climate_entity":"Zusätzlicher Heizthermostat / Heizkörper",
        "climate_cool_climate_entity":"Zusätzliches Klimagerät zum Kühlen",
        "climate_dry_climate_entity":"Klimagerät mit Entfeuchtungsmodus DRY",
@@ -122,6 +142,16 @@ LABELS={
        "climate_profiles":"Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
        "climate_presence":"Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
        "climate_equipment":"Κλίμα — πρόσθετες συσκευές και υγρασία",
+       "climate_air_strategy":"Κλίμα — αερισμός και καθαρισμός αέρα",
+       "climate_fan_speed_auto":"Ρύθμιση ταχύτητας μόνο ήδη ενεργών ανεμιστήρων (ξεχωριστή άδεια)",
+       "climate_pm25_sensor_verified":"Επιβεβαιωμένος πραγματικός αισθητήρας PM2.5",
+       "climate_co2_entity":"Αισθητήρας CO₂ (έλεγχος NDIR στις ρυθμίσεις περιβάλλοντος)",
+       "climate_pm25_entity":"Αισθητήρας PM2.5",
+       "climate_pm25_action_ug_m3":"Λειτουργικό βραχυπρόθεσμο όριο PM2.5 (µg/m³)",
+       "climate_extraction_speed_percent":"Επιθυμητή ταχύτητα ενεργού εξαερισμού (%)",
+       "climate_purifier_speed_percent":"Επιθυμητή ταχύτητα ενεργού καθαριστή (%)",
+       "climate_fan_control_inputs_missing":"Επιλέξτε επιτρεπόμενο έλεγχο και επαληθευμένους αισθητήρες.",
+       "climate_fan_sensor_invalid":"Επιλέξτε έγκυρους αισθητήρες CO₂/PM2.5 και ποσοστά.",
        "climate_heat_climate_entity":"Ξεχωριστός θερμοστάτης θέρμανσης / καλοριφέρ",
        "climate_cool_climate_entity":"Κλιματιστικό / αντλία θερμότητας για ψύξη",
        "climate_dry_climate_entity":"Κλιματιστικό με λειτουργία αφύγρανσης DRY",
@@ -196,6 +226,12 @@ def apply_climate_i18n(root:Path)->None:
               "climate_humidity_setpoint_auto",
               "climate_secondary_climate_setpoint_auto",
           ]),
+          "climate_air_strategy":("climate_air_strategy",[
+              "climate_fan_speed_auto","climate_pm25_sensor_verified",
+              "climate_co2_entity","climate_pm25_entity",
+              "climate_pm25_action_ug_m3","climate_extraction_speed_percent",
+              "climate_purifier_speed_percent",
+          ]),
           "climate_profiles":("climate_profiles",[f"{p}_{kind}" for p in
               ("home","unoccupied","away","sleep") for kind in ("heat","cool")]),
           "climate_actuators":("climate_actuators",[
@@ -213,6 +249,10 @@ def apply_climate_i18n(root:Path)->None:
                     "actual modes and assigns exclusive roles. Secondary devices are "
                     "advisory only until their safe drivers are verified."
                     if key=="climate_equipment" else
+                    "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, "
+                    "and optionally permit bounded speed increases only for already-on fans. "
+                    "No on/off, preset, AC mode or compressor commands are permitted."
+                    if key=="climate_air_strategy" else
                     "Configure each selected room independently. "
                     "A fresh room temperature sensor and exact room-assigned actuators are required. "
                     "Direct relay/PWM is permitted only for independently protected non-compressor loads, "
@@ -233,6 +273,7 @@ def apply_climate_i18n(root:Path)->None:
                 "climate_controller_invalid","climate_mode_invalid",
                 "climate_occupancy_invalid","climate_away_invalid","climate_deadband_invalid",
                 "climate_humidity_control_inputs_missing",
-                "climate_secondary_control_inputs_missing")
+                "climate_secondary_control_inputs_missing",
+                "climate_fan_control_inputs_missing","climate_fan_sensor_invalid")
         })
         path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")

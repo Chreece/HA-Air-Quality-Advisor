@@ -1180,7 +1180,14 @@ class _FlowMixin:
                     hysteresis=proposal["humidity_hysteresis_rh"]).get("status")=="invalid_inputs":
                 errors["base"]="climate_mode_invalid"
             if not errors:
+                if not (proposal.get("extraction_fan_entity") or
+                        proposal.get("purifier_fan_entity")):
+                    proposal["fan_speed_auto"]=False
                 self._climate_draft=proposal
+                if (proposal.get("enabled") and
+                    (proposal.get("extraction_fan_entity") or
+                     proposal.get("purifier_fan_entity"))):
+                    return await self.async_step_climate_air_strategy()
                 return await self.async_step_climate_profiles()
         fields={}
         for role,domain in roles.items():
@@ -1214,6 +1221,95 @@ class _FlowMixin:
             )
         return self.async_show_form(
             step_id="climate_equipment",errors=errors,
+            data_schema=probatio.Schema(fields),
+            description_placeholders={"area_name":area},
+        )
+
+
+    async def async_step_climate_air_strategy(
+        self,user_input:dict[str,Any]|None=None,
+    )->ConfigFlowResult:
+        """Optional bounded speed for already-on extraction/purification fans.
+
+        This never authorizes fan power changes or AC compressor mode changes.
+        A real same-room sensor and explicit source verification are required.
+        """
+        from .discovery import entity_area,supported_metric
+        draft=self._climate_draft
+        area=self._climate_area
+        choices={}
+        for metric in ("co2","pm25"):
+            choices[metric]=[
+                {"value":"none","label":"No selected "+metric.upper()+" sensor"}
+            ]+[
+                {"value":st.entity_id,
+                 "label":(st.name or st.entity_id)+" · "+st.entity_id}
+                for st in self.hass.states.async_all("sensor")
+                if entity_area(self.hass,st.entity_id)==area and
+                   supported_metric(self.hass,st,outdoor=False)==metric
+            ]
+        errors={}
+        if user_input is not None:
+            proposal=dict(draft)
+            proposal["fan_speed_auto"]=user_input.get(
+                "climate_fan_speed_auto",draft.get("fan_speed_auto",False)) is True
+            proposal["pm25_sensor_verified"]=user_input.get(
+                "climate_pm25_sensor_verified",
+                draft.get("pm25_sensor_verified",False)) is True
+            for field,metric in (("co2_entity","co2"),("pm25_entity","pm25")):
+                item=user_input.get("climate_"+field, draft.get(field) or "none")
+                if item not in {opt["value"] for opt in choices[metric]}:
+                    errors["base"]="climate_fan_sensor_invalid"
+                proposal[field]=None if item=="none" else item
+            for field,default,low,high in (
+                ("pm25_action_ug_m3",35,5,250),
+                ("extraction_speed_percent",65,30,100),
+                ("purifier_speed_percent",65,30,100),
+            ):
+                try:
+                    value=float(user_input.get("climate_"+field,
+                        draft.get(field,default)))
+                except (ValueError,TypeError,OverflowError):
+                    value=float("nan")
+                if not math.isfinite(value) or not low<=value<=high:
+                    errors["base"]="climate_fan_sensor_invalid"
+                proposal[field]=value
+            if proposal["fan_speed_auto"]:
+                extractor=proposal.get("extraction_fan_entity")
+                purifier=proposal.get("purifier_fan_entity")
+                if (proposal.get("enabled") is not True or
+                    proposal.get("allow_actuation") is not True or
+                    (extractor and extractor==purifier) or
+                    not ((extractor and proposal.get("co2_entity")) or
+                         (purifier and proposal.get("pm25_entity") and
+                          proposal.get("pm25_sensor_verified")))):
+                    errors["base"]="climate_fan_control_inputs_missing"
+            if not errors:
+                self._climate_draft=proposal
+                return await self.async_step_climate_profiles()
+        fields={
+            _marker("climate_fan_speed_auto",draft.get("fan_speed_auto",False)):
+                selector.BooleanSelector(),
+            _marker("climate_pm25_sensor_verified",
+                    draft.get("pm25_sensor_verified",False)):
+                selector.BooleanSelector(),
+        }
+        for field,metric in (("co2_entity","co2"),("pm25_entity","pm25")):
+            fields[_marker("climate_"+field,draft.get(field) or "none")]=(
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=choices[metric],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )))
+        fields.update({
+            _marker("climate_pm25_action_ug_m3",draft.get(
+                "pm25_action_ug_m3",35)):_real_number(5,250,"µg/m³"),
+            _marker("climate_extraction_speed_percent",draft.get(
+                "extraction_speed_percent",65)):_real_number(30,100,"%"),
+            _marker("climate_purifier_speed_percent",draft.get(
+                "purifier_speed_percent",65)):_real_number(30,100,"%"),
+        })
+        return self.async_show_form(
+            step_id="climate_air_strategy",errors=errors,
             data_schema=probatio.Schema(fields),
             description_placeholders={"area_name":area},
         )
