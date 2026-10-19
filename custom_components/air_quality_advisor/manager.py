@@ -35,6 +35,7 @@ from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
 from .climate_rooms import gather as climate_room_plan
 from .climate_native import NativeClimateControl
+from .climate_direct import DirectClimateControl
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
 from .logic import Plan, evaluate
@@ -64,6 +65,9 @@ class AirQualityManager:
         self._environment_store: Any | None = None
         self.pid = ClimatePidCoordinator(self.hass, self.entry.entry_id, report_changed=self._pid_updated)
         self.native_climate = NativeClimateControl(self.hass, self.entry.entry_id)
+        self.direct_climate = DirectClimateControl(
+            self.hass, self.entry.entry_id, changed=self._direct_climate_updated,
+        )
 
     @property
     def settings(self) -> dict[str, Any]:
@@ -199,13 +203,22 @@ class AirQualityManager:
         if isinstance(room_climate_configs,dict):
             for monitored in selected_rooms:
                 settings=room_climate_configs.get(monitored.area_id,{})
-                state,tracked=climate_room_plan(self.hass,monitored,settings)
+                prior = (
+                    self.direct_climate._rooms.get(monitored.area_id).mode
+                    if monitored.area_id in self.direct_climate._rooms else
+                    self.native_climate.expected_hvac.get(monitored.area_id)
+                )
+                state,tracked=climate_room_plan(self.hass,monitored,settings,prior_mode=prior)
                 if isinstance(settings,dict) and settings.get("enabled"):
                     state["automatic_actuation_enabled"] = (
                         settings.get("allow_actuation") is True and
                         settings.get("controller") == "device"
                     )
-                    state["actuation"] = self.native_climate.statuses.get(monitored.area_id,{"status":"advisory_only"})
+                    driver = (self.direct_climate if settings.get("controller") in
+                              ("on_off","pwm","proportional") else self.native_climate)
+                    state["actuation"] = driver.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
         pid_configs = config.get(CONF_PID_ROOMS, {})
@@ -268,6 +281,7 @@ class AirQualityManager:
         # If its storage fails, the PID controller remains fail-closed.
         await self.pid.async_start()
         await self.native_climate.async_start()
+        await self.direct_climate.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -275,6 +289,7 @@ class AirQualityManager:
             self.hass.bus.async_listen("device_registry_updated", self._on_registry_changed),
             self.hass.bus.async_listen("area_registry_updated", self._on_registry_changed),
             async_track_time_interval(self.hass, self._on_interval, timedelta(minutes=5)),
+            async_track_time_interval(self.hass, self._on_fast_climate_interval, timedelta(seconds=30)),
         ))
         self._recalculate(initial=True)
 
@@ -296,7 +311,22 @@ class AirQualityManager:
         configured=self.settings.get(CONF_CLIMATE_ROOMS,{})
         if not isinstance(configured,dict) or not isinstance(configured.get(area),dict):
             return {"accepted":False,"reason":"room_not_configured"}
+        profile=configured[area]
+        if profile.get("controller") in ("on_off","pwm","proportional"):
+            return await self.direct_climate.command(area,action,configured)
         return await self.native_climate.command(area,action)
+
+    @callback
+    def _direct_climate_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(val) for key,val in self.plan.environment.items()}
+        for area,status in self.direct_climate.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],"actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
     async def async_pid_control(self, area: str, action: str) -> dict[str, Any]:
         configs = self.settings.get(CONF_PID_ROOMS, {})
@@ -309,6 +339,21 @@ class AirQualityManager:
     @callback
     def _on_interval(self, _now: Any) -> None:
         self._recalculate()
+
+    @callback
+    def _on_fast_climate_interval(self, _now: Any) -> None:
+        # PWM edges require faster scheduling than the 5-minute air-quality
+        # refresh. Use the last validated plan; _tick rechecks sensor freshness.
+        if not self._active:
+            return
+        settings=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if not isinstance(settings,dict) or not settings:
+            return
+        plans={area:item.get("climate_plan",{})
+               for area,item in self.plan.environment.items()
+               if isinstance(item,dict) and "climate_plan" in item}
+        pid_settings=self.settings.get(CONF_PID_ROOMS,{})
+        self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
 
     @callback
     def _on_state_changed(self, event: Event) -> None:
@@ -347,6 +392,10 @@ class AirQualityManager:
                if isinstance(data,dict)}
         self.native_climate.schedule(
             native_configs, plans, pid_rooms=configured_pid,
+        )
+        self.direct_climate.schedule(
+            native_configs, plans, pid_rooms=configured_pid,
+            native_rooms=native_configs,
         )
 
         previous = self._active_actions
@@ -496,6 +545,7 @@ class AirQualityManager:
         self._active = False
         await self.pid.async_stop()
         await self.native_climate.async_stop()
+        await self.direct_climate.async_stop()
         self._cancel_pending()
         self._cancel_repeat()
         self._active_actions.clear()

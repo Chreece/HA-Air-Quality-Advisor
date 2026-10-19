@@ -11,6 +11,7 @@ import time
 from typing import Any
 
 from .pid_math import bounded_command, target_from_unit, finite
+from .discovery import entity_area, temperature_sensor_c
 
 _LOGGER=logging.getLogger(__name__)
 MODE_DWELL_SECONDS=1800
@@ -157,8 +158,15 @@ class NativeClimateControl:
 
     async def _apply(self,area:str,settings:dict,report:dict,now:float):
         if not self._active or area in self.paused:return
-        if report.get("status")!="ready":
+        if report.get("status")!="ready" or report.get("window_safe") is not True:
             self.statuses[area]={"status":"hold","reason":report.get("reason","no_valid_plan")}
+            return
+        # Revalidate the live room-temperature source, not just the cached
+        # recommendation. An explicitly chosen heat mode cannot skip this gate.
+        source=settings.get("temperature_entity")
+        if (not isinstance(source,str) or entity_area(self.hass,source)!=area or
+                temperature_sensor_c(self.hass,source,10) is None):
+            self.statuses[area]={"status":"temperature_stale_or_wrong_room"}
             return
         mode=report.get("mode")
         entity=settings.get("climate_entity")

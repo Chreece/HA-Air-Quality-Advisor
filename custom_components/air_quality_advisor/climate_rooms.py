@@ -52,6 +52,28 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None)->tuple[di
     climate_id=settings.get("climate_entity")
     state=hass.states.get(climate_id) if isinstance(climate_id,str) and climate_id.startswith("climate.") else None
     cap=capabilities(state.attributes,state.state) if state else {"kind":"unavailable"}
+    strategy=settings.get("controller","device")
+    if strategy in ("on_off","pwm","proportional"):
+        kind="number" if strategy=="proportional" else "switch"
+        capability={"kind":kind,"heat":False,"cool":False,"setpoint":False}
+        for key,mode in (("heat_actuator","heat"),("cool_actuator","cool")):
+            entity=settings.get(key)
+            if not isinstance(entity,str) or not entity.startswith(kind+"."):
+                continue
+            if entity_area(hass,entity)!=area:
+                continue
+            candidate=hass.states.get(entity)
+            if candidate is None or candidate.state in ("unavailable","unknown"):
+                continue
+            if kind=="switch":
+                capability[mode]=candidate.state in ("on","off")
+            else:
+                attrs=candidate.attributes
+                try: valid=0<=float(candidate.state)<=100
+                except (ValueError,TypeError,OverflowError): valid=False
+                capability[mode]=(valid and attrs.get("unit_of_measurement")=="%"
+                    and attrs.get("min")==0 and attrs.get("max")==100)
+        cap=capability
     window_safe=bool(room.windows) and all(win.opened is False for win in room.windows)
     result=policy(settings,temp_c=temp,capability=cap,at_home=at_home,
                   occupied=occupied,sleeping=settings.get("sleep_active") is True,
@@ -68,6 +90,10 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None)->tuple[di
         "climate_entity":climate_id,"climate_capabilities":cap,
         "temperature_entity":temperature_id,"temperature_c":temp,
         "window_safe":window_safe,
-        "automatic_actuation_enabled":False,
-        "note":"advisory planner only: direct mode/PWM/relay commands require separate validated driver",
+        "automatic_actuation_enabled": bool(
+            settings.get("allow_actuation") and
+            (strategy in ("device","on_off","pwm","proportional")) and
+            (strategy=="device" or settings.get("direct_hardware_confirmed"))
+        ),
+        "note":"Only explicitly authorized same-room actuators are controllable; equipment safety remains external",
     },set(sensors+trackers+[x for x in (temperature_id,climate_id) if isinstance(x,str)])

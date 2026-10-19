@@ -141,9 +141,11 @@ def policy(settings:dict, *, temp_c:float|None,
     if strategy not in ("device","setpoint_pid","on_off","pwm","proportional"):
         return Output("invalid_config",name,None,None,"unknown_strategy","none")
     if strategy in ("on_off","pwm","proportional"):
-        # Distinct direct-actuator path: climate.* is NOT a switch.
-        if capability.get("kind")!="switch":
-            return Output("unsupported_device",name,None,None,"direct_actuator_required",strategy)
+        # Switch relays and proportional number controls are distinct drivers;
+        # neither one can be inferred from a climate.* entity name.
+        expected_kind = "number" if strategy=="proportional" else "switch"
+        if capability.get("kind")!=expected_kind:
+            return Output("unsupported_device",name,None,None,"verified_direct_actuator_required",strategy)
     if strategy in ("device","setpoint_pid") and capability.get("kind")!="climate":
         return Output("unsupported_device",name,None,None,"climate_required",strategy)
     mode_choice=settings.get("mode","auto")
@@ -157,7 +159,7 @@ def policy(settings:dict, *, temp_c:float|None,
         if desired is None: return Output("hold",name,None,None,reason,strategy)
     else:
         desired,reason=mode_choice,"explicit_heating_or_cooling"
-    if desired in ("heat","cool") and not capability.get(desired,False) and strategy in ("device","setpoint_pid"):
+    if desired in ("heat","cool") and not capability.get(desired,False):
         return Output("unsupported_mode",name,None,None,"device_does_not_support_"+desired,strategy)
     target=band.heat_c if desired=="heat" else band.cool_c if desired=="cool" else None
     # Manual setpoint PID must never be stacked over an unknown device's PID.
