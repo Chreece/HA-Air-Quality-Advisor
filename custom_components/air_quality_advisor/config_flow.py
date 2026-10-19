@@ -25,6 +25,7 @@ from .const import (
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS,
 )
 from .mold import calibration_factor, estimate_mold_for_room
 
@@ -56,6 +57,29 @@ def _tts_player_options(hass: Any) -> list[dict[str, str]]:
         if features & int(MediaPlayerEntityFeature.PLAY_MEDIA):
             result.append({"value": state.entity_id, "label": state.name or state.entity_id})
     return sorted(result, key=lambda item: item["label"].casefold())
+
+
+ENV_AQI_SCALES = [
+    {"value": "not_configured", "label": "Unknown — disable comparison until identified"},
+    {"value": "us_epa", "label": "United States EPA AQI (0–500)"},
+    {"value": "eea_category", "label": "European Air Quality Index category (1–6)"},
+    {"value": "custom", "label": "Other international/provider scale (choose limit)"},
+]
+
+
+def _optional_sensor() -> selector.EntitySelector:
+    return selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor"))
+
+
+def _entity_any() -> selector.EntitySelector:
+    return selector.EntitySelector(selector.EntitySelectorConfig())
+
+
+def _real_number(low: float, high: float, unit: str | None = None) -> selector.NumberSelector:
+    return selector.NumberSelector(selector.NumberSelectorConfig(
+        min=low, max=high, step=0.1, unit_of_measurement=unit,
+        mode=selector.NumberSelectorMode.BOX,
+    ))
 
 
 class _FlowMixin:
@@ -576,6 +600,220 @@ class _FlowMixin:
             )
         return self.async_show_form(step_id="delivery", data_schema=probatio.Schema(fields), errors=errors)
 
+
+    async def async_step_environment(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Global provider-driven configuration; never infer country from HA locale."""
+        current = self._values.get(CONF_ENVIRONMENT_GLOBAL, {})
+        if not isinstance(current, dict):
+            current = {}
+        aqis = [value for value in self._values.get(CONF_OUTDOOR, [])
+                if value.startswith("sensor.") and
+                (state := self.hass.states.get(value)) is not None and
+                (str(state.attributes.get("device_class", "")).casefold() == "aqi"
+                 or value.endswith("_aqi") or value.endswith("_air_quality_index"))]
+        data = dict(current)
+        errors = {}
+        if user_input is not None:
+            scales = {}
+            for i, entity in enumerate(aqis):
+                scale = str(user_input.get(f"aqi_scale_{i}", "not_configured"))
+                raw_limit = user_input.get(f"aqi_custom_limit_{i}")
+                limit = None
+                if scale == "custom":
+                    try:
+                        limit = float(raw_limit)
+                    except (ValueError, TypeError, OverflowError):
+                        limit = float("nan")
+                if scale not in {row["value"] for row in ENV_AQI_SCALES} or (
+                    scale == "custom" and (not math.isfinite(limit) or not 0 <= limit <= 10000)
+                ):
+                    errors["base"] = "invalid_environment_scale"
+                    break
+                if scale != "not_configured":
+                    scales[entity] = {"scale": scale, **({"custom_limit": limit} if scale=="custom" else {})}
+            entity = user_input.get("pollen_entity")
+            try:
+                high, maximum = (float(user_input.get("pollen_high_from", 3)),
+                                 float(user_input.get("pollen_max_scale", 5)))
+            except (TypeError, ValueError, OverflowError):
+                high, maximum = float("nan"), float("nan")
+            if (entity and (not isinstance(entity, str) or not entity.startswith("sensor."))
+                    or not all(math.isfinite(v) for v in (high, maximum))
+                    or not 0 <= high <= maximum <= 100):
+                errors["base"] = "invalid_environment_scale"
+            if not errors:
+                data.update({
+                    "aqi_scales": scales, "pollen_entity": entity or None,
+                    "pollen_high_from": high, "pollen_max_scale": maximum,
+                    "pollen_avoid_ventilation": bool(user_input.get("pollen_avoid_ventilation", False)),
+                })
+                self._values[CONF_ENVIRONMENT_GLOBAL] = data
+                return await self._finish()
+        fields = {
+            _marker("pollen_entity", current.get("pollen_entity")): _optional_sensor(),
+            _marker("pollen_high_from", current.get("pollen_high_from", 3.0)): _real_number(0, 100),
+            _marker("pollen_max_scale", current.get("pollen_max_scale", 5.0)): _real_number(1, 100),
+            _marker("pollen_avoid_ventilation", current.get("pollen_avoid_ventilation", False)): selector.BooleanSelector(),
+        }
+        configured = current.get("aqi_scales", {})
+        if not isinstance(configured, dict):
+            configured = {}
+        for i, entity in enumerate(aqis):
+            details = configured.get(entity, {})
+            if not isinstance(details, dict):
+                details = {}
+            fields[_marker(f"aqi_scale_{i}", details.get("scale","not_configured"))] = (
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=ENV_AQI_SCALES, multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                ))
+            )
+            fields[_marker(f"aqi_custom_limit_{i}", details.get("custom_limit", 100))] = _real_number(0,10000)
+        return self.async_show_form(
+            step_id="environment", data_schema=probatio.Schema(fields), errors=errors,
+            description_placeholders={"aqi_entities": ", ".join(aqis) if aqis else "No AQI sensors selected"},
+        )
+
+    def _environment_area_name(self) -> str:
+        from homeassistant.helpers import area_registry as ar
+        area = ar.async_get(self.hass).async_get_area(self._environment_area)
+        return area.name if area else self._environment_area
+
+    async def async_step_environment_room(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Pick exactly one room rather than making users repeat a huge wizard."""
+        ids = list(self._values.get(CONF_AREAS, []))
+        if not ids:
+            return await self._finish()
+        from homeassistant.helpers import area_registry as ar
+        registry = ar.async_get(self.hass)
+        choices = [
+            {"value": key, "label": getattr(registry.async_get_area(key), "name", key)}
+            for key in ids
+        ]
+        if user_input is not None:
+            area = user_input.get("environment_area")
+            if area in ids:
+                self._environment_area = area
+                saved = self._values.get(CONF_ENVIRONMENT_ROOMS, {})
+                self._environment_room_data = dict(saved.get(area, {})) if isinstance(saved, dict) else {}
+                return await self.async_step_environment_room_air()
+            errors = {"base": "invalid_areas"}
+        else:
+            errors = {}
+        return self.async_show_form(step_id="environment_room",
+            data_schema=probatio.Schema({
+                _marker("environment_area", ids[0], required=True):
+                    selector.SelectSelector(selector.SelectSelectorConfig(
+                        options=choices, custom_value=False,
+                        mode=selector.SelectSelectorMode.DROPDOWN,
+                    ))
+            }), errors=errors)
+
+    async def async_step_environment_room_air(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Measured ventilation, occupant-supplied room volume and rated CADR."""
+        current = self._environment_room_data
+        if user_input is not None:
+            for field in ("room_volume_m3", "particle_cadr_m3h", "co2_target_ppm"):
+                if user_input.get(field) is not None:
+                    try:
+                        number = float(user_input[field])
+                    except (TypeError, ValueError, OverflowError):
+                        number = float("nan")
+                    low, high = {"room_volume_m3":(1,30000),
+                                 "particle_cadr_m3h":(0.1,100000),
+                                 "co2_target_ppm":(400,3000)}[field]
+                    if not math.isfinite(number) or not low <= number <= high:
+                        return self.async_show_form(step_id="environment_room_air",
+                            data_schema=self._environment_room_air_schema(current),
+                            errors={"base":"invalid_environment_measurement"},
+                            description_placeholders={"area_name":self._environment_area_name()})
+            current.update(user_input)
+            return await self.async_step_environment_room_exposure()
+        return self.async_show_form(step_id="environment_room_air",
+            data_schema=self._environment_room_air_schema(current),
+            description_placeholders={"area_name":self._environment_area_name()})
+
+    def _environment_room_air_schema(self, current: dict) -> probatio.Schema:
+        return probatio.Schema({
+            _marker("temperature_entity", current.get("temperature_entity")): _optional_sensor(),
+            _marker("room_volume_m3", current.get("room_volume_m3")): _real_number(1,30000,"m³"),
+            _marker("particle_cadr_m3h", current.get("particle_cadr_m3h")): _real_number(0.1,100000,"m³/h"),
+            _marker("purifier_entity", current.get("purifier_entity")): _entity_any(),
+            _marker("extractor_entity", current.get("extractor_entity")): _entity_any(),
+            _marker("co2_ndir_verified", current.get("co2_ndir_verified", False)): selector.BooleanSelector(),
+            _marker("co2_target_ppm", current.get("co2_target_ppm", 1000)): _real_number(400,3000,"ppm"),
+            _marker("sleep_room", current.get("sleep_room", False)): selector.BooleanSelector(),
+        })
+
+    async def async_step_environment_room_exposure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Optional specialist sensors; none are required for installation."""
+        current = self._environment_room_data
+        if user_input is not None:
+            current.update(user_input)
+            return await self.async_step_environment_room_comfort()
+        fields = {
+            _marker("radon_entity",current.get("radon_entity")): _optional_sensor(),
+            _marker("radon_sensor_verified",current.get("radon_sensor_verified",False)):selector.BooleanSelector(),
+            _marker("formaldehyde_entity",current.get("formaldehyde_entity")): _optional_sensor(),
+            _marker("formaldehyde_sensor_verified",current.get("formaldehyde_sensor_verified",False)):selector.BooleanSelector(),
+            _marker("noise_entity",current.get("noise_entity")): _optional_sensor(),
+            _marker("noise_sensor_calibrated",current.get("noise_sensor_calibrated",False)):selector.BooleanSelector(),
+            _marker("illuminance_entity",current.get("illuminance_entity")): _optional_sensor(),
+            _marker("melanopic_edi_entity",current.get("melanopic_edi_entity")): _optional_sensor(),
+            _marker("melanopic_spectral_verified",current.get("melanopic_spectral_verified",False)):selector.BooleanSelector(),
+        }
+        return self.async_show_form(step_id="environment_room_exposure",
+            data_schema=probatio.Schema(fields),
+            description_placeholders={"area_name":self._environment_area_name()})
+
+    async def async_step_environment_room_comfort(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """ISO 7730 requests explicit MRT, air velocity, MET and CLO assumptions."""
+        current = self._environment_room_data
+        fields = {
+            _marker("enable_pmv",current.get("enable_pmv",False)): selector.BooleanSelector(),
+            _marker("radiant_temperature_entity",current.get("radiant_temperature_entity")): _optional_sensor(),
+            _marker("air_speed_entity",current.get("air_speed_entity")): _optional_sensor(),
+            _marker("air_speed_m_s",current.get("air_speed_m_s")): _real_number(0.01,0.99,"m/s"),
+            _marker("met",current.get("met")): _real_number(0.81,3.99,"met"),
+            _marker("clo",current.get("clo")): _real_number(0.01,1.99,"clo"),
+        }
+        if user_input is not None:
+            selected = {**current, **user_input}
+            if selected.get("enable_pmv") and (
+                not selected.get("radiant_temperature_entity")
+                or not (selected.get("air_speed_entity") or selected.get("air_speed_m_s") is not None)
+                or selected.get("met") is None or selected.get("clo") is None
+            ):
+                errors = {"base":"pmv_requires_explicit_inputs"}
+            elif any(
+                value is not None and (not isinstance(value,(int,float)) or not math.isfinite(value)
+                    or not low <= value <= high)
+                for key,low,high in (("air_speed_m_s",0.01,0.99),("met",0.81,3.99),("clo",0.01,1.99))
+                if (value := selected.get(key)) is not None
+            ):
+                errors = {"base":"invalid_environment_measurement"}
+            else:
+                saved = self._values.get(CONF_ENVIRONMENT_ROOMS, {})
+                saved = dict(saved) if isinstance(saved,dict) else {}
+                saved[self._environment_area] = selected
+                self._values[CONF_ENVIRONMENT_ROOMS] = saved
+                return await self._finish()
+        else:
+            errors = {}
+        return self.async_show_form(step_id="environment_room_comfort",
+            data_schema=probatio.Schema(fields), errors=errors,
+            description_placeholders={"area_name":self._environment_area_name()})
+
     async def async_step_thresholds(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if user_input is not None:
             if user_input["min_outdoor_temp"] >= user_input["max_outdoor_temp"]:
@@ -635,7 +873,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
             step_id="init",
             menu_options=[
                 "areas", "weather", "indoor_sensors", "window_sensors",
-                "outdoor", "delivery", "thresholds",
+                "outdoor", "delivery", "thresholds", "environment", "environment_room",
             ],
         )
 
