@@ -624,6 +624,30 @@ hardware. Direct relay/PWM modes are for slow, safely protected thermal
 loads; they must not control compressor power circuits or serve as the sole
 frost/overtemperature protection.
 
+
+### Multi-device room equipment (v0.6 development branch)
+
+The **Climate** options now include an additional equipment page. You can
+assign a dedicated heating climate (such as a radiator), cooling climate
+(such as an AC or reversible heat pump), native DRY/FAN_ONLY climate entities,
+a humidifier, dehumidifier, extraction fan and purifier fan. The wizard
+restricts options to the selected Home Assistant area and can select a single
+known humidity sensor for configurable humidity bands and hysteresis.
+
+Each candidate is checked against its actual Home Assistant `hvac_modes`,
+`supported_features` or humidifier `device_class`. The planner identifies
+active opposing heating/cooling, missing measurements and ownership conflicts
+if a device is assigned to multiple rooms. Climate-only rooms need not have a
+window contact; existing monitored rooms still block control if their required
+window contact disappears.
+
+**Current limit:** this new multi-device inventory and arbitration is
+**advisory**. The existing primary native thermostat controller remains the
+only climate entity driven by that code path. Other selected devices are not
+automatically powered or switched into DRY/FAN_ONLY; those functions require
+separate commissioned drivers, acknowledgements and hardware-level tests.
+The v0.6 branch is not yet a production release.
+
 ## Known limitations
 
 - Only the named supported metric/device classes and units are interpreted. Unrecognized AQI variants, CO/ozone/NO₂/SO₂, arbitrary provider attributes and event-based weather alerts are not guessed at. Add a normalized HA template sensor where necessary.
