@@ -4,6 +4,7 @@ from typing import Any
 from datetime import datetime, timezone
 import time
 from .climate_schedule import scheduled_sleep
+from .climate_equipment import humidity_advice
 
 from .climate_strategy import (capabilities,home_away_evidence,occupied_evidence,
                                policy)
@@ -117,7 +118,15 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
                   manual_profile=settings.get("manual_profile"),prior_mode=prior_mode,
                   window_safe=window_safe,comfort_target_c=comfort_target_c)
 
+    humidity_values=[r.value for r in room.readings
+                     if r.metric=="humidity" and isinstance(r.value,(int,float))]
+    humidity_plan=humidity_advice(
+        humidity_values[-1] if humidity_values else None,
+        drying_available=bool(cap.get("dry")),
+    )
+
     return {
+        "humidity_management":humidity_plan,
         "status":result.state,
         "profile":result.profile,"mode":result.desired_hvac_mode,
         "temperature_target_c":result.temperature_c,
