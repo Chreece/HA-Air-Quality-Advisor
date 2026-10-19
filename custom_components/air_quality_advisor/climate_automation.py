@@ -492,7 +492,16 @@ class ClimateAutomationCoordinator:
             self._status(area,reason)
             return
         for entity in self.explicit_targets(cfg):
-            if self._output.get(area,{}).get(entity,{}).get("on"):
+            record=self._output.get(area,{}).get(entity,{})
+            if record.get("on"):
+                # A normal comfort transition honors the actuator's minimum
+                # running time. Safety faults skip this hold and de-energize
+                # a positively owned actuator as soon as possible.
+                if (reason=="idle_or_no_actuator" and
+                        now-record.get("when",now)<cfg["min_on_seconds"]):
+                    self._status(area,"minimum_on_dwell",remaining_seconds=round(
+                        cfg["min_on_seconds"]-(now-record["when"]),1))
+                    return
                 if not await self._deenergize(area,entity,cfg,now):
                     return
         if area not in self._paused:
@@ -632,6 +641,9 @@ class ClimateAutomationCoordinator:
                 if lo is None or hi is None or hi<=lo:
                     self._status(area,"number_range_unavailable")
                     return
+                if lo>0:
+                    self._status(area,"proportional_device_cannot_zero_output")
+                    return
                 current=safe_num(state.state,lo,hi)
                 target_native=min(hi,max(lo,lo+(hi-lo)*wanted/100))
                 svc="set_value";payload={"value":round(target_native,2)}
@@ -656,7 +668,7 @@ class ClimateAutomationCoordinator:
                 return
             if await self._service(area,domain,svc,active,payload):
                 self._record(area,active,"percent",target_native,now)
-                baseline=safe_num(state.attributes.get("min"),0,100) or 0 if domain=="number" else 0
+                baseline=0
                 self._output.setdefault(area,{})[active]={"on":target_native>baseline+1,
                                                          "when":now}
                 self._save()
@@ -784,6 +796,11 @@ class ClimateAutomationCoordinator:
             not room.windows or any(w.opened is not False for w in room.windows)
         ):
             await self._safe_off(area,cfg,now,"window_open_or_unknown")
+            return
+        if cfg["strategy"]=="on_off" and any(
+            entity.startswith("climate.") for entity in self.explicit_targets(cfg)
+        ) and (not cfg.get("allow_turn_off") or not cfg.get("allow_hvac_mode_change")):
+            self._status(area,"climate_onoff_requires_turned_off_permission")
             return
         sensor=cfg.get("temperature_entity")
         if not isinstance(sensor,str) or not sensor.startswith("sensor."):
