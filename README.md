@@ -641,12 +641,20 @@ if a device is assigned to multiple rooms. Climate-only rooms need not have a
 window contact; existing monitored rooms still block control if their required
 window contact disappears.
 
-**Current limit:** this new multi-device inventory and arbitration is
-**advisory**. The existing primary native thermostat controller remains the
-only climate entity driven by that code path. Other selected devices are not
-automatically powered or switched into DRY/FAN_ONLY; those functions require
-separate commissioned drivers, acknowledgements and hardware-level tests.
-The v0.6 branch is not yet a production release.
+**Native humidity setpoint (extra opt-in):** With climate actuation and
+**Allow native humidity setpoint changes** enabled, the integration may
+adjust the target on an already-on selected `humidifier.*` or
+`dehumidifier.*`. It requires a fresh, explicitly chosen same-room humidity
+sensor, the verified device class and native limits. Commands are bounded,
+rate-limited and acknowledged; manual target changes suspend control until
+explicit resume. It never turns the device on or off or changes its mode.
+
+**Remaining limits:** The existing primary thermostat retains its own native
+heat/cool control. Additional radiator/AC/heat-pump routing, switching into
+DRY/FAN_ONLY, and operating extraction/purifier fans are still **advisory**:
+no unverified device mode or compressor-power commands are issued. Actual
+hardware commissioning and restart tests are still mandatory before releasing
+v0.6.
 
 ## Known limitations
 
