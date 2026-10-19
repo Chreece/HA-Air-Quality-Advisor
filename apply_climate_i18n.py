@@ -8,6 +8,7 @@ BASE={
  "climate_room":"Climate — controller, occupancy and away",
  "climate_profiles":"Climate — temperature bands for each mode",
  "climate_presence":"Climate — occupancy, away, sleep and comfort",
+ "climate_equipment":"Climate — additional equipment and humidity",
  "climate_invalid_sleep_schedule":"Choose valid different HH:MM sleep start and end times.",
  "climate_invalid_comfort_adjustment":"Comfort adjustment must be between 0 and 2.5°C.",
  "climate_invalid_occupancy_timing":"Unoccupied settling time must be 0–240 min; sensor freshness must be 10–1440 min.",
@@ -34,6 +35,18 @@ BASE={
  "climate_occupancy_sensors":"Occupancy/presence sensors in this room",
  "climate_away_entities":"People or device trackers for home/away",
  "climate_hysteresis_c":"Mode-switching hysteresis (°C)",
+ "climate_heat_climate_entity":"Optional dedicated heating climate (radiator / heating zone)",
+ "climate_cool_climate_entity":"Optional dedicated cooling climate (air conditioner / heat pump)",
+ "climate_dry_climate_entity":"Optional climate with native DRY mode",
+ "climate_fan_climate_entity":"Optional climate with FAN_ONLY mode",
+ "climate_humidifier_entity":"Optional humidifier entity (adds moisture)",
+ "climate_dehumidifier_entity":"Optional dehumidifier entity (removes moisture)",
+ "climate_extraction_fan_entity":"Optional extract / ventilation fan",
+ "climate_purifier_fan_entity":"Optional air purifier fan",
+ "climate_humidity_entity":"Verified room humidity sensor (choose one if multiple)",
+ "climate_humidity_low_rh":"Minimum target relative humidity (%)",
+ "climate_humidity_high_rh":"Maximum target relative humidity (%)",
+ "climate_humidity_hysteresis_rh":"Humidity decision hysteresis (percentage points)",
  "climate_actuation_requires_native_device":"Automated control currently supports only the device-native thermostat driver; separate relay/PWM safety validation is still required.",
  "climate_temperature_required":"Select a room temperature sensor.",
  "climate_target_required":"Select a supported climate entity assigned to this room.",
@@ -67,6 +80,19 @@ LABELS={
  "de":{"climate":"Klima — Raum auswählen","climate_room":"Klima — Regelung, Anwesenheit und Abwesenheit",
        "climate_profiles":"Klima — Temperaturbereiche je Betriebsart",
        "climate_presence":"Klima — Anwesenheit, Abwesenheit, Schlaf und Komfort",
+       "climate_equipment":"Klima — zusätzliche Geräte und Luftfeuchtigkeit",
+       "climate_heat_climate_entity":"Zusätzlicher Heizthermostat / Heizkörper",
+       "climate_cool_climate_entity":"Zusätzliches Klimagerät zum Kühlen",
+       "climate_dry_climate_entity":"Klimagerät mit Entfeuchtungsmodus DRY",
+       "climate_fan_climate_entity":"Klimagerät mit Lüftermodus",
+       "climate_humidifier_entity":"Luftbefeuchter",
+       "climate_dehumidifier_entity":"Luftentfeuchter",
+       "climate_extraction_fan_entity":"Abluft- / Lüftungsventilator",
+       "climate_purifier_fan_entity":"Luftreiniger-Lüfter",
+       "climate_humidity_entity":"Luftfeuchtesensor für diesen Raum",
+       "climate_humidity_low_rh":"Untergrenze der relativen Luftfeuchte (%)",
+       "climate_humidity_high_rh":"Obergrenze der relativen Luftfeuchte (%)",
+       "climate_humidity_hysteresis_rh":"Hysterese für Luftfeuchte (Prozentpunkte)",
        "climate_sleep_schedule_enabled":"Schlafprofil nach Uhrzeit",
        "climate_sleep_start":"Schlafbeginn (lokale Zeit)",
        "climate_sleep_end":"Schlafende (lokale Zeit)",
@@ -87,6 +113,19 @@ LABELS={
  "el":{"climate":"Κλίμα — επιλογή δωματίου","climate_room":"Κλίμα — ελεγκτής, παρουσία και απουσία",
        "climate_profiles":"Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
        "climate_presence":"Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
+       "climate_equipment":"Κλίμα — πρόσθετες συσκευές και υγρασία",
+       "climate_heat_climate_entity":"Ξεχωριστός θερμοστάτης θέρμανσης / καλοριφέρ",
+       "climate_cool_climate_entity":"Κλιματιστικό / αντλία θερμότητας για ψύξη",
+       "climate_dry_climate_entity":"Κλιματιστικό με λειτουργία αφύγρανσης DRY",
+       "climate_fan_climate_entity":"Κλιματιστικό με λειτουργία ανεμιστήρα",
+       "climate_humidifier_entity":"Υγραντήρας (προσθήκη υγρασίας)",
+       "climate_dehumidifier_entity":"Αφυγραντήρας (αφαίρεση υγρασίας)",
+       "climate_extraction_fan_entity":"Ανεμιστήρας εξαερισμού / απαγωγής",
+       "climate_purifier_fan_entity":"Ανεμιστήρας καθαριστή αέρα",
+       "climate_humidity_entity":"Αισθητήρας υγρασίας δωματίου",
+       "climate_humidity_low_rh":"Ελάχιστη σχετική υγρασία (%)",
+       "climate_humidity_high_rh":"Μέγιστη σχετική υγρασία (%)",
+       "climate_humidity_hysteresis_rh":"Υστέρηση υγρασίας (ποσοστιαίες μονάδες)",
        "climate_sleep_schedule_enabled":"Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
        "climate_sleep_start":"Έναρξη ύπνου",
        "climate_sleep_end":"Λήξη ύπνου",
@@ -135,6 +174,14 @@ def apply_climate_i18n(root:Path)->None:
               "climate_sleep_end","climate_target_source",
               "climate_comfort_adjustment_max_c",
           ]),
+          "climate_equipment":("climate_equipment",[
+              "climate_heat_climate_entity","climate_cool_climate_entity",
+              "climate_dry_climate_entity","climate_fan_climate_entity",
+              "climate_humidifier_entity","climate_dehumidifier_entity",
+              "climate_extraction_fan_entity","climate_purifier_fan_entity",
+              "climate_humidity_entity","climate_humidity_low_rh",
+              "climate_humidity_high_rh","climate_humidity_hysteresis_rh",
+          ]),
           "climate_profiles":("climate_profiles",[f"{p}_{kind}" for p in
               ("home","unoccupied","away","sleep") for kind in ("heat","cool")]),
           "climate_actuators":("climate_actuators",[
@@ -147,7 +194,12 @@ def apply_climate_i18n(root:Path)->None:
         for key,(title,fields) in descriptors.items():
             steps[key]={
                 "title":vocab[title],
-                "description":("Configure each selected room independently. "
+                "description":("Select optional extra HVAC, humidifiers, dehumidifiers, "
+                    "extraction and purification fans in this room. The planner checks "
+                    "actual modes and assigns exclusive roles. Secondary devices are "
+                    "advisory only until their safe drivers are verified."
+                    if key=="climate_equipment" else
+                    "Configure each selected room independently. "
                     "A fresh room temperature sensor and exact room-assigned actuators are required. "
                     "Direct relay/PWM is permitted only for independently protected non-compressor loads, "
                     "with confirmed on/off limits and explicit actuation opt-in. "
