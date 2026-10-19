@@ -25,9 +25,12 @@ from .const import (
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
-    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS,
 )
 from .mold import calibration_factor, estimate_mold_for_room
+from .climate_pid import DEFAULT_PID, ClimatePidCoordinator
+from .pid_math import validate_settings
+from .discovery import entity_area
 
 from .discovery import (
     indoor_sensor_exclusion_choices, outdoor_choices, suggested_window_exclusions, warning_choices,
@@ -832,6 +835,194 @@ class _FlowMixin:
             data_schema=probatio.Schema(fields), errors=errors,
             description_placeholders={"area_name":self._environment_area_name()})
 
+
+    async def async_step_pid(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Select the room to configure; existing installs stay disabled."""
+        ids = list(self._values.get(CONF_AREAS, []))
+        if not ids:
+            return await self._finish()
+        from homeassistant.helpers import area_registry as ar
+        registry = ar.async_get(self.hass)
+        choices = [
+            {"value": key, "label": getattr(registry.async_get_area(key), "name", key)}
+            for key in ids
+        ]
+        if user_input is not None:
+            candidate = user_input.get("pid_area")
+            if candidate in ids:
+                self._pid_area = candidate
+                stored = self._values.get(CONF_PID_ROOMS, {})
+                self._pid_draft = dict(stored.get(candidate, {})) if isinstance(stored, dict) else {}
+                return await self.async_step_pid_room()
+            errors = {"base": "invalid_areas"}
+        else:
+            errors = {}
+        return self.async_show_form(
+            step_id="pid", errors=errors,
+            data_schema=probatio.Schema({
+                _marker("pid_area", ids[0], required=True):
+                    selector.SelectSelector(selector.SelectSelectorConfig(
+                        options=choices, multiple=False, custom_value=False,
+                        mode=selector.SelectSelectorMode.DROPDOWN,
+                    )),
+            }),
+        )
+
+    def _pid_room_name(self) -> str:
+        from homeassistant.helpers import area_registry as ar
+        area = ar.async_get(self.hass).async_get_area(self._pid_area)
+        return area.name if area else self._pid_area
+
+    def _pid_climate_choices(self) -> list[dict[str, str]]:
+        allowed = []
+        for state in self.hass.states.async_all("climate"):
+            assigned = entity_area(self.hass, state.entity_id)
+            if assigned is None or assigned == self._pid_area:
+                allowed.append({
+                    "value": state.entity_id,
+                    "label": f"{state.name or state.entity_id} · {state.entity_id}",
+                })
+        return sorted(allowed, key=lambda o:o["label"].casefold())
+
+    def _pid_targets_schema(self, config: dict) -> probatio.Schema:
+        temperatures = indoor_temperature_choices(
+            self.hass, self._pid_area, config.get("temperature_entity"),
+        )
+        climate_choices = self._pid_climate_choices()
+        return probatio.Schema({
+            _marker("pid_enabled", config.get("enabled", False)): selector.BooleanSelector(),
+            _marker("pid_climate_entities", config.get("climate_entities", [])):
+                _multi(climate_choices),
+            _marker("pid_temperature_entity", config.get("temperature_entity")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=temperatures, multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )),
+            _marker("pid_mode", config.get("mode", "heat")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=[{"value":"heat","label":"Heat"},
+                             {"value":"cool","label":"Cool"}],
+                    multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )),
+            _marker("pid_target_c", config.get("target_c", 21.0)):
+                _real_number(5,36,"°C"),
+            _marker("pid_pause_on_window_open", config.get("pause_on_window_open",True)):
+                selector.BooleanSelector(),
+        })
+
+    async def async_step_pid_room(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Basic room PID setup with all required device inputs visible."""
+        current = {**DEFAULT_PID, **self._pid_draft}
+        errors: dict[str,str] = {}
+        if user_input is not None:
+            enabled = bool(user_input.get("pid_enabled", current["enabled"]))
+            draft = dict(current)
+            draft.update({
+                "enabled": enabled,
+                "climate_entities": list(user_input.get("pid_climate_entities", current.get("climate_entities", []))),
+                "temperature_entity": user_input.get("pid_temperature_entity", current.get("temperature_entity")),
+                "mode": user_input.get("pid_mode", current["mode"]),
+                "target_c": user_input.get("pid_target_c", current["target_c"]),
+                "pause_on_window_open": bool(user_input.get("pid_pause_on_window_open",
+                                                   current["pause_on_window_open"])),
+            })
+            if enabled:
+                targets = ClimatePidCoordinator._targets(draft)
+                allowed = {option["value"] for option in self._pid_climate_choices()}
+                sensors = {option["value"] for option in indoor_temperature_choices(
+                    self.hass, self._pid_area, draft.get("temperature_entity"),
+                )}
+                if not targets or len(targets) != len(draft["climate_entities"]) or any(
+                    ent not in allowed for ent in targets
+                ):
+                    errors["base"] = "pid_climate_required"
+                elif not draft["temperature_entity"] or draft["temperature_entity"] not in sensors:
+                    errors["base"] = "pid_temperature_required"
+                elif draft["mode"] not in ("heat","cool") or not (
+                    isinstance(draft["target_c"],(int,float))
+                    and not isinstance(draft["target_c"],bool) and math.isfinite(draft["target_c"])
+                    and 5 <= draft["target_c"] <= 36
+                ):
+                    errors["base"] = "pid_invalid_target"
+                else:
+                    saved = self._values.get(CONF_PID_ROOMS, {})
+                    saved = dict(saved) if isinstance(saved,dict) else {}
+                    for other_area, other_config in saved.items():
+                        if other_area != self._pid_area and isinstance(other_config,dict) and other_config.get("enabled"):
+                            if set(targets) & set(ClimatePidCoordinator._targets(other_config)):
+                                errors["base"] = "pid_duplicate_climate"
+                                break
+            if not errors:
+                self._pid_draft = draft
+                if enabled:
+                    return await self.async_step_pid_tuning()
+                return await self._save_pid_configuration()
+        return self.async_show_form(
+            step_id="pid_room", errors=errors,
+            description_placeholders={"area_name":self._pid_room_name()},
+            data_schema=self._pid_targets_schema(current),
+        )
+
+    def _pid_tuning_schema(self, draft: dict) -> probatio.Schema:
+        fields = {
+            "kp": (0.01,100,0.1," %/°C"),
+            "ki": (0,10,0.01," %/(°C·min)"),
+            "kd": (0,50,0.1," %·min/°C"),
+            "offset_c": (0.25,5,0.1,"°C"),
+            "min_setpoint_c": (5,35,0.1,"°C"),
+            "max_setpoint_c": (6,40,0.1,"°C"),
+            "sample_seconds": (120,3600,60,"s"),
+            "max_change_c": (0.1,2,0.1,"°C/cycle"),
+            "min_change_c": (0.05,1,0.05,"°C"),
+        }
+        schema = {}
+        for key,(minimum,maximum,stepping,unit) in fields.items():
+            schema[_marker(f"pid_{key}",draft.get(key,DEFAULT_PID[key]))] = (
+                selector.NumberSelector(selector.NumberSelectorConfig(
+                    min=minimum,max=maximum,step=stepping,
+                    unit_of_measurement=unit,
+                    mode=selector.NumberSelectorMode.BOX,
+                ))
+            )
+        return probatio.Schema(schema)
+
+    async def _save_pid_configuration(self) -> ConfigFlowResult:
+        stored = self._values.get(CONF_PID_ROOMS, {})
+        result = dict(stored) if isinstance(stored, dict) else {}
+        result[self._pid_area] = dict(self._pid_draft)
+        self._values[CONF_PID_ROOMS] = result
+        return await self._finish()
+
+    async def async_step_pid_tuning(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Advanced tuning: PID terms, minimum/maximum targets and rate limits."""
+        current = {**DEFAULT_PID, **self._pid_draft}
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            draft = dict(current)
+            for key in (
+                "kp","ki","kd","offset_c","min_setpoint_c","max_setpoint_c",
+                "sample_seconds","max_change_c","min_change_c",
+            ):
+                draft[key] = user_input.get(f"pid_{key}",current[key])
+            valid, reason = validate_settings(draft)
+            if not valid:
+                errors["base"] = "pid_invalid_parameters"
+            else:
+                self._pid_draft = draft
+                return await self._save_pid_configuration()
+        return self.async_show_form(
+            step_id="pid_tuning", errors=errors,
+            description_placeholders={"area_name":self._pid_room_name()},
+            data_schema=self._pid_tuning_schema(current),
+        )
+
     async def async_step_thresholds(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if user_input is not None:
             if user_input["min_outdoor_temp"] >= user_input["max_outdoor_temp"]:
@@ -891,7 +1082,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
             step_id="init",
             menu_options=[
                 "areas", "weather", "indoor_sensors", "window_sensors",
-                "outdoor", "delivery", "thresholds", "environment", "environment_room",
+                "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
             ],
         )
 
