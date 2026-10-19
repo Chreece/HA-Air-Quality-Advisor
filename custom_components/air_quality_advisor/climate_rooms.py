@@ -22,7 +22,7 @@ def _bool_state(hass:Any,entity_id:str,*,max_age_minutes:float=15) -> bool|None:
 
 def _presence_ids(hass:Any,area:str,config:dict) -> list[str]:
     selected=config.get("occupancy_sensors")
-    if isinstance(selected,list):
+    if isinstance(selected,list) and selected:
         return [x for x in selected if isinstance(x,str) and x.startswith("binary_sensor.")
                 and entity_area(hass,x)==area]
     # Auto-discover only real presence/occupancy device_class in HA registry.
