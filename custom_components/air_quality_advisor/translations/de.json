@@ -141,7 +141,7 @@
       "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied."
     },
     "abort": {
-      "already_configured": "Home Environment Advisor is already configured."
+      "already_configured": "Home Environment Advisor ist bereits eingerichtet."
     }
   },
   "options": {
@@ -278,10 +278,10 @@
         "title": "Internationale Luftqualitätsquellen und Pollen",
         "description": "Optional. Wähle je AQI-Sensor explizit US EPA (0–500), europäische Kategorien (1–6) oder einen eigenen Grenzwert. Unbekannte AQI-Skalen werden niemals automatisch als US-Skala interpretiert. Pollen stammen aus einer beliebigen Home-Assistant-Integration.",
         "data": {
-          "pollen_entity": "Pollen forecast sensor (any country/provider)",
-          "pollen_high_from": "Pollen scale: threshold treated as high",
-          "pollen_max_scale": "Pollen provider's maximum scale value",
-          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)",
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "pollen_high_from": "Pollenindex ab diesem Wert hoch",
+          "pollen_max_scale": "Maximalwert der Pollen-Skala",
+          "pollen_avoid_ventilation": "Bei hoher Pollenbelastung Lüften vermeiden",
           "aqi_scale_0": "AQI sensor #1: source scale",
           "aqi_custom_limit_0": "AQI sensor #1: custom unsafe threshold",
           "aqi_scale_1": "AQI sensor #2: source scale",
@@ -422,7 +422,7 @@
         "title": "Raum für Umweltanalysen wählen",
         "description": "Zusätzliche Sensoren und Annahmen für genau einen Raum einstellen. Alles ist optional.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "Raum auswählen"
         },
         "data_description": {
           "environment_area": "Only the selected room is edited. Return here to configure another room."
@@ -432,22 +432,22 @@
         "title": "Raum: {area_name} — Lüftung und Feuchtigkeit",
         "description": "Optional. Raumtemperatursensor, Raumvolumen und veröffentlichten Partikel-CADR nur auswählen, wenn zuverlässig bekannt. Echtes NDIR-CO₂-Gerät bestätigen. Die Integration steuert keine Geräte.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "Temperatursensor im Raum (optional)",
+          "room_volume_m3": "Raumluftvolumen (m³)",
+          "particle_cadr_m3h": "Reinigungsleistung für Partikel, CADR (m³/h)",
+          "purifier_entity": "Luftreiniger: Betriebsstatus",
+          "extractor_entity": "Abluftventilator / Schalter",
+          "co2_ndir_verified": "Echter NDIR-CO₂-Sensor bestätigt",
+          "co2_target_ppm": "CO₂-Zielwert beim Lüften (ppm)",
+          "sleep_room": "Schlafzimmer"
         },
         "data_description": {
           "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
+          "room_volume_m3": "Innenfläche × Raumhöhe. Nur bei bekanntem Volumen angeben; nötig für den rechnerischen Luftwechsel des Luftreinigers.",
+          "particle_cadr_m3h": "Nur nachgewiesenen Partikel-CADR bei definierter Leistungsstufe verwenden, nicht den Lüftervolumenstrom; gilt nicht für Gase.",
           "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Advisor does not control the device.",
           "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
+          "co2_ndir_verified": "Nur bei nachweislich echtem CO₂-Sensor markieren. eCO₂ aus VOC-Messungen reicht nicht aus.",
           "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
           "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
         }
@@ -456,22 +456,22 @@
         "title": "Raum: {area_name} — zusätzliche Spezialmessungen",
         "description": "Optional. Nur echte Messgeräte für Radon, Formaldehyd, Schall und Beleuchtung wählen. Für Leitwerte werden geprüfte Sensoren und ausreichend lange Messreihen benötigt.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "Echter Radonmesssensor",
+          "radon_sensor_verified": "Radon-Messtechnik bestätigt",
+          "formaldehyde_entity": "Formaldehyd-Messsensor (HCHO)",
+          "formaldehyde_sensor_verified": "HCHO-Messung unabhängig geprüft",
+          "noise_entity": "A-bewerteter Schallpegel (dB(A))",
+          "noise_sensor_calibrated": "Geeignete kalibrierte Schallmessung",
+          "illuminance_entity": "Beleuchtungsstärke (Lux)",
+          "melanopic_edi_entity": "Spektral gemessene melanopische EDI (lx)",
+          "melanopic_spectral_verified": "Spektralmessung für EDI bestätigt"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
+          "radon_entity": "Bq/m³ oder pCi/L; für Jahresmittel sind ausreichend viele gültige Messtage erforderlich.",
           "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
+          "formaldehyde_entity": "Nur ein tatsächlicher HCHO-Messsensor mit µg/m³ oder mg/m³. Schätzwerte sind ungeeignet.",
           "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
+          "noise_entity": "Nur kalibrierte dB(A)-Zeitreihen; gemessene Spitzenpegel sind kein LAeq.",
           "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
           "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
           "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
@@ -482,15 +482,15 @@
         "title": "Raum: {area_name} — vollständiger thermischer Komfort",
         "description": "Optionales ISO-7730-Modell. Strahlungstemperatur, Luftgeschwindigkeit, Aktivität (met) und Bekleidung (clo) explizit angeben.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "ISO-7730-Komfort PMV/PPD aktivieren",
+          "radiant_temperature_entity": "Mittlere Strahlungstemperatur (°C)",
+          "air_speed_entity": "Gemessene Luftgeschwindigkeit (m/s)",
+          "air_speed_m_s": "Angenommene Luftgeschwindigkeit (m/s)",
+          "met": "Aktivität des Bewohners (met)",
+          "clo": "Bekleidungsisolierung des Bewohners (clo)"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
+          "enable_pmv": "Nur mit mittlerer Strahlungstemperatur, Luftgeschwindigkeit, Metabolismus (met) und Kleidung (clo).",
           "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
           "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
           "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
