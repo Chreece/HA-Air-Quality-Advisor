@@ -8,7 +8,7 @@ def coordinator(adapter):
     return climate_coordination
 
 from custom_components.air_quality_advisor.logic import Reading
-from test_discovery import MockState, FakeHass
+from test_discovery import MockState, FakeHass, adapter
 
 
 def home():
