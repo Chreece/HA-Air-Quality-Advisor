@@ -38,7 +38,7 @@ class AirQualityRecommendation(SensorEntity):
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry_id)},
             "name": NAME,
-            "manufacturer": "Air Quality Advisor",
+            "manufacturer": "Home Environment Manager",
         }
 
     @property

@@ -853,7 +853,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         return await self.async_step_areas()
 
     async def _finish(self) -> ConfigFlowResult:
-        return self.async_create_entry(title="Air Quality Advisor", data=self._values)
+        return self.async_create_entry(title="Home Environment Manager", data=self._values)
 
     @staticmethod
     @callback

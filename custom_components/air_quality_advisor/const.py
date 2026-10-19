@@ -1,7 +1,7 @@
 """Constants and cautious defaults for the Air Quality Advisor integration."""
 
 DOMAIN = "air_quality_advisor"
-NAME = "Home Environment Advisor"
+NAME = "Home Environment Manager"
 PLATFORMS = ["sensor"]
 
 CONF_AREAS = "areas"
