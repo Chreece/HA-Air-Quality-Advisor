@@ -75,3 +75,18 @@ def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
         home_hass.states.get(entity).last_changed=before
     status,_=gather(home_hass,room,conf)
     assert status["profile"]=="unoccupied"
+
+
+def test_climate_only_room_without_windows_is_not_forced_to_hold(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
+    house=home(room_occupied=True)
+    cfg={"enabled":True,"controller":"device","mode":"heat",
+         "temperature_entity":"sensor.kitchen_temperature",
+         "climate_entity":"climate.kitchen"}
+    room=Room("kitchen","Kitchen",(),())
+    autonomous,_=gather(house,room,cfg)
+    assert autonomous["status"]=="ready"
+    assert autonomous["window_evidence"]=="no_contact_configured"
+    monitored,_=gather(house,room,cfg,require_window_contact=True)
+    assert monitored["status"]=="hold"
+    assert monitored["window_evidence"]=="missing_required_contact"
