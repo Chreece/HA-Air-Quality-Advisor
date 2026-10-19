@@ -100,6 +100,12 @@ class NativeClimateControl:
             return
         now=self.clock()
         owners={}
+        pid_owners=set()
+        for pid in (pid_rooms or {}).values():
+            if not isinstance(pid,dict) or not pid.get("enabled"):continue
+            values=pid.get("climate_entities",[])
+            if isinstance(values,list):
+                pid_owners.update(x for x in values if isinstance(x,str))
         for area,room in config.items():
             if isinstance(room,dict) and room.get("allow_actuation") is True:
                 entity=room.get("climate_entity")
@@ -117,6 +123,7 @@ class NativeClimateControl:
                 continue
             entity=settings.get("climate_entity")
             if (not isinstance(entity,str) or owners.get(entity)!=1 or
+                entity in pid_owners or
                 (pid_rooms or {}).get(area,{}).get("enabled")):
                 self.statuses[area]={"status":"conflicting_controller"}
                 continue
@@ -166,6 +173,10 @@ class NativeClimateControl:
         except (TypeError,ValueError):features=0
         if features&1==0:
             self.statuses[area]={"status":"no_single_setpoint"}
+            return
+        preset=str(attrs.get("preset_mode") or "").casefold()
+        if preset not in ("","none","manual"):
+            self.statuses[area]={"status":"native_preset_active","preset":preset}
             return
         if state.state not in ("heat","cool","off",mode):
             self.paused[area]="unexpected_mode"
@@ -233,12 +244,16 @@ class NativeClimateControl:
             return
         observed_c=target_from_unit(observed,unit)
         if observed_c is None:return
-        from .pid_math import bounded_command
+        device_min=finite(attrs.get("min_temp"),-30,140)
+        device_max=finite(attrs.get("max_temp"),-29,150)
+        device_step=finite(attrs.get("target_temp_step"),0.1,10)
+        if None in (device_min,device_max,device_step):
+            self.statuses[area]={"status":"device_limits_unknown"}
+            return
         status,native=bounded_command(target,observed_c,max_change_c=.5,
             min_change_c=.15,unit=unit,
-            device_min=float(attrs.get("min_temp",7)),
-            device_max=float(attrs.get("max_temp",35)),
-            device_step=float(attrs.get("target_temp_step",.5)))
+            device_min=device_min,device_max=device_max,
+            device_step=device_step)
         if status=="no_meaningful_change":
             self.statuses[area]={"status":"at_setpoint","mode":mode,"target_c":target}
             return
