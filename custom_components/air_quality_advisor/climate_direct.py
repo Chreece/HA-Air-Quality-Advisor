@@ -313,13 +313,6 @@ class DirectClimateControl:
             self._rooms.pop(area,None)
             self.mode_changed[area]=now
             self._persist()
-        mode_dwell=finite(cfg.get("mode_dwell_s",900),300,7200)
-        if mode_dwell is None:
-            self._status(area,"invalid_mode_dwell")
-            return
-        if now-self.mode_changed.get(area,self._started if self._started is not None else now)<mode_dwell:
-            self._status(area,"mode_transfer_dwell")
-            return
         # Exclusivity: opposing output is stopped and confirmed OFF
         # before another side may turn ON, never both simultaneously.
         opposite=cool if mode=="heat" else heat
@@ -336,6 +329,13 @@ class DirectClimateControl:
                 self.expected[opposite].get("state") is True or
                 (strategy=="proportional" and self.expected[opposite].get("state",0)>0)):
             self._status(area,"interlock_unconfirmed")
+            return
+        mode_dwell=finite(cfg.get("mode_dwell_s",900),300,7200)
+        if mode_dwell is None:
+            self._status(area,"invalid_mode_dwell")
+            return
+        if now-self.mode_changed.get(area,self._started if self._started is not None else now)<mode_dwell:
+            self._status(area,"mode_transfer_dwell")
             return
         cycle=self._rooms.setdefault(area,RoomCycle(mode=mode))
         if cycle.mode!=mode:
