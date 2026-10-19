@@ -356,3 +356,7 @@ apply_config_overrides(root)
 # Optional mold indication and per-room calibration in all 38 languages.
 from apply_mold_i18n import apply_mold_i18n
 apply_mold_i18n(root)
+
+# Brand and international optional-science configuration, after legacy overrides.
+from apply_environment_i18n import apply_environment_i18n
+apply_environment_i18n(root)
