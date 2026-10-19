@@ -13,7 +13,7 @@ def test_public_name_and_domain_migration_are_separate():
     assert manifest["domain"] == "air_quality_advisor"
     assert manifest["name"] == "Home Environment Manager"
     assert hacs["name"] == "Home Environment Manager"
-    assert manifest["version"] == "0.4.0"
+    assert manifest["version"] == "0.5.0"
     assert any(item.startswith("pythermalcomfort==") for item in manifest["requirements"])
 
 

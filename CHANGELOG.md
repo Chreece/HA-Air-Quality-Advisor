@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — Opt-in bounded climate PID control
+
+- Add per-room PID setpoint control for explicit `climate.*` entities with separate heat/cool tuning and strict safe operating bounds.
+- Use integral anti-windup, filtered derivative on measured temperature, minimum sampling interval, maximum setpoint trim and maximum target change per control cycle.
+- Keep the actual thermostat's HVAC modes and compressor-cycle protection: no mode switching, on/off calls or service broadcasts.
+- Persist manual override pauses across restarts. Offer explicit `home_environment_manager.pid_control` pause/resume/reset actions and room-card controls.
+- Block control for stale sensors, open/unknown windows, unsupported HVAC presets, missing units or climate service, wrong-area devices and duplicate room assignments.
+- Add optional two-page room/device configuration, translations, mock climate actions and pure PID mathematical regression tests.
+- Preserve the v0.4.0 international research methods, environmental monitoring, existing HACS domain and entity IDs.
+
 ## 0.4.0 — Home Environment Manager: international science and future climate-control identity
 
 - Rebrand the public integration, dashboard, configuration and documentation as **Home Environment Manager**; preserve the existing Home Assistant domain, entity unique IDs, service and HACS repository for seamless upgrades. Expose a new Lovelace card alias while retaining the original one.

@@ -1,16 +1,16 @@
 {
-  "version": "0.4.0",
+  "version": "0.5.0",
   "intent": "metadata for automatic post-push validation and release",
   "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
   "validation_attempt": 0,
   "changes": [
-    "Rebrand all public UX as Home Environment Manager while preserving air_quality_advisor domain, service, entity IDs and HACS migration path",
-    "Add verified international air-quality and pollutant scale handling including US/EU/custom AQI, NO2/O3/SO2 and provider-defined pollen",
-    "Provide room-scoped ventilation learning, purifier CADR, moisture-event advice, particle trends and source-qualified pollutant recommendations",
-    "Support optional verified radon/formaldehyde, calibrated noise/daylight, nighttime acoustics, observed overheating and ISO 7730 PMV/PPD",
-    "Create clean optional global and per-room configuration forms and internationalize all added fields across locale files",
-    "Redesign logo/banner/architecture visualizations, update README and real Lovelace screenshots",
-    "Keep Announcement Hub area targeting, weather safety, historical configurations and no-actuator-by-default behavior unchanged",
-    "Add regression coverage and pass full Python, frontend, translations, hassfest and HACS gates"
+    "Introduce opt-in per-room bounded supervisory PID control for explicitly selected climate.* thermostats in heat/cool mode",
+    "Use pure derivative-on-measurement PID math, conditional integral anti-windup, safe sample intervals and conservative setpoint rate limits",
+    "Never toggle compressors or HVAC modes; issue only climate.set_temperature to configured same-room entities",
+    "Pause and persist manual thermostat overrides, service failures and explicit user pause, with manual resume/reset actions",
+    "Stop commands for open/unknown windows, stale temperature sensors, conflicting targets, unsupported modes and invalid temperature steps",
+    "Add optional multi-page PID configuration with safe defaults, user-facing diagnostics and pause/resume buttons to the existing card",
+    "Preserve all monitoring, international science, Home Assistant entities, domain, and Announcement Hub routing",
+    "Expand regression tests, documentation and translations; validate Python, card, Hassfest, HACS and release only after checks pass"
   ]
 }

@@ -24,8 +24,9 @@
 **Home Environment Manager** combines local sensor data, international environmental sources,
 building physics and optional advanced comfort models to recommend how to keep a room
 comfortable while balancing ventilation, air quality, moisture and potential
-pollutant exposure. **Current release: monitoring and advice only.** Opt-in
-PID-based climate-device control is explicitly reserved for the next version.
+pollutant exposure. **PID climate control is optional and initially disabled.** When enabled by the
+user for an explicitly chosen room and thermostat, it adjusts only the target
+temperature while keeping heating/cooling modes under device control.
 The Home Assistant integration domain, existing entity unique IDs and all
 saved configuration remain `air_quality_advisor` for upgrade compatibility.
 
@@ -462,6 +463,78 @@ bash ./publish.sh
 ```
 
 `publish.sh` is an optional local publishing script requiring an authenticated GitHub CLI (`gh auth status`). It **never force-pushes** or mutates other repositories. **GitHub Actions automatically validates every completed push to `main`** and creates a new GitHub/HACS Release after Python, JavaScript, translation, HACS and Hassfest checks pass. Superseded commits and already published version tags cannot create duplicate releases. Push the complete code, translations and release notes with matching manifest and release-request versions; no manual action is required. Manual validation remains available through [Actions → Validate and release (after push)](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml), without publishing by default. See [RELEASING.md](RELEASING.md).
+
+## Opt-in PID climate control (v0.5.0)
+
+Home Environment Manager can now **control explicitly authorized Home Assistant
+`climate.*` entities** using a bounded supervisory PID controller.
+
+**Important:** Unlike a direct compressor or heater relay PID, this is an
+*outer-loop thermostat setpoint regulator*. It changes only
+`climate.set_temperature` with a single `temperature` value.
+It never sends `climate.set_hvac_mode`, `climate.turn_on` or `climate.turn_off`.
+The climate device retains its own safety protections and compressor cycling.
+Not all thermostat models support safe nested PID control; test behavior carefully.
+
+### Configure a room
+
+Open **Settings → Devices & services → Home Environment Manager → Configure
+→ Climate PID**. Choose one monitored room, then provide:
+
+| Input | Why it is required |
+| --- | --- |
+| Enable PID | Explicit opt-in; disabled for every existing and new room by default. |
+| Authorized climate devices | Select only the target `climate.*` entities that are allowed to be controlled in this particular Home Assistant room. No area-wide service broadcast. |
+| Independent room temperature sensor | Required current `sensor.*` measurement, normalized from °C or °F; older than 10 minutes stops control. |
+| Existing HVAC mode | Choose heat or cool; the physical thermostat must already be in that mode. No automatic mode or compressor switching. |
+| Desired room temperature | Current fixed room-temperature goal in °C. |
+| Pause when window open/unknown | Enabled by default. Open or unknown window contacts suppress commands without turning climate hardware on or off. |
+
+The next **Advanced PID tuning** page contains Kp, Ki and Kd gains, the
+maximum permitted setpoint trim, minimum/maximum thermostat targets, sample
+interval, maximum step change and minimum meaningful change. Defaults are
+conservative: **300 seconds per cycle, up to 0.5°C change per cycle, 1.5°C
+maximum trim**. The controller waits for enough fresh measurements before its
+first command.
+
+Kp is measured in percentage points of PID demand per °C; Ki in percentage
+points per (°C·minute), and Kd in percentage points·minute per °C. The derivative
+is taken from observed room temperature, and an anti-windup guard prevents
+further integral growth into a saturated output. Demand maps into a heating
+setpoint between `target` and `target + offset`, or a cooling setpoint
+between `target - offset` and `target`. It is not a compressor duty cycle.
+
+### Manual controls and failure safety
+
+- A user changing thermostat target or HVAC mode pauses that room's PID.
+  Such pauses are saved across Home Assistant restarts; the user must explicitly
+  resume after checking the current thermostat state.
+- Use the **Pause PID / Resume PID** button on the room's Lovelace card or
+  the action `home_environment_manager.pid_control` with an explicit
+  `area` and `action: pause | resume | reset`. Reset clears PID history and
+  remains paused until separately resumed.
+- Missing or stale sensor input, open/unknown windows, active thermostat presets,
+  unsupported single-setpoint devices, wrong-area targets, duplicate climate
+  assignments and invalid device units cause control to stop rather than guess.
+  A Home Assistant service-write failure requires manual resume.
+- Thermostat setpoint acknowledgements are checked against the exact entity
+  selected. Unacknowledged writes or an unexpected manual setpoint change
+  result in a persistent pause, not repeated commands.
+- An integration reload cancels pending PID tasks. PID calculations and
+  manual pause state use local Home Assistant storage and do not require a cloud
+  controller. Restored PID state is never used to power on or restart hardware.
+
+All existing sensor entities, native announcement actions, room calibration,
+environmental-science observations and Lovelace card identifiers are preserved.
+One room may control multiple explicitly selected thermostats, but the same
+climate entity cannot be assigned to more than one enabled PID room.
+
+**Safety:** Home Environment Manager is not a certified heater, boiler,
+compressor, frost-prevention or life-safety controller. Leave independent
+hardware overtemperature/frost/compressor protections in place. It is not
+recommended to put medical, industrial or freeze-sensitive loads under this
+experimental supervisory controller without independent safeguards. No climate
+commands are sent until the user enables PID for that room.
 
 ## Known limitations
 

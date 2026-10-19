@@ -59,7 +59,8 @@ def pid_store(monkeypatch):
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",store)
     import importlib
     controller=importlib.import_module("custom_components.air_quality_advisor.climate_pid")
-    return SimpleNamespace(Store=FakeStore, Coordinator=controller.ClimatePidCoordinator)
+    store.Coordinator=controller.ClimatePidCoordinator
+    return store
 
 
 async def tick(engine,room,profile,clock):
