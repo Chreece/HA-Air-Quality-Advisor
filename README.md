@@ -678,3 +678,13 @@ MIT © 2026 Chreece
 ## Support this project
 
 If this integration helps, you can support ongoing development on [Ko-fi](https://ko-fi.com/chreece). Contributions and bug reports are welcome through the repository's [issues](https://github.com/Chreece/HA-Air-Quality-Advisor/issues).
+
+
+### Home Assistant Python 3.14 installation (v0.5.1)
+
+The v0.5.1 production hotfix removes the required `pythermalcomfort`/
+Numba/`llvmlite` installation chain. `pmv_core.py` uses a compact,
+reference-tested ISO 7730 Fanger scalar implementation without binary
+scientific dependencies, preserving advanced thermal comfort calculations
+in Home Assistant's Alpine/musl Python 3.14 environment. The experimental
+v0.6 climate-device controls remain on the draft branch.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1 — Python 3.14 / Alpine dependency compatibility
+
+- Remove the mandatory `pythermalcomfort` runtime package and its Numba/LLVM transitive dependencies.
+- Keep self-contained ISO 7730 PMV/PPD scientific estimates tested against published reference values.
+- Fix Home Assistant installation on Alpine Python 3.14 while retaining the climate controller, monitoring and compatibility safeguards.
+
+
 ## Unreleased — Per-room automatic climate control (draft)
 
 - Add room-specific comfort and away profiles, occupancy debounce, local-time sleeping schedules and explicit device/control configuration.
