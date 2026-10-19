@@ -892,6 +892,7 @@ class _FlowMixin:
                       "hysteresis_c":user_input.get("climate_hysteresis_c",draft.get("hysteresis_c",0.7)),
                       "allow_actuation":bool(user_input.get("climate_allow_actuation",draft.get("allow_actuation",False))),
                       "auto_switch_hvac":bool(user_input.get("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False))),
+                      "prefer_native_auto":bool(user_input.get("climate_prefer_native_auto",draft.get("prefer_native_auto",True))),
                       "sleep_active":bool(user_input.get("climate_sleep_active",draft.get("sleep_active",False))),
                       "manual_profile":user_input.get("climate_manual_profile",draft.get("manual_profile","auto")),
                       "unknown_occupancy":user_input.get("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied"))}
@@ -922,6 +923,7 @@ class _FlowMixin:
             _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
             _marker("climate_allow_actuation",draft.get("allow_actuation",False)):selector.BooleanSelector(),
             _marker("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)):selector.BooleanSelector(),
+            _marker("climate_prefer_native_auto",draft.get("prefer_native_auto",True)):selector.BooleanSelector(),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},
