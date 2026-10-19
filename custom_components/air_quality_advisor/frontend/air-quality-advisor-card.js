@@ -293,6 +293,25 @@
   // Calibration and humidity summary labels in all 38 supported card locales.
   const MOLD_DETAIL_LABELS = {"en":["Average humidity","sensor","sensors","Estimated surface","Calibration factor","Indoor temperature","Outdoor temperature"],"de":["Durchschnittliche Luftfeuchte","Sensor","Sensoren","Geschätzte Oberflächentemperatur","Kalibrierfaktor","Raumtemperatur","Außentemperatur"],"el":["Μέση υγρασία","αισθητήρας","αισθητήρες","Εκτιμώμενη επιφάνεια","Συντελεστής βαθμονόμησης","Εσωτερική θερμοκρασία","Εξωτερική θερμοκρασία"],"fr":["Humidité moyenne","capteur","capteurs","Surface estimée","Facteur de calibration","Température intérieure","Température extérieure"],"es":["Humedad media","sensor","sensores","Superficie estimada","Factor de calibración","Temperatura interior","Temperatura exterior"],"ar":["متوسط الرطوبة","مستشعر","مستشعرات","السطح المقدّر","معامل المعايرة","درجة الحرارة الداخلية","درجة الحرارة الخارجية"],"bg":["Средна влажност","сензор","сензора","Оценена температура на повърхността","Калибрационен коефициент","Вътрешна температура","Външна температура"],"bn":["গড় আর্দ্রতা","সেন্সর","সেন্সর","আনুমানিক পৃষ্ঠের তাপমাত্রা","ক্রমাঙ্কন গুণক","ভেতরের তাপমাত্রা","বাইরের তাপমাত্রা"],"cs":["Průměrná vlhkost","senzor","senzory","Odhadovaná teplota povrchu","Kalibrační faktor","Vnitřní teplota","Venkovní teplota"],"da":["Gennemsnitlig luftfugtighed","sensor","sensorer","Estimeret overfladetemperatur","Kalibreringsfaktor","Indetemperatur","Udetemperatur"],"fa":["میانگین رطوبت","حسگر","حسگر","دمای تخمینی سطح","ضریب کالیبراسیون","دمای داخل","دمای بیرون"],"fi":["Keskimääräinen ilmankosteus","anturi","anturia","Arvioitu pintalämpötila","Kalibrointikerroin","Sisälämpötila","Ulkolämpötila"],"he":["לחות ממוצעת","חיישן","חיישנים","טמפרטורת משטח משוערת","מקדם כיול","טמפרטורה פנימית","טמפרטורה חיצונית"],"hi":["औसत आर्द्रता","सेंसर","सेंसर","अनुमानित सतह तापमान","अंशांकन गुणांक","अंदर का तापमान","बाहर का तापमान"],"hr":["Prosječna vlažnost","senzor","senzora","Procijenjena temperatura površine","Faktor kalibracije","Unutarnja temperatura","Vanjska temperatura"],"hu":["Átlagos páratartalom","érzékelő","érzékelő","Becsült felületi hőmérséklet","Kalibrációs tényező","Beltéri hőmérséklet","Kültéri hőmérséklet"],"id":["Kelembapan rata-rata","sensor","sensor","Perkiraan suhu permukaan","Faktor kalibrasi","Suhu dalam ruangan","Suhu luar ruangan"],"it":["Umidità media","sensore","sensori","Temperatura superficiale stimata","Fattore di calibrazione","Temperatura interna","Temperatura esterna"],"ja":["平均湿度","センサー","センサー","推定表面温度","校正係数","室内温度","屋外温度"],"ko":["평균 습도","센서","센서","예상 표면 온도","보정 계수","실내 온도","실외 온도"],"nb":["Gjennomsnittlig luftfuktighet","sensor","sensorer","Estimert overflatetemperatur","Kalibreringsfaktor","Innetemperatur","Utetemperatur"],"nl":["Gemiddelde luchtvochtigheid","sensor","sensoren","Geschatte oppervlaktetemperatuur","Kalibratiefactor","Binnentemperatuur","Buitentemperatuur"],"pl":["Średnia wilgotność","czujnik","czujniki","Szacowana temperatura powierzchni","Współczynnik kalibracji","Temperatura wewnętrzna","Temperatura zewnętrzna"],"pt":["Humidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interior","Temperatura exterior"],"pt-br":["Umidade média","sensor","sensores","Temperatura estimada da superfície","Fator de calibração","Temperatura interna","Temperatura externa"],"ro":["Umiditate medie","senzor","senzori","Temperatura estimată a suprafeței","Factor de calibrare","Temperatura interioară","Temperatura exterioară"],"ru":["Средняя влажность","датчик","датчика","Оценочная температура поверхности","Калибровочный коэффициент","Температура внутри","Температура снаружи"],"sk":["Priemerná vlhkosť","senzor","senzory","Odhadovaná teplota povrchu","Kalibračný faktor","Vnútorná teplota","Vonkajšia teplota"],"sr":["Просечна влажност","сензор","сензора","Процењена температура површине","Фактор калибрације","Унутрашња температура","Спољашња температура"],"sv":["Genomsnittlig luftfuktighet","sensor","sensorer","Uppskattad yttemperatur","Kalibreringsfaktor","Inomhustemperatur","Utomhustemperatur"],"ta":["சராசரி ஈரப்பதம்","சென்சார்","சென்சார்கள்","மதிப்பிடப்பட்ட மேற்பரப்பு வெப்பநிலை","அளவுத்திருத்த காரணி","உட்புற வெப்பநிலை","வெளிப்புற வெப்பநிலை"],"th":["ความชื้นเฉลี่ย","เซนเซอร์","เซนเซอร์","อุณหภูมิพื้นผิวโดยประมาณ","ค่าปรับเทียบ","อุณหภูมิภายใน","อุณหภูมิภายนอก"],"tr":["Ortalama nem","sensör","sensör","Tahmini yüzey sıcaklığı","Kalibrasyon katsayısı","İç sıcaklık","Dış sıcaklık"],"uk":["Середня вологість","датчик","датчики","Оцінена температура поверхні","Калібрувальний коефіцієнт","Температура всередині","Температура зовні"],"ur":["اوسط نمی","سینسر","سینسر","سطح کا اندازاً درجہ حرارت","کیلیبریشن عامل","اندرونی درجہ حرارت","بیرونی درجہ حرارت"],"vi":["Độ ẩm trung bình","cảm biến","cảm biến","Nhiệt độ bề mặt ước tính","Hệ số hiệu chuẩn","Nhiệt độ trong nhà","Nhiệt độ ngoài trời"],"zh-hans":["平均湿度","传感器","传感器","估算表面温度","校准系数","室内温度","室外温度"],"zh-hant":["平均濕度","感測器","感測器","估算表面溫度","校正係數","室內溫度","室外溫度"]};
 
+
+  const CLIMATE_LABELS = {
+    en:{title:'Climate',heat:'Heating target',cool:'Cooling target',occupied:'Occupied',
+      unoccupied:'Unoccupied',away:'Away',sleep:'Sleep',home:'Home',
+      holding:'Waiting for safe conditions',active:'Native thermostat control',
+      advisory:'Planning only',pause:'Pause climate',resume:'Resume climate',
+      mode:'Selected mode',target:'Active target',device:'Device'},
+    de:{title:'Klima',heat:'Heizsollwert',cool:'Kühlsollwert',occupied:'Belegt',
+      unoccupied:'Unbelegt',away:'Abwesend',sleep:'Schlaf',home:'Zuhause',
+      holding:'Wartet auf sichere Bedingungen',active:'Native Thermostatregelung',
+      advisory:'Nur Planung',pause:'Klima pausieren',resume:'Klima fortsetzen',
+      mode:'Aktueller Modus',target:'Aktives Ziel',device:'Gerät'},
+    el:{title:'Κλίμα',heat:'Στόχος θέρμανσης',cool:'Στόχος ψύξης',occupied:'Παρουσία',
+      unoccupied:'Κενό',away:'Απουσία',sleep:'Ύπνος',home:'Σπίτι',
+      holding:'Αναμονή ασφαλών συνθηκών',active:'Έλεγχος θερμοστάτη',
+      advisory:'Μόνο σχεδιασμός',pause:'Παύση κλίματος',resume:'Συνέχιση κλίματος',
+      mode:'Λειτουργία',target:'Ενεργός στόχος',device:'Συσκευή'},
+  };
+
   const PID_LABELS = {
     en:{title:'Climate PID',active:'Setpoint regulation active',paused:'Paused: manual action required',
         pending:'Waiting for safe conditions',effort:'PID effort',target:'Room target',requested:'Requested setpoint',
@@ -395,6 +414,16 @@
       this._lastState = null;
       this._lastConfigKey = null;
       this.shadowRoot.addEventListener('click', (event) => {
+        const climate = event.target.closest?.('[data-climate-action]');
+        if (climate) {
+          const area = climate.getAttribute('data-climate-area');
+          const action = climate.getAttribute('data-climate-action');
+          if (area && ['pause','resume'].includes(action) && this._hass?.callService) {
+            Promise.resolve(this._hass.callService('home_environment_manager','climate_control',{area,action}))
+              .catch((error)=>console.error('Home Environment Manager climate action failed',error));
+          }
+          return;
+        }
         const pid = event.target.closest?.('[data-pid-action]');
         if (pid) {
           const area = pid.getAttribute('data-pid-area');
@@ -738,6 +767,30 @@
         '</strong></div>';
     }
 
+    _climatePanel(room) {
+      const p=room?.environment?.climate_plan || {};
+      if (!p.status || p.status==='disabled') return '';
+      const l=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
+      const actuator=p.actuation || {};
+      const actual=actuator.status || 'advisory_only';
+      const blocked=['hold','unavailable','unsupported_mode','unsupported_device'].includes(p.status);
+      const target=typeof p.temperature_target_c==='number' ?
+        this._format(p.temperature_target_c)+' °C' : '—';
+      const title=actual==='advisory_only' ? l.advisory : l.active;
+      const action=actual==='paused'?'resume':'pause';
+      const controls=actual==='advisory_only' ? '' :
+        '<button type="button" class="pid-button" data-climate-area="'+escape(room.area_id)+
+        '" data-climate-action="'+action+'">'+escape(action==='pause'?l.pause:l.resume)+'</button>';
+      return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
+        '<div class="pid-title">'+this._icon('mdi:thermostat')+'<strong>'+escape(l.title)+
+        '</strong><span>'+escape(title)+'</span></div>'+
+        '<div class="pid-metrics"><span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
+        '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>'+
+        '<span>'+escape(p.profile||'home')+'</span></div>'+
+        (blocked?'<small>'+escape(l.holding)+'</small>':'')+
+        '<small>'+escape(p.reason||'')+'</small>'+controls+'</section>';
+    }
+
     _pidPanel(room) {
       const pid = room?.environment?.climate_pid || {};
       if (!pid.status || pid.status === 'disabled') return '';
@@ -836,6 +889,7 @@
         ${button}
         ${expanded && this._config.show_metrics !== false
           ? this._moldCalibrationDetails(moldCalibration) : ''}
+        ${this._climatePanel(room)}
         ${this._pidPanel(room)}
         ${this._config.show_science === false ? '' : this._environmentReport(room)}
         ${rhFallback}
