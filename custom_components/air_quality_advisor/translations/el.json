@@ -670,6 +670,28 @@
           "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
       },
+      "climate_air_strategy": {
+        "title": "Κλίμα — αερισμός και καθαρισμός αέρα",
+        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "data": {
+          "climate_fan_speed_auto": "Ρύθμιση ταχύτητας μόνο ήδη ενεργών ανεμιστήρων (ξεχωριστή άδεια)",
+          "climate_pm25_sensor_verified": "Επιβεβαιωμένος πραγματικός αισθητήρας PM2.5",
+          "climate_co2_entity": "Αισθητήρας CO₂ (έλεγχος NDIR στις ρυθμίσεις περιβάλλοντος)",
+          "climate_pm25_entity": "Αισθητήρας PM2.5",
+          "climate_pm25_action_ug_m3": "Λειτουργικό βραχυπρόθεσμο όριο PM2.5 (µg/m³)",
+          "climate_extraction_speed_percent": "Επιθυμητή ταχύτητα ενεργού εξαερισμού (%)",
+          "climate_purifier_speed_percent": "Επιθυμητή ταχύτητα ενεργού καθαριστή (%)"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
       "climate_profiles": {
         "title": "Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
         "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
@@ -763,6 +785,8 @@
       "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
       "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
       "climate_secondary_control_inputs_missing": "Επιλέξτε δεύτερη συσκευή θέρμανσης ή ψύξης στο δωμάτιο και ενεργοποιήστε την άδεια.",
+      "climate_fan_control_inputs_missing": "Επιλέξτε επιτρεπόμενο έλεγχο και επαληθευμένους αισθητήρες.",
+      "climate_fan_sensor_invalid": "Επιλέξτε έγκυρους αισθητήρες CO₂/PM2.5 και ποσοστά.",
       "climate_humidity_control_inputs_missing": "Επιλέξτε εγκεκριμένο έλεγχο, αισθητήρα υγρασίας και υγραντήρα/αφυγραντήρα.",
       "climate_temperature_required": "Select a room temperature sensor.",
       "climate_target_required": "Select a supported climate entity assigned to this room.",

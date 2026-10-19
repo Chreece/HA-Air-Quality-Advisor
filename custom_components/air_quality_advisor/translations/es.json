@@ -670,6 +670,28 @@
           "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
       },
+      "climate_air_strategy": {
+        "title": "Climate — ventilation and air purification",
+        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "data": {
+          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
+          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
+          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
+          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
+          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
+          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
+          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
       "climate_profiles": {
         "title": "Clima — temperaturas por modo",
         "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
@@ -763,6 +785,8 @@
       "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
       "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
       "climate_secondary_control_inputs_missing": "Select a different same-room heating or cooling climate entity, enable native climate control, and opt in separately.",
+      "climate_fan_control_inputs_missing": "Enable authorized room control and select verified sensors for at least one selected fan.",
+      "climate_fan_sensor_invalid": "Select only same-room CO₂/PM2.5 sensors and valid fan speed limits.",
       "climate_humidity_control_inputs_missing": "Enable authorized climate control and select a same-room humidity sensor plus humidifier/dehumidifier first.",
       "climate_temperature_required": "Select a room temperature sensor.",
       "climate_target_required": "Select a supported climate entity assigned to this room.",
