@@ -92,7 +92,7 @@ def test_greek_weather_and_all_advanced_limits_are_translated():
         outdoor = greek[context]["step"]["outdoor"]["data_description"]
         assert "Επίλεξε πραγματικούς εξωτερικούς αισθητήρες" in outdoor["outdoor_sensors"]
         thresholds = greek[context]["step"]["thresholds"]["data"]
-        assert len(thresholds) == 19
+        assert len(thresholds) == 22
         assert all(value != docs["en"][context]["step"]["thresholds"]["data"][key]
                    for key, value in thresholds.items())
         for setting in ("language", "automatic_tts", "automatic_notifications",

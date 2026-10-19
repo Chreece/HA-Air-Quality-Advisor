@@ -1,4 +1,4 @@
-"""Air Quality Advisor for Home Assistant."""
+"""Home Environment Manager (backward-compatible Home Assistant domain)."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
-    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.3.0")
+    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.4.0")
     return True
 
 

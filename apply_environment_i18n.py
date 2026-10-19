@@ -1,4 +1,4 @@
-"""Idempotent Home Environment Advisor branding and opt-in science form translations.
+"""Idempotent Home Environment Manager branding and opt-in science form translations.
 
 Called last by generate_translations.py. Core 38 language translations are
 preserved; technical science help uses English where not yet translated.
@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-PRODUCT = "Home Environment Advisor"
+PRODUCT = "Home Environment Manager"
 
 EN = {
     "global_title": "International air-quality sources and pollen",
@@ -60,7 +60,7 @@ EN = {
         "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
         "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
         "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-        "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Advisor does not control the device.",
+        "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
         "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
         "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
         "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
