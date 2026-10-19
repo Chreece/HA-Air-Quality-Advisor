@@ -36,6 +36,7 @@ def test_all_presence_off_selects_eco_while_any_unknown_does_not_claim_vacancy(a
     from custom_components.air_quality_advisor.climate_rooms import gather
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     cfg={"enabled":True,"controller":"device","mode":"heat",
+         "unoccupied_delay_minutes":0,
          "temperature_entity":"sensor.kitchen_temperature","climate_entity":"climate.kitchen"}
     result,_=gather(home(),room,cfg)
     assert result["profile"]=="unoccupied"
@@ -54,3 +55,23 @@ def test_person_tracker_away_priority_and_open_window_hold(adapter):
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",True),),())
     report,_=gather(home(away=True),room,cfg)
     assert report["status"]=="hold"
+
+def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
+    home_hass=home(room_occupied=False,second_occupied=False)
+    room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
+    conf={"enabled":True,"controller":"device","mode":"heat",
+          "unoccupied_delay_minutes":20,
+          "temperature_entity":"sensor.kitchen_temperature",
+          "climate_entity":"climate.kitchen"}
+    status,_=gather(home_hass,room,conf)
+    assert status["profile"]=="home"
+    assert status["occupancy_evidence"]=="awaiting_stable_unoccupied_period"
+    # HA state can remain OFF while reporting normally; last_changed (rather
+    # than last_reported) establishes the entire quiet period.
+    from datetime import datetime,timedelta,timezone
+    before=datetime.now(timezone.utc)-timedelta(minutes=25)
+    for entity in ("binary_sensor.kitchen_occupancy","binary_sensor.kitchen_presence"):
+        home_hass.states.get(entity).last_changed=before
+    status,_=gather(home_hass,room,conf)
+    assert status["profile"]=="unoccupied"

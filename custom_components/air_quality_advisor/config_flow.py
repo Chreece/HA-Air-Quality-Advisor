@@ -975,6 +975,10 @@ class _FlowMixin:
                                                draft.get("away_entities",[])),
                 "unknown_occupancy":user_input.get("climate_unknown_occupancy",
                                                   draft.get("unknown_occupancy","occupied")),
+                "unoccupied_delay_minutes":user_input.get("climate_unoccupied_delay_minutes",
+                                                         draft.get("unoccupied_delay_minutes",10)),
+                "occupancy_stale_minutes":user_input.get("climate_occupancy_stale_minutes",
+                                                       draft.get("occupancy_stale_minutes",240)),
                 "away_policy":user_input.get("climate_away_policy",
                                              draft.get("away_policy","any_home")),
                 "manual_profile":user_input.get("climate_manual_profile",
@@ -1012,6 +1016,14 @@ class _FlowMixin:
                 errors["base"]="climate_invalid_sleep_schedule"
             else:
                 try:
+                    absence=float(proposal["unoccupied_delay_minutes"])
+                    stale=float(proposal["occupancy_stale_minutes"])
+                except (ValueError,TypeError,OverflowError):
+                    absence,stale=float("nan"),float("nan")
+                if (not math.isfinite(absence) or not 0<=absence<=240
+                        or not math.isfinite(stale) or not 10<=stale<=1440):
+                    errors["base"]="climate_invalid_occupancy_timing"
+                try:
                     adjustment=float(proposal["comfort_adjustment_max_c"])
                 except (ValueError,TypeError,OverflowError):
                     adjustment=float("nan")
@@ -1033,6 +1045,10 @@ class _FlowMixin:
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["occupied","hold"],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_unoccupied_delay_minutes",draft.get("unoccupied_delay_minutes",10)):
+                _real_number(0,240,"min"),
+            _marker("climate_occupancy_stale_minutes",draft.get("occupancy_stale_minutes",240)):
+                _real_number(10,1440,"min"),
             _marker("climate_away_policy",draft.get("away_policy","any_home")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["any_home","all_home"],multiple=False,custom_value=False,
