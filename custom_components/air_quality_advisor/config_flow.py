@@ -889,13 +889,17 @@ class _FlowMixin:
                       "temperature_entity":user_input.get("climate_temperature_entity",draft.get("temperature_entity")),
                       "occupancy_sensors":user_input.get("climate_occupancy_sensors",draft.get("occupancy_sensors",[])),
                       "away_entities":user_input.get("climate_away_entities",draft.get("away_entities",[])),
-                      "hysteresis_c":user_input.get("climate_hysteresis_c",draft.get("hysteresis_c",0.7))}
+                      "hysteresis_c":user_input.get("climate_hysteresis_c",draft.get("hysteresis_c",0.7)),
+                      "allow_actuation":bool(user_input.get("climate_allow_actuation",draft.get("allow_actuation",False))),
+                      "auto_switch_hvac":bool(user_input.get("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)))}
             if proposal["enabled"]:
                 if proposal["temperature_entity"] not in {c["value"] for c in temp_choices}:
                     errors["base"]="climate_temperature_required"
                 elif proposal["controller"] in ("device","setpoint_pid") and proposal["climate_entity"] not in {
                         c["value"] for c in climate_choices}:
                     errors["base"]="climate_target_required"
+                elif proposal.get("allow_actuation") and proposal["controller"]!="device":
+                    errors["base"]="climate_actuation_requires_native_device"
                 elif proposal["controller"] in ("pwm","on_off","proportional"):
                     # Prevent enabling control strategies without a dedicated
                     # validated direct actuator driver.
@@ -913,6 +917,8 @@ class _FlowMixin:
                 return await self.async_step_climate_profiles()
         schema=probatio.Schema({
             _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
+            _marker("climate_allow_actuation",draft.get("allow_actuation",False)):selector.BooleanSelector(),
+            _marker("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)):selector.BooleanSelector(),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},
@@ -925,8 +931,7 @@ class _FlowMixin:
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["auto","heat","cool","off"],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_entity",draft.get("climate_entity")):_optional_sensor() if False else
-                selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
+            _marker("climate_entity",draft.get("climate_entity")):selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
                 selector.SelectSelector(selector.SelectSelectorConfig(options=temp_choices,
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
