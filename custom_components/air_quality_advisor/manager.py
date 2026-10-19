@@ -39,6 +39,8 @@ from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
 from .climate_humidity_native import HumiditySetpointControl
 from .climate_secondary_native import SecondaryClimateSetpoint
+from .climate_air_actions import air_treatment_plan
+from .building_physics import moisture_potential
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
 from .logic import Plan, evaluate
@@ -243,6 +245,26 @@ class AirQualityManager:
                 )
                 state["target_source"]=settings.get("target_source","temperature")
                 state["comfort_target_evidence"]=pmv_air.get("status","not_configured")
+                # Independent air-quality responses never command hardware.
+                # Use physical moisture-ratio evidence, not outdoor RH alone.
+                profile=environment_rooms.get(monitored.area_id,{})
+                if not isinstance(profile,dict):
+                    profile={}
+                moist=environment.get(monitored.area_id,{}).get("moisture")
+                if not isinstance(moist,dict) or moist.get("status")=="unavailable":
+                    station=current_weather[0] if len(current_weather)==1 else None
+                    moist=moisture_potential(
+                        state.get("temperature_c"),
+                        state.get("humidity_management",{}).get("measured_rh"),
+                        getattr(station,"temperature_c",None),
+                        getattr(station,"humidity",None),
+                    )
+                state["air_actions"]=air_treatment_plan(
+                    raw_for_climate[monitored.area_id].readings,
+                    state,state.get("equipment_plan",{}),moist,
+                    outside_safe=base_plan.outdoor_safe,
+                    science_profile=profile,settings=settings,
+                )
                 if isinstance(settings,dict) and settings.get("enabled"):
                     equipment=state.get("equipment_plan",{})
                     thermal=equipment.get("thermal",{})
