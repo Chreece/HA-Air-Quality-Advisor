@@ -214,6 +214,70 @@ The card automatically uses **Home Assistant's per-user interface language** (`h
 
 If the card doesn't appear after updating via HACS, **restart Home Assistant**, reload the browser and reopen the card picker. It also exposes a normal JS resource endpoint at `/air_quality_advisor/air-quality-advisor-card.js` for installations where automatic frontend loading has been disabled; there is no need to copy it to `/config/www`.
 
+## Building-physics and exposure diagnostics
+
+Air Quality Advisor also derives **optional, deterministic environmental context** from
+real Home Assistant measurements. The existing window safety rules, weather alerts
+and Announcement Hub routing remain authoritative. These are **engineering
+indicators**, not a medical assessment, building certification, or an automatic
+window actuator.
+
+| Indicator | Inputs | Interpretation and limits |
+| --- | --- | --- |
+| Moisture and drying potential | Indoor air temperature + relative humidity and one valid outdoor weather temperature/RH source | Actual vapor content in g/kg dry air; positive drying potential means outside air carries less water. Shows predicted RH if outside air were warmed indoors without adding vapor. Cold 90% outdoor RH can still be drying. |
+| Adaptive comfort | Indoor temperature and **at least seven days** of sufficiently complete outdoor temperature samples | Indicative ASHRAE 55 80% band, only relevant to naturally conditioned spaces with occupant-controlled windows. Room air temperature is a proxy for operative temperature, *not proof of compliance*. |
+| Passive cooling and energy | Above comfort inputs and indoor/outdoor temperature difference | Opportunistic cooling only when outdoor safety policy also passes; approximate Wh **per cubic meter for one complete air exchange**, not measured heating energy or savings. |
+| Condensation and mold moisture exposure | Indoor temp/RH and optional existing calibrated mold surface temperature | Dew-point/surface margin and recorded hours at estimated surface RH ≥80%. Not a VTT mold index, mold probability, or verified wall measurement. |
+| 24-hour particles | PM2.5 and PM10 sensors | Time-weighted average with at least 80% observed coverage and no bridging gaps over 15 minutes. Shows WHO 2021 **24-hour** references (15/45 µg/m³), not instantaneous exposure compliance. |
+| CO₂ slope and tentative ACH | Real indoor/outdoor CO₂; open window contact; a confirmed vacant-state sensor | Trend requires at least 10 minutes of observations. ACH requires a vacant, open-window decay interval with sufficient measurements; occupancy uncertainty or no measured outdoor CO₂ means *no ACH estimate*. True NDIR sensor technology must be independently verified. |
+| Observed nighttime overheating | Valid room temperature, local timezone, 7 days of samples | Hours above 26°C between 22:00 and 07:00, reported only with adequate coverage. **Not** a CIBSE TM59:2026 design-stage assessment. |
+
+### Sensor selection, accuracy and persistence
+
+The advisor automatically discovers an indoor temperature sensor **only if exactly
+one current valid candidate exists in a room**. When there are several, it uses
+the explicitly configured temperature sensor from that room's mold calibration
+(if present); otherwise temperature-dependent metrics remain unavailable rather
+than randomly combining sources. Outdoor psychrometrics similarly require
+one unambiguous current weather temperature source with relative humidity.
+
+The historical indicators start in a **warming-up / insufficient-coverage** state.
+The integration saves a compact, capped collection of room observations in
+Home Assistant's **local storage**, retaining up to eight days and sampling at
+most every five minutes except when window/occupancy state changes. To calculate
+conditional ACH, the local history includes the occupancy boolean and window
+contact state. No cloud analytics are used. Changes to HA Recorder retention do
+not automatically delete the separate bounded history storage.
+
+Missing, stale and physically implausible CO₂/RH readings remain unknown; a
+measurement labeled CO₂ does **not** establish that the hardware contains an
+NDIR sensor. Outdoor PM2.5 = 15 and PM10 = 45 in the legacy configurable
+instantaneous decision rules remain operational screening cutoffs and must
+not be described as WHO 24-hour guideline compliance. Humidity-only opening
+is suppressed when reliable current paired readings indicate that outside air
+contains *more* vapor. This does not override rain, wind, cold-weather or
+severe-weather safety restrictions.
+
+These diagnostics are available inside the existing room dashboard's
+**Building physics** section and in the recommendation sensor's
+`dashboard.rooms[].environment` attributes; no extra devices are created.
+The card shows German, Greek and English labels, with English fallback for
+additional locales.
+
+**Scientific references:**
+[ASHRAE Standard 55](https://www.ashrae.org/technical-resources/bookstore/standard-55-thermal-environmental-conditions-for-human-occupancy),
+[ISO 13788](https://www.iso.org/standard/51615.html),
+[WHO 2021 global AQ guidelines](https://www.who.int/publications/i/item/9789240034228),
+[EPA indoor sensor limitations](https://www.epa.gov/indoor-air-quality-iaq/low-cost-air-pollution-monitors-and-indoor-air-quality),
+[CIBSE TM59:2026](https://www.cibse.org/knowledge-research/knowledge-portal/tm59-overheating-risk-in-dwellings-a-design-stage-methodology-2026).
+
+**Not implemented as a purported validated result:** Fanger PMV/PPD (would require
+measured radiant temperature/air speed and supplied clothing/activity inputs),
+Finnish VTT mold index (requires surface moisture history *and* verified
+material properties), or reliable heat-loss prediction without measured
+airflow/room geometry. Rather than manufacture these quantities from weather
+and RH alone, the advisor displays only the defensible indicators above.
+
 ## The one sensor
 
 <p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/recommendation-preview.svg" alt="Illustrative Air Quality Advisor close-window recommendation" width="100%"></p>

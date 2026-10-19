@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — Research-grounded building physics and time-dependent air-quality context
+
+- Derive room-level humidity ratio, absolute humidity, dew point and real indoor/outdoor drying potential instead of inferring moisture exchange from relative humidity alone.
+- Compute informational adaptive comfort bands from seven days of sufficiently complete outdoor observations, and evaluate clean-air passive-cooling opportunities without assuming heating/cooling state.
+- Expose estimated surface condensation margin, historical hours at high surface RH, approximate sensible heat per full air exchange, and nighttime overheating exposure; do not misrepresent estimates as ISO/CIBSE certification.
+- Add time-weighted 24-hour PM2.5/PM10 measurements with 80% coverage gates, CO₂ trends and strictly conditional CO₂-decay ACH estimates.
+- Reject implausible CO₂ (<250 or >20,000 ppm) and impossible RH measurements as unavailable. Never treat unknown sensing hardware as verified NDIR or estimate ACH without outdoor CO₂ and vacant/open-window evidence.
+- Prevent humidity-only opening advice if measured outdoor vapor mass is higher, while retaining rain, severe-weather, existing outside-temperature and Hub routing safeguards.
+- Store up to eight days of bounded local samples with source-freshness limits, restore after HA restart, and display available derived measurements on the existing card in English, German and Greek.
+- Add pure calculation and mocked Home Assistant regression tests, retain existing UX, config entries, entity identifiers and ANNOUNCEMENT HUB area targeting.
+
 ## 0.2.13 — Hand room names and routing ownership entirely to Announcement Hub
 
 - For Hub-bound announcements, send the **real Home Assistant area display name** from the recommendation snapshot, not the internal slug/area ID. Example: `output: [Küche]` rather than `output: [kouzina]`. Hub supports both and resolves room names itself.
