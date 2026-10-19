@@ -13,8 +13,10 @@ def test_public_name_and_domain_migration_are_separate():
     assert manifest["domain"] == "air_quality_advisor"
     assert manifest["name"] == "Home Environment Manager"
     assert hacs["name"] == "Home Environment Manager"
-    assert manifest["version"] == "0.5.0"
-    assert any(item.startswith("pythermalcomfort==") for item in manifest["requirements"])
+    requested = json.loads((ROOT / ".github" / "release-request.json").read_text(encoding="utf-8"))
+    assert manifest["version"] == requested["version"]
+    assert manifest["requirements"] == []
+    assert (DOMAIN / "pmv_core.py").is_file()
 
 
 def test_existing_entry_title_and_announce_service_are_preserved():
