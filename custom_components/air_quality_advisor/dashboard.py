@@ -82,7 +82,12 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     # Urgent closure always needs attention, even if indoor sensors are missing.
     # Indoor values over a threshold remain important while already ventilating
     # or when opening is prevented by outdoor hazards.
-    if high or (recommended and recommended.action == "close"):
+    extended = plan.environment.get(room.area_id, {}).get("international", {})
+    hcho = extended.get("formaldehyde_30min", {})
+    radon = extended.get("radon", {})
+    evidence_high = ((hcho.get("status") == "ready" and hcho.get("above_who_100ug_m3"))
+                     or (radon.get("status") == "annual_screening" and radon.get("above_reference")))
+    if high or evidence_high or (recommended and recommended.action == "close"):
         status = "attention"
     elif not known or incomplete_air or incomplete_windows:
         status = "unknown"

@@ -238,7 +238,16 @@ def evaluate(
                     continue
                 indoor_reasons.append(_reading_reason("inside", reading))
 
-        if not any(reading.value is not None for reading in room.readings):
+        international = environmental.get(room.area_id, {}).get("international", {})
+        hcho = international.get("formaldehyde_30min", {})
+        if hcho.get("status") == "ready" and hcho.get("above_who_100ug_m3"):
+            indoor_reasons.append(Reason("inside_formaldehyde", "Formaldehyde (30-min mean)",
+                                         f'{hcho["mean"]:g} µg/m³'))
+        cooling = environmental.get(room.area_id, {}).get("passive_cooling", {})
+        if cooling.get("status") == "cooling_opportunity" and not indoor_reasons:
+            indoor_reasons.append(Reason("inside_passive_cooling", "Cooling opportunity",
+                                         f'{cooling["cooling_delta_c"]:g} °C'))
+        if not any(reading.value is not None for reading in room.readings) and not indoor_reasons:
             diagnostics.append((room.name, "no_indoor_data"))
         elif indoor_reasons and closed and not opened:
             recommendations.append(

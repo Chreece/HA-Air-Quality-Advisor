@@ -203,7 +203,7 @@ def laeq_db_a(samples: Sequence[dict], now: float, window_seconds: float) -> dic
     """Physically valid dBA average: logarithmic sound energy, not dB arithmetic."""
     since = now - window_seconds
     total_energy, covered = 0.0, 0.0
-    data = _recent(samples, "noise_dba", now, int(window_seconds / 60) + 1)
+    data = [s for s in _recent(samples, "noise_dba", now, int(window_seconds / 60) + 1) if 0 <= s["noise_dba"] <= 150]
     for a, b in zip(data, data[1:]):
         elapsed = b["t"] - a["t"]
         if not 0 < elapsed <= MAX_GAP_S:
@@ -297,3 +297,34 @@ def pmv_iso7730(air_c: Any, mean_radiant_c: Any, rh: Any,
     return {"status": "estimate", "pmv": round(pmv, 2), "ppd_percent": round(ppd, 1),
             "standard": "ISO7730:2025", "inputs_user_supplied": ["met", "clo", "air_speed"],
             "note": "PMV/PPD estimates are model-based; not individual comfort predictions."}
+
+def nighttime_laeq(samples: Sequence[dict], now: float, tz_name: str) -> dict:
+    """Energy-averaged dB(A) over the last completed local 22:00–07:00 window."""
+    from datetime import timedelta
+    try:
+        zone = ZoneInfo(tz_name)
+    except (TypeError, ValueError, ZoneInfoNotFoundError):
+        zone = timezone.utc
+    local = datetime.fromtimestamp(now, zone)
+    end_day = local.date() if local.hour >= 7 else local.date()-timedelta(days=1)
+    end = datetime.combine(end_day, datetime.min.time(), zone).replace(hour=7)
+    start = end-timedelta(hours=9)
+    begin_s, end_s = start.timestamp(), end.timestamp()
+    data = [r for r in _recent(samples,"noise_dba",end_s,12*60) if 0 <= r["noise_dba"] <= 150]
+    energy = covered = 0.0
+    for a,b in zip(data,data[1:]):
+        if not 0 < b["t"]-a["t"] <= MAX_GAP_S:
+            continue
+        left,right=max(a["t"],begin_s),min(b["t"],end_s)
+        if right <= left:
+            continue
+        energy += (10**(a["noise_dba"]/10)+10**(b["noise_dba"]/10))/2*(right-left)
+        covered += right-left
+    expected = end_s - begin_s
+    if covered < 0.8*expected or energy <= 0:
+        return {"status":"insufficient_coverage", "coverage_percent":round(100*covered/expected,1)}
+    level = 10*math.log10(energy/covered)
+    return {"status":"indicative_night_laeq", "db_a":round(level,1),
+            "above_who_bedroom_30_dba":level>30, "reference_db_a":30,
+            "coverage_percent":round(100*covered/expected,1),
+            "local_window":"22:00_to_07:00","method":"measured_laeq_not_peak_dba"}

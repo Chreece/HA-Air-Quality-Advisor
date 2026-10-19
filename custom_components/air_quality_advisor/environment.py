@@ -87,7 +87,11 @@ def build_environment(
     outdoor_t = wx.temperature_c if wx else None
     outdoor_rh = wx.humidity if wx and wx.humidity is not None and 0 < wx.humidity <= 100 else None
     outdoor_co2 = _single_value(outdoor_readings, "co2")
-    changed = history.add("__outside__", {"outdoor_temperature_c": outdoor_t}, now=stamp)
+    changed = history.add("__outside__", {
+        "outdoor_temperature_c": outdoor_t,
+        "outdoor_pm25": _single_value(outdoor_readings, "pm25"),
+        "outdoor_pm10": _single_value(outdoor_readings, "pm10"),
+    }, now=stamp)
     prevailing = weighted_window(
         history.samples("__outside__"), "outdoor_temperature_c",
         stamp, WEEK_S, min_coverage=0.8,
@@ -176,6 +180,18 @@ def build_environment(
             hass, room.area_id, profile, samples, stamp,
             history=history, outside_safe=outside_safe, existing=base_report,
         )
+        outdoor_mean = weighted_window(history.samples("__outside__"), "outdoor_pm25", stamp, DAY_S)
+        indoor_mean = base_report["pm25_24h"]
+        if (outdoor_mean.get("status") == "ready"
+                and indoor_mean.get("status") == "ready" and outdoor_mean["mean"] > 0.1):
+            extra["particle_indoor_outdoor_ratio"] = {
+                "status":"descriptive_only", "ratio":round(indoor_mean["mean"]/outdoor_mean["mean"],2),
+                "indoor_pm25_24h":indoor_mean["mean"], "outdoor_pm25_24h":outdoor_mean["mean"],
+                "is_infiltration_fraction":False,
+                "note":"Cannot infer infiltration: indoor sources, deposition and airflow are unmeasured."
+            }
+        else:
+            extra["particle_indoor_outdoor_ratio"] = {"status":"insufficient_coverage"}
         base_report["international"] = extra
         changed = daily_saved or changed
         result[room.area_id] = base_report

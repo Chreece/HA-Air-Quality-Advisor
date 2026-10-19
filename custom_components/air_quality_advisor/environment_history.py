@@ -16,6 +16,7 @@ FIELDS = frozenset((
     "temperature_c", "humidity", "pm25", "pm10", "co2", "surface_rh",
     "outdoor_temperature_c", "window_open", "occupied",
     "radon", "noise_dba", "hcho", "lux", "melanopic_edi",
+    "outdoor_pm25", "outdoor_pm10",
     "radon_source",
 ))
 MAX_AGE = 8 * DAY_S

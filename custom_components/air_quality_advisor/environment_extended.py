@@ -12,7 +12,7 @@ from .building_physics import DAY_S, weighted_window
 from .environment_science import (
     aqi_category, daylight_exposure, eea_hourly_category, hcho_30min,
     laeq_db_a, moisture_event, overheating_degree_hours, particle_filtration,
-    pmv_iso7730, pollen_reading, radon_long_term, ventilation_learning,
+    pmv_iso7730, pollen_reading, radon_long_term, ventilation_learning, nighttime_laeq,
 )
 from .discovery import entity_area, is_stale, temperature_sensor_c
 
@@ -128,6 +128,7 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
     calibrated_noise = bool(profile.get("noise_sensor_calibrated"))
     sound = laeq_db_a(samples, now, DAY_S) if calibrated_noise and profile.get("noise_entity") else {
         "status": "sensor_calibration_required" if profile.get("noise_entity") else "not_configured"}
+    night_sound = nighttime_laeq(samples, now, getattr(getattr(hass,"config",None),"time_zone",None) or "UTC") if calibrated_noise and profile.get("noise_entity") and profile.get("sleep_room") else {"status":"not_configured"}
     light = daylight_exposure(samples, now) if profile.get("illuminance_entity") else {"status": "not_configured"}
     mel = [s.get("melanopic_edi") for s in samples[-1:] if isinstance(s.get("melanopic_edi"), (float,int))]
     if mel and profile.get("melanopic_spectral_verified"):
@@ -177,7 +178,8 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
     return {
         "air_purification": purification, "moisture_event": moisture,
         "ventilation_learning": ventilation, "formaldehyde_30min": hcho,
-        "radon": radon, "sound_24h": sound, "daylight": light, "pmv_ppd": pmv,
+        "radon": radon, "sound_24h": sound, "sound_last_night": night_sound,
+        "daylight": light, "pmv_ppd": pmv,
         "overheating_degree_hours": overheating,
         "additional_advice": recommendation,
         "method": "deterministic_opt_in_environmental_observations",
