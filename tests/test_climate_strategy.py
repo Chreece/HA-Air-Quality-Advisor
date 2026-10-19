@@ -76,7 +76,7 @@ def test_native_heat_cool_range_uses_two_device_targets_not_external_pid():
                 temp_c=19,capability=caps,at_home="home",occupied="occupied",
                 comfort_target_c=24)
     assert pmv.range_low_c==21.5
-    assert pmv.range_high_c==26
+    assert pmv.range_high_c==24.5  # PMV may lower the cooling threshold by at most 1.5°C
     no_native=policy({"enabled":True,"controller":"device","mode":"auto",
                       "prefer_native_auto":False},
                      temp_c=19,capability=caps,at_home="home",occupied="occupied")
