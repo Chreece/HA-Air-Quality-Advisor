@@ -363,3 +363,7 @@ apply_mold_i18n(root)
 # Brand and international optional-science configuration, after legacy overrides.
 from apply_environment_i18n import apply_environment_i18n
 apply_environment_i18n(root)
+
+# Explicitly opt-in supervisory PID climate control, after all legacy overrides.
+from apply_pid_i18n import apply_pid_i18n
+apply_pid_i18n(root)

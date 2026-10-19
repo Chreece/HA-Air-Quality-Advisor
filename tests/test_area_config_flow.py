@@ -346,7 +346,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds", "environment", "environment_room",
+        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -770,3 +770,22 @@ def test_room_environment_uses_explicit_sensor_verification(monkeypatch, adapter
     assert saved["co2_ndir_verified"] is True
     assert saved["formaldehyde_sensor_verified"] is False
     assert saved["sleep_room"] is True
+
+def test_pid_controller_is_off_by_default_and_saved_without_climate_devices(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    assert asyncio.run(options.async_step_pid({"pid_area":"living"}))["step_id"]=="pid_room"
+    disabled=asyncio.run(options.async_step_pid_room({"pid_enabled":False}))
+    assert disabled["completed"]["data"]["pid_rooms"]["living"]["enabled"] is False
+    assert disabled["completed"]["data"]["thresholds"]["indoor_co2"] == 1200
+
+
+def test_pid_controller_rejects_enabled_room_without_climate_or_temperature(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_pid({"pid_area":"living"}))
+    invalid=asyncio.run(options.async_step_pid_room({
+        "pid_enabled":True,"pid_climate_entities":[],
+        "pid_temperature_entity":None,"pid_mode":"heat","pid_target_c":21,
+    }))
+    assert invalid["errors"]["base"]=="pid_climate_required"
