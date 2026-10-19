@@ -536,6 +536,93 @@ recommended to put medical, industrial or freeze-sensitive loads under this
 experimental supervisory controller without independent safeguards. No climate
 commands are sent until the user enables PID for that room.
 
+## Climate room profiles and automatic control (development branch)
+
+The next Home Environment Manager climate update builds on v0.5.0's
+conservative thermostat-setpoint PID. It distinguishes **four controller
+strategies by actual Home Assistant capabilities**, rather than equating a
+thermostat with a relay:
+
+| Equipment and strategy | Commands | Hard limitations |
+| --- | --- | --- |
+| Built-in thermostat (`climate.*`) | `climate.set_temperature`; optionally `climate.set_hvac_mode` | Requires TARGET_TEMPERATURE support. Automatic heat/cool mode changes need a *second* explicit opt-in, minimum mode dwell and acknowledgement. An OFF thermostat is not restarted. |
+| Existing v0.5 setpoint PID (`climate.*`) | Rate-limited `climate.set_temperature` only | Can never run alongside another enabled room controller. |
+| Non-compressor heating/cooling relay (`switch.*`) | `switch.turn_on`/`turn_off` | Explicit non-compressor/independent-protection attestation, room ownership, hysteresis, minimum ON/OFF intervals and maximum ON watchdog. |
+| Slow thermal PWM relay (`switch.*`) | Bounded time-proportioning ON/OFF | Only loads documented as safe for repeated switching; fixed PWM period and minimum pulse durations. **Never attach a compressor or unprotected resistive heater.** |
+| True proportional actuator (`number.*`) | `number.set_value` | Sensor must expose a verified 0–100% output with unit `%`, range 0–100 and valid step; rate-limited commands. |
+
+A `climate.*` entity that only exposes heat/off control is **not** assumed
+to be safe for rapid relay PWM. Direct actuators must be assigned to the
+actual HA room, with explicit heat/cool output selectors and confirmation of
+hardware type. The integration does not discover or infer compressor safety.
+
+### Configure temperatures, occupancy and schedules
+
+Open **Home Environment Manager → Configure → Climate**. For each monitored
+room:
+
+1. Select a real temperature sensor, controller strategy and target devices.
+   Enable the room and then separately authorize actuator commands if wanted.
+   Optional automatic native heat/cool switching is another distinct setting.
+2. Select a subset of occupancy sensors or leave it empty to use **all
+   Home Assistant presence/occupancy binary sensors assigned to that room**.
+   Any occupied sensor wins. All known-off sensors must remain off for the
+   configured vacancy delay before an unoccupied setback takes effect.
+   Stale/unknown readings do not automatically prove vacancy.
+3. Choose any supported `person.*`, `device_tracker.*`, or explicitly
+   selected home-presence `binary_sensor.*` entities for whole-home
+   home/away decisions. A named zone such as work is considered away.
+4. Configure an optional **local-time sleeping schedule**, manual profile
+   override, and your desired temperature control basis.
+5. Set **separate heating/cooling bands** for *home, unoccupied, away
+   and sleep*. Heat and cool thresholds must remain separated by a deadband;
+   mode changes are filtered through hysteresis. The default example
+   setpoints (20/26°C at home, 18/28°C unoccupied, 16/30°C away and
+   18/26°C sleeping) are only starting points, not universal comfort targets.
+6. If choosing a relay, PWM or proportional driver, a separate **Direct
+   Actuators** page collects exact entities, hardware attestation,
+   minimum-on/off times, maximum runtime and applicable PID/PWM bounds.
+
+Each room is configured independently. All global and local settings work
+with any supported Home Assistant provider and local timezone; no German,
+Greek or other national integration is hardcoded.
+
+### Optional scientific comfort targeting
+
+Two target-selection modes are supported:
+
+- **Temperature:** use the explicit profile heating/cooling bands.
+- **ISO 7730 PMV:** when enabled in the room's advanced environmental
+  measurements, require a genuine mean radiant temperature, humidity,
+  measured/explicit air speed, clothing insulation (clo), and activity (met).
+  The pinned `pythermalcomfort` implementation solves a bounded air
+  temperature corresponding approximately to PMV 0. The correction to the
+  owner's chosen temperature bands is capped; without valid current physical
+  inputs the fixed profile targets remain in force. No PMV-based correction
+  is applied to away/unoccupied setbacks.
+
+ISO 7730 is a *population thermal-comfort model*, not a personalized
+guarantee. A PMV-derived target assumes the other model inputs stay fixed;
+actual indoor radiant temperature and airflow can change with HVAC operation.
+See the [pythermalcomfort model documentation](https://pythermalcomfort.readthedocs.io/en/stable/documentation/models.html).
+
+### Safety and scope
+
+Direct actuator control requires real-world commissioning. The code contains
+restart-persistent manual pauses, output acknowledgement, explicit room/device
+ownership, heating/cooling interlocks, short service-call timeouts, a
+maximum-on safeguard and best-effort safe-off on controller pause or reload
+for devices it previously operated. Unowned active outputs are *not* silently
+overwritten. If a relay cannot be verified OFF or an integration becomes
+unresponsive, hardware cutouts remain indispensable.
+
+**This v0.6 climate expansion is currently a draft implementation, not a
+released update.** Integration and simulation tests must pass before
+publication, followed by controlled testing with representative actual
+hardware. Direct relay/PWM modes are for slow, safely protected thermal
+loads; they must not control compressor power circuits or serve as the sole
+frost/overtemperature protection.
+
 ## Known limitations
 
 - Only the named supported metric/device classes and units are interpreted. Unrecognized AQI variants, CO/ozone/NO₂/SO₂, arbitrary provider attributes and event-based weather alerts are not guessed at. Add a normalized HA template sensor where necessary.

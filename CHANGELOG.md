@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — Per-room automatic climate control (draft)
+
+- Add room-specific comfort and away profiles, occupancy debounce, local-time sleeping schedules and explicit device/control configuration.
+- Implement guarded native heat/cool selection and direct non-compressor relay, PWM and percentage-based output drivers, each with independent equipment constraints.
+- Implement optional ISO 7730 PMV-target inversion using measured radiant temperature, humidity, air speed and configured clothing/activity inputs; never invent missing data.
+- Enforce room-level ownership, temperature sensor freshness, mode-change dwell, manual-override pause, output acknowledgement, maximum-on watchdog, interlocks and restart handling.
+- Expand Home Assistant configuration, tests, translations, documentation and rendered Lovelace-card examples. Remains unreleased pending end-to-end device validation.
+
 ## 0.5.0 — Opt-in bounded climate PID control
 
 - Add per-room PID setpoint control for explicit `climate.*` entities with separate heat/cool tuning and strict safe operating bounds.

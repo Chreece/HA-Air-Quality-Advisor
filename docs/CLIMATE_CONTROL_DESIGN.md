@@ -1,9 +1,10 @@
 # Home Environment Manager — climate control architecture (development)
 
 This document describes the safety contract of the next controller family. The
-feature branch currently implements the deterministic policy and planner.
-**Do not describe these planners as actuator control or install them for direct
-switch/PWM control yet.** The released v0.5 supervisor remains separate.
+feature branch implements deterministic policy and separate early-stage
+native/direct actuator drivers. **This is an experimental development branch;
+it is not approved for physical actuator commissioning or HACS publication.**
+The released v0.5 thermostat supervisor remains separate.
 
 ## Scientific and engineering basis
 
@@ -25,7 +26,7 @@ switch/PWM control yet.** The released v0.5 supervisor remains separate.
 - Power loss, HA reload or stale input: no automatic assumption of safe
   actuator state. Reconcile real output state before writing.
 
-## Capability-specific driver contracts (planned)
+## Capability-specific driver contracts (implementation under validation)
 
 | HA equipment | Choice | Allowed API | Safety |
 | --- | --- | --- | --- |
@@ -36,9 +37,9 @@ switch/PWM control yet.** The released v0.5 supervisor remains separate.
 | Slow thermal actuator with PWM | time proportioning | switch.turn_on/off at validated PWM periods | Pulse minimum and monotonic cycle anchor, no compressor switching. |
 | True proportional actuator | native modulation | number.set_value / supported specific API | Bounded 0–100% output, rated capabilities and explicit source mapping. |
 
-Each driver needs separate HA fake-platform integration tests, watchdog
-and restart tests. Unsupported device capabilities must produce diagnostics
-rather than automatic guessing or a generic service broadcast. One physical
+Pure-policy, fake Home Assistant actuator, watchdog and startup tests are
+underway. Unsupported device capabilities must produce diagnostics rather
+than automatic guessing or a generic service broadcast. One physical
 actuator cannot be controlled by two enabled room controllers.
 
 ## Occupancy / away

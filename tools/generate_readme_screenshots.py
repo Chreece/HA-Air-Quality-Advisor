@@ -87,6 +87,13 @@ def room(key: str, name: str, status: str, readings: list[dict],
                     "pm10_24h":{"status":"ready","mean":21.0},
                     "co2_trend":{"status":"ready","trend_ppm_per_hour":-260},
                     "heat_per_full_air_exchange_wh_m3":1.4,
+                    "climate_plan":{
+                        "status":"ready", "profile":"home",
+                        "occupancy":"occupied", "away":"home",
+                        "mode":"heat", "temperature_target_c":21.0,
+                        "reason":"heating_demand",
+                        "actuation":{"status":"holding","mode":"heat"},
+                    },
                     "climate_pid":{
                         "status":"controlling", "mode":"heat",
                         "target_c":21.5, "measured_c":20.8,
