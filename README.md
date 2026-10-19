@@ -725,3 +725,14 @@ interval, requires a known native speed step and command acknowledgments,
 pauses on a manual speed change and never sets 0% or sends on/off/preset
 actions. Unverified devices remain advisory and the controller will not
 power any purifier or ventilation equipment on.
+
+
+### Climate-only rooms without window sensors
+
+Climate can be configured for a Home Assistant area even when there is no
+window contact in the room. These areas now appear as dedicated **climate
+cards** in the Lovelace view with their controller and equipment diagnostics.
+They are not automatically counted as air-quality safe (or unsafe), do not
+receive invented window recommendations, and do not change the number of
+monitored areas or Announcement Hub delivery targets. Existing monitored
+rooms continue to use strict window-contact interlocks.

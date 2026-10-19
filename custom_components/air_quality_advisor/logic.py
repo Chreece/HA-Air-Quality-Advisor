@@ -103,6 +103,9 @@ class Plan:
     warnings: tuple[Warning, ...] = ()
     # Informational derived physics; not an additional measured air pollutant.
     environment: dict[str, dict[str, Any]] = field(default_factory=dict)
+    # Extra climate-only areas are displayed on the dashboard, never passed
+    # into the window/announcement evaluator as monitored air-quality rooms.
+    climate_rooms: tuple[Room, ...] = ()
 
     @property
     def signature(self) -> str:

@@ -882,6 +882,17 @@
     }
 
     _room(room) {
+      if (room?.climate_only === true) {
+        const labels=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
+        return `<article class="room room-climate-only">
+          <div class="room-heading">
+            <div class="room-icon">${this._icon('mdi:thermostat')}</div>
+            <div class="room-main"><h3>${escape(room.name)}</h3>
+              <span>${escape(labels.title)}</span></div>
+          </div>
+          ${this._climatePanel(room)}
+        </article>`;
+      }
       const status = ['safe','attention','unknown'].includes(room.status) ? room.status : 'unknown';
       const readings = safeArray(room.readings);
       const windows = safeArray(room.windows);

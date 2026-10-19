@@ -198,3 +198,14 @@ hold or pause the driver. Outdoor changes and source events recalculate the
 policy, but real hardware emergency and commissioning safeguards are still
 independently required. Full automatic extraction/dehumidifier power, cooling
 and DRY/FAN_ONLY transitions remain separate future control gates.
+
+
+## Dashboard vs ventilation-monitoring room membership
+
+`Plan.climate_rooms` contains independently configured HVAC-only areas.
+`Plan.rooms` remains strictly the selected window/indoor air monitoring
+areas used to calculate recommendations, announcements and monitored-room
+status totals. The dashboard appends specially marked `climate_only`
+room cards, without contributing them to air-quality summary counts or
+fabricating window alerts. When a monitored room loses its required contact
+its native setpoint policy still holds, unlike a deliberate HVAC-only room.

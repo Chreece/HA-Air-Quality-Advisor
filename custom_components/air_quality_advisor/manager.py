@@ -215,6 +215,7 @@ class AirQualityManager:
         )
         environment["__outside__"] = {"pollen": pollen}
         room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
+        climate_only=()
         if isinstance(room_climate_configs,dict):
             # Climate may be configured in any real HA area; window monitoring
             # remains scoped to CONF_AREAS so notification routes never widen.
@@ -340,11 +341,15 @@ class AirQualityManager:
             self._environment_store.async_delay_save(
                 self._environment_history.snapshot, 300,
             )
-        return evaluate(
+        air_plan=evaluate(
             outdoor_readings, current_weather, warnings, selected_rooms,
             self.thresholds, environment=environment,
             extra_outside=extra_outside,
         )
+        extra=tuple(room for room in climate_only if
+                    isinstance(room_climate_configs.get(room.area_id),dict) and
+                    room_climate_configs[room.area_id].get("enabled") is True)
+        return replace(air_plan,climate_rooms=extra)
 
     async def async_start(self) -> None:
         """Track sensor changes and periodically recheck freshness and new entities."""

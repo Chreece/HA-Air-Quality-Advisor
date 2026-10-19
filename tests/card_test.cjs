@@ -448,3 +448,25 @@ for(const [lang,label] of [
   assert.ok(airCard.shadowRoot.innerHTML.includes('fan.kitchen_filter'));
   assert.ok(airCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
 }
+
+
+// Windowless HVAC-only rooms appear without a fake missing air or window warning.
+const onlyClimate=JSON.parse(JSON.stringify(input));
+onlyClimate.rooms=[{
+  area_id:'bedroom',name:'Bedroom',status:'unknown',climate_only:true,
+  environment:{climate_plan:{
+    status:'ready',mode:'heat',temperature_target_c:21,profile:'home',
+    actuation:{status:'setpoint_commanded'},
+  }},
+  readings:[],windows:[],high_count:0,available_count:0,
+}];
+const onlyCard=new Card();
+onlyCard.setConfig({entity:'sensor.climate_only'});
+onlyCard.hass={language:'en',states:{
+  'sensor.climate_only':{state:'idle',attributes:{dashboard:onlyClimate}},
+}};
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('room-climate-only'));
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('Bedroom'));
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('21 °C'));
+assert.ok(!onlyCard.shadowRoot.innerHTML.includes('empty-measurements'));
+assert.ok(!onlyCard.shadowRoot.innerHTML.includes('window-section'));
