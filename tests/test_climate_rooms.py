@@ -1,5 +1,4 @@
 """HA area occupancy and tracking inputs, with conservative sensor handling."""
-from custom_components.air_quality_advisor.climate_rooms import gather
 from custom_components.air_quality_advisor.logic import Room,Window
 from test_discovery import FakeHass,MockState,adapter
 
@@ -18,6 +17,7 @@ def home(*,room_occupied=False,second_occupied=False,away=False,unknown=False):
 
 
 def test_auto_discovers_all_room_presence_and_any_on_wins(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
     hass=home(room_occupied=False,second_occupied=True)
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     c={"enabled":True,"controller":"device","mode":"auto",
@@ -33,6 +33,7 @@ def test_auto_discovers_all_room_presence_and_any_on_wins(adapter):
 
 
 def test_all_presence_off_selects_eco_while_any_unknown_does_not_claim_vacancy(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     cfg={"enabled":True,"controller":"device","mode":"heat",
          "temperature_entity":"sensor.kitchen_temperature","climate_entity":"climate.kitchen"}
@@ -43,6 +44,7 @@ def test_all_presence_off_selects_eco_while_any_unknown_does_not_claim_vacancy(a
 
 
 def test_person_tracker_away_priority_and_open_window_hold(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
     cfg={"enabled":True,"controller":"device","mode":"auto",
          "temperature_entity":"sensor.kitchen_temperature","climate_entity":"climate.kitchen",
          "away_entities":["person.resident"]}
