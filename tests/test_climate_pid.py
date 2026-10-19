@@ -26,10 +26,13 @@ class Services:
         self.hass=hass
         self.calls=[]
         self.ack=True
+        self.fail=False
     def has_service(self,domain,action):
         return (domain,action)==("climate","set_temperature")
     async def async_call(self,domain,action,data,**kwargs):
         self.calls.append((domain,action,data,kwargs))
+        if self.fail:
+            raise RuntimeError("climate integration offline")
         if self.ack:
             self.hass.states.get(kwargs["target"]["entity_id"]).attributes["temperature"]=data["temperature"]
 
@@ -165,6 +168,44 @@ def test_duplicate_climate_target_across_rooms_is_refused(adapter,pid_store):
         engine.schedule((room,second),both)
         assert engine.statuses["living"]["status"]=="duplicate_target"
         assert engine.statuses["other"]["status"]=="duplicate_target"
+        assert not hass.services.calls
+        await engine.async_stop()
+    asyncio.run(scenario())
+
+def test_climate_service_failure_latches_pause_and_does_not_retry(adapter,pid_store):
+    async def scenario():
+        hass,room=fake_home()
+        clock=[1000.]
+        engine=pid_store.Coordinator(hass,"failure",report_changed=lambda:None,clock=lambda:clock[0])
+        await engine.async_start()
+        profile=config()
+        clock[0]=1600
+        await tick(engine,room,profile,clock)
+        assert not hass.services.calls
+        hass.services.fail=True
+        clock[0]=1900
+        await tick(engine,room,profile,clock)
+        assert engine._paused["living"]=="climate_service_failure"
+        assert engine.statuses["living"]["status"]=="paused"
+        assert len(hass.services.calls)==1
+        clock[0]=2500
+        await tick(engine,room,profile,clock)
+        assert len(hass.services.calls)==1
+        await engine.async_stop()
+    asyncio.run(scenario())
+
+
+def test_manual_pause_always_blocks_future_device_writes(adapter,pid_store):
+    async def scenario():
+        hass,room=fake_home()
+        clock=[1000.]
+        engine=pid_store.Coordinator(hass,"pause",report_changed=lambda:None,clock=lambda:clock[0])
+        await engine.async_start()
+        conf=config()
+        assert (await engine.async_action("living","pause",{"living":conf}))["accepted"]
+        clock[0]=4000
+        await tick(engine,room,conf,clock)
+        assert engine.statuses["living"]["status"]=="paused"
         assert not hass.services.calls
         await engine.async_stop()
     asyncio.run(scenario())

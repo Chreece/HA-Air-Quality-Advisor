@@ -374,9 +374,12 @@ class ClimatePidCoordinator:
                 return
             try:
                 # No hvac_mode field: never power on/off or switch compressor modes.
-                await self.hass.services.async_call(
-                    "climate", "set_temperature", {"temperature": native},
-                    target={"entity_id": entity}, blocking=True,
+                await asyncio.wait_for(
+                    self.hass.services.async_call(
+                        "climate", "set_temperature", {"temperature": native},
+                        target={"entity_id": entity}, blocking=True,
+                    ),
+                    timeout=25,
                 )
             except asyncio.CancelledError:
                 raise
