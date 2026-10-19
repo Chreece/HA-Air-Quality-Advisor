@@ -17,6 +17,7 @@ from .const import DOMAIN, PLATFORMS, LANGUAGES
 from .manager import AirQualityManager
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+PUBLIC_ACTION_DOMAIN = "home_environment_manager"  # Alias only; existing domain remains.
 
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
@@ -67,6 +68,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             DOMAIN, "announce", async_announce_action,
             schema=SERVICE_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
         )
+        # A user-facing service alias for the rebrand. Both service domains
+        # intentionally call the same manager: no duplicate announcements.
+        if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "announce"):
+            hass.services.async_register(
+                PUBLIC_ACTION_DOMAIN, "announce", async_announce_action,
+                schema=SERVICE_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
+            )
     return True
 
 
@@ -77,4 +85,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
     if not hass.data.get(DOMAIN):
         hass.services.async_remove(DOMAIN, "announce")
+        if hass.services.has_service(PUBLIC_ACTION_DOMAIN, "announce"):
+            hass.services.async_remove(PUBLIC_ACTION_DOMAIN, "announce")
     return True

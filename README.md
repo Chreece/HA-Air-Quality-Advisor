@@ -142,7 +142,8 @@ local; selected external forecasts come from Home Assistant's existing providers
 
 The public title, integration manifest and dashboard branding use
 **Home Environment Manager**, but the internal domain remains
-`air_quality_advisor`; its service `air_quality_advisor.announce`,
+`air_quality_advisor`; its original service `air_quality_advisor.announce` (plus the new
+`home_environment_manager.announce` alias),
 existing entity unique IDs, area selections, statistics storage and prior
 configurations are preserved. Existing
 `custom:air-quality-advisor-card` Lovelace dashboards still work; new
