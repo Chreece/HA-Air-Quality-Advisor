@@ -160,3 +160,14 @@ radiant temperature, relative air movement, activity and clothing parameters
 remain explicit. The algorithm is an engineering estimate, not evidence of
 ISO-compliant certification. The adapted reference model's MIT notice is
 included in `docs/licenses/pythermalcomfort-MIT.txt`.
+
+
+## Dashboard visibility
+
+The v0.6 Lovelace climate section now shows primary thermostat, secondary
+native setpoint, and humidifier/dehumidifier setpoint statuses independently,
+plus the selected equipment and measured humidity evidence. It distinguishes
+an intentional primary hold from a secondary setpoint controller that is
+actively operating. Device names and failure reasons are presented as
+traceable diagnostics; controls call only the existing room-specific
+`home_environment_manager.climate_control` action.

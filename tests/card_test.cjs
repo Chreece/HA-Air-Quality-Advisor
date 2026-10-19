@@ -378,3 +378,43 @@ for(const [lang,title] of [['en','Climate'],['de','Klima'],['el','Κλίμα']])
   assert.ok(rangeCard.shadowRoot.innerHTML.includes('20–26 °C'));
   assert.ok(rangeCard.shadowRoot.innerHTML.includes('data-climate-area="kitchen"'));
 }
+
+
+// Show separate, explicitly opted-in HVAC and humidity status without
+// conflating active secondary setpoints with the primary controller hold.
+const multiDevice=JSON.parse(JSON.stringify(input));
+multiDevice.rooms[0].environment={climate_plan:{
+  status:'hold',reason:'secondary_thermal_driver_pending',mode:'cool',
+  temperature_target_c:26,profile:'home',
+  actuation:{status:'hold'},
+  secondary_actuation:{status:'setpoint_commanded'},
+  humidity_actuation:{status:'paused'},
+  equipment_plan:{
+    thermal:{status:'selected',entity_id:'climate.kitchen_ac',mode:'cool'},
+    moisture:{status:'selected',entity_id:'humidifier.dryer',action:'dry'},
+    humidity:{status:'advisory',action:'dry',measured_rh:67},
+    humidity_evidence:'selected_sensor',
+  },
+}};
+const multiCard=new Card();
+multiCard.setConfig({entity:'sensor.multi_device'});
+for (const [language, labels] of [
+  ['en',['Secondary HVAC','Humidity control','Selected equipment']],
+  ['de',['Zweites Klimagerät','Luftfeuchteregelung','Ausgewähltes Gerät']],
+  ['el',['Δεύτερη συσκευή κλίματος','Ρύθμιση υγρασίας','Επιλεγμένη συσκευή']],
+]) {
+  multiCard.hass={language,states:{
+    'sensor.multi_device':{state:'idle',attributes:{dashboard:multiDevice}},
+  }};
+  for(const label of labels)
+    assert.ok(multiCard.shadowRoot.innerHTML.includes(label), language+': '+label);
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('climate.kitchen_ac'));
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('humidifier.dryer'));
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+multiDevice.rooms[0].environment.climate_plan.actuation={status:'paused'};
+multiDevice.rooms[0].environment.climate_plan.secondary_actuation={status:'paused'};
+multiCard.hass={language:'en',states:{
+  'sensor.multi_device':{state:'idle',attributes:{dashboard:multiDevice}},
+}};
+assert.ok(multiCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));

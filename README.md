@@ -688,3 +688,15 @@ reference-tested ISO 7730 Fanger scalar implementation without binary
 scientific dependencies, preserving advanced thermal comfort calculations
 in Home Assistant's Alpine/musl Python 3.14 environment. The experimental
 v0.6 climate-device controls remain on the draft branch.
+
+
+### Multi-device climate status in the Lovelace room panel (v0.6 draft)
+
+The room's climate panel now reports **primary thermostat**, **secondary
+heating/cooling**, and **native humidity target supervision** separately.
+Selecting a secondary AC no longer makes the primary thermostat's hold
+status appear as if all climate control has failed. The selected equipment,
+room humidity evidence and pause/resume state remain visible with English,
+German and Greek labels. Device ID and diagnostic reason are shown for audit.
+All operations remain entity-targeted and retain the existing climate-control
+pause/resume action; secondary DRY/FAN modes are still advisory.

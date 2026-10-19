@@ -299,17 +299,26 @@
       unoccupied:'Unoccupied',away:'Away',sleep:'Sleep',home:'Home',
       holding:'Waiting for safe conditions',active:'Native thermostat control',
       advisory:'Planning only',pause:'Pause climate',resume:'Resume climate',
-      mode:'Selected mode',target:'Active target',device:'Device'},
+      mode:'Selected mode',target:'Active target',device:'Device',
+      primary:'Primary HVAC',secondary:'Secondary HVAC',humidity:'Humidity control',
+      selectedDevice:'Selected equipment',moistureAction:'Humidity decision',
+      currentHumidity:'Measured RH',sourceStatus:'Sensor evidence'},
     de:{title:'Klima',heat:'Heizsollwert',cool:'Kühlsollwert',occupied:'Belegt',
       unoccupied:'Unbelegt',away:'Abwesend',sleep:'Schlaf',home:'Zuhause',
       holding:'Wartet auf sichere Bedingungen',active:'Native Thermostatregelung',
       advisory:'Nur Planung',pause:'Klima pausieren',resume:'Klima fortsetzen',
-      mode:'Aktueller Modus',target:'Aktives Ziel',device:'Gerät'},
+      mode:'Aktueller Modus',target:'Aktives Ziel',device:'Gerät',
+      primary:'Hauptthermostat',secondary:'Zweites Klimagerät',humidity:'Luftfeuchteregelung',
+      selectedDevice:'Ausgewähltes Gerät',moistureAction:'Feuchteentscheidung',
+      currentHumidity:'Gemessene rF',sourceStatus:'Sensornachweis'},
     el:{title:'Κλίμα',heat:'Στόχος θέρμανσης',cool:'Στόχος ψύξης',occupied:'Παρουσία',
       unoccupied:'Κενό',away:'Απουσία',sleep:'Ύπνος',home:'Σπίτι',
       holding:'Αναμονή ασφαλών συνθηκών',active:'Έλεγχος θερμοστάτη',
       advisory:'Μόνο σχεδιασμός',pause:'Παύση κλίματος',resume:'Συνέχιση κλίματος',
-      mode:'Λειτουργία',target:'Ενεργός στόχος',device:'Συσκευή'},
+      mode:'Λειτουργία',target:'Ενεργός στόχος',device:'Συσκευή',
+      primary:'Κύριος θερμοστάτης',secondary:'Δεύτερη συσκευή κλίματος',humidity:'Ρύθμιση υγρασίας',
+      selectedDevice:'Επιλεγμένη συσκευή',moistureAction:'Απόφαση υγρασίας',
+      currentHumidity:'Μετρημένη υγρασία',sourceStatus:'Ποιότητα μετρήσεων'},
   };
 
   const PID_LABELS = {
@@ -771,31 +780,65 @@
       const p=room?.environment?.climate_plan || {};
       if (!p.status || p.status==='disabled') return '';
       const l=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
-      const actuator=p.actuation || {};
-      const actual=actuator.status || 'advisory_only';
-      const blocked=['hold','unavailable','unsupported_mode','unsupported_device'].includes(p.status);
+      const primary=p.actuation || {};
+      const secondary=p.secondary_actuation || {};
+      const moisture=p.humidity_actuation || {};
+      const controllers=[
+        {label:l.primary, status:primary.status || 'advisory_only'},
+        {label:l.secondary, status:secondary.status || 'advisory_only'},
+        {label:l.humidity, status:moisture.status || 'advisory_only'},
+      ];
+      const working=['setpoint_commanded','native_range_commanded',
+        'at_setpoint','native_range_at_setpoint','holding','commanded',
+        'modulating','mode_commanded','target_commanded'];
+      const active=controllers.some((part)=>working.includes(part.status));
+      const enabled=controllers.filter((part)=>part.status!=='advisory_only' &&
+        part.status!=='disabled');
+      const allPaused=enabled.length>0 && enabled.every((part)=>part.status==='paused');
+      const blocked=!active && ['hold','unavailable','unsupported_mode',
+        'unsupported_device'].includes(p.status);
       const target=(typeof p.low_target_c==='number' &&
                     typeof p.high_target_c==='number') ?
         this._format(p.low_target_c)+'–'+this._format(p.high_target_c)+' °C' :
         typeof p.temperature_target_c==='number' ?
         this._format(p.temperature_target_c)+' °C' : '—';
-      const activelyControlling=['setpoint_commanded','native_range_commanded',
-        'at_setpoint','native_range_at_setpoint','holding','commanded','modulating',
-        'mode_commanded'].includes(actual);
-      const title=actual==='advisory_only' ? l.advisory :
-        activelyControlling ? l.active : l.holding;
-      const action=actual==='paused'?'resume':'pause';
-      const controls=actual==='advisory_only' ? '' :
+      const title=active ? l.active : enabled.length ? l.holding : l.advisory;
+      const command=allPaused?'resume':'pause';
+      const controls=enabled.length===0 ? '' :
         '<button type="button" class="pid-button" data-climate-area="'+escape(room.area_id)+
-        '" data-climate-action="'+action+'">'+escape(action==='pause'?l.pause:l.resume)+'</button>';
+        '" data-climate-action="'+command+'">'+escape(command==='pause'?l.pause:l.resume)+'</button>';
+      const equipment=p.equipment_plan || {};
+      const thermal=equipment.thermal || {};
+      const wet=equipment.moisture || {};
+      const humidity=equipment.humidity || {};
+      const sources=[
+        thermal.entity_id ? '<span>'+escape(l.selectedDevice)+': <b>'+
+          escape(thermal.entity_id)+'</b></span>' : '',
+        wet.entity_id ? '<span>'+escape(l.humidity)+': <b>'+
+          escape(wet.entity_id)+'</b></span>' : '',
+      ].filter(Boolean).join('');
+      const controllerDetails=controllers.filter((part)=>
+        part.status!=='advisory_only' && part.status!=='disabled').map((part)=>
+        '<small>'+escape(part.label)+': '+escape(String(part.status).replaceAll('_',' '))+
+        '</small>').join('');
+      const humidityDetails=humidity.status==='advisory' ?
+        '<small>'+escape(l.moistureAction)+': '+escape(humidity.action||'idle')+
+        (typeof humidity.measured_rh==='number' ?
+          ' · '+escape(l.currentHumidity)+': '+escape(this._format(humidity.measured_rh))+'%' : '')+
+        ' · '+escape(l.sourceStatus)+': '+escape(equipment.humidity_evidence||'unknown')+
+        '</small>' : '';
+      const reason=(p.reason==='secondary_thermal_driver_pending' && active)
+        ? '' : (p.reason || '');
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
-        '<div class="pid-title">'+this._icon('mdi:thermostat')+'<strong>'+escape(l.title)+
-        '</strong><span>'+escape(title)+'</span></div>'+
+        '<div class="pid-title">'+this._icon('mdi:thermostat')+
+        '<strong>'+escape(l.title)+'</strong><span>'+escape(title)+'</span></div>'+
         '<div class="pid-metrics"><span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
         '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>'+
-        '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span></div>'+
+        '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
+        controllerDetails+humidityDetails+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
-        '<small>'+escape(p.reason||'')+'</small>'+controls+'</section>';
+        (reason?'<small>'+escape(reason)+'</small>':'')+
+        controls+'</section>';
     }
 
     _pidPanel(room) {
