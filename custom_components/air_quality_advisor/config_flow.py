@@ -963,8 +963,7 @@ class _FlowMixin:
         away_options=[
             {"value":state.entity_id,"label":(state.name or state.entity_id)}
             for state in self.hass.states.async_all()
-            if state.domain in ("person","device_tracker")
-            or (state.domain=="binary_sensor" and "home" in state.entity_id)
+            if state.domain in ("person","device_tracker","binary_sensor")
         ]
         errors={}
         if user_input is not None:

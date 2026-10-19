@@ -216,7 +216,10 @@ class NativeClimateControl:
             desired=finite(expected.get("temperature"),-30,150)
             if last is None or desired is None:
                 self.paused[area]="invalid_ack_state"
-            elif abs(observed-desired)>max(.05,float(attrs.get("target_temp_step",.5))*.51):
+            elif (step_size:=finite(attrs.get("target_temp_step"),0.1,10)) is None:
+                self.statuses[area]={"status":"device_step_unknown"}
+                return
+            elif abs(observed-desired)>max(.05,step_size*.51):
                 if now-last<MANUAL_GRACE_SECONDS:
                     self.statuses[area]={"status":"waiting_for_ack"}
                     return
