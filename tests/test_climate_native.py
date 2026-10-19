@@ -202,3 +202,25 @@ def test_heat_cool_range_rejects_unsupported_single_target_mode(native):
         assert not hass.services.calls
         await controller.async_stop()
     asyncio.run(scenario())
+
+def test_native_range_respects_manual_change_from_previous_heat_mode(native):
+    async def scenario():
+        hass,_=fake_home(hvac="heat_cool")
+        target=hass.states.get("climate.room_thermostat")
+        target.attributes.update({
+            "hvac_modes":["off","heat_cool"],"supported_features":2,
+            "target_temp_low":18.0,"target_temp_high":28.0,
+        })
+        clock=[1000.]
+        controller=native.NativeClimateControl(hass,"manual_mode_range",clock=lambda:clock[0])
+        await controller.async_start()
+        controller.expected_hvac["living"]="heat"
+        clock[0]=2000.
+        await scheduled(controller,settings(),{
+            "status":"ready","mode":"heat_cool","window_safe":True,
+            "low_target_c":20,"high_target_c":26,
+        })
+        assert controller.paused["living"]=="manual_hvac_mode_change"
+        assert not hass.services.calls
+        await controller.async_stop()
+    asyncio.run(scenario())
