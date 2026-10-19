@@ -202,3 +202,42 @@ def test_duplicate_pid_owner_and_write_error_fail_closed(secondary):
         assert len(h.services.calls)==1
         await c.async_stop()
     asyncio.run(run())
+
+
+def test_restart_latches_secondary_manual_changes_without_reenergizing(secondary):
+
+    class PersistedStore(FakeStore):
+        records={}
+        def __init__(self,*args):
+            super().__init__(*args)
+            self.key=args[-1]
+        async def async_load(self):
+            return self.records.get(self.key)
+        async def async_save(self,value):
+            self.records[self.key]=value
+        def async_delay_save(self,callback,delay):
+            self.records[self.key]=callback()
+
+    sys.modules["homeassistant.helpers.storage"].Store=PersistedStore
+
+    async def scenario():
+        h=system()
+        clk=[1000.0]
+        first=secondary.SecondaryClimateSetpoint(h,"restart",clock=lambda:clk[0])
+        await first.async_start()
+        clk[0]=1400
+        await tick(first,config(),plan())
+        assert first.expected["lounge"]["target"]==24.5
+        await first.async_stop()
+
+        # An operator changed a previously commanded target while HA was down.
+        h.states.get("climate.ac").attributes["temperature"]=29
+        second=secondary.SecondaryClimateSetpoint(h,"restart",clock=lambda:clk[0])
+        await second.async_start()
+        assert second.expected["lounge"]["target"]==24.5
+        clk[0]=2000
+        await tick(second,config(),plan())
+        assert second.paused["lounge"]=="manual_setpoint_or_missing_ack"
+        assert len(h.services.calls)==1
+        await second.async_stop()
+    asyncio.run(scenario())

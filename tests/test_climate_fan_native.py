@@ -192,3 +192,42 @@ def test_conflicting_assignment_and_extract_requires_verified_co2(fan_module):
         assert h.services.calls[0][3]["target"]=={"entity_id":"fan.extractor"}
         await c.async_stop()
     asyncio.run(run())
+
+
+def test_restart_detects_manual_fan_speed_and_never_rewrites_it(fan_module):
+
+    class PersistedStore(FakeStore):
+        records={}
+        def __init__(self,*args):
+            super().__init__(*args)
+            self.key=args[-1]
+        async def async_load(self):
+            return self.records.get(self.key)
+        async def async_save(self,value):
+            self.records[self.key]=value
+        def async_delay_save(self,callback,delay):
+            self.records[self.key]=callback()
+
+    sys.modules["homeassistant.helpers.storage"].Store=PersistedStore
+
+    async def scenario():
+        h=home()
+        clk=[1000.0]
+        first=fan_module.RunningFanSpeedControl(h,"restart",clock=lambda:clk[0])
+        await first.async_start()
+        clk[0]=1400
+        await tick(first,config(),plan())
+        assert first.expected["fan.purifier"]["percentage"]==50
+        await first.async_stop()
+
+        # During the HA outage somebody selected a different fan speed.
+        h.states.get("fan.purifier").attributes["percentage"]=35
+        recovered=fan_module.RunningFanSpeedControl(h,"restart",clock=lambda:clk[0])
+        await recovered.async_start()
+        assert recovered.expected["fan.purifier"]["percentage"]==50
+        clk[0]=1800
+        await tick(recovered,config(),plan())
+        assert recovered.paused["bedroom"]=="manual_speed_or_unacknowledged_fan"
+        assert len(h.services.calls)==1
+        await recovered.async_stop()
+    asyncio.run(scenario())
