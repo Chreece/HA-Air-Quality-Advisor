@@ -129,6 +129,24 @@ ES = {
 
 
 
+GAS_THRESHOLDS = {
+ "en":{"outdoor_no2":"Outdoor NO₂ operational screen (µg/m³)",
+       "outdoor_o3":"Outdoor O₃ operational screen (µg/m³)",
+       "outdoor_so2":"Outdoor SO₂ operational screen (µg/m³)"},
+ "de":{"outdoor_no2":"Außenluft NO₂ — Richtwert (µg/m³)",
+       "outdoor_o3":"Außenluft O₃ — Richtwert (µg/m³)",
+       "outdoor_so2":"Außenluft SO₂ — Richtwert (µg/m³)"},
+ "el":{"outdoor_no2":"Εξωτερικό NO₂ — όριο απόφασης (µg/m³)",
+       "outdoor_o3":"Εξωτερικό O₃ — όριο απόφασης (µg/m³)",
+       "outdoor_so2":"Εξωτερικό SO₂ — όριο απόφασης (µg/m³)"},
+ "fr":{"outdoor_no2":"NO₂ extérieur — seuil opérationnel (µg/m³)",
+       "outdoor_o3":"O₃ extérieur — seuil opérationnel (µg/m³)",
+       "outdoor_so2":"SO₂ extérieur — seuil opérationnel (µg/m³)"},
+ "es":{"outdoor_no2":"NO₂ exterior — umbral de decisión (µg/m³)",
+       "outdoor_o3":"O₃ exterior — umbral de decisión (µg/m³)",
+       "outdoor_so2":"SO₂ exterior — umbral de decisión (µg/m³)"},
+}
+
 LOCAL_FIELDS = {
  "de": {
  "pollen_entity":"Pollenprognose-Sensor (beliebiges Land)",
@@ -221,6 +239,11 @@ def apply_environment_i18n(root: Path) -> None:
             return localized.get(key, EN[key])
         data = json.loads(path.read_text(encoding="utf-8"))
         data["title"] = PRODUCT
+        for scope in ("config", "options"):
+            step = data.get(scope, {}).get("step", {}).get("thresholds", {})
+            labels = step.get("data", {})
+            if isinstance(labels, dict):
+                labels.update(GAS_THRESHOLDS.get(lang, GAS_THRESHOLDS["en"]))
         config = data.get("config", {})
         if "abort" in config and "already_configured" in config["abort"]:
             config["abort"]["already_configured"] = config["abort"]["already_configured"].replace("Air Quality Advisor", PRODUCT)
