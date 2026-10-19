@@ -60,3 +60,24 @@ def test_pwm_respects_cycle_and_minimum_pulses():
     assert pwm_slot(50,period_s=900,now_s=700,anchor_s=0,min_on_s=120,min_off_s=120)==("ready",False)
     assert pwm_slot(5,period_s=900,now_s=200,anchor_s=0,min_on_s=120,min_off_s=120)[0]=="pulse_too_short"
     assert pwm_slot(100,period_s=900,now_s=200,anchor_s=0,min_on_s=120,min_off_s=120)==("on",True)
+
+def test_native_heat_cool_range_uses_two_device_targets_not_external_pid():
+    caps={"kind":"climate","heat":False,"cool":False,"range":True,
+          "auto":True,"modes":["off","heat_cool"]}
+    result=policy({"enabled":True,"controller":"device","mode":"auto"},
+                  temp_c=19,capability=caps,at_home="home",occupied="occupied")
+    assert result.state=="ready"
+    assert result.desired_hvac_mode=="heat_cool"
+    assert result.temperature_c is None
+    assert (result.range_low_c,result.range_high_c)==(20,26)
+    # PMV may only adjust within explicit bounded homeowner comfort limits.
+    pmv=policy({"enabled":True,"controller":"device","mode":"auto",
+                "target_source":"pmv","comfort_adjustment_max_c":1.5},
+                temp_c=19,capability=caps,at_home="home",occupied="occupied",
+                comfort_target_c=24)
+    assert pmv.range_low_c==21.5
+    assert pmv.range_high_c==26
+    no_native=policy({"enabled":True,"controller":"device","mode":"auto",
+                      "prefer_native_auto":False},
+                     temp_c=19,capability=caps,at_home="home",occupied="occupied")
+    assert no_native.state=="unsupported_mode"
