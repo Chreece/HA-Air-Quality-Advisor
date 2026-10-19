@@ -33,6 +33,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     return True
 
 
+PID_CONTROL_SCHEMA = probatio.Schema({
+    probatio.Required("area"): cv.string,
+    probatio.Required("action"): probatio.In(["pause", "resume", "reset"]),
+})
+
+
 SERVICE_SCHEMA = probatio.Schema({
     probatio.Optional("language"): probatio.In([tag for tag in LANGUAGES if tag != "auto"]),
     probatio.Optional("channels", default="both"): probatio.In(["both", "tts", "notification"]),
@@ -79,6 +85,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 PUBLIC_ACTION_DOMAIN, "announce", async_announce_action,
                 schema=SERVICE_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
             )
+    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "pid_control"):
+        async def async_pid_action(call: ServiceCall) -> ServiceResponse:
+            managers = list(hass.data.get(DOMAIN, {}).values())
+            if not managers:
+                return {"accepted": False, "reason": "Integration is not loaded"}
+            # Accept only the selected registry area ID, no implicit whole-house
+            # or fanout targeting; the PID service never changes HVAC modes.
+            result = await managers[0].async_pid_control(
+                area=call.data["area"], action=call.data["action"],
+            )
+            return result if call.return_response else None
+
+        for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN):
+            if not hass.services.has_service(service_domain, "pid_control"):
+                hass.services.async_register(
+                    service_domain, "pid_control", async_pid_action,
+                    schema=PID_CONTROL_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
+                )
     return True
 
 
@@ -91,4 +115,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.services.async_remove(DOMAIN, "announce")
         if hass.services.has_service(PUBLIC_ACTION_DOMAIN, "announce"):
             hass.services.async_remove(PUBLIC_ACTION_DOMAIN, "announce")
+        for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN):
+            if hass.services.has_service(service_domain, "pid_control"):
+                hass.services.async_remove(service_domain, "pid_control")
     return True

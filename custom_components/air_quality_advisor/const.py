@@ -30,6 +30,7 @@ CONF_AI_AGENT = "ai_conversation_agent"
 CONF_THRESHOLDS = "thresholds"
 CONF_ENVIRONMENT_GLOBAL = "environment_global"
 CONF_ENVIRONMENT_ROOMS = "environment_rooms"
+CONF_PID_ROOMS = "pid_rooms"
 
 from .languages import SUPPORTED_LANGUAGE_TAGS
 

@@ -55,3 +55,24 @@ announce:
       selector:
         area:
           multiple: true
+
+pid_control:
+  name: PID climate controller
+  description: >-
+    Pause, resume or reset the explicitly configured room PID controller.
+    Resume requires a user action after a manual override or service failure.
+    This action never changes HVAC modes.
+  fields:
+    area:
+      required: true
+      selector:
+        area:
+          multiple: false
+    action:
+      required: true
+      selector:
+        select:
+          options:
+            - pause
+            - resume
+            - reset
