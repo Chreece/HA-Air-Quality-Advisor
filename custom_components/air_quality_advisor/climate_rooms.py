@@ -1,6 +1,7 @@
 """Room-aware occupancy and climate diagnostics, independent of actuator writes."""
 from __future__ import annotations
 from typing import Any
+from datetime import datetime, timezone
 import time
 from .climate_schedule import scheduled_sleep
 
@@ -9,7 +10,7 @@ from .climate_strategy import (capabilities,home_away_evidence,occupied_evidence
 from .discovery import entity_area, temperature_sensor_c, is_stale
 
 
-def _bool_state(hass:Any,entity_id:str,*,max_age_minutes:float=15) -> bool|None:
+def _bool_state(hass:Any,entity_id:str,*,max_age_minutes:float=240) -> bool|None:
     s=hass.states.get(entity_id)
     if s is None or s.state in ("unknown","unavailable","none"): return None
     if s.domain=="binary_sensor":
@@ -48,8 +49,32 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         return {"status":"disabled"},set()
     area=room.area_id
     sensors=_presence_ids(hass,area,settings)
-    occupants=[_bool_state(hass,s) for s in sensors]
-    occupied,occ_reason=occupied_evidence(occupants,unknown_policy=settings.get("unknown_occupancy","occupied"))
+    age_limit=settings.get("occupancy_stale_minutes",240)
+    try: age_limit=float(age_limit)
+    except (ValueError,TypeError,OverflowError): age_limit=240
+    if not 10<=age_limit<=1440: age_limit=240
+    occupants=[_bool_state(hass,s,max_age_minutes=age_limit) for s in sensors]
+    occupied,occ_reason=occupied_evidence(
+        occupants,unknown_policy=settings.get("unknown_occupancy","occupied")
+    )
+    # An instantaneous 'no motion' does not prove a vacant room. Wait until
+    # EVERY selected presence sensor has remained OFF for the chosen interval.
+    if occupied=="unoccupied":
+        try: delay=float(settings.get("unoccupied_delay_minutes",10))
+        except (ValueError,TypeError,OverflowError): delay=10
+        if not 0<=delay<=240: delay=10
+        clock=time.time() if now is None else now
+        for entity in sensors:
+            state=hass.states.get(entity)
+            changed=(getattr(state,"last_changed",None) or
+                     getattr(state,"last_updated",None))
+            if not isinstance(changed,datetime) or changed.tzinfo is None:
+                occupied,occ_reason="occupied","off_duration_unverified"
+                break
+            seconds=clock-changed.timestamp()
+            if seconds<0 or seconds<delay*60:
+                occupied,occ_reason="occupied","awaiting_stable_unoccupied_period"
+                break
     tracker_ids=settings.get("away_entities",[])
     if not isinstance(tracker_ids,list): tracker_ids=[]
     trackers=[e for e in tracker_ids if isinstance(e,str) and e.startswith(("person.","device_tracker.","binary_sensor."))]
@@ -99,6 +124,7 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "reason":result.reason,"controller":result.controller,
         "occupancy":occupied,"occupancy_evidence":occ_reason,
         "presence_entities":sensors,"away":at_home,"away_evidence":home_reason,
+        "absence_delay_minutes":settings.get("unoccupied_delay_minutes",10),
         "sleep_schedule_active":sleeping,"sleep_schedule_evidence":sleep_evidence,
         "tracker_entities":trackers,
         "climate_entity":climate_id,"climate_capabilities":cap,
