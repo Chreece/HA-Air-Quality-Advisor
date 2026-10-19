@@ -215,11 +215,15 @@ class RunningFanSpeedControl:
             return
         live=device_inventory(self.hass,area,cfg)
         did_any=False
+        attempted=False
         for role,(choice,metric,source_key,target_key) in FAN_ROLES.items():
             proposal=air.get(choice,{})
+            if not isinstance(cfg.get(role),str):
+                continue
             if (proposal.get("status")!="recommended" or
                     proposal.get("speed_control_eligible") is not True):
                 continue
+            attempted=True
             fan=cfg.get(role)
             source=cfg.get(source_key)
             if (not isinstance(fan,str) or not isinstance(source,str) or
@@ -310,5 +314,5 @@ class RunningFanSpeedControl:
             did_any=True
             self._status(area,"fan_speed_increased",entity_id=fan,
                          new_percent=percentage)
-        if not did_any and area not in self.statuses:
+        if not did_any and not attempted:
             self._status(area,"no_verified_fan_speed_demand")

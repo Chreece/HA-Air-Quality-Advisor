@@ -89,10 +89,9 @@ def air_treatment_plan(
         "device_status":extraction.get("status","not_configured"),
         "speed_control_eligible":bool(
             extract_demand and extraction.get("status")=="ready" and
-            (("elevated_measured_co2" in reasons and
-              science.get("co2_ndir_verified") is True) or
-             ("high_rh_and_measured_outdoor_drying" in reasons and
-              isinstance(config.get("humidity_entity"),str)))
+            "elevated_measured_co2" in reasons and
+            science.get("co2_ndir_verified") is True and
+            isinstance(config.get("co2_entity"),str)
         ),
     }
     filtered={

@@ -41,7 +41,9 @@ def test_true_winter_drying_requires_absolute_moisture_not_outdoor_rh():
         outside_safe=True,settings=CFG)
     assert result["extraction"]["status"]=="recommended"
     assert "high_rh_and_measured_outdoor_drying" in result["extraction"]["reasons"]
-    assert result["extraction"]["speed_control_eligible"] is True
+    # Moisture-only extraction remains advisory until outdoor sensor and
+    # independent fan driver commissioning can be verified.
+    assert result["extraction"]["speed_control_eligible"] is False
     wet=moisture_potential(22,68,30,85)
     assert wet["status"]=="humidifying"
     result=air_treatment_plan((sample("humidity",68),),BASE,DEVICES,wet,
