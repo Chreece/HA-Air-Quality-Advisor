@@ -26,6 +26,8 @@ class Output:
     desired_hvac_mode: str | None
     reason: str
     controller: str
+    range_low_c: float | None = None
+    range_high_c: float | None = None
 
 
 def _num(value: Any, low: float, high: float) -> float | None:
@@ -38,6 +40,11 @@ def _num(value: Any, low: float, high: float) -> float | None:
 def profiles(settings: dict) -> tuple[dict[str,Profile],str|None]:
     """Reject heating/cooling overlap or biologically unsafe defaults."""
     raw=settings.get("profiles",{}) if isinstance(settings,dict) else {}
+    if not isinstance(raw,dict):
+        return {},"invalid_profile_collection"
+    tolerance=_num(settings.get("hysteresis_c",0.7),0.2,3.0) if isinstance(settings,dict) else None
+    if tolerance is None:
+        return {},"invalid_hysteresis"
     defaults={
         "home": {"heat_c":20.0,"cool_c":26.0},
         "unoccupied": {"heat_c":18.0,"cool_c":28.0},
@@ -50,7 +57,7 @@ def profiles(settings: dict) -> tuple[dict[str,Profile],str|None]:
         if not isinstance(v,dict): return {},f"invalid_profile_{name}"
         heat=_num(v.get("heat_c"),5,35)
         cool=_num(v.get("cool_c"),6,40)
-        if heat is None or cool is None or cool-heat<1:
+        if heat is None or cool is None or cool-heat<max(1.0,2*tolerance):
             return {},f"overlapping_or_invalid_{name}"
         parsed[name]=Profile(name,heat,cool)
     return parsed,None
@@ -162,23 +169,29 @@ def policy(settings:dict, *, temp_c:float|None,
         desired,reason=mode_choice,"explicit_heating_or_cooling"
     if desired in ("heat","cool") and not capability.get(desired,False):
         return Output("unsupported_mode",name,None,None,"device_does_not_support_"+desired,strategy)
-    target=band.heat_c if desired=="heat" else band.cool_c if desired=="cool" else None
-    # ISO 7730 inverse PMV supplies a *bounded correction*, never replaces
-    # the explicit homeowner-defined comfort band or away/eco setbacks.
-    if (settings.get("target_source")=="pmv" and name in ("home","sleep")
-            and target is not None):
+    heat_target,cool_target=band.heat_c,band.cool_c
+    # Apply PMV only as a bounded modification to *home/sleep* comfort
+    # bands. The preconfigured away and unoccupied setbacks are sacrosanct.
+    if settings.get("target_source")=="pmv" and name in ("home","sleep"):
         comfort=_num(comfort_target_c,16,30)
         influence=_num(settings.get("comfort_adjustment_max_c",1.5),0,2.5)
         if comfort is not None and influence is not None:
-            if desired=="heat":
-                target=min(band.heat_c+influence, max(
-                    band.heat_c, min(comfort-0.5, band.cool_c-1.0),
-                ))
-            elif desired=="cool":
-                target=max(band.cool_c-influence, min(
-                    band.cool_c, max(comfort+0.5, band.heat_c+1.0),
-                ))
-            target=round(target,2)
+            adjusted_heat=min(band.heat_c+influence,max(
+                band.heat_c,min(comfort-0.5,band.cool_c-1.0)))
+            adjusted_cool=max(band.cool_c-influence,min(
+                band.cool_c,max(comfort+0.5,band.heat_c+1.0)))
+            if adjusted_cool-adjusted_heat>=1:
+                heat_target,cool_target=round(adjusted_heat,2),round(adjusted_cool,2)
+    # Native dual-setpoint thermostats should use their own internal
+    # heat/cool control whenever its range feature and mode are present.
+    if (mode_choice=="auto" and strategy=="device"
+            and settings.get("prefer_native_auto",True)
+            and capability.get("range") and
+            "heat_cool" in capability.get("modes",[])):
+        return Output("ready",name,None,"heat_cool",
+                      "native_heat_cool_range",strategy,
+                      heat_target,cool_target)
+    target=heat_target if desired=="heat" else cool_target if desired=="cool" else None
     # Manual setpoint PID must never be stacked over an unknown device's PID.
     if strategy=="setpoint_pid" and settings.get("native_pid",False):
         return Output("conflicting_controllers",name,None,None,"nested_pid_forbidden","none")
