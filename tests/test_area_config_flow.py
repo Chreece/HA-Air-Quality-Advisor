@@ -346,7 +346,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
+        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid", "climate",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
