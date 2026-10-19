@@ -398,7 +398,7 @@ class ClimateAutomationCoordinator:
         elif field=="relay":
             match=str(state.state).lower()==("on" if recorded else "off")
         elif field=="percent":
-            observed=safe_num(state.state if entity.startswith("number.") else state.attributes.get("percentage"),0,100)
+            observed=safe_num(state.state,-10000,10000) if entity.startswith("number.") else safe_num(state.attributes.get("percentage"),0,100)
             match=observed is not None and abs(observed-recorded)<=2
         else:
             match=False
@@ -439,15 +439,62 @@ class ClimateAutomationCoordinator:
             return True
         return False
 
+    async def _deenergize(self,area: str,entity: str,cfg: dict,now: float) -> bool:
+        """Remove only this controller's previously commanded output."""
+        record=self._output.get(area,{}).get(entity)
+        if not record or not record.get("on"):
+            return True
+        state,status=self._current(area,entity)
+        if status!="ready":
+            await self._pause(area,"owned_actuator_unavailable_during_shutdown")
+            return False
+        ack=self._check_expected(area,entity,state,now)
+        if ack=="manual_override":
+            await self._pause(area,"manual_actuator_override")
+            return False
+        if ack=="pending_ack":
+            return False
+        domain=entity.split(".",1)[0]
+        if domain in ("switch","input_boolean"):
+            if not await self._relay_command(area,entity,False,now,force_off=True):
+                return False
+        elif domain=="climate":
+            if not cfg.get("allow_hvac_mode_change") or not cfg.get("allow_turn_off") or (
+                "off" not in (state.attributes.get("hvac_modes") or [])
+            ):
+                await self._pause(area,"cannot_safely_turn_climate_off")
+                return False
+            if state.state!="off":
+                if not await self._service(area,"climate","set_hvac_mode",entity,{"hvac_mode":"off"}):
+                    return False
+                self._record(area,entity,"mode","off",now)
+        elif domain=="number":
+            minimum=safe_num(state.attributes.get("min"),0,100)
+            if minimum is None or minimum>0:
+                await self._pause(area,"proportional_output_has_no_zero_off")
+                return False
+            if not await self._service(area,"number","set_value",entity,{"value":0}):
+                return False
+            self._record(area,entity,"percent",0,now)
+        elif domain=="fan":
+            if not await self._service(area,"fan","turn_off",entity,{}):
+                return False
+            self._record(area,entity,"percent",0,now)
+        else:
+            await self._pause(area,"actuator_has_no_safe_off_action")
+            return False
+        self._output.setdefault(area,{})[entity]={"on":False,"when":now}
+        self._save()
+        return True
+
     async def _safe_off(self,area: str,cfg: dict,now: float,reason: str) -> None:
-        if cfg["strategy"] not in ("pwm","on_off"):
+        if cfg["strategy"] not in ("pwm","on_off","proportional"):
             self._status(area,reason)
             return
-        # Only de-energize switch outputs that this integration last turned on.
         for entity in self.explicit_targets(cfg):
-            recorded=self._output.get(area,{}).get(entity)
-            if recorded and recorded.get("on") and entity.startswith(("switch.","input_boolean.")):
-                await self._relay_command(area,entity,False,now,force_off=True)
+            if self._output.get(area,{}).get(entity,{}).get("on"):
+                if not await self._deenergize(area,entity,cfg,now):
+                    return
         if area not in self._paused:
             self._status(area,reason)
 
@@ -543,14 +590,22 @@ class ClimateAutomationCoordinator:
         heat,cool=cfg.get("heat_entity"),cfg.get("cool_entity")
         active=heat if mode=="heat" else cool if mode=="cool" else None
         inactive=cool if mode=="heat" else heat
-        # Ensure the opposite relay is off before activating a new channel.
+        # Interlock across all actuator domains. Never energize cooling while
+        # a previously driven heating output remains active, or vice versa.
         if inactive and inactive!=active:
             state,status=self._current(area,inactive)
-            if status=="ready" and state.state=="on":
-                if not await self._relay_command(area,inactive,False,now,force_off=True):
-                    self._status(area,"opposing_actuator_not_off")
+            record=self._output.get(area,{}).get(inactive,{})
+            if record.get("on"):
+                if not await self._deenergize(area,inactive,cfg,now):
                     return
                 self._status(area,"cooldown_after_opposite_off")
+                return
+            if status=="ready" and (
+                (inactive.startswith(("switch.","input_boolean.","fan.")) and
+                 state.state=="on") or
+                (inactive.startswith("climate.") and state.state in ("heat","cool"))
+            ):
+                await self._pause(area,"opposite_actuator_is_externally_active")
                 return
         if mode=="idle" or not active:
             if active is None and mode in ("heat","cool"):
@@ -601,6 +656,10 @@ class ClimateAutomationCoordinator:
                 return
             if await self._service(area,domain,svc,active,payload):
                 self._record(area,active,"percent",target_native,now)
+                baseline=safe_num(state.attributes.get("min"),0,100) or 0 if domain=="number" else 0
+                self._output.setdefault(area,{})[active]={"on":target_native>baseline+1,
+                                                         "when":now}
+                self._save()
                 self._status(area,"controlling",mode=mode,profile=profile,
                              demand_percent=round(wanted,1),actuator=active)
             return
@@ -619,6 +678,13 @@ class ClimateAutomationCoordinator:
             actual=state.state
             if actual not in ("off","heat","cool"):
                 self._status(area,"unsupported_climate_state")
+                return
+            ack=self._check_expected(area,active,state,now)
+            if ack=="manual_override":
+                await self._pause(area,"manual_climate_mode_change")
+                return
+            if ack=="pending_ack":
+                self._status(area,"waiting_device_ack")
                 return
             desired_on=hysteresis_demand(round(measured,2),target,mode,
                                          was_on=(actual==mode),hysteresis_c=cfg["hysteresis_c"])
@@ -708,6 +774,7 @@ class ClimateAutomationCoordinator:
         zone=self._zones.setdefault(area,ZoneRuntime())
         if zone.last_strategy!=cfg["strategy"]:
             zone.pid=Memory()
+            zone.last_demand_percent=None
             zone.last_strategy=cfg["strategy"]
         zone.last_checked=now
         if self._started is None or now-self._started < max(120,cfg["sample_seconds"]):
@@ -738,6 +805,7 @@ class ClimateAutomationCoordinator:
             return
         if zone.last_profile!=profile:
             zone.pid=Memory()
+            zone.last_demand_percent=None
             zone.last_profile=profile
         previous=zone.last_mode
         elapsed=now-zone.last_mode_transition if zone.last_mode_transition is not None else None
@@ -758,6 +826,7 @@ class ClimateAutomationCoordinator:
             zone.last_mode=mode
             zone.last_mode_transition=now
             zone.pid=Memory()
+            zone.last_demand_percent=None
             self._save()
         if mode in ("heat","cool"):
             zone.last_driven_mode=mode
