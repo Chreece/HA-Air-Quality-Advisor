@@ -320,3 +320,63 @@ def test_manual_pause_does_not_overwrite_unowned_energized_relay(runtime):
         assert hass.services.calls==[]
         await driver.async_stop()
     asyncio.run(case())
+
+def test_proportional_actuator_has_both_step_and_sample_rate_limit(runtime):
+    async def case():
+        hass=home(proportional=True)
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"percent",clock=lambda:clock[0])
+        await driver.async_start()
+        settings_=settings(controller="proportional",
+            heat_actuator="number.living_heat",
+            kp=18,ki=.12,kd=0,sample_seconds=300,
+            max_demand_change=10,min_demand_change=2)
+        clock[0]=2000.
+        await advance(driver,clock,settings_,planned())
+        assert not hass.services.calls   # initializes derivative and integral
+        clock[0]=2300.
+        await advance(driver,clock,settings_,planned())
+        assert len(hass.services.calls)==1
+        command=hass.services.calls[-1]
+        assert command[0:2]==("number","set_value")
+        assert command[2]["value"]==10.0
+        clock[0]=2330.
+        await advance(driver,clock,settings_,planned())
+        assert len(hass.services.calls)==1  # 30-sec poll is not a PID cycle
+        clock[0]=2600.
+        await advance(driver,clock,settings_,planned())
+        assert len(hass.services.calls)==2
+        assert hass.services.calls[-1][2]["value"]==20.0
+        await driver.async_stop()
+        assert hass.states.get("number.living_heat").state=="0.0"
+    asyncio.run(case())
+
+
+def test_switch_actuation_does_not_assume_compressor_safety(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        engine=runtime.DirectClimateControl(hass,"attestation",clock=lambda:clock[0])
+        await engine.async_start()
+        clock[0]=4000.
+        await advance(engine,clock,settings(direct_hardware_confirmed=False),planned())
+        assert engine.statuses["living"]["status"]=="advisory_only"
+        assert hass.services.calls==[]
+        await engine.async_stop()
+    asyncio.run(case())
+
+
+def test_two_controllers_cannot_run_same_room_even_for_different_devices(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        engine=runtime.DirectClimateControl(hass,"collision",clock=lambda:clock[0])
+        await engine.async_start()
+        clock[0]=4000.
+        engine.schedule({"living":settings()},{"living":planned()},
+                        pid_rooms={"living":{"enabled":True,
+                            "climate_entities":["climate.other_thermostat"]}})
+        assert engine.statuses["living"]["status"]=="conflicting_pid_room"
+        assert not hass.services.calls
+        await engine.async_stop()
+    asyncio.run(case())
