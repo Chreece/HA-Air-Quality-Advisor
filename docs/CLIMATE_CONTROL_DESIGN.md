@@ -76,11 +76,37 @@ Humidity advice must not be confused with a guarantee of effective moisture
 removal: outdoor *absolute moisture* and source control matter, and extractor
 fan operation depends on safe outdoor evidence.
 
-**Important:** Choosing a device in the extra-equipment wizard enables
-inventory, scientific advisories and conflict diagnostics. It does not
-authorize unattended on/off or native mode transitions. This avoids silently
-energizing an unknown compressor or fan and keeps user-operated equipment
-under manual control pending the next tested driver release.
+**Important:** Selecting extra equipment generally enables only inventory,
+advisories and conflict diagnostics. The single exception is the independently
+opted-in **native humidifier/dehumidifier setpoint controller** described below.
+
+### Already-running humidifier/dehumidifier target supervision
+
+The `humidity_setpoint_auto` permission is a separate opt-in. It requires
+an exact `humidifier.*` entity, correct `humidifier`/`dehumidifier`
+device class, explicit fresh same-room humidity sensor, permitted climate
+actuation, valid native humidity limits/step size, all configured windows
+closed, no competing humidity equipment and exclusive room ownership.
+
+The controller sends only `humidifier.set_humidity` with a device-specific
+single-entity target. It **never** calls `turn_on`, `turn_off`, `set_mode`,
+`climate.set_hvac_mode`, or commands an AC compressor. If the selected device
+is OFF, it is left OFF. Native device PID, operating mode, hardware protections
+and shutoff behavior remain the equipment's responsibility.
+
+Target changes are bounded to five percentage points per command, rate
+limited to ten minutes, and forbidden when resolution/bounds are unknown.
+The controller waits five minutes after startup/resume; persistent expected
+setpoints are compared to observed hardware state; manual override, service
+failure or missing acknowledgment latches a pause. A user must explicitly
+resume after such a pause. Windows and sensor conditions are checked again
+immediately before any new setpoint call. Full hardware commissioning and
+restart testing remain outstanding.
+
+For `climate.*` units exposing DRY and FAN_ONLY, no additional native
+mode-switching driver is enabled by this exception. Similarly, standalone
+extractors and purifier fans remain advisory until hardware verified.
+
 
 ## Occupancy / away
 
