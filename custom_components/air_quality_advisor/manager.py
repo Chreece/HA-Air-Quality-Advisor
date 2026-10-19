@@ -24,7 +24,7 @@ from .const import (
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
-    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
@@ -33,6 +33,7 @@ from .mold import estimate_mold_for_room, rh_fallback_for_room
 from .environment import build_environment
 from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
+from .climate_rooms import gather as climate_room_plan
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
 from .logic import Plan, evaluate
@@ -192,6 +193,14 @@ class AirQualityManager:
             outside_safe=base_plan.outdoor_safe,
         )
         environment["__outside__"] = {"pollen": pollen}
+        room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
+        if isinstance(room_climate_configs,dict):
+            for monitored in selected_rooms:
+                settings=room_climate_configs.get(monitored.area_id,{})
+                state,tracked=climate_room_plan(self.hass,monitored,settings)
+                if isinstance(settings,dict) and settings.get("enabled"):
+                    environment.setdefault(monitored.area_id,{})["climate_plan"]=state
+                    self._tracked.update(tracked)
         pid_configs = config.get(CONF_PID_ROOMS, {})
         if not isinstance(pid_configs, dict):
             pid_configs = {}
