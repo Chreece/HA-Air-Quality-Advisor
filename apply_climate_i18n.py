@@ -48,6 +48,8 @@ BASE={
  "climate_humidity_high_rh":"Maximum target relative humidity (%)",
  "climate_humidity_hysteresis_rh":"Humidity decision hysteresis (percentage points)",
  "climate_humidity_setpoint_auto":"Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
+ "climate_secondary_climate_setpoint_auto":"Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)",
+ "climate_secondary_control_inputs_missing":"Select a different same-room heating or cooling climate entity, enable native climate control, and opt in separately.",
  "climate_humidity_control_inputs_missing":"Enable authorized climate control and select a same-room humidity sensor plus humidifier/dehumidifier first.",
  "climate_actuation_requires_native_device":"Automated control currently supports only the device-native thermostat driver; separate relay/PWM safety validation is still required.",
  "climate_temperature_required":"Select a room temperature sensor.",
@@ -96,6 +98,8 @@ LABELS={
        "climate_humidity_high_rh":"Obergrenze der relativen Luftfeuchte (%)",
        "climate_humidity_hysteresis_rh":"Hysterese für Luftfeuchte (Prozentpunkte)",
        "climate_humidity_setpoint_auto":"Sollfeuchte eines bereits eingeschalteten Be-/Entfeuchters regeln (separate Freigabe)",
+       "climate_secondary_climate_setpoint_auto":"Sollwert von bereits aktiven zusätzlichen Heiz-/Kühlthermostaten regeln (separate Freigabe)",
+       "climate_secondary_control_inputs_missing":"Zusätzliches Heiz-/Kühlgerät und Raumfreigabe konfigurieren.",
        "climate_humidity_control_inputs_missing":"Zuerst Klimasteuerung, Raumsensor sowie Be- oder Entfeuchter auswählen.",
        "climate_sleep_schedule_enabled":"Schlafprofil nach Uhrzeit",
        "climate_sleep_start":"Schlafbeginn (lokale Zeit)",
@@ -131,6 +135,8 @@ LABELS={
        "climate_humidity_high_rh":"Μέγιστη σχετική υγρασία (%)",
        "climate_humidity_hysteresis_rh":"Υστέρηση υγρασίας (ποσοστιαίες μονάδες)",
        "climate_humidity_setpoint_auto":"Ρύθμιση στόχου υγρασίας μόνο σε ήδη ενεργή συσκευή (ξεχωριστή άδεια)",
+       "climate_secondary_climate_setpoint_auto":"Ρύθμιση στόχου σε ήδη ενεργούς δεύτερους θερμοστάτες (ξεχωριστή άδεια)",
+       "climate_secondary_control_inputs_missing":"Επιλέξτε δεύτερη συσκευή θέρμανσης ή ψύξης στο δωμάτιο και ενεργοποιήστε την άδεια.",
        "climate_humidity_control_inputs_missing":"Επιλέξτε εγκεκριμένο έλεγχο, αισθητήρα υγρασίας και υγραντήρα/αφυγραντήρα.",
        "climate_sleep_schedule_enabled":"Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
        "climate_sleep_start":"Έναρξη ύπνου",
@@ -188,6 +194,7 @@ def apply_climate_i18n(root:Path)->None:
               "climate_humidity_entity","climate_humidity_low_rh",
               "climate_humidity_high_rh","climate_humidity_hysteresis_rh",
               "climate_humidity_setpoint_auto",
+              "climate_secondary_climate_setpoint_auto",
           ]),
           "climate_profiles":("climate_profiles",[f"{p}_{kind}" for p in
               ("home","unoccupied","away","sleep") for kind in ("heat","cool")]),
@@ -225,6 +232,7 @@ def apply_climate_i18n(root:Path)->None:
                 "climate_target_required","climate_direct_actuator_not_ready",
                 "climate_controller_invalid","climate_mode_invalid",
                 "climate_occupancy_invalid","climate_away_invalid","climate_deadband_invalid",
-                "climate_humidity_control_inputs_missing")
+                "climate_humidity_control_inputs_missing",
+                "climate_secondary_control_inputs_missing")
         })
         path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")

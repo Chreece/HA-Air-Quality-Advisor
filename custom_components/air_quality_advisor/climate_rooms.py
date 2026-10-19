@@ -155,6 +155,7 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "temperature_entity":temperature_id,"temperature_c":temp,
         "window_safe":window_safe,
         "window_evidence":window_evidence,
+        "window_contacts":[win.entity_id for win in room.windows],
         "automatic_actuation_enabled": bool(
             settings.get("allow_actuation") and
             (strategy in ("device","on_off","pwm","proportional")) and

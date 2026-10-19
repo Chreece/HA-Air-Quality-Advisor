@@ -1149,6 +1149,19 @@ class _FlowMixin:
             proposal["humidity_setpoint_auto"]=user_input.get(
                 "climate_humidity_setpoint_auto",draft.get("humidity_setpoint_auto",False)
             ) is True
+            proposal["secondary_climate_setpoint_auto"]=user_input.get(
+                "climate_secondary_climate_setpoint_auto",
+                draft.get("secondary_climate_setpoint_auto",False)
+            ) is True
+            if proposal["secondary_climate_setpoint_auto"] and not (
+                proposal.get("enabled") is True and
+                proposal.get("controller")=="device" and
+                proposal.get("allow_actuation") is True and
+                any(proposal.get(role) and
+                    proposal.get(role)!=proposal.get("climate_entity")
+                    for role in ("heat_climate_entity","cool_climate_entity"))
+            ):
+                errors["base"]="climate_secondary_control_inputs_missing"
             if proposal["humidity_setpoint_auto"] and not (
                 proposal.get("enabled") is True and
                 proposal.get("allow_actuation") is True and
@@ -1177,6 +1190,10 @@ class _FlowMixin:
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 ))
             )
+        fields[_marker("climate_secondary_climate_setpoint_auto",
+                       draft.get("secondary_climate_setpoint_auto",False))]=(
+            selector.BooleanSelector()
+        )
         fields[_marker("climate_humidity_setpoint_auto",
                        draft.get("humidity_setpoint_auto",False))]=(
             selector.BooleanSelector()
