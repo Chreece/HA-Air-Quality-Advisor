@@ -162,7 +162,8 @@
           "thresholds": "Напредни прагови",
           "environment": "International air-quality sources and pollen",
           "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room"
+          "pid": "Climate PID — select a room",
+          "climate": "Climate — room automation"
         }
       },
       "window_sensors": {
@@ -562,6 +563,164 @@
           "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
           "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
         }
+      },
+      "climate": {
+        "title": "Choose a room for climate control",
+        "description": "Configure a single existing monitored room. Climate control is OFF until explicitly enabled. The legacy PID setup remains compatible but does not share outputs with this controller.",
+        "data": {
+          "climate_area": "Room to configure"
+        },
+        "data_description": {
+          "climate_area": "Select only one monitored Home Assistant area. A device cannot belong to two enabled room controllers."
+        }
+      },
+      "climate_device": {
+        "title": "Room {area_name} — devices and control method",
+        "description": "Select the measured room temperature, device-native thermostat, internal setpoint PID, safe on/off hysteresis, PWM (confirmed switch hardware only) or proportional number/fan. Select exact authorized entities. 'Auto heat/cool' requires an explicit permission; never assume equipment supports mode switching.",
+        "data": {
+          "climate_enabled": "Enable automatic climate control for this room",
+          "climate_strategy": "Control strategy for authorized devices",
+          "climate_operation": "Heating, cooling or explicitly allowed automatic switching",
+          "climate_temperature_entity": "Independent, fresh room temperature sensor",
+          "climate_allow_hvac_mode_change": "Allow changing a compatible device's heat/cool/off mode",
+          "climate_allow_turn_off": "Allow switching the selected device to off when comfortable",
+          "climate_climate_entity": "Device-native or PID climate thermostat",
+          "climate_heat_entity": "Heating actuator (exact entity)",
+          "climate_cool_entity": "Cooling actuator (exact entity)"
+        },
+        "data_description": {
+          "climate_enabled": "Default OFF. Existing thermostats remain under their own control until explicitly enabled.",
+          "climate_strategy": "Device = own thermostat PID; setpoint PID = our bounded outer loop; on/off = hysteresis; PWM = certified cycling-safe switch only; proportional = number/fan.",
+          "climate_operation": "Auto chooses heating or cooling with explicit mode-switch permission, deadband and minimum dwell. It is not equivalent to HA's climate AUTO schedule.",
+          "climate_temperature_entity": "Must be room assigned and report recent temperature (°C or °F). Missing/stale data blocks new commands.",
+          "climate_allow_hvac_mode_change": "Requires manual opt-in. The device must advertise the exact requested HVAC mode. Switching is never assumed safe.",
+          "climate_allow_turn_off": "When within the deadband, allow an authorized thermostat to be set off; other modes remain unchanged.",
+          "climate_climate_entity": "Only a single explicitly selected climate.* thermostat with compatible target/mode support.",
+          "climate_heat_entity": "Required for heating with direct on/off/PWM/analog strategies. Only selected entity IDs are actuated.",
+          "climate_cool_entity": "Required for cooling with direct on/off/PWM/analog strategies. Heating and cooling cannot activate simultaneously."
+        }
+      },
+      "climate_targets": {
+        "title": "Room {area_name} — normal and comfort temperature bands",
+        "description": "Set independent lower heating and upper cooling targets with a nonzero deadband. Comfort mode uses your explicit comfort band; it does NOT infer ASHRAE compliance from a basic thermometer.",
+        "data": {
+          "climate_target_source": "Choose explicit targets or a custom comfort band",
+          "climate_occupied_uses_comfort": "Use comfort band when room is occupied",
+          "climate_heat_cool_deadband_c": "Minimum separation of heat/cool targets (°C)",
+          "climate_home_heat_c": "Home heat target (°C)",
+          "climate_home_cool_c": "Home cool target (°C)",
+          "climate_occupied_heat_c": "Occupied heat target (°C)",
+          "climate_occupied_cool_c": "Occupied cool target (°C)",
+          "climate_comfort_heat_c": "Comfort heat target (°C)",
+          "climate_comfort_cool_c": "Comfort cool target (°C)"
+        },
+        "data_description": {
+          "climate_target_source": "Choose explicit targets or a custom comfort band; optional and source-qualified.",
+          "climate_occupied_uses_comfort": "Use comfort band when room is occupied; optional and source-qualified.",
+          "climate_heat_cool_deadband_c": "Heating target must remain sufficiently below cooling target. Changing modes also requires a minimum off period.",
+          "climate_home_heat_c": "Home heat target (°C); optional and source-qualified.",
+          "climate_home_cool_c": "Home cool target (°C); optional and source-qualified.",
+          "climate_occupied_heat_c": "Occupied heat target (°C); optional and source-qualified.",
+          "climate_occupied_cool_c": "Occupied cool target (°C); optional and source-qualified.",
+          "climate_comfort_heat_c": "Comfort heat target (°C); optional and source-qualified.",
+          "climate_comfort_cool_c": "Comfort cool target (°C); optional and source-qualified."
+        }
+      },
+      "climate_setbacks": {
+        "title": "Room {area_name} — energy setbacks and sleep",
+        "description": "Separate targets for unoccupied room, whole-house away and sleep. Avoid extreme setbacks with heat pumps or equipment not designed for them. All values are local °C, independent of country.",
+        "data": {
+          "climate_unoccupied_heat_c": "Unoccupied heat target (°C)",
+          "climate_unoccupied_cool_c": "Unoccupied cool target (°C)",
+          "climate_away_heat_c": "Away heat target (°C)",
+          "climate_away_cool_c": "Away cool target (°C)",
+          "climate_sleep_heat_c": "Sleep heat target (°C)",
+          "climate_sleep_cool_c": "Sleep cool target (°C)"
+        },
+        "data_description": {
+          "climate_unoccupied_heat_c": "Unoccupied heat target (°C); optional and source-qualified.",
+          "climate_unoccupied_cool_c": "Unoccupied cool target (°C); optional and source-qualified.",
+          "climate_away_heat_c": "Away heat target (°C); optional and source-qualified.",
+          "climate_away_cool_c": "Away cool target (°C); optional and source-qualified.",
+          "climate_sleep_heat_c": "Sleep heat target (°C); optional and source-qualified.",
+          "climate_sleep_cool_c": "Sleep cool target (°C); optional and source-qualified."
+        }
+      },
+      "climate_presence": {
+        "title": "Room {area_name} — occupancy and home/away",
+        "description": "Automatically find all Home Assistant binary sensors of occupancy/presence class assigned to this room, or select them explicitly. Choose person, device tracker and optional binary home indicators. Any detected person means present; all verified absent can trigger a setback only after the configured delay. Missing/unknown never counts as absent.",
+        "data": {
+          "climate_auto_discover_occupancy": "Discover ALL room occupancy/presence binary sensors in HA",
+          "climate_occupancy_entities": "Specific room occupancy sensors (optional override)",
+          "climate_home_entities": "People, device trackers or home/away binary sensors",
+          "climate_vacancy_delay_seconds": "Wait before applying empty-room setback (seconds)",
+          "climate_away_delay_seconds": "Wait before applying whole-home away setback (seconds)",
+          "climate_sleep_enabled": "Use scheduled sleep targets",
+          "climate_sleep_start": "Local sleep start (HH:MM)",
+          "climate_sleep_end": "Local sleep end (HH:MM)"
+        },
+        "data_description": {
+          "climate_auto_discover_occupancy": "When selected room sensors are empty, all HA binary_sensor entities with presence/occupancy device class and matching area are monitored.",
+          "climate_occupancy_entities": "Choose room occupancy/presence class binary sensors; any on means occupied, all fresh off permits vacancy after hold. Unknown never implies vacancy.",
+          "climate_home_entities": "Person, device_tracker or explicitly identified binary home signals. Every selected entity must reliably report at-home/away.",
+          "climate_vacancy_delay_seconds": "Wait before applying empty-room setback (seconds); optional and source-qualified.",
+          "climate_away_delay_seconds": "Wait before applying whole-home away setback (seconds); optional and source-qualified.",
+          "climate_sleep_enabled": "Use scheduled sleep targets; optional and source-qualified.",
+          "climate_sleep_start": "Local sleep start (HH:MM); optional and source-qualified.",
+          "climate_sleep_end": "Local sleep end (HH:MM); optional and source-qualified."
+        }
+      },
+      "climate_safety": {
+        "title": "Room {area_name} — safety and controller tuning",
+        "description": "Control never bypasses physical frost, overheat, compressor or boiler safety. PWM is ONLY for specifically verified cycle-tolerant switch/input_boolean hardware. Configure minimum ON/OFF, maximum uninterrupted ON and PWM period. Internal PID gains and setpoint limits are adjustable; device-native strategy retains its own built-in PID.",
+        "data": {
+          "climate_pause_on_window_open": "Stop control on open OR unknown window contacts",
+          "climate_turn_relay_off_on_bad_data": "Safely de-energize owned relays when input fails",
+          "climate_min_mode_seconds": "Minimum dwell before switching heating and cooling (seconds)",
+          "climate_hysteresis_c": "On/off hysteresis around targets (°C)",
+          "climate_sample_seconds": "Controller measurement interval (seconds)",
+          "climate_relay_hardware_confirmed": "I verified the actuator has independent safety protections",
+          "climate_min_on_seconds": "Minimum ON time (seconds)",
+          "climate_min_off_seconds": "Minimum OFF time / cooldown (seconds)",
+          "climate_max_on_seconds": "Maximum uninterrupted ON time (seconds)",
+          "climate_pwm_hardware_confirmed": "Actuator manufacturer permits relay PWM; NOT a compressor",
+          "climate_pwm_period_seconds": "PWM time-proportioning period (seconds)",
+          "climate_pwm_min_pulse_seconds": "Minimum permitted PWM pulse (seconds)",
+          "climate_kp": "KP — PID/actuator limit",
+          "climate_ki": "KI — PID/actuator limit",
+          "climate_kd": "KD — PID/actuator limit",
+          "climate_output_min": "OUTPUT MIN — PID/actuator limit",
+          "climate_output_max": "OUTPUT MAX — PID/actuator limit",
+          "climate_offset_c": "OFFSET C — PID/actuator limit",
+          "climate_min_setpoint_c": "MIN SETPOINT C — PID/actuator limit",
+          "climate_max_setpoint_c": "MAX SETPOINT C — PID/actuator limit",
+          "climate_max_change_c": "MAX CHANGE C — PID/actuator limit",
+          "climate_min_change_c": "MIN CHANGE C — PID/actuator limit"
+        },
+        "data_description": {
+          "climate_pause_on_window_open": "Stop control on open OR unknown window contacts; optional and source-qualified.",
+          "climate_turn_relay_off_on_bad_data": "If enabled, only relays owned by this controller are switched off on stale data/window openings. No commands to unowned devices.",
+          "climate_min_mode_seconds": "Minimum dwell before switching heating and cooling (seconds); optional and source-qualified.",
+          "climate_hysteresis_c": "On/off hysteresis around targets (°C); optional and source-qualified.",
+          "climate_sample_seconds": "Controller measurement interval (seconds); optional and source-qualified.",
+          "climate_relay_hardware_confirmed": "User confirms suitability, including independent high-temperature/freeze/overcurrent/boiler safety. HA is not a safety-rated controller.",
+          "climate_min_on_seconds": "Minimum ON time (seconds); optional and source-qualified.",
+          "climate_min_off_seconds": "Minimum OFF time / cooldown (seconds); optional and source-qualified.",
+          "climate_max_on_seconds": "Maximum uninterrupted ON time (seconds); optional and source-qualified.",
+          "climate_pwm_hardware_confirmed": "PWM is refused for ordinary climate.* devices and any hardware requiring compressor minimum-off protection.",
+          "climate_pwm_period_seconds": "PWM time-proportioning period (seconds); optional and source-qualified.",
+          "climate_pwm_min_pulse_seconds": "Minimum permitted PWM pulse (seconds); optional and source-qualified.",
+          "climate_kp": "KP — PID/actuator limit; optional and source-qualified.",
+          "climate_ki": "KI — PID/actuator limit; optional and source-qualified.",
+          "climate_kd": "KD — PID/actuator limit; optional and source-qualified.",
+          "climate_output_min": "OUTPUT MIN — PID/actuator limit; optional and source-qualified.",
+          "climate_output_max": "OUTPUT MAX — PID/actuator limit; optional and source-qualified.",
+          "climate_offset_c": "OFFSET C — PID/actuator limit; optional and source-qualified.",
+          "climate_min_setpoint_c": "MIN SETPOINT C — PID/actuator limit; optional and source-qualified.",
+          "climate_max_setpoint_c": "MAX SETPOINT C — PID/actuator limit; optional and source-qualified.",
+          "climate_max_change_c": "MAX CHANGE C — PID/actuator limit; optional and source-qualified.",
+          "climate_min_change_c": "MIN CHANGE C — PID/actuator limit; optional and source-qualified."
+        }
       }
     },
     "error": {
@@ -594,7 +753,16 @@
       "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
       "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
       "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
-      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits."
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
+      "invalid_climate_strategy": "Choose an allowed control strategy and heat/cool operation.",
+      "invalid_climate_temperature": "Select a real room temperature sensor.",
+      "invalid_climate_actuator": "Choose valid, compatible devices for the requested strategy.",
+      "climate_auto_requires_optin": "Automatic heating/cooling switching requires explicit HVAC-mode permission.",
+      "climate_duplicate_actuator": "Another enabled room already controls that device.",
+      "invalid_climate_targets": "Choose valid heating and cooling targets with an appropriate deadband.",
+      "invalid_climate_sleep_window": "Use local clock times in HH:MM format.",
+      "invalid_climate_presence_delay": "Presence hold times must be valid seconds.",
+      "invalid_climate_safety": "Review hardware confirmation, minimum cycles, PID limits and PWM operating bounds."
     }
   },
   "entity": {
@@ -640,6 +808,24 @@
         "action": {
           "name": "Action",
           "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    },
+    "climate_control": {
+      "name": "Climate automation",
+      "description": "Pause, resume, reset, or override the selected room climate profile. Controller must be explicitly enabled.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant area ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "pause | resume | reset | profile"
+        },
+        "profile": {
+          "name": "Override profile",
+          "description": "auto | home | occupied | unoccupied | away | sleep"
         }
       }
     }
