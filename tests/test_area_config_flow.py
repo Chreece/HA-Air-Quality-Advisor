@@ -53,6 +53,7 @@ def _wizard(monkeypatch, adapter):
     selector.EntitySelectorConfig = SelectSelectorConfig
     selector.EntitySelector = SelectSelector
     selector.BooleanSelector = lambda: SelectSelector(SelectSelectorConfig(type="boolean"))
+    selector.TimeSelector = lambda: SelectSelector(SelectSelectorConfig(type="time"))
     selector.NumberSelectorConfig = SelectSelectorConfig
     selector.NumberSelector = SelectSelector
     selector.NumberSelectorMode = SimpleNamespace(BOX="box")
@@ -796,7 +797,9 @@ def test_climate_room_profiles_are_optional_and_keep_existing_settings(monkeypat
     choose = asyncio.run(options.async_step_climate({"climate_area":"living"}))
     assert choose["step_id"] == "climate_room"
     setup = asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
-    assert setup["step_id"] == "climate_profiles"
+    assert setup["step_id"] == "climate_presence"
+    assert "climate_sleep_start" in setup["data_schema"]
+    assert asyncio.run(options.async_step_climate_presence({}))["step_id"]=="climate_profiles"
     saved = asyncio.run(options.async_step_climate_profiles({}))
     data = saved["completed"]["data"]
     assert data["climate_rooms"]["living"]["enabled"] is False
@@ -814,3 +817,43 @@ def test_climate_room_rejects_new_actuation_without_real_sensor(monkeypatch,adap
         "climate_controller":"device","climate_mode":"auto",
     }))
     assert result["errors"]["base"] == "climate_temperature_required"
+
+def test_climate_schedule_and_comfort_settings_preserve_other_config(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    bad=asyncio.run(options.async_step_climate_presence({
+        "climate_sleep_schedule_enabled":True,
+        "climate_sleep_start":"22:00","climate_sleep_end":"22:00",
+    }))
+    assert bad["errors"]["base"]=="climate_invalid_sleep_schedule"
+    nxt=asyncio.run(options.async_step_climate_presence({
+        "climate_sleep_schedule_enabled":True,
+        "climate_sleep_start":"22:00","climate_sleep_end":"07:00",
+        "climate_target_source":"pmv",
+        "climate_comfort_adjustment_max_c":1.5,
+    }))
+    assert nxt["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    room=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert room["sleep_schedule_enabled"] is True
+    assert room["target_source"]=="pmv"
+    assert room["sleep_end"]=="07:00"
+    assert saved["completed"]["data"]["thresholds"]["indoor_co2"]==1200
+
+
+def test_direct_actuator_settings_are_separate_and_off_by_default(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    nxt=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":False,"climate_controller":"pwm",
+        "climate_allow_actuation":False,
+    }))
+    assert nxt["step_id"]=="climate_presence"
+    assert asyncio.run(options.async_step_climate_presence({}))["step_id"]=="climate_actuators"
+    nxt=asyncio.run(options.async_step_climate_actuators({
+        "direct_hardware_confirmed":False,
+    }))
+    assert nxt["step_id"]=="climate_profiles"
