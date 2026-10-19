@@ -76,3 +76,27 @@ pid_control:
             - pause
             - resume
             - reset
+
+climate_control:
+  name: Room climate control
+  description: >-
+    Explicitly pause or resume an enabled, authorized Home Environment Manager
+    room climate controller. Only the specified Home Assistant room is affected.
+    Resume starts a fresh warm-up and never powers on an OFF native thermostat.
+  fields:
+    area:
+      name: Home Assistant room
+      description: Exact configured area. No whole-house default or fanout.
+      required: true
+      selector:
+        area:
+          multiple: false
+    action:
+      name: Action
+      description: Pause or resume the selected room's climate controller.
+      required: true
+      selector:
+        select:
+          options:
+            - pause
+            - resume

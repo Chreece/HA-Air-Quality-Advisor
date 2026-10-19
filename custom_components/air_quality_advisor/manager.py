@@ -322,6 +322,8 @@ class AirQualityManager:
         if not isinstance(configured,dict) or not isinstance(configured.get(area),dict):
             return {"accepted":False,"reason":"room_not_configured"}
         profile=configured[area]
+        if profile.get("enabled") is not True or profile.get("allow_actuation") is not True:
+            return {"accepted":False,"reason":"climate_control_not_enabled"}
         if profile.get("controller") in ("on_off","pwm","proportional"):
             return await self.direct_climate.command(area,action,configured)
         return await self.native_climate.command(area,action)
