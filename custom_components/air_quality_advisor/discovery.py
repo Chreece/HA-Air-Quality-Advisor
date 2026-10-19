@@ -20,6 +20,10 @@ DEVICE_CLASS_METRICS = {
     "co2": "co2",
     "pm25": "pm25",
     "pm10": "pm10",
+    "nitrogen_dioxide": "no2",
+    "ozone": "o3",
+    "sulphur_dioxide": "so2",
+    "sulfur_dioxide": "so2",
     "volatile_organic_compounds": "voc",
     "volatile_organic_compounds_parts": "voc_parts",
     "humidity": "humidity",
@@ -29,6 +33,9 @@ SUFFIX_METRICS = {
     "aqi": "aqi", "air_quality_index": "aqi", "co2": "co2",
     "pm25": "pm25", "pm2_5": "pm25", "pm10": "pm10",
     "tvoc": "voc", "voc": "voc", "humidity": "humidity",
+    "no2": "no2", "o3": "o3", "so2": "so2",
+    "nitrogen_dioxide": "no2", "ozone": "o3",
+    "sulphur_dioxide": "so2", "sulfur_dioxide": "so2",
 }
 WARNING_HINTS = re.compile(
     r"warning|warnung|warnstufe|alert|meteoalarm|weatheralarm|"
@@ -96,7 +103,7 @@ def _normalize(metric: str, value: float, unit: str | None) -> float | None:
         return value if u in ("", "%") else None
     if metric == "co2":
         return value if u in ("ppm",) else None
-    if metric in ("pm25", "pm10", "voc"):
+    if metric in ("pm25", "pm10", "voc", "no2", "o3", "so2"):
         if u in ("µg/m3", "ug/m3"):
             return value
         return value * 1000 if u in ("mg/m3",) else None

@@ -374,3 +374,15 @@ def test_physically_implausible_co2_and_humidity_are_unknown_not_safe(adapter):
     assert adapter.reading(home, "sensor.humidity", 90, outdoor=False).value is None
     home._values["sensor.co2"] = MockState("sensor.co2", 1200, device_class="co2", unit="ppm")
     assert adapter.reading(home, "sensor.co2", 90, outdoor=False).value == 1200
+
+def test_international_no2_o3_so2_gases_are_recognized_only_with_real_mass_units(adapter):
+    home = FakeHass([
+        MockState("sensor.outdoor_nitrogen_dioxide", 0.020, device_class="nitrogen_dioxide", unit="mg/m³"),
+        MockState("sensor.outdoor_o3", 70, unit="µg/m³"),
+        MockState("sensor.outdoor_so2", 30, unit="µg/m³"),
+        MockState("sensor.outdoor_ozone_bad", 0.08, unit="ppm"),
+    ])
+    assert adapter.reading(home, "sensor.outdoor_nitrogen_dioxide", 90, outdoor=True).value == 20
+    assert adapter.reading(home, "sensor.outdoor_o3", 90, outdoor=True).value == 70
+    assert adapter.reading(home, "sensor.outdoor_so2", 90, outdoor=True).value == 30
+    assert adapter.reading(home, "sensor.outdoor_ozone_bad", 90, outdoor=True).value is None
