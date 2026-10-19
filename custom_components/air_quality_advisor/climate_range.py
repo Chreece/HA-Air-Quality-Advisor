@@ -29,6 +29,14 @@ async def async_apply_native_range(controller: Any, area: str,
         controller._save()
         controller.statuses[area]={"status":"paused","reason":controller.paused[area]}
         return
+    # An unexpected mode change after this manager commanded a different
+    # HVAC mode is treated as a manual intervention, not silently adopted.
+    previous_mode=controller.expected_hvac.get(area)
+    if previous_mode is not None and previous_mode!=state.state:
+        controller.paused[area]="manual_hvac_mode_change"
+        controller._save()
+        controller.statuses[area]={"status":"paused","reason":"manual_hvac_mode_change"}
+        return
     # The device's own heat/cool mode must already be in operation. A
     # transition to heat_cool is not inferred from a partial capability list.
     if state.state!="heat_cool":
