@@ -24,7 +24,7 @@ from .const import (
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
-    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
@@ -33,6 +33,7 @@ from .mold import estimate_mold_for_room, rh_fallback_for_room
 from .environment import build_environment
 from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
+from .climate_automation import ClimateAutomationCoordinator
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason
 from .logic import Plan, evaluate
@@ -61,6 +62,7 @@ class AirQualityManager:
         self._environment_history = EnvironmentHistory()
         self._environment_store: Any | None = None
         self.pid = ClimatePidCoordinator(self.hass, self.entry.entry_id, report_changed=self._pid_updated)
+        self.climate = ClimateAutomationCoordinator(self.hass, self.entry.entry_id, changed=self._climate_updated)
 
     @property
     def settings(self) -> dict[str, Any]:
@@ -195,10 +197,26 @@ class AirQualityManager:
         pid_configs = config.get(CONF_PID_ROOMS, {})
         if not isinstance(pid_configs, dict):
             pid_configs = {}
+        climate_configs = config.get(CONF_CLIMATE_ROOMS, {})
+        if not isinstance(climate_configs, dict):
+            climate_configs = {}
         pid_statuses = self.pid.configured_statuses(pid_configs)
+        climate_statuses = self.climate.configured_statuses(climate_configs)
         for room in selected_rooms:
             if room.area_id in pid_statuses:
                 environment.setdefault(room.area_id, {})["climate_pid"] = pid_statuses[room.area_id]
+            if room.area_id in climate_statuses:
+                environment.setdefault(room.area_id, {})["climate_control"] = climate_statuses[room.area_id]
+        self._tracked.update(self.climate.selected_sources(climate_configs))
+        for climate_area, climate_cfg in climate_configs.items():
+            if (not isinstance(climate_cfg, dict) or not climate_cfg.get("enabled")
+                    or not climate_cfg.get("auto_discover_occupancy")):
+                continue
+            for state in self.hass.states.async_all("binary_sensor"):
+                if (entity_area(self.hass, state.entity_id)==climate_area
+                        and str(state.attributes.get("device_class","")).lower()
+                        in ("presence","occupancy")):
+                    self._tracked.add(state.entity_id)
         for pid_config in pid_configs.values():
             if not isinstance(pid_config, dict) or not pid_config.get("enabled"):
                 continue
@@ -251,6 +269,7 @@ class AirQualityManager:
         # Load latching PID manual overrides and expected targets first.
         # If its storage fails, the PID controller remains fail-closed.
         await self.pid.async_start()
+        await self.climate.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -258,8 +277,49 @@ class AirQualityManager:
             self.hass.bus.async_listen("device_registry_updated", self._on_registry_changed),
             self.hass.bus.async_listen("area_registry_updated", self._on_registry_changed),
             async_track_time_interval(self.hass, self._on_interval, timedelta(minutes=5)),
+            async_track_time_interval(self.hass, self._on_climate_interval, timedelta(seconds=60)),
         ))
         self._recalculate(initial=True)
+
+    def _legacy_pid_filtered(self) -> dict:
+        legacy=self.settings.get(CONF_PID_ROOMS,{})
+        climate=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if not isinstance(legacy,dict):
+            return {}
+        if not isinstance(climate,dict):
+            return legacy
+        claimed={entity for cfg in climate.values() if isinstance(cfg,dict) and cfg.get("enabled")
+                 for entity in self.climate.explicit_targets(cfg)}
+        result={}
+        for area,config in legacy.items():
+            if (area in climate and isinstance(climate[area],dict)
+                    and climate[area].get("enabled")):
+                continue
+            if isinstance(config,dict) and any(
+                e in claimed for e in self.pid._targets(config)
+            ):
+                continue
+            result[area]=config
+        return result
+
+    @callback
+    def _climate_updated(self) -> None:
+        if not self._active:
+            return
+        config=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if not isinstance(config,dict):
+            return
+        env={a:dict(values) for a,values in self.plan.environment.items()}
+        for area,status in self.climate.configured_statuses(config).items():
+            env.setdefault(area,{})["climate_control"]=status
+        self.plan=replace(self.plan,environment=env)
+        async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    async def async_climate_action(self,area: str,action: str,
+                                   profile: str|None=None) -> dict[str,Any]:
+        return await self.climate.async_action(
+            area,action,self.settings.get(CONF_CLIMATE_ROOMS,{}),profile=profile,
+        )
 
     @callback
     def _pid_updated(self) -> None:
@@ -286,6 +346,13 @@ class AirQualityManager:
     @callback
     def _on_interval(self, _now: Any) -> None:
         self._recalculate()
+
+    @callback
+    def _on_climate_interval(self, _now: Any) -> None:
+        if not self._active:
+            return
+        cfg=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        self.climate.schedule(self.plan.rooms,cfg,legacy_pid=self._legacy_pid_filtered())
 
     @callback
     def _on_state_changed(self, event: Event) -> None:
@@ -316,8 +383,11 @@ class AirQualityManager:
             self.plan = new_plan
             async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
-        configured_pid = self.settings.get(CONF_PID_ROOMS, {})
+        configured_pid = self._legacy_pid_filtered()
         self.pid.schedule(new_plan.rooms, configured_pid, initial=initial)
+        climate_configs=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        self.climate.schedule(new_plan.rooms, climate_configs,
+                              legacy_pid=configured_pid,initial=initial)
 
         previous = self._active_actions
         current = {
@@ -464,6 +534,7 @@ class AirQualityManager:
 
     async def async_stop(self) -> None:
         self._active = False
+        await self.climate.async_stop()
         await self.pid.async_stop()
         self._cancel_pending()
         self._cancel_repeat()
