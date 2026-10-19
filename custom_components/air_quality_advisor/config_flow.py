@@ -839,11 +839,27 @@ class _FlowMixin:
 
     async def async_step_climate(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Configure the room-scoped comfort planner, never implicit HVAC broadcast."""
-        area_ids=list(self._values.get(CONF_AREAS, []))
+        from homeassistant.helpers import area_registry as ar
+        from .discovery import entity_area
+        registry=ar.async_get(self.hass)
+        # Unlike window recommendations, climate setup accepts ALL Home
+        # Assistant areas with climate or temperature/humidity equipment.
+        known=set(self._values.get(CONF_AREAS, []))
+        saved=self._values.get(CONF_CLIMATE_ROOMS,{})
+        if isinstance(saved,dict):
+            known.update(saved)
+        for state in self.hass.states.async_all():
+            if state.domain in ("climate","humidifier","fan") or (
+                state.domain=="sensor" and
+                state.attributes.get("device_class") in ("temperature","humidity")
+            ):
+                if (found:=entity_area(self.hass,state.entity_id)):
+                    known.add(found)
+        areas=(registry.async_list_areas() if hasattr(registry,"async_list_areas") else [])
+        area_ids=sorted({entry.id for entry in areas if entry.id in known} |
+                        {a for a in known if registry.async_get_area(a) is not None})
         if not area_ids:
             return await self._finish()
-        from homeassistant.helpers import area_registry as ar
-        registry=ar.async_get(self.hass)
         opts=[{"value":a,"label":getattr(registry.async_get_area(a),"name",a)} for a in area_ids]
         if user_input is not None:
             area=user_input.get("climate_area")
@@ -1036,6 +1052,8 @@ class _FlowMixin:
                 self._climate_draft=proposal
                 if proposal.get("controller") in ("on_off","pwm","proportional"):
                     return await self.async_step_climate_actuators()
+                if proposal.get("controller")=="device":
+                    return await self.async_step_climate_equipment()
                 return await self.async_step_climate_profiles()
         fields={
             _marker("climate_occupancy_sensors",draft.get("occupancy_sensors",[])):
@@ -1077,6 +1095,98 @@ class _FlowMixin:
         return self.async_show_form(step_id="climate_presence",
             errors=errors,data_schema=probatio.Schema(fields),
             description_placeholders={"area_name":area})
+
+    async def async_step_climate_equipment(
+        self,user_input:dict[str,Any]|None=None,
+    )->ConfigFlowResult:
+        """Optional additional same-room equipment and RH evidence.
+
+        Selecting a secondary actuator records its role for arbitration and
+        diagnostics. Direct device writes are NOT enabled by this form.
+        """
+        from .climate_coordination import ROLE_KINDS
+        from .climate_equipment import humidity_advice
+        from .discovery import entity_area,supported_metric
+        draft=self._climate_draft
+        area=self._climate_area
+        roles={role:domain for role,domain in ROLE_KINDS.items()
+               if role!="climate_entity"}
+        choices={}
+        for domain in ("climate","humidifier","fan"):
+            choices[domain]=[
+                {"value":"none","label":"No additional equipment"}
+            ]+[
+                {"value":st.entity_id,
+                 "label":(st.name or st.entity_id)+" · "+st.entity_id}
+                for st in self.hass.states.async_all(domain)
+                if entity_area(self.hass,st.entity_id)==area
+            ]
+        humidity=[
+            {"value":"none","label":"No selected humidity sensor"}
+        ]+[
+            {"value":st.entity_id,
+             "label":(st.name or st.entity_id)+" · "+st.entity_id}
+            for st in self.hass.states.async_all("sensor")
+            if entity_area(self.hass,st.entity_id)==area and
+               supported_metric(self.hass,st,outdoor=False)=="humidity"
+        ]
+        errors={}
+        if user_input is not None:
+            proposal=dict(draft)
+            for role,domain in roles.items():
+                value=user_input.get("climate_"+role,draft.get(role) or "none")
+                if value=="none":
+                    value=None
+                if value is not None and value not in {
+                    item["value"] for item in choices[domain]}:
+                    errors["base"]="climate_target_required"
+                proposal[role]=value
+            selected=user_input.get("climate_humidity_entity",
+                                    draft.get("humidity_entity") or "none")
+            if selected not in {o["value"] for o in humidity}:
+                errors["base"]="climate_occupancy_invalid"
+            proposal["humidity_entity"]=None if selected=="none" else selected
+            for key,default in (
+                ("humidity_low_rh",40),("humidity_high_rh",60),
+                ("humidity_hysteresis_rh",3),
+            ):
+                proposal[key]=user_input.get("climate_"+key,draft.get(key,default))
+            if humidity_advice(50,
+                    low_rh=proposal["humidity_low_rh"],
+                    high_rh=proposal["humidity_high_rh"],
+                    hysteresis=proposal["humidity_hysteresis_rh"]).get("status")=="invalid_inputs":
+                errors["base"]="climate_mode_invalid"
+            if not errors:
+                self._climate_draft=proposal
+                return await self.async_step_climate_profiles()
+        fields={}
+        for role,domain in roles.items():
+            fields[_marker("climate_"+role,draft.get(role) or "none")]=(
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=choices[domain],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                ))
+            )
+        fields[_marker("climate_humidity_entity",draft.get("humidity_entity") or "none")]=(
+            selector.SelectSelector(selector.SelectSelectorConfig(
+                options=humidity,multiple=False,custom_value=False,
+                mode=selector.SelectSelectorMode.DROPDOWN,
+            ))
+        )
+        for key,default,lower,upper in (
+            ("humidity_low_rh",40,20,70),
+            ("humidity_high_rh",60,30,80),
+            ("humidity_hysteresis_rh",3,0.5,10),
+        ):
+            fields[_marker("climate_"+key,draft.get(key,default))]=(
+                _real_number(lower,upper,"%")
+            )
+        return self.async_show_form(
+            step_id="climate_equipment",errors=errors,
+            data_schema=probatio.Schema(fields),
+            description_placeholders={"area_name":area},
+        )
+
 
     def _direct_actuator_schema(self, draft: dict) -> probatio.Schema:
         from .discovery import entity_area
