@@ -452,10 +452,23 @@ class DirectClimateControl:
                 if not isinstance(observed,(int,float)):
                     self._status(area,"invalid_proportional_input")
                     return
-                change=max(-float(cfg.get("max_demand_change",10)),
-                           min(float(cfg.get("max_demand_change",10)),demand-observed))
-                desired=round(observed+change,1)
-                if abs(desired-observed)<float(cfg.get("min_demand_change",2)):
+                max_delta=finite(cfg.get("max_demand_change",10),1,50)
+                min_delta=finite(cfg.get("min_demand_change",2),0.1,20)
+                number_state=self.hass.states.get(active)
+                spacing=finite(number_state.attributes.get("step") if number_state else None,0.1,10)
+                if None in (max_delta,min_delta,spacing):
+                    self._status(area,"invalid_percentage_step_or_rate")
+                    return
+                change=max(-max_delta,min(max_delta,demand-observed))
+                proposed=max(0.0,min(100.0,observed+change))
+                # Quantize inward, never allowing device rounding to violate
+                # the maximum allowed output change per sampling interval.
+                if change>=0:
+                    desired=math.floor(proposed/spacing+1e-9)*spacing
+                else:
+                    desired=math.ceil(proposed/spacing-1e-9)*spacing
+                desired=round(max(0.0,min(100.0,desired)),5)
+                if abs(desired-observed)<min_delta:
                     self._status(area,"demand_within_tolerance",demand_percent=demand)
                     return
                 now_last=self.transitions.get(active,{}).get("when")
