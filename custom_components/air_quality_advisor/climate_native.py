@@ -1,0 +1,257 @@
+"""Conservative climate-native target controller; no relay/PWM writes.
+
+Only explicit opted-in same-room climate.* with native single-setpoint support.
+A native thermostat retains compressor protection. No power-off command is sent
+just because the room enters the heating/cooling comfort deadband.
+"""
+from __future__ import annotations
+import asyncio
+import logging
+import time
+from typing import Any
+
+from .pid_math import bounded_command, target_from_unit, finite
+
+_LOGGER=logging.getLogger(__name__)
+MODE_DWELL_SECONDS=1800
+STARTUP_WARMUP_SECONDS=300
+WRITE_TIMEOUT_SECONDS=20
+MANUAL_GRACE_SECONDS=120
+
+
+class NativeClimateControl:
+    def __init__(self,hass:Any,entry_id:str,*,clock=None):
+        self.hass=hass
+        self.entry_id=entry_id
+        self.clock=clock or time.time
+        self.statuses={}
+        self.paused={}
+        self.expected={}
+        self.last_mode={}
+        self.last_write={}
+        self._store=None
+        self.ready=False
+        self.started=None
+        self._tasks={}
+        self._active=False
+
+    async def async_start(self):
+        self._active=True
+        self.started=self.clock()
+        try:
+            from homeassistant.helpers.storage import Store
+            self._store=Store(self.hass,1,f"air_quality_advisor.climate_native_{self.entry_id}")
+            loaded=await self._store.async_load()
+        except Exception:
+            _LOGGER.exception("Climate mode safety state unavailable; native actuation blocked")
+            return
+        if isinstance(loaded,dict) and loaded.get("version")==1:
+            p=loaded.get("paused",{})
+            if isinstance(p,dict):
+                self.paused={k:v for k,v in p.items() if isinstance(k,str) and isinstance(v,str)}
+            lm=loaded.get("last_mode",{})
+            if isinstance(lm,dict):
+                self.last_mode={k:float(v) for k,v in lm.items() if isinstance(v,(float,int))}
+            ew=loaded.get("expected",{})
+            if isinstance(ew,dict):
+                self.expected={k:v for k,v in ew.items() if isinstance(k,str) and isinstance(v,dict)}
+            lw=loaded.get("last_write",{})
+            if isinstance(lw,dict):
+                self.last_write={k:float(v) for k,v in lw.items() if isinstance(v,(float,int))}
+        self.ready=True
+
+    def _snapshot(self):
+        return {"version":1,"paused":self.paused,"last_mode":self.last_mode,
+                "expected":self.expected,"last_write":self.last_write}
+
+    def _save(self):
+        if self._store is not None:
+            self._store.async_delay_save(self._snapshot,3)
+
+    async def async_stop(self):
+        self._active=False
+        tasks=list(self._tasks.values())
+        for task in tasks:task.cancel()
+        if tasks:await asyncio.gather(*tasks,return_exceptions=True)
+        self._tasks.clear()
+        if self.ready and self._store is not None:
+            await self._store.async_save(self._snapshot())
+
+    async def command(self,area:str,action:str)->dict:
+        if action not in ("pause","resume"):
+            return {"accepted":False,"reason":"unsupported_action"}
+        task=self._tasks.get(area)
+        if task and not task.done():
+            task.cancel()
+            await asyncio.gather(task,return_exceptions=True)
+        if action=="pause":
+            self.paused[area]="user_paused"
+        else:
+            self.paused.pop(area,None)
+            self.expected.pop(area,None)
+            self.last_write.pop(area,None)
+            # Resume always warms up before any new command.
+            self.started=self.clock()
+        self._save()
+        return {"accepted":True,"area":area,"action":action}
+
+    def schedule(self,config:dict,plans:dict,*,pid_rooms:dict|None=None):
+        if not self._active or not self.ready or not isinstance(config,dict):
+            return
+        now=self.clock()
+        owners={}
+        for area,room in config.items():
+            if isinstance(room,dict) and room.get("allow_actuation") is True:
+                entity=room.get("climate_entity")
+                owners[entity]=owners.get(entity,0)+1
+        for area,settings in config.items():
+            if not isinstance(settings,dict) or settings.get("allow_actuation") is not True:
+                self.statuses[area]={"status":"advisory_only"}
+                continue
+            report=plans.get(area,{})
+            if not settings.get("enabled"):
+                self.statuses[area]={"status":"disabled"}
+                continue
+            if area in self.paused:
+                self.statuses[area]={"status":"paused","reason":self.paused[area]}
+                continue
+            entity=settings.get("climate_entity")
+            if (not isinstance(entity,str) or owners.get(entity)!=1 or
+                (pid_rooms or {}).get(area,{}).get("enabled")):
+                self.statuses[area]={"status":"conflicting_controller"}
+                continue
+            if settings.get("controller")!="device":
+                self.statuses[area]={"status":"unsupported_control_method"}
+                continue
+            if now-(self.started or now)<STARTUP_WARMUP_SECONDS:
+                self.statuses[area]={"status":"startup_warmup"}
+                continue
+            if now-self.last_write.get(area,0)<300:
+                continue
+            t=self._tasks.get(area)
+            if t and not t.done():continue
+            task=self.hass.async_create_task(self._apply(area,settings,report,now))
+            self._tasks[area]=task
+            def done(t,area=area):
+                if self._tasks.get(area) is t:self._tasks.pop(area,None)
+                if not t.cancelled():
+                    try:t.result()
+                    except Exception:
+                        _LOGGER.exception("Native climate controller exception in %s",area)
+                        self.paused[area]="unexpected_task_exception"
+                        self._save()
+            task.add_done_callback(done)
+
+    async def _apply(self,area:str,settings:dict,report:dict,now:float):
+        if not self._active or area in self.paused:return
+        if report.get("status")!="ready":
+            self.statuses[area]={"status":"hold","reason":report.get("reason","no_valid_plan")}
+            return
+        mode=report.get("mode")
+        entity=settings.get("climate_entity")
+        target=finite(report.get("temperature_target_c"),5,36)
+        if mode=="off" or target is None:
+            self.statuses[area]={"status":"comfort_deadband_no_command"}
+            return
+        state=self.hass.states.get(entity)
+        if state is None or state.state in ("unknown","unavailable"):
+            self.statuses[area]={"status":"unavailable"}
+            return
+        attrs=state.attributes
+        modes=attrs.get("hvac_modes",[])
+        if not isinstance(modes,list) or mode not in modes:
+            self.statuses[area]={"status":"unsupported_mode"}
+            return
+        try:features=int(attrs.get("supported_features",0))
+        except (TypeError,ValueError):features=0
+        if features&1==0:
+            self.statuses[area]={"status":"no_single_setpoint"}
+            return
+        if state.state not in ("heat","cool","off",mode):
+            self.paused[area]="unexpected_mode"
+            self._save()
+            return
+        expected=self.expected.get(area)
+        observed=finite(attrs.get("temperature"),-30,150)
+        if observed is None:
+            self.statuses[area]={"status":"target_unavailable"}
+            return
+        unit=str(attrs.get("temperature_unit") or "")
+        if unit not in ("°C","C","°F","F"):
+            self.statuses[area]={"status":"unsupported_unit"}
+            return
+        if expected:
+            last=finite(expected.get("when"),0,1e13)
+            desired=finite(expected.get("temperature"),-30,150)
+            if last is None or desired is None:
+                self.paused[area]="invalid_ack_state"
+            elif abs(observed-desired)>max(.05,float(attrs.get("target_temp_step",.5))*.51):
+                if now-last<MANUAL_GRACE_SECONDS:
+                    self.statuses[area]={"status":"waiting_for_ack"}
+                    return
+                self.paused[area]="manual_setpoint_or_unacknowledged_write"
+            if area in self.paused:
+                self._save()
+                return
+        # Explicitly opted in to automatic HVAC mode switching; do not turn
+        # hardware off within the deadband. Enforce full dwell period.
+        if state.state!=mode:
+            if settings.get("auto_switch_hvac") is not True:
+                self.statuses[area]={"status":"mode_mismatch_auto_switch_disabled"}
+                return
+            if now-self.last_mode.get(area,now)<MODE_DWELL_SECONDS:
+                self.statuses[area]={"status":"mode_dwell"}
+                return
+            if not self.hass.services.has_service("climate","set_hvac_mode"):
+                self.statuses[area]={"status":"mode_service_missing"}
+                return
+            try:
+                await asyncio.wait_for(
+                    self.hass.services.async_call("climate","set_hvac_mode",
+                        {"hvac_mode":mode},target={"entity_id":entity},blocking=True),
+                    WRITE_TIMEOUT_SECONDS)
+            except asyncio.CancelledError: raise
+            except Exception:
+                _LOGGER.exception("Climate mode command failed for %s",entity)
+                self.paused[area]="mode_service_failure"
+                self._save()
+                return
+            self.last_mode[area]=now
+            self.last_write[area]=now
+            self._save()
+            self.statuses[area]={"status":"mode_commanded","mode":mode,
+                                 "note":"wait_for_device_ack_before_target"}
+            return
+        if not self.hass.services.has_service("climate","set_temperature"):
+            self.statuses[area]={"status":"temperature_service_unavailable"}
+            return
+        observed_c=target_from_unit(observed,unit)
+        if observed_c is None:return
+        from .pid_math import bounded_command
+        status,native=bounded_command(target,observed_c,max_change_c=.5,
+            min_change_c=.15,unit=unit,
+            device_min=float(attrs.get("min_temp",7)),
+            device_max=float(attrs.get("max_temp",35)),
+            device_step=float(attrs.get("target_temp_step",.5)))
+        if status=="no_meaningful_change":
+            self.statuses[area]={"status":"at_setpoint","mode":mode,"target_c":target}
+            return
+        if status!="command" or native is None:
+            self.statuses[area]={"status":status}
+            return
+        try:
+            await asyncio.wait_for(
+                self.hass.services.async_call("climate","set_temperature",
+                    {"temperature":native},target={"entity_id":entity},blocking=True),
+                WRITE_TIMEOUT_SECONDS)
+        except asyncio.CancelledError:raise
+        except Exception:
+            _LOGGER.exception("Native climate setpoint failed for %s",entity)
+            self.paused[area]="setpoint_service_failure"
+            self._save()
+            return
+        self.expected[area]={"temperature":native,"when":now}
+        self.last_write[area]=now
+        self._save()
+        self.statuses[area]={"status":"setpoint_commanded","mode":mode,
+            "target_c":target,"device_setpoint":native}
