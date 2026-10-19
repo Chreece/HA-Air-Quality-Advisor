@@ -186,7 +186,15 @@ def apply_climate_i18n(root: Path) -> None:
         localized=TEXT.get(locale,TEXT["en"])
         doc=json.loads(path.read_text(encoding="utf-8"))
         steps=doc["options"]["step"]
-        steps["init"]["menu_options"]["climate"]=localized["menu"]
+        menu=steps["init"]["menu_options"]
+        reordered={}
+        for key,value in menu.items():
+            if key=="pid":
+                reordered["climate"]=localized["menu"]
+            reordered[key]=value
+        if "climate" not in reordered:
+            reordered["climate"]=localized["menu"]
+        steps["init"]["menu_options"]=reordered
         for name,title,description,fields in FORMS:
             steps[name]={
                 "title":localized[title],"description":localized[description],
