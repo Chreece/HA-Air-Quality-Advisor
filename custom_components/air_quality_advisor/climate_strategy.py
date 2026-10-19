@@ -167,7 +167,13 @@ def policy(settings:dict, *, temp_c:float|None,
         if desired is None: return Output("hold",name,None,None,reason,strategy)
     else:
         desired,reason=mode_choice,"explicit_heating_or_cooling"
-    if desired in ("heat","cool") and not capability.get(desired,False):
+    native_range_possible=(
+        mode_choice=="auto" and strategy=="device"
+        and settings.get("prefer_native_auto",True)
+        and capability.get("range")
+        and "heat_cool" in capability.get("modes",[])
+    )
+    if desired in ("heat","cool") and not capability.get(desired,False) and not native_range_possible:
         return Output("unsupported_mode",name,None,None,"device_does_not_support_"+desired,strategy)
     heat_target,cool_target=band.heat_c,band.cool_c
     # Apply PMV only as a bounded modification to *home/sleep* comfort
