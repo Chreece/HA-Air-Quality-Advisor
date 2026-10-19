@@ -4,7 +4,8 @@ from typing import Any
 from datetime import datetime, timezone
 import time
 from .climate_schedule import scheduled_sleep
-from .climate_coordination import assigned_entities, room_equipment_plan
+from .climate_coordination import (assigned_entities, room_equipment_plan,
+                                   device_inventory, planning_capabilities)
 
 from .climate_strategy import (capabilities,home_away_evidence,occupied_evidence,
                                policy)
@@ -89,6 +90,9 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
     state=hass.states.get(climate_id) if isinstance(climate_id,str) and climate_id.startswith("climate.") else None
     cap=capabilities(state.attributes,state.state) if state else {"kind":"unavailable"}
     strategy=settings.get("controller","device")
+    primary_cap=cap
+    if strategy=="device":
+        cap=planning_capabilities(cap,device_inventory(hass,area,settings))
     if strategy in ("on_off","pwm","proportional"):
         kind="number" if strategy=="proportional" else "switch"
         capability={"kind":kind,"heat":False,"cool":False,"setpoint":False}
@@ -146,7 +150,8 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "absence_delay_minutes":settings.get("unoccupied_delay_minutes",10),
         "sleep_schedule_active":sleeping,"sleep_schedule_evidence":sleep_evidence,
         "tracker_entities":trackers,
-        "climate_entity":climate_id,"climate_capabilities":cap,
+        "climate_entity":climate_id,"climate_capabilities":primary_cap,
+        "room_planning_capabilities":cap,
         "temperature_entity":temperature_id,"temperature_c":temp,
         "window_safe":window_safe,
         "window_evidence":window_evidence,

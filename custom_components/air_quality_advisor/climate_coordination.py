@@ -246,3 +246,48 @@ def room_equipment_plan(hass: Any, area: str, config: dict,
         "automatic_secondary_actuation": False,
         "method": "capability_verified_exclusive_device_advisory",
     }
+
+
+def planning_capabilities(primary: dict, inventory: dict) -> dict:
+    """Advertise *room-wide* heat/cool planning without mislabeling primary.
+
+    Only a verified, live, single-setpoint climate in the configured room
+    contributes a secondary heat/cool capability. No new permission is granted
+    to send commands; the secondary driver has an independent safety gate.
+    """
+    merged = dict(primary) if isinstance(primary, dict) else {}
+    if merged.get("kind") != "climate":
+        merged = {"kind": "unavailable"}
+    for role, ability, demand in (
+        ("heat_climate_entity", "heating", "heat"),
+        ("cool_climate_entity", "cooling", "cool"),
+    ):
+        candidate = inventory.get(role, {})
+        caps = candidate.get("capabilities", {})
+        if (candidate.get("status") == "ready"
+                and caps.get("temperature_setpoint") is True
+                and caps.get(ability) is True):
+            merged["kind"] = "climate"
+            merged[demand] = True
+    return merged
+
+
+def native_plan_hold_reason(primary: str | None, equipment: dict,
+                            mode: str | None) -> str | None:
+    """Never silently fall back to a primary thermostat after a role override."""
+    if equipment.get("status") == "duplicate_equipment_owner":
+        return "duplicate_equipment_owner"
+    if mode not in ("heat", "cool", "heat_cool"):
+        return None
+    thermal = equipment.get("thermal", {})
+    status = thermal.get("status")
+    if status != "selected":
+        return status if status in (
+            "no_verified_device", "opposing_equipment_active",
+            "window_interlock") else "incomplete_equipment_plan"
+    selected = thermal.get("entity_id")
+    if not isinstance(selected, str) or not selected.startswith("climate."):
+        return "unverified_thermal_target"
+    if selected != primary:
+        return "secondary_thermal_driver_pending"
+    return None

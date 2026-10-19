@@ -90,3 +90,30 @@ def test_climate_only_room_without_windows_is_not_forced_to_hold(adapter):
     monitored,_=gather(house,room,cfg,require_window_contact=True)
     assert monitored["status"]=="hold"
     assert monitored["window_evidence"]=="missing_required_contact"
+
+
+def test_room_mode_can_plan_secondary_ac_without_claiming_radiator_cooling(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.air_quality_advisor.logic import Room,Window
+    air=home(room_occupied=True)
+    radiator=air.states.get("climate.kitchen")
+    radiator.attributes["hvac_modes"]=["off","heat"]
+    radiator.attributes["hvac_action"]="idle"
+    ac=MockState("climate.kitchen_ac","cool")
+    ac.attributes.update({"hvac_modes":["off","cool","dry","fan_only"],
+                          "supported_features":1,"hvac_action":"idle"})
+    air._values[ac.entity_id]=ac
+    air._entity_areas[ac.entity_id]="kitchen"
+    cfg={"enabled":True,"controller":"device","mode":"cool",
+        "temperature_entity":"sensor.kitchen_temperature",
+        "climate_entity":"climate.kitchen",
+        "cool_climate_entity":"climate.kitchen_ac"}
+    room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
+    report,tracked=gather(air,room,cfg)
+    assert report["status"]=="ready"
+    assert report["mode"]=="cool"
+    assert report["temperature_target_c"]==26
+    assert report["climate_capabilities"]["cool"] is False
+    assert report["room_planning_capabilities"]["cool"] is True
+    assert report["equipment_plan"]["thermal"]["entity_id"]==ac.entity_id
+    assert ac.entity_id in tracked

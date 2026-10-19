@@ -34,7 +34,7 @@ from .environment import build_environment
 from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
 from .climate_rooms import gather as climate_room_plan
-from .climate_coordination import duplicate_owners
+from .climate_coordination import duplicate_owners, native_plan_hold_reason
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
 from .climate_humidity_native import HumiditySetpointControl
@@ -244,17 +244,15 @@ class AirQualityManager:
                     thermal=equipment.get("thermal",{})
                     # Never issue commands for an unowned, shared or competing
                     # appliance. Secondary equipment needs a dedicated driver.
-                    if equipment.get("status")=="duplicate_equipment_owner":
+                    if settings.get("controller")=="device":
+                        hold=native_plan_hold_reason(
+                            settings.get("climate_entity"),equipment,state.get("mode"))
+                        if hold is not None:
+                            state["status"]="hold"
+                            state["reason"]=hold
+                    elif equipment.get("status")=="duplicate_equipment_owner":
                         state["status"]="hold"
                         state["reason"]="duplicate_equipment_owner"
-                    elif thermal.get("status")=="opposing_equipment_active":
-                        state["status"]="hold"
-                        state["reason"]="opposing_equipment_active"
-                    elif (thermal.get("status")=="selected" and
-                          thermal.get("entity_id")!=settings.get("climate_entity") and
-                          settings.get("controller")=="device"):
-                        state["status"]="hold"
-                        state["reason"]="secondary_thermal_driver_pending"
                     state["automatic_actuation_enabled"] = (
                         settings.get("allow_actuation") is True and
                         settings.get("controller") == "device"

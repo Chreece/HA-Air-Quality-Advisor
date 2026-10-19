@@ -42,6 +42,8 @@ def classify_hvac(attributes: dict[str, Any], state: str) -> dict[str, Any]:
         "drying": "dry" in modes,
         "fan_only": "fan_only" in modes,
         "auto_unspecified": "auto" in modes,
+        "temperature_setpoint": bool(flags & 1),
+        "temperature_range": bool(flags & 2),
         "target_humidity": bool(flags & HUMIDITY_FEATURE),
         "fan_control": bool(flags & FAN_FEATURE),
         "swing_control": bool(flags & SWING_FEATURE),

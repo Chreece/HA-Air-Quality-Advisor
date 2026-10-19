@@ -129,3 +129,34 @@ def test_fans_need_outdoor_evidence(coordinator):
     assert not_safe["ventilation"]["status"] == "outdoor_air_unverified_or_fan_unavailable"
     assert safe["ventilation"]["status"] == "available_if_outdoor_evidence_supports"
     assert "fan.purifier" in coordinator.assigned_entities(cfg)
+
+
+def test_room_thermal_planning_recognizes_verified_secondary_modes(coordinator):
+    h=home()
+    primary=coordinator.device_inventory(h,"bedroom",config())
+    raw={"kind":"climate","heat":True,"cool":False,"setpoint":True}
+    union=coordinator.planning_capabilities(raw,primary)
+    assert union["heat"] and union["cool"]
+    assert raw["cool"] is False  # Actual radiator remains heat-only.
+    bad=home()
+    bad._values["climate.ac"].attributes["supported_features"]=0
+    assert coordinator.planning_capabilities(raw,
+        coordinator.device_inventory(bad,"bedroom",config()))["cool"] is False
+
+
+def test_explicit_unavailable_cooling_never_sends_primary_command(coordinator):
+    h=home()
+    cfg=config()
+    state={"status":"ready","mode":"cool","window_safe":True}
+    item=coordinator.room_equipment_plan(h,"bedroom",cfg,state,())
+    assert coordinator.native_plan_hold_reason(
+        "climate.radiator",item,"cool")=="secondary_thermal_driver_pending"
+    h.states.get("climate.ac").state="unavailable"
+    item=coordinator.room_equipment_plan(h,"bedroom",cfg,state,())
+    assert coordinator.native_plan_hold_reason(
+        "climate.radiator",item,"cool")=="no_verified_device"
+    assert coordinator.native_plan_hold_reason("climate.radiator",
+        {"status":"duplicate_equipment_owner"},"heat")=="duplicate_equipment_owner"
+    good=coordinator.room_equipment_plan(h,"bedroom",cfg,
+        {"status":"ready","mode":"heat","window_safe":True},())
+    assert coordinator.native_plan_hold_reason("climate.radiator",good,"heat") is None
