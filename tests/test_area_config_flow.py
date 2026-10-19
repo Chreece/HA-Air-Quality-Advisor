@@ -789,3 +789,28 @@ def test_pid_controller_rejects_enabled_room_without_climate_or_temperature(monk
         "pid_temperature_entity":None,"pid_mode":"heat","pid_target_c":21,
     }))
     assert invalid["errors"]["base"]=="pid_climate_required"
+
+def test_climate_room_profiles_are_optional_and_keep_existing_settings(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    choose = asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    assert choose["step_id"] == "climate_room"
+    setup = asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    assert setup["step_id"] == "climate_profiles"
+    saved = asyncio.run(options.async_step_climate_profiles({}))
+    data = saved["completed"]["data"]
+    assert data["climate_rooms"]["living"]["enabled"] is False
+    assert data["climate_rooms"]["living"]["profiles"]["home"] == {"heat_c":20.0,"cool_c":26.0}
+    assert data["thresholds"]["indoor_co2"] == 1200
+
+
+def test_climate_room_rejects_new_actuation_without_real_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":None,"climate_temperature_entity":None,
+        "climate_controller":"device","climate_mode":"auto",
+    }))
+    assert result["errors"]["base"] == "climate_temperature_required"

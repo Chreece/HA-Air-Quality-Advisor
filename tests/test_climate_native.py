@@ -121,3 +121,19 @@ def test_conflicting_pid_owner_never_commands_native(native):
         assert not hass.services.calls
         await c.async_stop()
     asyncio.run(scenario())
+
+def test_device_without_declared_hardware_limits_fails_closed(native):
+    async def scenario():
+        hass,_=fake_home()
+        s=hass.states.get("climate.room_thermostat")
+        s.attributes["hvac_modes"]=["off","heat","cool"]
+        del s.attributes["min_temp"]
+        clock=[1000.]
+        c=native.NativeClimateControl(hass,"invalidlimits",clock=lambda:clock[0])
+        await c.async_start()
+        clock[0]=1400
+        await scheduled(c,settings(),report())
+        assert c.statuses["living"]["status"]=="device_limits_unknown"
+        assert not hass.services.calls
+        await c.async_stop()
+    asyncio.run(scenario())
