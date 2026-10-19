@@ -917,22 +917,11 @@ class _FlowMixin:
                     errors["base"]="climate_away_invalid"
             if not errors:
                 self._climate_draft=proposal
-                if proposal["controller"] in ("on_off","pwm","proportional"):
-                    return await self.async_step_climate_actuators()
-                return await self.async_step_climate_profiles()
+                return await self.async_step_climate_presence()
         schema=probatio.Schema({
             _marker("climate_enabled",draft.get("enabled",False)):selector.BooleanSelector(),
             _marker("climate_allow_actuation",draft.get("allow_actuation",False)):selector.BooleanSelector(),
             _marker("climate_auto_switch_hvac",draft.get("auto_switch_hvac",False)):selector.BooleanSelector(),
-            _marker("climate_sleep_active",draft.get("sleep_active",False)):selector.BooleanSelector(),
-            _marker("climate_manual_profile",draft.get("manual_profile","auto")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["auto","home","unoccupied","away","sleep"],
-                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["occupied","hold"],multiple=False,custom_value=False,
-                    mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},
@@ -949,13 +938,128 @@ class _FlowMixin:
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
                 selector.SelectSelector(selector.SelectSelectorConfig(options=temp_choices,
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_occupancy_sensors",draft.get("occupancy_sensors",[])):_multi(occupant_choices),
-            _marker("climate_away_entities",draft.get("away_entities",[])):_multi(away_choices),
-            _marker("climate_hysteresis_c",draft.get("hysteresis_c",0.7)):_real_number(0.2,3,"°C"),
         })
         return self.async_show_form(step_id="climate_room",errors=errors,data_schema=schema,
             description_placeholders={"area_name":self._climate_area})
 
+
+
+    async def async_step_climate_presence(
+        self,user_input:dict[str,Any]|None=None
+    )->ConfigFlowResult:
+        """One room's occupancy, whole-home away, sleep schedule and comfort basis."""
+        from .discovery import entity_area
+        from .climate_schedule import local_interval_active
+        draft=self._climate_draft
+        area=self._climate_area
+        sensor_options=[
+            {"value":state.entity_id,"label":(state.name or state.entity_id)}
+            for state in self.hass.states.async_all("binary_sensor")
+            if entity_area(self.hass,state.entity_id)==area
+            and str(state.attributes.get("device_class","")).casefold() in ("occupancy","presence")
+        ]
+        # This is independent of the room Area Registry: people / mobile
+        # trackers represent home presence, not room occupancy.
+        away_options=[
+            {"value":state.entity_id,"label":(state.name or state.entity_id)}
+            for state in self.hass.states.async_all()
+            if state.domain in ("person","device_tracker")
+            or (state.domain=="binary_sensor" and "home" in state.entity_id)
+        ]
+        errors={}
+        if user_input is not None:
+            proposal={**draft,
+                "occupancy_sensors":user_input.get("climate_occupancy_sensors",
+                                                 draft.get("occupancy_sensors",[])),
+                "away_entities":user_input.get("climate_away_entities",
+                                               draft.get("away_entities",[])),
+                "unknown_occupancy":user_input.get("climate_unknown_occupancy",
+                                                  draft.get("unknown_occupancy","occupied")),
+                "away_policy":user_input.get("climate_away_policy",
+                                             draft.get("away_policy","any_home")),
+                "manual_profile":user_input.get("climate_manual_profile",
+                                                draft.get("manual_profile","auto")),
+                "sleep_active":bool(user_input.get("climate_sleep_active",
+                                                 draft.get("sleep_active",False))),
+                "sleep_schedule_enabled":bool(user_input.get("climate_sleep_schedule_enabled",
+                                                  draft.get("sleep_schedule_enabled",False))),
+                "sleep_start":user_input.get("climate_sleep_start",
+                                             draft.get("sleep_start","22:00")),
+                "sleep_end":user_input.get("climate_sleep_end",
+                                           draft.get("sleep_end","07:00")),
+                "target_source":user_input.get("climate_target_source",
+                                               draft.get("target_source","temperature")),
+                "comfort_adjustment_max_c":user_input.get("climate_comfort_adjustment_max_c",
+                                                    draft.get("comfort_adjustment_max_c",1.5)),
+            }
+            if (proposal["unknown_occupancy"] not in ("occupied","hold")
+                    or proposal["away_policy"] not in ("any_home","all_home")
+                    or proposal["manual_profile"] not in
+                      ("auto","home","unoccupied","away","sleep")
+                    or proposal["target_source"] not in ("temperature","pmv")):
+                errors["base"]="climate_occupancy_invalid"
+            elif not all(x in {s["value"] for s in sensor_options}
+                         for x in proposal["occupancy_sensors"]):
+                errors["base"]="climate_occupancy_invalid"
+            elif not all(x in {s["value"] for s in away_options}
+                         for x in proposal["away_entities"]):
+                errors["base"]="climate_away_invalid"
+            elif proposal["sleep_schedule_enabled"] and (
+                local_interval_active(
+                    1704067200,"UTC",proposal["sleep_start"],proposal["sleep_end"]
+                )[0] is None
+            ):
+                errors["base"]="climate_invalid_sleep_schedule"
+            else:
+                try:
+                    adjustment=float(proposal["comfort_adjustment_max_c"])
+                except (ValueError,TypeError,OverflowError):
+                    adjustment=float("nan")
+                if not math.isfinite(adjustment) or not 0<=adjustment<=2.5:
+                    errors["base"]="climate_invalid_comfort_adjustment"
+                else:
+                    proposal["comfort_adjustment_max_c"]=adjustment
+            if not errors:
+                self._climate_draft=proposal
+                if proposal.get("controller") in ("on_off","pwm","proportional"):
+                    return await self.async_step_climate_actuators()
+                return await self.async_step_climate_profiles()
+        fields={
+            _marker("climate_occupancy_sensors",draft.get("occupancy_sensors",[])):
+                _multi(sensor_options),
+            _marker("climate_away_entities",draft.get("away_entities",[])):
+                _multi(away_options),
+            _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["occupied","hold"],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_away_policy",draft.get("away_policy","any_home")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["any_home","all_home"],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_manual_profile",draft.get("manual_profile","auto")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["auto","home","unoccupied","away","sleep"],
+                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_sleep_active",draft.get("sleep_active",False)):
+                selector.BooleanSelector(),
+            _marker("climate_sleep_schedule_enabled",draft.get("sleep_schedule_enabled",False)):
+                selector.BooleanSelector(),
+            _marker("climate_sleep_start",draft.get("sleep_start","22:00")):
+                selector.TimeSelector(),
+            _marker("climate_sleep_end",draft.get("sleep_end","07:00")):
+                selector.TimeSelector(),
+            _marker("climate_target_source",draft.get("target_source","temperature")):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=["temperature","pmv"],multiple=False,custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
+            _marker("climate_comfort_adjustment_max_c",
+                    draft.get("comfort_adjustment_max_c",1.5)):
+                _real_number(0,2.5,"°C"),
+        }
+        return self.async_show_form(step_id="climate_presence",
+            errors=errors,data_schema=probatio.Schema(fields),
+            description_placeholders={"area_name":area})
 
     def _direct_actuator_schema(self, draft: dict) -> probatio.Schema:
         from .discovery import entity_area
