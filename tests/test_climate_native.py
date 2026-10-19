@@ -20,11 +20,13 @@ def native(adapter,monkeypatch):
 def settings(**changes):
     return {"enabled":True,"controller":"device",
             "allow_actuation":True,"auto_switch_hvac":False,
-            "climate_entity":"climate.room_thermostat",**changes}
+            "climate_entity":"climate.room_thermostat",
+            "temperature_entity":"sensor.room_temperature",**changes}
 
 
 def report(mode="heat",target=22,status="ready"):
-    return {"status":status,"mode":mode,"temperature_target_c":target}
+    return {"status":status,"mode":mode,"temperature_target_c":target,
+            "window_safe":True,"temperature_c":20.0}
 
 
 async def scheduled(ctrl,settings_,plan):
