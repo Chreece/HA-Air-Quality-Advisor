@@ -41,6 +41,10 @@ SERVICE_SCHEMA = probatio.Schema({
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    # Existing installations retain entry IDs and selected devices. Only the
+    # uncustomized legacy display title is migrated to the new product name.
+    if getattr(entry, "title", None) in ("Air Quality Advisor", "Home Environment Advisor"):
+        hass.config_entries.async_update_entry(entry, title="Home Environment Manager")
     manager = AirQualityManager(hass, entry)
     entry.runtime_data = manager
     await manager.async_start()
