@@ -202,6 +202,9 @@ class AirQualityManager:
             climate_configs = {}
         pid_statuses = self.pid.configured_statuses(pid_configs)
         climate_statuses = self.climate.configured_statuses(climate_configs)
+        for area, entry in climate_configs.items():
+            if isinstance(entry,dict) and entry.get("enabled") and area in pid_statuses:
+                pid_statuses[area]={"status":"superseded_by_climate"}
         for room in selected_rooms:
             if room.area_id in pid_statuses:
                 environment.setdefault(room.area_id, {})["climate_pid"] = pid_statuses[room.area_id]
@@ -330,7 +333,10 @@ class AirQualityManager:
         if not isinstance(saved, dict):
             return
         environment = {key: dict(val) for key, val in self.plan.environment.items()}
+        active=self.settings.get(CONF_CLIMATE_ROOMS,{})
         for area, status in self.pid.configured_statuses(saved).items():
+            if isinstance(active,dict) and isinstance(active.get(area),dict) and active[area].get("enabled"):
+                status={"status":"superseded_by_climate"}
             environment.setdefault(area, {})["climate_pid"] = status
         self.plan = replace(self.plan, environment=environment)
         async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")

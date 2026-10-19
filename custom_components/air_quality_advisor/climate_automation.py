@@ -882,5 +882,6 @@ class ClimateAutomationCoordinator:
                 "profile":profile,"room_occupancy":room_presence,"home_presence":home_presence,
                 "heat_target_c":heat,"cool_target_c":cool,"operation":cfg["operation"],
                 "strategy":cfg["strategy"],
+                "profile_override":zone.profile_override,
             })
             self._changed()

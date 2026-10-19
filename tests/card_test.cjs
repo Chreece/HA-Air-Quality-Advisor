@@ -360,3 +360,26 @@ assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-action="resume"'));
 pidData.rooms[0].environment.climate_pid={status:'disabled'};
 pidCard.hass={language:'en',states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
 assert.ok(!pidCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
+
+const climateDemo=JSON.parse(JSON.stringify(input));
+climateDemo.rooms[0].environment={
+  climate_control:{status:'controlling',strategy:'device',mode:'heat',
+     heat_target_c:21, cool_target_c:25, measured_c:20.4,
+     profile:'occupied', profile_override:'auto'},
+  climate_pid:{status:'superseded_by_climate'},
+};
+const climateCard=new Card();
+climateCard.setConfig({entity:'sensor.climate_test'});
+for(const [lang,label] of [['en','Climate automation'],['de','Klimaregelung'],['el','Αυτόματος κλιματισμός']]){
+  climateCard.hass={language:lang,states:{'sensor.climate_test':{state:'open',
+    attributes:{dashboard:climateDemo}}}};
+  assert.ok(climateCard.shadowRoot.innerHTML.includes(label),label);
+  assert.ok(climateCard.shadowRoot.innerHTML.includes('data-climate-area="kitchen"'));
+  assert.ok(climateCard.shadowRoot.innerHTML.includes('data-climate-profile="kitchen"'));
+  assert.ok(climateCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+  assert.ok(!climateCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
+}
+climateDemo.rooms[0].environment.climate_control.status='paused';
+climateCard.hass={language:'en',states:{'sensor.climate_test':{state:'open',
+  attributes:{dashboard:climateDemo}}}};
+assert.ok(climateCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
