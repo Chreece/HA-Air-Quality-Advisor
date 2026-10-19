@@ -73,6 +73,9 @@ def test_translated_help_thresholds_errors_abort_and_menu_do_not_regress_to_engl
             if (key.startswith(("options.step.environment", "options.error.invalid_environment",
                                "options.error.pmv_requires_explicit",
                                "options.step.pid", "options.error.pid_",
+                               "options.step.climate", "options.error.climate_",
+                               "options.error.invalid_climate",
+                               "options.step.init.menu_options.climate",
                                "options.step.init.menu_options.pid"))
                     or key.startswith("options.step.init.menu_options.environment")
                     or any(key.endswith(".data." + gas) for gas in

@@ -56,6 +56,7 @@ def _wizard(monkeypatch, adapter):
     selector.NumberSelectorConfig = SelectSelectorConfig
     selector.NumberSelector = SelectSelector
     selector.NumberSelectorMode = SimpleNamespace(BOX="box")
+    selector.TextSelector = lambda: SelectSelector(SelectSelectorConfig(type="text"))
     monkeypatch.setitem(sys.modules, "homeassistant.helpers.selector", selector)
 
     name = "custom_components.air_quality_advisor.config_flow"
@@ -346,7 +347,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
+        "outdoor", "delivery", "thresholds", "environment", "environment_room", "climate", "pid",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -789,3 +790,48 @@ def test_pid_controller_rejects_enabled_room_without_climate_or_temperature(monk
         "pid_temperature_entity":None,"pid_mode":"heat","pid_target_c":21,
     }))
     assert invalid["errors"]["base"]=="pid_climate_required"
+
+def test_climate_section_off_by_default_and_room_scoped(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    choice=asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    assert choice["step_id"]=="climate_device"
+    assert "climate_enabled" in choice["data_schema"]
+    saved=asyncio.run(options.async_step_climate_device({"climate_enabled":False}))
+    assert saved["completed"]["data"]["climate_rooms"]["living"]["enabled"] is False
+    assert saved["completed"]["data"]["thresholds"]["indoor_co2"]==1200
+
+
+def test_climate_strategy_requires_sensor_and_authorized_actuator(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    bad=asyncio.run(options.async_step_climate_device({
+        "climate_enabled":True,"climate_strategy":"pwm",
+        "climate_temperature_entity":"sensor.missing",
+        "climate_heat_entity":"switch.not_authorized",
+        "climate_operation":"heat",
+    }))
+    assert bad["errors"]["base"] in ("invalid_climate_temperature","invalid_climate_actuator")
+
+
+def test_climate_automatic_hvac_requires_explicit_optin(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    # With an otherwise valid sensor/device, auto would require permission.
+    from test_discovery import MockState
+    temp=MockState("sensor.living_temperature",20,device_class="temperature",unit="°C")
+    thermostat=MockState("climate.living_thermostat","heat")
+    options.hass._values[temp.entity_id]=temp
+    options.hass._values[thermostat.entity_id]=thermostat
+    options.hass._entity_areas[temp.entity_id]="living"
+    options.hass._entity_areas[thermostat.entity_id]="living"
+    bad=asyncio.run(options.async_step_climate_device({
+        "climate_enabled":True, "climate_strategy":"device",
+        "climate_operation":"auto",
+        "climate_temperature_entity":temp.entity_id,
+        "climate_climate_entity":thermostat.entity_id,
+        "climate_allow_hvac_mode_change":False,
+    }))
+    assert bad["errors"]["base"]=="climate_auto_requires_optin"
