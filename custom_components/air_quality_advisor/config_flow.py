@@ -1146,6 +1146,16 @@ class _FlowMixin:
             if selected not in {o["value"] for o in humidity}:
                 errors["base"]="climate_occupancy_invalid"
             proposal["humidity_entity"]=None if selected=="none" else selected
+            proposal["humidity_setpoint_auto"]=user_input.get(
+                "climate_humidity_setpoint_auto",draft.get("humidity_setpoint_auto",False)
+            ) is True
+            if proposal["humidity_setpoint_auto"] and not (
+                proposal.get("enabled") is True and
+                proposal.get("allow_actuation") is True and
+                proposal.get("humidity_entity") and
+                (proposal.get("humidifier_entity") or proposal.get("dehumidifier_entity"))
+            ):
+                errors["base"]="climate_humidity_control_inputs_missing"
             for key,default in (
                 ("humidity_low_rh",40),("humidity_high_rh",60),
                 ("humidity_hysteresis_rh",3),
@@ -1167,6 +1177,10 @@ class _FlowMixin:
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 ))
             )
+        fields[_marker("climate_humidity_setpoint_auto",
+                       draft.get("humidity_setpoint_auto",False))]=(
+            selector.BooleanSelector()
+        )
         fields[_marker("climate_humidity_entity",draft.get("humidity_entity") or "none")]=(
             selector.SelectSelector(selector.SelectSelectorConfig(
                 options=humidity,multiple=False,custom_value=False,
