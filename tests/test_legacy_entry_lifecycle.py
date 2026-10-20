@@ -104,6 +104,11 @@ class FakeManager:
         self.calls.append(("climate",{"area":area,"action":action}))
         return {"accepted":True}
 
+    def climate_diagnostics(self,area=None):
+        return {"read_only":True,"rooms":(
+            [{"area_id":"living","devices":[]}] if area in (None,"living") else []
+        )}
+
 
 @pytest.fixture
 def integration(adapter,monkeypatch):
@@ -203,6 +208,8 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
         ("home_environment_manager","pid_control"),
         ("air_quality_advisor","climate_control"),
         ("home_environment_manager","climate_control"),
+        ("air_quality_advisor","climate_diagnostics"),
+        ("home_environment_manager","climate_diagnostics"),
     }
     # No climate permission is implicitly created for a legacy entry.
     assert "climate_rooms" not in entry.data
@@ -220,10 +227,10 @@ def test_multiple_config_entries_register_once_and_unload_cleanly(integration):
     second=legacy_entry(number=2,title="Home Environment Advisor")
     asyncio.run(module.async_setup_entry(h,first))
     asyncio.run(module.async_setup_entry(h,second))
-    assert len(h.services.registered)==6
+    assert len(h.services.registered)==8
     assert sorted(h.data["air_quality_advisor"])==["legacy-1","legacy-2"]
     assert asyncio.run(module.async_unload_entry(h,first))
-    assert len(h.services.callbacks)==6
+    assert len(h.services.callbacks)==8
     assert not FakeManager.instances[1].stopped
     assert asyncio.run(module.async_unload_entry(h,second))
     assert len(h.services.callbacks)==0
@@ -246,3 +253,30 @@ def test_setup_forwarding_and_partial_controller_start_failures_stop_manager(int
         asyncio.run(module.async_setup_entry(h,entry))
     assert FakeManager.instances[-1].stopped
     assert h.services.registered==[]
+
+
+def test_read_only_climate_diagnostics_registers_both_aliases_and_never_calls_hvac(
+    integration,
+):
+    module,_=integration
+    hass=make_hass()
+    entry=legacy_entry()
+    asyncio.run(module.async_setup_entry(hass,entry))
+    call=SimpleNamespace(data={"area":"living"},return_response=True)
+    service=hass.services.callbacks[
+        ("home_environment_manager","climate_diagnostics")
+    ]
+    result=asyncio.run(service(call))
+    assert result["status"]=="ok"
+    assert result["read_only"] is True
+    assert result["no_commands_sent"] is True
+    assert result["physical_hardware_safety_verified"] is False
+    assert result["rooms"]==[{"area_id":"living","devices":[]}]
+    assert FakeManager.instances[0].calls==[]
+    missing=asyncio.run(service(SimpleNamespace(
+        data={"area":"unknown"},return_response=True,
+    )))
+    assert missing["status"]=="area_not_configured"
+    assert missing["rooms"]==[]
+    assert asyncio.run(module.async_unload_entry(hass,entry))
+    assert not hass.services.callbacks
