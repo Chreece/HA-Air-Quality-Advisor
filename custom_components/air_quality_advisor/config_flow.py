@@ -1151,6 +1151,17 @@ class _FlowMixin:
             proposal["humidity_setpoint_auto"]=user_input.get(
                 "climate_humidity_setpoint_auto",draft.get("humidity_setpoint_auto",False)
             ) is True
+            for field in ("humidity_power_auto","humidity_power_hardware_confirmed",
+                          "humidity_power_windowless_confirmed"):
+                proposal[field]=user_input.get(
+                    "climate_"+field,draft.get(field,False)
+                ) is True
+            for field,default in (
+                ("humidity_power_min_on_s",600),
+                ("humidity_power_min_off_s",600),
+                ("humidity_power_max_on_s",7200),
+            ):
+                proposal[field]=user_input.get("climate_"+field,draft.get(field,default))
             proposal["secondary_climate_setpoint_auto"]=user_input.get(
                 "climate_secondary_climate_setpoint_auto",
                 draft.get("secondary_climate_setpoint_auto",False)
@@ -1164,6 +1175,27 @@ class _FlowMixin:
                     for role in ("heat_climate_entity","cool_climate_entity"))
             ):
                 errors["base"]="climate_secondary_control_inputs_missing"
+            if proposal["humidity_power_auto"]:
+                from .climate_humidity_power import timings
+                supported = False
+                for field,device_class in (
+                    ("humidifier_entity","humidifier"),
+                    ("dehumidifier_entity","dehumidifier"),
+                ):
+                    entity=proposal.get(field)
+                    st=self.hass.states.get(entity) if isinstance(entity,str) else None
+                    if (st is not None and entity_area(self.hass,entity)==area
+                            and st.attributes.get("device_class")==device_class):
+                        supported=True
+                if not (
+                    proposal.get("enabled") is True
+                    and proposal.get("allow_actuation") is True
+                    and proposal.get("humidity_power_hardware_confirmed") is True
+                    and proposal.get("humidity_setpoint_auto") is not True
+                    and proposal.get("humidity_entity")
+                    and supported and timings(proposal) is not None
+                ):
+                    errors["base"]="climate_humidity_power_inputs_missing"
             if proposal["humidity_setpoint_auto"] and not (
                 proposal.get("enabled") is True and
                 proposal.get("allow_actuation") is True and
@@ -1207,6 +1239,19 @@ class _FlowMixin:
                        draft.get("humidity_setpoint_auto",False))]=(
             selector.BooleanSelector()
         )
+        for field in ("humidity_power_auto","humidity_power_hardware_confirmed",
+                      "humidity_power_windowless_confirmed"):
+            fields[_marker("climate_"+field,draft.get(field,False))]=(
+                selector.BooleanSelector()
+            )
+        for field,default,minimum,maximum in (
+            ("humidity_power_min_on_s",600,300,7200),
+            ("humidity_power_min_off_s",600,600,14400),
+            ("humidity_power_max_on_s",7200,900,28800),
+        ):
+            fields[_marker("climate_"+field,draft.get(field,default))]=(
+                _real_number(minimum,maximum,"s")
+            )
         fields[_marker("climate_humidity_entity",draft.get("humidity_entity") or "none")]=(
             selector.SelectSelector(selector.SelectSelectorConfig(
                 options=humidity,multiple=False,custom_value=False,
