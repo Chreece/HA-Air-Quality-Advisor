@@ -38,6 +38,7 @@ from .climate_coordination import duplicate_owners, native_plan_hold_reason
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
 from .climate_humidity_native import HumiditySetpointControl
+from .climate_humidity_power import HumidityPowerControl
 from .climate_secondary_native import SecondaryClimateSetpoint
 from .climate_air_actions import air_treatment_plan
 from .climate_fan_native import RunningFanSpeedControl
@@ -76,6 +77,9 @@ class AirQualityManager:
         )
         self.native_humidity = HumiditySetpointControl(
             self.hass,self.entry.entry_id,changed=self._humidity_updated,
+        )
+        self.humidity_power = HumidityPowerControl(
+            self.hass,self.entry.entry_id,changed=self._humidity_power_updated,
         )
         self.secondary_climate = SecondaryClimateSetpoint(
             self.hass,self.entry.entry_id,changed=self._secondary_updated,
@@ -286,7 +290,10 @@ class AirQualityManager:
                         state["reason"]="duplicate_equipment_owner"
                     state["automatic_actuation_enabled"] = (
                         settings.get("allow_actuation") is True and
-                        settings.get("controller") == "device"
+                        (settings.get("controller") == "device" or
+                         settings.get("humidity_setpoint_auto") is True or
+                         settings.get("humidity_power_auto") is True or
+                         settings.get("fan_speed_auto") is True)
                     )
                     driver = (self.direct_climate if settings.get("controller") in
                               ("on_off","pwm","proportional") else self.native_climate)
@@ -294,6 +301,9 @@ class AirQualityManager:
                         monitored.area_id,{"status":"advisory_only"}
                     )
                     state["humidity_actuation"] = self.native_humidity.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["humidity_power_actuation"] = self.humidity_power.statuses.get(
                         monitored.area_id,{"status":"advisory_only"}
                     )
                     state["secondary_actuation"] = self.secondary_climate.statuses.get(
@@ -372,6 +382,7 @@ class AirQualityManager:
         await self.native_climate.async_start()
         await self.direct_climate.async_start()
         await self.native_humidity.async_start()
+        await self.humidity_power.async_start()
         await self.secondary_climate.async_start()
         await self.running_fans.async_start()
         self._active = True
@@ -408,11 +419,15 @@ class AirQualityManager:
             return {"accepted":False,"reason":"climate_control_not_enabled"}
         if profile.get("controller") in ("on_off","pwm","proportional"):
             primary=await self.direct_climate.command(area,action,configured)
+        elif profile.get("controller")=="environment":
+            primary={"accepted":True,"reason":"environment_only_no_primary_hvac"}
         else:
             primary=await self.native_climate.command(area,action)
         results={"primary":primary}
         if profile.get("humidity_setpoint_auto") is True:
             results["humidity_setpoint"]=await self.native_humidity.command(area,action)
+        if profile.get("humidity_power_auto") is True:
+            results["humidity_power"]=await self.humidity_power.command(area,action)
         if profile.get("secondary_climate_setpoint_auto") is True:
             results["secondary_climate"]=await self.secondary_climate.command(area,action)
         if profile.get("fan_speed_auto") is True:
@@ -444,6 +459,19 @@ class AirQualityManager:
             if area in environment and "climate_plan" in environment[area]:
                 plan={**environment[area]["climate_plan"],
                       "secondary_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _humidity_power_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.humidity_power.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "humidity_power_actuation":status}
                 environment[area]["climate_plan"]=plan
         self.plan=replace(self.plan,environment=environment)
         async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
@@ -500,6 +528,7 @@ class AirQualityManager:
         pid_settings=self.settings.get(CONF_PID_ROOMS,{})
         self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
         self.native_humidity.schedule(settings,plans)
+        self.humidity_power.schedule(settings,plans)
         self.secondary_climate.schedule(settings,plans,pid_rooms=pid_settings)
         self.running_fans.schedule(settings,plans)
 
@@ -546,6 +575,7 @@ class AirQualityManager:
             native_rooms=native_configs,
         )
         self.native_humidity.schedule(native_configs, plans)
+        self.humidity_power.schedule(native_configs, plans)
         self.secondary_climate.schedule(native_configs, plans,
                                         pid_rooms=configured_pid)
         self.running_fans.schedule(native_configs,plans)
@@ -699,6 +729,7 @@ class AirQualityManager:
         await self.native_climate.async_stop()
         await self.direct_climate.async_stop()
         await self.native_humidity.async_stop()
+        await self.humidity_power.async_stop()
         await self.secondary_climate.async_stop()
         await self.running_fans.async_stop()
         self._cancel_pending()
