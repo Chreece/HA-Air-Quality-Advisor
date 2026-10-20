@@ -504,7 +504,7 @@ def test_direct_output_rejects_corrupt_or_future_safety_history(runtime):
         driver=runtime.DirectClimateControl(hass,"future",clock=lambda:clock[0])
         await driver.async_start()
         assert driver._ready is False
-        assert driver.statuses["*"]["state"]=="safety_history_unsupported"
+        assert driver.statuses["*"]["status"]=="safety_history_unsupported"
         clock[0]=4000.
         await advance(driver,clock,settings(),planned())
         assert not hass.services.calls
