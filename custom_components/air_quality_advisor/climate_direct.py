@@ -329,7 +329,7 @@ class DirectClimateControl:
         coordination_reason=None
         if can_run and isinstance(active,str):
             coordination_reason=new_command_gate(
-                self.hass,area,cfg,report,"thermal",active,now=now,
+                self.hass,area,cfg,report,"thermal",active,now=now,entry_id=self.entry_id,
             )
             if coordination_reason is not None:
                 can_run=False
