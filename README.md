@@ -1102,7 +1102,9 @@ certification.
 first choose an entity actually containing usable Home Assistant room IDs
 or names; then select either its validated **State** or one of its actual
 valid room-list attributes. The option list is derived from that entity's
-current values and prevents typos in arbitrary attribute names. The original
+current values and prevents typos in arbitrary attribute names. **State**
+is offered only when its actual value contains a recognized room list;
+attribute choices are localized when the server language is known. The original
 240-minute setting means the **maximum age since the source's last Home
 Assistant report (4 hours)**. It does **not** mean time slept or a sleep
 duration; stale/unknown state is never proof that everybody has left.
