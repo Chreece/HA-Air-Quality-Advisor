@@ -138,7 +138,76 @@ BAD_OUTSIDE = {
                  "name":"Wind and rain advisory","active":True}],
     "blockers":[{"code":"outside_pm25","label":"Outdoor particles",
                  "value":"34 µg/m³"}],"unavailable_sensors":[]}
+# Synthetic but internally consistent samples exercise the *bundled card*
+# climate-only render path, not a separate screenshot mock component.
+CLIMATE_ONLY_ROOMS = [
+    {
+        "area_id":"bathroom","name":"Bathroom",
+        "status":"unknown","climate_only":True,"readings":[],"windows":[],
+        "environment":{"climate_plan":{
+            "status":"advisory","controller":"environment","profile":"home",
+            "occupancy":"occupied","window_safe":True,
+            "humidity_power_actuation":{
+                "status":"owned_running","entity_id":"humidifier.bathroom_dehumidifier"},
+            "equipment_plan":{
+                "status":"ready",
+                "humidity":{"status":"advisory","action":"dry","measured_rh":69.0},
+                "humidity_evidence":"selected_sensor",
+                "moisture":{"status":"selected","entity_id":"humidifier.bathroom_dehumidifier",
+                            "role":"dehumidifier_entity","action":"dry"},
+                "thermal":{"status":"no_thermal_demand"}},
+            "coordination":{
+                "status":"ready","priority":"humidity_management",
+                "channels":{
+                    "thermal":{"status":"idle"},
+                    "humidity":{"status":"eligible",
+                                "entity_id":"humidifier.bathroom_dehumidifier"},
+                    "extraction":{"status":"idle"},
+                    "filtration":{"status":"idle"},
+                }},
+            "window_efficiency":{
+                "status":"opportunity","effect":"dry",
+                "active_device":"humidifier.bathroom_dehumidifier",
+                "automatic_control":False},
+        }},
+    },
+    {
+        "area_id":"studio","name":"Studio",
+        "status":"unknown","climate_only":True,"readings":[],"windows":[],
+        "environment":{"climate_plan":{
+            "status":"ready","controller":"device","profile":"home",
+            "temperature_c":27.4,"temperature_target_c":25.5,
+            "mode":"cool","window_safe":True,
+            "actuation":{"status":"at_setpoint","entity_id":"climate.studio_ac"},
+            "fan_actuation":{"status":"fan_speed_increased",
+                             "entity_id":"fan.studio_purifier",
+                             "new_percent":50},
+            "equipment_plan":{
+                "status":"ready",
+                "humidity":{"status":"advisory","action":"idle","measured_rh":48.0},
+                "humidity_evidence":"selected_sensor",
+                "thermal":{"status":"selected","entity_id":"climate.studio_ac","mode":"cool"}},
+            "air_actions":{
+                "status":"advisory",
+                "extraction":{"status":"blocked_outdoor_evidence"},
+                "filtration":{"status":"recommended","entity_id":"fan.studio_purifier"}},
+            "coordination":{
+                "status":"ready","priority":"measured_particle_filtration",
+                "channels":{
+                    "thermal":{"status":"eligible","entity_id":"climate.studio_ac"},
+                    "humidity":{"status":"idle"},
+                    "extraction":{"status":"held","reason":"outdoor_air_not_verified"},
+                    "filtration":{"status":"eligible","entity_id":"fan.studio_purifier"},
+                }},
+        }},
+    },
+]
+
 SCENARIOS = [
+    ("dashboard-climate-coordination.png", 990, "light", "en",
+     "CLIMATE ROOM MANAGEMENT · DESKTOP", CLIMATE_ONLY_ROOMS, GOOD_OUTSIDE),
+    ("dashboard-climate-coordination-mobile.png", 396, "dark", "el",
+     "ΣΥΝΤΟΝΙΣΜΟΣ ΚΛΙΜΑΤΟΣ · ΚΙΝΗΤΟ", CLIMATE_ONLY_ROOMS[:1], GOOD_OUTSIDE),
     ("dashboard-overview-light.png", 990, "light", "en",
      "DESKTOP · LIGHT THEME", GOOD_ROOMS, GOOD_OUTSIDE),
     ("dashboard-greek-dark.png", 940, "dark", "el",
