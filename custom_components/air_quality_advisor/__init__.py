@@ -116,12 +116,55 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             managers = list(hass.data.get(DOMAIN, {}).values())
             if not managers:
                 return {"submitted": 0, "reason": "Integration is not loaded"}
-            manager = managers[0]
-            result = await manager.async_announce(
-                language=call.data.get("language"),
-                channels=call.data.get("channels", "both"),
-                areas=call.data.get("areas"),
-            )
+            requested=call.data.get("areas")
+            if requested is not None and not isinstance(requested,(list,tuple)):
+                return {"submitted":0,"reason":"invalid_room_filter"}
+            # An announcement belongs to an actual pending recommendation,
+            # not an arbitrary config entry. The Hub alone routes speakers,
+            # visual outputs, occupancy and fallback after submission.
+            claims={}
+            for manager in managers:
+                plan=getattr(manager,"plan",None)
+                for recommendation in (
+                    *getattr(plan,"recommendations",()),
+                    *getattr(plan,"climate_recommendations",()),
+                ):
+                    area=getattr(recommendation,"area_id",None)
+                    if not isinstance(area,str):
+                        continue
+                    claims.setdefault(area,[]).append(manager)
+            if requested is None:
+                selected=sorted(claims)
+            else:
+                selected=list(dict.fromkeys(requested))
+            conflicts=[area for area in selected
+                       if len(set(claims.get(area,())))>1]
+            if conflicts:
+                # Fail the WHOLE request before any output is routed, rather
+                # than partly announcing and then discovering ambiguity.
+                return {"submitted":0,"reason":"ambiguous_room_across_config_entries",
+                        "areas":conflicts}
+            grouped={}
+            for area in selected:
+                owners=claims.get(area,())
+                if len(owners)==1:
+                    grouped.setdefault(owners[0],[]).append(area)
+            if not grouped:
+                return {"submitted":0,"reason":"No actionable window recommendations"}
+            total=0
+            errors=[]
+            for manager,area_ids in grouped.items():
+                outcome=await manager.async_announce(
+                    language=call.data.get("language"),
+                    channels=call.data.get("channels","both"),
+                    areas=area_ids,
+                )
+                if isinstance(outcome,dict):
+                    total+=int(outcome.get("submitted",0))
+                    errors.extend(outcome.get("errors",[]) or [])
+            result={"submitted":total}
+            if errors:
+                result["errors"]=errors
             return result if call.return_response else None
 
         hass.services.async_register(
