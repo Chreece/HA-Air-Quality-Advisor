@@ -617,6 +617,18 @@ for devices it previously operated. Unowned active outputs are *not* silently
 overwritten. If a relay cannot be verified OFF or an integration becomes
 unresponsive, hardware cutouts remain indispensable.
 
+The v0.6 development controller now **durably records direct ON/positive-percent
+intent before issuing a relay, PWM or proportional actuator command**. Interrupted
+writes, missing/corrupt safety history and failed acknowledgement persistence
+fail closed; the controller does not automatically repeat uncertain ON commands.
+Resuming an interrupted ON requires the exact output to be verified OFF for
+the configured minimum-OFF dwell, followed by startup settling. Changes to the
+assigned actuator, safety timing, device permissions or room removal cause a
+bounded best-effort shutdown of the *previously confirmed owned* output. An
+output moved to another Home Assistant area or claimed by another config entry
+is not touched automatically; manual reconciliation is required. Physical
+cutouts and supervised equipment commissioning remain necessary.
+
 **This v0.6 climate expansion is currently a draft implementation, not a
 released update.** Integration and simulation tests must pass before
 publication, followed by controlled testing with representative actual
