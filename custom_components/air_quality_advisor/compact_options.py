@@ -119,6 +119,8 @@ class CompactOptionsMixin:
             }
         names=_area_aliases(hass,known)
         def usable(value):
+            if isinstance(value,str) and value.strip().casefold()=="none":
+                return False
             parsed=_tokens(value)
             return parsed is not None and (
                 not parsed or all(isinstance(v,str) and v.strip().casefold() in names
@@ -137,20 +139,32 @@ class CompactOptionsMixin:
 
     @staticmethod
     def _room_attribute_options(hass, entity):
-        from .occupancy_policy import _tokens
+        from .occupancy_policy import _tokens, _area_aliases
+        from homeassistant.helpers import area_registry
         state=hass.states.get(entity) if isinstance(entity,str) else None
-        values=[{"value":"__state__","label":"State / Κατάσταση"}]
         if state is None:
-            return values
+            return [{"value":"__state__","label":"State / Κατάσταση"}]
+        registry=area_registry.async_get(hass)
+        known=({area.id for area in registry.async_list_areas()}
+               if hasattr(registry,"async_list_areas") else
+               {entity_area(hass,s.entity_id) for s in hass.states.async_all()
+                if entity_area(hass,s.entity_id)})
+        names=_area_aliases(hass,known)
+        def has_rooms(value):
+            values=_tokens(value)
+            return values is not None and (
+                not values or all(isinstance(v,str) and v.strip().casefold() in names
+                                  for v in values)
+            )
+        values=[]
+        if has_rooms(state.state):
+            values.append({"value":"__state__","label":"State / Κατάσταση"})
         for key,value in state.attributes.items():
             if not isinstance(key,str) or key.startswith("_"):
                 continue
-            if _tokens(value) is not None and (
-                isinstance(value,(list,tuple,dict)) or
-                isinstance(value,str) and (value.strip().startswith(("[","{")) or "," in value)
-            ):
+            if has_rooms(value):
                 values.append({"value":key,"label":key})
-        return values
+        return values or [{"value":"__state__","label":"State / Κατάσταση"}]
 
     async def async_step_general_settings(self, user_input=None):
         """Shared presence and sleep sources, independent of any HVAC device."""
@@ -244,7 +258,12 @@ class CompactOptionsMixin:
                 _select(room_sensors, multi=True),
             _field("general_occupied_rooms_entity", old.get("occupied_rooms_entity")):
                 _select(source_options),
-            _field("general_occupied_rooms_attribute", old.get("occupied_rooms_attribute") or "__state__"):
+            _field("general_occupied_rooms_attribute", (
+                old.get("occupied_rooms_attribute") or "__state__"
+                if any(o["value"]=="__state__" for o in self._room_attribute_options(
+                    self.hass,old.get("occupied_rooms_entity"))) else
+                self._room_attribute_options(self.hass,old.get("occupied_rooms_entity"))[0]["value"]
+            )):
                 _select(self._room_attribute_options(self.hass,old.get("occupied_rooms_entity"))),
             _field("general_home_trackers", old.get("home_trackers", [])):
                 _select(trackers, multi=True),
@@ -252,7 +271,12 @@ class CompactOptionsMixin:
                 _select(["any_home", "all_home"], translation_key="general_home_policy"),
             _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity")):
                 _select(source_options),
-            _field("general_sleep_rooms_attribute", old.get("sleep_rooms_attribute") or "__state__"):
+            _field("general_sleep_rooms_attribute", (
+                old.get("sleep_rooms_attribute") or "__state__"
+                if any(o["value"]=="__state__" for o in self._room_attribute_options(
+                    self.hass,old.get("sleep_rooms_entity"))) else
+                self._room_attribute_options(self.hass,old.get("sleep_rooms_entity"))[0]["value"]
+            )):
                 _select(self._room_attribute_options(self.hass,old.get("sleep_rooms_entity"))),
             _field("general_source_stale_minutes", old.get("source_stale_minutes", 240)):
                 _number(10, 1440),
