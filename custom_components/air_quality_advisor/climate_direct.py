@@ -11,6 +11,7 @@ import asyncio
 import logging
 import math
 import time
+from datetime import datetime
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
@@ -59,12 +60,14 @@ class DirectClimateControl:
         self._active = False
         self._started: float | None = None
         self._last_config: dict[str,dict] = {}
+        self._write_lock = asyncio.Lock()
 
     def _snapshot(self) -> dict:
-        return {"version": 1, "paused": self.paused,
-                "expected": self.expected, "transitions": self.transitions,
-                "energized_since": self.energized_since,
-                "mode_changed": self.mode_changed}
+        return {"version": 1, "paused": dict(self.paused),
+                "expected": {k: dict(v) for k,v in self.expected.items()},
+                "transitions": {k: dict(v) for k,v in self.transitions.items()},
+                "energized_since": dict(self.energized_since),
+                "mode_changed": dict(self.mode_changed)}
 
     def _persist(self) -> None:
         if self._store is not None:
@@ -87,6 +90,16 @@ class DirectClimateControl:
         except Exception:
             _LOGGER.exception("Direct actuator storage unavailable; output writes disabled")
             return
+        if saved is not None and (
+            not isinstance(saved, dict) or saved.get("version") != 1 or
+            any(not isinstance(saved.get(key, {}), dict) for key in (
+                "paused", "expected", "transitions", "energized_since",
+                "mode_changed"
+            ))
+        ):
+            self._active = False
+            self._status("*", "safety_history_unsupported")
+            return
         if isinstance(saved, dict) and saved.get("version") == 1:
             pauses = saved.get("paused", {})
             self.paused = {k: v for k, v in pauses.items()
@@ -108,7 +121,23 @@ class DirectClimateControl:
             if isinstance(changes, dict):
                 self.mode_changed = {k:float(v) for k,v in changes.items()
                                      if isinstance(k,str) and finite(v,0,1e13) is not None}
+            for entity, record in self.expected.items():
+                if (not entity.startswith(("switch.", "number.")) or
+                        record.get("phase", "commanded") not in ("intent", "commanded")):
+                    self._active = False
+                    self._status("*", "safety_history_unsupported")
+                    return
+                if record.get("phase") == "intent":
+                    area = record.get("area")
+                    if not isinstance(area, str) or not area:
+                        self._active = False
+                        self._status("*", "unattributed_direct_write_intent")
+                        return
+                    self.paused[area] = "interrupted_direct_write_requires_manual_reconciliation"
+                    self._status(area, "paused", reason=self.paused[area])
         self._ready = True
+        if any(rec.get("phase") == "intent" for rec in self.expected.values()):
+            self._persist()
 
     async def async_stop(self) -> None:
         # On Home Assistant reload, deenergize outputs owned by this direct
@@ -154,8 +183,10 @@ class DirectClimateControl:
                 return False
             if observed is True or (percentage and observed>0):
                 known=self.expected.get(entity)
-                if not isinstance(known,dict) or known.get("state")!=observed:
-                    _LOGGER.warning("Output %s active but not owned; refusing to overwrite",entity)
+                if (not isinstance(known,dict) or
+                        known.get("phase", "commanded") != "commanded" or
+                        known.get("state") != observed):
+                    _LOGGER.warning("Output %s active but not confirmed owned; refusing to overwrite", entity)
                     return False
                 if not await self._send(
                     area,entity,0.0 if percentage else False,
@@ -185,10 +216,32 @@ class DirectClimateControl:
                     return {"accepted":False,"reason":"unable_to_confirm_output_safe_off"}
             self._pause(area,"user_paused")
         else:
+            # Uncertain ON history must be physically reconciled, not merely
+            # cleared with Resume. Require OFF for the entire original dwell.
+            pending = [entity for entity in self._entities(settings)
+                       if self.expected.get(entity, {}).get("phase") == "intent"]
+            now = self.clock()
+            minimum = finite(settings.get("min_off_s", 180), 60, 7200)
+            for entity in pending:
+                observed = self.hass.states.get(entity)
+                changed = getattr(observed, "last_changed", None)
+                is_off = (finite(observed.state, 0, 100) == 0
+                          if entity.startswith("number.") else
+                          observed.state == "off") if observed is not None else False
+                if (minimum is None or entity_area(self.hass, entity) != area or
+                        not is_off or not isinstance(changed, datetime) or
+                        changed.tzinfo is None or
+                        not 0 <= now - changed.timestamp() or
+                        now - changed.timestamp() < minimum):
+                    return {"accepted": False,
+                            "reason": "verified_output_off_and_full_dwell_required"}
+            for entity in pending:
+                self.expected.pop(entity, None)
+                self.energized_since.pop(entity, None)
+                self.transitions[entity] = {"state": False, "when": now}
             self.paused.pop(area,None)
             self._rooms.pop(area,None)
-            self.expected.pop(area,None)
-            self._started=self.clock()
+            self._started=now
             self._persist()
             self._status(area,"startup_warmup")
         return {"accepted":True,"area":area,"action":action}
@@ -272,37 +325,79 @@ class DirectClimateControl:
 
     async def _send(self, area: str, entity: str, state: bool | float,
                     *, percentage: bool=False, now:float)->bool:
-        domain,service=(("number","set_value") if percentage else
-                        ("switch","turn_on" if state is True else "turn_off"))
-        value={"value":float(state)} if percentage else {}
-        try:
-            if not self.hass.services.has_service(domain,service):
-                raise RuntimeError(f"{domain}.{service} not available")
-            await asyncio.wait_for(self.hass.services.async_call(
-                domain,service,value,target={"entity_id":entity},blocking=True
-            ),timeout=WRITE_TIMEOUT_SECONDS)
-        except asyncio.CancelledError:
-            raise
-        except Exception:
-            _LOGGER.exception("Direct actuator command failed: %s",entity)
-            self._pause(area,"service_failed_or_timeout")
-            return False
-        previous=self.expected.get(entity,{}).get("state")
-        new_active=(state is True) or (percentage and float(state)>0)
-        old_active=(previous is True) or (
-            percentage and isinstance(previous,(int,float)) and previous>0
-        )
-        if new_active:
-            if not old_active:
+        """Durably record ON intent before the first physical command."""
+        domain, service = (("number", "set_value") if percentage else
+                           ("switch", "turn_on" if state is True else "turn_off"))
+        data = {"value": float(state)} if percentage else {}
+        new_active = state is True or (percentage and float(state) > 0)
+        async with self._write_lock:
+            if new_active and (not self._active or not self._ready or
+                               area in self.paused or self._store is None):
+                self._pause(area, "direct_write_not_authorized")
+                return False
+            prior = self.expected.get(entity, {})
+            previous = prior.get("state")
+            old_active = previous is True or (
+                percentage and isinstance(previous, (int,float))
+                and not isinstance(previous, bool) and previous > 0
+            )
+            if new_active:
+                # Without this durable intent an interrupted turn_on can
+                # leave an energized actuator with NO ownership/watchdog
+                # history. Capture a deep snapshot before dispatch.
+                self.expected[entity] = {
+                    "state": state, "when": now, "phase": "intent", "area": area}
+                self.transitions[entity] = {"state": state, "when": now}
+                if not old_active:
+                    self.energized_since[entity] = now
+                try:
+                    await self._store.async_save(self._snapshot())
+                except asyncio.CancelledError:
+                    raise
+                except Exception:
+                    _LOGGER.exception("Cannot store direct ON intent for %s", entity)
+                    self._pause(area, "direct_intent_storage_failed")
+                    return False
+                latest = self._last_config.get(area)
+                if (not self._active or area in self.paused or
+                        not isinstance(latest,dict) or
+                        latest.get("enabled") is not True or
+                        latest.get("allow_actuation") is not True or
+                        latest.get("direct_hardware_confirmed") is not True or
+                        entity not in self._entities(latest) or
+                        entity_area(self.hass,entity)!=area):
+                    self._pause(area, "direct_intent_revoked_before_dispatch")
+                    return False
+            try:
+                if not self.hass.services.has_service(domain,service):
+                    raise RuntimeError(f"{domain}.{service} not available")
+                await asyncio.wait_for(self.hass.services.async_call(
+                    domain,service,data,target={"entity_id":entity},blocking=True
+                ),timeout=WRITE_TIMEOUT_SECONDS)
+            except asyncio.CancelledError:
+                # Persistent intent may have reached equipment; never retry.
+                raise
+            except Exception:
+                _LOGGER.exception("Direct actuator command failed: %s",entity)
+                self._pause(area,"service_failed_or_timeout")
+                return False
+            self.expected[entity] = {
+                "state":state, "when":now, "phase":"commanded", "area":area}
+            if not new_active:
+                self.energized_since.pop(entity,None)
+            elif not old_active:
                 self.energized_since[entity]=now
-        else:
-            self.energized_since.pop(entity,None)
-        self.expected[entity]={"state":state,"when":now}
-        # Command timestamp governs minimum dwell and modulation sample rate;
-        # energized_since governs MAXIMUM continuous runtime independently.
-        self.transitions[entity]={"state":state,"when":now}
-        self._persist()
-        return True
+            self.transitions[entity]={"state":state,"when":now}
+            try:
+                await self._store.async_save(self._snapshot())
+            except asyncio.CancelledError:
+                raise
+            except Exception:
+                if new_active:
+                    self.expected[entity]["phase"]="intent"
+                self._pause(area, "direct_command_history_persist_failed")
+                return False
+            return True
 
     async def _tick(self, area: str, cfg: dict, report: dict, now: float) -> None:
         if not self._active or area in self.paused:
@@ -371,6 +466,10 @@ class DirectClimateControl:
                 observed=state.state=="on"
             measured[e]=observed
             acknowledgement=self.expected.get(e)
+            if (acknowledgement is not None and
+                    acknowledgement.get("phase", "commanded") != "commanded"):
+                self._pause(area, "interrupted_direct_write_requires_manual_reconciliation")
+                return
             if acknowledgement is not None and acknowledgement.get("state") != observed:
                 sent=finite(acknowledgement.get("when"),0,1e13)
                 if sent is not None and 0 <= now-sent < ACK_GRACE_SECONDS:
