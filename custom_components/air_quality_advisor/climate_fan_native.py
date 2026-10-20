@@ -202,6 +202,12 @@ class RunningFanSpeedControl:
         if now - (self._started or now) < STARTUP_WARMUP_S:
             self._status(area,"startup_warmup")
             return
+        stamp=plan.get("air_evidence_at")
+        if stamp is not None:
+            seen=finite(stamp,0,1e13)
+            if seen is None or not 0 <= now-seen <= 120:
+                self._status(area,"air_quality_decision_expired")
+                return
         air=plan.get("air_actions",{})
         if air.get("status")!="advisory":
             self._status(area,"air_quality_policy_missing")
