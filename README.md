@@ -776,3 +776,49 @@ as `climate.*`, and power control cannot be combined with the separate
 native humidity-setpoint driver. The v0.6 feature is still a development
 draft requiring hardware-level testing and must not be treated as a
 certified safety controller.
+
+
+### Heat-only, cool-only and DRY-only climate devices (v0.6 draft)
+
+A device can advertise **only HEAT**, **only COOL** or **only DRY** in Home
+Assistant and still be configured. The climate engine respects actual native
+capabilities. Automatic planning will not attempt to cool with a heat-only
+radiator or heat with a cooling-only AC. For DRY-only climate equipment,
+choose the \`dry\` operating intent without inventing a temperature setpoint
+or a FAN_ONLY capability. Compressor-affecting DRY mode changes remain
+**manual/advisory** until physical commissioning is complete.
+
+### Window ventilation instead of running mechanical climate equipment
+
+When **Window efficiency notifications** is enabled in a climate room, the
+integration can advise opening its existing closed window if credible measured
+outdoor conditions could help with the same goal as currently operating
+heating, cooling or dehumidification. These are conservative suggestions,
+not unconditional claims of equivalent energy savings.
+
+Examples:
+
+- Cooling: the room's air conditioner is actually cooling, outdoor air is
+  measured at least 2°C cooler, and outdoor weather/pollutants are safe.
+- Heating: a heater is operating and outdoor air is at least 2°C warmer and
+  can approach the room's requested heating temperature. A cold outdoors
+  situation never generates a fake warming opportunity.
+- Drying: a verified dehumidifier or AC DRY mode is actively removing
+  moisture, and measured indoor/outdoor temperature and relative humidity
+  show at least a 1.5 g/kg dry-air drying advantage, with reasonable
+  indoor/outdoor temperature difference and a plausible RH reduction.
+
+A high *outdoor relative humidity* alone cannot establish indoor
+dehumidification effectiveness; moisture **mass** is considered. Missing
+sensor data, pollutant warnings, ambiguous weather stations, already-open
+windows or uncertain device operating state suppress advice. For a
+humidity-only room, a measured room temperature is optional for running
+a dedicated dehumidifier but **required** to estimate how much window airing
+could reduce humidity; the advisor never fabricates it.
+
+Announcements use the existing global opt-in channels and Announcement Hub
+room-routing authority. Each climate room explicitly opts into these extra
+messages. A climate-only area can receive a notice for its actual recognized
+window without becoming a new general air-quality monitoring room. The
+integration never automatically opens a window or switches off a running
+heater, air conditioner or dehumidifier to exploit the potential savings.
