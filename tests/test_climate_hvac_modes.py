@@ -71,8 +71,35 @@ def test_hvac_capability_unknown_and_missing_measurement_hold(adapter):
         {"status":"ready","mode":"off","window_safe":True},
         (Reading("sensor.rh","Humidity","humidity",75),))
     t=datetime.now(timezone.utc).timestamp()
-    assert native_air_mode_advice(h,"bedroom",cfg,item,t)["status"]=="native_dry_and_fan_modes_required"
+    assert native_air_mode_advice(h,"bedroom",cfg,item,t)["status"]=="native_dry_mode_required"
     h.states.get("climate.ac").attributes["hvac_modes"]=["off","cool","dry","fan_only"]
     item=room_equipment_plan(h,"bedroom",cfg,
         {"status":"ready","mode":"off","window_safe":True},())
     assert native_air_mode_advice(h,"bedroom",cfg,item,t)["status"]=="humidity_evidence_insufficient"
+
+
+def test_dry_only_climate_does_not_invent_a_fan_mode(adapter):
+    from custom_components.air_quality_advisor.climate_hvac_modes import native_air_mode_advice
+    from custom_components.air_quality_advisor.climate_coordination import room_equipment_plan
+    h=home()
+    dry=h.states.get("climate.ac")
+    dry.state="dry"
+    dry.attributes["hvac_modes"]=["dry"]
+    dry.last_changed=datetime.now(timezone.utc)-timedelta(minutes=40)
+    config_={**config(),"enabled":True}
+    config_.pop("dehumidifier_entity",None)
+    item=room_equipment_plan(h,"bedroom",config_,
+        {"status":"ready","mode":"off","window_safe":True},
+        (Reading("sensor.rh","RH","humidity",56),))
+    result=native_air_mode_advice(
+        h,"bedroom",config_,item,datetime.now(timezone.utc).timestamp())
+    assert result["status"]=="manual_stop_dry_suggested"
+    assert result["recommended_mode"]=="off"
+    assert result["automatic_control"] is False
+    item=room_equipment_plan(h,"bedroom",config_,
+        {"status":"ready","mode":"off","window_safe":True},
+        (Reading("sensor.rh","RH","humidity",76),))
+    result=native_air_mode_advice(h,"bedroom",config_,item,
+        datetime.now(timezone.utc).timestamp())
+    assert result["status"]=="already_in_suitable_mode"
+    assert result["recommended_mode"]=="dry"
