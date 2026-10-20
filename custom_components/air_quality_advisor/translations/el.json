@@ -570,17 +570,17 @@
       },
       "climate_room": {
         "title": "Κλίμα — ελεγκτής, παρουσία και απουσία",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "climate_enabled": "Ενεργοποίηση σχεδίου κλίματος δωματίου",
           "climate_allow_actuation": "Να επιτρέπονται εντολές στους επιλεγμένους ελεγκτές (ξεχωριστές άδειες)",
           "climate_auto_switch_hvac": "Αυτόματο πέρασμα θέρμανσης/ψύξης (ξεχωριστή άδεια)",
           "climate_prefer_native_auto": "Προτίμηση αυτόματης ζώνης θέρμανσης/ψύξης της συσκευής",
           "climate_controller": "έλεγχος",
-          "climate_mode": "Heat, cool, off or automatic selection",
+          "climate_mode": "Λειτουργία: αυτόματη, θέρμανση, ψύξη ή απενεργοποίηση",
           "climate_entity": "πηγή",
           "climate_temperature_entity": "Θερμοκρασία · πηγή",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_hysteresis_c": "Υστέρηση αλλαγής θέρμανσης/ψύξης (°C)"
         },
         "data_description": {
           "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
@@ -596,7 +596,7 @@
       },
       "climate_presence": {
         "title": "Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "climate_occupancy_sensors": "Αισθητήρες παρουσίας αυτού του δωματίου",
           "climate_away_entities": "Άτομα και συσκευές εντοπισμού για σπίτι/απουσία",
@@ -604,7 +604,7 @@
           "climate_unoccupied_delay_minutes": "Χρόνος πριν θεωρηθεί άδειο το δωμάτιο (λεπτά)",
           "climate_occupancy_stale_minutes": "Μέγιστη ηλικία μέτρησης παρουσίας (λεπτά)",
           "climate_away_policy": "Σπίτι",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
+          "climate_manual_profile": "Χειροκίνητη επιλογή προφίλ παρουσίας/απουσίας",
           "climate_sleep_active": "Ύπνος",
           "climate_sleep_schedule_enabled": "Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
           "climate_sleep_start": "Έναρξη ύπνου",
@@ -630,7 +630,7 @@
       },
       "climate_equipment": {
         "title": "Κλίμα — πρόσθετες συσκευές και υγρασία",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "climate_heat_climate_entity": "Ξεχωριστός θερμοστάτης θέρμανσης / καλοριφέρ",
           "climate_cool_climate_entity": "Κλιματιστικό / αντλία θερμότητας για ψύξη",
@@ -690,7 +690,7 @@
       },
       "climate_air_strategy": {
         "title": "Κλίμα — αερισμός και καθαρισμός αέρα",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "climate_fan_speed_auto": "Ρύθμιση ταχύτητας μόνο ήδη ενεργών ανεμιστήρων (ξεχωριστή άδεια)",
           "climate_fan_power_auto": "Αυτόματη ενεργοποίηση/απενεργοποίηση επαληθευμένων ανεμιστήρων αερισμού ή καθαρισμού (ξεχωριστή άδεια)",
@@ -722,12 +722,12 @@
       },
       "climate_profiles": {
         "title": "Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "home_heat": "Σπίτι (°C)",
           "home_cool": "Σπίτι (°C)",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
+          "unoccupied_heat": "Θέρμανση όταν ο χώρος δεν χρησιμοποιείται (°C)",
+          "unoccupied_cool": "Ψύξη όταν ο χώρος δεν χρησιμοποιείται (°C)",
           "away_heat": "Σπίτι (°C)",
           "away_cool": "Σπίτι (°C)",
           "sleep_heat": "Ύπνος (°C)",
@@ -746,22 +746,22 @@
       },
       "climate_actuators": {
         "title": "Άμεσοι ενεργοποιητές — υλικό και όρια ασφαλείας",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές.",
         "data": {
           "direct_hardware_confirmed": "Επιβεβαιώνω ανεξάρτητη προστασία και απουσία συμπιεστή",
           "heat_actuator": "Ενεργοποιητής θέρμανσης",
           "cool_actuator": "Ενεργοποιητής ψύξης",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "min_on_s": "Ελάχιστος χρόνος ενεργοποίησης (δευτερόλεπτα)",
+          "min_off_s": "Ελάχιστος χρόνος απενεργοποίησης (δευτερόλεπτα)",
+          "max_on_s": "Μέγιστος συνεχής χρόνος λειτουργίας (δευτερόλεπτα)",
+          "mode_dwell_s": "Ελάχιστη καθυστέρηση αλλαγής θέρμανσης/ψύξης (δευτερόλεπτα)",
+          "kp": "Αναλογικός συντελεστής PID (Kp)",
+          "ki": "Ολοκληρωτικός συντελεστής PID (Ki)",
+          "kd": "Παράγωγος συντελεστής PID (Kd)",
+          "sample_seconds": "Περίοδος δειγματοληψίας PID (δευτερόλεπτα)",
+          "pwm_period_s": "Περίοδος κύκλου PWM (δευτερόλεπτα)",
+          "max_demand_change": "Μέγιστη μεταβολή ισχύος ανά κύκλο (%)",
+          "min_demand_change": "Ελάχιστη ουσιαστική μεταβολή ισχύος (%)"
         },
         "data_description": {
           "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
