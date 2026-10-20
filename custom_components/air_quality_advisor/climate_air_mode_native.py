@@ -18,6 +18,7 @@ from datetime import datetime
 from typing import Any, Callable
 
 from .climate_coordination import device_inventory, duplicate_owners, room_equipment_plan
+from .climate_entry_ownership import foreign_owner_hold
 from .climate_equipment import humidity_advice
 from .climate_hvac_modes import native_air_mode_advice
 from .discovery import entity_area, reading
@@ -307,6 +308,9 @@ class NativeAirModeControl:
             return "both_dry_and_fan_only_required",None
         if entity in duplicate_owners(self._configured):
             return "duplicate_device_owner",None
+        other_entry=foreign_owner_hold(self.hass,self.entry_id,entity)
+        if other_entry is not None:
+            return other_entry,None
         # Never switch a climate entity while another room controller
         # could simultaneously set its HEAT/COOL target.
         if cfg.get("climate_entity")==entity and not (
