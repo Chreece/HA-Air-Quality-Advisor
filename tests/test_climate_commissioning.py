@@ -125,7 +125,7 @@ def test_commissioning_flags_device_shared_by_separate_entry_without_exposing_id
     hass,cfg=sample()
     foreign=SimpleNamespace(
         entry_id="another-private-config-id",disabled_by=None,
-        data={"climate_rooms":{"bathroom":{"enabled":True,
+        data={"climate_rooms":{"bathroom":{"enabled":True,"allow_actuation":True,
             "dry_climate_entity":"climate.bathroom_ac"}}},
         options={},
     )
