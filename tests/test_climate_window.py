@@ -29,7 +29,9 @@ def home(mode="cool",action="cooling"):
 
 def plan(temperature=27,target=20):
     return {"temperature_c":temperature,"temperature_target_c":target,
-            "away":"home","occupancy":"occupied"}
+            "away":"home","occupancy":"occupied",
+            "humidity_management":{"status":"advisory","action":"dry",
+                                   "measured_rh":75}}
 
 
 def test_cooling_only_device_can_offer_measured_free_cooling(model):
@@ -141,12 +143,16 @@ def test_drying_not_equivalent_when_outdoor_moisture_inadequate_or_heating_loss_
     h,room=home("dry","drying")
     cfg={"enabled":True,"dry_climate_entity":"climate.one_mode"}
     args=dict(hass=h,room=room,settings=cfg,plan=plan(temperature=23),
-              weather=(Weather("weather.home","sunny",15,70),),
+              weather=(Weather("weather.home","sunny",22,75),),
               outdoor=OUTDOOR,outside_safe=True)
     result=model.window_substitution(
-        **{**args,"science":{"moisture":moisture_potential(23,70,15,70)}})
+        **{**args,"science":{"moisture":moisture_potential(23,70,22,75)}})
     assert result["status"] in ("drying_effect_insufficient","measured_outdoor_drying_not_verified")
     cold=model.window_substitution(
         **{**args,"weather":(Weather("weather.home","sunny",1,45),),
            "science":{"moisture":moisture_potential(23,75,1,45)}})
     assert cold["status"]=="excessive_heat_loss_for_drying"
+    missing={**args,"plan":{**plan(23),"humidity_management":{"status":"insufficient_data"}}}
+    assert model.window_substitution(
+        **{**missing,"science":{"moisture":moisture_potential(23,75,14,45)}})
+        ["status"]=="no_verified_drying_demand"
