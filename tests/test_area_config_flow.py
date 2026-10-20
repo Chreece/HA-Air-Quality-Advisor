@@ -1081,3 +1081,45 @@ def test_humidity_power_and_setpoint_cannot_be_enabled_together(monkeypatch,adap
         "climate_humidity_entity":"sensor.living_humidity",
     }))
     assert result["errors"]["base"]=="climate_humidity_power_inputs_missing"
+
+
+def test_dry_only_climate_mode_without_fictitious_temperature_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    dryer=MockState("climate.room_dryer","dry")
+    dryer.attributes.update({"hvac_modes":["dry"],"supported_features":0})
+    h._values[dryer.entity_id]=dryer
+    h._entity_areas[dryer.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,
+        "climate_controller":"device",
+        "climate_mode":"dry",
+        "climate_entity":"climate.room_dryer",
+        "climate_temperature_entity":"none",
+        "climate_allow_actuation":False,
+    }))
+    assert result["step_id"]=="climate_presence"
+    result=asyncio.run(options.async_step_climate_presence({}))
+    assert result["step_id"]=="climate_equipment"
+    result=asyncio.run(options.async_step_climate_equipment({
+        "climate_window_efficiency_notify":True,
+    }))
+    assert result["step_id"]=="climate_profiles"
+    result=asyncio.run(options.async_step_climate_profiles({}))
+    room=result["completed"]["data"]["climate_rooms"]["living"]
+    assert room["mode"]=="dry"
+    assert room["temperature_entity"] is None
+    assert room["window_efficiency_notify"] is True
+
+
+def test_window_substitution_notifications_default_off_for_legacy_climate_rooms(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    asyncio.run(options.async_step_climate_presence({}))
+    result=asyncio.run(options.async_step_climate_profiles({}))
+    cfg=result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg.get("window_efficiency_notify") is not True
