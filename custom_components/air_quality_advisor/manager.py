@@ -44,6 +44,7 @@ from .climate_secondary_native import SecondaryClimateSetpoint
 from .climate_air_actions import air_treatment_plan
 from .climate_hvac_modes import native_air_mode_advice
 from .climate_air_mode_native import NativeAirModeControl
+from .climate_commissioning import report as climate_commissioning_report
 from .climate_window import window_substitution, window_reason
 from .climate_fan_native import RunningFanSpeedControl
 from .climate_fan_power import FanPowerControl
@@ -488,6 +489,16 @@ class AirQualityManager:
             environment.setdefault(area, {})["climate_pid"] = status
         self.plan = replace(self.plan, environment=environment)
         async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    def climate_diagnostics(self, area:str|None=None) -> dict[str,Any]:
+        """Read-only commissioning evidence for the explicitly configured rooms."""
+        configured=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        plans={key:value.get("climate_plan",{})
+               for key,value in self.plan.environment.items()
+               if isinstance(value,dict)}
+        return climate_commissioning_report(
+            self.hass,configured,plans,area=area,
+        )
 
     async def async_climate_control(self, area:str, action:str) -> dict[str, Any]:
         configured=self.settings.get(CONF_CLIMATE_ROOMS,{})
