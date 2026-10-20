@@ -463,6 +463,20 @@ class NativeAirModeControl:
             _LOGGER.exception("Cannot persist native DRY/FAN mode intent in %s",area)
             self._pause(area,"mode_intent_storage_failed")
             return
+        # Storage I/O may suspend this coroutine while a room window
+        # opens, another compressor engages, or the humidity evidence
+        # changes. The durable intent is already saved: re-verify the
+        # specific mode/target immediately before the physical service call.
+        # If evidence changed, preserve the intent as a fail-closed
+        # reconciliation record rather than sending an obsolete command.
+        verified_again,latest=self._current_evidence(
+            area,cfg,plan,self.clock(),
+        )
+        if (verified_again!="ready" or not isinstance(latest,dict) or
+                latest.get("entity_id")!=item["entity_id"] or
+                latest.get("mode")!=item["mode"]):
+            self._pause(area,"mode_intent_aborted_by_live_interlock")
+            return
         try:
             await asyncio.wait_for(
                 self.hass.services.async_call(
