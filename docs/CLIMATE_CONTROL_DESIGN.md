@@ -623,3 +623,22 @@ not prevent the remaining listeners from being removed.
 These are software safety and lifecycle invariants backed by simulated
 multi-entry and failure-injection regressions. They do not certify physical
 electrical or compressor protections or replace on-site commissioning.
+
+
+### Exact room-scoped service routing across historical entries
+
+The original and public \`climate_control\` and \`pid_control\` service
+aliases accept a Home Assistant room area ID, not an arbitrary output
+target. When multiple entries are installed, the integration now chooses
+the one **enabled** room that owns that control section, or fails closed
+with \`ambiguous_room_across_config_entries\` /
+\`room_not_configured_or_disabled\`. It never controls the first loaded
+entry merely because that was its installation order, and never
+broadcasts a control request to every manager. The announcement
+routing contract remains unchanged and belongs to Announcement Hub.
+
+Cross-entry hardware exclusivity counts only devices authorized for
+actuation (or enabled legacy PID targets), not passive/advisory room
+monitoring. A newly authorized competing entry is detected again at
+write time; even a previously approved cached room plan does not
+grant another controller access to the same physical output.
