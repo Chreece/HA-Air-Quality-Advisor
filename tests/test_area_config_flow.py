@@ -1171,3 +1171,88 @@ def test_environment_only_native_fan_power_consent_and_mutual_exclusion(monkeypa
     assert cfg["controller"]=="environment"
     assert cfg["fan_power_auto"] is True and cfg["fan_speed_auto"] is False
     assert cfg["fan_power_hardware_confirmed"] is True
+
+
+
+def test_commissioned_dry_fan_setup_requires_exact_modes_sensor_and_extra_consent(
+    monkeypatch,adapter,
+):
+    options=_make_options(monkeypatch,adapter)
+    hass=options.hass
+    sensor=MockState("sensor.living_humidity",76,device_class="humidity",unit="%")
+    ac=MockState("climate.living_dry","fan_only")
+    ac.attributes.update({"hvac_modes":["off","dry","fan_only"],
+                          "supported_features":0,"hvac_action":"fan"})
+    for item in (sensor,ac):
+        hass._values[item.entity_id]=item
+        hass._entity_areas[item.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment","climate_temperature_entity":"none",
+    }))
+    assert result["step_id"]=="climate_presence"
+    asyncio.run(options.async_step_climate_presence({}))
+    request={
+        "climate_dry_climate_entity":ac.entity_id,
+        "climate_humidity_entity":sensor.entity_id,
+        "climate_dry_fan_mode_auto":True,
+    }
+    result=asyncio.run(options.async_step_climate_equipment(request))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
+    # A configured DRY-only model does not invent FAN_ONLY support.
+    ac.attributes["hvac_modes"]=["dry"]
+    result=asyncio.run(options.async_step_climate_equipment({
+        **request,"climate_dry_fan_hardware_confirmed":True,
+    }))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
+    ac.attributes["hvac_modes"]=["off","dry","fan_only"]
+    result=asyncio.run(options.async_step_climate_equipment({
+        **request,"climate_dry_fan_hardware_confirmed":True,
+        "climate_dry_fan_mode_dwell_s":1800,
+        "climate_dry_fan_windowless_confirmed":True,
+    }))
+    assert result["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    final=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert final["controller"]=="environment"
+    assert final["climate_entity"] is None
+    assert final["dry_climate_entity"]==ac.entity_id
+    assert final["humidity_entity"]==sensor.entity_id
+    assert final["dry_fan_mode_auto"] is True
+    assert final["dry_fan_hardware_confirmed"] is True
+    assert final["dry_fan_mode_dwell_s"]==1800
+
+
+def test_dry_fan_mode_consent_does_not_override_separate_humidity_controller(
+    monkeypatch,adapter,
+):
+    options=_make_options(monkeypatch,adapter)
+    hass=options.hass
+    for item in (
+        MockState("sensor.living_humidity",76,device_class="humidity",unit="%"),
+        MockState("climate.living_dry","fan_only"),
+        MockState("humidifier.living_dry","off",device_class="dehumidifier"),
+    ):
+        hass._values[item.entity_id]=item
+        hass._entity_areas[item.entity_id]="living"
+    hass.states.get("climate.living_dry").attributes.update({
+        "hvac_modes":["off","dry","fan_only"],"hvac_action":"fan",
+    })
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment","climate_temperature_entity":"none",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    result=asyncio.run(options.async_step_climate_equipment({
+        "climate_dry_fan_mode_auto":True,
+        "climate_dry_fan_hardware_confirmed":True,
+        "climate_dry_climate_entity":"climate.living_dry",
+        "climate_humidity_entity":"sensor.living_humidity",
+        "climate_dehumidifier_entity":"humidifier.living_dry",
+        "climate_humidity_setpoint_auto":True,
+    }))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
