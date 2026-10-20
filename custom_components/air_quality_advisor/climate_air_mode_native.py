@@ -57,6 +57,7 @@ class NativeAirModeControl:
         # cannot stand in for manufacturer-proven compressor protections.
         self._dry_idle_since:dict[str,float]={}
         self._configured:dict={}
+        self._planned:dict={}
         self._tasks:dict[str,asyncio.Task]={}
         self._store=None
         self._started:float|None=None
@@ -213,6 +214,7 @@ class NativeAirModeControl:
         if not self._active or not self._ready or not isinstance(configs,dict):
             return
         self._configured=configs
+        self._planned=plans if isinstance(plans,dict) else {}
         now=self.clock()
         for area,config in configs.items():
             if not isinstance(area,str) or not isinstance(config,dict):
@@ -226,8 +228,11 @@ class NativeAirModeControl:
             task=self._tasks.get(area)
             if task is not None and not task.done():
                 continue
+            # Pass an immutable-at-dispatch snapshot of the room's options.
+            # If an options reload or new plan arrives during storage I/O,
+            # the live pre-service gate detects that change and aborts.
             task=self.hass.async_create_task(
-                self._apply(area,config,plans.get(area,{}),now)
+                self._apply(area,dict(config),self._planned.get(area,{}),now)
             )
             self._tasks[area]=task
             def done(future:asyncio.Task,key:str=area)->None:
@@ -243,6 +248,21 @@ class NativeAirModeControl:
 
     def _current_evidence(self,area:str,cfg:dict,plan:dict,now:float)->tuple[str,dict|None]:
         """Rebuild current RH evidence and device inventory, never trust old plan."""
+        if not self._active or not self._ready or area in self.paused:
+            return "controller_not_active_or_paused",None
+        if not isinstance(cfg,dict) or self._configured.get(area)!=cfg:
+            return "room_permissions_or_equipment_changed",None
+        if not isinstance(self._planned,dict) or self._planned.get(area) is not plan:
+            return "room_plan_superseded",None
+        if not (
+            cfg.get("enabled") is True and
+            cfg.get("allow_actuation") is True and
+            cfg.get("dry_fan_mode_auto") is True and
+            cfg.get("dry_fan_hardware_confirmed") is True
+        ):
+            return "native_mode_permission_revoked",None
+        if allowed_dwell(cfg) is None:
+            return "native_mode_dwell_policy_changed",None
         if not isinstance(plan,dict):
             return "plan_missing",None
         if plan.get("equipment_plan",{}).get("status")!="ready":
