@@ -281,3 +281,50 @@ def test_native_refuses_armed_opposing_secondary_climate(native):
         assert len(hass.services.calls)==1
         await c.async_stop()
     asyncio.run(scenario())
+
+
+def test_unified_room_gate_rechecks_opposing_ac_after_plan_was_approved(native):
+    async def scenario():
+        from custom_components.air_quality_advisor.climate_arbitration import (
+            room_coordination,
+        )
+        from test_discovery import MockState
+        hass,_=fake_home()
+        primary=hass.states.get("climate.room_thermostat")
+        primary.attributes["hvac_modes"]=["off","heat","cool"]
+        ac=MockState("climate.room_ac","off")
+        ac.attributes.update({
+            "hvac_modes":["off","cool"],"supported_features":1,
+            "hvac_action":"idle",
+        })
+        hass._values[ac.entity_id]=ac
+        hass._entity_areas[ac.entity_id]="living"
+        cfg=settings(cool_climate_entity=ac.entity_id)
+        plan_=report()
+        plan_["equipment_plan"]={
+            "status":"ready",
+            "thermal":{"status":"selected","entity_id":primary.entity_id,
+                       "role":"climate_entity","mode":"heat"},
+            "moisture":{"status":"within_band"},
+        }
+        clock=[1000.]
+        controller=native.NativeClimateControl(
+            hass,"coordinated",clock=lambda:clock[0],
+        )
+        await controller.async_start()
+        clock[0]=1400
+        plan_["coordination"]=room_coordination(
+            hass,"living",cfg,plan_,now=1400,
+        )
+        assert plan_["coordination"]["channels"]["thermal"]["status"]=="eligible"
+        ac.state="cool"  # AC armed AFTER room planning but before command.
+        await scheduled(controller,cfg,plan_)
+        assert controller.statuses["living"]=={
+            "status":"coordination_hold","reason":"opposing_native_mode_armed",
+        }
+        assert not hass.services.calls
+        ac.state="off"
+        await scheduled(controller,cfg,plan_)
+        assert hass.services.calls[0][1]=="set_temperature"
+        await controller.async_stop()
+    asyncio.run(scenario())
