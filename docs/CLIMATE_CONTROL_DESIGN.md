@@ -333,3 +333,35 @@ separate room-specific notice without entering regular air-quality totals.
 Existing 90-second stability, reminder/cooldown and channel permissions are
 unchanged. Announcement Hub alone owns occupancy filtering, device selection,
 fallback, TTS, text notification and AI processing while it is running.
+
+
+## Native fan power (experimental draft, independently attested)
+
+The new \`climate_fan_power.py\` is deliberately separate from the already-on
+fan speed supervisor. Fan power requires \`fan_power_auto\`, a second
+\`fan_power_hardware_confirmed\` safety attestation, a supported exact HA
+\`fan.*\` entity belonging to the room, verified sensor inputs and configurable
+minimum ON, minimum OFF and maximum continuous powered intervals. Fan power
+and speed supervision are **mutually exclusive** for a room.
+
+Extraction requires a current qualifying room CO₂ source (with explicit
+NDIR verification), unblocked outdoor ventilation, a real measured outdoor
+pollutant source and closed room window contacts. Purification requires
+indoor PM2.5 measurement and explicit sensor verification; it remains
+available when outdoor air is unsuitable for window ventilation. The
+120-second air-policy freshness limit applies at the final write.
+
+Manual ON fans are never commandeered or silently switched OFF.
+Only controller-owned outputs may be turned OFF after minimum-on dwell or
+when an acknowledged maximum-on watchdog expires. Native OFF dwell and HA
+\`last_changed\` both protect restarts after a manual toggle. Failed service
+calls, acknowledgments, user override, hardware unavailability or restart
+with previously-owned ON power latch a persistent pause. Explicit OFF
+reconciliation and manual resume are required after an active restart.
+
+This driver issues ONLY exact-target \`fan.turn_on\` and \`fan.turn_off\`.
+It does not operate generic switches, heat pumps, ACs, compressor modes,
+fan presets, speed, room-wide broadcasts or motorized windows. Exhaust
+systems may have special backdraft/fire/pressure requirements; simulated
+tests are not hardware certification. Keep the feature in the v0.6 draft
+until tested on supported real devices.
