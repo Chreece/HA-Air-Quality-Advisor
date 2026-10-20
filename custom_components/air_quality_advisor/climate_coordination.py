@@ -186,6 +186,13 @@ def room_equipment_plan(hass: Any, area: str, config: dict,
     """Plan *exclusive* thermal and moisture intentions without device writes."""
     inventory = device_inventory(hass, area, config)
     chosen = assigned_entities(config)
+    if config.get("controller") in ("on_off","pwm","proportional"):
+        chosen.update(
+            entity for entity in (
+                config.get("heat_actuator"),config.get("cool_actuator"),
+            )
+            if isinstance(entity,str) and entity
+        )
     collision = sorted(chosen.intersection(duplicates or {}))
     if collision:
         return {"status": "duplicate_equipment_owner", "entities": collision,
