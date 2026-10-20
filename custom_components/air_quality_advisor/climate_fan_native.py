@@ -157,6 +157,9 @@ class RunningFanSpeedControl:
         for area,cfg in configs.items():
             if not isinstance(cfg,dict) or not isinstance(area,str):
                 continue
+            if cfg.get("fan_power_auto") is True:
+                self._status(area,"conflicting_fan_power_owner")
+                continue
             if not (cfg.get("enabled") is True and
                     cfg.get("allow_actuation") is True and
                     cfg.get("fan_speed_auto") is True):
@@ -197,7 +200,8 @@ class RunningFanSpeedControl:
         if (not self._active or not self._ready or area in self.paused or
                 cfg.get("enabled") is not True or
                 cfg.get("allow_actuation") is not True or
-                cfg.get("fan_speed_auto") is not True):
+                cfg.get("fan_speed_auto") is not True or
+                cfg.get("fan_power_auto") is True):
             return
         if now - (self._started or now) < STARTUP_WARMUP_S:
             self._status(area,"startup_warmup")
