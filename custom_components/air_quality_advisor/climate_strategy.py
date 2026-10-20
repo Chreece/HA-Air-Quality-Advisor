@@ -196,7 +196,11 @@ def policy(settings:dict, *, temp_c:float|None,
         # and a cooling-only AC remains usable for cool. Opposite demand
         # simply needs different equipment; do not broadcast an invalid
         # mode or turn the valid existing appliance off.
-        status = "hold" if mode_choice=="auto" else "unsupported_mode"
+        # A range-only climate with native auto explicitly disabled is
+        # genuinely unsupported as a single-setpoint target, unlike a
+        # valid heat-only or cool-only thermostat lacking the opposite mode.
+        single_mode = bool(capability.get("heat") or capability.get("cool"))
+        status = "hold" if mode_choice=="auto" and single_mode else "unsupported_mode"
         return Output(status,name,None,None,
                       "no_configured_"+desired+"_capability",strategy)
     heat_target,cool_target=band.heat_c,band.cool_c
