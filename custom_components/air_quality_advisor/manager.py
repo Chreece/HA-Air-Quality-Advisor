@@ -6,7 +6,7 @@ import asyncio
 import logging
 from dataclasses import replace
 from datetime import timedelta
-from time import monotonic
+from time import monotonic, time
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -274,6 +274,9 @@ class AirQualityManager:
                     outside_safe=base_plan.outdoor_safe,
                     science_profile=profile,settings=settings,
                 )
+                # Fast fan polling may reuse this plan; record when its
+                # outdoor-air and sensor evidence was actually evaluated.
+                state["air_evidence_at"]=time()
                 if isinstance(settings,dict) and settings.get("enabled"):
                     equipment=state.get("equipment_plan",{})
                     thermal=equipment.get("thermal",{})
