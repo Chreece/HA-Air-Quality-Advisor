@@ -134,6 +134,11 @@ class NativeClimateControl:
                 (pid_rooms or {}).get(area,{}).get("enabled")):
                 self.statuses[area]={"status":"conflicting_controller"}
                 continue
+            if settings.get("controller")=="environment":
+                # Environmental-only rooms use independent humidity/fan
+                # drivers; no primary thermostat exists or should be commanded.
+                self.statuses[area]={"status":"advisory_only"}
+                continue
             if settings.get("controller")!="device":
                 self.statuses[area]={"status":"unsupported_control_method"}
                 continue
