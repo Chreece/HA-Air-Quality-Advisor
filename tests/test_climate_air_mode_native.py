@@ -402,8 +402,9 @@ def test_failed_write_ahead_storage_forbids_any_hvac_command(
         # physical mode can be reconciled, so no immediate second try.
         assert (await driver.command("bedroom","resume"))["accepted"] is False
         assert not hass.services.calls
-        with pytest.raises(OSError):
-            await driver.async_stop()
+        # Storage failure is already latched; stopping this controller
+        # must not block shutdown of every other HA device controller.
+        await driver.async_stop()
     asyncio.run(case())
 
 
