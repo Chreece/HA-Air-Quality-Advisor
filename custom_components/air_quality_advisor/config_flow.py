@@ -886,7 +886,9 @@ class _FlowMixin:
         climate_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
                          for s in self.hass.states.async_all("climate")
                          if entity_area(self.hass,s.entity_id)==area]
-        temp_choices=indoor_temperature_choices(self.hass,area,draft.get("temperature_entity"))
+        temp_choices=[
+            {"value":"none","label":"No temperature sensor (environmental-only)"}
+        ]+indoor_temperature_choices(self.hass,area,draft.get("temperature_entity"))
         occupant_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
             for s in self.hass.states.async_all("binary_sensor")
             if entity_area(self.hass,s.entity_id)==area
@@ -902,7 +904,9 @@ class _FlowMixin:
                       "controller":user_input.get("climate_controller",draft.get("controller","device")),
                       "mode":user_input.get("climate_mode",draft.get("mode","auto")),
                       "climate_entity":user_input.get("climate_entity",draft.get("climate_entity")),
-                      "temperature_entity":user_input.get("climate_temperature_entity",draft.get("temperature_entity")),
+                      "temperature_entity":(None if user_input.get(
+                          "climate_temperature_entity",draft.get("temperature_entity"))=="none"
+                          else user_input.get("climate_temperature_entity",draft.get("temperature_entity"))),
                       "occupancy_sensors":user_input.get("climate_occupancy_sensors",draft.get("occupancy_sensors",[])),
                       "away_entities":user_input.get("climate_away_entities",draft.get("away_entities",[])),
                       "hysteresis_c":user_input.get("climate_hysteresis_c",draft.get("hysteresis_c",0.7)),
