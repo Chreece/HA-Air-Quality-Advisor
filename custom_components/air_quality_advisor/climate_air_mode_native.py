@@ -130,12 +130,32 @@ class NativeAirModeControl:
         if action=="pause":
             self._pause(area,"user_paused")
         else:
-            # Explicit resume transfers control after a human intervention;
-            # no write is allowed until warmup and a full mode dwell.
+            # A previous DRY command may have reached the compressor even if
+            # Home Assistant did not acknowledge it. Never discard physical
+            # mode history merely because the user pressed Resume.
+            config=self._configured.get(area,{})
+            entity=config.get("dry_climate_entity") if isinstance(config,dict) else None
+            dwell=allowed_dwell(config) if isinstance(config,dict) else None
+            state=self.hass.states.get(entity) if isinstance(entity,str) else None
+            changed=getattr(state,"last_changed",None)
+            now=self.clock()
+            latest=self.last_write.get(area,0)
+            if not (dwell is not None and
+                    isinstance(entity,str) and entity_area(self.hass,entity)==area and
+                    state is not None and state.state=="fan_only" and
+                    state.attributes.get("hvac_action") in ("fan","idle") and
+                    isinstance(changed,datetime) and changed.tzinfo is not None and
+                    0<=now-changed.timestamp() and now-changed.timestamp()>=dwell and
+                    0<=now-latest and now-latest>=dwell):
+                return {
+                    "accepted":False,"reason":"manual_fan_only_reconciliation_and_full_dwell_required",
+                }
+            # Only a physically confirmed, stable FAN_ONLY state can retire
+            # an unacknowledged/failed previous intent. Preserve last_write:
+            # it remains an additional anti-short-cycle bound after resume.
             self.paused.pop(area,None)
             self.expected.pop(area,None)
-            self.last_write.pop(area,None)
-            self._started=self.clock()
+            self._started=now
             self._save()
             self._status(area,"startup_warmup")
         return {"accepted":True,"area":area,"action":action}
@@ -316,9 +336,17 @@ class NativeAirModeControl:
         if expected is not None:
             written=finite(expected.get("when"),0,1e13)
             target=expected.get("mode")
+            phase=expected.get("phase","commanded")
             if (written is None or written>now or
-                expected.get("entity_id")!=entity or target not in VALID_MODES):
+                expected.get("entity_id")!=entity or target not in VALID_MODES or
+                phase not in ("intent","commanded")):
                 self._pause(area,"persistent_mode_ack_history_invalid")
+                return
+            # A durable pre-write intent may have reached the physical AC
+            # before the process died. Never guess whether it took effect,
+            # even when Home Assistant currently reports the target state.
+            if phase=="intent":
+                self._pause(area,"interrupted_mode_write_requires_manual_reconciliation")
                 return
             if state is None or state.state!=target:
                 if now-written<ACK_GRACE_S:
@@ -352,6 +380,26 @@ class NativeAirModeControl:
         if not self.hass.services.has_service("climate","set_hvac_mode"):
             self._status(area,"native_mode_service_missing")
             return
+        # Durable write-ahead: a successful service may reach the actual
+        # HVAC unit just before Home Assistant or the integration crashes.
+        # Persist the intent *before* the first physical mode command.
+        # On an interrupted write this record forces human reconciliation
+        # instead of automatically retrying a potentially running compressor.
+        self.expected[area]={
+            "entity_id":item["entity_id"],"mode":item["mode"],
+            "when":now,"phase":"intent",
+        }
+        self.last_write[area]=now
+        try:
+            if self._store is None:
+                raise RuntimeError("Persistent mode history unavailable")
+            await self._store.async_save(self._snapshot())
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            _LOGGER.exception("Cannot persist native DRY/FAN mode intent in %s",area)
+            self._pause(area,"mode_intent_storage_failed")
+            return
         try:
             await asyncio.wait_for(
                 self.hass.services.async_call(
@@ -361,14 +409,22 @@ class NativeAirModeControl:
                 ),SERVICE_TIMEOUT_S,
             )
         except asyncio.CancelledError:
+            # The durable 'intent' is deliberately left in place; it may
+            # already have reached the device.
             raise
         except Exception:
             _LOGGER.exception("Native DRY/FAN mode command failure in %s",area)
             self._pause(area,"native_mode_service_failure")
             return
-        self.expected[area]={"entity_id":item["entity_id"],
-                             "mode":item["mode"],"when":now}
-        self.last_write[area]=now
-        self._save()
+        self.expected[area]["phase"]="commanded"
+        try:
+            await self._store.async_save(self._snapshot())
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            # Its prior durable intent still fails closed on restart.
+            _LOGGER.exception("Native DRY/FAN mode acknowledgement history not saved")
+            self._pause(area,"mode_command_history_persist_failed")
+            return
         self._status(area,"native_mode_commanded",
                      entity_id=item["entity_id"],mode=item["mode"])
