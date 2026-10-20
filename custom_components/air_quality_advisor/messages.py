@@ -21,6 +21,10 @@ TEXT = {
         "unavailable_weather": "weather information is unavailable",
         "weather_condition": "weather conditions: {value}",
         "inside_passive_cooling": "outdoor air could cool the room ({value} cooler)",
+        "title_climate_window": "Window airing may reduce mechanical conditioning",
+        "climate_window_cool": "cooling equipment is operating, but outside air is {value} cooler; briefly opening a window could reduce mechanical cooling",
+        "climate_window_heat": "heating equipment is operating, but outside air is {value} warmer and can approach the heating target; briefly opening a window could help",
+        "climate_window_dry": "drying equipment is operating, but outdoor air carries {value} less water vapour per kilogram of dry air; briefly opening a window could reduce humidity",
         "weather_cold": "low outside temperature ({value})",
         "weather_hot": "high outside temperature ({value})",
         "weather_humid": "very humid outside ({value})",
@@ -41,6 +45,10 @@ TEXT = {
         "unavailable_weather": "Wetterdaten nicht verfügbar",
         "weather_condition": "Wetterbedingungen: {value}",
         "inside_passive_cooling": "Außenluft könnte den Raum kühlen ({value} kühler)",
+        "title_climate_window": "Fensterlüftung könnte die Klimatisierung entlasten",
+        "climate_window_cool": "die Kühlung läuft, aber die Außenluft ist {value} kühler; kurzes Fensterlüften könnte die Kühlung entlasten",
+        "climate_window_heat": "die Heizung läuft, aber die Außenluft ist {value} wärmer und kann dem Heizsollwert nahekommen; kurzes Lüften könnte helfen",
+        "climate_window_dry": "die Entfeuchtung läuft, aber die Außenluft enthält {value} weniger Wasserdampf je Kilogramm trockener Luft; kurzes Lüften könnte Feuchtigkeit abführen",
         "weather_cold": "niedrige Außentemperatur ({value})",
         "weather_hot": "hohe Außentemperatur ({value})",
         "weather_humid": "hohe Luftfeuchte draußen ({value})",
@@ -61,6 +69,10 @@ TEXT = {
         "unavailable_weather": "μη διαθέσιμα δεδομένα καιρού",
         "weather_condition": "καιρικές συνθήκες: {value}",
         "inside_passive_cooling": "ο εξωτερικός αέρας μπορεί να δροσίσει ({value} ψυχρότερος)",
+        "title_climate_window": "Το άνοιγμα παραθύρου μπορεί να μειώσει τη χρήση κλιματισμού",
+        "climate_window_cool": "λειτουργεί ψύξη, αλλά ο εξωτερικός αέρας είναι {value} ψυχρότερος· ο σύντομος αερισμός μπορεί να βοηθήσει",
+        "climate_window_heat": "λειτουργεί θέρμανση, αλλά ο εξωτερικός αέρας είναι {value} θερμότερος και πλησιάζει τον επιθυμητό στόχο· ο σύντομος αερισμός μπορεί να βοηθήσει",
+        "climate_window_dry": "λειτουργεί αφύγρανση, αλλά ο εξωτερικός αέρας έχει {value} λιγότερους υδρατμούς ανά κιλό ξηρού αέρα· ο σύντομος αερισμός μπορεί να απομακρύνει υγρασία",
         "weather_cold": "χαμηλή εξωτερική θερμοκρασία ({value})",
         "weather_hot": "υψηλή εξωτερική θερμοκρασία ({value})",
         "weather_humid": "υψηλή εξωτερική υγρασία ({value})",
@@ -163,7 +175,9 @@ def explain(reason: Reason, language: str) -> str:
         )
     template = dictionary.get(reason.code)
     if template is None:
-        if reason.code.startswith("inside_"):
+        if reason.code.startswith("climate_window_"):
+            template = TEXT["en"].get(reason.code, "{name}: {value}")
+        elif reason.code.startswith("inside_"):
             template = dictionary["inside"]
         elif reason.code.startswith("outside_"):
             template = dictionary["outside"]
@@ -178,4 +192,8 @@ def announcement(rec: Recommendation, language: str) -> tuple[str, str]:
     # A few causes are sufficient for TTS; all causes remain in sensor attributes.
     reasons = "; ".join(explain(reason, language) for reason in rec.reasons[:3])
     title = t[f"title_{rec.action}"]
+    if rec.action=="open" and any(
+        item.code.startswith("climate_window_") for item in rec.reasons
+    ):
+        title = t.get("title_climate_window", TEXT["en"]["title_climate_window"])
     return title, t[rec.action].format(windows=windows, area=rec.area_name, reasons=reasons)
