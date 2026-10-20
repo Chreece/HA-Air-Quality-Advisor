@@ -100,3 +100,18 @@ climate_control:
           options:
             - pause
             - resume
+
+climate_diagnostics:
+  name: Read-only climate commissioning report
+  description: >-
+    Return the selected Home Assistant climate room's reported native modes,
+    sensor freshness, area/device ownership, and safety opt-ins. Omit area
+    to inspect configured rooms. Does not call any hardware services or
+    establish physical compressor/electrical safety certification.
+  fields:
+    area:
+      name: Home Assistant room (optional)
+      description: Exact configured area ID; empty shows all configured rooms.
+      selector:
+        area:
+          multiple: false
