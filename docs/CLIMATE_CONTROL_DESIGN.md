@@ -241,3 +241,40 @@ even when their current `hvac_action` was previously idle.
 These checks are a final conservative gate; they do not start, switch off or
 reconfigure another appliance. Hardware safety and commissioning remain
 required, and native DRY/FAN_ONLY automation is still advisory-only.
+
+
+## Experimental automatic dedicated humidifier/dehumidifier power
+
+The `climate_humidity_power.py` driver is independently opted in and **OFF
+by default**. It supports only explicitly selected and area-verified
+`humidifier.*` or `dehumidifier.*` entities, not generic switches or
+`climate.*` AC/heat-pump compressors. The hardware must have its own tank-full,
+thermal, frost and, where applicable, compressor anti-short-cycle protections.
+
+The room may use the new `environment` controller method to supervise
+humidity or fans **without an unrelated temperature sensor or thermostat**.
+Humidity actuator permission remains a separate explicit consent.
+
+Before an ON command the driver requires a fresh exact room RH sensor, stable
+windows (or another explicit permission for a windowless room), an exclusive
+selected device, matching Home Assistant `device_class`, a native humidity
+setpoint preconfigured within ±2 RH points of the room threshold, confirmed
+device setpoint range and resolution, no active opposing humidifier, and no
+selected AC already reporting DRY operation. It observes OFF continuously for
+the configured minimum (default 600 s) before energizing. It issues only
+single-entity `humidifier.turn_on` and `humidifier.turn_off` actions.
+
+ON-to-OFF operation observes minimum runtime (default 600 s), Schmitt
+humidity hysteresis, a maximum continuous controller-owned runtime (default
+7200 s), missing humidity/window evidence and explicit pause. A successful
+command must be acknowledged before another write. Unexpected manual power
+changes, service failures and missing acknowledgements persist a pause.
+After a restart, every persisted active output requires the user to reconcile
+the physical OFF state; the controller does not silently reclaim or stop an
+unverified appliance. Disabling the integration or reloading Home Assistant
+does not magically provide hardware shutdown protection.
+
+The **power and native humidity-setpoint drivers cannot simultaneously own
+one device**. A new dedicated-device power permission never authorizes
+fan power, AC DRY/FAN_ONLY changes, heating equipment or power-relay PWM.
+Real hardware commissioning remains mandatory before releasing this feature.
