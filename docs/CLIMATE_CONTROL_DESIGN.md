@@ -585,3 +585,41 @@ automatic retry on subsequent startup.
 These software checks are exercised with injected Home Assistant state
 changes during asynchronous storage I/O and legacy entry teardown. Real
 compressor/electrical safety is not measured or certified by the report.
+
+
+## Cross-config-entry control ownership and fail-safe unload
+
+Home Assistant may preserve legacy or independently created
+\`air_quality_advisor\` config entries. A device shared between **different
+config entries** is a separate safety risk from an ordinary within-room
+equipment alias. \`climate_entry_ownership.py\` now inspects only
+explicitly selected room output entity IDs of all active integration entries,
+including legacy PID climate targets and slow-load direct actuators. It does
+not inspect secrets, credentials, MAC addresses or device serials.
+
+Two independent entries selecting one climate/fan/humidity/relay output fail
+closed in **both directions**. The room equipment planner flags the
+collision, the read-only \`climate_diagnostics\` service reports a generic
+shared-equipment blocker without exposing the other entry's ID, and every
+native/secondary/PID, humidity and fan command path verifies *live foreign
+ownership* again at service-write time. The commissioned native DRY/FAN_ONLY
+path has the same interlock after asynchronous write-ahead storage.
+An unavailable or failing Home Assistant config-entry registry also blocks
+fresh commands; it never turns into assumed exclusive ownership.
+
+An already controller-owned output may still complete its separately
+validated bounded OFF/reconciliation path when a foreign owner is discovered.
+The cross-entry hold is not an excuse to leave previously owned electrical
+outputs energized indefinitely. The implementation preserves current
+config-entry identity, existing domains, device roles, and room options.
+
+The HA manager's asynchronous unload now attempts **all** PID, native HVAC,
+direct actuator, humidity, fan and commissioned-mode controller stops even
+when an independent Store flush fails. Announcement timer cancellation,
+registry/bus unsubscribes and manager task cancellation continue in a
+\`finally\` cleanup path. Failure of a single unsubscribe is logged and does
+not prevent the remaining listeners from being removed.
+
+These are software safety and lifecycle invariants backed by simulated
+multi-entry and failure-injection regressions. They do not certify physical
+electrical or compressor protections or replace on-site commissioning.
