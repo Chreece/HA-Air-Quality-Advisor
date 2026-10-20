@@ -13,6 +13,7 @@ from typing import Any, Callable
 
 from .climate_coordination import duplicate_owners, device_inventory
 from .climate_equipment import humidity_advice
+from .climate_arbitration import new_command_gate
 from .discovery import entity_area, reading
 from .pid_math import finite
 
@@ -279,6 +280,12 @@ class HumiditySetpointControl:
         status,target=_bounded_setpoint(attrs,observed,desired)
         if status!="command":
             self._status(area,status,entity_id=entity)
+            return
+        conflict=new_command_gate(
+            self.hass,area,cfg,plan,"humidity",entity,now=now,
+        )
+        if conflict is not None:
+            self._status(area,"coordination_hold",reason=conflict)
             return
         if not self.hass.services.has_service("humidifier","set_humidity"):
             self._status(area, "set_humidity_service_missing")
