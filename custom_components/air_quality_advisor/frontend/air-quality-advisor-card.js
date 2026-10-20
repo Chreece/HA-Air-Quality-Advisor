@@ -303,7 +303,7 @@
       primary:'Primary HVAC',secondary:'Secondary HVAC',humidity:'Humidity control',humidityPower:'Humidity power',environmentActive:'Environment control active',
       selectedDevice:'Selected equipment',moistureAction:'Humidity decision',
       currentHumidity:'Measured RH',sourceStatus:'Sensor evidence',
-      fan:'Fan-speed control',extraction:'Ventilation/extraction',
+      fan:'Fan-speed control',fanPower:'Fan power',extraction:'Ventilation/extraction',
       filtration:'Particle filtration',treatment:'Air treatment',
       manualDry:'Manual AC mode suggestion (no automatic switch)',
       windowHelp:'Open-window opportunity (advisory only)'},
@@ -315,7 +315,7 @@
       primary:'Hauptthermostat',secondary:'Zweites Klimagerät',humidity:'Luftfeuchteregelung',humidityPower:'Be-/Entfeuchter schalten',environmentActive:'Umweltregelung aktiv',
       selectedDevice:'Ausgewähltes Gerät',moistureAction:'Feuchteentscheidung',
       currentHumidity:'Gemessene rF',sourceStatus:'Sensornachweis',
-      fan:'Lüfter-Drehzahlregelung',extraction:'Lüftung / Abluft',
+      fan:'Lüfter-Drehzahlregelung',fanPower:'Lüfter Ein/Aus',extraction:'Lüftung / Abluft',
       filtration:'Partikelfiltration',treatment:'Luftbehandlung',
       manualDry:'Empfohlener Klimamodus (nur manuell, kein Umschalten)',
       windowHelp:'Fensterlüften als Alternative (nur Hinweis)'},
@@ -327,7 +327,7 @@
       primary:'Κύριος θερμοστάτης',secondary:'Δεύτερη συσκευή κλίματος',humidity:'Ρύθμιση υγρασίας',humidityPower:'Έλεγχος ισχύος υγρασίας',environmentActive:'Ενεργή διαχείριση περιβάλλοντος',
       selectedDevice:'Επιλεγμένη συσκευή',moistureAction:'Απόφαση υγρασίας',
       currentHumidity:'Μετρημένη υγρασία',sourceStatus:'Ποιότητα μετρήσεων',
-      fan:'Ρύθμιση ταχύτητας ανεμιστήρων',extraction:'Εξαερισμός / απαγωγή',
+      fan:'Ρύθμιση ταχύτητας ανεμιστήρων',fanPower:'Ισχύς ανεμιστήρων',extraction:'Εξαερισμός / απαγωγή',
       filtration:'Φιλτράρισμα σωματιδίων',treatment:'Διαχείριση αέρα',
       manualDry:'Πρόταση χειροκίνητης λειτουργίας A/C (χωρίς αυτόματη αλλαγή)',
       windowHelp:'Πιθανή εξοικονόμηση με άνοιγμα παραθύρου (μόνο συμβουλή)'},
@@ -797,18 +797,22 @@
       const moisture=p.humidity_actuation || {};
       const power=p.humidity_power_actuation || {};
       const fan=p.fan_actuation || {};
+      const fanPower=p.fan_power_actuation || {};
       const controllers=[
         {label:l.primary, status:primary.status || 'advisory_only'},
         {label:l.secondary, status:secondary.status || 'advisory_only'},
         {label:l.humidity, status:moisture.status || 'advisory_only'},
         {label:l.humidityPower, status:power.status || 'advisory_only'},
         {label:l.fan, status:fan.status || 'advisory_only'},
+        {label:l.fanPower, status:fanPower.status || 'advisory_only'},
       ];
       const working=['setpoint_commanded','native_range_commanded',
         'at_setpoint','native_range_at_setpoint','holding','commanded',
         'modulating','mode_commanded','target_commanded',
         'fan_speed_increased','at_target_speed',
         'power_command_sent','owned_running','power_off_acknowledged',
+        'fan_power_commanded','owned_fan_running','fan_power_off_acknowledged',
+        'minimum_fan_on_hold',
         'minimum_on_hold_before_safe_off'];
       const active=controllers.some((part)=>working.includes(part.status));
       const enabled=controllers.filter((part)=>part.status!=='advisory_only' &&
