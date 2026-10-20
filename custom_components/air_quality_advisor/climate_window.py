@@ -156,3 +156,24 @@ def window_substitution(
             "effect": effect, "active_device": device, "evidence": evidence,
             "reason": "measured_outdoor_air_may_reduce_mechanical_conditioning",
             "note": "Opening a window is a manual, conditional opportunity; do not automatically turn off HVAC equipment."}
+
+
+def window_reason(opportunity: dict):
+    """Build stable, localized reason codes; keep numbers out of dedup keys."""
+    from .logic import Reason
+
+    effect = opportunity.get("effect")
+    data = opportunity.get("evidence", {})
+    if effect in ("heat", "cool"):
+        value = _number(data.get("temperature_difference_c"), 0, 50)
+        unit = "°C"
+    elif effect == "dry":
+        value = _number(data.get("humidity_ratio_advantage_g_kg"), 0, 30)
+        unit = "g/kg"
+    else:
+        raise ValueError("Unsupported window opportunity")
+    if value is None:
+        raise ValueError("Window opportunity must provide physical evidence")
+    return Reason("climate_window_" + effect,
+                  str(opportunity.get("active_device") or ""),
+                  f"{value:g} {unit}")
