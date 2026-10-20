@@ -492,3 +492,106 @@ def test_direct_noncompressor_heat_off_holds_when_opposing_ac_arms(runtime):
         assert hass.services.calls[0][:2]==("switch","turn_on")
         await controller.async_stop()
     asyncio.run(case())
+
+
+def test_direct_output_rejects_corrupt_or_future_safety_history(runtime):
+    async def case():
+        original={"version":999,"expected":{"switch.living_heat":{
+            "state":True,"when":4000}}}
+        MemoryStore.payload=original
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"future",clock=lambda:clock[0])
+        await driver.async_start()
+        assert driver._ready is False
+        assert driver.statuses["*"]["state"]=="safety_history_unsupported"
+        clock[0]=4000.
+        await advance(driver,clock,settings(),planned())
+        assert not hass.services.calls
+        await driver.async_stop()
+        assert MemoryStore.payload is original
+    asyncio.run(case())
+
+
+def test_direct_output_requires_durable_intent_before_energizing(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"no_store",clock=lambda:clock[0])
+        await driver.async_start()
+        async def no_disk(data):
+            raise OSError("Simulated persistent storage fault")
+        driver._store.async_save=no_disk
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert not hass.services.calls
+        assert driver.paused["living"]=="direct_intent_storage_failed"
+        assert driver.expected["switch.living_heat"]["phase"]=="intent"
+        await driver.async_stop()
+        assert hass.states.get("switch.living_heat").state=="off"
+    asyncio.run(case())
+
+
+def test_direct_on_ack_storage_failure_requires_manual_off_across_restart(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"interrupted",clock=lambda:clock[0])
+        await driver.async_start()
+        save=driver._store.async_save
+        calls=[0]
+        async def lose_second(data):
+            calls[0]+=1
+            if calls[0]==2:
+                raise OSError("Simulated crash after physical ON")
+            await save(data)
+        driver._store.async_save=lose_second
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        assert driver.paused["living"]=="direct_command_history_persist_failed"
+        assert MemoryStore.payload["expected"]["switch.living_heat"]["phase"]=="intent"
+        # The new process sees the original write-ahead intent, never a
+        # fabricated confirmed ON ownership record.
+        driver._active=False
+        next_driver=runtime.DirectClimateControl(hass,"interrupted",clock=lambda:clock[0])
+        await next_driver.async_start()
+        assert next_driver.paused["living"]==(
+            "interrupted_direct_write_requires_manual_reconciliation"
+        )
+        clock[0]=3000.
+        await advance(next_driver,clock,settings(),planned())
+        assert len(hass.services.calls)==1  # no retry, no new ON/OFF
+        result=await next_driver.command("living","resume",{"living":settings()})
+        assert not result["accepted"]  # the physical relay is still ON
+        from datetime import datetime,timezone
+        output=hass.states.get("switch.living_heat")
+        output.state="off"
+        output.last_changed=datetime.fromtimestamp(2600,timezone.utc)
+        result=await next_driver.command("living","resume",{"living":settings()})
+        assert result["accepted"] is True
+        assert "switch.living_heat" not in next_driver.expected
+        assert next_driver._started==3000
+        await next_driver.async_stop()
+    asyncio.run(case())
+
+
+def test_direct_rechecks_revoked_actuation_after_persisting_intent(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"revoked",clock=lambda:clock[0])
+        await driver.async_start()
+        save=driver._store.async_save
+        async def reconfigure_mid_store(data):
+            # Simulate a live options update during asynchronous Store I/O.
+            driver._last_config["living"]["allow_actuation"]=False
+            await save(data)
+        driver._store.async_save=reconfigure_mid_store
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert hass.services.calls==[]
+        assert driver.paused["living"]=="direct_intent_revoked_before_dispatch"
+        assert MemoryStore.payload["expected"]["switch.living_heat"]["phase"]=="intent"
+        await driver.async_stop()
+    asyncio.run(case())
