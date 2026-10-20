@@ -278,3 +278,58 @@ The **power and native humidity-setpoint drivers cannot simultaneously own
 one device**. A new dedicated-device power permission never authorizes
 fan power, AC DRY/FAN_ONLY changes, heating equipment or power-relay PWM.
 Real hardware commissioning remains mandatory before releasing this feature.
+
+
+## Single-purpose heat, cool and dry climate devices
+
+Devices are classified by actual \`hvac_modes\`, not brand names. A heater
+exposing only \`heat\` remains fully supported for valid heating requests;
+an AC exposing only \`cool\` remains fully supported for valid cooling
+requests. If automatic temperature planning detects demand for a missing
+opposite mode, it holds that demand instead of sending an unsupported command
+or turning off the only supported device.
+
+A \`climate.*\` unit with only \`dry\` may be configured with the explicit
+DRY-only mode; it does not require a temperature setpoint or nonexistent
+\`fan_only\` mode. The native DRY pathway is informational only because
+switching a compressor into DRY requires equipment-specific anti-short-cycle,
+defrost and recovery validation. When the humidity is back within bounds,
+DRY-only units recommend stopping the mode manually rather than fabricating
+\`fan_only\` availability.
+
+## Ventilation as a measured alternative to running equipment
+
+\`climate_window.py\` evaluates an **advisory**, not an actuator instruction.
+Before suggesting opening a window it requires all selected closed room window
+contacts, unblocked outdoor air/weather, fresh and unambiguous outdoor
+temperature from ONE weather provider, present outdoor pollutant measurements,
+verified SAME-room climate device identity, and operating evidence: native
+\`hvac_action=heating/cooling/drying\` (with the corresponding mode) or an
+actually-ON dedicated dehumidifier. Idle units are not considered in use.
+The integration does not silently reclassify an AQI scale.
+
+A cooling alternative requires outdoor air at least 2°C below measured room
+temperature. A warming alternative requires outside air at least 2°C warmer
+AND at or above the selected heating target (within 0.25°C), rather than
+pretending marginally warmer outside air can meet an unmet heat demand.
+Dehumidifier/DRY alternatives require the room genuinely needs drying,
+a humidity-ratio advantage of at least 1.5 g/kg dry air, the predicted
+outdoor-air RH at room temperature below the room's humidity upper limit,
+and no extreme (>12°C) temperature drop suggesting excessive heating cost.
+These are conservative proposal gates, NOT an equivalence to AC or rated
+dehumidifier CADR/drying capacity and NOT an energy-savings guarantee.
+
+Additional protection: stale/unavailable outdoor pollutant sensors, weather
+warnings, pollen blockers, unknown/open windows, uncertain humidity readings,
+simultaneous incompatible equipment demands or known away occupancy suppress
+the suggestion. Windows are never opened or operated automatically, and
+running HVAC is never shut off automatically just because airing may help.
+
+**Routing:** The optional per-room \`window_efficiency_notify\` toggle is OFF
+for existing configurations, preserving delivery preferences. For monitored
+rooms the new cause is attached to the existing window recommendation with
+pollutant/mold reasons first. Explicitly opted-in climate-only rooms create a
+separate room-specific notice without entering regular air-quality totals.
+Existing 90-second stability, reminder/cooldown and channel permissions are
+unchanged. Announcement Hub alone owns occupancy filtering, device selection,
+fallback, TTS, text notification and AI processing while it is running.
