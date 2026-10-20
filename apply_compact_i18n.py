@@ -491,8 +491,8 @@ def apply_compact_i18n(root: Path) -> None:
                 value:choices.get(value) or (
                     f"{vocab['automatic']} · {vocab['control']}" if value=="auto" else
                     f"{vocab['sleep']}" if value=="sleep" else
-                    f"{vocab['temperature']} + " if value=="heat" else
-                    f"{vocab['temperature']} − " if value=="cool" else
+                    f"{vocab['temperature']} +" if value=="heat" else
+                    f"{vocab['temperature']} −" if value=="cool" else
                     f"{vocab['humidity']} · {vocab['control']}" if value=="dry" else
                     f"{vocab['off']}" if value=="off" else
                     f"{vocab['presence']} · {vocab['settings']}" if value in
