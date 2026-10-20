@@ -320,6 +320,45 @@ def apply_compact_i18n(root: Path) -> None:
         else:
             steps["general_settings"]["data"]["general_source_stale_minutes"]=f"{vocab['source']} · max (min)"
             steps["general_settings"]["data_description"]["general_source_stale_minutes"]=f"{vocab['source']} · {vocab['sleep']} / {vocab['presence']} · max 240 min. {vocab['invalid']} · {vocab['off']}."
+        # Existing room forms have more detailed device/PID options than the
+        # legacy translations provided. Cover remaining untranslated labels
+        # and descriptions instead of leaving English on Greek/other UIs.
+        if lang=="el":
+            precise={
+                "climate_mode":"Λειτουργία: αυτόματη, θέρμανση, ψύξη ή απενεργοποίηση",
+                "climate_hysteresis_c":"Υστέρηση αλλαγής θέρμανσης/ψύξης (°C)",
+                "climate_manual_profile":"Χειροκίνητη επιλογή προφίλ παρουσίας/απουσίας",
+                "unoccupied_heat":"Θέρμανση όταν ο χώρος δεν χρησιμοποιείται (°C)",
+                "unoccupied_cool":"Ψύξη όταν ο χώρος δεν χρησιμοποιείται (°C)",
+                "min_on_s":"Ελάχιστος χρόνος ενεργοποίησης (δευτερόλεπτα)",
+                "min_off_s":"Ελάχιστος χρόνος απενεργοποίησης (δευτερόλεπτα)",
+                "max_on_s":"Μέγιστος συνεχής χρόνος λειτουργίας (δευτερόλεπτα)",
+                "mode_dwell_s":"Ελάχιστη καθυστέρηση αλλαγής θέρμανσης/ψύξης (δευτερόλεπτα)",
+                "kp":"Αναλογικός συντελεστής PID (Kp)",
+                "ki":"Ολοκληρωτικός συντελεστής PID (Ki)",
+                "kd":"Παράγωγος συντελεστής PID (Kd)",
+                "sample_seconds":"Περίοδος δειγματοληψίας PID (δευτερόλεπτα)",
+                "pwm_period_s":"Περίοδος κύκλου PWM (δευτερόλεπτα)",
+                "max_demand_change":"Μέγιστη μεταβολή ισχύος ανά κύκλο (%)",
+                "min_demand_change":"Ελάχιστη ουσιαστική μεταβολή ισχύος (%)",
+            }
+            for section in ("climate_room","climate_presence","climate_profiles","climate_actuators"):
+                step=steps.get(section,{})
+                if isinstance(step.get("data"),dict):
+                    for field,label in precise.items():
+                        if field in step["data"]:
+                            step["data"][field]=label
+            for section in ("climate_room","climate_presence","climate_equipment",
+                            "climate_air_strategy","climate_actuators","climate_profiles"):
+                step=steps.get(section,{})
+                if isinstance(step,dict):
+                    step["description"]="Ρύθμισε μόνο τον επιλεγμένο χώρο. Έλεγξε τις πραγματικές δυνατότητες κάθε συσκευής, την παρουσία και τα δεδομένα αισθητήρων. Ο αυτόματος έλεγχος απαιτεί ξεχωριστή έγκριση· άγνωστες ενδείξεις παγώνουν τις εντολές."
+        elif lang!="en":
+            for section in ("climate_room","climate_presence","climate_equipment",
+                            "climate_air_strategy","climate_actuators","climate_profiles"):
+                step=steps.get(section,{})
+                if isinstance(step,dict):
+                    step["description"]=f"{vocab['area']} · {vocab['settings']} · {vocab['devices']} · {vocab['control']}. {vocab['presence']} · {vocab['sensor']} · {vocab['required']}."
         # The older climate generator still supplies English fallback names for
         # less-common per-room options. Replace those with localized labels
         # across every supported language rather than translating only menus.
