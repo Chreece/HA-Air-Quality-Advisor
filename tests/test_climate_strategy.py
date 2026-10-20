@@ -39,7 +39,7 @@ def test_policy_device_is_conservative_and_capability_gated():
     assert policy(CFG,temp_c=23,capability=DEVICE,at_home="home",occupied="unoccupied").profile=="unoccupied"
     assert policy(CFG,temp_c=18,capability=DEVICE,at_home="away",occupied="occupied").profile=="away"
     assert policy(CFG,temp_c=19,capability=DEVICE,at_home="home",occupied="occupied",window_safe=False).state=="hold"
-    assert policy(CFG,temp_c=27,capability={**DEVICE,"cool":False},at_home="home",occupied="occupied").state=="unsupported_mode"
+    assert policy(CFG,temp_c=27,capability={**DEVICE,"cool":False},at_home="home",occupied="occupied").state=="hold"
     assert policy({**CFG,"controller":"pwm"},temp_c=19,capability=DEVICE,at_home="home",occupied="occupied").state=="unsupported_device"
     assert policy({**CFG,"controller":"setpoint_pid","native_pid":True},temp_c=19,capability=DEVICE,at_home="home",occupied="occupied").state=="conflicting_controllers"
 def test_comfort_ranges_not_a_universal_medical_target():
@@ -81,3 +81,31 @@ def test_native_heat_cool_range_uses_two_device_targets_not_external_pid():
                       "prefer_native_auto":False},
                      temp_c=19,capability=caps,at_home="home",occupied="occupied")
     assert no_native.state=="unsupported_mode"
+
+
+def test_one_mode_heat_only_cool_only_and_dry_only_are_first_class():
+    heat={"kind":"climate","heat":True,"cool":False,"dry":False,
+          "setpoint":True,"modes":["heat"]}
+    cool={"kind":"climate","heat":False,"cool":True,"dry":False,
+          "setpoint":True,"modes":["cool"]}
+    dryer={"kind":"climate","heat":False,"cool":False,"dry":True,
+           "setpoint":False,"modes":["dry"]}
+    base={"enabled":True,"controller":"device","mode":"auto"}
+    cold=policy(base,temp_c=18,capability=heat,at_home="home",occupied="occupied")
+    assert cold.state=="ready" and cold.desired_hvac_mode=="heat"
+    hot=policy(base,temp_c=28,capability=heat,at_home="home",occupied="occupied")
+    assert hot.state=="hold" and "no_configured_cool" in hot.reason
+    hot=policy(base,temp_c=28,capability=cool,at_home="home",occupied="occupied")
+    assert hot.state=="ready" and hot.desired_hvac_mode=="cool"
+    cold=policy(base,temp_c=18,capability=cool,at_home="home",occupied="occupied")
+    assert cold.state=="hold" and "no_configured_heat" in cold.reason
+    only_dry=policy({**base,"mode":"dry"},temp_c=None,
+                    capability=dryer,at_home="home",occupied="occupied")
+    assert only_dry.state=="advisory"
+    assert only_dry.desired_hvac_mode=="dry"
+    assert only_dry.temperature_c is None
+    assert policy({**base,"mode":"dry"},temp_c=None,capability=heat,
+                  at_home="home",occupied="occupied").state=="unsupported_mode"
+    assert policy({**base,"mode":"dry","controller":"environment"},
+                  temp_c=None,capability=dryer,
+                  at_home="home",occupied="occupied").state=="advisory"
