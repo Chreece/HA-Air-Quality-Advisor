@@ -463,3 +463,55 @@ Simulated regression tests cover room deletion, options edits, invalid
 persisted records, setup failure, service registration and unload. These
 are preflight software checks; no physical operating interval or hardware
 safety certification is inferred from them.
+
+
+## Commissioned native DRY/FAN_ONLY transitions (software implementation)
+
+The controller \`climate_air_mode_native.py\` is now present and wired to
+the regular per-room planning, Home Assistant option flow and climate
+pause/resume service. It is **disabled by default**. Device-specific hardware
+testing and explicit operator confirmation are mandatory before activation.
+
+This driver is separate from the older \`climate_hvac_modes.py\` advisor,
+which is always side-effect-free. The advisor now feeds the actual room plan
+and Lovelace interface, even when automatic mode switching is disabled.
+
+When both \`dry_fan_mode_auto\` and \`dry_fan_hardware_confirmed\` are
+explicitly selected, the controller can request only exact-target
+\`climate.set_hvac_mode\` transitions between existing \`dry\` and
+\`fan_only\` modes for **one selected, already-running, same-room** AC.
+The HA entity must publish both modes. A DRY-only unit remains fully
+recognized for monitoring/advice but is **never** automatically switched
+to a fictional FAN_ONLY mode or OFF.
+
+Before issuing a command, the controller must verify:
+- Same-room \`dry_climate_entity\`, fresh exact humidity sensor, and
+  current confirmed closed window contacts (or separate windowless consent).
+- No room cross-ownership, competing humidifier/dehumidifier, unverified
+  native HVAC activity, or other armed cooling/heating/drying equipment.
+- No independent humidity setpoint/power owner on the same room.
+- Controller method \`environment\`, or a \`device\` configured for
+  manual/advisory \`dry\` only; it cannot fight the primary temperature PID.
+- Explicit compatible \`hvac_action\`: FAN_ONLY must report actual
+  \`fan\`/\`idle\`. When humidity recovers, active compressor drying must
+  first become \`idle\` before requesting FAN_ONLY.
+- A verified Home Assistant \`last_changed\` timestamp and at least
+  30 minutes of native mode stability, plus a bounded extra configured
+  dwell between integration-originated changes.
+- Valid independent hardware compressor/defrost/electrical protections,
+  user consent, and functioning \`climate.set_hvac_mode\` service.
+
+It **never** sends \`climate.turn_on\`, \`climate.turn_off\`, generic
+switch commands, area broadcasts, HEAT/COOL/AUTO transitions or unsupported
+mode values. Every successful request is persisted and must be acknowledged.
+Unexpected manual changes, failed service calls or missing acknowledgements
+latch a pause. After Home Assistant restarts, a five-minute warmup and
+persistent mode history gate all new commands.
+
+This is a **software implementation awaiting hardware commissioning**:
+clicking a confirmation checkbox is not manufacturer certification, nor does
+the integration directly measure compressor current, defrost state or actual
+minimum off time. Do not merge or publish the experimental feature until
+representative units and shared outdoor-unit safety are verified.
+
+Reference API contract: https://www.home-assistant.io/actions/climate.set_hvac_mode/
