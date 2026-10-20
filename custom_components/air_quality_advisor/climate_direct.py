@@ -61,6 +61,8 @@ class DirectClimateControl:
         self._started: float | None = None
         self._last_config: dict[str,dict] = {}
         self._last_plans: dict[str,dict] = {}
+        self._retired_config: dict[str,dict] = {}
+        self._retiring: dict[str,asyncio.Task] = {}
         self._write_lock = asyncio.Lock()
 
     def _snapshot(self) -> dict:
@@ -150,8 +152,15 @@ class DirectClimateControl:
         if running:
             await asyncio.gather(*running, return_exceptions=True)
         self._tasks.clear()
+        # Do not abandon a scheduled safe-off when Home Assistant unloads
+        # during an options change or room removal.
+        if self._retiring:
+            await asyncio.gather(*tuple(self._retiring.values()),
+                                 return_exceptions=True)
+        self._retiring.clear()
         if self._ready:
-            for area,settings in self._last_config.items():
+            for area,settings in {**self._last_config,
+                                  **self._retired_config}.items():
                 if (not isinstance(settings,dict) or
                         not settings.get("direct_hardware_confirmed") or
                         not settings.get("allow_actuation")):
@@ -173,6 +182,13 @@ class DirectClimateControl:
         """Deenergize only outputs this controller is known to own."""
         percentage=settings.get("controller")=="proportional"
         for entity in self._entities(settings):
+            from .climate_entry_ownership import foreign_owner_hold
+            # The old room's recorded ownership is not permission to change
+            # an output moved to another HA area or claimed by another entry.
+            if (entity_area(self.hass,entity)!=area or
+                    foreign_owner_hold(self.hass,self.entry_id,entity) is not None):
+                _LOGGER.warning("Retired output %s changed HA ownership; manual reconciliation required",entity)
+                return False
             state=self.hass.states.get(entity)
             if state is None or str(state.state).lower() in ("unknown","unavailable"):
                 _LOGGER.warning("Could not confirm output OFF: %s state unavailable",entity)
@@ -248,6 +264,50 @@ class DirectClimateControl:
         return {"accepted":True,"area":area,"action":action}
 
     @staticmethod
+    def _hardware_signature(settings: dict) -> tuple:
+        """A live room edit cannot relax the original safety policy."""
+        return tuple(settings.get(key) for key in (
+            "enabled", "allow_actuation", "direct_hardware_confirmed",
+            "controller", "heat_actuator", "cool_actuator",
+            "temperature_entity", "min_on_s", "min_off_s", "max_on_s",
+            "mode_dwell_s", "pwm_period_s",
+        ))
+
+    def _retire_room(self, area: str, previous: dict) -> None:
+        if area in self._retiring and not self._retiring[area].done():
+            return
+        # Cancel any in-flight ON task first. A write that was already
+        # dispatched leaves a durable intent and will NOT be treated as
+        # confirmed ownership merely because the desired state matches.
+        running = self._tasks.pop(area, None)
+        if running is not None and not running.done():
+            running.cancel()
+        self._retired_config[area] = dict(previous)
+
+        async def retire() -> None:
+            if running is not None:
+                await asyncio.gather(running, return_exceptions=True)
+            if not self._ready:
+                self._pause(area, "retired_output_storage_unavailable")
+                return
+            safe = await self._safe_off_owned(area, previous, now=self.clock())
+            self._pause(area, "room_output_configuration_removed_or_changed"
+                        if safe else "retired_output_safe_off_unconfirmed")
+
+        task = self.hass.async_create_task(retire())
+        self._retiring[area] = task
+        def done(future: asyncio.Task) -> None:
+            if self._retiring.get(area) is future:
+                self._retiring.pop(area,None)
+            if not future.cancelled():
+                try:
+                    future.result()
+                except Exception:
+                    _LOGGER.exception("Unable to retire owned output in %s",area)
+                    self._pause(area,"retirement_controller_exception")
+        task.add_done_callback(done)
+
+    @staticmethod
     def _entities(settings: dict) -> list[str]:
         heat=settings.get("heat_actuator")
         cool=settings.get("cool_actuator")
@@ -272,12 +332,18 @@ class DirectClimateControl:
                               for t in v.get("climate_entities",[]) if isinstance(t,str)}
         now = self.clock()
         self._last_plans = plans if isinstance(plans,dict) else {}
+        previous_config = self._last_config
         self._last_config={
             area:dict(settings) for area,settings in config.items()
             if isinstance(area,str) and isinstance(settings,dict)
             and settings.get("enabled")
             and settings.get("controller") in ("on_off","pwm","proportional")
         }
+        for area, previous in previous_config.items():
+            current = self._last_config.get(area)
+            if (self._hardware_signature(previous) !=
+                    self._hardware_signature(current or {})):
+                self._retire_room(area,previous)
         for area, raw in config.items():
             if not isinstance(raw,dict) or not raw.get("enabled"):
                 continue
@@ -292,6 +358,9 @@ class DirectClimateControl:
                 continue
             if area in self.paused:
                 self._status(area,"paused",reason=self.paused[area])
+                continue
+            if area in self._retiring and not self._retiring[area].done():
+                self._status(area,"retiring_previous_output")
                 continue
             entities=self._entities(raw)
             if (pid_rooms or {}).get(area,{}).get("enabled"):
