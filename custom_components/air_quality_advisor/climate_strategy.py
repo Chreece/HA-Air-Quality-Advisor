@@ -151,8 +151,12 @@ def policy(settings:dict, *, temp_c:float|None,
     if not window_safe:
         return Output("hold",name,None,None,"open_or_unknown_window","none")
     strategy=settings.get("controller","device")
-    if strategy not in ("device","setpoint_pid","on_off","pwm","proportional"):
+    if strategy not in ("device","environment","setpoint_pid","on_off","pwm","proportional"):
         return Output("invalid_config",name,None,None,"unknown_strategy","none")
+    if strategy=="environment":
+        # Environmental sensors and humidifier/fan actions need no thermostat.
+        # Separate drivers retain their own explicit actuation permissions.
+        return Output("advisory",name,None,None,"environment_only_no_hvac","environment")
     if strategy in ("on_off","pwm","proportional"):
         # Switch relays and proportional number controls are distinct drivers;
         # neither one can be inferred from a climate.* entity name.
