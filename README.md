@@ -857,13 +857,13 @@ They demonstrate a humidity-only room, a cooling room, central room priorities
 and independently guarded fan/dehumidifier status.
 
 <p align="center">
-  <img src=".github/assets/screenshots/dashboard-climate-coordination.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-climate-coordination.png"
        alt="Actual Home Environment Manager card with simulated bedroom cooling and dehumidifier controls, coordinated priorities and safety holds"
        width="850">
 </p>
 
 <p align="center">
-  <img src=".github/assets/screenshots/dashboard-climate-coordination-mobile.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
        alt="Actual Greek dark-theme climate room card, simulated dehumidification status and room priority"
        width="360">
 </p>
