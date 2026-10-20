@@ -108,20 +108,18 @@ def cross_entry_collisions(hass:Any, current_entry_id:str,
                            rooms:Mapping) -> dict[str,list[str]]:
     """Collision records compatible with the room equipment planner."""
     other=other_entry_output_owners(hass,current_entry_id)
+    own={
+        entity for room in rooms.values()
+        if isinstance(room,Mapping)
+        and room.get("enabled") is True
+        and room.get("allow_actuation") is True
+        for entity in active_output_entities(room)
+    }
     if other is None:
         return {
             entity:["other_config_entries_unverifiable"]
-            for room in rooms.values()
-            if isinstance(room,Mapping) and room.get("enabled") is True
-        and room.get("allow_actuation") is True
-            and room.get("allow_actuation") is True
-            for entity in active_output_entities(room)
+            for entity in sorted(own)
         }
-    own={
-        entity for room in rooms.values()
-        if isinstance(room,Mapping) and room.get("enabled") is True
-        for entity in active_output_entities(room)
-    }
     return {entity:sorted(other[entity])
             for entity in sorted(own)
             if entity in other}
