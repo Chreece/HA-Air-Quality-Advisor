@@ -263,17 +263,18 @@ class FanPowerControl:
         roles=[role for role in FAN_ROLES if isinstance(cfg.get(role),str)]
         devices=[cfg[role] for role in roles]
         duplicates=duplicate_owners(self._configured)
-        if len(devices)!=len(set(devices)) or any(e in duplicates for e in devices):
-            self._status(area,"duplicate_fan_owner")
-            return
-        # Existing previously-owned outputs are visited even if settings were
-        # removed, but may not be reenergized if configuration is missing.
+        # Reconcile equipment we actually own before any new-ownership
+        # checks. A duplicate configuration must not bypass the bounded
+        # OFF/reconciliation path for a previously commanded output.
         active_owned=[(e,r) for e,r in self.owned.items() if r.get("area")==area]
         for entity,record in active_owned:
             await self._owned_tick(area,cfg,plan,entity,record,now,
                                    on_min,max_on)
         if area in self.paused:
             self._status(area,"paused",reason=self.paused[area])
+            return
+        if len(devices)!=len(set(devices)) or any(e in duplicates for e in devices):
+            self._status(area,"duplicate_fan_owner")
             return
         if not (cfg.get("enabled") is True and cfg.get("allow_actuation") is True
                 and cfg.get("fan_power_auto") is True
