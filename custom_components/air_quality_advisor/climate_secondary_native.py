@@ -250,7 +250,7 @@ class SecondaryClimateSetpoint:
             return
         entity, mode, role = selected
         conflict=new_command_gate(
-            self.hass,area,cfg,plan,"thermal",entity,now=now,
+            self.hass,area,cfg,plan,"thermal",entity,now=now,entry_id=self.entry_id,
         )
         if conflict is not None:
             self._status(area,"coordination_hold",reason=conflict)
