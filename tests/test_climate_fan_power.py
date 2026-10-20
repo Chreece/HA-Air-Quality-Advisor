@@ -297,3 +297,90 @@ def test_live_room_gate_prevents_unsafe_extractor_start_after_window_change(driv
         assert h.services.calls[0][:2]==("fan","turn_on")
         await manager.async_stop()
     asyncio.run(scenario())
+
+
+
+def test_owned_fan_survives_room_removal_and_preserves_power_dwell(driver):
+    async def scenario():
+        hass=home()
+        clock=[1000.]
+        control=driver.FanPowerControl(
+            hass,"room-removal",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        original=cfg(fan_power_min_on_s=900,
+                     fan_power_min_off_s=300,
+                     fan_power_max_on_s=3000)
+        clock[0]=1400
+        await tick(control,original,plan(clock[0]))
+        clock[0]=1750
+        await tick(control,original,plan(clock[0]))
+        target="fan.bedroom_extractor"
+        assert control.owned[target]["min_on_s"]==900
+        assert [e[1] for e in hass.services.calls]==["turn_on"]
+        clock[0]=2400
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert [e[1] for e in hass.services.calls]==["turn_on"]
+        assert control.statuses["bedroom"]["status"]=="minimum_fan_on_hold"
+        clock[0]=2651
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert [e[1] for e in hass.services.calls]==["turn_on","turn_off"]
+        clock[0]=2700
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert target not in control.owned
+        await control.async_stop()
+    asyncio.run(scenario())
+
+
+def test_fan_options_change_does_not_shorten_active_minimum_on(driver):
+    async def scenario():
+        hass=home()
+        clock=[1000.]
+        control=driver.FanPowerControl(
+            hass,"on-dwell-edited",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        original=cfg(fan_power_min_on_s=900,
+                     fan_power_max_on_s=3000)
+        clock[0]=1400
+        await tick(control,original,plan(clock[0]))
+        clock[0]=1750
+        await tick(control,original,plan(clock[0]))
+        changed=cfg(fan_power_min_on_s=120,fan_power_max_on_s=900,
+                    enabled=False)
+        clock[0]=2400
+        await tick(control,changed,plan(clock[0]))
+        assert [e[1] for e in hass.services.calls]==["turn_on"]
+        clock[0]=2651
+        await tick(control,changed,plan(clock[0]))
+        assert [e[1] for e in hass.services.calls]==["turn_on","turn_off"]
+        await control.async_stop()
+    asyncio.run(scenario())
+
+
+def test_fan_legacy_active_record_without_dwell_requires_manual_reconciliation(driver):
+    async def scenario():
+        hass=home(on=True)
+        clock=[2000.]
+        control=driver.FanPowerControl(
+            hass,"legacy-fan-record",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        control.owned["fan.bedroom_extractor"]={
+            "entity_id":"fan.bedroom_extractor",
+            "area":"bedroom","role":"extraction_fan_entity",
+            "power":"on","when":1000,"acknowledged":True,
+        }
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert control.paused["bedroom"]=="original_fan_dwell_unknown_reconcile_manually"
+        assert not hass.services.calls
+        await control.async_stop()
+    asyncio.run(scenario())
