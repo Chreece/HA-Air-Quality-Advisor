@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+from datetime import datetime
 from typing import Any, Callable
 
 from .climate_coordination import device_inventory, duplicate_owners
@@ -343,6 +344,15 @@ class HumidityPowerControl:
         self.off_seen.setdefault(entity, now)
         last_observed = self.off_seen[entity]
         last_off = self.last_off.get(entity, last_observed)
+        # HA's last_changed catches brief manual ON/OFF events between
+        # supervisor polls. Only an aware timestamp is trusted; otherwise
+        # rely on the conservative in-process continuous OFF observation.
+        changed = getattr(native, "last_changed", None)
+        if isinstance(changed, datetime) and changed.tzinfo is not None:
+            observed_change = changed.timestamp()
+            if observed_change > now or now-observed_change < min_off:
+                self._status(area, "minimum_native_device_off_hold")
+                return
         if now < last_off or now - max(last_observed,last_off) < min_off:
             self._status(area, "minimum_off_hold")
             return
