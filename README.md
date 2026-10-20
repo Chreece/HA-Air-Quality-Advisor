@@ -847,3 +847,32 @@ native fan power services. There are no automatic compressor or
 \`climate.set_hvac_mode\` commands, and no claim that a powered fan
 guarantees a measured air-change rate or equivalent pollutant removal.
 This remains a draft pending field commissioning.
+
+
+### Unified climate room coordination (v0.6 development)
+
+Each climate room now has one shared **thermal, humidity, outdoor
+ventilation and particle filtration** arbitration policy. Rather than
+letting six controllers independently decide whether to issue a new
+command, each driver must pass the same room grant plus a **fresh live**
+verification immediately before it sends a Home Assistant service call.
+
+The climate card displays the current control priority and why any
+physical objective is held. A heat-only radiator will not compete against
+an armed cooling-only AC. Separate dehumidifier startup waits while an
+air conditioner may already be cooling at moderately high RH, but
+verified severe humidity can still be treated with dedicated drying
+equipment. High CO₂ extraction has priority for air-quality guidance
+when outdoor air is verified safe, while PM2.5 filtration can remain
+eligible even if outside air is polluted.
+
+This shared coordinator is an extra *safety/efficiency gate*, **not**
+a replacement for the separate user authorizations, physical device
+protections, acknowledgment tracking, startup settling, minimum
+on/off durations or manual restart reconciliation. It never acts on a
+window-opportunity suggestion to automatically switch off running
+heating, cooling or DRY equipment.
+
+CI includes coordinated room and live-transition regressions on both
+Python 3.13 and 3.14. Representative hardware commissioning remains
+mandatory before releasing the experimental control functions.
