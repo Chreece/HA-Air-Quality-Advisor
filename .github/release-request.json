@@ -1,16 +1,16 @@
 {
-  "version": "0.6.0b2",
+  "version": "0.6.0b3",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Second opt-in prerelease: compact international options, room/home/sleep presence and per-device policy. Stable v0.5.1 remains latest. Hardware commissioning still mandatory.",
+  "note": "Opt-in beta3, accessible info icons on primary and scientific measurements, only actual HA room-list sources/attributes, explained sleep freshness limit, improved per-room translations. Stable release unchanged.",
   "validation_attempt": 0,
   "changes": [
-    "Fix international pollen and AQI provider configuration screens, replacing crash-prone combined indexed form with independent validators",
-    "Outside data, General settings, Area settings root menus with preserved settings and original Home Assistant domain",
-    "Per-device real native climate/humidifier/fan inventory auto-selected for monitoring, with independent opt-in and configured control methods",
-    "Shared occupied-room and sleep-room state/attribute evidence, device trackers, absence and sleep targeting with live write-time revocation",
-    "Exact non-compressor/heat/cool and dedicated fan/humidity safety guards, persistent mode OFF intent and restart reconciliation",
-    "38 deterministic translated locales with reviewed Greek descriptions, validated Python 3.13/3.14, HACS and Hassfest"
+    "Contextual keyboard/touch help on main and scientific measurements, localized Greek/English and actual configured limit when present",
+    "Source entity choices filtered by parseable HA room IDs/names and dynamic State/attribute choices on source change",
+    "Explain source staleness minutes are maximum permitted age of occupancy/sleep data, not minimum sleep duration",
+    "Improve Greek per-room climate/PID/control help and all 38 supported locale catalogs",
+    "Preserve fail-closed presence policy, manual-off recovery and commissioning requirements",
+    "Regressions validated via Python 3.13/3.14, Hassfest, HACS and frontend tests"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b2"
+  "release_branch": "beta/v0.6.0b3"
 }

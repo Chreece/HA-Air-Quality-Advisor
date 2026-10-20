@@ -7,8 +7,8 @@ from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
-RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/"
-VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2")
+RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/"
+VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3")
 LOCAL_ASSET_ROOT = ".github/assets/"
 
 
@@ -42,7 +42,7 @@ def test_all_readme_images_use_absolute_https_urls_for_hacs() -> None:
                 f"Repository image must point to the stable branch or pinned beta: {src}"
             )
             relative = unquote(url.path).removeprefix(
-                "/Chreece/HA-Air-Quality-Advisor/" + matched + "/"
+                "/Chreece/HA-Home-Environment-Manager/" + matched + "/"
             )
             assert relative.startswith(LOCAL_ASSET_ROOT)
             file = ROOT / relative

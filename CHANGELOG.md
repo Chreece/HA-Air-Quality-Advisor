@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0b3 — Contextual measurement explanations and validated room-source selectors (beta)
+
+- Add accessible info popovers for all room primary metrics and derived scientific measurements, explaining what each means, potential risks and benefits, and only configured limits when present.
+- Restrict shared occupancy and sleep source selectors to actual parseable Home Assistant room lists; refresh the attribute choices after selecting a source and offer State as a choice when valid.
+- Explain that source age in minutes is a freshness limit, not minimum sleep duration, and ensure stale/unknown data cannot authorize equipment shutdown.
+- Expand Greek and international advanced per-room labels and explanations; regenerate all 38 locales.
+- Preserve the original domain, IDs, storage, opt-in protection, HACS install and v0.5.1 stable release.
+
 ## 0.6.0b2 — Compact settings and evidence-qualified device occupancy (beta)
 
 - Reorganize 11 flat settings into **Outside data**, **General settings**, **Area settings**, Announcements and Advanced thresholds; move international pollen/AQI into Outside data and window exclusions into Area settings.

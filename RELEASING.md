@@ -1,5 +1,9 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b3 — Measurement help and useful-source selector beta
+
+This opt-in HACS prerelease is published from the isolated `beta/v0.6.0b3` branch only after Python 3.13 and 3.14, generated 38-language translations, Node.js frontend tests, Hassfest, HACS validation and ZIP integrity succeed. It adds contextual measurement info, fresh/valid occupied and sleep-room selector choices and corrected Greek form guidance. Stable v0.5.1 and existing tags remain unchanged. The GitHub release is explicitly marked prerelease and never Latest. The ZIP is for manual installation; HACS reads the matching tagged source tree.
+
 ## v0.6.0b2 — Compact options and international device occupancy beta
 
 Version `v0.6.0b2` is the next HACS-selectable **prerelease**, created from
