@@ -454,15 +454,26 @@ def test_initial_config_entry_starts_with_rooms(monkeypatch, adapter):
     initial = flows.AirQualityConfigFlow()
     initial.hass = home
 
-    async def set_unique_id(_value):
-        return None
+    unique_id_calls = []
+
+    async def set_unique_id(value, *, raise_on_progress=True):
+        # In Home Assistant, claiming the static ID before the initial form
+        # aborts on an abandoned earlier setup flow.
+        assert raise_on_progress is False
+        unique_id_calls.append(value)
 
     initial.async_set_unique_id = set_unique_id
+    initial._async_current_entries = lambda: []
     initial._abort_if_unique_id_configured = lambda: None
     initial.async_show_form = lambda **kwargs: kwargs
+    initial.async_create_entry = lambda **kwargs: kwargs
     form = asyncio.run(initial.async_step_user())
     assert form["step_id"] == "areas"
     assert next(iter(form["data_schema"])).default == ["living"]
+    assert unique_id_calls == []  # the first form is never locked out
+    saved = asyncio.run(initial._finish())
+    assert saved["data"] == {}
+    assert unique_id_calls == ["home"]
 
 
 def test_initial_no_exclusions_still_moves_to_indoor_then_outdoor(monkeypatch, adapter):
@@ -1480,3 +1491,72 @@ def test_room_source_picker_excludes_irrelevant_entities_and_only_valid_attribut
     attrs=next(v for k,v in choose["data_schema"].items()
                if k=="general_sleep_rooms_attribute")
     assert [x["value"] for x in attrs.config.options]==["sleeping_areas"]
+
+def test_abandoned_initial_flow_does_not_block_retry_before_first_form(monkeypatch,adapter):
+    """Starting a second attempt need not wait for HA's ghost flow cleanup."""
+    _wizard(monkeypatch,adapter)
+    import custom_components.air_quality_advisor.config_flow as flows
+    home=FakeHass([MockState("binary_sensor.living_window","off",device_class="window")],
+                  {"binary_sensor.living_window":"living"})
+    reserved=[]
+    def make():
+        flow=flows.AirQualityConfigFlow()
+        flow.hass=home
+        flow._async_current_entries=lambda: []
+        flow.async_show_form=lambda **kwargs:kwargs
+        flow._abort_if_unique_id_configured=lambda:None
+        flow.async_create_entry=lambda **kwargs:kwargs
+        async def claim(uid,*,raise_on_progress=True):
+            assert not raise_on_progress
+            reserved.append(uid)
+        flow.async_set_unique_id=claim
+        return flow
+    abandoned=make()
+    assert asyncio.run(abandoned.async_step_user())["step_id"]=="areas"
+    assert reserved==[]
+    # The first UI no longer exists, but its backend flow is still pending.
+    retry=make()
+    assert asyncio.run(retry.async_step_user())["step_id"]=="areas"
+    assert reserved==[]
+    result=asyncio.run(retry._finish())
+    assert result["title"]=="Home Environment Manager"
+    assert reserved==["home"]
+
+
+def test_initial_setup_blocks_existing_entries_even_without_unique_id(monkeypatch,adapter):
+    _wizard(monkeypatch,adapter)
+    import custom_components.air_quality_advisor.config_flow as flows
+    flow=flows.AirQualityConfigFlow()
+    flow.hass=FakeHass([])
+    flow._async_current_entries=lambda:[SimpleNamespace(unique_id=None)]
+    flow.async_abort=lambda **params:{"aborted":params}
+    async def unexpected_id(*args,**kwargs):
+        raise AssertionError("Do not claim another ID when installed")
+    flow.async_set_unique_id=unexpected_id
+    assert asyncio.run(flow.async_step_user())=={
+        "aborted":{"reason":"already_configured"}
+    }
+
+
+def test_initial_setup_rechecks_entry_created_while_first_form_open(monkeypatch,adapter):
+    _wizard(monkeypatch,adapter)
+    import custom_components.air_quality_advisor.config_flow as flows
+    home=FakeHass([MockState("binary_sensor.living_window","off",device_class="window")],
+                  {"binary_sensor.living_window":"living"})
+    registered=[]
+    flow=flows.AirQualityConfigFlow()
+    flow.hass=home
+    flow._async_current_entries=lambda:registered
+    flow.async_show_form=lambda **kwargs:kwargs
+    flow.async_abort=lambda **kwargs:{"aborted":kwargs}
+    flow._abort_if_unique_id_configured=lambda:None
+    flow.async_create_entry=lambda **kw:{"created":kw}
+    async def claim(uid,*,raise_on_progress=True):
+        assert (uid,raise_on_progress)==("home",False)
+    flow.async_set_unique_id=claim
+    assert asyncio.run(flow.async_step_user())["step_id"]=="areas"
+    registered.append(SimpleNamespace(unique_id="home"))
+    assert asyncio.run(flow._finish())=={
+        "aborted":{"reason":"already_configured"}
+    }
+
