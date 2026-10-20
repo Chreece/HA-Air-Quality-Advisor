@@ -385,8 +385,11 @@ class HumidityPowerControl:
             return
         # Persisted active device remains paused across restart. No automatic
         # OFF command is sent after HA lost control of the device.
-        if self.paused.get(area)=="restart_requires_manual_output_reconciliation":
-            self._status(area,"paused",reason=self.paused[area])
+        if area in self.paused and self.paused[area] != "user_paused":
+            # Manual mode/target change, service failure, and restart all
+            # transfer authority away from this controller. Never keep
+            # retrying power writes after a fault.
+            self._status(area, "paused", reason=self.paused[area])
             return
         target = native_humidity_target(state.attributes)
         if target is None or abs(target-float(record.get("target",-999)))>0.51:
@@ -420,6 +423,15 @@ class HumidityPowerControl:
             )
             stop = (persisted.get("status")!="advisory" or
                     persisted.get("action")!=action)
+        if not stop:
+            inventory = device_inventory(self.hass, area, cfg)
+            other_role = ("humidifier_entity" if role=="dehumidifier_entity"
+                          else "dehumidifier_entity")
+            opposite = inventory.get(other_role, {})
+            if opposite.get("active") is True or (
+                opposite and opposite.get("status") != "ready"
+            ):
+                stop = True
         if not stop:
             self._status(area,"owned_running",entity_id=entity,
                          elapsed_s=int(now-on_since))
