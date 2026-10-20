@@ -913,14 +913,15 @@ class _FlowMixin:
                       "manual_profile":user_input.get("climate_manual_profile",draft.get("manual_profile","auto")),
                       "unknown_occupancy":user_input.get("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied"))}
             if proposal["enabled"]:
-                if proposal["temperature_entity"] not in {c["value"] for c in temp_choices}:
+                if (proposal["controller"]!="environment" and
+                    proposal["temperature_entity"] not in {c["value"] for c in temp_choices}):
                     errors["base"]="climate_temperature_required"
                 elif proposal["controller"] in ("device","setpoint_pid") and proposal["climate_entity"] not in {
                         c["value"] for c in climate_choices}:
                     errors["base"]="climate_target_required"
                 elif proposal.get("allow_actuation") and proposal["controller"]=="setpoint_pid":
                     errors["base"]="climate_pid_separate_configuration"
-                elif proposal["controller"] not in ("device","setpoint_pid","on_off","pwm","proportional"):
+                elif proposal["controller"] not in ("device","environment","setpoint_pid","on_off","pwm","proportional"):
                     errors["base"]="climate_controller_invalid"
                 elif proposal["manual_profile"] not in ("auto","home","unoccupied","away","sleep"):
                     errors["base"]="climate_mode_invalid"
@@ -943,6 +944,7 @@ class _FlowMixin:
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=[{"value":"device","label":"Device native thermostat / internal PID"},
+                             {"value":"environment","label":"Environmental devices only — no thermostat required"},
                              {"value":"setpoint_pid","label":"Outer-loop PID setpoint (separate v0.5 controller)"},
                              {"value":"on_off","label":"On/off slow-load relay (requires independent safety)"},
                              {"value":"pwm","label":"Time-proportioning slow-load relay (non-compressor only)"},
@@ -1052,7 +1054,7 @@ class _FlowMixin:
                 self._climate_draft=proposal
                 if proposal.get("controller") in ("on_off","pwm","proportional"):
                     return await self.async_step_climate_actuators()
-                if proposal.get("controller")=="device" and proposal.get("enabled"):
+                if proposal.get("controller") in ("device","environment") and proposal.get("enabled"):
                     return await self.async_step_climate_equipment()
                 return await self.async_step_climate_profiles()
         fields={
