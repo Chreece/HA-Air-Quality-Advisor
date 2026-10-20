@@ -280,3 +280,72 @@ def test_read_only_climate_diagnostics_registers_both_aliases_and_never_calls_hv
     assert missing["rooms"]==[]
     assert asyncio.run(module.async_unload_entry(hass,entry))
     assert not hass.services.callbacks
+
+
+
+def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
+    integration,
+):
+    module,_=integration
+    hass=make_hass()
+    first=legacy_entry(number=1)
+    second=legacy_entry(number=2)
+    first.data["climate_rooms"]={
+        "bedroom":{"enabled":True,"allow_actuation":True},
+    }
+    second.data["climate_rooms"]={
+        "kitchen":{"enabled":True,"allow_actuation":True},
+    }
+    first.data["pid_rooms"]={
+        "bedroom":{"enabled":True},
+    }
+    second.data["pid_rooms"]={
+        "kitchen":{"enabled":True},
+    }
+    asyncio.run(module.async_setup_entry(hass,first))
+    asyncio.run(module.async_setup_entry(hass,second))
+    def request(area,action="pause"):
+        return SimpleNamespace(
+            data={"area":area,"action":action},return_response=True,
+        )
+    routed=asyncio.run(
+        hass.services.callbacks[("home_environment_manager","climate_control")](
+            request("kitchen")
+        )
+    )
+    assert routed["accepted"] is True
+    assert FakeManager.instances[0].calls==[]
+    assert FakeManager.instances[1].calls==[
+        ("climate",{"area":"kitchen","action":"pause"}),
+    ]
+    pid=asyncio.run(
+        hass.services.callbacks[("air_quality_advisor","pid_control")](
+            request("bedroom","resume")
+        )
+    )
+    assert pid["accepted"] is True
+    assert FakeManager.instances[0].calls==[
+        ("pid",{"area":"bedroom","action":"resume"}),
+    ]
+    assert len(FakeManager.instances[1].calls)==1
+    # A second entry that gains the same room must never be a broadcast.
+    first.data["climate_rooms"]["kitchen"]={"enabled":True}
+    unsafe=asyncio.run(
+        hass.services.callbacks[("air_quality_advisor","climate_control")](
+            request("kitchen")
+        )
+    )
+    assert unsafe["accepted"] is False
+    assert unsafe["reason"]=="ambiguous_room_across_config_entries"
+    assert len(FakeManager.instances[1].calls)==1
+    # An unknown room is not accidentally routed to the first entry.
+    unknown=asyncio.run(
+        hass.services.callbacks[("home_environment_manager","climate_control")](
+            request("office")
+        )
+    )
+    assert unknown=={
+        "accepted":False,"reason":"room_not_configured_or_disabled",
+    }
+    asyncio.run(module.async_unload_entry(hass,first))
+    asyncio.run(module.async_unload_entry(hass,second))
