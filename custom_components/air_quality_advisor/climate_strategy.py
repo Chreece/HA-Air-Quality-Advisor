@@ -166,8 +166,17 @@ def policy(settings:dict, *, temp_c:float|None,
     if strategy in ("device","setpoint_pid") and capability.get("kind")!="climate":
         return Output("unsupported_device",name,None,None,"climate_required",strategy)
     mode_choice=settings.get("mode","auto")
-    if mode_choice not in ("auto","heat","cool","off"):
+    if mode_choice not in ("auto","heat","cool","dry","off"):
         return Output("invalid_config",name,None,None,"invalid_mode","none")
+    if mode_choice=="dry":
+        # A humidity-only native climate device need not have a temperature
+        # target. HVAC DRY may start a compressor: recommend it, but never
+        # authorize a set_hvac_mode call from the temperature controller.
+        if strategy != "device" or capability.get("dry") is not True:
+            return Output("unsupported_mode",name,None,None,
+                          "device_does_not_support_dry",strategy)
+        return Output("advisory",name,None,"dry",
+                      "dry_only_mode_does_not_require_temperature",strategy)
     if mode_choice=="off":
         return Output("advisory",name,None,"off","explicit_off_requested",strategy)
     if mode_choice=="auto":
@@ -183,7 +192,13 @@ def policy(settings:dict, *, temp_c:float|None,
         and "heat_cool" in capability.get("modes",[])
     )
     if desired in ("heat","cool") and not capability.get(desired,False) and not native_range_possible:
-        return Output("unsupported_mode",name,None,None,"device_does_not_support_"+desired,strategy)
+        # In automatic mode a heating-only radiator remains usable for heat,
+        # and a cooling-only AC remains usable for cool. Opposite demand
+        # simply needs different equipment; do not broadcast an invalid
+        # mode or turn the valid existing appliance off.
+        status = "hold" if mode_choice=="auto" else "unsupported_mode"
+        return Output(status,name,None,None,
+                      "no_configured_"+desired+"_capability",strategy)
     heat_target,cool_target=band.heat_c,band.cool_c
     # Apply PMV only as a bounded modification to *home/sleep* comfort
     # bands. The preconfigured away and unoccupied setbacks are sacrosanct.
