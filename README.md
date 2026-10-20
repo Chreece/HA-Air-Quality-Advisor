@@ -970,3 +970,24 @@ after persistent write-ahead and refuses superseded room plans or revoked
 permissions. If post-command history persistence fails, its original
 uncertain intent is retained for manual reconciliation rather than silently
 promoted to a completed command.
+
+
+### Multiple integrations, shared-device safety and reliable unload (v0.6)
+
+A configured thermostat, PID-controlled climate entity, protected heating
+relay, dehumidifier or fan must not receive commands from two independent
+Home Environment Manager configuration entries. The draft now detects
+duplicate device ownership **across entries**, not just rooms within one
+entry, and checks live ownership again before hardware writes.
+
+The \`climate_diagnostics\` service can identify shared equipment in
+configured rooms without exposing other entry IDs or device credentials.
+All controllers still require their own opt-ins and physical safety
+protections; existing owned outputs retain their bounded, acknowledged
+shutdown/reconciliation policy. On HA shutdown or options reload, failure
+of one controller's persistence no longer prevents the remaining
+controllers, announcements, listeners or background tasks from being
+cleaned up.
+
+All of this remains development code in [draft PR #2](https://github.com/Chreece/HA-Air-Quality-Advisor/pull/2).
+Production v0.5.1 is unchanged pending representative hardware testing.
