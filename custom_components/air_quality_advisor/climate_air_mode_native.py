@@ -90,6 +90,19 @@ class NativeAirModeControl:
         except Exception:
             _LOGGER.exception("Native DRY/FAN mode control safety storage unavailable")
             return
+        if loaded is not None and (
+            not isinstance(loaded,dict) or loaded.get("version")!=1 or
+            not isinstance(loaded.get("expected",{}),dict) or
+            not isinstance(loaded.get("paused",{}),dict) or
+            not isinstance(loaded.get("last_write",{}),dict)
+        ):
+            # Never reinterpret future/incompatible or corrupt safety records
+            # as a fresh, first-time installation. Fail closed, keeping the
+            # original on-disk record available for diagnosis.
+            _LOGGER.error("Unsupported or damaged DRY/FAN mode safety history")
+            self._active=False
+            self._status("*","safety_history_unsupported")
+            return
         if isinstance(loaded,dict) and loaded.get("version")==1:
             paused=loaded.get("paused",{})
             if isinstance(paused,dict):
@@ -97,16 +110,39 @@ class NativeAirModeControl:
                              if isinstance(a,str) and isinstance(v,str)}
             expected=loaded.get("expected",{})
             if isinstance(expected,dict):
+                if any(not isinstance(area,str) or not isinstance(item,dict)
+                       for area,item in expected.items()):
+                    _LOGGER.error("Corrupt DRY/FAN pending write history")
+                    self._active=False
+                    self._status("*","safety_history_unsupported")
+                    return
                 self.expected={
                     area:dict(item) for area,item in expected.items()
-                    if isinstance(area,str) and isinstance(item,dict)
                 }
             written=loaded.get("last_write",{})
             if isinstance(written,dict):
-                self.last_write={
-                    area:float(v) for area,v in written.items()
-                    if isinstance(area,str) and finite(v,0,1e13) is not None
-                }
+                if any(not isinstance(area,str) or finite(v,0,1e13) is None
+                       for area,v in written.items()):
+                    _LOGGER.error("Corrupt native mode last-write history")
+                    self._active=False
+                    self._status("*","safety_history_unsupported")
+                    return
+                self.last_write={area:float(v) for area,v in written.items()}
+            for area,record in self.expected.items():
+                phase=record.get("phase","commanded")
+                if phase=="intent":
+                    # Surface interrupted physical commands as an immediate
+                    # persisted safety pause rather than showing warmup for
+                    # several minutes and discovering the issue only later.
+                    self.paused[area]=(
+                        "interrupted_mode_write_requires_manual_reconciliation"
+                    )
+                    self._status(area,"paused",reason=self.paused[area])
+                elif phase!="commanded":
+                    self.paused[area]="persistent_mode_ack_history_invalid"
+                    self._status(area,"paused",reason=self.paused[area])
+            if self.paused:
+                self._save()
         self._ready=True
 
     async def async_stop(self)->None:
