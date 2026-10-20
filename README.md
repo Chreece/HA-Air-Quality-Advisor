@@ -943,3 +943,30 @@ compressor, heat pump, defrost cycle or shared refrigeration circuit.
 
 The feature remains **disabled by default and unreleased** in the draft
 v0.6 branch. The physical AC must be independently commissioned first.
+
+
+### Read-only Home Assistant climate commissioning report (v0.6 draft)
+
+The integration now exposes
+\`home_environment_manager.climate_diagnostics\` (and the backward-compatible
+\`air_quality_advisor.climate_diagnostics\`) under **Developer Tools → Actions**.
+Select an optional Home Assistant \`area\` to inspect only that configured room,
+or omit it to inspect all explicitly configured climate rooms. Request the
+action response to obtain a structured report of selected entity IDs, actual
+native HEAT/COOL/DRY/FAN modes, current HVAC action, device/room ownership,
+sensor freshness, windows, safety opt-ins, room-coordinator state and existing
+native DRY/FAN mode diagnostic status.
+
+This service **never changes an entity**. It does not export serial numbers,
+network addresses, credentials, device tokens or unrelated unconfigured
+entities. The reported \`software_preflight_ready\` flag reflects the data
+visible to HA; it does **not** certify manufacturer compressor protection,
+minimum compressor OFF time, defrost logic, electrical safety, or mechanical
+ventilation safety. Physical commissioning remains an independent release
+gate.
+
+The native DRY/FAN controller now also rechecks the **full configured dwell**
+after persistent write-ahead and refuses superseded room plans or revoked
+permissions. If post-command history persistence fails, its original
+uncertain intent is retained for manual reconciliation rather than silently
+promoted to a completed command.
