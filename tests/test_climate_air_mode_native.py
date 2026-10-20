@@ -742,3 +742,84 @@ def test_plan_superseded_while_persisting_dry_intent_never_commands_ac(
         assert controller.expected["bedroom"]["phase"]=="intent"
         await controller.async_stop()
     asyncio.run(scenario())
+
+
+def test_full_custom_mode_dwell_is_rechecked_after_durable_storage(
+    mode_module,monkeypatch,
+):
+    async def scenario():
+        hass,clock=system()
+        settings=cfg(dry_fan_mode_dwell_s=3600)
+        source=plan(hass,settings)
+        seen=[]
+        class Store:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,fn,delay):
+                pass
+            async def async_save(self,record):
+                phase=record["expected"].get("bedroom",{}).get("phase")
+                seen.append(phase)
+                if phase=="intent":
+                    # A real device event occurred after the initial 4-hour
+                    # dwell check, but before the final service call.
+                    # Still older than the advisor's 30-minute gate.
+                    hass.states.get("climate.bedroom_ac").last_changed=(
+                        datetime.fromtimestamp(2400,timezone.utc)
+                    )
+        monkeypatch.setattr(
+            sys.modules["homeassistant.helpers.storage"],"Store",Store,
+        )
+        driver=mode_module.NativeAirModeControl(
+            hass,"full-dwell-recheck",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,settings,source)
+        assert seen==["intent"]
+        assert hass.services.calls==[]
+        assert driver.paused["bedroom"]=="mode_intent_aborted_by_live_interlock"
+        assert driver.expected["bedroom"]["phase"]=="intent"
+        await driver.async_stop()
+    asyncio.run(scenario())
+
+
+def test_failed_post_command_write_never_promotes_persisted_intent(
+    mode_module,monkeypatch,
+):
+    async def scenario():
+        hass,clock=system()
+        snapshots=[]
+        class Store:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,fn,delay):
+                pass
+            async def async_save(self,payload):
+                snapshots.append(payload)
+                if payload["expected"].get("bedroom",{}).get("phase")=="commanded":
+                    raise OSError("disk failed after native mode command")
+        monkeypatch.setattr(
+            sys.modules["homeassistant.helpers.storage"],"Store",Store,
+        )
+        driver=mode_module.NativeAirModeControl(
+            hass,"commanded-store-fail",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==1
+        assert driver.expected["bedroom"]["phase"]=="intent"
+        assert driver.paused["bedroom"]=="mode_command_history_persist_failed"
+        # Snapshot #1 must be independent of later Python dict mutations.
+        assert snapshots[0]["expected"]["bedroom"]["phase"]=="intent"
+        assert snapshots[1]["expected"]["bedroom"]["phase"]=="commanded"
+        clock[0]=9200
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==1
+        await driver.async_stop()
+    asyncio.run(scenario())
