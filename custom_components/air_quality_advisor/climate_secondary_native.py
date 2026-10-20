@@ -13,6 +13,7 @@ import time
 from typing import Any, Callable
 
 from .climate_coordination import assigned_entities, duplicate_owners, device_inventory
+from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
 from .pid_math import bounded_command, finite, target_from_unit
 
@@ -248,6 +249,12 @@ class SecondaryClimateSetpoint:
             self._status(area,"plan_or_permission_changed")
             return
         entity, mode, role = selected
+        conflict=new_command_gate(
+            self.hass,area,cfg,plan,"thermal",entity,now=now,
+        )
+        if conflict is not None:
+            self._status(area,"coordination_hold",reason=conflict)
+            return
         if entity in duplicate_owners(self._configured):
             self._status(area,"duplicate_equipment_owner")
             return
