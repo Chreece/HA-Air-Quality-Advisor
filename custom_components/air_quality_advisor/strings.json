@@ -814,26 +814,34 @@
       },
       "general_settings": {
         "title": "General settings",
-        "description": "Choose shared presence sensors, home trackers, and entities listing occupied or sleeping rooms. The source can hold a JSON list in its state or in a named attribute. Stale or unknown evidence NEVER means nobody is home.",
+        "description": "Select verified presence sensors, home trackers, and entities containing an occupied-room or sleep-room list. The next page will show only suitable State or attribute sources. The time in minutes is maximum source-update age, NOT sleep duration.",
         "data": {
           "general_room_occupancy_sensors": "Room · Occupancy · sensor",
-          "general_occupied_rooms_entity": "Occupancy · Room · source (state)",
-          "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
+          "general_occupied_rooms_entity": "Occupied rooms — choose source entity",
           "general_home_trackers": "Home · Occupancy · Devices",
           "general_home_policy": "Home · Occupancy · control",
-          "general_sleep_rooms_entity": "Sleep · Room · source (state)",
-          "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
-          "general_source_stale_minutes": "source · Required (min)"
+          "general_sleep_rooms_entity": "Sleeping rooms — choose source entity",
+          "general_source_stale_minutes": "Maximum age since room-source update (minutes)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Select source; Required · control · sensor / Devices.",
-          "general_occupied_rooms_entity": "Select source; Required · control · sensor / Devices.",
-          "general_occupied_rooms_attribute": "Select source; Required · control · sensor / Devices.",
+          "general_occupied_rooms_entity": "Only entities whose current state or an actual attribute holds a valid list of Home Assistant area names/IDs are shown.",
           "general_home_trackers": "Select source; Required · control · sensor / Devices.",
           "general_home_policy": "Select source; Required · control · sensor / Devices.",
-          "general_sleep_rooms_entity": "Select source; Required · control · sensor / Devices.",
-          "general_sleep_rooms_attribute": "Select source; Required · control · sensor / Devices.",
-          "general_source_stale_minutes": "Select source; Required · control · sensor / Devices."
+          "general_sleep_rooms_entity": "Only entities whose state or attributes contain valid sleeping room IDs/names are shown.",
+          "general_source_stale_minutes": "The maximum minutes elapsed since Home Assistant last reported this occupied/sleep-room entity. 240 minutes means four hours of allowed data age; it does NOT mean four hours of sleep. If the source stops updating beyond this time, room occupancy/sleep evidence becomes unknown."
+        }
+      },
+      "general_sources": {
+        "title": "source · Select",
+        "description": "Choose State if the entity state itself lists rooms, otherwise pick an attribute containing a valid room list. Unsupported values cannot be selected.",
+        "data": {
+          "general_occupied_rooms_attribute": "Occupied rooms — State or actual attribute",
+          "general_sleep_rooms_attribute": "Sleeping rooms — State or actual attribute"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "Choose State for an actual list in the state, or a supported attribute from the chosen entity.",
+          "general_sleep_rooms_attribute": "Choose State or an actual named attribute containing a list of sleeping rooms; no free text or arbitrary attribute names."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "target · settings"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Devices · control",
+        "environment": "Devices · control",
+        "setpoint_pid": "Devices · control",
+        "on_off": "Devices · control",
+        "pwm": "Devices · control",
+        "proportional": "Devices · control"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Automatic · control",
+        "heat": "Temperature + ",
+        "cool": "Temperature − ",
+        "dry": "Humidity · control",
+        "off": "Off"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Occupancy · settings",
+        "hold": "Devices · control"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Occupancy · settings",
+        "all_home": "Occupancy · settings"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Automatic · control",
+        "home": "Occupancy · settings",
+        "unoccupied": "Occupancy · settings",
+        "away": "Occupancy · settings",
+        "sleep": "Sleep"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Devices · control",
+        "pmv": "Devices · control"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Temperature + ",
+        "cool": "Temperature − "
       }
     }
   }

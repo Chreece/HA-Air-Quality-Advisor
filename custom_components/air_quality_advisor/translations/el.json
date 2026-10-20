@@ -427,7 +427,7 @@
           "environment_area": "Επιλογή δωματίου"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "environment_room_air": {
@@ -444,14 +444,14 @@
           "sleep_room": "Χώρος ύπνου"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Εμβαδόν δωματίου × ύψος οροφής. Χρησιμοποιείται μόνο για θεωρητικές ανανεώσεις αέρα φίλτρου.",
-          "particle_cadr_m3h": "Χρησιμοποίησε τεκμηριωμένο CADR σωματιδίων για γνωστή σκάλα λειτουργίας, όχι τυχαία παροχή ανεμιστήρα.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
+          "temperature_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "room_volume_m3": "Όγκος δωματίου σε m³ για εκτιμήσεις αερισμού, όχι μέτρηση παροχής.",
+          "particle_cadr_m3h": "Ονομαστική παροχή φίλτρου, όχι πραγματική απόδοση.",
+          "purifier_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "extractor_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
           "co2_ndir_verified": "Μόνο για πραγματικό αισθητήρα CO₂ NDIR, όχι υπολογισμό eCO₂ μέσω VOC.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "co2_target_ppm": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "sleep_room": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "environment_room_exposure": {
@@ -471,15 +471,15 @@
         },
         "data_description": {
           "radon_entity": "Bq/m³ ή pCi/L. Η μακροχρόνια εκτίμηση απαιτεί επαρκείς ημέρες μετρήσεων.",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
+          "radon_sensor_verified": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "radon_reference_bq_m3": "Επίλεξε τοπική τιμή αναφοράς με αξιόπιστη μακρόχρονη μέτρηση.",
           "formaldehyde_entity": "Πραγματική μέτρηση HCHO σε µg/m³ ή mg/m³. Οι εκτιμήσεις δεν είναι αξιόπιστες.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
+          "formaldehyde_sensor_verified": "Απαιτείται πραγματικός αισθητήρας HCHO, όχι απλή εκτίμηση TVOC.",
           "noise_entity": "Βαθμονομημένες μετρήσεις dB(A)· οι στιγμιαίες κορυφές δεν είναι LAeq.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "noise_sensor_calibrated": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "illuminance_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "melanopic_edi_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "melanopic_spectral_verified": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "environment_room_comfort": {
@@ -495,11 +495,11 @@
         },
         "data_description": {
           "enable_pmv": "Απαιτούνται ακτινοβολούμενη θερμοκρασία, ταχύτητα αέρα, δραστηριότητα (met) και ένδυση (clo).",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "radiant_temperature_entity": "Πραγματική θερμοκρασία ακτινοβολίας, όχι μόνο θερμοκρασία αέρα.",
+          "air_speed_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "air_speed_m_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "met": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "clo": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "pid": {
@@ -509,27 +509,27 @@
           "pid_area": "Δωμάτιο προς ρύθμιση"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "pid_room": {
         "title": "Κλιματικός PID στο {area_name} — συσκευές και στόχος",
         "description": "Ενεργοποίησε μόνο με πραγματικό αισθητήρα θερμοκρασίας και ρητά επιλεγμένες συσκευές climate. Η θέρμανση/ψύξη πρέπει να είναι ήδη ενεργή. Με ανοιχτά ή άγνωστα παράθυρα ο PID αναστέλλεται. Δεν αλλάζει τρόπους HVAC ή συμπιεστές.",
         "data": {
-          "pid_enabled": "Ενεργοποίηση κλιματικού PID σε αυτό το δωμάτιο",
+          "pid_enabled": "Ενεργοποίηση PID θερμοστάτη",
           "pid_climate_entities": "Ρητά επιτρεπόμενες συσκευές climate",
           "pid_temperature_entity": "Αισθητήρας θερμοκρασίας (έως 10 λεπτά παλαιός)",
-          "pid_mode": "Τρέχουσα λειτουργία θέρμανσης/ψύξης",
-          "pid_target_c": "Επιθυμητή θερμοκρασία δωματίου (°C)",
+          "pid_mode": "Λειτουργία PID: θέρμανση ή ψύξη",
+          "pid_target_c": "Στόχος θερμοκρασίας PID (°C)",
           "pid_pause_on_window_open": "Παύση όταν παράθυρο είναι ανοιχτό ή άγνωστο"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "Απενεργοποιημένο αρχικά, αλλάζει μόνο στόχους ήδη ενεργού θερμοστάτη.",
+          "pid_climate_entities": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_temperature_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_mode": "Πρέπει να ταιριάζει με την πραγματική λειτουργία της συσκευής.",
+          "pid_target_c": "Στόχος θερμοκρασίας δωματίου, όχι κατανάλωση ενέργειας.",
+          "pid_pause_on_window_open": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "pid_tuning": {
@@ -547,65 +547,65 @@
           "pid_min_change_c": "Ελάχιστη ουσιαστική αλλαγή (°C)"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_ki": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_kd": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_offset_c": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_min_setpoint_c": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_max_setpoint_c": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_sample_seconds": "Χρόνος μεταξύ υπολογισμών. Πολύ συχνές αλλαγές προκαλούν αστάθεια.",
+          "pid_max_change_c": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pid_min_change_c": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate": {
         "title": "Κλίμα — επιλογή δωματίου",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "ρυθμίσεις · έλεγχος"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_room": {
         "title": "Κλίμα — ελεγκτής, παρουσία και απουσία",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
           "climate_enabled": "Ενεργοποίηση σχεδίου κλίματος δωματίου",
           "climate_allow_actuation": "Να επιτρέπονται εντολές στους επιλεγμένους ελεγκτές (ξεχωριστές άδειες)",
           "climate_auto_switch_hvac": "Αυτόματο πέρασμα θέρμανσης/ψύξης (ξεχωριστή άδεια)",
           "climate_prefer_native_auto": "Προτίμηση αυτόματης ζώνης θέρμανσης/ψύξης της συσκευής",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_controller": "Μέθοδος ελέγχου κλιματικής συσκευής",
+          "climate_mode": "Επιθυμητή λειτουργία θέρμανσης/ψύξης",
+          "climate_entity": "Πραγματική κλιματική συσκευή δωματίου",
+          "climate_temperature_entity": "Αισθητήρας θερμοκρασίας του χώρου",
+          "climate_hysteresis_c": "ρυθμίσεις · έλεγχος"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "Ο σχεδιασμός δεν στέλνει εντολές χωρίς ξεχωριστή εξουσιοδότηση.",
+          "climate_allow_actuation": "Ξεχωριστή άδεια εντολών στους επιλεγμένους ελεγκτές με ελέγχους ασφαλείας.",
+          "climate_auto_switch_hvac": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_prefer_native_auto": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_controller": "Η εγγενής ρύθμιση προτιμάται· τα ρελέ/PWM απαιτούν ανεξάρτητη φυσική προστασία και όχι συμπιεστή.",
+          "climate_mode": "Μόνο πραγματικά υποστηριζόμενες λειτουργίες. DRY δεν σημαίνει FAN_ONLY.",
+          "climate_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_temperature_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_hysteresis_c": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_presence": {
         "title": "Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
           "climate_occupancy_sensors": "Αισθητήρες παρουσίας αυτού του δωματίου",
           "climate_away_entities": "Άτομα και συσκευές εντοπισμού για σπίτι/απουσία",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Χρόνος πριν θεωρηθεί άδειο το δωμάτιο (λεπτά)",
-          "climate_occupancy_stale_minutes": "Μέγιστη ηλικία μέτρησης παρουσίας (λεπτά)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
+          "climate_unknown_occupancy": "Αν η παρουσία είναι άγνωστη",
+          "climate_unoccupied_delay_minutes": "Συνεχής απουσία πριν από οικονομικό στόχο (λεπτά)",
+          "climate_occupancy_stale_minutes": "Μέγιστη ηλικία αναφοράς παρουσίας (λεπτά)",
+          "climate_away_policy": "Πότε θεωρείται άδειο το σπίτι",
+          "climate_manual_profile": "Χειροκίνητο προφίλ δωματίου",
+          "climate_sleep_active": "Ενεργοποίηση ύπνου τώρα",
           "climate_sleep_schedule_enabled": "Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
           "climate_sleep_start": "Έναρξη ύπνου",
           "climate_sleep_end": "Λήξη ύπνου",
@@ -613,41 +613,41 @@
           "climate_comfort_adjustment_max_c": "Μέγιστη διόρθωση άνεσης (°C)"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_away_entities": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_unknown_occupancy": "Άγνωστη παρουσία σημαίνει ασφαλή αναμονή, ποτέ βέβαιη απουσία.",
+          "climate_unoccupied_delay_minutes": "Απαιτείται συνεχής απουσία πριν από οικονομικό προφίλ.",
+          "climate_occupancy_stale_minutes": "Μέγιστη ηλικία τελευταίας ενημέρωσης παρουσίας, ΟΧΙ διάρκεια ύπνου.",
+          "climate_away_policy": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_manual_profile": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_sleep_active": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_sleep_schedule_enabled": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_sleep_start": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_sleep_end": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_target_source": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_comfort_adjustment_max_c": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_equipment": {
         "title": "Κλίμα — πρόσθετες συσκευές και υγρασία",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
-          "climate_heat_climate_entity": "Ξεχωριστός θερμοστάτης θέρμανσης / καλοριφέρ",
-          "climate_cool_climate_entity": "Κλιματιστικό / αντλία θερμότητας για ψύξη",
-          "climate_dry_climate_entity": "Κλιματιστικό με λειτουργία αφύγρανσης DRY",
-          "climate_fan_climate_entity": "Κλιματιστικό με λειτουργία ανεμιστήρα",
-          "climate_humidifier_entity": "Υγραντήρας (προσθήκη υγρασίας)",
-          "climate_dehumidifier_entity": "Αφυγραντήρας (αφαίρεση υγρασίας)",
-          "climate_extraction_fan_entity": "Ανεμιστήρας εξαερισμού / απαγωγής",
-          "climate_purifier_fan_entity": "Ανεμιστήρας καθαριστή αέρα",
-          "climate_humidity_entity": "Αισθητήρας υγρασίας δωματίου",
-          "climate_humidity_low_rh": "Ελάχιστη σχετική υγρασία (%)",
-          "climate_humidity_high_rh": "Μέγιστη σχετική υγρασία (%)",
-          "climate_humidity_hysteresis_rh": "Υστέρηση υγρασίας (ποσοστιαίες μονάδες)",
+          "climate_heat_climate_entity": "Θερμοστάτης με πραγματικό HEAT",
+          "climate_cool_climate_entity": "Κλιματιστικό με πραγματικό COOL",
+          "climate_dry_climate_entity": "Κλιματιστικό με πραγματικό DRY",
+          "climate_fan_climate_entity": "Κλιματιστικό με πραγματικό FAN_ONLY",
+          "climate_humidifier_entity": "Συσκευή ύγρανσης",
+          "climate_dehumidifier_entity": "Συσκευή αφύγρανσης",
+          "climate_extraction_fan_entity": "Ανεμιστήρας εξαερισμού",
+          "climate_purifier_fan_entity": "Ανεμιστήρας φίλτρου αέρα",
+          "climate_humidity_entity": "Αισθητήρας σχετικής υγρασίας",
+          "climate_humidity_low_rh": "Κάτω στόχος υγρασίας (%)",
+          "climate_humidity_high_rh": "Άνω στόχος υγρασίας (%)",
+          "climate_humidity_hysteresis_rh": "Υστέρηση ελέγχου υγρασίας (%)",
           "climate_cooling_dry_deferral_rh_points": "Αναβολή αφύγρανσης όσο λειτουργεί ψύξη, έως ότου η σχετική υγρασία υπερβεί το άνω όριο κατά τόσες μονάδες (0 απενεργοποιεί)",
           "climate_humidity_setpoint_auto": "Ρύθμιση στόχου υγρασίας μόνο σε ήδη ενεργή συσκευή (ξεχωριστή άδεια)",
           "climate_window_efficiency_notify": "Ειδοποίηση όταν ασφαλής αερισμός από παράθυρο μπορεί να βοηθήσει αντί θέρμανσης, ψύξης ή αφύγρανσης",
-          "climate_dry_fan_mode_auto": "Αυτόματη εναλλαγή εγγενούς λειτουργίας DRY/FAN_ONLY (ξεχωριστή έγκριση μετά από έλεγχο συσκευής)",
+          "climate_dry_fan_mode_auto": "Αυτόματη εναλλαγή DRY/FAN_ONLY με προστασία συμπιεστή",
           "climate_dry_fan_hardware_confirmed": "Επιβεβαιώνω ανεξάρτητες προστασίες συμπιεστή, απόψυξης και ελάχιστου κύκλου για τη συγκεκριμένη συσκευή",
           "climate_dry_fan_windowless_confirmed": "Επιτρέπω εναλλαγή DRY/FAN_ONLY χωρίς αισθητήρα παραθύρου",
           "climate_dry_fan_mode_dwell_s": "Ελάχιστη διάρκεια λειτουργίας DRY/FAN_ONLY (δευτερόλεπτα, τουλάχιστον 1800)",
@@ -660,124 +660,124 @@
           "climate_secondary_climate_setpoint_auto": "Ρύθμιση στόχου σε ήδη ενεργούς δεύτερους θερμοστάτες (ξεχωριστή άδεια)"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_cool_climate_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_dry_climate_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_fan_climate_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidifier_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_dehumidifier_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_extraction_fan_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_purifier_fan_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_low_rh": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_high_rh": "Άνω όριο υγρασίας· υψηλές τιμές ευνοούν συμπύκνωση και μούχλα.",
+          "climate_humidity_hysteresis_rh": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_cooling_dry_deferral_rh_points": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_setpoint_auto": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_window_efficiency_notify": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_dry_fan_mode_auto": "Απαιτούνται πραγματικές προστασίες συμπιεστή και ασφαλής αναμονή μεταξύ αλλαγών.",
+          "climate_dry_fan_hardware_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_dry_fan_windowless_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_dry_fan_mode_dwell_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_auto": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_hardware_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_windowless_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_min_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_min_off_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_humidity_power_max_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_secondary_climate_setpoint_auto": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_air_strategy": {
         "title": "Κλίμα — αερισμός και καθαρισμός αέρα",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
-          "climate_fan_speed_auto": "Ρύθμιση ταχύτητας μόνο ήδη ενεργών ανεμιστήρων (ξεχωριστή άδεια)",
-          "climate_fan_power_auto": "Αυτόματη ενεργοποίηση/απενεργοποίηση επαληθευμένων ανεμιστήρων αερισμού ή καθαρισμού (ξεχωριστή άδεια)",
+          "climate_fan_speed_auto": "Έλεγχος ταχύτητας ήδη ενεργού ανεμιστήρα",
+          "climate_fan_power_auto": "Προστατευμένη ενεργοποίηση ανεμιστήρα",
           "climate_fan_power_hardware_confirmed": "Επιβεβαιώνω ανεξάρτητες ηλεκτρικές, πυρασφάλειας, αντεπιστροφής και πίεσης προστασίες",
           "climate_fan_power_min_on_s": "Ελάχιστη λειτουργία ανεμιστήρα (δευτερόλεπτα)",
           "climate_fan_power_min_off_s": "Ελάχιστη αποδεδειγμένη παύση (δευτερόλεπτα)",
           "climate_fan_power_max_on_s": "Μέγιστη συνεχής λειτουργία ανεμιστήρα (δευτερόλεπτα)",
           "climate_pm25_sensor_verified": "Επιβεβαιωμένος πραγματικός αισθητήρας PM2.5",
-          "climate_co2_entity": "Αισθητήρας CO₂ (έλεγχος NDIR στις ρυθμίσεις περιβάλλοντος)",
-          "climate_pm25_entity": "Αισθητήρας PM2.5",
-          "climate_pm25_action_ug_m3": "Λειτουργικό βραχυπρόθεσμο όριο PM2.5 (µg/m³)",
+          "climate_co2_entity": "Αισθητήρας CO₂ του χώρου",
+          "climate_pm25_entity": "Αισθητήρας PM2.5 του χώρου",
+          "climate_pm25_action_ug_m3": "Λειτουργικό όριο PM2.5 (µg/m³)",
           "climate_extraction_speed_percent": "Επιθυμητή ταχύτητα ενεργού εξαερισμού (%)",
           "climate_purifier_speed_percent": "Επιθυμητή ταχύτητα ενεργού καθαριστή (%)"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_fan_power_auto": "Απαιτούνται ανεξάρτητες ηλεκτρικές προστασίες και προστασία ανάστροφης ροής.",
+          "climate_fan_power_hardware_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_fan_power_min_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_fan_power_min_off_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_fan_power_max_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_pm25_sensor_verified": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_co2_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_pm25_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_pm25_action_ug_m3": "Λειτουργικό κατώφλι, όχι όριο υγείας ή επιβεβαίωση 24ωρης συμμόρφωσης.",
+          "climate_extraction_speed_percent": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "climate_purifier_speed_percent": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_profiles": {
         "title": "Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "Θέρμανση με παρουσία (°C)",
+          "home_cool": "Ψύξη με παρουσία (°C)",
+          "unoccupied_heat": "Θέρμανση σε άδειο δωμάτιο (°C)",
+          "unoccupied_cool": "Ψύξη σε άδειο δωμάτιο (°C)",
+          "away_heat": "Θέρμανση σε απουσία (°C)",
+          "away_cool": "Ψύξη σε απουσία (°C)",
+          "sleep_heat": "Θέρμανση στον ύπνο (°C)",
+          "sleep_cool": "Ψύξη στον ύπνο (°C)"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "home_cool": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "unoccupied_heat": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "unoccupied_cool": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "away_heat": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "away_cool": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "sleep_heat": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "sleep_cool": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "climate_actuators": {
         "title": "Άμεσοι ενεργοποιητές — υλικό και όρια ασφαλείας",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Χώρου · ρυθμίσεις · Συσκευές / αισθητήρας · έλεγχος.",
         "data": {
           "direct_hardware_confirmed": "Επιβεβαιώνω ανεξάρτητη προστασία και απουσία συμπιεστή",
           "heat_actuator": "Ενεργοποιητής θέρμανσης",
           "cool_actuator": "Ενεργοποιητής ψύξης",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "min_on_s": "ρυθμίσεις · έλεγχος",
+          "min_off_s": "ρυθμίσεις · έλεγχος",
+          "max_on_s": "ρυθμίσεις · έλεγχος",
+          "mode_dwell_s": "ρυθμίσεις · έλεγχος",
+          "kp": "ρυθμίσεις · έλεγχος",
+          "ki": "ρυθμίσεις · έλεγχος",
+          "kd": "ρυθμίσεις · έλεγχος",
+          "sample_seconds": "ρυθμίσεις · έλεγχος",
+          "pwm_period_s": "ρυθμίσεις · έλεγχος",
+          "max_demand_change": "ρυθμίσεις · έλεγχος",
+          "min_demand_change": "ρυθμίσεις · έλεγχος"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "heat_actuator": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "cool_actuator": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "min_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "min_off_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "max_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "mode_dwell_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "kp": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "ki": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "kd": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "sample_seconds": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "pwm_period_s": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "max_demand_change": "Επιλογή πηγή; Απαιτείται · έλεγχος.",
+          "min_demand_change": "Επιλογή πηγή; Απαιτείται · έλεγχος."
         }
       },
       "outside_data": {
@@ -814,26 +814,34 @@
       },
       "general_settings": {
         "title": "Γενικές ρυθμίσεις",
-        "description": "Επίλεξε αισθητήρες παρουσίας, συσκευές εντοπισμού κατοίκων και οντότητες που περιέχουν τα κατειλημμένα ή τα δωμάτια ύπνου. Η λίστα μπορεί να βρίσκεται στην κατάσταση ή σε ένα συγκεκριμένο χαρακτηριστικό. Άγνωστα ή παλιά δεδομένα ΔΕΝ σημαίνουν άδειο σπίτι.",
+        "description": "Επίλεξε έγκυρους αισθητήρες παρουσίας, ανιχνευτές κατοίκων και οντότητες με λίστες κατειλημμένων ή δωματίων ύπνου. Στο επόμενο βήμα επιλέγεις κατάσταση (state) ή διαθέσιμο χαρακτηριστικό. Τα λεπτά είναι μέγιστη ηλικία ενημέρωσης της πηγής, ΟΧΙ διάρκεια ύπνου.",
         "data": {
           "general_room_occupancy_sensors": "Δωμάτιο · Παρουσία · αισθητήρας",
-          "general_occupied_rooms_entity": "Παρουσία · Δωμάτιο · πηγή (state)",
-          "general_occupied_rooms_attribute": "Παρουσία · Δωμάτιο · πηγή (attribute)",
+          "general_occupied_rooms_entity": "Κατειλημμένα δωμάτια — επιλογή οντότητας",
           "general_home_trackers": "Σπίτι · Παρουσία · Συσκευές",
           "general_home_policy": "Σπίτι · Παρουσία · έλεγχος",
-          "general_sleep_rooms_entity": "Ύπνος · Δωμάτιο · πηγή (state)",
-          "general_sleep_rooms_attribute": "Ύπνος · Δωμάτιο · πηγή (attribute)",
-          "general_source_stale_minutes": "πηγή · Απαιτείται (min)"
+          "general_sleep_rooms_entity": "Δωμάτια ύπνου — επιλογή οντότητας",
+          "general_source_stale_minutes": "Μέγιστη ηλικία ενημέρωσης πηγών παρουσίας/ύπνου (λεπτά)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
-          "general_occupied_rooms_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
-          "general_occupied_rooms_attribute": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_occupied_rooms_entity": "Εμφανίζονται μόνο οντότητες που έχουν πραγματική λίστα ονομάτων/αναγνωριστικών δωματίων στην κατάσταση ή σε χαρακτηριστικό.",
           "general_home_trackers": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
           "general_home_policy": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
-          "general_sleep_rooms_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
-          "general_sleep_rooms_attribute": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
-          "general_source_stale_minutes": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+          "general_sleep_rooms_entity": "Εμφανίζονται μόνο οντότητες με αναγνώσιμη λίστα δωματίων ύπνου.",
+          "general_source_stale_minutes": "Μέγιστα λεπτά από την τελευταία ενημέρωση της οντότητας παρουσίας/ύπνου από το Home Assistant. 240 λεπτά = 4 ώρες παλαιότητας δεδομένων, ΟΧΙ 4 ώρες ύπνου. Αν η πηγή μείνει χωρίς ενημέρωση, η παρουσία/ύπνος γίνεται άγνωστη."
+        }
+      },
+      "general_sources": {
+        "title": "πηγή · Επιλογή",
+        "description": "Επίλεξε «Κατάσταση (state)» όταν η ίδια η κατάσταση περιέχει λίστα δωματίων ή ένα από τα πραγματικά διαθέσιμα χαρακτηριστικά. Άσχετα δεδομένα αποκλείονται.",
+        "data": {
+          "general_occupied_rooms_attribute": "Κατειλημμένα δωμάτια — κατάσταση ή πραγματικό χαρακτηριστικό",
+          "general_sleep_rooms_attribute": "Δωμάτια ύπνου — κατάσταση ή πραγματικό χαρακτηριστικό"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "Επίλεξε Κατάσταση (state) αν περιέχει έγκυρη λίστα ή ένα από τα πραγματικά χαρακτηριστικά της επιλεγμένης οντότητας.",
+          "general_sleep_rooms_attribute": "Επίλεξε Κατάσταση (state) ή πραγματικό χαρακτηριστικό με λίστα δωματίων ύπνου. Δεν χρειάζεται χειροκίνητη πληκτρολόγηση."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "στόχος · ρυθμίσεις"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Εγγενής θερμοστάτης",
+        "environment": "Μόνο περιβαλλοντικές συσκευές",
+        "setpoint_pid": "PID στόχου",
+        "on_off": "Θερμικό ρελέ",
+        "pwm": "Θερμικό PWM",
+        "proportional": "Αναλογική έξοδος"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Αυτόματο",
+        "heat": "Θέρμανση",
+        "cool": "Ψύξη",
+        "dry": "Αφύγρανση",
+        "off": "Κλειστό"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Θεώρησε παρουσία",
+        "hold": "Αναστολή εντολών"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Ένας κάτοικος αρκεί",
+        "all_home": "Απαιτούνται όλοι"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Αυτόματο",
+        "home": "Σπίτι",
+        "unoccupied": "Άδειο δωμάτιο",
+        "away": "Απουσία",
+        "sleep": "Ύπνος"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Θερμοκρασία",
+        "pmv": "Θερμική άνεση PMV"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Θέρμανση",
+        "cool": "Ψύξη"
       }
     }
   }

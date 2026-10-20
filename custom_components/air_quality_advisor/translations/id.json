@@ -422,362 +422,362 @@
       },
       "environment_room": {
         "title": "Choose a room for environmental science",
-        "description": "Configure extra sensors and assumptions for one selected room. All are optional. The basic Home Environment Manager features work without any of them.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "pengaturan · kendali"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "Pilih sumber; Wajib · kendali."
         }
       },
       "environment_room_air": {
         "title": "Room: {area_name} — ventilation and moisture",
-        "description": "Optional. Choose the room-temperature sensor if multiple are present. Enter measured room volume and your air cleaner's published particle CADR only if known. Confirm real NDIR CO₂ hardware before allowing predictions. Room occupancy and open-window evidence still determine whether air-change estimates are possible.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "Suhu · target (°C)",
+          "room_volume_m3": "pengaturan · kendali",
+          "particle_cadr_m3h": "pengaturan · kendali",
+          "purifier_entity": "Perangkat · Pilih sensor",
+          "extractor_entity": "Perangkat · Pilih sensor",
+          "co2_ndir_verified": "pengaturan · kendali",
+          "co2_target_ppm": "pengaturan · kendali",
+          "sleep_room": "Tidur · pengaturan"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "temperature_entity": "Pilih sumber; Wajib · kendali.",
+          "room_volume_m3": "Pilih sumber; Wajib · kendali.",
+          "particle_cadr_m3h": "Pilih sumber; Wajib · kendali.",
+          "purifier_entity": "Pilih sumber; Wajib · kendali.",
+          "extractor_entity": "Pilih sumber; Wajib · kendali.",
+          "co2_ndir_verified": "Pilih sumber; Wajib · kendali.",
+          "co2_target_ppm": "Pilih sumber; Wajib · kendali.",
+          "sleep_room": "Pilih sumber; Wajib · kendali."
         }
       },
       "environment_room_exposure": {
         "title": "Room: {area_name} — optional specialist sensors",
-        "description": "Optional. Select only sensors actually measuring the requested pollutant and units. Confirm independent hardware/calibration; synthetic HCHO, eCO₂ and generic sound-level signals are not acceptable substitutes for validated observations. Radon guidelines need nearly a full year of history.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "Perangkat · Pilih sensor",
+          "radon_sensor_verified": "pengaturan · kendali",
+          "radon_reference_bq_m3": "pengaturan · kendali",
+          "formaldehyde_entity": "Perangkat · Pilih sensor",
+          "formaldehyde_sensor_verified": "pengaturan · kendali",
+          "noise_entity": "Perangkat · Pilih sensor",
+          "noise_sensor_calibrated": "pengaturan · kendali",
+          "illuminance_entity": "Perangkat · Pilih sensor",
+          "melanopic_edi_entity": "Perangkat · Pilih sensor",
+          "melanopic_spectral_verified": "pengaturan · kendali"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "radon_entity": "Pilih sumber; Wajib · kendali.",
+          "radon_sensor_verified": "Pilih sumber; Wajib · kendali.",
+          "radon_reference_bq_m3": "Pilih sumber; Wajib · kendali.",
+          "formaldehyde_entity": "Pilih sumber; Wajib · kendali.",
+          "formaldehyde_sensor_verified": "Pilih sumber; Wajib · kendali.",
+          "noise_entity": "Pilih sumber; Wajib · kendali.",
+          "noise_sensor_calibrated": "Pilih sumber; Wajib · kendali.",
+          "illuminance_entity": "Pilih sumber; Wajib · kendali.",
+          "melanopic_edi_entity": "Pilih sumber; Wajib · kendali.",
+          "melanopic_spectral_verified": "Pilih sumber; Wajib · kendali."
         }
       },
       "environment_room_comfort": {
         "title": "Room: {area_name} — full thermal comfort (advanced)",
-        "description": "Optional ISO 7730 PMV/PPD. You MUST provide mean radiant temperature, air speed (measured or supplied), activity in met and clothing insulation in clo. Never interpret estimates as individual comfort or building compliance.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "pengaturan · kendali",
+          "radiant_temperature_entity": "Suhu · target (°C)",
+          "air_speed_entity": "Perangkat · Pilih sensor",
+          "air_speed_m_s": "pengaturan · kendali",
+          "met": "pengaturan · kendali",
+          "clo": "pengaturan · kendali"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "enable_pmv": "Pilih sumber; Wajib · kendali.",
+          "radiant_temperature_entity": "Pilih sumber; Wajib · kendali.",
+          "air_speed_entity": "Pilih sumber; Wajib · kendali.",
+          "air_speed_m_s": "Pilih sumber; Wajib · kendali.",
+          "met": "Pilih sumber; Wajib · kendali.",
+          "clo": "Pilih sumber; Wajib · kendali."
         }
       },
       "pid": {
         "title": "Climate PID — select a room",
-        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "pid_area": "Monitored room to configure"
+          "pid_area": "pengaturan · kendali"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "Pilih sumber; Wajib · kendali."
         }
       },
       "pid_room": {
         "title": "Climate PID in {area_name} — devices and comfort target",
-        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "pid_enabled": "Enable supervisory climate PID for this room",
-          "pid_climate_entities": "Authorized climate devices",
-          "pid_temperature_entity": "Independent room temperature sensor",
-          "pid_mode": "Existing thermostat mode",
-          "pid_target_c": "Desired room temperature (°C)",
-          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+          "pid_enabled": "pengaturan · kendali",
+          "pid_climate_entities": "Perangkat · Pilih sensor",
+          "pid_temperature_entity": "Suhu · target (°C)",
+          "pid_mode": "pengaturan · kendali",
+          "pid_target_c": "pengaturan · kendali",
+          "pid_pause_on_window_open": "pengaturan · kendali"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "Pilih sumber; Wajib · kendali.",
+          "pid_climate_entities": "Pilih sumber; Wajib · kendali.",
+          "pid_temperature_entity": "Pilih sumber; Wajib · kendali.",
+          "pid_mode": "Pilih sumber; Wajib · kendali.",
+          "pid_target_c": "Pilih sumber; Wajib · kendali.",
+          "pid_pause_on_window_open": "Pilih sumber; Wajib · kendali."
         }
       },
       "pid_tuning": {
         "title": "Climate PID in {area_name} — advanced safety and tuning",
-        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "pid_kp": "Proportional gain Kp (% per °C)",
-          "pid_ki": "Integral gain Ki (% per °C-minute)",
-          "pid_kd": "Derivative gain Kd (%·minute per °C)",
-          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
-          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
-          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
-          "pid_sample_seconds": "PID measurement cycle (seconds)",
-          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
-          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+          "pid_kp": "pengaturan · kendali",
+          "pid_ki": "pengaturan · kendali",
+          "pid_kd": "pengaturan · kendali",
+          "pid_offset_c": "pengaturan · kendali",
+          "pid_min_setpoint_c": "pengaturan · kendali",
+          "pid_max_setpoint_c": "pengaturan · kendali",
+          "pid_sample_seconds": "pengaturan · kendali",
+          "pid_max_change_c": "pengaturan · kendali",
+          "pid_min_change_c": "pengaturan · kendali"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "Pilih sumber; Wajib · kendali.",
+          "pid_ki": "Pilih sumber; Wajib · kendali.",
+          "pid_kd": "Pilih sumber; Wajib · kendali.",
+          "pid_offset_c": "Pilih sumber; Wajib · kendali.",
+          "pid_min_setpoint_c": "Pilih sumber; Wajib · kendali.",
+          "pid_max_setpoint_c": "Pilih sumber; Wajib · kendali.",
+          "pid_sample_seconds": "Pilih sumber; Wajib · kendali.",
+          "pid_max_change_c": "Pilih sumber; Wajib · kendali.",
+          "pid_min_change_c": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate": {
         "title": "Climate — select room",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "pengaturan · kendali"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_room": {
         "title": "Climate — controller, occupancy and away",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
-          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
-          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_enabled": "pengaturan · kendali",
+          "climate_allow_actuation": "pengaturan · kendali",
+          "climate_auto_switch_hvac": "pengaturan · kendali",
+          "climate_prefer_native_auto": "pengaturan · kendali",
+          "climate_controller": "pengaturan · kendali",
+          "climate_mode": "pengaturan · kendali",
+          "climate_entity": "Perangkat · Pilih sensor",
+          "climate_temperature_entity": "Suhu · target (°C)",
+          "climate_hysteresis_c": "pengaturan · kendali"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "Pilih sumber; Wajib · kendali.",
+          "climate_allow_actuation": "Pilih sumber; Wajib · kendali.",
+          "climate_auto_switch_hvac": "Pilih sumber; Wajib · kendali.",
+          "climate_prefer_native_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_controller": "Pilih sumber; Wajib · kendali.",
+          "climate_mode": "Pilih sumber; Wajib · kendali.",
+          "climate_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_temperature_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_hysteresis_c": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_presence": {
         "title": "Climate — occupancy, away, sleep and comfort",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
-          "climate_away_entities": "People or device trackers for home/away",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
-          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
-          "climate_sleep_start": "Sleep period begins (local time)",
-          "climate_sleep_end": "Sleep period ends (local time)",
-          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
-          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+          "climate_occupancy_sensors": "Kehadiran · kendali",
+          "climate_away_entities": "Perangkat · Pilih sensor",
+          "climate_unknown_occupancy": "Kehadiran · kendali",
+          "climate_unoccupied_delay_minutes": "pengaturan · kendali",
+          "climate_occupancy_stale_minutes": "Kehadiran · kendali",
+          "climate_away_policy": "Kehadiran · kendali",
+          "climate_manual_profile": "pengaturan · kendali",
+          "climate_sleep_active": "Tidur · pengaturan",
+          "climate_sleep_schedule_enabled": "Tidur · pengaturan",
+          "climate_sleep_start": "Tidur · pengaturan",
+          "climate_sleep_end": "Tidur · pengaturan",
+          "climate_target_source": "pengaturan · kendali",
+          "climate_comfort_adjustment_max_c": "pengaturan · kendali"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "Pilih sumber; Wajib · kendali.",
+          "climate_away_entities": "Pilih sumber; Wajib · kendali.",
+          "climate_unknown_occupancy": "Pilih sumber; Wajib · kendali.",
+          "climate_unoccupied_delay_minutes": "Pilih sumber; Wajib · kendali.",
+          "climate_occupancy_stale_minutes": "Pilih sumber; Wajib · kendali.",
+          "climate_away_policy": "Pilih sumber; Wajib · kendali.",
+          "climate_manual_profile": "Pilih sumber; Wajib · kendali.",
+          "climate_sleep_active": "Pilih sumber; Wajib · kendali.",
+          "climate_sleep_schedule_enabled": "Pilih sumber; Wajib · kendali.",
+          "climate_sleep_start": "Pilih sumber; Wajib · kendali.",
+          "climate_sleep_end": "Pilih sumber; Wajib · kendali.",
+          "climate_target_source": "Pilih sumber; Wajib · kendali.",
+          "climate_comfort_adjustment_max_c": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_equipment": {
         "title": "Climate — additional equipment and humidity",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
-          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
-          "climate_dry_climate_entity": "Optional climate with native DRY mode",
-          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
-          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
-          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
-          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
-          "climate_purifier_fan_entity": "Optional air purifier fan",
-          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
-          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
-          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
-          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
-          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
-          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
-          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
-          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
-          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
-          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
-          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
-          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
-          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
-          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
-          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
-          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
-          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
-          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+          "climate_heat_climate_entity": "Suhu · target (°C)",
+          "climate_cool_climate_entity": "Suhu · target (°C)",
+          "climate_dry_climate_entity": "Perangkat · Pilih sensor",
+          "climate_fan_climate_entity": "Perangkat · Pilih sensor",
+          "climate_humidifier_entity": "Perangkat · Pilih sensor",
+          "climate_dehumidifier_entity": "Perangkat · Pilih sensor",
+          "climate_extraction_fan_entity": "Perangkat · Pilih sensor",
+          "climate_purifier_fan_entity": "Perangkat · Pilih sensor",
+          "climate_humidity_entity": "Kelembapan · target",
+          "climate_humidity_low_rh": "Kelembapan · target",
+          "climate_humidity_high_rh": "Kelembapan · target",
+          "climate_humidity_hysteresis_rh": "Kelembapan · target",
+          "climate_cooling_dry_deferral_rh_points": "Suhu · target (°C)",
+          "climate_humidity_setpoint_auto": "Kelembapan · target",
+          "climate_window_efficiency_notify": "pengaturan · kendali",
+          "climate_dry_fan_mode_auto": "pengaturan · kendali",
+          "climate_dry_fan_hardware_confirmed": "pengaturan · kendali",
+          "climate_dry_fan_windowless_confirmed": "pengaturan · kendali",
+          "climate_dry_fan_mode_dwell_s": "pengaturan · kendali",
+          "climate_humidity_power_auto": "Kelembapan · target",
+          "climate_humidity_power_hardware_confirmed": "Kelembapan · target",
+          "climate_humidity_power_windowless_confirmed": "Kelembapan · target",
+          "climate_humidity_power_min_on_s": "Kelembapan · target",
+          "climate_humidity_power_min_off_s": "Kelembapan · target",
+          "climate_humidity_power_max_on_s": "Kelembapan · target",
+          "climate_secondary_climate_setpoint_auto": "pengaturan · kendali"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_cool_climate_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_dry_climate_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_climate_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_humidifier_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_dehumidifier_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_extraction_fan_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_purifier_fan_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_low_rh": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_high_rh": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_hysteresis_rh": "Pilih sumber; Wajib · kendali.",
+          "climate_cooling_dry_deferral_rh_points": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_setpoint_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_window_efficiency_notify": "Pilih sumber; Wajib · kendali.",
+          "climate_dry_fan_mode_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_dry_fan_hardware_confirmed": "Pilih sumber; Wajib · kendali.",
+          "climate_dry_fan_windowless_confirmed": "Pilih sumber; Wajib · kendali.",
+          "climate_dry_fan_mode_dwell_s": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_hardware_confirmed": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_windowless_confirmed": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_min_on_s": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_min_off_s": "Pilih sumber; Wajib · kendali.",
+          "climate_humidity_power_max_on_s": "Pilih sumber; Wajib · kendali.",
+          "climate_secondary_climate_setpoint_auto": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_air_strategy": {
         "title": "Climate — ventilation and air purification",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
-          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
-          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
-          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
-          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
-          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
-          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
-          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
-          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
-          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
-          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
-          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+          "climate_fan_speed_auto": "pengaturan · kendali",
+          "climate_fan_power_auto": "pengaturan · kendali",
+          "climate_fan_power_hardware_confirmed": "pengaturan · kendali",
+          "climate_fan_power_min_on_s": "pengaturan · kendali",
+          "climate_fan_power_min_off_s": "pengaturan · kendali",
+          "climate_fan_power_max_on_s": "pengaturan · kendali",
+          "climate_pm25_sensor_verified": "pengaturan · kendali",
+          "climate_co2_entity": "Perangkat · Pilih sensor",
+          "climate_pm25_entity": "Perangkat · Pilih sensor",
+          "climate_pm25_action_ug_m3": "pengaturan · kendali",
+          "climate_extraction_speed_percent": "pengaturan · kendali",
+          "climate_purifier_speed_percent": "pengaturan · kendali"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_power_auto": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_power_hardware_confirmed": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_power_min_on_s": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_power_min_off_s": "Pilih sumber; Wajib · kendali.",
+          "climate_fan_power_max_on_s": "Pilih sumber; Wajib · kendali.",
+          "climate_pm25_sensor_verified": "Pilih sumber; Wajib · kendali.",
+          "climate_co2_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_pm25_entity": "Pilih sumber; Wajib · kendali.",
+          "climate_pm25_action_ug_m3": "Pilih sumber; Wajib · kendali.",
+          "climate_extraction_speed_percent": "Pilih sumber; Wajib · kendali.",
+          "climate_purifier_speed_percent": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_profiles": {
         "title": "Climate — temperature bands for each mode",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "Suhu · target (°C)",
+          "home_cool": "Suhu · target (°C)",
+          "unoccupied_heat": "Suhu · target (°C)",
+          "unoccupied_cool": "Suhu · target (°C)",
+          "away_heat": "Suhu · target (°C)",
+          "away_cool": "Suhu · target (°C)",
+          "sleep_heat": "Tidur · pengaturan",
+          "sleep_cool": "Tidur · pengaturan"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "Pilih sumber; Wajib · kendali.",
+          "home_cool": "Pilih sumber; Wajib · kendali.",
+          "unoccupied_heat": "Pilih sumber; Wajib · kendali.",
+          "unoccupied_cool": "Pilih sumber; Wajib · kendali.",
+          "away_heat": "Pilih sumber; Wajib · kendali.",
+          "away_cool": "Pilih sumber; Wajib · kendali.",
+          "sleep_heat": "Pilih sumber; Wajib · kendali.",
+          "sleep_cool": "Pilih sumber; Wajib · kendali."
         }
       },
       "climate_actuators": {
         "title": "Direct actuators — verify the equipment and limits",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Area · pengaturan · Perangkat / sensor · kendali.",
         "data": {
-          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
-          "heat_actuator": "Heating switch or proportional output",
-          "cool_actuator": "Cooling switch or proportional output",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "direct_hardware_confirmed": "pengaturan · kendali",
+          "heat_actuator": "pengaturan · kendali",
+          "cool_actuator": "pengaturan · kendali",
+          "min_on_s": "pengaturan · kendali",
+          "min_off_s": "pengaturan · kendali",
+          "max_on_s": "pengaturan · kendali",
+          "mode_dwell_s": "pengaturan · kendali",
+          "kp": "pengaturan · kendali",
+          "ki": "pengaturan · kendali",
+          "kd": "pengaturan · kendali",
+          "sample_seconds": "pengaturan · kendali",
+          "pwm_period_s": "pengaturan · kendali",
+          "max_demand_change": "pengaturan · kendali",
+          "min_demand_change": "pengaturan · kendali"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "Pilih sumber; Wajib · kendali.",
+          "heat_actuator": "Pilih sumber; Wajib · kendali.",
+          "cool_actuator": "Pilih sumber; Wajib · kendali.",
+          "min_on_s": "Pilih sumber; Wajib · kendali.",
+          "min_off_s": "Pilih sumber; Wajib · kendali.",
+          "max_on_s": "Pilih sumber; Wajib · kendali.",
+          "mode_dwell_s": "Pilih sumber; Wajib · kendali.",
+          "kp": "Pilih sumber; Wajib · kendali.",
+          "ki": "Pilih sumber; Wajib · kendali.",
+          "kd": "Pilih sumber; Wajib · kendali.",
+          "sample_seconds": "Pilih sumber; Wajib · kendali.",
+          "pwm_period_s": "Pilih sumber; Wajib · kendali.",
+          "max_demand_change": "Pilih sumber; Wajib · kendali.",
+          "min_demand_change": "Pilih sumber; Wajib · kendali."
         }
       },
       "outside_data": {
@@ -818,22 +818,30 @@
         "data": {
           "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
           "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
-          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
           "general_home_trackers": "Rumah · Kehadiran · Perangkat",
           "general_home_policy": "Rumah · Kehadiran · kendali",
           "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
-          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
           "general_source_stale_minutes": "sumber · Wajib (min)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
-          "general_occupied_rooms_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
-          "general_occupied_rooms_attribute": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_occupied_rooms_entity": "sumber · Ruangan · Pilih; Wajib.",
           "general_home_trackers": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
           "general_home_policy": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
-          "general_sleep_rooms_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
-          "general_sleep_rooms_attribute": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
-          "general_source_stale_minutes": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+          "general_sleep_rooms_entity": "sumber · Ruangan · Pilih; Wajib.",
+          "general_source_stale_minutes": "sumber · Ruangan · Pilih; Wajib."
+        }
+      },
+      "general_sources": {
+        "title": "sumber · Pilih",
+        "description": "sumber · Pilih: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "sumber · Ruangan · Pilih; Wajib.",
+          "general_sleep_rooms_attribute": "sumber · Ruangan · Pilih; Wajib."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "target · pengaturan"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Perangkat · kendali",
+        "environment": "Perangkat · kendali",
+        "setpoint_pid": "Perangkat · kendali",
+        "on_off": "Perangkat · kendali",
+        "pwm": "Perangkat · kendali",
+        "proportional": "Perangkat · kendali"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Otomatis · kendali",
+        "heat": "Suhu + ",
+        "cool": "Suhu − ",
+        "dry": "Kelembapan · kendali",
+        "off": "Matikan"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Kehadiran · pengaturan",
+        "hold": "Perangkat · kendali"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Kehadiran · pengaturan",
+        "all_home": "Kehadiran · pengaturan"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Otomatis · kendali",
+        "home": "Kehadiran · pengaturan",
+        "unoccupied": "Kehadiran · pengaturan",
+        "away": "Kehadiran · pengaturan",
+        "sleep": "Tidur"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Perangkat · kendali",
+        "pmv": "Perangkat · kendali"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Suhu + ",
+        "cool": "Suhu − "
       }
     }
   }

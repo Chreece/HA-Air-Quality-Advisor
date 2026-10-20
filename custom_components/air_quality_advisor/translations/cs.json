@@ -422,362 +422,362 @@
       },
       "environment_room": {
         "title": "Choose a room for environmental science",
-        "description": "Configure extra sensors and assumptions for one selected room. All are optional. The basic Home Environment Manager features work without any of them.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "nastavení · řízení"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "environment_room_air": {
         "title": "Room: {area_name} — ventilation and moisture",
-        "description": "Optional. Choose the room-temperature sensor if multiple are present. Enter measured room volume and your air cleaner's published particle CADR only if known. Confirm real NDIR CO₂ hardware before allowing predictions. Room occupancy and open-window evidence still determine whether air-change estimates are possible.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "Teplota · cíl (°C)",
+          "room_volume_m3": "nastavení · řízení",
+          "particle_cadr_m3h": "nastavení · řízení",
+          "purifier_entity": "Zařízení · Vybrat senzor",
+          "extractor_entity": "Zařízení · Vybrat senzor",
+          "co2_ndir_verified": "nastavení · řízení",
+          "co2_target_ppm": "nastavení · řízení",
+          "sleep_room": "Spánek · nastavení"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "temperature_entity": "Vybrat zdroj; Povinné · řízení.",
+          "room_volume_m3": "Vybrat zdroj; Povinné · řízení.",
+          "particle_cadr_m3h": "Vybrat zdroj; Povinné · řízení.",
+          "purifier_entity": "Vybrat zdroj; Povinné · řízení.",
+          "extractor_entity": "Vybrat zdroj; Povinné · řízení.",
+          "co2_ndir_verified": "Vybrat zdroj; Povinné · řízení.",
+          "co2_target_ppm": "Vybrat zdroj; Povinné · řízení.",
+          "sleep_room": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "environment_room_exposure": {
         "title": "Room: {area_name} — optional specialist sensors",
-        "description": "Optional. Select only sensors actually measuring the requested pollutant and units. Confirm independent hardware/calibration; synthetic HCHO, eCO₂ and generic sound-level signals are not acceptable substitutes for validated observations. Radon guidelines need nearly a full year of history.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "Zařízení · Vybrat senzor",
+          "radon_sensor_verified": "nastavení · řízení",
+          "radon_reference_bq_m3": "nastavení · řízení",
+          "formaldehyde_entity": "Zařízení · Vybrat senzor",
+          "formaldehyde_sensor_verified": "nastavení · řízení",
+          "noise_entity": "Zařízení · Vybrat senzor",
+          "noise_sensor_calibrated": "nastavení · řízení",
+          "illuminance_entity": "Zařízení · Vybrat senzor",
+          "melanopic_edi_entity": "Zařízení · Vybrat senzor",
+          "melanopic_spectral_verified": "nastavení · řízení"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "radon_entity": "Vybrat zdroj; Povinné · řízení.",
+          "radon_sensor_verified": "Vybrat zdroj; Povinné · řízení.",
+          "radon_reference_bq_m3": "Vybrat zdroj; Povinné · řízení.",
+          "formaldehyde_entity": "Vybrat zdroj; Povinné · řízení.",
+          "formaldehyde_sensor_verified": "Vybrat zdroj; Povinné · řízení.",
+          "noise_entity": "Vybrat zdroj; Povinné · řízení.",
+          "noise_sensor_calibrated": "Vybrat zdroj; Povinné · řízení.",
+          "illuminance_entity": "Vybrat zdroj; Povinné · řízení.",
+          "melanopic_edi_entity": "Vybrat zdroj; Povinné · řízení.",
+          "melanopic_spectral_verified": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "environment_room_comfort": {
         "title": "Room: {area_name} — full thermal comfort (advanced)",
-        "description": "Optional ISO 7730 PMV/PPD. You MUST provide mean radiant temperature, air speed (measured or supplied), activity in met and clothing insulation in clo. Never interpret estimates as individual comfort or building compliance.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "nastavení · řízení",
+          "radiant_temperature_entity": "Teplota · cíl (°C)",
+          "air_speed_entity": "Zařízení · Vybrat senzor",
+          "air_speed_m_s": "nastavení · řízení",
+          "met": "nastavení · řízení",
+          "clo": "nastavení · řízení"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "enable_pmv": "Vybrat zdroj; Povinné · řízení.",
+          "radiant_temperature_entity": "Vybrat zdroj; Povinné · řízení.",
+          "air_speed_entity": "Vybrat zdroj; Povinné · řízení.",
+          "air_speed_m_s": "Vybrat zdroj; Povinné · řízení.",
+          "met": "Vybrat zdroj; Povinné · řízení.",
+          "clo": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "pid": {
         "title": "Climate PID — select a room",
-        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "pid_area": "Monitored room to configure"
+          "pid_area": "nastavení · řízení"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "pid_room": {
         "title": "Climate PID in {area_name} — devices and comfort target",
-        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "pid_enabled": "Enable supervisory climate PID for this room",
-          "pid_climate_entities": "Authorized climate devices",
-          "pid_temperature_entity": "Independent room temperature sensor",
-          "pid_mode": "Existing thermostat mode",
-          "pid_target_c": "Desired room temperature (°C)",
-          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+          "pid_enabled": "nastavení · řízení",
+          "pid_climate_entities": "Zařízení · Vybrat senzor",
+          "pid_temperature_entity": "Teplota · cíl (°C)",
+          "pid_mode": "nastavení · řízení",
+          "pid_target_c": "nastavení · řízení",
+          "pid_pause_on_window_open": "nastavení · řízení"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "Vybrat zdroj; Povinné · řízení.",
+          "pid_climate_entities": "Vybrat zdroj; Povinné · řízení.",
+          "pid_temperature_entity": "Vybrat zdroj; Povinné · řízení.",
+          "pid_mode": "Vybrat zdroj; Povinné · řízení.",
+          "pid_target_c": "Vybrat zdroj; Povinné · řízení.",
+          "pid_pause_on_window_open": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "pid_tuning": {
         "title": "Climate PID in {area_name} — advanced safety and tuning",
-        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "pid_kp": "Proportional gain Kp (% per °C)",
-          "pid_ki": "Integral gain Ki (% per °C-minute)",
-          "pid_kd": "Derivative gain Kd (%·minute per °C)",
-          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
-          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
-          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
-          "pid_sample_seconds": "PID measurement cycle (seconds)",
-          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
-          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+          "pid_kp": "nastavení · řízení",
+          "pid_ki": "nastavení · řízení",
+          "pid_kd": "nastavení · řízení",
+          "pid_offset_c": "nastavení · řízení",
+          "pid_min_setpoint_c": "nastavení · řízení",
+          "pid_max_setpoint_c": "nastavení · řízení",
+          "pid_sample_seconds": "nastavení · řízení",
+          "pid_max_change_c": "nastavení · řízení",
+          "pid_min_change_c": "nastavení · řízení"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "Vybrat zdroj; Povinné · řízení.",
+          "pid_ki": "Vybrat zdroj; Povinné · řízení.",
+          "pid_kd": "Vybrat zdroj; Povinné · řízení.",
+          "pid_offset_c": "Vybrat zdroj; Povinné · řízení.",
+          "pid_min_setpoint_c": "Vybrat zdroj; Povinné · řízení.",
+          "pid_max_setpoint_c": "Vybrat zdroj; Povinné · řízení.",
+          "pid_sample_seconds": "Vybrat zdroj; Povinné · řízení.",
+          "pid_max_change_c": "Vybrat zdroj; Povinné · řízení.",
+          "pid_min_change_c": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate": {
         "title": "Climate — select room",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "nastavení · řízení"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_room": {
         "title": "Climate — controller, occupancy and away",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
-          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
-          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_enabled": "nastavení · řízení",
+          "climate_allow_actuation": "nastavení · řízení",
+          "climate_auto_switch_hvac": "nastavení · řízení",
+          "climate_prefer_native_auto": "nastavení · řízení",
+          "climate_controller": "nastavení · řízení",
+          "climate_mode": "nastavení · řízení",
+          "climate_entity": "Zařízení · Vybrat senzor",
+          "climate_temperature_entity": "Teplota · cíl (°C)",
+          "climate_hysteresis_c": "nastavení · řízení"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "Vybrat zdroj; Povinné · řízení.",
+          "climate_allow_actuation": "Vybrat zdroj; Povinné · řízení.",
+          "climate_auto_switch_hvac": "Vybrat zdroj; Povinné · řízení.",
+          "climate_prefer_native_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_controller": "Vybrat zdroj; Povinné · řízení.",
+          "climate_mode": "Vybrat zdroj; Povinné · řízení.",
+          "climate_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_temperature_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_hysteresis_c": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_presence": {
         "title": "Climate — occupancy, away, sleep and comfort",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
-          "climate_away_entities": "People or device trackers for home/away",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
-          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
-          "climate_sleep_start": "Sleep period begins (local time)",
-          "climate_sleep_end": "Sleep period ends (local time)",
-          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
-          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+          "climate_occupancy_sensors": "Obsazenost · řízení",
+          "climate_away_entities": "Zařízení · Vybrat senzor",
+          "climate_unknown_occupancy": "Obsazenost · řízení",
+          "climate_unoccupied_delay_minutes": "nastavení · řízení",
+          "climate_occupancy_stale_minutes": "Obsazenost · řízení",
+          "climate_away_policy": "Obsazenost · řízení",
+          "climate_manual_profile": "nastavení · řízení",
+          "climate_sleep_active": "Spánek · nastavení",
+          "climate_sleep_schedule_enabled": "Spánek · nastavení",
+          "climate_sleep_start": "Spánek · nastavení",
+          "climate_sleep_end": "Spánek · nastavení",
+          "climate_target_source": "nastavení · řízení",
+          "climate_comfort_adjustment_max_c": "nastavení · řízení"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "Vybrat zdroj; Povinné · řízení.",
+          "climate_away_entities": "Vybrat zdroj; Povinné · řízení.",
+          "climate_unknown_occupancy": "Vybrat zdroj; Povinné · řízení.",
+          "climate_unoccupied_delay_minutes": "Vybrat zdroj; Povinné · řízení.",
+          "climate_occupancy_stale_minutes": "Vybrat zdroj; Povinné · řízení.",
+          "climate_away_policy": "Vybrat zdroj; Povinné · řízení.",
+          "climate_manual_profile": "Vybrat zdroj; Povinné · řízení.",
+          "climate_sleep_active": "Vybrat zdroj; Povinné · řízení.",
+          "climate_sleep_schedule_enabled": "Vybrat zdroj; Povinné · řízení.",
+          "climate_sleep_start": "Vybrat zdroj; Povinné · řízení.",
+          "climate_sleep_end": "Vybrat zdroj; Povinné · řízení.",
+          "climate_target_source": "Vybrat zdroj; Povinné · řízení.",
+          "climate_comfort_adjustment_max_c": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_equipment": {
         "title": "Climate — additional equipment and humidity",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
-          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
-          "climate_dry_climate_entity": "Optional climate with native DRY mode",
-          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
-          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
-          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
-          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
-          "climate_purifier_fan_entity": "Optional air purifier fan",
-          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
-          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
-          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
-          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
-          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
-          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
-          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
-          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
-          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
-          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
-          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
-          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
-          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
-          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
-          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
-          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
-          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
-          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+          "climate_heat_climate_entity": "Teplota · cíl (°C)",
+          "climate_cool_climate_entity": "Teplota · cíl (°C)",
+          "climate_dry_climate_entity": "Zařízení · Vybrat senzor",
+          "climate_fan_climate_entity": "Zařízení · Vybrat senzor",
+          "climate_humidifier_entity": "Zařízení · Vybrat senzor",
+          "climate_dehumidifier_entity": "Zařízení · Vybrat senzor",
+          "climate_extraction_fan_entity": "Zařízení · Vybrat senzor",
+          "climate_purifier_fan_entity": "Zařízení · Vybrat senzor",
+          "climate_humidity_entity": "Vlhkost · cíl",
+          "climate_humidity_low_rh": "Vlhkost · cíl",
+          "climate_humidity_high_rh": "Vlhkost · cíl",
+          "climate_humidity_hysteresis_rh": "Vlhkost · cíl",
+          "climate_cooling_dry_deferral_rh_points": "Teplota · cíl (°C)",
+          "climate_humidity_setpoint_auto": "Vlhkost · cíl",
+          "climate_window_efficiency_notify": "nastavení · řízení",
+          "climate_dry_fan_mode_auto": "nastavení · řízení",
+          "climate_dry_fan_hardware_confirmed": "nastavení · řízení",
+          "climate_dry_fan_windowless_confirmed": "nastavení · řízení",
+          "climate_dry_fan_mode_dwell_s": "nastavení · řízení",
+          "climate_humidity_power_auto": "Vlhkost · cíl",
+          "climate_humidity_power_hardware_confirmed": "Vlhkost · cíl",
+          "climate_humidity_power_windowless_confirmed": "Vlhkost · cíl",
+          "climate_humidity_power_min_on_s": "Vlhkost · cíl",
+          "climate_humidity_power_min_off_s": "Vlhkost · cíl",
+          "climate_humidity_power_max_on_s": "Vlhkost · cíl",
+          "climate_secondary_climate_setpoint_auto": "nastavení · řízení"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_cool_climate_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dry_climate_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_climate_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidifier_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dehumidifier_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_extraction_fan_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_purifier_fan_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_low_rh": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_high_rh": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_hysteresis_rh": "Vybrat zdroj; Povinné · řízení.",
+          "climate_cooling_dry_deferral_rh_points": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_setpoint_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_window_efficiency_notify": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dry_fan_mode_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dry_fan_hardware_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dry_fan_windowless_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "climate_dry_fan_mode_dwell_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_hardware_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_windowless_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_min_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_min_off_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_humidity_power_max_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_secondary_climate_setpoint_auto": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_air_strategy": {
         "title": "Climate — ventilation and air purification",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
-          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
-          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
-          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
-          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
-          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
-          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
-          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
-          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
-          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
-          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
-          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+          "climate_fan_speed_auto": "nastavení · řízení",
+          "climate_fan_power_auto": "nastavení · řízení",
+          "climate_fan_power_hardware_confirmed": "nastavení · řízení",
+          "climate_fan_power_min_on_s": "nastavení · řízení",
+          "climate_fan_power_min_off_s": "nastavení · řízení",
+          "climate_fan_power_max_on_s": "nastavení · řízení",
+          "climate_pm25_sensor_verified": "nastavení · řízení",
+          "climate_co2_entity": "Zařízení · Vybrat senzor",
+          "climate_pm25_entity": "Zařízení · Vybrat senzor",
+          "climate_pm25_action_ug_m3": "nastavení · řízení",
+          "climate_extraction_speed_percent": "nastavení · řízení",
+          "climate_purifier_speed_percent": "nastavení · řízení"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_power_auto": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_power_hardware_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_power_min_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_power_min_off_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_fan_power_max_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "climate_pm25_sensor_verified": "Vybrat zdroj; Povinné · řízení.",
+          "climate_co2_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_pm25_entity": "Vybrat zdroj; Povinné · řízení.",
+          "climate_pm25_action_ug_m3": "Vybrat zdroj; Povinné · řízení.",
+          "climate_extraction_speed_percent": "Vybrat zdroj; Povinné · řízení.",
+          "climate_purifier_speed_percent": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_profiles": {
         "title": "Climate — temperature bands for each mode",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "Teplota · cíl (°C)",
+          "home_cool": "Teplota · cíl (°C)",
+          "unoccupied_heat": "Teplota · cíl (°C)",
+          "unoccupied_cool": "Teplota · cíl (°C)",
+          "away_heat": "Teplota · cíl (°C)",
+          "away_cool": "Teplota · cíl (°C)",
+          "sleep_heat": "Spánek · nastavení",
+          "sleep_cool": "Spánek · nastavení"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "Vybrat zdroj; Povinné · řízení.",
+          "home_cool": "Vybrat zdroj; Povinné · řízení.",
+          "unoccupied_heat": "Vybrat zdroj; Povinné · řízení.",
+          "unoccupied_cool": "Vybrat zdroj; Povinné · řízení.",
+          "away_heat": "Vybrat zdroj; Povinné · řízení.",
+          "away_cool": "Vybrat zdroj; Povinné · řízení.",
+          "sleep_heat": "Vybrat zdroj; Povinné · řízení.",
+          "sleep_cool": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "climate_actuators": {
         "title": "Direct actuators — verify the equipment and limits",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Oblast · nastavení · Zařízení / senzor · řízení.",
         "data": {
-          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
-          "heat_actuator": "Heating switch or proportional output",
-          "cool_actuator": "Cooling switch or proportional output",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "direct_hardware_confirmed": "nastavení · řízení",
+          "heat_actuator": "nastavení · řízení",
+          "cool_actuator": "nastavení · řízení",
+          "min_on_s": "nastavení · řízení",
+          "min_off_s": "nastavení · řízení",
+          "max_on_s": "nastavení · řízení",
+          "mode_dwell_s": "nastavení · řízení",
+          "kp": "nastavení · řízení",
+          "ki": "nastavení · řízení",
+          "kd": "nastavení · řízení",
+          "sample_seconds": "nastavení · řízení",
+          "pwm_period_s": "nastavení · řízení",
+          "max_demand_change": "nastavení · řízení",
+          "min_demand_change": "nastavení · řízení"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "Vybrat zdroj; Povinné · řízení.",
+          "heat_actuator": "Vybrat zdroj; Povinné · řízení.",
+          "cool_actuator": "Vybrat zdroj; Povinné · řízení.",
+          "min_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "min_off_s": "Vybrat zdroj; Povinné · řízení.",
+          "max_on_s": "Vybrat zdroj; Povinné · řízení.",
+          "mode_dwell_s": "Vybrat zdroj; Povinné · řízení.",
+          "kp": "Vybrat zdroj; Povinné · řízení.",
+          "ki": "Vybrat zdroj; Povinné · řízení.",
+          "kd": "Vybrat zdroj; Povinné · řízení.",
+          "sample_seconds": "Vybrat zdroj; Povinné · řízení.",
+          "pwm_period_s": "Vybrat zdroj; Povinné · řízení.",
+          "max_demand_change": "Vybrat zdroj; Povinné · řízení.",
+          "min_demand_change": "Vybrat zdroj; Povinné · řízení."
         }
       },
       "outside_data": {
@@ -818,22 +818,30 @@
         "data": {
           "general_room_occupancy_sensors": "Místnost · Obsazenost · senzor",
           "general_occupied_rooms_entity": "Obsazenost · Místnost · zdroj (state)",
-          "general_occupied_rooms_attribute": "Obsazenost · Místnost · zdroj (attribute)",
           "general_home_trackers": "Domov · Obsazenost · Zařízení",
           "general_home_policy": "Domov · Obsazenost · řízení",
           "general_sleep_rooms_entity": "Spánek · Místnost · zdroj (state)",
-          "general_sleep_rooms_attribute": "Spánek · Místnost · zdroj (attribute)",
           "general_source_stale_minutes": "zdroj · Povinné (min)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
-          "general_occupied_rooms_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
-          "general_occupied_rooms_attribute": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_occupied_rooms_entity": "zdroj · Místnost · Vybrat; Povinné.",
           "general_home_trackers": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
           "general_home_policy": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
-          "general_sleep_rooms_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
-          "general_sleep_rooms_attribute": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
-          "general_source_stale_minutes": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+          "general_sleep_rooms_entity": "zdroj · Místnost · Vybrat; Povinné.",
+          "general_source_stale_minutes": "zdroj · Místnost · Vybrat; Povinné."
+        }
+      },
+      "general_sources": {
+        "title": "zdroj · Vybrat",
+        "description": "zdroj · Vybrat: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "general_occupied_rooms_attribute": "Obsazenost · Místnost · zdroj (attribute)",
+          "general_sleep_rooms_attribute": "Spánek · Místnost · zdroj (attribute)"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "zdroj · Místnost · Vybrat; Povinné.",
+          "general_sleep_rooms_attribute": "zdroj · Místnost · Vybrat; Povinné."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "cíl · nastavení"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Zařízení · řízení",
+        "environment": "Zařízení · řízení",
+        "setpoint_pid": "Zařízení · řízení",
+        "on_off": "Zařízení · řízení",
+        "pwm": "Zařízení · řízení",
+        "proportional": "Zařízení · řízení"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Automatické · řízení",
+        "heat": "Teplota + ",
+        "cool": "Teplota − ",
+        "dry": "Vlhkost · řízení",
+        "off": "Vypnout"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Obsazenost · nastavení",
+        "hold": "Zařízení · řízení"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Obsazenost · nastavení",
+        "all_home": "Obsazenost · nastavení"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Automatické · řízení",
+        "home": "Obsazenost · nastavení",
+        "unoccupied": "Obsazenost · nastavení",
+        "away": "Obsazenost · nastavení",
+        "sleep": "Spánek"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Zařízení · řízení",
+        "pmv": "Zařízení · řízení"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Teplota + ",
+        "cool": "Teplota − "
       }
     }
   }

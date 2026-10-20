@@ -424,82 +424,82 @@
         "title": "Elegir habitación para análisis ambiental",
         "description": "Parámetros opcionales para una habitación.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "ajustes · control"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "Elegir fuente; Obligatorio · control."
         }
       },
       "environment_room_air": {
         "title": "Habitación: {area_name} — ventilación y humedad",
         "description": "Opcional. Proporciona sensores correctos, volumen real y CADR de partículas. Confirma que el sensor CO₂ es NDIR real.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "Temperatura · objetivo (°C)",
+          "room_volume_m3": "ajustes · control",
+          "particle_cadr_m3h": "ajustes · control",
+          "purifier_entity": "Dispositivos · Elegir sensor",
+          "extractor_entity": "Dispositivos · Elegir sensor",
+          "co2_ndir_verified": "ajustes · control",
+          "co2_target_ppm": "ajustes · control",
+          "sleep_room": "Sueño · ajustes"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "temperature_entity": "Elegir fuente; Obligatorio · control.",
+          "room_volume_m3": "Elegir fuente; Obligatorio · control.",
+          "particle_cadr_m3h": "Elegir fuente; Obligatorio · control.",
+          "purifier_entity": "Elegir fuente; Obligatorio · control.",
+          "extractor_entity": "Elegir fuente; Obligatorio · control.",
+          "co2_ndir_verified": "Elegir fuente; Obligatorio · control.",
+          "co2_target_ppm": "Elegir fuente; Obligatorio · control.",
+          "sleep_room": "Elegir fuente; Obligatorio · control."
         }
       },
       "environment_room_exposure": {
         "title": "Habitación: {area_name} — sensores especializados",
         "description": "Sensores opcionales de radón, formaldehído, ruido y luz. Los valores de referencia requieren mediciones verificadas.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "Dispositivos · Elegir sensor",
+          "radon_sensor_verified": "ajustes · control",
+          "radon_reference_bq_m3": "ajustes · control",
+          "formaldehyde_entity": "Dispositivos · Elegir sensor",
+          "formaldehyde_sensor_verified": "ajustes · control",
+          "noise_entity": "Dispositivos · Elegir sensor",
+          "noise_sensor_calibrated": "ajustes · control",
+          "illuminance_entity": "Dispositivos · Elegir sensor",
+          "melanopic_edi_entity": "Dispositivos · Elegir sensor",
+          "melanopic_spectral_verified": "ajustes · control"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "radon_entity": "Elegir fuente; Obligatorio · control.",
+          "radon_sensor_verified": "Elegir fuente; Obligatorio · control.",
+          "radon_reference_bq_m3": "Elegir fuente; Obligatorio · control.",
+          "formaldehyde_entity": "Elegir fuente; Obligatorio · control.",
+          "formaldehyde_sensor_verified": "Elegir fuente; Obligatorio · control.",
+          "noise_entity": "Elegir fuente; Obligatorio · control.",
+          "noise_sensor_calibrated": "Elegir fuente; Obligatorio · control.",
+          "illuminance_entity": "Elegir fuente; Obligatorio · control.",
+          "melanopic_edi_entity": "Elegir fuente; Obligatorio · control.",
+          "melanopic_spectral_verified": "Elegir fuente; Obligatorio · control."
         }
       },
       "environment_room_comfort": {
         "title": "Habitación: {area_name} — confort térmico completo",
         "description": "ISO 7730 opcional: temperatura radiante, velocidad del aire, actividad y ropa obligatorias.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "ajustes · control",
+          "radiant_temperature_entity": "Temperatura · objetivo (°C)",
+          "air_speed_entity": "Dispositivos · Elegir sensor",
+          "air_speed_m_s": "ajustes · control",
+          "met": "ajustes · control",
+          "clo": "ajustes · control"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "enable_pmv": "Elegir fuente; Obligatorio · control.",
+          "radiant_temperature_entity": "Elegir fuente; Obligatorio · control.",
+          "air_speed_entity": "Elegir fuente; Obligatorio · control.",
+          "air_speed_m_s": "Elegir fuente; Obligatorio · control.",
+          "met": "Elegir fuente; Obligatorio · control.",
+          "clo": "Elegir fuente; Obligatorio · control."
         }
       },
       "pid": {
@@ -509,7 +509,7 @@
           "pid_area": "Habitación a configurar"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "Elegir fuente; Obligatorio · control."
         }
       },
       "pid_room": {
@@ -524,260 +524,260 @@
           "pid_pause_on_window_open": "Pausar si una ventana está abierta o desconocida"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "Elegir fuente; Obligatorio · control.",
+          "pid_climate_entities": "Elegir fuente; Obligatorio · control.",
+          "pid_temperature_entity": "Elegir fuente; Obligatorio · control.",
+          "pid_mode": "Elegir fuente; Obligatorio · control.",
+          "pid_target_c": "Elegir fuente; Obligatorio · control.",
+          "pid_pause_on_window_open": "Elegir fuente; Obligatorio · control."
         }
       },
       "pid_tuning": {
         "title": "PID climático en {area_name} — parámetros avanzados y seguridad",
         "description": "Kp en %/°C, Ki en %/(°C·min), Kd en %·min/°C. La consigna se limita. Los cambios manuales pausan el PID hasta reanudarlo explícitamente.",
         "data": {
-          "pid_kp": "Proportional gain Kp (% per °C)",
-          "pid_ki": "Integral gain Ki (% per °C-minute)",
-          "pid_kd": "Derivative gain Kd (%·minute per °C)",
-          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
-          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
-          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
-          "pid_sample_seconds": "PID measurement cycle (seconds)",
-          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
-          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+          "pid_kp": "ajustes · control",
+          "pid_ki": "ajustes · control",
+          "pid_kd": "ajustes · control",
+          "pid_offset_c": "ajustes · control",
+          "pid_min_setpoint_c": "ajustes · control",
+          "pid_max_setpoint_c": "ajustes · control",
+          "pid_sample_seconds": "ajustes · control",
+          "pid_max_change_c": "ajustes · control",
+          "pid_min_change_c": "ajustes · control"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "Elegir fuente; Obligatorio · control.",
+          "pid_ki": "Elegir fuente; Obligatorio · control.",
+          "pid_kd": "Elegir fuente; Obligatorio · control.",
+          "pid_offset_c": "Elegir fuente; Obligatorio · control.",
+          "pid_min_setpoint_c": "Elegir fuente; Obligatorio · control.",
+          "pid_max_setpoint_c": "Elegir fuente; Obligatorio · control.",
+          "pid_sample_seconds": "Elegir fuente; Obligatorio · control.",
+          "pid_max_change_c": "Elegir fuente; Obligatorio · control.",
+          "pid_min_change_c": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate": {
         "title": "Clima — elegir habitación",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "ajustes · control"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_room": {
         "title": "Clima — control, ocupación y ausencia",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
-          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
-          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_enabled": "ajustes · control",
+          "climate_allow_actuation": "ajustes · control",
+          "climate_auto_switch_hvac": "ajustes · control",
+          "climate_prefer_native_auto": "ajustes · control",
+          "climate_controller": "ajustes · control",
+          "climate_mode": "ajustes · control",
+          "climate_entity": "Dispositivos · Elegir sensor",
+          "climate_temperature_entity": "Temperatura · objetivo (°C)",
+          "climate_hysteresis_c": "ajustes · control"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "Elegir fuente; Obligatorio · control.",
+          "climate_allow_actuation": "Elegir fuente; Obligatorio · control.",
+          "climate_auto_switch_hvac": "Elegir fuente; Obligatorio · control.",
+          "climate_prefer_native_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_controller": "Elegir fuente; Obligatorio · control.",
+          "climate_mode": "Elegir fuente; Obligatorio · control.",
+          "climate_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_temperature_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_hysteresis_c": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_presence": {
         "title": "Climate — occupancy, away, sleep and comfort",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
-          "climate_away_entities": "People or device trackers for home/away",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
-          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
-          "climate_sleep_start": "Sleep period begins (local time)",
-          "climate_sleep_end": "Sleep period ends (local time)",
-          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
-          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+          "climate_occupancy_sensors": "Ocupación · control",
+          "climate_away_entities": "Dispositivos · Elegir sensor",
+          "climate_unknown_occupancy": "Ocupación · control",
+          "climate_unoccupied_delay_minutes": "ajustes · control",
+          "climate_occupancy_stale_minutes": "Ocupación · control",
+          "climate_away_policy": "Ocupación · control",
+          "climate_manual_profile": "ajustes · control",
+          "climate_sleep_active": "Sueño · ajustes",
+          "climate_sleep_schedule_enabled": "Sueño · ajustes",
+          "climate_sleep_start": "Sueño · ajustes",
+          "climate_sleep_end": "Sueño · ajustes",
+          "climate_target_source": "ajustes · control",
+          "climate_comfort_adjustment_max_c": "ajustes · control"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "Elegir fuente; Obligatorio · control.",
+          "climate_away_entities": "Elegir fuente; Obligatorio · control.",
+          "climate_unknown_occupancy": "Elegir fuente; Obligatorio · control.",
+          "climate_unoccupied_delay_minutes": "Elegir fuente; Obligatorio · control.",
+          "climate_occupancy_stale_minutes": "Elegir fuente; Obligatorio · control.",
+          "climate_away_policy": "Elegir fuente; Obligatorio · control.",
+          "climate_manual_profile": "Elegir fuente; Obligatorio · control.",
+          "climate_sleep_active": "Elegir fuente; Obligatorio · control.",
+          "climate_sleep_schedule_enabled": "Elegir fuente; Obligatorio · control.",
+          "climate_sleep_start": "Elegir fuente; Obligatorio · control.",
+          "climate_sleep_end": "Elegir fuente; Obligatorio · control.",
+          "climate_target_source": "Elegir fuente; Obligatorio · control.",
+          "climate_comfort_adjustment_max_c": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_equipment": {
         "title": "Climate — additional equipment and humidity",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
-          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
-          "climate_dry_climate_entity": "Optional climate with native DRY mode",
-          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
-          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
-          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
-          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
-          "climate_purifier_fan_entity": "Optional air purifier fan",
-          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
-          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
-          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
-          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
-          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
-          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
-          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
-          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
-          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
-          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
-          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
-          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
-          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
-          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
-          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
-          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
-          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
-          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+          "climate_heat_climate_entity": "Temperatura · objetivo (°C)",
+          "climate_cool_climate_entity": "Temperatura · objetivo (°C)",
+          "climate_dry_climate_entity": "Dispositivos · Elegir sensor",
+          "climate_fan_climate_entity": "Dispositivos · Elegir sensor",
+          "climate_humidifier_entity": "Dispositivos · Elegir sensor",
+          "climate_dehumidifier_entity": "Dispositivos · Elegir sensor",
+          "climate_extraction_fan_entity": "Dispositivos · Elegir sensor",
+          "climate_purifier_fan_entity": "Dispositivos · Elegir sensor",
+          "climate_humidity_entity": "Humedad · objetivo",
+          "climate_humidity_low_rh": "Humedad · objetivo",
+          "climate_humidity_high_rh": "Humedad · objetivo",
+          "climate_humidity_hysteresis_rh": "Humedad · objetivo",
+          "climate_cooling_dry_deferral_rh_points": "Temperatura · objetivo (°C)",
+          "climate_humidity_setpoint_auto": "Humedad · objetivo",
+          "climate_window_efficiency_notify": "ajustes · control",
+          "climate_dry_fan_mode_auto": "ajustes · control",
+          "climate_dry_fan_hardware_confirmed": "ajustes · control",
+          "climate_dry_fan_windowless_confirmed": "ajustes · control",
+          "climate_dry_fan_mode_dwell_s": "ajustes · control",
+          "climate_humidity_power_auto": "Humedad · objetivo",
+          "climate_humidity_power_hardware_confirmed": "Humedad · objetivo",
+          "climate_humidity_power_windowless_confirmed": "Humedad · objetivo",
+          "climate_humidity_power_min_on_s": "Humedad · objetivo",
+          "climate_humidity_power_min_off_s": "Humedad · objetivo",
+          "climate_humidity_power_max_on_s": "Humedad · objetivo",
+          "climate_secondary_climate_setpoint_auto": "ajustes · control"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_cool_climate_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_dry_climate_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_climate_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_humidifier_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_dehumidifier_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_extraction_fan_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_purifier_fan_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_low_rh": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_high_rh": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_hysteresis_rh": "Elegir fuente; Obligatorio · control.",
+          "climate_cooling_dry_deferral_rh_points": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_setpoint_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_window_efficiency_notify": "Elegir fuente; Obligatorio · control.",
+          "climate_dry_fan_mode_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_dry_fan_hardware_confirmed": "Elegir fuente; Obligatorio · control.",
+          "climate_dry_fan_windowless_confirmed": "Elegir fuente; Obligatorio · control.",
+          "climate_dry_fan_mode_dwell_s": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_hardware_confirmed": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_windowless_confirmed": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_min_on_s": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_min_off_s": "Elegir fuente; Obligatorio · control.",
+          "climate_humidity_power_max_on_s": "Elegir fuente; Obligatorio · control.",
+          "climate_secondary_climate_setpoint_auto": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_air_strategy": {
         "title": "Climate — ventilation and air purification",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
-          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
-          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
-          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
-          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
-          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
-          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
-          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
-          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
-          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
-          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
-          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+          "climate_fan_speed_auto": "ajustes · control",
+          "climate_fan_power_auto": "ajustes · control",
+          "climate_fan_power_hardware_confirmed": "ajustes · control",
+          "climate_fan_power_min_on_s": "ajustes · control",
+          "climate_fan_power_min_off_s": "ajustes · control",
+          "climate_fan_power_max_on_s": "ajustes · control",
+          "climate_pm25_sensor_verified": "ajustes · control",
+          "climate_co2_entity": "Dispositivos · Elegir sensor",
+          "climate_pm25_entity": "Dispositivos · Elegir sensor",
+          "climate_pm25_action_ug_m3": "ajustes · control",
+          "climate_extraction_speed_percent": "ajustes · control",
+          "climate_purifier_speed_percent": "ajustes · control"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_power_auto": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_power_hardware_confirmed": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_power_min_on_s": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_power_min_off_s": "Elegir fuente; Obligatorio · control.",
+          "climate_fan_power_max_on_s": "Elegir fuente; Obligatorio · control.",
+          "climate_pm25_sensor_verified": "Elegir fuente; Obligatorio · control.",
+          "climate_co2_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_pm25_entity": "Elegir fuente; Obligatorio · control.",
+          "climate_pm25_action_ug_m3": "Elegir fuente; Obligatorio · control.",
+          "climate_extraction_speed_percent": "Elegir fuente; Obligatorio · control.",
+          "climate_purifier_speed_percent": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_profiles": {
         "title": "Clima — temperaturas por modo",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "Temperatura · objetivo (°C)",
+          "home_cool": "Temperatura · objetivo (°C)",
+          "unoccupied_heat": "Temperatura · objetivo (°C)",
+          "unoccupied_cool": "Temperatura · objetivo (°C)",
+          "away_heat": "Temperatura · objetivo (°C)",
+          "away_cool": "Temperatura · objetivo (°C)",
+          "sleep_heat": "Sueño · ajustes",
+          "sleep_cool": "Sueño · ajustes"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "Elegir fuente; Obligatorio · control.",
+          "home_cool": "Elegir fuente; Obligatorio · control.",
+          "unoccupied_heat": "Elegir fuente; Obligatorio · control.",
+          "unoccupied_cool": "Elegir fuente; Obligatorio · control.",
+          "away_heat": "Elegir fuente; Obligatorio · control.",
+          "away_cool": "Elegir fuente; Obligatorio · control.",
+          "sleep_heat": "Elegir fuente; Obligatorio · control.",
+          "sleep_cool": "Elegir fuente; Obligatorio · control."
         }
       },
       "climate_actuators": {
         "title": "Direct actuators — verify the equipment and limits",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Área · ajustes · Dispositivos / sensor · control.",
         "data": {
-          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
-          "heat_actuator": "Heating switch or proportional output",
-          "cool_actuator": "Cooling switch or proportional output",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "direct_hardware_confirmed": "ajustes · control",
+          "heat_actuator": "ajustes · control",
+          "cool_actuator": "ajustes · control",
+          "min_on_s": "ajustes · control",
+          "min_off_s": "ajustes · control",
+          "max_on_s": "ajustes · control",
+          "mode_dwell_s": "ajustes · control",
+          "kp": "ajustes · control",
+          "ki": "ajustes · control",
+          "kd": "ajustes · control",
+          "sample_seconds": "ajustes · control",
+          "pwm_period_s": "ajustes · control",
+          "max_demand_change": "ajustes · control",
+          "min_demand_change": "ajustes · control"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "Elegir fuente; Obligatorio · control.",
+          "heat_actuator": "Elegir fuente; Obligatorio · control.",
+          "cool_actuator": "Elegir fuente; Obligatorio · control.",
+          "min_on_s": "Elegir fuente; Obligatorio · control.",
+          "min_off_s": "Elegir fuente; Obligatorio · control.",
+          "max_on_s": "Elegir fuente; Obligatorio · control.",
+          "mode_dwell_s": "Elegir fuente; Obligatorio · control.",
+          "kp": "Elegir fuente; Obligatorio · control.",
+          "ki": "Elegir fuente; Obligatorio · control.",
+          "kd": "Elegir fuente; Obligatorio · control.",
+          "sample_seconds": "Elegir fuente; Obligatorio · control.",
+          "pwm_period_s": "Elegir fuente; Obligatorio · control.",
+          "max_demand_change": "Elegir fuente; Obligatorio · control.",
+          "min_demand_change": "Elegir fuente; Obligatorio · control."
         }
       },
       "outside_data": {
@@ -818,22 +818,30 @@
         "data": {
           "general_room_occupancy_sensors": "Habitación · Ocupación · sensor",
           "general_occupied_rooms_entity": "Ocupación · Habitación · fuente (state)",
-          "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
           "general_home_trackers": "Casa · Ocupación · Dispositivos",
           "general_home_policy": "Casa · Ocupación · control",
           "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
-          "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
           "general_source_stale_minutes": "fuente · Obligatorio (min)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
-          "general_occupied_rooms_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
-          "general_occupied_rooms_attribute": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_occupied_rooms_entity": "fuente · Habitación · Elegir; Obligatorio.",
           "general_home_trackers": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
           "general_home_policy": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
-          "general_sleep_rooms_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
-          "general_sleep_rooms_attribute": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
-          "general_source_stale_minutes": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+          "general_sleep_rooms_entity": "fuente · Habitación · Elegir; Obligatorio.",
+          "general_source_stale_minutes": "fuente · Habitación · Elegir; Obligatorio."
+        }
+      },
+      "general_sources": {
+        "title": "fuente · Elegir",
+        "description": "fuente · Elegir: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
+          "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "fuente · Habitación · Elegir; Obligatorio.",
+          "general_sleep_rooms_attribute": "fuente · Habitación · Elegir; Obligatorio."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "objetivo · ajustes"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Dispositivos · control",
+        "environment": "Dispositivos · control",
+        "setpoint_pid": "Dispositivos · control",
+        "on_off": "Dispositivos · control",
+        "pwm": "Dispositivos · control",
+        "proportional": "Dispositivos · control"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Automático · control",
+        "heat": "Temperatura + ",
+        "cool": "Temperatura − ",
+        "dry": "Humedad · control",
+        "off": "Apagar"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Ocupación · ajustes",
+        "hold": "Dispositivos · control"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Ocupación · ajustes",
+        "all_home": "Ocupación · ajustes"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Automático · control",
+        "home": "Ocupación · ajustes",
+        "unoccupied": "Ocupación · ajustes",
+        "away": "Ocupación · ajustes",
+        "sleep": "Sueño"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Dispositivos · control",
+        "pmv": "Dispositivos · control"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Temperatura + ",
+        "cool": "Temperatura − "
       }
     }
   }

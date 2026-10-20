@@ -422,362 +422,362 @@
       },
       "environment_room": {
         "title": "Choose a room for environmental science",
-        "description": "Configure extra sensors and assumptions for one selected room. All are optional. The basic Home Environment Manager features work without any of them.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "cài đặt · điều khiển"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "environment_room_air": {
         "title": "Room: {area_name} — ventilation and moisture",
-        "description": "Optional. Choose the room-temperature sensor if multiple are present. Enter measured room volume and your air cleaner's published particle CADR only if known. Confirm real NDIR CO₂ hardware before allowing predictions. Room occupancy and open-window evidence still determine whether air-change estimates are possible.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "Nhiệt độ · mục tiêu (°C)",
+          "room_volume_m3": "cài đặt · điều khiển",
+          "particle_cadr_m3h": "cài đặt · điều khiển",
+          "purifier_entity": "Thiết bị · Chọn cảm biến",
+          "extractor_entity": "Thiết bị · Chọn cảm biến",
+          "co2_ndir_verified": "cài đặt · điều khiển",
+          "co2_target_ppm": "cài đặt · điều khiển",
+          "sleep_room": "Ngủ · cài đặt"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "temperature_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "room_volume_m3": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "particle_cadr_m3h": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "purifier_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "extractor_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "co2_ndir_verified": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "co2_target_ppm": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "sleep_room": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "environment_room_exposure": {
         "title": "Room: {area_name} — optional specialist sensors",
-        "description": "Optional. Select only sensors actually measuring the requested pollutant and units. Confirm independent hardware/calibration; synthetic HCHO, eCO₂ and generic sound-level signals are not acceptable substitutes for validated observations. Radon guidelines need nearly a full year of history.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "Thiết bị · Chọn cảm biến",
+          "radon_sensor_verified": "cài đặt · điều khiển",
+          "radon_reference_bq_m3": "cài đặt · điều khiển",
+          "formaldehyde_entity": "Thiết bị · Chọn cảm biến",
+          "formaldehyde_sensor_verified": "cài đặt · điều khiển",
+          "noise_entity": "Thiết bị · Chọn cảm biến",
+          "noise_sensor_calibrated": "cài đặt · điều khiển",
+          "illuminance_entity": "Thiết bị · Chọn cảm biến",
+          "melanopic_edi_entity": "Thiết bị · Chọn cảm biến",
+          "melanopic_spectral_verified": "cài đặt · điều khiển"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "radon_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "radon_sensor_verified": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "radon_reference_bq_m3": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "formaldehyde_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "formaldehyde_sensor_verified": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "noise_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "noise_sensor_calibrated": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "illuminance_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "melanopic_edi_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "melanopic_spectral_verified": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "environment_room_comfort": {
         "title": "Room: {area_name} — full thermal comfort (advanced)",
-        "description": "Optional ISO 7730 PMV/PPD. You MUST provide mean radiant temperature, air speed (measured or supplied), activity in met and clothing insulation in clo. Never interpret estimates as individual comfort or building compliance.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "cài đặt · điều khiển",
+          "radiant_temperature_entity": "Nhiệt độ · mục tiêu (°C)",
+          "air_speed_entity": "Thiết bị · Chọn cảm biến",
+          "air_speed_m_s": "cài đặt · điều khiển",
+          "met": "cài đặt · điều khiển",
+          "clo": "cài đặt · điều khiển"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "enable_pmv": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "radiant_temperature_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "air_speed_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "air_speed_m_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "met": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "clo": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "pid": {
         "title": "Climate PID — select a room",
-        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "pid_area": "Monitored room to configure"
+          "pid_area": "cài đặt · điều khiển"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "pid_room": {
         "title": "Climate PID in {area_name} — devices and comfort target",
-        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "pid_enabled": "Enable supervisory climate PID for this room",
-          "pid_climate_entities": "Authorized climate devices",
-          "pid_temperature_entity": "Independent room temperature sensor",
-          "pid_mode": "Existing thermostat mode",
-          "pid_target_c": "Desired room temperature (°C)",
-          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+          "pid_enabled": "cài đặt · điều khiển",
+          "pid_climate_entities": "Thiết bị · Chọn cảm biến",
+          "pid_temperature_entity": "Nhiệt độ · mục tiêu (°C)",
+          "pid_mode": "cài đặt · điều khiển",
+          "pid_target_c": "cài đặt · điều khiển",
+          "pid_pause_on_window_open": "cài đặt · điều khiển"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_climate_entities": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_temperature_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_mode": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_target_c": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_pause_on_window_open": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "pid_tuning": {
         "title": "Climate PID in {area_name} — advanced safety and tuning",
-        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "pid_kp": "Proportional gain Kp (% per °C)",
-          "pid_ki": "Integral gain Ki (% per °C-minute)",
-          "pid_kd": "Derivative gain Kd (%·minute per °C)",
-          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
-          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
-          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
-          "pid_sample_seconds": "PID measurement cycle (seconds)",
-          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
-          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+          "pid_kp": "cài đặt · điều khiển",
+          "pid_ki": "cài đặt · điều khiển",
+          "pid_kd": "cài đặt · điều khiển",
+          "pid_offset_c": "cài đặt · điều khiển",
+          "pid_min_setpoint_c": "cài đặt · điều khiển",
+          "pid_max_setpoint_c": "cài đặt · điều khiển",
+          "pid_sample_seconds": "cài đặt · điều khiển",
+          "pid_max_change_c": "cài đặt · điều khiển",
+          "pid_min_change_c": "cài đặt · điều khiển"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_ki": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_kd": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_offset_c": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_min_setpoint_c": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_max_setpoint_c": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_sample_seconds": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_max_change_c": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pid_min_change_c": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate": {
         "title": "Climate — select room",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "cài đặt · điều khiển"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_room": {
         "title": "Climate — controller, occupancy and away",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
-          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
-          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_enabled": "cài đặt · điều khiển",
+          "climate_allow_actuation": "cài đặt · điều khiển",
+          "climate_auto_switch_hvac": "cài đặt · điều khiển",
+          "climate_prefer_native_auto": "cài đặt · điều khiển",
+          "climate_controller": "cài đặt · điều khiển",
+          "climate_mode": "cài đặt · điều khiển",
+          "climate_entity": "Thiết bị · Chọn cảm biến",
+          "climate_temperature_entity": "Nhiệt độ · mục tiêu (°C)",
+          "climate_hysteresis_c": "cài đặt · điều khiển"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_allow_actuation": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_auto_switch_hvac": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_prefer_native_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_controller": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_mode": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_temperature_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_hysteresis_c": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_presence": {
         "title": "Climate — occupancy, away, sleep and comfort",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
-          "climate_away_entities": "People or device trackers for home/away",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
-          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
-          "climate_sleep_start": "Sleep period begins (local time)",
-          "climate_sleep_end": "Sleep period ends (local time)",
-          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
-          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+          "climate_occupancy_sensors": "Hiện diện · điều khiển",
+          "climate_away_entities": "Thiết bị · Chọn cảm biến",
+          "climate_unknown_occupancy": "Hiện diện · điều khiển",
+          "climate_unoccupied_delay_minutes": "cài đặt · điều khiển",
+          "climate_occupancy_stale_minutes": "Hiện diện · điều khiển",
+          "climate_away_policy": "Hiện diện · điều khiển",
+          "climate_manual_profile": "cài đặt · điều khiển",
+          "climate_sleep_active": "Ngủ · cài đặt",
+          "climate_sleep_schedule_enabled": "Ngủ · cài đặt",
+          "climate_sleep_start": "Ngủ · cài đặt",
+          "climate_sleep_end": "Ngủ · cài đặt",
+          "climate_target_source": "cài đặt · điều khiển",
+          "climate_comfort_adjustment_max_c": "cài đặt · điều khiển"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_away_entities": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_unknown_occupancy": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_unoccupied_delay_minutes": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_occupancy_stale_minutes": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_away_policy": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_manual_profile": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_sleep_active": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_sleep_schedule_enabled": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_sleep_start": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_sleep_end": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_target_source": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_comfort_adjustment_max_c": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_equipment": {
         "title": "Climate — additional equipment and humidity",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
-          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
-          "climate_dry_climate_entity": "Optional climate with native DRY mode",
-          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
-          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
-          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
-          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
-          "climate_purifier_fan_entity": "Optional air purifier fan",
-          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
-          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
-          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
-          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
-          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
-          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
-          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
-          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
-          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
-          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
-          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
-          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
-          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
-          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
-          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
-          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
-          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
-          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+          "climate_heat_climate_entity": "Nhiệt độ · mục tiêu (°C)",
+          "climate_cool_climate_entity": "Nhiệt độ · mục tiêu (°C)",
+          "climate_dry_climate_entity": "Thiết bị · Chọn cảm biến",
+          "climate_fan_climate_entity": "Thiết bị · Chọn cảm biến",
+          "climate_humidifier_entity": "Thiết bị · Chọn cảm biến",
+          "climate_dehumidifier_entity": "Thiết bị · Chọn cảm biến",
+          "climate_extraction_fan_entity": "Thiết bị · Chọn cảm biến",
+          "climate_purifier_fan_entity": "Thiết bị · Chọn cảm biến",
+          "climate_humidity_entity": "Độ ẩm · mục tiêu",
+          "climate_humidity_low_rh": "Độ ẩm · mục tiêu",
+          "climate_humidity_high_rh": "Độ ẩm · mục tiêu",
+          "climate_humidity_hysteresis_rh": "Độ ẩm · mục tiêu",
+          "climate_cooling_dry_deferral_rh_points": "Nhiệt độ · mục tiêu (°C)",
+          "climate_humidity_setpoint_auto": "Độ ẩm · mục tiêu",
+          "climate_window_efficiency_notify": "cài đặt · điều khiển",
+          "climate_dry_fan_mode_auto": "cài đặt · điều khiển",
+          "climate_dry_fan_hardware_confirmed": "cài đặt · điều khiển",
+          "climate_dry_fan_windowless_confirmed": "cài đặt · điều khiển",
+          "climate_dry_fan_mode_dwell_s": "cài đặt · điều khiển",
+          "climate_humidity_power_auto": "Độ ẩm · mục tiêu",
+          "climate_humidity_power_hardware_confirmed": "Độ ẩm · mục tiêu",
+          "climate_humidity_power_windowless_confirmed": "Độ ẩm · mục tiêu",
+          "climate_humidity_power_min_on_s": "Độ ẩm · mục tiêu",
+          "climate_humidity_power_min_off_s": "Độ ẩm · mục tiêu",
+          "climate_humidity_power_max_on_s": "Độ ẩm · mục tiêu",
+          "climate_secondary_climate_setpoint_auto": "cài đặt · điều khiển"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_cool_climate_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dry_climate_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_climate_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidifier_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dehumidifier_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_extraction_fan_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_purifier_fan_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_low_rh": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_high_rh": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_hysteresis_rh": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_cooling_dry_deferral_rh_points": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_setpoint_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_window_efficiency_notify": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dry_fan_mode_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dry_fan_hardware_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dry_fan_windowless_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_dry_fan_mode_dwell_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_hardware_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_windowless_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_min_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_min_off_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_humidity_power_max_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_secondary_climate_setpoint_auto": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_air_strategy": {
         "title": "Climate — ventilation and air purification",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
-          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
-          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
-          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
-          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
-          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
-          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
-          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
-          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
-          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
-          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
-          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+          "climate_fan_speed_auto": "cài đặt · điều khiển",
+          "climate_fan_power_auto": "cài đặt · điều khiển",
+          "climate_fan_power_hardware_confirmed": "cài đặt · điều khiển",
+          "climate_fan_power_min_on_s": "cài đặt · điều khiển",
+          "climate_fan_power_min_off_s": "cài đặt · điều khiển",
+          "climate_fan_power_max_on_s": "cài đặt · điều khiển",
+          "climate_pm25_sensor_verified": "cài đặt · điều khiển",
+          "climate_co2_entity": "Thiết bị · Chọn cảm biến",
+          "climate_pm25_entity": "Thiết bị · Chọn cảm biến",
+          "climate_pm25_action_ug_m3": "cài đặt · điều khiển",
+          "climate_extraction_speed_percent": "cài đặt · điều khiển",
+          "climate_purifier_speed_percent": "cài đặt · điều khiển"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_power_auto": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_power_hardware_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_power_min_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_power_min_off_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_fan_power_max_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_pm25_sensor_verified": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_co2_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_pm25_entity": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_pm25_action_ug_m3": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_extraction_speed_percent": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "climate_purifier_speed_percent": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_profiles": {
         "title": "Climate — temperature bands for each mode",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "Nhiệt độ · mục tiêu (°C)",
+          "home_cool": "Nhiệt độ · mục tiêu (°C)",
+          "unoccupied_heat": "Nhiệt độ · mục tiêu (°C)",
+          "unoccupied_cool": "Nhiệt độ · mục tiêu (°C)",
+          "away_heat": "Nhiệt độ · mục tiêu (°C)",
+          "away_cool": "Nhiệt độ · mục tiêu (°C)",
+          "sleep_heat": "Ngủ · cài đặt",
+          "sleep_cool": "Ngủ · cài đặt"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "home_cool": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "unoccupied_heat": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "unoccupied_cool": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "away_heat": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "away_cool": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "sleep_heat": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "sleep_cool": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "climate_actuators": {
         "title": "Direct actuators — verify the equipment and limits",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "Khu vực · cài đặt · Thiết bị / cảm biến · điều khiển.",
         "data": {
-          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
-          "heat_actuator": "Heating switch or proportional output",
-          "cool_actuator": "Cooling switch or proportional output",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "direct_hardware_confirmed": "cài đặt · điều khiển",
+          "heat_actuator": "cài đặt · điều khiển",
+          "cool_actuator": "cài đặt · điều khiển",
+          "min_on_s": "cài đặt · điều khiển",
+          "min_off_s": "cài đặt · điều khiển",
+          "max_on_s": "cài đặt · điều khiển",
+          "mode_dwell_s": "cài đặt · điều khiển",
+          "kp": "cài đặt · điều khiển",
+          "ki": "cài đặt · điều khiển",
+          "kd": "cài đặt · điều khiển",
+          "sample_seconds": "cài đặt · điều khiển",
+          "pwm_period_s": "cài đặt · điều khiển",
+          "max_demand_change": "cài đặt · điều khiển",
+          "min_demand_change": "cài đặt · điều khiển"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "heat_actuator": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "cool_actuator": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "min_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "min_off_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "max_on_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "mode_dwell_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "kp": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "ki": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "kd": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "sample_seconds": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "pwm_period_s": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "max_demand_change": "Chọn nguồn; Bắt buộc · điều khiển.",
+          "min_demand_change": "Chọn nguồn; Bắt buộc · điều khiển."
         }
       },
       "outside_data": {
@@ -818,22 +818,30 @@
         "data": {
           "general_room_occupancy_sensors": "Phòng · Hiện diện · cảm biến",
           "general_occupied_rooms_entity": "Hiện diện · Phòng · nguồn (state)",
-          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
           "general_home_trackers": "Nhà · Hiện diện · Thiết bị",
           "general_home_policy": "Nhà · Hiện diện · điều khiển",
           "general_sleep_rooms_entity": "Ngủ · Phòng · nguồn (state)",
-          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)",
           "general_source_stale_minutes": "nguồn · Bắt buộc (min)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
-          "general_occupied_rooms_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
-          "general_occupied_rooms_attribute": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_occupied_rooms_entity": "nguồn · Phòng · Chọn; Bắt buộc.",
           "general_home_trackers": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
           "general_home_policy": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
-          "general_sleep_rooms_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
-          "general_sleep_rooms_attribute": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
-          "general_source_stale_minutes": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+          "general_sleep_rooms_entity": "nguồn · Phòng · Chọn; Bắt buộc.",
+          "general_source_stale_minutes": "nguồn · Phòng · Chọn; Bắt buộc."
+        }
+      },
+      "general_sources": {
+        "title": "nguồn · Chọn",
+        "description": "nguồn · Chọn: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
+          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "nguồn · Phòng · Chọn; Bắt buộc.",
+          "general_sleep_rooms_attribute": "nguồn · Phòng · Chọn; Bắt buộc."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "mục tiêu · cài đặt"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "Thiết bị · điều khiển",
+        "environment": "Thiết bị · điều khiển",
+        "setpoint_pid": "Thiết bị · điều khiển",
+        "on_off": "Thiết bị · điều khiển",
+        "pwm": "Thiết bị · điều khiển",
+        "proportional": "Thiết bị · điều khiển"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "Tự động · điều khiển",
+        "heat": "Nhiệt độ + ",
+        "cool": "Nhiệt độ − ",
+        "dry": "Độ ẩm · điều khiển",
+        "off": "Tắt"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "Hiện diện · cài đặt",
+        "hold": "Thiết bị · điều khiển"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "Hiện diện · cài đặt",
+        "all_home": "Hiện diện · cài đặt"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "Tự động · điều khiển",
+        "home": "Hiện diện · cài đặt",
+        "unoccupied": "Hiện diện · cài đặt",
+        "away": "Hiện diện · cài đặt",
+        "sleep": "Ngủ"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "Thiết bị · điều khiển",
+        "pmv": "Thiết bị · điều khiển"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "Nhiệt độ + ",
+        "cool": "Nhiệt độ − "
       }
     }
   }

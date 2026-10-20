@@ -422,362 +422,362 @@
       },
       "environment_room": {
         "title": "Choose a room for environmental science",
-        "description": "Configure extra sensors and assumptions for one selected room. All are optional. The basic Home Environment Manager features work without any of them.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "environment_area": "Room to configure"
+          "environment_area": "تنظیمات · کنترل"
         },
         "data_description": {
-          "environment_area": "Only the selected room is edited. Return here to configure another room."
+          "environment_area": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "environment_room_air": {
         "title": "Room: {area_name} — ventilation and moisture",
-        "description": "Optional. Choose the room-temperature sensor if multiple are present. Enter measured room volume and your air cleaner's published particle CADR only if known. Confirm real NDIR CO₂ hardware before allowing predictions. Room occupancy and open-window evidence still determine whether air-change estimates are possible.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "temperature_entity": "Room air temperature sensor (optional override)",
-          "room_volume_m3": "Measured room air volume (m³)",
-          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
-          "purifier_entity": "Air purifier power/fan entity",
-          "extractor_entity": "Mechanical extraction fan/switch entity",
-          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
-          "co2_target_ppm": "CO₂ ventilation target (ppm)",
-          "sleep_room": "This is a sleeping room"
+          "temperature_entity": "دما · هدف (°C)",
+          "room_volume_m3": "تنظیمات · کنترل",
+          "particle_cadr_m3h": "تنظیمات · کنترل",
+          "purifier_entity": "دستگاه‌ها · انتخاب حسگر",
+          "extractor_entity": "دستگاه‌ها · انتخاب حسگر",
+          "co2_ndir_verified": "تنظیمات · کنترل",
+          "co2_target_ppm": "تنظیمات · کنترل",
+          "sleep_room": "خواب · تنظیمات"
         },
         "data_description": {
-          "temperature_entity": "When multiple temperature sensors are available, explicitly choose the correctly located one. A mold calibration sensor is otherwise reused.",
-          "room_volume_m3": "Interior usable volume: room floor area × ceiling height. Required for nominal filter air exchanges.",
-          "particle_cadr_m3h": "Use the manufacturer's rated particle CADR at the stated fan speed, not fan airflow or a guessed air-change rate. Does not apply to gases.",
-          "purifier_entity": "Power state is used for descriptive suggestions only; Home Environment Manager does not control the device.",
-          "extractor_entity": "Enables moisture-event advice about extraction. RH rises alone do not prove a shower or cooking event.",
-          "co2_ndir_verified": "Use only independently confirmed true CO₂ hardware, not TVOC-based eCO₂ estimates.",
-          "co2_target_ppm": "A configurable operational ventilation goal; reaching it does not prove healthy air or absence of infection risk.",
-          "sleep_room": "Adds sleeping-room interpretation of nighttime heat and noise history when adequate data exists."
+          "temperature_entity": "انتخاب منبع; الزامی · کنترل.",
+          "room_volume_m3": "انتخاب منبع; الزامی · کنترل.",
+          "particle_cadr_m3h": "انتخاب منبع; الزامی · کنترل.",
+          "purifier_entity": "انتخاب منبع; الزامی · کنترل.",
+          "extractor_entity": "انتخاب منبع; الزامی · کنترل.",
+          "co2_ndir_verified": "انتخاب منبع; الزامی · کنترل.",
+          "co2_target_ppm": "انتخاب منبع; الزامی · کنترل.",
+          "sleep_room": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "environment_room_exposure": {
         "title": "Room: {area_name} — optional specialist sensors",
-        "description": "Optional. Select only sensors actually measuring the requested pollutant and units. Confirm independent hardware/calibration; synthetic HCHO, eCO₂ and generic sound-level signals are not acceptable substitutes for validated observations. Radon guidelines need nearly a full year of history.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "radon_entity": "Dedicated radon sensor",
-          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
-          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
-          "formaldehyde_entity": "Dedicated formaldehyde sensor",
-          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
-          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
-          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
-          "illuminance_entity": "Photopic illuminance (lux)",
-          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
-          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+          "radon_entity": "دستگاه‌ها · انتخاب حسگر",
+          "radon_sensor_verified": "تنظیمات · کنترل",
+          "radon_reference_bq_m3": "تنظیمات · کنترل",
+          "formaldehyde_entity": "دستگاه‌ها · انتخاب حسگر",
+          "formaldehyde_sensor_verified": "تنظیمات · کنترل",
+          "noise_entity": "دستگاه‌ها · انتخاب حسگر",
+          "noise_sensor_calibrated": "تنظیمات · کنترل",
+          "illuminance_entity": "دستگاه‌ها · انتخاب حسگر",
+          "melanopic_edi_entity": "دستگاه‌ها · انتخاب حسگر",
+          "melanopic_spectral_verified": "تنظیمات · کنترل"
         },
         "data_description": {
-          "radon_entity": "Dedicated monitor, Bq/m³ or pCi/L. WHO recommends a national annual reference of 100 Bq/m³ where feasible (not above 300).",
-          "radon_sensor_verified": "Acknowledges the device truly measures radon. Annual comparison remains unavailable until enough measured days exist.",
-          "radon_reference_bq_m3": "Choose a reference appropriate to your jurisdiction; 100 Bq/m³ is WHO's recommended target where feasible, national limits vary.",
-          "formaldehyde_entity": "Dedicated HCHO with µg/m³ or mg/m³ readings. A generic Tuya estimated HCHO signal is unsuitable.",
-          "formaldehyde_sensor_verified": "Required before comparing a measured 30-minute average against WHO's 100 µg/m³ guideline.",
-          "noise_entity": "A-weighted dB(A). The integration performs logarithmic energy averaging, not arithmetic dB averaging.",
-          "noise_sensor_calibrated": "Only enable if your sensor represents sampled equivalent sound levels; peak-only recordings cannot make an LAeq.",
-          "illuminance_entity": "Standard lux; daylight exposure only, not circadian or melanopic effectiveness.",
-          "melanopic_edi_entity": "Requires actual melanopic equivalent daylight illuminance from a spectral sensor, never an estimated conversion from lux.",
-          "melanopic_spectral_verified": "Confirms the selected sensor measures melanopic EDI. The integration does not infer this from correlated color temperature."
+          "radon_entity": "انتخاب منبع; الزامی · کنترل.",
+          "radon_sensor_verified": "انتخاب منبع; الزامی · کنترل.",
+          "radon_reference_bq_m3": "انتخاب منبع; الزامی · کنترل.",
+          "formaldehyde_entity": "انتخاب منبع; الزامی · کنترل.",
+          "formaldehyde_sensor_verified": "انتخاب منبع; الزامی · کنترل.",
+          "noise_entity": "انتخاب منبع; الزامی · کنترل.",
+          "noise_sensor_calibrated": "انتخاب منبع; الزامی · کنترل.",
+          "illuminance_entity": "انتخاب منبع; الزامی · کنترل.",
+          "melanopic_edi_entity": "انتخاب منبع; الزامی · کنترل.",
+          "melanopic_spectral_verified": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "environment_room_comfort": {
         "title": "Room: {area_name} — full thermal comfort (advanced)",
-        "description": "Optional ISO 7730 PMV/PPD. You MUST provide mean radiant temperature, air speed (measured or supplied), activity in met and clothing insulation in clo. Never interpret estimates as individual comfort or building compliance.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
-          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
-          "air_speed_entity": "Measured local air-speed sensor (m/s)",
-          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
-          "met": "Occupant activity rate (met)",
-          "clo": "Occupant clothing insulation (clo)"
+          "enable_pmv": "تنظیمات · کنترل",
+          "radiant_temperature_entity": "دما · هدف (°C)",
+          "air_speed_entity": "دستگاه‌ها · انتخاب حسگر",
+          "air_speed_m_s": "تنظیمات · کنترل",
+          "met": "تنظیمات · کنترل",
+          "clo": "تنظیمات · کنترل"
         },
         "data_description": {
-          "enable_pmv": "Off by default to avoid invented clothing, radiant temperature, activity and air speed.",
-          "radiant_temperature_entity": "Measured mean radiant temperature, not an ordinary ambient temperature sensor in the same room.",
-          "air_speed_entity": "If selected, use an actual m/s sensor; this overrides the static entered air speed.",
-          "air_speed_m_s": "Only enter when you can justify an air-speed assumption; the output will be labeled an estimate.",
-          "met": "For example approximately 1.0 sitting quietly or 1.2 for desk work; choose the occupant's real activity.",
-          "clo": "Clothing insulation chosen for the occupant, e.g. 0.5 light summer clothing and 1.0 winter clothing."
+          "enable_pmv": "انتخاب منبع; الزامی · کنترل.",
+          "radiant_temperature_entity": "انتخاب منبع; الزامی · کنترل.",
+          "air_speed_entity": "انتخاب منبع; الزامی · کنترل.",
+          "air_speed_m_s": "انتخاب منبع; الزامی · کنترل.",
+          "met": "انتخاب منبع; الزامی · کنترل.",
+          "clo": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "pid": {
         "title": "Climate PID — select a room",
-        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "pid_area": "Monitored room to configure"
+          "pid_area": "تنظیمات · کنترل"
         },
         "data_description": {
-          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+          "pid_area": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "pid_room": {
         "title": "Climate PID in {area_name} — devices and comfort target",
-        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "pid_enabled": "Enable supervisory climate PID for this room",
-          "pid_climate_entities": "Authorized climate devices",
-          "pid_temperature_entity": "Independent room temperature sensor",
-          "pid_mode": "Existing thermostat mode",
-          "pid_target_c": "Desired room temperature (°C)",
-          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+          "pid_enabled": "تنظیمات · کنترل",
+          "pid_climate_entities": "دستگاه‌ها · انتخاب حسگر",
+          "pid_temperature_entity": "دما · هدف (°C)",
+          "pid_mode": "تنظیمات · کنترل",
+          "pid_target_c": "تنظیمات · کنترل",
+          "pid_pause_on_window_open": "تنظیمات · کنترل"
         },
         "data_description": {
-          "pid_enabled": "Off by default. Enable only after verifying the temperature sensor, climate devices and safe setpoint range.",
-          "pid_climate_entities": "Select the exact thermostats in this room. This controller will not broadcast to a device, area or entire integration.",
-          "pid_temperature_entity": "Required. Fresh reading no older than 10 minutes; unavailable or stale values stop control. °C/°F supported.",
-          "pid_mode": "Choose heat or cool to match the device's current mode. PID never powers on HVAC or changes modes.",
-          "pid_target_c": "The requested room temperature, not a compressor duty cycle or proof of thermal comfort.",
-          "pid_pause_on_window_open": "Strongly recommended. No thermostat commands while the selected room's window contacts are open or unavailable."
+          "pid_enabled": "انتخاب منبع; الزامی · کنترل.",
+          "pid_climate_entities": "انتخاب منبع; الزامی · کنترل.",
+          "pid_temperature_entity": "انتخاب منبع; الزامی · کنترل.",
+          "pid_mode": "انتخاب منبع; الزامی · کنترل.",
+          "pid_target_c": "انتخاب منبع; الزامی · کنترل.",
+          "pid_pause_on_window_open": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "pid_tuning": {
         "title": "Climate PID in {area_name} — advanced safety and tuning",
-        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "pid_kp": "Proportional gain Kp (% per °C)",
-          "pid_ki": "Integral gain Ki (% per °C-minute)",
-          "pid_kd": "Derivative gain Kd (%·minute per °C)",
-          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
-          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
-          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
-          "pid_sample_seconds": "PID measurement cycle (seconds)",
-          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
-          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+          "pid_kp": "تنظیمات · کنترل",
+          "pid_ki": "تنظیمات · کنترل",
+          "pid_kd": "تنظیمات · کنترل",
+          "pid_offset_c": "تنظیمات · کنترل",
+          "pid_min_setpoint_c": "تنظیمات · کنترل",
+          "pid_max_setpoint_c": "تنظیمات · کنترل",
+          "pid_sample_seconds": "تنظیمات · کنترل",
+          "pid_max_change_c": "تنظیمات · کنترل",
+          "pid_min_change_c": "تنظیمات · کنترل"
         },
         "data_description": {
-          "pid_kp": "Start with default 22. High values may cause undesirable thermostat setpoint hunting.",
-          "pid_ki": "Start with 0.25. Conditional anti-windup stops integration at saturated limits.",
-          "pid_kd": "Default 0. Derivative is based on the filtered measured temperature, avoiding a setpoint kick.",
-          "pid_offset_c": "Full PID demand moves heating setpoint up by this offset or cooling setpoint down by this offset; no HVAC mode switching.",
-          "pid_min_setpoint_c": "Hard operational floor; device min/max are additional hard limits.",
-          "pid_max_setpoint_c": "Hard operational ceiling; device min/max are additional hard limits.",
-          "pid_sample_seconds": "At least 120 seconds. A 300-second cycle is the conservative default; no repeated commands on every sensor event.",
-          "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
-          "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
+          "pid_kp": "انتخاب منبع; الزامی · کنترل.",
+          "pid_ki": "انتخاب منبع; الزامی · کنترل.",
+          "pid_kd": "انتخاب منبع; الزامی · کنترل.",
+          "pid_offset_c": "انتخاب منبع; الزامی · کنترل.",
+          "pid_min_setpoint_c": "انتخاب منبع; الزامی · کنترل.",
+          "pid_max_setpoint_c": "انتخاب منبع; الزامی · کنترل.",
+          "pid_sample_seconds": "انتخاب منبع; الزامی · کنترل.",
+          "pid_max_change_c": "انتخاب منبع; الزامی · کنترل.",
+          "pid_min_change_c": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate": {
         "title": "Climate — select room",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "climate_area": "Room to configure"
+          "climate_area": "تنظیمات · کنترل"
         },
         "data_description": {
-          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_area": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_room": {
         "title": "Climate — controller, occupancy and away",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
-          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
-          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
-          "climate_controller": "Controller method / device capability",
-          "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
-          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+          "climate_enabled": "تنظیمات · کنترل",
+          "climate_allow_actuation": "تنظیمات · کنترل",
+          "climate_auto_switch_hvac": "تنظیمات · کنترل",
+          "climate_prefer_native_auto": "تنظیمات · کنترل",
+          "climate_controller": "تنظیمات · کنترل",
+          "climate_mode": "تنظیمات · کنترل",
+          "climate_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_temperature_entity": "دما · هدف (°C)",
+          "climate_hysteresis_c": "تنظیمات · کنترل"
         },
         "data_description": {
-          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_enabled": "انتخاب منبع; الزامی · کنترل.",
+          "climate_allow_actuation": "انتخاب منبع; الزامی · کنترل.",
+          "climate_auto_switch_hvac": "انتخاب منبع; الزامی · کنترل.",
+          "climate_prefer_native_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_controller": "انتخاب منبع; الزامی · کنترل.",
+          "climate_mode": "انتخاب منبع; الزامی · کنترل.",
+          "climate_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_temperature_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_hysteresis_c": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_presence": {
         "title": "Climate — occupancy, away, sleep and comfort",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
-          "climate_away_entities": "People or device trackers for home/away",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
-          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
-          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
-          "climate_away_policy": "Whole-house away tracking policy",
-          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
-          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
-          "climate_sleep_start": "Sleep period begins (local time)",
-          "climate_sleep_end": "Sleep period ends (local time)",
-          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
-          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+          "climate_occupancy_sensors": "حضور · کنترل",
+          "climate_away_entities": "دستگاه‌ها · انتخاب حسگر",
+          "climate_unknown_occupancy": "حضور · کنترل",
+          "climate_unoccupied_delay_minutes": "تنظیمات · کنترل",
+          "climate_occupancy_stale_minutes": "حضور · کنترل",
+          "climate_away_policy": "حضور · کنترل",
+          "climate_manual_profile": "تنظیمات · کنترل",
+          "climate_sleep_active": "خواب · تنظیمات",
+          "climate_sleep_schedule_enabled": "خواب · تنظیمات",
+          "climate_sleep_start": "خواب · تنظیمات",
+          "climate_sleep_end": "خواب · تنظیمات",
+          "climate_target_source": "تنظیمات · کنترل",
+          "climate_comfort_adjustment_max_c": "تنظیمات · کنترل"
         },
         "data_description": {
-          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
-          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_occupancy_sensors": "انتخاب منبع; الزامی · کنترل.",
+          "climate_away_entities": "انتخاب منبع; الزامی · کنترل.",
+          "climate_unknown_occupancy": "انتخاب منبع; الزامی · کنترل.",
+          "climate_unoccupied_delay_minutes": "انتخاب منبع; الزامی · کنترل.",
+          "climate_occupancy_stale_minutes": "انتخاب منبع; الزامی · کنترل.",
+          "climate_away_policy": "انتخاب منبع; الزامی · کنترل.",
+          "climate_manual_profile": "انتخاب منبع; الزامی · کنترل.",
+          "climate_sleep_active": "انتخاب منبع; الزامی · کنترل.",
+          "climate_sleep_schedule_enabled": "انتخاب منبع; الزامی · کنترل.",
+          "climate_sleep_start": "انتخاب منبع; الزامی · کنترل.",
+          "climate_sleep_end": "انتخاب منبع; الزامی · کنترل.",
+          "climate_target_source": "انتخاب منبع; الزامی · کنترل.",
+          "climate_comfort_adjustment_max_c": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_equipment": {
         "title": "Climate — additional equipment and humidity",
-        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
-          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
-          "climate_dry_climate_entity": "Optional climate with native DRY mode",
-          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
-          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
-          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
-          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
-          "climate_purifier_fan_entity": "Optional air purifier fan",
-          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
-          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
-          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
-          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
-          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
-          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
-          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
-          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
-          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
-          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
-          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
-          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
-          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
-          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
-          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
-          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
-          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
-          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+          "climate_heat_climate_entity": "دما · هدف (°C)",
+          "climate_cool_climate_entity": "دما · هدف (°C)",
+          "climate_dry_climate_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_fan_climate_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_humidifier_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_dehumidifier_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_extraction_fan_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_purifier_fan_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_humidity_entity": "رطوبت · هدف",
+          "climate_humidity_low_rh": "رطوبت · هدف",
+          "climate_humidity_high_rh": "رطوبت · هدف",
+          "climate_humidity_hysteresis_rh": "رطوبت · هدف",
+          "climate_cooling_dry_deferral_rh_points": "دما · هدف (°C)",
+          "climate_humidity_setpoint_auto": "رطوبت · هدف",
+          "climate_window_efficiency_notify": "تنظیمات · کنترل",
+          "climate_dry_fan_mode_auto": "تنظیمات · کنترل",
+          "climate_dry_fan_hardware_confirmed": "تنظیمات · کنترل",
+          "climate_dry_fan_windowless_confirmed": "تنظیمات · کنترل",
+          "climate_dry_fan_mode_dwell_s": "تنظیمات · کنترل",
+          "climate_humidity_power_auto": "رطوبت · هدف",
+          "climate_humidity_power_hardware_confirmed": "رطوبت · هدف",
+          "climate_humidity_power_windowless_confirmed": "رطوبت · هدف",
+          "climate_humidity_power_min_on_s": "رطوبت · هدف",
+          "climate_humidity_power_min_off_s": "رطوبت · هدف",
+          "climate_humidity_power_max_on_s": "رطوبت · هدف",
+          "climate_secondary_climate_setpoint_auto": "تنظیمات · کنترل"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
-          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_heat_climate_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_cool_climate_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dry_climate_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_climate_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidifier_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dehumidifier_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_extraction_fan_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_purifier_fan_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_low_rh": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_high_rh": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_hysteresis_rh": "انتخاب منبع; الزامی · کنترل.",
+          "climate_cooling_dry_deferral_rh_points": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_setpoint_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_window_efficiency_notify": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dry_fan_mode_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dry_fan_hardware_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dry_fan_windowless_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "climate_dry_fan_mode_dwell_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_hardware_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_windowless_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_min_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_min_off_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_humidity_power_max_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_secondary_climate_setpoint_auto": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_air_strategy": {
         "title": "Climate — ventilation and air purification",
-        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
-          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
-          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
-          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
-          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
-          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
-          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
-          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
-          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
-          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
-          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
-          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+          "climate_fan_speed_auto": "تنظیمات · کنترل",
+          "climate_fan_power_auto": "تنظیمات · کنترل",
+          "climate_fan_power_hardware_confirmed": "تنظیمات · کنترل",
+          "climate_fan_power_min_on_s": "تنظیمات · کنترل",
+          "climate_fan_power_min_off_s": "تنظیمات · کنترل",
+          "climate_fan_power_max_on_s": "تنظیمات · کنترل",
+          "climate_pm25_sensor_verified": "تنظیمات · کنترل",
+          "climate_co2_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_pm25_entity": "دستگاه‌ها · انتخاب حسگر",
+          "climate_pm25_action_ug_m3": "تنظیمات · کنترل",
+          "climate_extraction_speed_percent": "تنظیمات · کنترل",
+          "climate_purifier_speed_percent": "تنظیمات · کنترل"
         },
         "data_description": {
-          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "climate_fan_speed_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_power_auto": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_power_hardware_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_power_min_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_power_min_off_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_fan_power_max_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "climate_pm25_sensor_verified": "انتخاب منبع; الزامی · کنترل.",
+          "climate_co2_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_pm25_entity": "انتخاب منبع; الزامی · کنترل.",
+          "climate_pm25_action_ug_m3": "انتخاب منبع; الزامی · کنترل.",
+          "climate_extraction_speed_percent": "انتخاب منبع; الزامی · کنترل.",
+          "climate_purifier_speed_percent": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_profiles": {
         "title": "Climate — temperature bands for each mode",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
-          "unoccupied_heat": "Unoccupied heat",
-          "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "home_heat": "دما · هدف (°C)",
+          "home_cool": "دما · هدف (°C)",
+          "unoccupied_heat": "دما · هدف (°C)",
+          "unoccupied_cool": "دما · هدف (°C)",
+          "away_heat": "دما · هدف (°C)",
+          "away_cool": "دما · هدف (°C)",
+          "sleep_heat": "خواب · تنظیمات",
+          "sleep_cool": "خواب · تنظیمات"
         },
         "data_description": {
-          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "home_heat": "انتخاب منبع; الزامی · کنترل.",
+          "home_cool": "انتخاب منبع; الزامی · کنترل.",
+          "unoccupied_heat": "انتخاب منبع; الزامی · کنترل.",
+          "unoccupied_cool": "انتخاب منبع; الزامی · کنترل.",
+          "away_heat": "انتخاب منبع; الزامی · کنترل.",
+          "away_cool": "انتخاب منبع; الزامی · کنترل.",
+          "sleep_heat": "انتخاب منبع; الزامی · کنترل.",
+          "sleep_cool": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "climate_actuators": {
         "title": "Direct actuators — verify the equipment and limits",
-        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "description": "ناحیه · تنظیمات · دستگاه‌ها / حسگر · کنترل.",
         "data": {
-          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
-          "heat_actuator": "Heating switch or proportional output",
-          "cool_actuator": "Cooling switch or proportional output",
-          "min_on_s": "Minimum energized interval (seconds)",
-          "min_off_s": "Minimum de-energized interval (seconds)",
-          "max_on_s": "Maximum continuous energized runtime (seconds)",
-          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
-          "kp": "PID proportional gain (percentage points/°C)",
-          "ki": "PID integral gain (percentage points/(°C·minute))",
-          "kd": "PID derivative gain (percentage points·minute/°C)",
-          "sample_seconds": "PID sampling period (seconds)",
-          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
-          "max_demand_change": "Maximum percentage-point change per cycle",
-          "min_demand_change": "Minimum meaningful percentage-point change"
+          "direct_hardware_confirmed": "تنظیمات · کنترل",
+          "heat_actuator": "تنظیمات · کنترل",
+          "cool_actuator": "تنظیمات · کنترل",
+          "min_on_s": "تنظیمات · کنترل",
+          "min_off_s": "تنظیمات · کنترل",
+          "max_on_s": "تنظیمات · کنترل",
+          "mode_dwell_s": "تنظیمات · کنترل",
+          "kp": "تنظیمات · کنترل",
+          "ki": "تنظیمات · کنترل",
+          "kd": "تنظیمات · کنترل",
+          "sample_seconds": "تنظیمات · کنترل",
+          "pwm_period_s": "تنظیمات · کنترل",
+          "max_demand_change": "تنظیمات · کنترل",
+          "min_demand_change": "تنظیمات · کنترل"
         },
         "data_description": {
-          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
-          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+          "direct_hardware_confirmed": "انتخاب منبع; الزامی · کنترل.",
+          "heat_actuator": "انتخاب منبع; الزامی · کنترل.",
+          "cool_actuator": "انتخاب منبع; الزامی · کنترل.",
+          "min_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "min_off_s": "انتخاب منبع; الزامی · کنترل.",
+          "max_on_s": "انتخاب منبع; الزامی · کنترل.",
+          "mode_dwell_s": "انتخاب منبع; الزامی · کنترل.",
+          "kp": "انتخاب منبع; الزامی · کنترل.",
+          "ki": "انتخاب منبع; الزامی · کنترل.",
+          "kd": "انتخاب منبع; الزامی · کنترل.",
+          "sample_seconds": "انتخاب منبع; الزامی · کنترل.",
+          "pwm_period_s": "انتخاب منبع; الزامی · کنترل.",
+          "max_demand_change": "انتخاب منبع; الزامی · کنترل.",
+          "min_demand_change": "انتخاب منبع; الزامی · کنترل."
         }
       },
       "outside_data": {
@@ -818,22 +818,30 @@
         "data": {
           "general_room_occupancy_sensors": "اتاق · حضور · حسگر",
           "general_occupied_rooms_entity": "حضور · اتاق · منبع (state)",
-          "general_occupied_rooms_attribute": "حضور · اتاق · منبع (attribute)",
           "general_home_trackers": "خانه · حضور · دستگاه‌ها",
           "general_home_policy": "خانه · حضور · کنترل",
           "general_sleep_rooms_entity": "خواب · اتاق · منبع (state)",
-          "general_sleep_rooms_attribute": "خواب · اتاق · منبع (attribute)",
           "general_source_stale_minutes": "منبع · الزامی (min)"
         },
         "data_description": {
           "general_room_occupancy_sensors": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
-          "general_occupied_rooms_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
-          "general_occupied_rooms_attribute": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_occupied_rooms_entity": "منبع · اتاق · انتخاب; الزامی.",
           "general_home_trackers": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
           "general_home_policy": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
-          "general_sleep_rooms_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
-          "general_sleep_rooms_attribute": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
-          "general_source_stale_minutes": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+          "general_sleep_rooms_entity": "منبع · اتاق · انتخاب; الزامی.",
+          "general_source_stale_minutes": "منبع · اتاق · انتخاب; الزامی."
+        }
+      },
+      "general_sources": {
+        "title": "منبع · انتخاب",
+        "description": "منبع · انتخاب: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "general_occupied_rooms_attribute": "حضور · اتاق · منبع (attribute)",
+          "general_sleep_rooms_attribute": "خواب · اتاق · منبع (attribute)"
+        },
+        "data_description": {
+          "general_occupied_rooms_attribute": "منبع · اتاق · انتخاب; الزامی.",
+          "general_sleep_rooms_attribute": "منبع · اتاق · انتخاب; الزامی."
         }
       },
       "pollen": {
@@ -1163,6 +1171,58 @@
         "us_epa": "US EPA AQI (0–500)",
         "eea_category": "EEA AQI (1–6)",
         "custom": "هدف · تنظیمات"
+      }
+    },
+    "climate_controller": {
+      "options": {
+        "device": "دستگاه‌ها · کنترل",
+        "environment": "دستگاه‌ها · کنترل",
+        "setpoint_pid": "دستگاه‌ها · کنترل",
+        "on_off": "دستگاه‌ها · کنترل",
+        "pwm": "دستگاه‌ها · کنترل",
+        "proportional": "دستگاه‌ها · کنترل"
+      }
+    },
+    "climate_mode": {
+      "options": {
+        "auto": "خودکار · کنترل",
+        "heat": "دما + ",
+        "cool": "دما − ",
+        "dry": "رطوبت · کنترل",
+        "off": "خاموش"
+      }
+    },
+    "climate_unknown_occupancy": {
+      "options": {
+        "occupied": "حضور · تنظیمات",
+        "hold": "دستگاه‌ها · کنترل"
+      }
+    },
+    "climate_away_policy": {
+      "options": {
+        "any_home": "حضور · تنظیمات",
+        "all_home": "حضور · تنظیمات"
+      }
+    },
+    "climate_manual_profile": {
+      "options": {
+        "auto": "خودکار · کنترل",
+        "home": "حضور · تنظیمات",
+        "unoccupied": "حضور · تنظیمات",
+        "away": "حضور · تنظیمات",
+        "sleep": "خواب"
+      }
+    },
+    "climate_target_source": {
+      "options": {
+        "temperature": "دستگاه‌ها · کنترل",
+        "pmv": "دستگاه‌ها · کنترل"
+      }
+    },
+    "pid_mode": {
+      "options": {
+        "heat": "دما + ",
+        "cool": "دما − "
       }
     }
   }
