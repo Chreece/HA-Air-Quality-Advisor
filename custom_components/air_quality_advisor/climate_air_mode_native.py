@@ -65,8 +65,12 @@ class NativeAirModeControl:
         self._ready=False
 
     def _snapshot(self)->dict:
-        return {"version":1,"paused":self.paused,
-                "expected":self.expected,"last_write":self.last_write}
+        # Capture value copies: a returned Store snapshot must NOT silently
+        # change its previously persisted "intent" phase if our in-memory
+        # record is later advanced to "commanded" but that second save fails.
+        return {"version":1,"paused":dict(self.paused),
+                "expected":{area:dict(value) for area,value in self.expected.items()},
+                "last_write":dict(self.last_write)}
 
     def _save(self)->None:
         if self._store is not None:
@@ -489,12 +493,27 @@ class NativeAirModeControl:
         # specific mode/target immediately before the physical service call.
         # If evidence changed, preserve the intent as a fail-closed
         # reconciliation record rather than sending an obsolete command.
+        rechecked_at=self.clock()
         verified_again,latest=self._current_evidence(
-            area,cfg,plan,self.clock(),
+            area,cfg,plan,rechecked_at,
+        )
+        # Between the durable intent and this service call, HA can receive
+        # a new device event that resets its physical mode-change timer.
+        # Honor the room's ORIGINAL configured dwell, not merely the
+        # generic 30-minute advisor threshold checked above.
+        physical=self.hass.states.get(item["entity_id"])
+        final_changed=getattr(physical,"last_changed",None)
+        dwell_still_valid=(
+            isinstance(final_changed,datetime) and
+            final_changed.tzinfo is not None and
+            0<=rechecked_at-final_changed.timestamp() and
+            rechecked_at-final_changed.timestamp()>=dwell
         )
         if (verified_again!="ready" or not isinstance(latest,dict) or
                 latest.get("entity_id")!=item["entity_id"] or
-                latest.get("mode")!=item["mode"]):
+                latest.get("mode")!=item["mode"] or
+                not dwell_still_valid or
+                self.last_write.get(area)!=now):
             self._pause(area,"mode_intent_aborted_by_live_interlock")
             return
         try:
