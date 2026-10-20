@@ -35,7 +35,7 @@ def home(*profiles):
 
 
 def test_multiple_roles_in_one_entry_are_not_a_collision(guard):
-    cfg={"enabled":True,"controller":"device",
+    cfg={"enabled":True,"allow_actuation":True,"controller":"device",
          "climate_entity":"climate.living",
          "heat_climate_entity":"climate.living"}
     h=home(entry("first",climate={"living":cfg}))
@@ -45,9 +45,9 @@ def test_multiple_roles_in_one_entry_are_not_a_collision(guard):
 
 
 def test_second_active_entry_claim_blocks_both_controllers(guard):
-    original={"enabled":True,"controller":"device",
+    original={"enabled":True,"allow_actuation":True,"controller":"device",
               "climate_entity":"climate.living"}
-    foreign={"enabled":True,"controller":"device",
+    foreign={"enabled":True,"allow_actuation":True,"controller":"device",
              "heat_climate_entity":"climate.living"}
     h=home(entry("alpha",climate={"living":original}),
            entry("beta",climate={"living":foreign}))
@@ -61,7 +61,7 @@ def test_second_active_entry_claim_blocks_both_controllers(guard):
 
 
 def test_disabled_entries_and_disabled_room_do_not_block(guard):
-    cfg={"enabled":True,"climate_entity":"climate.living"}
+    cfg={"enabled":True,"allow_actuation":True,"climate_entity":"climate.living"}
     h=home(entry("alpha",climate={"living":cfg}),
            entry("beta",climate={"living":cfg},disabled=True),
            entry("gamma",climate={"living":{**cfg,"enabled":False}}))
@@ -69,7 +69,7 @@ def test_disabled_entries_and_disabled_room_do_not_block(guard):
 
 
 def test_cross_entry_pid_and_native_cannot_share_target(guard):
-    cfg={"enabled":True,"climate_entity":"climate.living"}
+    cfg={"enabled":True,"allow_actuation":True,"climate_entity":"climate.living"}
     h=home(entry("alpha",climate={"living":cfg}),
            entry("beta",pid={"living":{
                "enabled":True,"climate_entities":["climate.living"],
@@ -79,16 +79,16 @@ def test_cross_entry_pid_and_native_cannot_share_target(guard):
     h.config_entries=SimpleNamespace(async_entries=lambda domain:[
         entry("alpha",climate={"living":cfg}),
         entry("beta",pid={"living":{
-            "enabled":True,"climate_entity":"climate.living",
+            "enabled":True,"allow_actuation":True,"climate_entity":"climate.living",
         }}),
     ])
     assert guard.foreign_owner_hold(h,"alpha","climate.living")=="cross_entry_equipment_owner"
 
 
 def test_cross_entry_direct_output_is_never_owned_twice(guard):
-    cfg={"enabled":True,"controller":"on_off",
+    cfg={"enabled":True,"allow_actuation":True,"controller":"on_off",
          "heat_actuator":"switch.living_heat"}
-    foreign={"enabled":True,"controller":"on_off",
+    foreign={"enabled":True,"allow_actuation":True,"controller":"on_off",
              "heat_actuator":"switch.living_heat"}
     h=home(entry("alpha",climate={"living":cfg}),
            entry("beta",climate={"kitchen":foreign}))
@@ -115,10 +115,10 @@ def test_live_gate_revokes_cached_thermal_permission_after_new_entry_claim(guard
         primary.entity_id:"room",ac.entity_id:"room",
         window.entity_id:"room",
     })
-    current={"enabled":True,"controller":"device",
+    current={"enabled":True,"allow_actuation":True,"controller":"device",
              "climate_entity":"climate.radiator",
              "cool_climate_entity":"climate.ac"}
-    foreign={"enabled":True,"controller":"device",
+    foreign={"enabled":True,"allow_actuation":True,"controller":"device",
              "climate_entity":"climate.radiator"}
     h.config_entries=SimpleNamespace(async_entries=lambda _: [
         entry("alpha",climate={"room":current}),
@@ -148,16 +148,29 @@ def test_broken_home_assistant_entry_registry_fails_closed(guard):
     assert guard.foreign_owner_hold(h,"alpha","climate.living")==(
         "other_config_entries_unverifiable"
     )
-    cfg={"enabled":True,"climate_entity":"climate.living"}
+    cfg={"enabled":True,"allow_actuation":True,"climate_entity":"climate.living"}
     assert guard.cross_entry_collisions(h,"alpha",{"living":cfg})=={
         "climate.living":["other_config_entries_unverifiable"],
     }
 
 
 def test_loaded_entry_options_override_old_config_data(guard):
-    old={"enabled":True,"climate_entity":"climate.living"}
+    old={"enabled":True,"allow_actuation":True,"climate_entity":"climate.living"}
     no={"enabled":False,"climate_entity":"climate.living"}
     other=entry("beta",climate={"living":old})
     other.options={"climate_rooms":{"living":no}}
     h=home(entry("alpha"),other)
     assert guard.other_entry_output_owners(h,"alpha")=={}
+
+
+
+def test_advisory_only_other_entry_does_not_claim_controlled_hardware(guard):
+    controlled={"enabled":True,"allow_actuation":True,
+                "climate_entity":"climate.living"}
+    advisory={"enabled":True,"allow_actuation":False,
+              "climate_entity":"climate.living"}
+    h=home(entry("main",climate={"living":controlled}),
+           entry("monitor",climate={"living":advisory}))
+    assert guard.foreign_owner_hold(h,"main","climate.living") is None
+    assert guard.cross_entry_collisions(h,"main",{"living":controlled})=={}
+    assert guard.cross_entry_collisions(h,"monitor",{"living":advisory})=={}
