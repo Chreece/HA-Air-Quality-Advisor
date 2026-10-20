@@ -247,8 +247,15 @@ class HumidityPowerControl:
         desired = finite(band, 20, 80)
         # Require a compatible pre-programmed native controller, NOT an
         # arbitrary 30% drying target left from a prior manual session.
+        minimum = finite(state.attributes.get("min_humidity"), 0, 100)
+        maximum = finite(state.attributes.get("max_humidity"), 0, 100)
+        step = finite(state.attributes.get("target_humidity_step"), 0.5, 10)
         return (target is not None and desired is not None and
-                abs(target - desired) <= 2)
+                minimum is not None and maximum is not None and
+                step is not None and minimum < maximum and
+                minimum <= target <= maximum and
+                abs(target-desired) <= 2 and
+                abs((target-minimum)/step-round((target-minimum)/step)) < 0.01)
 
     async def _tick(self, area: str, cfg: dict, plan: dict, now: float) -> None:
         if not self._ready or not self._active:
