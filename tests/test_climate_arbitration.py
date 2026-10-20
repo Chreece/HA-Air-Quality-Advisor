@@ -228,3 +228,18 @@ def test_window_savings_remains_advice_not_power_permission(arbi):
     assert result["status"]=="idle"
     assert result["window_efficiency"]=="opportunity"
     assert result["mechanical_mode_changes_allowed"] is False
+
+
+def test_cooling_dehumidifier_preference_is_explicit_and_bounded(arbi):
+    h=environment(ac="cool",rh=66)
+    p=report(mode="cool",thermal_role="cool_climate_entity",rh=66,
+             extraction=False,filtration=False)
+    no_deferral=arbi.room_coordination(h,"room",config(
+        cooling_dry_deferral_rh_points=0),p)
+    assert no_deferral["channels"]["humidity"]["status"]=="eligible"
+    defer=arbi.room_coordination(h,"room",config(
+        cooling_dry_deferral_rh_points=15),p)
+    assert defer["channels"]["humidity"]["reason"]=="cooling_priority_observe_rh"
+    broken=arbi.room_coordination(h,"room",config(
+        cooling_dry_deferral_rh_points=-1),p)
+    assert broken["channels"]["humidity"]["reason"]=="invalid_cooling_dry_margin"
