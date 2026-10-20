@@ -1123,3 +1123,51 @@ def test_window_substitution_notifications_default_off_for_legacy_climate_rooms(
     result=asyncio.run(options.async_step_climate_profiles({}))
     cfg=result["completed"]["data"]["climate_rooms"]["living"]
     assert cfg.get("window_efficiency_notify") is not True
+
+
+def test_environment_only_native_fan_power_consent_and_mutual_exclusion(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    fan=MockState("fan.living_extractor","off")
+    co2=MockState("sensor.living_co2",1600,device_class="co2",unit="ppm")
+    for device in (fan,co2):
+        h._values[device.entity_id]=device
+        h._entity_areas[device.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment",
+        "climate_temperature_entity":"none",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    next_form=asyncio.run(options.async_step_climate_equipment({
+        "climate_extraction_fan_entity":"fan.living_extractor",
+    }))
+    assert next_form["step_id"]=="climate_air_strategy"
+    invalid=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert invalid["errors"]["base"]=="climate_fan_power_inputs_missing"
+    invalid=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,"climate_fan_speed_auto":True,
+        "climate_fan_power_hardware_confirmed":True,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert invalid["errors"]["base"]=="climate_fan_power_inputs_missing"
+    enabled=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,
+        "climate_fan_speed_auto":False,
+        "climate_fan_power_hardware_confirmed":True,
+        "climate_fan_power_min_on_s":300,
+        "climate_fan_power_min_off_s":300,
+        "climate_fan_power_max_on_s":3600,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert enabled["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    cfg=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["controller"]=="environment"
+    assert cfg["fan_power_auto"] is True and cfg["fan_speed_auto"] is False
+    assert cfg["fan_power_hardware_confirmed"] is True
