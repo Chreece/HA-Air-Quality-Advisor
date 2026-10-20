@@ -159,13 +159,15 @@ class DirectClimateControl:
                                  return_exceptions=True)
         self._retiring.clear()
         if self._ready:
-            for area,settings in {**self._last_config,
-                                  **self._retired_config}.items():
-                if (not isinstance(settings,dict) or
-                        not settings.get("direct_hardware_confirmed") or
-                        not settings.get("allow_actuation")):
-                    continue
-                await self._safe_off_owned(area,settings,now=self.clock())
+            # A reconfigured area may have BOTH an old, not-yet-reconciled
+            # output and a newly commissioned output. Check both separately.
+            for profiles in (self._retired_config, self._last_config):
+                for area,settings in profiles.items():
+                    if (not isinstance(settings,dict) or
+                            not settings.get("direct_hardware_confirmed") or
+                            not settings.get("allow_actuation")):
+                        continue
+                    await self._safe_off_owned(area,settings,now=self.clock())
         if self._ready and self._store is not None:
             try:
                 await self._store.async_save(self._snapshot())
