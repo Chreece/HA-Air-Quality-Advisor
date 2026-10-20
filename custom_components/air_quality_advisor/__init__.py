@@ -63,6 +63,36 @@ SERVICE_SCHEMA = probatio.Schema({
 })
 
 
+def _exact_room_manager(hass: HomeAssistant, area: str,
+                        section: str) -> tuple[Any | None, str | None]:
+    """Select exactly one active owner for room-scoped control actions.
+
+    Multiple historical config entries may coexist. Never silently route
+    a room to the first one or broadcast a control action to multiple
+    managers; ambiguous area ownership must fail closed.
+    """
+    candidates=[]
+    for manager in hass.data.get(DOMAIN, {}).values():
+        entry=getattr(manager,"entry",None)
+        if entry is None:
+            continue
+        data=getattr(entry,"data",{})
+        options=getattr(entry,"options",{})
+        if not isinstance(data,dict) or not isinstance(options,dict):
+            continue
+        room_settings={**data,**options}.get(section,{})
+        if not isinstance(room_settings,dict):
+            continue
+        config=room_settings.get(area)
+        if isinstance(config,dict) and config.get("enabled") is True:
+            candidates.append(manager)
+    if len(candidates)>1:
+        return None,"ambiguous_room_across_config_entries"
+    if not candidates:
+        return None,"room_not_configured_or_disabled"
+    return candidates[0],None
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Existing installations retain entry IDs and selected devices. Only the
     # uncustomized legacy display title is migrated to the new product name.
@@ -107,12 +137,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
     if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "pid_control"):
         async def async_pid_action(call: ServiceCall) -> ServiceResponse:
-            managers = list(hass.data.get(DOMAIN, {}).values())
-            if not managers:
-                return {"accepted": False, "reason": "Integration is not loaded"}
-            # Accept only the selected registry area ID, no implicit whole-house
-            # or fanout targeting; the PID service never changes HVAC modes.
-            result = await managers[0].async_pid_control(
+            manager,why=_exact_room_manager(
+                hass,call.data["area"],"pid_rooms",
+            )
+            if manager is None:
+                return {"accepted":False,"reason":why}
+            # Exact area owner: never choose the first manager implicitly.
+            result = await manager.async_pid_control(
                 area=call.data["area"], action=call.data["action"],
             )
             return result if call.return_response else None
@@ -125,10 +156,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 )
     if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_control"):
         async def async_native_action(call: ServiceCall) -> ServiceResponse:
-            managers=list(hass.data.get(DOMAIN, {}).values())
-            if not managers:
-                return {"accepted":False,"reason":"not_loaded"}
-            result=await managers[0].async_climate_control(
+            manager,why=_exact_room_manager(
+                hass,call.data["area"],"climate_rooms",
+            )
+            if manager is None:
+                return {"accepted":False,"reason":why}
+            result=await manager.async_climate_control(
                 call.data["area"],call.data["action"]
             )
             return result if call.return_response else None
