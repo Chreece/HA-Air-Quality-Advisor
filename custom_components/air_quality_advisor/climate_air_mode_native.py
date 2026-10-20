@@ -118,7 +118,12 @@ class NativeAirModeControl:
             await asyncio.gather(*tasks,return_exceptions=True)
         self._tasks.clear()
         if self._ready and self._store is not None:
-            await self._store.async_save(self._snapshot())
+            try:
+                await self._store.async_save(self._snapshot())
+            except Exception:
+                # A broken Store cannot justify new commands, but must not
+                # prevent other HA controllers from unloading cleanly.
+                _LOGGER.exception("Could not persist native DRY/FAN shutdown history")
 
     async def command(self,area:str,action:str)->dict:
         if action not in ("pause","resume") or not self._ready:
