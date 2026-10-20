@@ -108,8 +108,15 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
             now_clock=time.time() if now is None else now
             for source in sources:
                 state = hass.states.get(source)
-                changed = (getattr(state,"last_changed",None) or
-                           getattr(state,"last_updated",None))
+                if source == global_presence.get("occupied_rooms_entity") and (
+                    global_presence.get("occupied_rooms_attribute")
+                ):
+                    # Home Assistant updates attributes without changing the
+                    # entity's state. Use the attribute update time for dwell.
+                    changed = getattr(state, "last_updated", None)
+                else:
+                    changed = (getattr(state,"last_changed",None) or
+                               getattr(state,"last_updated",None))
                 if (not isinstance(changed,datetime) or changed.tzinfo is None
                         or not 0<=now_clock-changed.timestamp()
                         or now_clock-changed.timestamp()<delay*60):
@@ -162,13 +169,16 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
     sleeping,sleep_evidence=scheduled_sleep(
         settings,time.time() if now is None else now,time_zone,
     )
-    sleep_verified=bool(sleeping)
+    # Local schedule is trustworthy even when inactive. Only a CONFIGURED
+    # but broken global sleep-room source makes sleep evidence unknown.
+    sleep_verified=True
     if isinstance(global_presence,dict) and global_presence.get("sleep_rooms_entity"):
         from .occupancy_policy import sleep_presence
         global_sleep,global_reason=sleep_presence(
             hass,area,global_presence,known_areas or {area})
         if global_sleep is True:
             sleeping,sleep_evidence=True,global_reason
+            sleep_verified=True
         elif global_sleep is None:
             sleep_verified=False
             sleep_evidence=global_reason

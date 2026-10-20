@@ -253,7 +253,7 @@ def apply_compact_i18n(root: Path) -> None:
             }
         opts=options.setdefault("error",{})
         opts.update({
-            error:f"{vocab['invalid']} · {vocab[field]} · {vocab['settings']}"
+            error:f"{vocab['invalid']} · {vocab['house' if field == 'home' else field]} · {vocab['settings']}"
             for error,field in ERROR_FIELDS.items()
         })
         selectors=data.setdefault("selector",{})

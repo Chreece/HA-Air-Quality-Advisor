@@ -129,7 +129,7 @@ def home_presence(hass: Any, global_settings: Mapping,
         return "home", "no_trackers_assume_home", []
     values = [_bool_presence(hass.states.get(e)) for e in allowed]
     if any(v is None for v in values):
-        return "home", "unverified_home_trackers", allowed
+        return "unknown", "unverified_home_trackers", allowed
     if global_settings.get("home_policy", "any_home") == "all_home":
         return ("home" if all(values) else "away"), "all_home_policy", allowed
     return ("home" if any(values) else "away"), "any_home_policy", allowed

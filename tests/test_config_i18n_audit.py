@@ -169,8 +169,10 @@ def test_translation_generator_uses_reviewed_overrides_and_provider_names_are_in
 def test_all_locales_include_live_mold_weather_and_room_readiness_hints():
     for code, doc in _translations().items():
         assert list(doc["options"]["step"]["init"]["menu_options"])[1:3] == [
-            "weather", "indoor_sensors"
+            "general_settings", "area_settings"
         ], code
+        assert "weather" in doc["options"]["step"]["outside_data"]["menu_options"]
+        assert "indoor_sensors" in doc["options"]["step"]["area_settings"]["menu_options"]
         for context in ("config", "options"):
             weather = doc[context]["step"]["weather"]
             room = doc[context]["step"]["indoor_sensors"]

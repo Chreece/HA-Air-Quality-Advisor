@@ -486,7 +486,8 @@ def test_initial_no_exclusions_still_moves_to_indoor_then_outdoor(monkeypatch, a
 def test_reconfigure_keeps_rooms_first_without_replaying_setup(monkeypatch, adapter):
     options = _make_options(monkeypatch, adapter)
     menu = asyncio.run(options.async_step_init())
-    assert menu["menu_options"][0] == "areas"
+    assert menu["menu_options"][0] == "outside_data"
+    assert "areas" in asyncio.run(options.async_step_area_settings())["menu_options"]
     result = asyncio.run(options.async_step_areas({"areas": ["living"]}))
     assert "completed" in result
     assert result["completed"]["data"]["areas"] == ["living"]
@@ -712,7 +713,11 @@ def test_weather_options_second_and_source_status_before_room_measurements(
     # values of the previous edit.
     options.config_entry.options["use_mold_indicator"] = True
     menu = asyncio.run(options.async_step_init())
-    assert menu["menu_options"][:3] == ["areas","weather","indoor_sensors"]
+    assert menu["menu_options"][:3] == [
+        "outside_data", "general_settings", "area_settings"
+    ]
+    assert "weather" in asyncio.run(options.async_step_outside_data())["menu_options"]
+    assert "indoor_sensors" in asyncio.run(options.async_step_area_settings())["menu_options"]
     weather = asyncio.run(options.async_step_weather())
     assert weather["step_id"] == "weather"
     assert "weather.home" in weather["description_placeholders"]["mold_weather_notice"]
