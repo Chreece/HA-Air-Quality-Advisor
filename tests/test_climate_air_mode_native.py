@@ -222,7 +222,14 @@ def test_compressor_dwell_manual_override_and_service_failure_latch(mode_module)
         await tick(driver,policy,plan(hass,policy))
         assert driver.paused["bedroom"]=="manual_mode_or_unacknowledged_write"
         assert len(hass.services.calls)==1
+        # Resume cannot erase the outstanding mode-change cooldown.
+        assert (await driver.command("bedroom","resume"))=={
+            "accepted":False,
+            "reason":"manual_fan_only_reconciliation_and_full_dwell_required",
+        }
+        clock[0]=7000
         assert (await driver.command("bedroom","resume"))["accepted"] is True
+        assert driver.last_write["bedroom"]==5000
         hass.services.fail=True
         clock[0]=9000
         await tick(driver,policy,plan(hass,policy))
@@ -307,5 +314,129 @@ def test_bad_dwell_and_duplicate_device_ownership_fail_closed(mode_module):
             await asyncio.sleep(0)
         assert driver.statuses["bedroom"]["status"]=="duplicate_device_owner"
         assert not hass.services.calls
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+
+def test_mode_write_intent_is_durable_before_hvac_service_and_after_restart(
+    mode_module,monkeypatch,
+):
+    async def case():
+        persisted={}
+        order=[]
+        class Store:
+            def __init__(self,*args):
+                self.key=args[-1]
+            async def async_load(self):
+                return persisted.get(self.key)
+            def async_delay_save(self,callback,delay):
+                persisted[self.key]=callback()
+            async def async_save(self,payload):
+                persisted[self.key]={
+                    "version":payload["version"],
+                    "paused":dict(payload["paused"]),
+                    "expected":{k:dict(v) for k,v in payload["expected"].items()},
+                    "last_write":dict(payload["last_write"]),
+                }
+                order.append("persist_"+payload["expected"].get(
+                    "bedroom",{}).get("phase","unknown"))
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",Store)
+        hass,clock=system()
+        class Interrupted:
+            def has_service(self,domain,service):
+                return (domain,service)==("climate","set_hvac_mode")
+            async def async_call(self,*args,**kwargs):
+                order.append("service_attempt")
+                raise asyncio.CancelledError
+        hass.services=Interrupted()
+        first=mode_module.NativeAirModeControl(
+            hass,"interrupted",clock=lambda:clock[0],
+        )
+        await first.async_start()
+        clock[0]=5000
+        await tick(first,cfg(),plan(hass,cfg()))
+        assert order[:2]==["persist_intent","service_attempt"]
+        assert persisted[first._store.key]["expected"]["bedroom"]["phase"]=="intent"
+        await first.async_stop()
+        second=mode_module.NativeAirModeControl(
+            hass,"interrupted",clock=lambda:clock[0],
+        )
+        await second.async_start()
+        clock[0]=5400
+        await tick(second,cfg(),plan(hass,cfg()))
+        assert second.paused["bedroom"]==(
+            "interrupted_mode_write_requires_manual_reconciliation"
+        )
+        assert order.count("service_attempt")==1
+        await second.async_stop()
+    asyncio.run(case())
+
+
+def test_failed_write_ahead_storage_forbids_any_hvac_command(
+    mode_module,monkeypatch,
+):
+    async def case():
+        class FailingStore:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,callback,delay):
+                pass
+            async def async_save(self,payload):
+                raise OSError("storage device unavailable")
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",FailingStore)
+        hass,clock=system()
+        driver=mode_module.NativeAirModeControl(
+            hass,"storage-failure",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert driver.paused["bedroom"]=="mode_intent_storage_failed"
+        assert not hass.services.calls
+        # An explicit resume is not permitted until the history and
+        # physical mode can be reconciled, so no immediate second try.
+        assert (await driver.command("bedroom","resume"))["accepted"] is False
+        assert not hass.services.calls
+        with pytest.raises(OSError):
+            await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_manual_resume_requires_physical_fan_only_and_keeps_last_hvac_dwell(
+    mode_module,
+):
+    async def case():
+        hass,clock=system()
+        driver=mode_module.NativeAirModeControl(
+            hass,"manual-reconcile",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert [c[2]["hvac_mode"] for c in hass.services.calls]==["dry"]
+        assert (await driver.command("bedroom","pause"))["accepted"] is True
+        # Current physical DRY mode must not be silently taken back over.
+        clock[0]=7100
+        denied=await driver.command("bedroom","resume")
+        assert denied["accepted"] is False
+        # Operator manually switches to FAN_ONLY and allows stable dwell.
+        ac=hass.states.get("climate.bedroom_ac")
+        ac.state="fan_only"
+        ac.attributes["hvac_action"]="fan"
+        ac.last_changed=datetime.fromtimestamp(7200,timezone.utc)
+        clock[0]=8500
+        assert (await driver.command("bedroom","resume"))["accepted"] is False
+        clock[0]=9100
+        assert (await driver.command("bedroom","resume"))["accepted"] is True
+        assert driver.last_write["bedroom"]==5000
+        assert "bedroom" not in driver.expected
+        clock[0]=9200
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==1
         await driver.async_stop()
     asyncio.run(case())
