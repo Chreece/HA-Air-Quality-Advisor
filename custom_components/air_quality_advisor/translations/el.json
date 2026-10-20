@@ -576,10 +576,10 @@
           "climate_allow_actuation": "Να επιτρέπονται εντολές στους επιλεγμένους ελεγκτές (ξεχωριστές άδειες)",
           "climate_auto_switch_hvac": "Αυτόματο πέρασμα θέρμανσης/ψύξης (ξεχωριστή άδεια)",
           "climate_prefer_native_auto": "Προτίμηση αυτόματης ζώνης θέρμανσης/ψύξης της συσκευής",
-          "climate_controller": "Controller method / device capability",
+          "climate_controller": "έλεγχος",
           "climate_mode": "Heat, cool, off or automatic selection",
-          "climate_entity": "Explicit room climate device",
-          "climate_temperature_entity": "Fresh independent temperature sensor",
+          "climate_entity": "πηγή",
+          "climate_temperature_entity": "Θερμοκρασία · πηγή",
           "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
         },
         "data_description": {
@@ -600,12 +600,12 @@
         "data": {
           "climate_occupancy_sensors": "Αισθητήρες παρουσίας αυτού του δωματίου",
           "climate_away_entities": "Άτομα και συσκευές εντοπισμού για σπίτι/απουσία",
-          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
+          "climate_unknown_occupancy": "Παρουσία",
           "climate_unoccupied_delay_minutes": "Χρόνος πριν θεωρηθεί άδειο το δωμάτιο (λεπτά)",
           "climate_occupancy_stale_minutes": "Μέγιστη ηλικία μέτρησης παρουσίας (λεπτά)",
-          "climate_away_policy": "Whole-house away tracking policy",
+          "climate_away_policy": "Σπίτι",
           "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
-          "climate_sleep_active": "Sleep profile currently active in this room",
+          "climate_sleep_active": "Ύπνος",
           "climate_sleep_schedule_enabled": "Πρόγραμμα ύπνου σύμφωνα με τοπική ώρα",
           "climate_sleep_start": "Έναρξη ύπνου",
           "climate_sleep_end": "Λήξη ύπνου",
@@ -724,14 +724,14 @@
         "title": "Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
         "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
         "data": {
-          "home_heat": "Home heat",
-          "home_cool": "Home cool",
+          "home_heat": "Σπίτι (°C)",
+          "home_cool": "Σπίτι (°C)",
           "unoccupied_heat": "Unoccupied heat",
           "unoccupied_cool": "Unoccupied cool",
-          "away_heat": "Away heat",
-          "away_cool": "Away cool",
-          "sleep_heat": "Sleep heat",
-          "sleep_cool": "Sleep cool"
+          "away_heat": "Σπίτι (°C)",
+          "away_cool": "Σπίτι (°C)",
+          "sleep_heat": "Ύπνος (°C)",
+          "sleep_cool": "Ύπνος (°C)"
         },
         "data_description": {
           "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
