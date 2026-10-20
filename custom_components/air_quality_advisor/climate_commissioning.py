@@ -12,6 +12,7 @@ from math import isfinite
 from typing import Any
 
 from .climate_coordination import ROLE_KINDS, device_inventory, duplicate_owners
+from .climate_entry_ownership import cross_entry_collisions
 from .climate_air_mode_native import allowed_dwell
 from .discovery import entity_area, reading, temperature_sensor_c
 
@@ -158,7 +159,8 @@ def room_commissioning(hass: Any, area: str, config: dict,
 
 
 def report(hass: Any, configs: dict, plans: dict | None = None,
-           *, area: str | None = None, now: float | None = None) -> dict:
+           *, area: str | None = None, now: float | None = None,
+           entry_id: str | None = None) -> dict:
     """Return an explicitly requested, safe-to-share overview."""
     configs=configs if isinstance(configs,dict) else {}
     plans=plans if isinstance(plans,dict) else {}
@@ -169,6 +171,8 @@ def report(hass: Any, configs: dict, plans: dict | None = None,
                     "requested_area":area,"rooms":[]}
         selected=[area]
     duplicates=duplicate_owners(configs)
+    if entry_id is not None:
+        duplicates.update(cross_entry_collisions(hass,entry_id,configs))
     rooms=[room_commissioning(hass,key,configs[key],plans.get(key),now=now,
                              collisions=duplicates)
            for key in selected if isinstance(configs.get(key),dict)]
