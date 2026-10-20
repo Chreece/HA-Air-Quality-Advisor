@@ -13,6 +13,7 @@ import time
 from typing import Any, Callable
 
 from .climate_coordination import duplicate_owners, device_inventory
+from .climate_arbitration import new_command_gate
 from .discovery import entity_area, reading
 from .pid_math import finite
 
@@ -304,6 +305,15 @@ class RunningFanSpeedControl:
                 continue
             if value!="command" or percentage is None:
                 self._status(area,value,entity_id=fan)
+                continue
+            channel=("extraction" if role=="extraction_fan_entity"
+                     else "filtration")
+            conflict=new_command_gate(
+                self.hass,area,cfg,plan,channel,fan,now=now,
+            )
+            if conflict is not None:
+                self._status(area,"coordination_hold",entity_id=fan,
+                             reason=conflict)
                 continue
             if not self.hass.services.has_service("fan","set_percentage"):
                 self._status(area,"fan_speed_service_unavailable")
