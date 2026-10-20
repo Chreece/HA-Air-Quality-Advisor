@@ -578,3 +578,88 @@ def test_new_compressor_activity_invalidates_the_full_idle_observation(
         assert [c[2]["hvac_mode"] for c in hass.services.calls]==["fan_only"]
         await driver.async_stop()
     asyncio.run(case())
+
+
+
+def test_window_opened_during_write_ahead_prevents_hvac_mode_service(
+    mode_module,monkeypatch,
+):
+    async def case():
+        hass,clock=system()
+        saved={}
+        snapshots=[]
+        class RaceStore:
+            def __init__(self,*args):
+                self.key=args[-1]
+            async def async_load(self):
+                return saved.get(self.key)
+            def async_delay_save(self,fn,delay):
+                saved[self.key]=fn()
+            async def async_save(self,payload):
+                snapshots.append({
+                    "phase":payload["expected"].get("bedroom",{}).get("phase"),
+                    "mode":payload["expected"].get("bedroom",{}).get("mode"),
+                })
+                saved[self.key]=payload
+                if payload["expected"].get("bedroom",{}).get("phase")=="intent":
+                    # HA state arrives while the physical command intent
+                    # is being flushed. This must be re-checked before the
+                    # controller writes a climate.set_hvac_mode request.
+                    hass.states.get("binary_sensor.bedroom_window").state="on"
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",RaceStore)
+        driver=mode_module.NativeAirModeControl(
+            hass,"write-ahead-live-window",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert snapshots[0]=={"phase":"intent","mode":"dry"}
+        assert driver.paused["bedroom"]=="mode_intent_aborted_by_live_interlock"
+        assert driver.expected["bedroom"]["phase"]=="intent"
+        assert not hass.services.calls
+        # The externally closed window does not let the controller retry
+        # an uncertain durable intent without explicit reconciliation.
+        hass.states.get("binary_sensor.bedroom_window").state="off"
+        clock[0]=7000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert not hass.services.calls
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_competing_ac_armed_during_persist_is_rejected_before_service(
+    mode_module,monkeypatch,
+):
+    async def case():
+        hass,clock=system()
+        other=MockState("climate.bedroom_heater","off")
+        other.attributes.update({
+            "hvac_modes":["off","heat"],"supported_features":1,
+            "hvac_action":"idle",
+        })
+        hass._values[other.entity_id]=other
+        hass._entity_areas[other.entity_id]="bedroom"
+        class RaceStore:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,fn,delay):
+                pass
+            async def async_save(self,payload):
+                if payload["expected"].get("bedroom",{}).get("phase")=="intent":
+                    other.state="heat"
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",RaceStore)
+        policy=cfg(heat_climate_entity=other.entity_id)
+        driver=mode_module.NativeAirModeControl(
+            hass,"write-ahead-live-hvac",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,policy,plan(hass,policy))
+        assert driver.paused["bedroom"]=="mode_intent_aborted_by_live_interlock"
+        assert not hass.services.calls
+        await driver.async_stop()
+    asyncio.run(case())
