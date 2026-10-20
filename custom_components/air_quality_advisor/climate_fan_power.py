@@ -18,6 +18,7 @@ from datetime import datetime
 from typing import Any, Callable
 
 from .climate_coordination import duplicate_owners, device_inventory
+from .climate_arbitration import new_command_gate
 from .climate_fan_native import FAN_ROLES
 from .discovery import entity_area, reading
 from .pid_math import finite
@@ -318,6 +319,15 @@ class FanPowerControl:
             if now<last_off or now-max(last_off,self.off_seen[entity])<off_min:
                 self._status(area,"minimum_fan_off_hold",entity_id=entity)
                 continue
+            purpose=("extraction" if role=="extraction_fan_entity"
+                     else "filtration")
+            conflict=new_command_gate(
+                self.hass,area,cfg,plan,purpose,entity,now=now,
+            )
+            if conflict is not None:
+                self._status(area,"coordination_hold",entity_id=entity,
+                             reason=conflict)
+                continue
             record={"entity_id":entity,"area":area,"role":role,
                     "power":"off","when":now,"acknowledged":True}
             if not await self._send(area,entity,record,"on",now):
@@ -368,6 +378,15 @@ class FanPowerControl:
                 cfg.get("fan_power_hardware_confirmed") is True and
                 cfg.get("fan_speed_auto") is not True)
         needed,why=self._need(area,cfg,plan,role,now) if active else (False,"disabled")
+        if needed:
+            purpose=("extraction" if role=="extraction_fan_entity"
+                     else "filtration")
+            conflict=new_command_gate(
+                self.hass,area,cfg,plan,purpose,entity,now=now,
+            )
+            if conflict is not None:
+                needed=False
+                why=conflict
         if needed and area not in self.paused:
             self._status(area,"owned_fan_running",entity_id=entity)
             return
