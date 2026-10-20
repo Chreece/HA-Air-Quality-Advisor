@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Any
 
 from .climate_coordination import device_inventory
-from .discovery import entity_area, reading
+from .discovery import entity_area
 from .pid_math import finite
 
 CHANNELS = ("thermal", "humidity", "extraction", "filtration")
@@ -193,18 +193,23 @@ def room_coordination(hass: Any, area: str, config: dict, plan: dict,
             else:
                 observed=finite(advice.get("measured_rh"),0,100)
                 high=finite(config.get("humidity_high_rh",60),30,80)
+                margin=finite(config.get("cooling_dry_deferral_rh_points",
+                                         COOLING_DRY_DEFERRAL_RH_POINTS),0,20)
                 cooling_armed=any(
                     item.get("status")=="ready" and
                     item.get("domain")=="climate" and
                     item.get("capabilities",{}).get("current") in ("cool","heat_cool")
                     for item in inventory.values()
                 )
-                if wanted=="humidify" and cooling_armed:
+                if margin is None:
+                    decisions["humidity"]=_decision("held",entity=entity,
+                                                   reason="invalid_cooling_dry_margin")
+                elif wanted=="humidify" and cooling_armed:
                     decisions["humidity"]=_decision("held",entity=entity,
                                                    reason="cooling_conflicts_with_humidification")
                 elif (wanted=="dry" and cooling_armed and
                       observed is not None and high is not None and
-                      observed < high + COOLING_DRY_DEFERRAL_RH_POINTS):
+                      observed < high + margin):
                     decisions["humidity"]=_decision(
                         "held",entity=entity,reason="cooling_priority_observe_rh",
                         measured_rh=observed,
