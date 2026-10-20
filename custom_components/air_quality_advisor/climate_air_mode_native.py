@@ -27,6 +27,9 @@ from .pid_math import finite
 _LOGGER = logging.getLogger(__name__)
 STARTUP_WARMUP_S=300
 MIN_MODE_DWELL_S=1800
+# Confirm sustained native idle before leaving DRY. A single instant of
+# hvac_action=idle is not evidence that the compressor is safe to cycle.
+MIN_DRY_IDLE_CONFIRM_S=300
 ACK_GRACE_S=120
 SERVICE_TIMEOUT_S=20
 VALID_MODES=frozenset(("dry","fan_only"))
@@ -50,6 +53,9 @@ class NativeAirModeControl:
         self.paused:dict[str,str]={}
         self.expected:dict[str,dict]={}
         self.last_write:dict[str,float]={}
+        # In-process observations deliberately reset on HA restart. They
+        # cannot stand in for manufacturer-proven compressor protections.
+        self._dry_idle_since:dict[str,float]={}
         self._configured:dict={}
         self._tasks:dict[str,asyncio.Task]={}
         self._store=None
@@ -153,6 +159,7 @@ class NativeAirModeControl:
         if tasks:
             await asyncio.gather(*tasks,return_exceptions=True)
         self._tasks.clear()
+        self._dry_idle_since.clear()
         if self._ready and self._store is not None:
             try:
                 await self._store.async_save(self._snapshot())
@@ -196,6 +203,7 @@ class NativeAirModeControl:
             # it remains an additional anti-short-cycle bound after resume.
             self.paused.pop(area,None)
             self.expected.pop(area,None)
+            self._dry_idle_since.pop(area,None)
             self._started=now
             self._save()
             self._status(area,"startup_warmup")
@@ -344,12 +352,26 @@ class NativeAirModeControl:
         # Use the proven advisory policy as one reusable source for
         # deciding the desired mode, then add hardware-specific guards.
         suggestion=native_air_mode_advice(self.hass,area,cfg,fresh,now)
+        # A fresh native report of active compressor work invalidates
+        # every previous sustained-idle observation, even while RH remains
+        # high enough that no transition is currently requested.
+        if state.state=="dry" and action not in ("idle","fan"):
+            self._dry_idle_since.pop(area,None)
         if suggestion.get("status")=="already_in_suitable_mode":
             return "already_in_suitable_mode",None
-        # DRY compressor may be actively removing moisture. Never request
-        # FAN_ONLY until the device itself reports the compressor idle.
-        if state.state=="dry" and action not in ("idle","fan"):
-            return "active_compressor_wait_for_idle",None
+        # DRY -> FAN_ONLY may interrupt a compressor. Require the unit's
+        # reported compressor state to remain idle over multiple polls.
+        # This is an extra protective software gate, never proof that
+        # the manufacturer's own minimum-off/defrost requirements are met.
+        if state.state=="dry":
+            if action not in ("idle","fan"):
+                return "active_compressor_wait_for_idle",None
+            since=self._dry_idle_since.get(area)
+            if since is None or since>now:
+                self._dry_idle_since[area]=now
+                return "compressor_idle_confirmation_pending",None
+            if now-since<MIN_DRY_IDLE_CONFIRM_S:
+                return "compressor_idle_confirmation_pending",None
         if suggestion.get("status")!="manual_mode_transition_suggested":
             return suggestion.get("status","advice_unavailable"),None
         selected=suggestion.get("recommended_mode")
@@ -467,5 +489,6 @@ class NativeAirModeControl:
             _LOGGER.exception("Native DRY/FAN mode acknowledgement history not saved")
             self._pause(area,"mode_command_history_persist_failed")
             return
+        self._dry_idle_since.pop(area,None)
         self._status(area,"native_mode_commanded",
                      entity_id=item["entity_id"],mode=item["mode"])
