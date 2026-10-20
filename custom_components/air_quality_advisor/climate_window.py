@@ -133,6 +133,11 @@ def window_substitution(
         evidence = {"temperature_difference_c": round(difference, 1),
                     "indoor_temperature_c": indoor_c, "outdoor_temperature_c": outdoor_c}
     else:
+        humidity = plan.get("humidity_management", {})
+        if (not isinstance(humidity, dict) or
+                humidity.get("status") != "advisory" or
+                humidity.get("action") != "dry"):
+            return {**base, "status": "no_verified_drying_demand"}
         if indoor_c is None:
             return {**base, "status": "indoor_temperature_missing_for_moisture"}
         moisture = science.get("moisture", {}) if isinstance(science, dict) else {}
