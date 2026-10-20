@@ -35,6 +35,7 @@ from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
 from .climate_rooms import gather as climate_room_plan
 from .climate_coordination import duplicate_owners, native_plan_hold_reason
+from .climate_entry_ownership import cross_entry_collisions
 from .climate_arbitration import room_coordination
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
@@ -245,6 +246,14 @@ class AirQualityManager:
             raw_for_climate={r.area_id:r for r in raw_rooms}
             raw_for_climate.update({r.area_id:r for r in climate_only})
             duplicate_devices=duplicate_owners(room_climate_configs)
+            # An old installation can contain multiple config entries
+            # selecting the same physical actuator. Do not let separate
+            # managers issue competing native/switch power commands.
+            duplicate_devices.update(
+                cross_entry_collisions(
+                    self.hass,self.entry.entry_id,room_climate_configs
+                )
+            )
             for monitored in (*selected_rooms,*climate_only):
                 settings=room_climate_configs.get(monitored.area_id,{})
                 prior = (
