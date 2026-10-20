@@ -109,16 +109,27 @@ class CompactOptionsMixin:
         Unknown and stale sources may remain selectable for diagnostics but
         never turn into an empty occupied/sleep-room list.
         """
-        from .occupancy_policy import _tokens
+        from .occupancy_policy import _tokens, _area_aliases
+        from homeassistant.helpers import area_registry
+        registry=area_registry.async_get(hass)
+        known={area.id for area in registry.async_list_areas()} if hasattr(
+            registry,"async_list_areas") else {
+                entity_area(hass,e.entity_id) for e in hass.states.async_all()
+                if entity_area(hass,e.entity_id)
+            }
+        names=_area_aliases(hass,known)
+        def usable(value):
+            parsed=_tokens(value)
+            return parsed is not None and (
+                not parsed or all(isinstance(v,str) and v.strip().casefold() in names
+                                  for v in parsed)
+            )
         result=[]
         for state in hass.states.async_all():
             if state.domain not in ("sensor","binary_sensor","input_text","input_select"):
                 continue
             values=[state.state,*state.attributes.values()]
-            if not any(_tokens(v) is not None and (
-                isinstance(v,(list,tuple,dict)) or
-                isinstance(v,str) and (v.strip().startswith(("[","{")) or "," in v)
-            ) for v in values):
+            if not any(usable(v) for v in values):
                 continue
             result.append({"value":state.entity_id,
                            "label":(state.name or state.entity_id)+" · "+state.entity_id})
