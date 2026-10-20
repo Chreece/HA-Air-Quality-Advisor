@@ -178,7 +178,7 @@ class NativeClimateControl:
         entity=settings.get("climate_entity")
         if mode in ("heat","cool","heat_cool"):
             conflict=new_command_gate(
-                self.hass,area,settings,report,"thermal",entity,now=now,
+                self.hass,area,settings,report,"thermal",entity,now=now,entry_id=self.entry_id,
             )
             if conflict is not None:
                 self.statuses[area]={"status":"coordination_hold","reason":conflict}
