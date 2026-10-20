@@ -595,3 +595,65 @@ def test_direct_rechecks_revoked_actuation_after_persisting_intent(runtime):
         assert MemoryStore.payload["expected"]["switch.living_heat"]["phase"]=="intent"
         await driver.async_stop()
     asyncio.run(case())
+
+
+def test_removed_direct_room_retires_exact_previously_owned_relay(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"retire",clock=lambda:clock[0])
+        await driver.async_start()
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        driver.schedule({},{})
+        for _ in range(12):
+            await asyncio.sleep(0)
+        assert hass.states.get("switch.living_heat").state=="off"
+        assert hass.services.calls[-1][1]=="turn_off"
+        assert len(hass.services.calls)==2
+        assert driver.paused["living"]=="room_output_configuration_removed_or_changed"
+        await driver.async_stop()
+        assert all(call[3]["target"]=={"entity_id":"switch.living_heat"}
+                   for call in hass.services.calls)
+        assert len(hass.services.calls)==2
+    asyncio.run(case())
+
+
+def test_disabling_direct_actuation_retires_original_owned_output(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"disabled",clock=lambda:clock[0])
+        await driver.async_start()
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        # The original confirmed ownership permits ONLY safe-off. It does not
+        # allow further ON commands after the user revokes actuation consent.
+        await advance(driver,clock,settings(allow_actuation=False),planned())
+        assert hass.states.get("switch.living_heat").state=="off"
+        assert driver.paused["living"]=="room_output_configuration_removed_or_changed"
+        assert [c[1] for c in hass.services.calls]==["turn_on","turn_off"]
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_retired_relay_moved_to_another_area_is_not_automatically_touched(runtime):
+    async def case():
+        hass=home()
+        clock=[1000.]
+        driver=runtime.DirectClimateControl(hass,"moved",clock=lambda:clock[0])
+        await driver.async_start()
+        clock[0]=2000.
+        await advance(driver,clock,settings(),planned())
+        assert hass.states.get("switch.living_heat").state=="on"
+        hass._entity_areas["switch.living_heat"]="another_room"
+        driver.schedule({},{})
+        for _ in range(12):
+            await asyncio.sleep(0)
+        assert [c[1] for c in hass.services.calls]==["turn_on"]
+        assert driver.paused["living"]=="retired_output_safe_off_unconfirmed"
+        await driver.async_stop()
+        assert [c[1] for c in hass.services.calls]==["turn_on"]
+    asyncio.run(case())
