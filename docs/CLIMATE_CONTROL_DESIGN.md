@@ -223,3 +223,21 @@ Converting this recommendation to automatic control will require verifying
 compressor anti-short-cycle protections, multi-zone priority, restart
 recovery, command acknowledgment and a safe manual override policy on
 representative actual units.
+
+
+## Native thermostat final-write live interlocks (October 2026)
+
+The primary native temperature-setpoint and heat/cool range path now
+revalidates the actual `climate.*` entity's area registry assignment before
+sending commands. When a cached plan declares window contacts, each contact
+is re-read and must still be a closed, correct-room window binary sensor.
+
+All separately selected HVAC equipment is also re-read. An armed opposing
+mode, active `hvac_action`, unavailable device, or missing operating
+information holds the primary write. This is essential because independent
+thermostats can begin heating or cooling after the last planning interval,
+even when their current `hvac_action` was previously idle.
+
+These checks are a final conservative gate; they do not start, switch off or
+reconfigure another appliance. Hardware safety and commissioning remain
+required, and native DRY/FAN_ONLY automation is still advisory-only.
