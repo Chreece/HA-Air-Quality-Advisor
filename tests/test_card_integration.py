@@ -27,7 +27,7 @@ def test_static_registration_and_cache_version_are_declared():
     # so upcoming releases cannot accidentally reuse an older cache key.
     assert "manifest.json" in source
     assert "manifest['version']" in source
-    assert f"/{manifest['domain']}/air-quality-advisor-card.js" in source
+    assert 'f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest[\'version\']}"' in source
 
 
 def test_single_sensor_still_exposes_dashboard_without_new_entities():
