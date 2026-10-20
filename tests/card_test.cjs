@@ -616,3 +616,41 @@ fanPowerCard.hass={language:'en',states:{
   'sensor.powered_fan':{state:'idle',attributes:{dashboard:poweredFan}},
 }};
 assert.ok(fanPowerCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// One centralized room arbiter explains priorities and inhibits unsupported
+// simultaneous effects without inventing extra HVAC service controls.
+const coordinated=JSON.parse(JSON.stringify(input));
+coordinated.rooms=[{
+  area_id:'bedroom',name:'Bedroom',climate_only:true,
+  status:'unknown',readings:[],windows:[],
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    coordination:{
+      status:'ready',priority:'measured_co2_ventilation',
+      channels:{
+        thermal:{status:'held',reason:'opposing_native_mode_armed'},
+        humidity:{status:'eligible',entity_id:'humidifier.bedroom'},
+        extraction:{status:'eligible',entity_id:'fan.bedroom'},
+        filtration:{status:'idle'},
+      },
+    },
+    actuation:{status:'advisory_only'},
+  }},
+}];
+const arbCard=new Card();
+arbCard.setConfig({entity:'sensor.room_priority'});
+for(const [language,rank,hold] of [
+  ['en','CO₂ ventilation','Held'],
+  ['de','CO₂-Lüftung','Gesperrt'],
+  ['el','Εξαερισμός CO₂','Σε αναμονή'],
+]){
+  arbCard.hass={language,states:{
+    'sensor.room_priority':{state:'idle',attributes:{dashboard:coordinated}},
+  }};
+  const html=arbCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(rank),language+': priority');
+  assert.ok(html.includes(hold),language+': blocked purpose');
+  assert.ok(html.includes('opposing native mode armed'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
