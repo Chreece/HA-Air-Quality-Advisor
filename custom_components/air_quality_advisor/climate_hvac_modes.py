@@ -39,8 +39,10 @@ def native_air_mode_advice(hass:Any, area:str, settings:dict,
         candidate.get("entity_id")!=climate):
         return {**advisory,"status":"device_unavailable_or_unverified"}
     caps=candidate.get("capabilities",{})
-    if not caps.get("drying") or not caps.get("fan_only"):
-        return {**advisory,"status":"native_dry_and_fan_modes_required"}
+    if not caps.get("drying"):
+        return {**advisory,"status":"native_dry_mode_required"}
+    # FAN_ONLY is optional. A DRY-only device may still provide humidity
+    # control; never recommend a mode the actual entity does not expose.
     if equipment.get("status")!="ready":
         return {**advisory,"status":"incomplete_equipment_plan"}
     thermal=equipment.get("thermal",{})
@@ -70,7 +72,8 @@ def native_air_mode_advice(hass:Any, area:str, settings:dict,
     hvac_action=state.attributes.get("hvac_action")
     if hvac_action in ("heating","cooling","preheating") and state.state=="fan_only":
         return {**advisory,"status":"unexpected_compressor_activity"}
-    target=("dry" if action=="dry" else "fan_only")
+    target=("dry" if action=="dry" else
+            "fan_only" if caps.get("fan_only") else "off")
     if state.state==target:
         return {**advisory,"status":"already_in_suitable_mode",
                 "current_mode":state.state, "recommended_mode":target}
@@ -83,7 +86,8 @@ def native_air_mode_advice(hass:Any, area:str, settings:dict,
     if interval<MODE_DWELL_SECONDS:
         return {**advisory,"status":"mode_dwell_not_met",
                 "dwell_remaining_minutes":round((MODE_DWELL_SECONDS-interval)/60,1)}
-    return {**advisory,"status":"manual_mode_transition_suggested",
+    return {**advisory,"status":("manual_stop_dry_suggested" if target=="off"
+                                       else "manual_mode_transition_suggested"),
             "current_mode":state.state,"recommended_mode":target,
             "climate_entity":climate,
             "requires_device_commissioning":True,
