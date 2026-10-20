@@ -143,6 +143,35 @@ duplicate ownership; heating/cooling reversal; rapid toggling; freezing
 protection; PWM too-short pulses; service failure; command retry; unexpected
 output state; dehumidifying vs cooling priority; and safe upgrade from v0.5.
 
+### Direct non-compressor actuator write-ahead and retirement (v0.6 draft)
+
+- Any `switch.turn_on` or positive `number.set_value` is preceded by
+  `Store.async_save` of a value-copied `phase=intent` record, the exact
+  target/output, Home Assistant room and continuous runtime origin. A failed
+  prewrite never energizes a relay; no optimistic retry is allowed.
+- A successful physical command advances the record to
+  `phase=commanded` and immediately saves its acknowledgement history.
+  Interrupted or failed writes retain the uncertain intent and pause the
+  exact room across restart. Existing v1 history without a phase remains
+  backward-compatible, but unknown storage versions fail closed.
+- ON write-time checks revalidate active room consent, the exact assigned
+  entity, current temperature evidence, room plan generation and the live
+  arbitration/foreign-entry ownership grant after asynchronous storage I/O.
+- To manually resume an uncertain ON, the user must first verify the exact
+  output is OFF continuously for its full configured minimum-OFF interval.
+  The controller then restarts with its normal warmup; Resume cannot
+  erase an active unknown physical output.
+- On removal or hardware-safety reconfiguration, cancel in-flight room
+  work, retain its formerly commissioned identity, and attempt OFF of
+  only the previously *acknowledged* owned output. Refuse to operate an
+  actuator that has moved HA areas or acquired a foreign write owner.
+  A failed retirement pauses and must be reconciled manually. On unload,
+  attempt safe-off of both retired and current output generations.
+- These are SOFTWARE fault-containment properties, not evidence of
+  independent limit switches, fail-safe relays, electrical interlocks or
+  compressor protection. Direct devices remain limited to independently
+  protected slow thermal non-compressor loads and require physical testing.
+
 Keep the internal integration domain `air_quality_advisor`, existing entities
 and legacy announce services. The public product name remains Home Environment
 Manager. Independent devices keep their own hardwired safety protections.
