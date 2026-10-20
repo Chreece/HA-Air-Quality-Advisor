@@ -142,6 +142,14 @@ def test_measured_humidity_switches_only_previously_running_fan_to_dry(mode_modu
         assert driver.statuses["bedroom"]["status"]=="active_compressor_wait_for_idle"
         hass.states.get("climate.bedroom_ac").attributes["hvac_action"]="idle"
         await tick(driver,policy,plan(hass,policy))
+        assert driver.statuses["bedroom"]["status"]=="compressor_idle_confirmation_pending"
+        assert len(hass.services.calls)==1
+        clock[0]=7250
+        await tick(driver,policy,plan(hass,policy))
+        assert driver.statuses["bedroom"]["status"]=="compressor_idle_confirmation_pending"
+        assert len(hass.services.calls)==1
+        clock[0]=7301
+        await tick(driver,policy,plan(hass,policy))
         assert [item[2]["hvac_mode"] for item in hass.services.calls]==[
             "dry","fan_only",
         ]
@@ -531,4 +539,42 @@ def test_mode_resume_preserves_earliest_possible_next_write_after_restart(
         await tick(next_driver,cfg(),plan(hass,cfg()))
         assert len(hass.services.calls)==2
         await next_driver.async_stop()
+    asyncio.run(case())
+
+
+
+def test_new_compressor_activity_invalidates_the_full_idle_observation(
+    mode_module,
+):
+    async def case():
+        hass,clock=system(mode="dry",rh=55,hvac_action="idle")
+        policy=cfg()
+        driver=mode_module.NativeAirModeControl(
+            hass,"native-idle-recheck",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,policy,plan(hass,policy))
+        assert driver.statuses["bedroom"]["status"]==(
+            "compressor_idle_confirmation_pending"
+        )
+        # A DRYING report between observations resets the idle window.
+        clock[0]=5200
+        hass.states.get("climate.bedroom_ac").attributes["hvac_action"]="drying"
+        await tick(driver,policy,plan(hass,policy))
+        assert driver.statuses["bedroom"]["status"]=="active_compressor_wait_for_idle"
+        assert "bedroom" not in driver._dry_idle_since
+        clock[0]=5300
+        hass.states.get("climate.bedroom_ac").attributes["hvac_action"]="idle"
+        await tick(driver,policy,plan(hass,policy))
+        assert driver.statuses["bedroom"]["status"]==(
+            "compressor_idle_confirmation_pending"
+        )
+        clock[0]=5599
+        await tick(driver,policy,plan(hass,policy))
+        assert not hass.services.calls
+        clock[0]=5600
+        await tick(driver,policy,plan(hass,policy))
+        assert [c[2]["hvac_mode"] for c in hass.services.calls]==["fan_only"]
+        await driver.async_stop()
     asyncio.run(case())
