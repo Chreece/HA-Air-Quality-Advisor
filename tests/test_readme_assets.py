@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/"
-VALID_REFS = ("main", "v0.6.0b1")
+VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2")
 LOCAL_ASSET_ROOT = ".github/assets/"
 
 
