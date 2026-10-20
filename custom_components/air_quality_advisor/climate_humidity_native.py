@@ -159,6 +159,9 @@ class HumiditySetpointControl:
         for area, cfg in configs.items():
             if not isinstance(cfg,dict) or not cfg.get("enabled"):
                 continue
+            if cfg.get("humidity_power_auto") is True:
+                self._status(area, "conflicting_humidity_power_owner")
+                continue
             if not (cfg.get("allow_actuation") is True and
                     cfg.get("humidity_setpoint_auto") is True):
                 self._status(area, "advisory_only")
@@ -206,6 +209,9 @@ class HumiditySetpointControl:
 
     async def _apply(self, area: str, cfg: dict, plan: dict, now: float) -> None:
         if not self._active or not self._ready or area in self.paused:
+            return
+        if cfg.get("humidity_power_auto") is True:
+            self._status(area, "conflicting_humidity_power_owner")
             return
         choice = plan.get("equipment_plan",{}).get("moisture",{})
         role = choice.get("role")
