@@ -282,7 +282,7 @@ class HumiditySetpointControl:
             self._status(area,status,entity_id=entity)
             return
         conflict=new_command_gate(
-            self.hass,area,cfg,plan,"humidity",entity,now=now,
+            self.hass,area,cfg,plan,"humidity",entity,now=now,entry_id=self.entry_id,
         )
         if conflict is not None:
             self._status(area,"coordination_hold",reason=conflict)
