@@ -860,7 +860,10 @@ class AirQualityManager:
         for key in selected:
             unsubscribe = self._pending_unsubs.pop(key, None)
             if unsubscribe is not None:
-                unsubscribe()
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not cancel pending announcement for %s",key)
 
     @callback
     def _cancel_repeat(self, area_id: str | None = None) -> None:
@@ -871,37 +874,67 @@ class AirQualityManager:
         for key in selected:
             unsubscribe = self._repeat_unsubs.pop(key, None)
             if unsubscribe is not None:
-                unsubscribe()
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not cancel repeating announcement for %s",key)
 
     async def async_stop(self) -> None:
+        """Unload every controller and HA listener, even after one failure.
+
+        A failed Store flush in one native HVAC controller must not prevent
+        unrelated fan, humidity, PID or sensor listeners from stopping. Never
+        convert a teardown failure into permission to re-energize equipment.
+        """
         self._active = False
-        await self.pid.async_stop()
-        await self.native_climate.async_stop()
-        await self.direct_climate.async_stop()
-        await self.native_humidity.async_stop()
-        await self.humidity_power.async_stop()
-        await self.secondary_climate.async_stop()
-        await self.running_fans.async_stop()
-        await self.fan_power.async_stop()
-        await self.native_air_mode.async_stop()
-        self._cancel_pending()
-        self._cancel_repeat()
-        self._active_actions.clear()
-        for unsubscribe in self._unsubs:
-            unsubscribe()
-        self._unsubs.clear()
-        # Do not leave work running across an options reload or HA shutdown.
-        pending = tuple(self._tasks)
-        for task in pending:
-            task.cancel()
-        if pending:
-            await asyncio.gather(*pending, return_exceptions=True)
-        self._tasks.clear()
-        if self._environment_store is not None:
-            try:
-                await self._environment_store.async_save(self._environment_history.snapshot())
-            except Exception:
-                _LOGGER.exception("Could not flush bounded environment history")
+        controllers = (
+            ("pid",self.pid),("native_climate",self.native_climate),
+            ("direct_climate",self.direct_climate),
+            ("native_humidity",self.native_humidity),
+            ("humidity_power",self.humidity_power),
+            ("secondary_climate",self.secondary_climate),
+            ("running_fans",self.running_fans),
+            ("fan_power",self.fan_power),
+            ("native_air_mode",self.native_air_mode),
+        )
+        try:
+            outcomes = await asyncio.gather(
+                *(controller.async_stop() for _,controller in controllers),
+                return_exceptions=True,
+            )
+            for (name,_),outcome in zip(controllers,outcomes):
+                if isinstance(outcome,BaseException):
+                    _LOGGER.error(
+                        "Controller %s failed while unloading: %r",
+                        name,outcome,
+                    )
+        finally:
+            # Always release timers/listeners and cancel outstanding manager
+            # tasks, including if HA cancelled an in-progress unload.
+            self._cancel_pending()
+            self._cancel_repeat()
+            self._active_actions.clear()
+            for unsubscribe in tuple(self._unsubs):
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not release Home Assistant listener")
+            self._unsubs.clear()
+            pending=tuple(self._tasks)
+            for task in pending:
+                task.cancel()
+            if pending:
+                await asyncio.gather(*pending,return_exceptions=True)
+            self._tasks.clear()
+            if self._environment_store is not None:
+                try:
+                    await self._environment_store.async_save(
+                        self._environment_history.snapshot()
+                    )
+                except Exception:
+                    _LOGGER.exception(
+                        "Could not flush bounded environment history"
+                    )
 
     def _targets_in_room(self, configured: list[str], area_id: str) -> list[str]:
         """Only configured room outputs or explicitly unassigned/general ones."""
