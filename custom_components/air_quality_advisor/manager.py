@@ -42,6 +42,7 @@ from .climate_humidity_native import HumiditySetpointControl
 from .climate_humidity_power import HumidityPowerControl
 from .climate_secondary_native import SecondaryClimateSetpoint
 from .climate_air_actions import air_treatment_plan
+from .climate_hvac_modes import native_air_mode_advice
 from .climate_window import window_substitution, window_reason
 from .climate_fan_native import RunningFanSpeedControl
 from .climate_fan_power import FanPowerControl
@@ -305,6 +306,13 @@ class AirQualityManager:
                     if isinstance(settings,dict) else False
                 )
                 state["window_efficiency"]=substitute
+                # Previously the DRY/FAN_ONLY advisor existed only in tests:
+                # attach its real live plan to the dashboard for heat-pump,
+                # AC, and native DRY-only equipment, even without actuation.
+                state["native_air_mode_advice"]=native_air_mode_advice(
+                    self.hass,monitored.area_id,settings,
+                    state.get("equipment_plan",{}),time(),
+                )
                 if isinstance(settings,dict) and settings.get("enabled"):
                     equipment=state.get("equipment_plan",{})
                     thermal=equipment.get("thermal",{})
