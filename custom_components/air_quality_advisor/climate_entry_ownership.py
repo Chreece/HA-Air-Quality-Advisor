@@ -3,7 +3,8 @@
 No device writes, config changes or secret reads. Only configured output
 entity IDs (not sensors, tokens or device identifiers) are inspected.
 Repeated roles for the same physical device within ONE room/entry remain
-valid; independent config entries must never simultaneously own that output.
+valid; only independently *authorized* (not advisory-only) config entries
+can claim actuator ownership. A legacy PID with enabled=true is authorized.
 """
 from __future__ import annotations
 
@@ -32,7 +33,8 @@ def _configured_owners(config: Mapping) -> dict[str,set[str]]:
     if isinstance(rooms,Mapping):
         for area,room in rooms.items():
             if (not isinstance(area,str) or not isinstance(room,Mapping)
-                    or room.get("enabled") is not True):
+                    or room.get("enabled") is not True
+                    or room.get("allow_actuation") is not True):
                 continue
             for entity in active_output_entities(room):
                 outputs[entity].add(area)
@@ -111,6 +113,8 @@ def cross_entry_collisions(hass:Any, current_entry_id:str,
             entity:["other_config_entries_unverifiable"]
             for room in rooms.values()
             if isinstance(room,Mapping) and room.get("enabled") is True
+        and room.get("allow_actuation") is True
+            and room.get("allow_actuation") is True
             for entity in active_output_entities(room)
         }
     own={
