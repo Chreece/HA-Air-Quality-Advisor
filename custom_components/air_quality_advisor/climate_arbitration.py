@@ -280,7 +280,8 @@ def room_coordination(hass: Any, area: str, config: dict, plan: dict,
 
 def new_command_gate(hass: Any, area: str, config: dict,
                      plan: dict, purpose: str, entity: str,
-                     *, now: float | None = None) -> str | None:
+                     *, now: float | None = None,
+                     entry_id: str | None = None) -> str | None:
     """Require both planned AND fresh live authority for any new command.
 
     None permits a command to progress to the independent device driver.
@@ -293,6 +294,14 @@ def new_command_gate(hass: Any, area: str, config: dict,
     """
     if purpose not in CHANNELS or not isinstance(plan,dict):
         return "invalid_coordination_request"
+    # A separate HA config entry may choose the same climate/fan/humidity
+    # output *after* this room was planned. The live foreign-owner gate must
+    # apply even to the legacy minimal-plan interface.
+    if entry_id is not None:
+        from .climate_entry_ownership import foreign_owner_hold
+        other_owner=foreign_owner_hold(hass,entry_id,entity)
+        if other_owner is not None:
+            return other_owner
     cached=plan.get("coordination")
     if cached is None:
         return None
