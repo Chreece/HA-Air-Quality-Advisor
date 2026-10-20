@@ -102,6 +102,45 @@ class CompactOptionsMixin:
             ],
         )
 
+    @staticmethod
+    def _room_source_options(hass):
+        """Only states/attributes that can represent explicit room collections.
+
+        Unknown and stale sources may remain selectable for diagnostics but
+        never turn into an empty occupied/sleep-room list.
+        """
+        from .occupancy_policy import _tokens
+        result=[]
+        for state in hass.states.async_all():
+            if state.domain not in ("sensor","binary_sensor","input_text","input_select"):
+                continue
+            values=[state.state,*state.attributes.values()]
+            if not any(_tokens(v) is not None and (
+                isinstance(v,(list,tuple,dict)) or
+                isinstance(v,str) and (v.strip().startswith(("[","{")) or "," in v)
+            ) for v in values):
+                continue
+            result.append({"value":state.entity_id,
+                           "label":(state.name or state.entity_id)+" · "+state.entity_id})
+        return sorted(result,key=lambda e:e["label"].casefold())
+
+    @staticmethod
+    def _room_attribute_options(hass, entity):
+        from .occupancy_policy import _tokens
+        state=hass.states.get(entity) if isinstance(entity,str) else None
+        values=[{"value":"__state__","label":"State / Κατάσταση"}]
+        if state is None:
+            return values
+        for key,value in state.attributes.items():
+            if not isinstance(key,str) or key.startswith("_"):
+                continue
+            if _tokens(value) is not None and (
+                isinstance(value,(list,tuple,dict)) or
+                isinstance(value,str) and (value.strip().startswith(("[","{")) or "," in value)
+            ):
+                values.append({"value":key,"label":key})
+        return values
+
     async def async_step_general_settings(self, user_input=None):
         """Shared presence and sleep sources, independent of any HVAC device."""
         old = self._values.get(CONF_OCCUPANCY_GLOBAL, {})
@@ -122,6 +161,8 @@ class CompactOptionsMixin:
                  in ("occupancy", "presence"))],
             key=lambda x: x["label"].casefold(),
         )
+        source_options=self._room_source_options(self.hass)
+        source_ids={v["value"] for v in source_options}
         errors = {}
         if user_input is not None:
             selected = user_input.get("general_room_occupancy_sensors", old.get("room_occupancy_sensors", []))
@@ -129,9 +170,9 @@ class CompactOptionsMixin:
             occupied_entity = user_input.get("general_occupied_rooms_entity", old.get("occupied_rooms_entity"))
             sleep_entity = user_input.get("general_sleep_rooms_entity", old.get("sleep_rooms_entity"))
             occupancy_attr = (user_input.get("general_occupied_rooms_attribute",
-                              old.get("occupied_rooms_attribute", "")) or "").strip()
+                              old.get("occupied_rooms_attribute", "__state__")) or "__state__")
             sleep_attr = (user_input.get("general_sleep_rooms_attribute",
-                         old.get("sleep_rooms_attribute", "")) or "").strip()
+                         old.get("sleep_rooms_attribute", "__state__")) or "__state__")
             stale = user_input.get("general_source_stale_minutes", old.get("source_stale_minutes", 240))
             try:
                 age = float(stale)
@@ -144,20 +185,32 @@ class CompactOptionsMixin:
             elif (not isinstance(at_home, list) or
                   any(v not in {s["value"] for s in trackers} for v in at_home)):
                 errors["base"] = "general_invalid_trackers"
-            elif any(e and e not in known for e in (occupied_entity, sleep_entity)):
+            elif any(e and (e not in known or e not in source_ids)
+                     for e in (occupied_entity, sleep_entity)):
                 errors["base"] = "general_invalid_rooms_entity"
-            elif any(len(a) > 128 or a.startswith("_") for a in (occupancy_attr, sleep_attr)):
+            elif any(attr not in {v["value"] for v in self._room_attribute_options(self.hass,entity)}
+                     for entity,attr in ((occupied_entity,occupancy_attr),(sleep_entity,sleep_attr))
+                     if entity and entity in (old.get("occupied_rooms_entity"),old.get("sleep_rooms_entity"))):
                 errors["base"] = "general_invalid_attribute"
             elif not math.isfinite(age) or not 10 <= age <= 1440:
                 errors["base"] = "general_invalid_source_age"
+            elif ((occupied_entity and occupied_entity != old.get("occupied_rooms_entity")) or
+                  (sleep_entity and sleep_entity != old.get("sleep_rooms_entity"))) and (
+                  "general_occupied_rooms_attribute" not in user_input or
+                  "general_sleep_rooms_attribute" not in user_input):
+                # HA forms do not dynamically refresh an attribute picker.
+                # Re-render after source selection, with only the new source's
+                # genuinely parseable attributes + its state.
+                old={**old,"occupied_rooms_entity":occupied_entity,
+                     "sleep_rooms_entity":sleep_entity}
             else:
                 self._values[CONF_OCCUPANCY_GLOBAL] = {
                     **old,
                     "room_occupancy_sensors": list(dict.fromkeys(selected)),
                     "occupied_rooms_entity": occupied_entity or None,
-                    "occupied_rooms_attribute": occupancy_attr,
+                    "occupied_rooms_attribute": "" if occupancy_attr=="__state__" else occupancy_attr,
                     "sleep_rooms_entity": sleep_entity or None,
-                    "sleep_rooms_attribute": sleep_attr,
+                    "sleep_rooms_attribute": "" if sleep_attr=="__state__" else sleep_attr,
                     "home_trackers": list(dict.fromkeys(at_home)),
                     "home_policy": user_input.get(
                         "general_home_policy", old.get("home_policy", "any_home")
@@ -171,17 +224,17 @@ class CompactOptionsMixin:
             _field("general_room_occupancy_sensors", old.get("room_occupancy_sensors", [])):
                 _select(room_sensors, multi=True),
             _field("general_occupied_rooms_entity", old.get("occupied_rooms_entity")):
-                selector.EntitySelector(selector.EntitySelectorConfig()),
-            _field("general_occupied_rooms_attribute", old.get("occupied_rooms_attribute", "")):
-                selector.TextSelector(),
+                _select(source_options),
+            _field("general_occupied_rooms_attribute", old.get("occupied_rooms_attribute") or "__state__"):
+                _select(self._room_attribute_options(self.hass,old.get("occupied_rooms_entity"))),
             _field("general_home_trackers", old.get("home_trackers", [])):
                 _select(trackers, multi=True),
             _field("general_home_policy", old.get("home_policy", "any_home")):
                 _select(["any_home", "all_home"], translation_key="general_home_policy"),
             _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity")):
-                selector.EntitySelector(selector.EntitySelectorConfig()),
-            _field("general_sleep_rooms_attribute", old.get("sleep_rooms_attribute", "")):
-                selector.TextSelector(),
+                _select(source_options),
+            _field("general_sleep_rooms_attribute", old.get("sleep_rooms_attribute") or "__state__"):
+                _select(self._room_attribute_options(self.hass,old.get("sleep_rooms_entity"))),
             _field("general_source_stale_minutes", old.get("source_stale_minutes", 240)):
                 _number(10, 1440),
         }
