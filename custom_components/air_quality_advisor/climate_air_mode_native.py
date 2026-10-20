@@ -538,8 +538,12 @@ class NativeAirModeControl:
         except asyncio.CancelledError:
             raise
         except Exception:
-            # Its prior durable intent still fails closed on restart.
+            # A service may have reached the real unit while the later
+            # completion record could not be committed. Restore the durable
+            # INTENT phase in memory, so any shutdown/restart reconciliation
+            # still fails closed rather than treating the write as complete.
             _LOGGER.exception("Native DRY/FAN mode acknowledgement history not saved")
+            self.expected[area]["phase"]="intent"
             self._pause(area,"mode_command_history_persist_failed")
             return
         self._dry_idle_since.pop(area,None)
