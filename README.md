@@ -923,3 +923,23 @@ DRY/FAN_ONLY suggestions in the climate dashboard. **Do not enable the
 automatic mode controller in an uncommissioned home.** Tests using simulated
 Home Assistant devices do not establish hardware compressor safety. This
 work remains in draft PR #2, not the published v0.5.1 release.
+
+
+#### DRY/FAN_ONLY mode-change recovery (development)
+
+The commissioned DRY/FAN driver additionally persists each exact-target
+mode-change **intent before issuing the HA command**. If storage fails,
+Home Assistant stops during the write, or a manual override changes the
+unit, automatic commands latch a pause rather than repeat a potentially
+compressor-affecting transition. Resume requires a verified stable FAN_ONLY
+state and retains the previous native mode dwell.
+
+New commands are rechecked for live window, humidity, native operating mode
+and competing equipment immediately after the durable save. DRY → FAN_ONLY
+also requires five consecutive minutes of observed idle compressor state
+before attempting a transition, in addition to the original 30-minute
+mode-change dwell. These extra software guards do not certify any specific
+compressor, heat pump, defrost cycle or shared refrigeration circuit.
+
+The feature remains **disabled by default and unreleased** in the draft
+v0.6 branch. The physical AC must be independently commissioned first.
