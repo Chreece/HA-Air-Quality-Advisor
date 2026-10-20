@@ -747,3 +747,32 @@ mode automatically. Advice requires usable humidity evidence, no competing
 thermostat demand, a supported native mode pair, and a confirmed 30-minute
 mode dwell. An OFF unit remains untouched. This prevents silently starting
 compressor operation without verified real-device protection and recovery.
+
+
+### Dedicated humidity power and environmental-only rooms (v0.6 draft)
+
+For a bathroom or bedroom without any thermostat, choose
+**Climate → Environmental devices only**. Assign the room's humidity sensor
+and `humidifier.*` or `dehumidifier.*` entity; heating, cooling and
+temperature measurements are optional for this method.
+
+An additional experimental, **disabled-by-default** `humidity_power_auto`
+control can turn a *dedicated Home Assistant humidifier/dehumidifier* on or
+off, only after the user confirms independent equipment protections and
+selects safe minimum on/off and maximum continuous running times. The default
+minimum ON/OFF period is 10 minutes, and a newly starting controller will
+not power a device on before it has observed a full off period. A
+windowless room requires another explicit permission. Device target humidity
+must be already programmed near the chosen room threshold and expose known
+bounds/resolution. Only the named `humidifier.turn_on` /
+`humidifier.turn_off` actions are used.
+
+The power controller **does not take ownership of an already-running
+appliance**. It pauses after out-of-band power changes, service/acknowledgement
+failures or a restart with a previously owned active output. Manually
+switch the device OFF, reconcile it, and explicitly resume before automatic
+starts can be considered again. It never controls a compressor exposed only
+as `climate.*`, and power control cannot be combined with the separate
+native humidity-setpoint driver. The v0.6 feature is still a development
+draft requiring hardware-level testing and must not be treated as a
+certified safety controller.
