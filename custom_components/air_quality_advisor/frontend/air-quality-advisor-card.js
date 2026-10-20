@@ -306,7 +306,11 @@
       fan:'Fan-speed control',fanPower:'Fan power',extraction:'Ventilation/extraction',
       filtration:'Particle filtration',treatment:'Air treatment',
       manualDry:'Manual AC mode suggestion (no automatic switch)',
-      windowHelp:'Open-window opportunity (advisory only)'},
+      windowHelp:'Open-window opportunity (advisory only)',
+      priority:'Room priority',heldPurpose:'Held',
+      co2Priority:'CO₂ ventilation',particlePriority:'Particle filtration',
+      temperaturePriority:'Temperature comfort',humidityPriority:'Humidity',
+      safetyPriority:'Safety interlock',noPriority:'No qualifying demand'},
     de:{title:'Klima',heat:'Heizsollwert',cool:'Kühlsollwert',occupied:'Belegt',
       unoccupied:'Unbelegt',away:'Abwesend',sleep:'Schlaf',home:'Zuhause',
       holding:'Wartet auf sichere Bedingungen',active:'Native Thermostatregelung',
@@ -318,7 +322,11 @@
       fan:'Lüfter-Drehzahlregelung',fanPower:'Lüfter Ein/Aus',extraction:'Lüftung / Abluft',
       filtration:'Partikelfiltration',treatment:'Luftbehandlung',
       manualDry:'Empfohlener Klimamodus (nur manuell, kein Umschalten)',
-      windowHelp:'Fensterlüften als Alternative (nur Hinweis)'},
+      windowHelp:'Fensterlüften als Alternative (nur Hinweis)',
+      priority:'Raumpriorität',heldPurpose:'Gesperrt',
+      co2Priority:'CO₂-Lüftung',particlePriority:'Partikelfiltration',
+      temperaturePriority:'Temperaturkomfort',humidityPriority:'Luftfeuchtigkeit',
+      safetyPriority:'Sicherheitssperre',noPriority:'Kein qualifizierter Bedarf'},
     el:{title:'Κλίμα',heat:'Στόχος θέρμανσης',cool:'Στόχος ψύξης',occupied:'Παρουσία',
       unoccupied:'Κενό',away:'Απουσία',sleep:'Ύπνος',home:'Σπίτι',
       holding:'Αναμονή ασφαλών συνθηκών',active:'Έλεγχος θερμοστάτη',
@@ -330,7 +338,11 @@
       fan:'Ρύθμιση ταχύτητας ανεμιστήρων',fanPower:'Ισχύς ανεμιστήρων',extraction:'Εξαερισμός / απαγωγή',
       filtration:'Φιλτράρισμα σωματιδίων',treatment:'Διαχείριση αέρα',
       manualDry:'Πρόταση χειροκίνητης λειτουργίας A/C (χωρίς αυτόματη αλλαγή)',
-      windowHelp:'Πιθανή εξοικονόμηση με άνοιγμα παραθύρου (μόνο συμβουλή)'},
+      windowHelp:'Πιθανή εξοικονόμηση με άνοιγμα παραθύρου (μόνο συμβουλή)',
+      priority:'Προτεραιότητα δωματίου',heldPurpose:'Σε αναμονή',
+      co2Priority:'Εξαερισμός CO₂',particlePriority:'Φιλτράρισμα σωματιδίων',
+      temperaturePriority:'Θερμική άνεση',humidityPriority:'Υγρασία',
+      safetyPriority:'Ασφάλεια',noPriority:'Καμία έγκυρη ανάγκη'},
   };
 
   const PID_LABELS = {
@@ -871,6 +883,24 @@
         escape(String(windowPlan.effect||''))+' · '+
         escape(String(windowPlan.active_device||''))+
         '</small>' : '';
+      const coordinator=p.coordination || {};
+      const purposes=coordinator.channels || {};
+      const priorities={
+        measured_co2_ventilation:l.co2Priority,
+        measured_particle_filtration:l.particlePriority,
+        temperature_comfort:l.temperaturePriority,
+        humidity_management:l.humidityPriority,
+        safety:l.safetyPriority,
+        hold_or_no_demand:l.noPriority,
+      };
+      const priorityDetail=coordinator.priority ?
+        '<small>'+escape(l.priority)+': '+
+        escape(priorities[coordinator.priority] || l.noPriority)+'</small>' : '';
+      const heldDetails=Object.entries(purposes)
+        .filter(([,data])=>data?.status==='held').slice(0,3)
+        .map(([kind,data])=>'<small>'+escape(l.heldPurpose)+' · '+
+          escape(kind)+': '+escape(String(data.reason||'unverified').replaceAll('_',' '))+
+          '</small>').join('');
       const reason=(p.reason==='secondary_thermal_driver_pending' && active)
         ? '' : (p.reason || '');
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
@@ -881,7 +911,8 @@
           '<span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
           '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>')+
         '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
-        controllerDetails+humidityDetails+airDetails+dryAdvice+windowAdvice+
+        controllerDetails+priorityDetail+heldDetails+
+        humidityDetails+airDetails+dryAdvice+windowAdvice+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
         (reason?'<small>'+escape(reason)+'</small>':'')+
         controls+'</section>';
