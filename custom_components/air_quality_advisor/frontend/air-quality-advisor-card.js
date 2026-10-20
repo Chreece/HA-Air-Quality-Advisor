@@ -305,7 +305,8 @@
       currentHumidity:'Measured RH',sourceStatus:'Sensor evidence',
       fan:'Fan-speed control',extraction:'Ventilation/extraction',
       filtration:'Particle filtration',treatment:'Air treatment',
-      manualDry:'Manual AC mode suggestion (no automatic switch)'},
+      manualDry:'Manual AC mode suggestion (no automatic switch)',
+      windowHelp:'Open-window opportunity (advisory only)'},
     de:{title:'Klima',heat:'Heizsollwert',cool:'Kühlsollwert',occupied:'Belegt',
       unoccupied:'Unbelegt',away:'Abwesend',sleep:'Schlaf',home:'Zuhause',
       holding:'Wartet auf sichere Bedingungen',active:'Native Thermostatregelung',
@@ -316,7 +317,8 @@
       currentHumidity:'Gemessene rF',sourceStatus:'Sensornachweis',
       fan:'Lüfter-Drehzahlregelung',extraction:'Lüftung / Abluft',
       filtration:'Partikelfiltration',treatment:'Luftbehandlung',
-      manualDry:'Empfohlener Klimamodus (nur manuell, kein Umschalten)'},
+      manualDry:'Empfohlener Klimamodus (nur manuell, kein Umschalten)',
+      windowHelp:'Fensterlüften als Alternative (nur Hinweis)'},
     el:{title:'Κλίμα',heat:'Στόχος θέρμανσης',cool:'Στόχος ψύξης',occupied:'Παρουσία',
       unoccupied:'Κενό',away:'Απουσία',sleep:'Ύπνος',home:'Σπίτι',
       holding:'Αναμονή ασφαλών συνθηκών',active:'Έλεγχος θερμοστάτη',
@@ -327,7 +329,8 @@
       currentHumidity:'Μετρημένη υγρασία',sourceStatus:'Ποιότητα μετρήσεων',
       fan:'Ρύθμιση ταχύτητας ανεμιστήρων',extraction:'Εξαερισμός / απαγωγή',
       filtration:'Φιλτράρισμα σωματιδίων',treatment:'Διαχείριση αέρα',
-      manualDry:'Πρόταση χειροκίνητης λειτουργίας A/C (χωρίς αυτόματη αλλαγή)'},
+      manualDry:'Πρόταση χειροκίνητης λειτουργίας A/C (χωρίς αυτόματη αλλαγή)',
+      windowHelp:'Πιθανή εξοικονόμηση με άνοιγμα παραθύρου (μόνο συμβουλή)'},
   };
 
   const PID_LABELS = {
@@ -854,9 +857,16 @@
           (filter.entity_id || l.advisory) : '',
       ].filter(Boolean).map((v)=>'<small>'+escape(v)+'</small>').join('');
       const nativeAir=p.native_air_mode_advice || {};
-      const dryAdvice=nativeAir.status==='manual_mode_transition_suggested' ?
+      const dryAdvice=['manual_mode_transition_suggested',
+        'manual_stop_dry_suggested'].includes(nativeAir.status) ?
         '<small>'+escape(l.manualDry)+': '+escape(nativeAir.recommended_mode||'')+
         ' · '+escape(nativeAir.climate_entity||'')+'</small>' : '';
+      const windowPlan=p.window_efficiency || {};
+      const windowAdvice=windowPlan.status==='opportunity' ?
+        '<small>'+escape(l.windowHelp)+': '+
+        escape(String(windowPlan.effect||''))+' · '+
+        escape(String(windowPlan.active_device||''))+
+        '</small>' : '';
       const reason=(p.reason==='secondary_thermal_driver_pending' && active)
         ? '' : (p.reason || '');
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
@@ -867,7 +877,7 @@
           '<span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
           '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>')+
         '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
-        controllerDetails+humidityDetails+airDetails+dryAdvice+
+        controllerDetails+humidityDetails+airDetails+dryAdvice+windowAdvice+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
         (reason?'<small>'+escape(reason)+'</small>':'')+
         controls+'</section>';
