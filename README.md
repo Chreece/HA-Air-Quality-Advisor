@@ -1,16 +1,16 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
-  <a href="https://ko-fi.com/chreece"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/ko-fi-banner.svg" alt="Support Chreece on Ko-fi" width="480"></a>
+  <a href="https://ko-fi.com/chreece"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/ko-fi-banner.svg" alt="Support Chreece on Ko-fi" width="480"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Chreece/HA-Air-Quality-Advisor/releases"><img alt="Release" src="https://img.shields.io/github/v/release/Chreece/HA-Air-Quality-Advisor?include_prereleases&display_name=tag"></a>
-  <a href="https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml"><img alt="Validation" src="https://img.shields.io/github/actions/workflow/status/Chreece/HA-Air-Quality-Advisor/validate.yml?label=Validation"></a>
+  <a href="https://github.com/Chreece/HA-Home-Environment-Manager/releases"><img alt="Release" src="https://img.shields.io/github/v/release/Chreece/HA-Home-Environment-Manager?include_prereleases&display_name=tag"></a>
+  <a href="https://github.com/Chreece/HA-Home-Environment-Manager/actions/workflows/validate.yml"><img alt="Validation" src="https://img.shields.io/github/actions/workflow/status/Chreece/HA-Home-Environment-Manager/validate.yml?label=Validation"></a>
   <a href="https://www.hacs.xyz/"><img alt="HACS compatible" src="https://img.shields.io/badge/HACS-Custom%20Repository-41BDF5"></a>
-  <a href="https://github.com/Chreece/HA-Air-Quality-Advisor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-2aa198"></a>
+  <a href="https://github.com/Chreece/HA-Home-Environment-Manager/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-2aa198"></a>
 </p>
 
 <p align="center">
@@ -21,9 +21,9 @@
 
 # Home Environment Manager for Home Assistant
 
-> **New opt-in beta: [Home Environment Manager v0.6.0b2](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.6.0b2).** Stable users remain on **v0.5.1**. The beta adds coordinated climate and humidity/ventilation management, compact Outside/General/Area settings, repaired pollen configuration, per-device control options and room/home/sleep occupancy safeguards. Experimental power controls still require actual hardware commissioning. [See the beta README, features and installation instructions](https://github.com/Chreece/HA-Air-Quality-Advisor/blob/v0.6.0b2/README.md).
+> **New opt-in beta: [Home Environment Manager v0.6.0b3](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b3).** Stable users remain on **v0.5.1**. The beta adds metric info bubbles on the room card, valid Home Assistant state/attribute selectors for occupied and sleep rooms, clarified freshness limits and improved per-room translations, alongside coordinated climate and humidity/ventilation management. Experimental power controls still require actual hardware commissioning. [See the beta README, features and installation instructions](https://github.com/Chreece/HA-Home-Environment-Manager/blob/v0.6.0b3/README.md).
 
-**Install the beta with HACS:** Open this custom Integration repository in HACS → **Redownload / version selection** → enable **Show beta versions** → choose **v0.6.0b2** → restart Home Assistant. Back up your HA configuration before upgrading. If your HACS UI doesn't expose prereleases, the beta GitHub release provides a manual installation ZIP. All experimental power and compressor-affecting controls remain opt-in and require verified physical equipment safety; automated tests are not hardware certification. The beta is a separate prerelease, not the latest stable version.
+**Install the beta with HACS:** Open this custom Integration repository in HACS → **Redownload / version selection** → enable **Show beta versions** → choose **v0.6.0b3** → restart Home Assistant. Back up your HA configuration before upgrading. If your HACS UI doesn't expose prereleases, the beta GitHub release provides a manual installation ZIP. All experimental power and compressor-affecting controls remain opt-in and require verified physical equipment safety; automated tests are not hardware certification. The beta is a separate prerelease, not the latest stable version.
 
 **Home Environment Manager** combines local sensor data, international environmental sources,
 building physics and optional advanced comfort models to recommend how to keep a room
@@ -39,7 +39,7 @@ saved configuration remain `air_quality_advisor` for upgrade compatibility.
 
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/home-environment-manager-workflow.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/home-environment-manager-workflow.svg" alt="Indoor sensors, outdoor air quality and weather feed a single recommendation sensor, with optional announcements" width="100%"></p>
 
 ## Dashboard screenshots
 
@@ -48,13 +48,13 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
 ### Desktop overview — light theme
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-overview-light.png" alt="Home Environment Manager light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-overview-light.png" alt="Home Environment Manager light-theme dashboard: outdoor air conditions, good and attention rooms, four-room infographic and recommendation to open a window" width="850">
 </p>
 
 ### Greek localization — dark theme
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Home Environment Manager dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-greek-dark.png" alt="Greek Home Environment Manager dashboard in Home Assistant dark theme, with measured CO2 and a window recommendation" width="800">
 </p>
 
 ### Mobile view and outdoor warning
@@ -65,8 +65,8 @@ The examples below are **real renders of the bundled Lovelace card** using *samp
     <td align="center"><b>Unsafe outdoor conditions — close windows</b></td>
   </tr>
   <tr>
-    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-mobile.png" alt="Home Environment Manager mobile dashboard with room cards and sensor gauges" width="340"></td>
-    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-outdoor-alert.png" alt="Home Environment Manager dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-mobile.png" alt="Home Environment Manager mobile dashboard with room cards and sensor gauges" width="340"></td>
+    <td valign="top" align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-outdoor-alert.png" alt="Home Environment Manager dark-theme outdoor weather and air-quality warning, with close-window recommendation" width="550"></td>
   </tr>
 </table>
 
@@ -81,8 +81,8 @@ The following examples show the **actual bundled Lovelace card** with
 illustrative, explicitly simulated sensor values and advanced room analysis.
 They are not screenshots from a live user's home.
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-science-desktop.png" width="850" alt="Home Environment Manager Lovelace scientific room metrics for ventilation, comfort, moisture, pollutants and energy"></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-science-mobile.png" width="360" alt="Home Environment Manager responsive mobile scientific room card"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-science-desktop.png" width="850" alt="Home Environment Manager Lovelace scientific room metrics for ventilation, comfort, moisture, pollutants and energy"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/screenshots/dashboard-science-mobile.png" width="360" alt="Home Environment Manager responsive mobile scientific room card"></p>
 
 ## What it provides
 
@@ -174,7 +174,7 @@ current advice triggers an actuator directly.
 
 ### HACS (versioned releases)
 
-1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Air-Quality-Advisor` and choose **Integration**.
+1. In HACS, open **Custom repositories**; enter `https://github.com/Chreece/HA-Home-Environment-Manager` and choose **Integration**.
 2. Install **Home Environment Manager**, restart Home Assistant and add it under **Settings → Devices & services → Add integration**. The dashboard card is bundled and registered automatically when Home Assistant starts; no separate HACS frontend repository or copy to `www` is required.
 3. No YAML configuration is required. After updating from a version that was classified as a Helper, **restart Home Assistant** so the new manifest type takes effect. The existing configuration and entity ID are kept; the integration should now appear under **Settings → Devices & services → Integrations** instead of being categorized under Helpers.
 
@@ -190,7 +190,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**Latest published stable release:** see [GitHub Releases](https://github.com/Chreece/HA-Air-Quality-Advisor/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
+**Latest published stable release:** see [GitHub Releases](https://github.com/Chreece/HA-Home-Environment-Manager/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
 
 Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Air-Quality-Advisor&category=integration), then restart Home Assistant. Existing config entries and the single recommendation sensor retain their IDs. The bundled Lovelace card is refreshed automatically.
 
@@ -286,7 +286,7 @@ Only **non-excluded** `binary_sensor` entities with device class `window` count 
 
 ## Home Environment Manager dashboard card
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/dashboard-card-preview.svg" alt="Illustrative Home Environment Manager Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/dashboard-card-preview.svg" alt="Illustrative Home Environment Manager Lovelace card with outdoor weather, safe rooms, attention counts, sensors and windows" width="100%"></p>
 
 **Add it from the dashboard card picker**: Edit your dashboard → **Add card** → **Home Environment Manager**. The integration registers the card JavaScript automatically after a Home Assistant restart, and the card discovers the recommendation sensor if you have exactly one Home Environment Manager instance. The card picker also suggests it for your recommendation entity. A built-in graphical editor lets you select the sensor, rename the card and toggle the outdoor panel and detailed metrics.
 
@@ -377,7 +377,7 @@ and RH alone, the advisor displays only the defensible indicators above.
 
 ## The single backward-compatible recommendation sensor
 
-<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/recommendation-preview.svg" alt="Illustrative Home Environment Manager close-window recommendation" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/recommendation-preview.svg" alt="Illustrative Home Environment Manager close-window recommendation" width="100%"></p>
 
 Typical state when CO₂ is high but outdoor air and weather are good:
 
@@ -466,7 +466,7 @@ python -m compileall -q custom_components
 bash ./publish.sh
 ```
 
-`publish.sh` is an optional local publishing script requiring an authenticated GitHub CLI (`gh auth status`). It **never force-pushes** or mutates other repositories. **GitHub Actions automatically validates every completed push to `main`** and creates a new GitHub/HACS Release after Python, JavaScript, translation, HACS and Hassfest checks pass. Superseded commits and already published version tags cannot create duplicate releases. Push the complete code, translations and release notes with matching manifest and release-request versions; no manual action is required. Manual validation remains available through [Actions → Validate and release (after push)](https://github.com/Chreece/HA-Air-Quality-Advisor/actions/workflows/validate.yml), without publishing by default. See [RELEASING.md](RELEASING.md).
+`publish.sh` is an optional local publishing script requiring an authenticated GitHub CLI (`gh auth status`). It **never force-pushes** or mutates other repositories. **GitHub Actions automatically validates every completed push to `main`** and creates a new GitHub/HACS Release after Python, JavaScript, translation, HACS and Hassfest checks pass. Superseded commits and already published version tags cannot create duplicate releases. Push the complete code, translations and release notes with matching manifest and release-request versions; no manual action is required. Manual validation remains available through [Actions → Validate and release (after push)](https://github.com/Chreece/HA-Home-Environment-Manager/actions/workflows/validate.yml), without publishing by default. See [RELEASING.md](RELEASING.md).
 
 ## Opt-in PID climate control (v0.5.0)
 
@@ -561,7 +561,7 @@ MIT © 2026 Chreece
 
 ## Support this project
 
-If this integration helps, you can support ongoing development on [Ko-fi](https://ko-fi.com/chreece). Contributions and bug reports are welcome through the repository's [issues](https://github.com/Chreece/HA-Air-Quality-Advisor/issues).
+If this integration helps, you can support ongoing development on [Ko-fi](https://ko-fi.com/chreece). Contributions and bug reports are welcome through the repository's [issues](https://github.com/Chreece/HA-Home-Environment-Manager/issues).
 
 
 ### Python 3.14 / Alpine installation compatibility (v0.5.1)
