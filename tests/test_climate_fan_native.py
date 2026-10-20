@@ -253,3 +253,50 @@ def test_expired_air_evidence_never_commands_fan_speed(fan_module):
         assert len(h.services.calls)==1
         await engine.async_stop()
     asyncio.run(run())
+
+
+def test_running_extractor_speed_rechecks_window_after_room_grant(fan_module):
+    async def scenario():
+        from custom_components.air_quality_advisor.climate_arbitration import (
+            room_coordination,
+        )
+        h=home()
+        window=MockState("binary_sensor.window","off",device_class="window")
+        h._values[window.entity_id]=window
+        h._entity_areas[window.entity_id]="bedroom"
+        conf={
+            "enabled":True,"allow_actuation":True,"fan_speed_auto":True,
+            "extraction_fan_entity":"fan.extractor",
+            "co2_entity":"sensor.co2",
+            "extraction_speed_percent":65,
+        }
+        report=plan(extraction=True)
+        report.update({
+            "window_contacts":[window.entity_id],
+            "window_safe":True,
+            "air_evidence_at":1400,
+            "equipment_plan":{"status":"ready"},
+        })
+        report["air_actions"]["outdoor_air_verified"]=True
+        clk=[1000.]
+        controller=fan_module.RunningFanSpeedControl(
+            h,"shared-air",clock=lambda:clk[0],
+        )
+        await controller.async_start()
+        clk[0]=1400
+        report["coordination"]=room_coordination(
+            h,"bedroom",conf,report,now=1400,
+        )
+        assert report["coordination"]["channels"]["extraction"]["status"]=="eligible"
+        window.state="on"  # New opening after the last policy evaluation
+        await tick(controller,conf,report)
+        assert not h.services.calls
+        assert controller.statuses["bedroom"]=={
+            "status":"coordination_hold","entity_id":"fan.extractor",
+            "reason":"window_open_or_unknown",
+        }
+        window.state="off"
+        await tick(controller,conf,report)
+        assert h.services.calls[0][:2]==("fan","set_percentage")
+        await controller.async_stop()
+    asyncio.run(scenario())
