@@ -199,7 +199,7 @@ jobs:
           hacs = json.loads(Path("hacs.json").read_text(encoding="utf-8"))
           assert manifest["domain"] == "air_quality_advisor"
           assert manifest["name"] == "Home Environment Manager"
-          assert manifest["version"] == "0.6.0b1"
+          assert manifest["version"] == "0.6.0b2"
           assert request["version"] == manifest["version"]
           assert request["channel"] == "beta"
           assert request["release_branch"] == "beta/v0.6.0b2"
