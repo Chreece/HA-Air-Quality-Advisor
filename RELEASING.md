@@ -1,5 +1,9 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b4 — First-install retry recovery beta
+
+This HACS-selectable prerelease is built from `beta/v0.6.0b4` and published **only after** the full Python 3.13/3.14, frontend, translation, Hassfest, HACS and installation ZIP checks pass. It removes the early unique-ID reservation that made a first-time dialog lost by the browser block retries as `already_in_progress`. The fixed `home` unique ID and existing-entry checks are enforced at final save, not removed. Stable `v0.5.1`, earlier betas, the internal domain and all hardware-safety permissions remain unchanged. A previous pending HA config flow can be cleared by restarting only Home Assistant after the HACS update.
+
 ## v0.6.0b3 — Measurement help and useful-source selector beta
 
 This opt-in HACS prerelease is published from the isolated `beta/v0.6.0b3` branch only after Python 3.13 and 3.14, generated 38-language translations, Node.js frontend tests, Hassfest, HACS validation and ZIP integrity succeed. It adds contextual measurement info, fresh/valid occupied and sleep-room selector choices and corrected Greek form guidance. Stable v0.5.1 and existing tags remain unchanged. The GitHub release is explicitly marked prerelease and never Latest. The ZIP is for manual installation; HACS reads the matching tagged source tree.

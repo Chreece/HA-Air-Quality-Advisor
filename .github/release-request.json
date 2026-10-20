@@ -1,16 +1,15 @@
 {
-  "version": "0.6.0b3",
+  "version": "0.6.0b4",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Opt-in beta3, accessible info icons on primary and scientific measurements, only actual HA room-list sources/attributes, explained sleep freshness limit, improved per-room translations. Stable release unchanged.",
+  "note": "Public beta 4: first-install setup flow retry recovery without duplicate entries. Stable 0.5.1 remains latest. No changes to physical actuator controls.",
   "validation_attempt": 0,
   "changes": [
-    "Contextual keyboard/touch help on main and scientific measurements, localized Greek/English and actual configured limit when present",
-    "Source entity choices filtered by parseable HA room IDs/names and dynamic State/attribute choices on source change",
-    "Explain source staleness minutes are maximum permitted age of occupancy/sleep data, not minimum sleep duration",
-    "Improve Greek per-room climate/PID/control help and all 38 supported locale catalogs",
-    "Preserve fail-closed presence policy, manual-off recovery and commissioning requirements",
-    "Regressions validated via Python 3.13/3.14, Hassfest, HACS and frontend tests"
+    "Show first-time room-selection form without reserving a global config-flow unique ID that blocks subsequent attempts after a lost frontend dialog",
+    "Defer unique ID assignment to final save and recheck configured entries, preserving one Home Environment Manager instance",
+    "Cover abandoned initial setup, retry and race with an already configured instance in regression tests",
+    "Document restart-only recovery from old in-memory flows and clarify Configure vs Add integration after HACS updates",
+    "Keep existing domain, automations, climate safety policies, translations and v0.5.1 stable channel unchanged"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b3"
+  "release_branch": "beta/v0.6.0b4"
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0b4 — Initial setup retry and existing-entry protection (beta)
+
+- Avoid reserving the static `home` config-flow unique ID before the first setup form, so a frontend-abandoned initial flow cannot block every fresh attempt with `already_in_progress`.
+- Recheck both the unique ID and legacy existing entries immediately before saving, including installs without a stored unique ID. Two simultaneous attempts cannot intentionally create duplicate entries.
+- Add simulated regression tests for an abandoned original setup flow, retry, final ID assignment and an entry created while another flow was open.
+- Document recovery from already-in-progress installation attempts; existing HACS users should use Configure, not Add integration, after upgrading.
+- Keep hardware-control safety, translations, entity IDs and stable v0.5.1 untouched.
+
 ## 0.6.0b3 — Contextual measurement explanations and validated room-source selectors (beta)
 
 - Add accessible info popovers for all room primary metrics and derived scientific measurements, explaining what each means, potential risks and benefits, and only configured limits when present.
