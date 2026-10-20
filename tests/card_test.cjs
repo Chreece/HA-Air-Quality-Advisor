@@ -547,3 +547,37 @@ humidityCard.hass={language:'en',states:{
   'sensor.humidity_only':{state:'idle',attributes:{dashboard:humidityOnly}},
 }};
 assert.ok(humidityCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Window-based savings advice is visible but NEVER presented as a command.
+// Climates exposing only DRY are rendered without a fabricated FAN_ONLY mode.
+const windowAid=JSON.parse(JSON.stringify(input));
+windowAid.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'device',mode:'dry',profile:'home',
+    actuation:{status:'advisory_only'},
+    window_efficiency:{status:'opportunity',effect:'dry',
+      active_device:'climate.dry_only',notify_enabled:true,
+      automatic_control:false,
+      evidence:{humidity_ratio_advantage_g_kg:3.4}},
+    native_air_mode_advice:{status:'manual_stop_dry_suggested',
+      recommended_mode:'off',automatic_control:false},
+  }},
+}];
+const windowAidCard=new Card();
+windowAidCard.setConfig({entity:'sensor.window_aid'});
+for(const [language,word] of [
+  ['en','Open-window opportunity'],
+  ['de','Fensterlüften als Alternative'],
+  ['el','Πιθανή εξοικονόμηση'],
+]){
+  windowAidCard.hass={language,states:{
+    'sensor.window_aid':{state:'idle',attributes:{dashboard:windowAid}},
+  }};
+  const html=windowAidCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(word), language + ': missing window alternative');
+  assert.ok(html.includes('climate.dry_only'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
