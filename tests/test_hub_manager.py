@@ -341,3 +341,34 @@ def test_fast_air_supervision_refreshes_stale_evidence_before_fan_commands(
     manager._on_fast_climate_interval(None)
     assert refreshed==[]
     assert len(schedules)==2*len(drivers)
+
+
+
+def test_commissioned_dry_fan_room_control_routes_pause_resume_to_native_mode(
+    delivery_module,
+):
+    configured={
+        "climate_rooms":{"bedroom":{
+            "enabled":True,
+            "allow_actuation":True,
+            "controller":"environment",
+            "dry_fan_mode_auto":True,
+            "dry_fan_hardware_confirmed":True,
+            "dry_climate_entity":"climate.bedroom_ac",
+        }},
+    }
+    manager,service=advisor(delivery_module,configured)
+    invoked=[]
+    async def control(area,action):
+        invoked.append((area,action))
+        return {"accepted":True,"area":area,"action":action}
+    manager.native_air_mode.command=control
+    for action in ("pause","resume"):
+        answer=asyncio.run(manager.async_climate_control("bedroom",action))
+        assert answer["accepted"] is True
+        assert answer["native_air_mode"]["action"]==action
+        assert answer["primary"]["reason"]=="environment_only_no_primary_hvac"
+    assert invoked==[("bedroom","pause"),("bedroom","resume")]
+    assert service.calls==[]  # no HVAC command is sent by pause/resume
+    denied=asyncio.run(manager.async_climate_control("nonexistent","pause"))
+    assert denied["accepted"] is False
