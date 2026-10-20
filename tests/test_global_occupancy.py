@@ -107,3 +107,30 @@ def test_device_policy_blocks_new_thermal_commands_when_unoccupied(adapter):
     cfg["selected_devices"]=[]
     assert new_command_gate(FakeHass([]),"kitchen",cfg,plan,
                             "thermal","climate.kitchen")=="device_not_selected"
+
+
+
+def test_live_gate_rejects_entered_room_and_invalidated_sleep_after_planning(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import (
+        live_device_permission,
+    )
+    sensor=MockState("binary_sensor.living_presence","off",device_class="presence")
+    occupied=MockState("sensor.rooms",'[]')
+    sleep=MockState("sensor.sleep_rooms",'[]')
+    h=FakeHass([sensor,occupied,sleep],{sensor.entity_id:"living"})
+    global_cfg={"occupied_rooms_entity":occupied.entity_id,
+                "room_occupancy_sensors":[sensor.entity_id],
+                "sleep_rooms_entity":sleep.entity_id}
+    room_config={"occupancy_sensors":[sensor.entity_id]}
+    plan={"occupancy":"unoccupied","away":"home","sleeping":False,
+          "global_presence":global_cfg,"known_presence_areas":["living"]}
+    device={"auto_control":True,"presence_requirement":"room",
+            "sleep_behavior":"normal"}
+    assert live_device_permission(h,"living",room_config,plan,device)[0]=="absent"
+    sensor.state="on"
+    assert live_device_permission(h,"living",room_config,plan,device)[0]=="eligible"
+    device["sleep_behavior"]="pause"
+    sleep.state="unavailable"
+    assert live_device_permission(h,"living",room_config,plan,device)[0]=="held"
+    device["sleep_behavior"]="sleep_targets"
+    assert live_device_permission(h,"living",room_config,plan,device)[0]=="held"

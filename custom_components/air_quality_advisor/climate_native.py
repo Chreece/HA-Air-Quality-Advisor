@@ -205,13 +205,19 @@ class NativeClimateControl:
         device=devices.get(entity,{}) if isinstance(devices,dict) else {}
         if not isinstance(device,dict) or device.get("auto_control") is not True:
             return False
-        from .occupancy_policy import device_permission
+        from .occupancy_policy import device_permission, live_device_permission
         decision,reason=device_permission(
             device,report.get("occupancy","unknown"),
             report.get("away","home"),report.get("sleeping"),
         )
         if decision!="absent":
             return False
+        live_decision,_=live_device_permission(
+            self.hass,area,settings,report,device,
+        )
+        if live_decision!="absent":
+            self.statuses[area]={"status":"presence_changed_before_off"}
+            return True
         self.statuses[area]={"status":"presence_hold","reason":reason}
         if device.get("absence_action")!="off":
             return True
@@ -265,7 +271,8 @@ class NativeClimateControl:
         if (not self._active or settings!=self._configured.get(area) or
                 self._planned.get(area) is not report or area in self.paused or
                 entity_area(self.hass,entity)!=area or
-                foreign_owner_hold(self.hass,self.entry_id,entity) is not None):
+                foreign_owner_hold(self.hass,self.entry_id,entity) is not None or
+                live_device_permission(self.hass,area,settings,report,device)[0]!="absent"):
             self.paused[area]="native_off_permission_revoked_after_intent"
             self._save()
             return True

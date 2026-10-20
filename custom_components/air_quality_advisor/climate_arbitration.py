@@ -301,11 +301,15 @@ def new_command_gate(hass: Any, area: str, config: dict,
             return "device_not_selected"
     profiles=config.get("device_settings",{}) if isinstance(config,dict) else {}
     if isinstance(profiles,dict) and isinstance(profiles.get(entity),dict):
-        from .occupancy_policy import device_permission
+        from .occupancy_policy import device_permission, live_device_permission
         action,reason=device_permission(
             profiles[entity],plan.get("occupancy","unknown"),
             plan.get("away","home"),plan.get("sleeping"),
         )
+        if action=="eligible":
+            action,reason=live_device_permission(
+                hass,area,config,plan,profiles[entity],
+            )
         if action!="eligible":
             return reason
     # A separate HA config entry may choose the same climate/fan/humidity

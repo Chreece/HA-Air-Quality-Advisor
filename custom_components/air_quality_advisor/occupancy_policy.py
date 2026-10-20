@@ -211,6 +211,52 @@ def device_permission(device: Mapping, room_status: str, home_status: str,
             return "held", "sleep_room_control_paused"
         if sleeping is None:
             return "held", "sleep_room_evidence_unknown"
+    elif sleep == "sleep_targets" and sleeping is None:
+        return "held", "sleep_room_evidence_unknown"
     elif sleep not in ("normal", "sleep_targets"):
         return "held", "invalid_sleep_policy"
     return "eligible", "device_policy_approved"
+
+
+
+def live_device_permission(hass: Any, area: str, room_config: Mapping,
+                           plan: Mapping, device: Mapping) -> tuple[str, str]:
+    """Re-check sensor/occupancy evidence at the actual write boundary.
+
+    A plan evaluated before a person enters, leaves or starts sleeping must
+    not authorize a stale command. No new entity is discovered or controlled.
+    """
+    global_settings = plan.get("global_presence")
+    area_ids = plan.get("known_presence_areas")
+    if isinstance(global_settings, Mapping) and global_settings:
+        known = (set(area_ids) if isinstance(area_ids, (tuple,list,set))
+                 else {area})
+        room,_,_=room_presence(hass,area,room_config,global_settings,
+                               known_areas=known or {area})
+        home,_,_=home_presence(hass,global_settings,
+                               plan.get("tracker_entities",[]))
+        sleeping=plan.get("sleeping")
+        if global_settings.get("sleep_rooms_entity"):
+            value,_=sleep_presence(hass,area,global_settings,known or {area})
+            if value is None:
+                sleeping=None
+            elif value is True:
+                sleeping=True
+            elif sleeping is None:
+                sleeping=False
+        return device_permission(device,room,home,sleeping)
+    room = plan.get("occupancy","unknown")
+    sensors=plan.get("presence_entities")
+    if isinstance(sensors,list) and sensors:
+        readings=[_bool_presence(hass.states.get(entity)) for entity in sensors]
+        if any(value is True for value in readings):
+            room="occupied"
+        elif any(value is None for value in readings):
+            room="unknown"
+        else:
+            room="unoccupied"
+    home=plan.get("away","unknown")
+    trackers=plan.get("tracker_entities")
+    if isinstance(trackers,list) and trackers:
+        home,_,_=home_presence(hass,{"home_trackers":trackers})
+    return device_permission(device,room,home,plan.get("sleeping"))
