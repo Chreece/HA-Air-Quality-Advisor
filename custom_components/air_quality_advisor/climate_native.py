@@ -11,6 +11,7 @@ import time
 from typing import Any
 
 from .pid_math import bounded_command, target_from_unit, finite
+from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
 
 _LOGGER=logging.getLogger(__name__)
@@ -175,6 +176,13 @@ class NativeClimateControl:
             return
         mode=report.get("mode")
         entity=settings.get("climate_entity")
+        if mode in ("heat","cool","heat_cool"):
+            conflict=new_command_gate(
+                self.hass,area,settings,report,"thermal",entity,now=now,
+            )
+            if conflict is not None:
+                self.statuses[area]={"status":"coordination_hold","reason":conflict}
+                return
         # Recheck live ownership and contacts immediately before every write.
         # The advisory plan can be older than the last entity/area change.
         if (not isinstance(entity,str) or not entity.startswith("climate.") or
