@@ -602,6 +602,25 @@ class AirQualityManager:
         plans={area:item.get("climate_plan",{})
                for area,item in self.plan.environment.items()
                if isinstance(item,dict) and "climate_plan" in item}
+        # Fan power/speed checks use a strict 120-second outdoor-air evidence
+        # lifetime. Refresh the *whole* scientific/environmental plan before
+        # it expires, not only every five minutes. This recalculation also
+        # recomputes unified arbitration and dispatches all controllers once.
+        now=time()
+        active_air_rooms=[
+            area for area,conf in settings.items()
+            if isinstance(conf,dict) and conf.get("enabled") is True
+            and (conf.get("fan_speed_auto") is True or
+                 conf.get("fan_power_auto") is True)
+        ]
+        if active_air_rooms and any(
+            not isinstance(plans.get(area),dict) or
+            not isinstance(plans.get(area,{}).get("air_evidence_at"),(int,float))
+            or not 0 <= now-plans[area]["air_evidence_at"] < 90
+            for area in active_air_rooms
+        ):
+            self._recalculate()
+            return
         pid_settings=self.settings.get(CONF_PID_ROOMS,{})
         self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
         self.native_humidity.schedule(settings,plans)
