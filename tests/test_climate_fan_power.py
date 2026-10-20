@@ -251,7 +251,9 @@ def test_restart_with_owned_fan_requires_reconciliation_not_power_command(driver
         assert not (await again.command("bedroom","resume"))["accepted"]
         h.states.get("fan.bedroom_extractor").state="off"
         assert (await again.command("bedroom","resume"))["accepted"]
-        t[0]=2900
+        # Manual reconciliation at 2600 requires a *new*, full 300-second
+        # minimum-off and startup warmup period before another ON.
+        t[0]=2850
         await tick(again,cfg(),plan(t[0]))
         assert len(h.services.calls)==1
         await again.async_stop()
