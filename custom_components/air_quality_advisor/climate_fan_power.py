@@ -257,10 +257,10 @@ class FanPowerControl:
         if not self._active or not self._ready:
             return
         interval=dwell_settings(cfg)
-        if interval is None:
-            self._status(area,"invalid_fan_power_timing")
-            return
-        on_min,off_min,max_on=interval
+        # Incorrect new settings may block NEW starts, but cannot strand a
+        # previously owned output whose original safe dwell was persisted.
+        on_min,off_min,max_on=(interval if interval is not None
+                              else (None,None,None))
         roles=[role for role in FAN_ROLES if isinstance(cfg.get(role),str)]
         devices=[cfg[role] for role in roles]
         duplicates=duplicate_owners(self._configured)
@@ -269,10 +269,21 @@ class FanPowerControl:
         # OFF/reconciliation path for a previously commanded output.
         active_owned=[(e,r) for e,r in self.owned.items() if r.get("area")==area]
         for entity,record in active_owned:
+            original_on=finite(record.get("min_on_s"),120,3600)
+            original_max=finite(record.get("max_on_s"),900,86400)
+            if (original_on is None or original_max is None or
+                    original_max<=original_on):
+                if interval is None or not cfg:
+                    self._pause(area,"original_fan_dwell_unknown_reconcile_manually")
+                    continue
+                original_on,_,original_max=interval
             await self._owned_tick(area,cfg,plan,entity,record,now,
-                                   on_min,max_on)
+                                   original_on,original_max)
         if area in self.paused:
             self._status(area,"paused",reason=self.paused[area])
+            return
+        if interval is None:
+            self._status(area,"invalid_fan_power_timing")
             return
         if len(devices)!=len(set(devices)) or any(e in duplicates for e in devices):
             self._status(area,"duplicate_fan_owner")
@@ -329,7 +340,8 @@ class FanPowerControl:
                              reason=conflict)
                 continue
             record={"entity_id":entity,"area":area,"role":role,
-                    "power":"off","when":now,"acknowledged":True}
+                    "power":"off","when":now,"acknowledged":True,
+                    "min_on_s":on_min,"max_on_s":max_on}
             if not await self._send(area,entity,record,"on",now):
                 return
 
