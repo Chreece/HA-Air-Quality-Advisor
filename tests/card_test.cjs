@@ -654,3 +654,44 @@ for(const [language,rank,hold] of [
   assert.ok(html.includes('opposing native mode armed'));
   assert.ok(!html.includes('data-hvac-mode='));
 }
+
+
+// Native DRY/FAN_ONLY controller status is visible independently of
+// the existing manual mode advice and can be paused without HVAC broadcasts.
+const nativeDry=JSON.parse(JSON.stringify(input));
+nativeDry.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    actuation:{status:'advisory_only'},
+    native_air_mode_advice:{status:'manual_mode_transition_suggested',
+      recommended_mode:'dry',current_mode:'fan_only',
+      climate_entity:'climate.bathroom_ac',automatic_control:false},
+    native_air_mode_actuation:{
+      status:'native_mode_commanded',entity_id:'climate.bathroom_ac',mode:'dry'},
+  }},
+}];
+const nativeDryCard=new Card();
+nativeDryCard.setConfig({entity:'sensor.native_dry'});
+for(const [language,label] of [
+  ['en','Commissioned DRY/FAN modes'],
+  ['de','Freigegebene DRY/FAN-Modi'],
+  ['el','Εγκεκριμένες λειτουργίες DRY/FAN'],
+]){
+  nativeDryCard.hass={language,states:{
+    'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
+  }};
+  const html=nativeDryCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(label),language+': no mode controller');
+  assert.ok(html.includes('native mode commanded'),language+': no mode status');
+  assert.ok(html.includes('data-climate-action="pause"'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
+nativeDry.rooms[0].environment.climate_plan.native_air_mode_actuation={
+  status:'paused',reason:'manual_mode_or_unacknowledged_write',
+};
+nativeDryCard.hass={language:'en',states:{
+  'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
+}};
+assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
