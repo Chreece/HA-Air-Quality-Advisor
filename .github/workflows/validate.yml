@@ -11,6 +11,7 @@ on:
       - 'feat/home-environment-manager-pid-*'
       - 'feat/home-environment-climate-profiles-*'
       - 'beta/v0.6.0b1'
+      - 'beta/v0.6.0b2'
       - 'feat/compact-environment-settings-*'
   workflow_dispatch:
     inputs:
@@ -176,8 +177,8 @@ jobs:
             --latest
 
   publish_beta:
-    name: Publish opt-in v0.6.0b1 prerelease only after all checks
-    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b1'
+    name: Publish opt-in v0.6.0b2 prerelease only after all checks
+    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b2'
     needs: [test, hassfest, hacs]
     runs-on: ubuntu-latest
     permissions:
@@ -201,11 +202,11 @@ jobs:
           assert manifest["version"] == "0.6.0b1"
           assert request["version"] == manifest["version"]
           assert request["channel"] == "beta"
-          assert request["release_branch"] == "beta/v0.6.0b1"
+          assert request["release_branch"] == "beta/v0.6.0b2"
           # HACS reads release tag tree directly. Never change the default
           # channel's installation contract for old stable releases.
           assert hacs.get("zip_release") is not True
-          assert Path(".github/releases/v0.6.0b1.md").stat().st_size > 1500
+          assert Path(".github/releases/v0.6.0b2.md").stat().st_size > 1500
           for item in ("icon.png", "icon@2x.png", "logo.png", "logo@2x.png"):
               assert (p.parent / "brand" / item).is_file(), item
           print("Exact prerelease identity, HACS source-tree mode, brand and notes: PASS")
@@ -223,13 +224,13 @@ jobs:
             echo "publish=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if gh release view v0.6.0b1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+          if gh release view v0.6.0b2 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "::notice::This beta was already published; never replace its tag"
             echo "publish=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b1" >/dev/null 2>&1; then
-            echo "::error::Existing orphan tag v0.6.0b1; refusing to move tag"
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b2" >/dev/null 2>&1; then
+            echo "::error::Existing orphan tag v0.6.0b2; refusing to move tag"
             exit 1
           fi
           echo "publish=true" >> "$GITHUB_OUTPUT"
@@ -239,13 +240,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          zip -q -r dist/HA-Air-Quality-Advisor-v0.6.0b1.zip custom_components/air_quality_advisor \
+          zip -q -r dist/HA-Air-Quality-Advisor-v0.6.0b2.zip custom_components/air_quality_advisor \
             -x '*__pycache__*' '*.pyc' '*.pyo' '.DS_Store'
           python - <<'PY'
           import json
           import zipfile
           from pathlib import Path
-          archive = Path("dist/HA-Air-Quality-Advisor-v0.6.0b1.zip")
+          archive = Path("dist/HA-Air-Quality-Advisor-v0.6.0b2.zip")
           prefix = "custom_components/air_quality_advisor/"
           with zipfile.ZipFile(archive) as z:
               assert z.testzip() is None
@@ -262,7 +263,7 @@ jobs:
                   assert prefix+path in names,path
               print("Manual installation archive: verified",len(names),"files")
           PY
-          sha256sum dist/HA-Air-Quality-Advisor-v0.6.0b1.zip > dist/HA-Air-Quality-Advisor-v0.6.0b1.zip.sha256
+          sha256sum dist/HA-Air-Quality-Advisor-v0.6.0b2.zip > dist/HA-Air-Quality-Advisor-v0.6.0b2.zip.sha256
       - name: Publish GitHub prerelease without changing stable latest
         if: steps.eligibility_beta.outputs.publish == 'true'
         shell: bash
@@ -275,19 +276,19 @@ jobs:
             echo "::notice::Superseded while packaging; skip"
             exit 0
           fi
-          if gh release view v0.6.0b1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+          if gh release view v0.6.0b2 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "::notice::Already published; never overwrite"
             exit 0
           fi
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b1" >/dev/null 2>&1; then
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b2" >/dev/null 2>&1; then
             echo "::error::Orphan tag, refuse to repoint"
             exit 1
           fi
-          gh release create v0.6.0b1 \
-            'dist/HA-Air-Quality-Advisor-v0.6.0b1.zip#Manual installation ZIP' \
-            'dist/HA-Air-Quality-Advisor-v0.6.0b1.zip.sha256#SHA-256 checksum' \
+          gh release create v0.6.0b2 \
+            'dist/HA-Air-Quality-Advisor-v0.6.0b2.zip#Manual installation ZIP' \
+            'dist/HA-Air-Quality-Advisor-v0.6.0b2.zip.sha256#SHA-256 checksum' \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title 'Home Environment Manager v0.6.0 beta 1' \
-            --notes-file .github/releases/v0.6.0b1.md \
+            --notes-file .github/releases/v0.6.0b2.md \
             --prerelease --latest=false

@@ -1,5 +1,21 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b2 — Compact options and international device occupancy beta
+
+Version `v0.6.0b2` is the next HACS-selectable **prerelease**, created from
+`beta/v0.6.0b2` at its validated HEAD. GitHub Latest remains stable `v0.5.1`
+and the first `v0.6.0b1` tag is immutable. HACS uses the tagged source tree
+(`custom_components/air_quality_advisor`); the attached ZIP is for manual
+installation. The validation workflow gates publication on Python 3.13/3.14,
+full translations, frontend tests, Hassfest, HACS checks, and package smoke
+tests. This beta does not merge the experimental branch to `main`.
+
+See the beta README for grouped Outside data / General / Area settings,
+device-by-device commissioning and occupancy/sleep input formats. Unknown
+state/attribute data never authorizes an absence OFF. Native AC compressor
+and electrical safety are still the responsibility of independently
+commissioned hardware, never of these software tests.
+
 ## v0.6.0b1 opt-in HACS beta (no stable-branch merge)
 
 The first 0.6 preview publishes from `beta/v0.6.0b1` as the GitHub **prerelease** tag `v0.6.0b1`, with the same `0.6.0b1` manifest version. The beta workflow is branch- and version-locked and runs the Python 3.13/3.14 tests, generated translations, frontend, Hassfest, HACS checks and package smoke test **before** creating the release. It pins the tag to the validated exact Git SHA, never retags/overwrites it, and uses `--prerelease --latest=false` so v0.5.1 remains stable/latest.

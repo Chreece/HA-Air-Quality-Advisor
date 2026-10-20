@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — Compact settings and evidence-qualified device occupancy
+## 0.6.0b2 — Compact settings and evidence-qualified device occupancy (beta)
 
 - Reorganize 11 flat settings into **Outside data**, **General settings**, **Area settings**, Announcements and Advanced thresholds; move international pollen/AQI into Outside data and window exclusions into Area settings.
 - Replace dynamic AQI/pollen options with isolated, validated provider controls. Fix a crash-prone menu involving dynamically numbered selectors.
