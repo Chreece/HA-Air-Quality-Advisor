@@ -614,9 +614,11 @@ class AirQualityManager:
                  conf.get("fan_power_auto") is True)
         ]
         if active_air_rooms and any(
-            not isinstance(plans.get(area),dict) or
-            not isinstance(plans.get(area,{}).get("air_evidence_at"),(int,float))
-            or not 0 <= now-plans[area]["air_evidence_at"] < 90
+            isinstance(plans.get(area),dict) and bool(plans[area])
+            and (
+                not isinstance(plans[area].get("air_evidence_at"),(int,float))
+                or not 0 <= now-plans[area]["air_evidence_at"] < 90
+            )
             for area in active_air_rooms
         ):
             self._recalculate()
