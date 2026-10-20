@@ -148,7 +148,7 @@ LABELS={
        "heat_actuator":"Heizaktor (Schalter oder Prozentwert)",
        "cool_actuator":"Kühlaktor (Schalter oder Prozentwert)",
        "climate_enabled":"Klimaplaner für diesen Raum aktivieren",
-       "climate_allow_actuation":"Thermostat-Sollwertbefehle erlauben (separate Zustimmung)",
+       "climate_allow_actuation":"Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)",
        "climate_auto_switch_hvac":"Automatischen Heiz-/Kühlmoduswechsel erlauben",
        "climate_prefer_native_auto":"Geräteeigenen Heiz-/Kühlbereich verwenden",
        "climate_occupancy_sensors":"Präsenzsensoren in diesem Raum",
@@ -203,7 +203,7 @@ LABELS={
        "heat_actuator":"Ενεργοποιητής θέρμανσης",
        "cool_actuator":"Ενεργοποιητής ψύξης",
        "climate_enabled":"Ενεργοποίηση σχεδίου κλίματος δωματίου",
-       "climate_allow_actuation":"Να επιτρέπονται εντολές στον επιλεγμένο θερμοστάτη (ξεχωριστή άδεια)",
+       "climate_allow_actuation":"Να επιτρέπονται εντολές στους επιλεγμένους ελεγκτές (ξεχωριστές άδειες)",
        "climate_auto_switch_hvac":"Αυτόματο πέρασμα θέρμανσης/ψύξης (ξεχωριστή άδεια)",
        "climate_prefer_native_auto":"Προτίμηση αυτόματης ζώνης θέρμανσης/ψύξης της συσκευής",
        "climate_occupancy_sensors":"Αισθητήρες παρουσίας αυτού του δωματίου",
@@ -300,6 +300,7 @@ def apply_climate_i18n(root:Path)->None:
                 "climate_controller_invalid","climate_mode_invalid",
                 "climate_occupancy_invalid","climate_away_invalid","climate_deadband_invalid",
                 "climate_humidity_control_inputs_missing",
+                "climate_humidity_power_inputs_missing",
                 "climate_secondary_control_inputs_missing",
                 "climate_fan_control_inputs_missing","climate_fan_sensor_invalid")
         })
