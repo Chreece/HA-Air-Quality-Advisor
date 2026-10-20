@@ -47,10 +47,9 @@ def _device_choices(hass, area: str) -> list[dict[str, str]]:
             continue
         if entity_area(hass, state.entity_id) != area:
             continue
-        if state.domain == "humidifier" and state.attributes.get("device_class") not in (
-            "humidifier", "dehumidifier"
-        ):
-            continue
+        # Device class can be missing from an otherwise valid Home Assistant
+        # humidifier entity. It remains visible for INVENTORY, but must
+        # report its actual supported class before automatic device control.
         if state.domain == "climate" and not isinstance(
             state.attributes.get("hvac_modes"), (list, tuple)
         ):
@@ -447,11 +446,27 @@ class CompactOptionsMixin:
                  data["presence_requirement"] == "always")):
                 errors["base"] = "device_policy_invalid"
             if data["auto_control"]:
-                if domain == "climate" and data["method"] not in ("setpoint", "native"):
+                # A discovered entity is not necessarily capable of safely
+                # implementing a chosen control mode. Validate actual HA
+                # features before turning on the independent driver opt-in.
+                if domain=="humidifier" and state.attributes.get("device_class") not in (
+                    "humidifier","dehumidifier"
+                ):
+                    errors["base"]="device_hardware_required"
+                elif domain == "climate" and data["method"] not in ("setpoint", "native"):
                     errors["base"] = "device_method_invalid"
                 elif domain == "climate" and data["method"] == "native" and (
                      not data["hardware_confirmed"]):
                     errors["base"] = "device_hardware_required"
+                elif domain == "climate" and not (set(
+                    state.attributes.get("hvac_modes", ())
+                    if isinstance(state.attributes.get("hvac_modes"), (tuple,list))
+                    else ()
+                ) & {"heat","cool","heat_cool"}):
+                    # A DRY-only native climate can be monitored and advised
+                    # but cannot accept fabricated temperature targets here.
+                    # Its compressor-mode driver is separately commissioned.
+                    errors["base"]="device_method_invalid"
                 elif domain in ("humidifier","fan") and data["method"] not in (
                     "setpoint","power","speed"):
                     errors["base"] = "device_method_invalid"

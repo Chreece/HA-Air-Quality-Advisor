@@ -1393,3 +1393,48 @@ def test_device_auto_control_requires_exact_sensor_and_hardware_for_off(monkeypa
     assert room["allow_actuation"] is True
     assert room["climate_entity"]==st.entity_id
     assert room["device_settings"][st.entity_id]["presence_requirement"]=="room"
+
+
+
+def test_humidifier_without_device_class_stays_visible_but_cannot_be_armed(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    old=MockState("humidifier.generic","off")
+    options.hass._values[old.entity_id]=old
+    options.hass._entity_areas[old.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_area_devices({"area_devices_area":"living"}))
+    form=asyncio.run(options.async_step_select_devices())
+    selected=next(k.default for k in form["data_schema"] if k=="selected_devices")
+    assert old.entity_id in selected
+    asyncio.run(options.async_step_select_devices({"selected_devices":[old.entity_id]}))
+    asyncio.run(options.async_step_device_choice({"device_choice":old.entity_id}))
+    bad=asyncio.run(options.async_step_device_settings({
+        "device_auto_control":True,"device_method":"power",
+        "device_hardware_confirmed":True,
+    }))
+    assert bad["errors"]["base"]=="device_hardware_required"
+
+
+def test_dry_only_climate_is_inventory_and_advisory_not_temperature_auto(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    ac=MockState("climate.dry_only","dry")
+    ac.attributes["hvac_modes"]=["off","dry"]
+    temp=MockState("sensor.living_temperature",21,device_class="temperature",unit="°C")
+    for st in (ac,temp):
+        options.hass._values[st.entity_id]=st
+        options.hass._entity_areas[st.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_area_devices({"area_devices_area":"living"}))
+    asyncio.run(options.async_step_select_devices({"selected_devices":[ac.entity_id]}))
+    asyncio.run(options.async_step_device_choice({"device_choice":ac.entity_id}))
+    invalid=asyncio.run(options.async_step_device_settings({
+        "device_auto_control":True,"device_method":"setpoint",
+        "device_temperature_entity":temp.entity_id,
+    }))
+    assert invalid["errors"]["base"]=="device_method_invalid"
+    result=asyncio.run(options.async_step_device_settings({
+        "device_auto_control":False,
+    }))
+    assert result["completed"]["data"]["climate_rooms"]["living"][
+        "device_settings"
+    ][ac.entity_id]["auto_control"] is False
