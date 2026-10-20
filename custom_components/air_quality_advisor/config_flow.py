@@ -1850,13 +1850,28 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
     VERSION = 1
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        await self.async_set_unique_id("home")
-        self._abort_if_unique_id_configured()
+        # Show the first setup form without reserving our static unique ID.
+        # Otherwise a frontend-disconnected/abandoned first attempt leaves an
+        # in-memory flow with ID "home" and every retry aborts as
+        # already_in_progress *before the first form is shown*.
+        #
+        # This integration allows only one new "home" entry. Reject existing
+        # entries up front, including older installations with no unique_id,
+        # but claim the unique ID only immediately before creating the entry.
+        if self._async_current_entries():
+            return self.async_abort(reason="already_configured")
         self._editing = False
         self._values = {}
         return await self.async_step_areas()
 
     async def _finish(self) -> ConfigFlowResult:
+        # A stale, unfinished setup flow must not prevent a fresh attempt
+        # from completing. Conversely, an entry installed while this flow was
+        # open must never be duplicated. Recheck immediately before creation.
+        await self.async_set_unique_id("home", raise_on_progress=False)
+        self._abort_if_unique_id_configured()
+        if self._async_current_entries():
+            return self.async_abort(reason="already_configured")
         return self.async_create_entry(title="Home Environment Manager", data=self._values)
 
     @staticmethod
