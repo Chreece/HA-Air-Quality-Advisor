@@ -579,7 +579,7 @@
         "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
         "data": {
           "climate_enabled": "Enable climate planning for this room",
-          "climate_allow_actuation": "Permit commands to the selected native thermostat (opt in)",
+          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
           "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
           "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
           "climate_controller": "Controller method / device capability",
@@ -651,6 +651,12 @@
           "climate_humidity_high_rh": "Maximum target relative humidity (%)",
           "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
           "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
+          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
+          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
+          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
+          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
+          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
+          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
           "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
         },
         "data_description": {
@@ -667,6 +673,12 @@
           "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
       },
