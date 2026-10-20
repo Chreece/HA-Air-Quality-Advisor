@@ -154,5 +154,5 @@ def test_drying_not_equivalent_when_outdoor_moisture_inadequate_or_heating_loss_
     assert cold["status"]=="excessive_heat_loss_for_drying"
     missing={**args,"plan":{**plan(23),"humidity_management":{"status":"insufficient_data"}}}
     assert model.window_substitution(
-        **{**missing,"science":{"moisture":moisture_potential(23,75,14,45)}})
-        ["status"]=="no_verified_drying_demand"
+        **{**missing,"science":{"moisture":moisture_potential(23,75,14,45)}}
+    )["status"]=="no_verified_drying_demand"
