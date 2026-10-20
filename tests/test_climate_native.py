@@ -224,3 +224,59 @@ def test_native_range_respects_manual_change_from_previous_heat_mode(native):
         assert not hass.services.calls
         await controller.async_stop()
     asyncio.run(scenario())
+
+
+def test_native_never_writes_to_cross_room_thermostat(native):
+    async def scenario():
+        hass,_=fake_home()
+        hass._entity_areas["climate.room_thermostat"]="kitchen"
+        clock=[1000.]
+        c=native.NativeClimateControl(hass,"wrong-room",clock=lambda:clock[0])
+        await c.async_start()
+        clock[0]=1400
+        await scheduled(c,settings(),report())
+        assert c.statuses["living"]["status"]=="climate_target_wrong_room"
+        assert not hass.services.calls
+        await c.async_stop()
+    asyncio.run(scenario())
+
+
+def test_native_rechecks_window_contacts_after_plan_capture(native):
+    async def scenario():
+        hass,_=fake_home()
+        from test_discovery import MockState
+        contact=MockState("binary_sensor.living_window","on",device_class="window")
+        hass._values[contact.entity_id]=contact
+        hass._entity_areas[contact.entity_id]="living"
+        clock=[1000.]
+        c=native.NativeClimateControl(hass,"window-race",clock=lambda:clock[0])
+        await c.async_start()
+        clock[0]=1400
+        plan={**report(),"window_contacts":[contact.entity_id]}
+        await scheduled(c,settings(),plan)
+        assert c.statuses["living"]["status"]=="window_changed_since_plan"
+        assert not hass.services.calls
+        await c.async_stop()
+    asyncio.run(scenario())
+
+
+def test_native_refuses_armed_opposing_secondary_climate(native):
+    async def scenario():
+        hass,_=fake_home()
+        from test_discovery import MockState
+        other=MockState("climate.ac","cool")
+        other.attributes["hvac_action"]="idle"
+        hass._values[other.entity_id]=other
+        hass._entity_areas[other.entity_id]="living"
+        clock=[1000.]
+        c=native.NativeClimateControl(hass,"other-armed",clock=lambda:clock[0])
+        await c.async_start()
+        clock[0]=1400
+        await scheduled(c,settings(cool_climate_entity=other.entity_id),report("heat"))
+        assert c.statuses["living"]["status"]=="competing_climate_active_or_armed"
+        assert not hass.services.calls
+        other.state="off"
+        await scheduled(c,settings(cool_climate_entity=other.entity_id),report("heat"))
+        assert len(hass.services.calls)==1
+        await c.async_stop()
+    asyncio.run(scenario())
