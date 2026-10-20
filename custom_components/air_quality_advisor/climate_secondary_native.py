@@ -337,6 +337,18 @@ class SecondaryClimateSetpoint:
                     self._pause(area,"manual_setpoint_or_missing_ack")
                 return
         desired=finite(plan.get("temperature_target_c"),5,36)
+        profiles=(cfg.get("device_settings",{}) if isinstance(cfg.get("device_settings"),dict)
+                  else {})
+        override=profiles.get(entity,{})
+        if isinstance(override,dict) and override.get("auto_control") is True:
+            profile=plan.get("profile","home")
+            if profile not in ("home","unoccupied","away","sleep"):
+                profile="home"
+            if profile=="sleep" and override.get("sleep_behavior")!="sleep_targets":
+                profile="home"
+            proposed=finite(override.get(f"{profile}_{mode}_c"),5,36)
+            if proposed is not None:
+                desired=proposed
         current_c=target_from_unit(observed,unit)
         if desired is None or current_c is None:
             self._status(area,"invalid_temperature_target")

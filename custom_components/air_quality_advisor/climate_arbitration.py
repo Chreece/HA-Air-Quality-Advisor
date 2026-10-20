@@ -294,6 +294,20 @@ def new_command_gate(hass: Any, area: str, config: dict,
     """
     if purpose not in CHANNELS or not isinstance(plan,dict):
         return "invalid_coordination_request"
+    selected=config.get("selected_devices") if isinstance(config,dict) else None
+    if isinstance(selected,list) and entity not in selected:
+        # A deselected device cannot remain live via an old room role.
+        if entity.startswith(("climate.","humidifier.","fan.")):
+            return "device_not_selected"
+    profiles=config.get("device_settings",{}) if isinstance(config,dict) else {}
+    if isinstance(profiles,dict) and isinstance(profiles.get(entity),dict):
+        from .occupancy_policy import device_permission
+        action,reason=device_permission(
+            profiles[entity],plan.get("occupancy","unknown"),
+            plan.get("away","home"),plan.get("sleeping"),
+        )
+        if action!="eligible":
+            return reason
     # A separate HA config entry may choose the same climate/fan/humidity
     # output *after* this room was planned. The live foreign-owner gate must
     # apply even to the legacy minimal-plan interface.

@@ -53,6 +53,7 @@ def _wizard(monkeypatch, adapter):
     selector.EntitySelectorConfig = SelectSelectorConfig
     selector.EntitySelector = SelectSelector
     selector.BooleanSelector = lambda: SelectSelector(SelectSelectorConfig(type="boolean"))
+    selector.TextSelector = lambda: SelectSelector(SelectSelectorConfig(type="text"))
     selector.TimeSelector = lambda: SelectSelector(SelectSelectorConfig(type="time"))
     selector.NumberSelectorConfig = SelectSelectorConfig
     selector.NumberSelector = SelectSelector
@@ -346,8 +347,15 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     menu = asyncio.run(options.async_step_init())
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
-        "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid", "climate",
+        "outside_data", "general_settings", "area_settings",
+        "delivery", "thresholds",
+    ]
+    assert asyncio.run(options.async_step_outside_data())["menu_options"] == [
+        "weather", "outdoor", "outside_aqi", "pollen",
+    ]
+    assert asyncio.run(options.async_step_area_settings())["menu_options"] == [
+        "areas", "indoor_sensors", "window_sensors", "environment_room",
+        "climate", "pid", "area_devices",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -1256,3 +1264,127 @@ def test_dry_fan_mode_consent_does_not_override_separate_humidity_controller(
         "climate_humidity_setpoint_auto":True,
     }))
     assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
+
+
+def test_pollen_step_from_outside_submenu_is_reliable_without_aqi(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    asyncio.run(opt.async_step_init())
+    menu = asyncio.run(opt.async_step_outside_data())
+    assert "pollen" in menu["menu_options"]
+    form = asyncio.run(opt.async_step_pollen())
+    assert form["step_id"] == "pollen"
+    assert "pollen_entity" in form["data_schema"]
+    bad = asyncio.run(opt.async_step_pollen({
+        "pollen_entity":None, "pollen_high_from":9,"pollen_max_scale":5
+    }))
+    assert bad["errors"]["base"] == "invalid_environment_scale"
+    done = asyncio.run(opt.async_step_pollen({
+        "pollen_entity":None,"pollen_high_from":3,
+        "pollen_max_scale":5,"pollen_avoid_ventilation":True,
+    }))
+    assert done["completed"]["data"]["environment_global"]["pollen_high_from"]==3
+    assert done["completed"]["data"]["environment_global"]["pollen_avoid_ventilation"] is True
+    assert done["completed"]["data"]["thresholds"]=={"indoor_co2":1200}
+
+
+def test_outside_aqi_submenu_no_sources_still_renders_nonempty_form(monkeypatch,adapter):
+    opt=_make_options(monkeypatch,adapter)
+    asyncio.run(opt.async_step_init())
+    form=asyncio.run(opt.async_step_outside_aqi())
+    assert form["step_id"]=="outside_aqi"
+    assert "outside_aqi_no_sources" in form["data_schema"]
+    done=asyncio.run(opt.async_step_outside_aqi({"outside_aqi_no_sources":False}))
+    assert done["completed"]["data"]["weather_entities"]==["weather.home"]
+
+
+def test_shared_general_presence_sources_saved_without_touching_room_settings(monkeypatch,adapter):
+    opt=_make_options(monkeypatch,adapter)
+    tracker=MockState("person.occupant","home")
+    global_rooms=MockState("sensor.house_occupied_rooms",'["living"]')
+    sleep=MockState("sensor.sleep_rooms",'[]')
+    sensor=MockState("binary_sensor.living_occupancy","on",device_class="occupancy")
+    for st in (tracker,global_rooms,sleep,sensor):
+        opt.hass._values[st.entity_id]=st
+    opt.hass._entity_areas[sensor.entity_id]="living"
+    asyncio.run(opt.async_step_init())
+    form=asyncio.run(opt.async_step_general_settings())
+    assert form["step_id"]=="general_settings"
+    assert "general_sleep_rooms_attribute" in form["data_schema"]
+    done=asyncio.run(opt.async_step_general_settings({
+        "general_room_occupancy_sensors":[sensor.entity_id],
+        "general_occupied_rooms_entity":global_rooms.entity_id,
+        "general_occupied_rooms_attribute":"occupied",
+        "general_home_trackers":[tracker.entity_id],
+        "general_home_policy":"any_home",
+        "general_sleep_rooms_entity":sleep.entity_id,
+        "general_sleep_rooms_attribute":"rooms",
+        "general_source_stale_minutes":240,
+    }))
+    config=done["completed"]["data"]
+    assert config["occupancy_global"]["occupied_rooms_entity"]==global_rooms.entity_id
+    assert config["occupancy_global"]["sleep_rooms_attribute"]=="rooms"
+    assert config["areas"]==["living"]
+    assert config["thresholds"]=={"indoor_co2":1200}
+
+
+def test_area_device_list_preselects_every_supported_room_entity_without_actuation(monkeypatch,adapter):
+    opt=_make_options(monkeypatch,adapter)
+    ha=opt.hass
+    st=MockState("climate.living_ac","cool")
+    st.attributes["hvac_modes"]=["off","cool","dry","fan_only"]
+    fan=MockState("fan.living_filter","off")
+    humidifier=MockState("humidifier.living_dryer","off",device_class="dehumidifier")
+    foreign=MockState("fan.other_room","off")
+    for x in (st,fan,humidifier,foreign):
+        ha._values[x.entity_id]=x
+        ha._entity_areas[x.entity_id]="kitchen" if x==foreign else "living"
+    asyncio.run(opt.async_step_init())
+    assert asyncio.run(opt.async_step_area_devices({"area_devices_area":"living"}))["step_id"]=="select_devices"
+    listing=asyncio.run(opt.async_step_select_devices())
+    choice=next(k.default for k in listing["data_schema"] if k=="selected_devices")
+    assert set(choice)=={st.entity_id,fan.entity_id,humidifier.entity_id}
+    assert "fan.other_room" not in choice
+    nxt=asyncio.run(opt.async_step_select_devices({"selected_devices":choice}))
+    assert nxt["step_id"]=="device_choice"
+    assert asyncio.run(opt.async_step_device_choice({"device_choice":st.entity_id}))["step_id"]=="device_menu"
+    form=asyncio.run(opt.async_step_device_settings())
+    assert form["step_id"]=="device_settings"
+    assert "device_sleep_heat_c" in form["data_schema"]
+    assert "device_presence_requirement" in form["data_schema"]
+    saved=asyncio.run(opt.async_step_device_settings({"device_auto_control":False}))
+    data=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert set(data["selected_devices"])==set(choice)
+    assert data["device_settings"][st.entity_id]["auto_control"] is False
+    assert data.get("allow_actuation") is not True
+
+
+def test_device_auto_control_requires_exact_sensor_and_hardware_for_off(monkeypatch,adapter):
+    opt=_make_options(monkeypatch,adapter)
+    ha=opt.hass
+    st=MockState("climate.living_heat","heat")
+    st.attributes.update({"hvac_modes":["off","heat"],"supported_features":1})
+    temp=MockState("sensor.living_temperature",20,device_class="temperature",unit="°C")
+    for x in (st,temp):
+        ha._values[x.entity_id]=x
+        ha._entity_areas[x.entity_id]="living"
+    asyncio.run(opt.async_step_init())
+    asyncio.run(opt.async_step_area_devices({"area_devices_area":"living"}))
+    asyncio.run(opt.async_step_select_devices({"selected_devices":[st.entity_id]}))
+    asyncio.run(opt.async_step_device_choice({"device_choice":st.entity_id}))
+    missing=asyncio.run(opt.async_step_device_settings({
+        "device_auto_control":True,"device_absence_action":"off",
+        "device_presence_requirement":"room",
+        "device_temperature_entity":temp.entity_id,
+        "device_hardware_confirmed":False,
+    }))
+    assert missing["errors"]["base"]=="device_hardware_required"
+    okay=asyncio.run(opt.async_step_device_settings({
+        "device_auto_control":True,"device_method":"setpoint",
+        "device_absence_action":"off","device_presence_requirement":"room",
+        "device_temperature_entity":temp.entity_id,"device_hardware_confirmed":True,
+    }))
+    room=okay["completed"]["data"]["climate_rooms"]["living"]
+    assert room["enabled"] is True
+    assert room["allow_actuation"] is True
+    assert room["climate_entity"]==st.entity_id
+    assert room["device_settings"][st.entity_id]["presence_requirement"]=="room"

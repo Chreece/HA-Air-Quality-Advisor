@@ -1,0 +1,64 @@
+name: Regenerate grouped environment options translations
+
+# Only for the new development branch. No release or stable modification.
+on:
+  push:
+    branches:
+      - 'feat/compact-environment-settings-*'
+    paths:
+      - apply_compact_i18n.py
+      - generate_translations.py
+      - custom_components/air_quality_advisor/compact_locales.json
+      - .github/workflows/refresh-compact-translations.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: home-environment-compact-locales-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Generate deterministic 38-language options
+        run: |
+          python generate_translations.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("custom_components/air_quality_advisor")
+          files=list((root/"translations").glob("*.json"))
+          assert len(files)==38,len(files)
+          en=json.loads((root/"strings.json").read_text())
+          for path in files:
+              data=json.loads(path.read_text())
+              assert set(data["options"]["step"]["init"]["menu_options"]) == {
+                  "outside_data","general_settings","area_settings",
+                  "delivery","thresholds",
+              },path
+              assert set(data["options"]["step"]) == set(en["options"]["step"]),path
+              assert "device_presence_requirement" in data["selector"],path
+          print("All 38 translated compact option menus generated")
+          PY
+      - name: Commit translations only on this development branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add custom_components/air_quality_advisor/strings.json \
+                  custom_components/air_quality_advisor/translations/
+          if git diff --cached --quiet; then
+            echo 'No locale changes'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'i18n: generate compact options in all supported languages'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

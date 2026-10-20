@@ -328,3 +328,108 @@ def test_unified_room_gate_rechecks_opposing_ac_after_plan_was_approved(native):
         assert hass.services.calls[0][1]=="set_temperature"
         await controller.async_stop()
     asyncio.run(scenario())
+
+
+def test_commissioned_native_device_off_on_verified_room_absence(native):
+    from datetime import datetime,timezone
+    async def scenario():
+        hass,_=fake_home()
+        state=hass.states.get("climate.room_thermostat")
+        state.attributes["hvac_modes"]=["off","heat"]
+        state.last_changed=datetime.fromtimestamp(2000,timezone.utc)
+        original=hass.services.async_call
+        hass.services.has_service=lambda domain,action: (
+            domain=="climate" and action in ("set_temperature","set_hvac_mode")
+        )
+        async def send(domain,service,payload,**kwargs):
+            hass.services.calls.append((domain,service,payload,kwargs))
+            assert domain=="climate" and service=="set_hvac_mode"
+            assert payload=={"hvac_mode":"off"}
+            assert kwargs["target"]=={"entity_id":"climate.room_thermostat"}
+            state.state="off"
+            state.last_changed=datetime.fromtimestamp(4500,timezone.utc)
+        hass.services.async_call=send
+        clock=[1000.]
+        driver=native.NativeClimateControl(hass,"absent",clock=lambda:clock[0])
+        await driver.async_start()
+        clock[0]=4500.
+        cfg=settings(device_settings={"climate.room_thermostat":{
+            "auto_control":True,"presence_requirement":"room",
+            "absence_action":"off","hardware_confirmed":True,
+            "sleep_behavior":"normal",
+        }},selected_devices=["climate.room_thermostat"])
+        plan={**report(status="hold"),"occupancy":"unoccupied",
+              "away":"home","sleeping":False}
+        await scheduled(driver,cfg,plan)
+        assert [call[1] for call in hass.services.calls]==["set_hvac_mode"]
+        assert driver.off_intent["living"]["phase"]=="commanded"
+        assert driver.paused["living"]=="native_off_requires_manual_reconciliation"
+        await scheduled(driver,cfg,plan)
+        assert len(hass.services.calls)==1
+        assert not (await driver.command("living","resume"))["accepted"]
+        clock[0]=6401.
+        assert (await driver.command("living","resume"))["accepted"]
+        assert driver.off_intent=={}
+        await driver.async_stop()
+    asyncio.run(scenario())
+
+
+def test_absence_off_never_acts_on_unknown_or_unverified_occupancy(native):
+    from datetime import datetime,timezone
+    async def scenario():
+        hass,_=fake_home()
+        state=hass.states.get("climate.room_thermostat")
+        state.attributes["hvac_modes"]=["off","heat"]
+        state.last_changed=datetime.fromtimestamp(1000,timezone.utc)
+        hass.services.has_service=lambda domain,action: True
+        clock=[1000.]
+        driver=native.NativeClimateControl(hass,"unknown",clock=lambda:clock[0])
+        await driver.async_start()
+        clock[0]=5000.
+        cfg=settings(device_settings={"climate.room_thermostat":{
+            "auto_control":True,"presence_requirement":"room",
+            "absence_action":"off","hardware_confirmed":True,
+        }})
+        report_unknown={**report(status="hold"),
+                         "occupancy":"unknown","sleeping":None}
+        await scheduled(driver,cfg,report_unknown)
+        assert hass.services.calls==[]
+        report_absent={**report(status="hold"),
+                       "occupancy":"unoccupied","sleeping":False}
+        cfg["device_settings"]["climate.room_thermostat"]["hardware_confirmed"]=False
+        await scheduled(driver,cfg,report_absent)
+        assert hass.services.calls==[]
+        assert driver.statuses["living"]["status"]=="uncommissioned_absence_off"
+        await driver.async_stop()
+    asyncio.run(scenario())
+
+
+def test_native_absence_off_requires_persistent_intent(native):
+    from datetime import datetime,timezone
+    async def scenario():
+        hass,_=fake_home()
+        state=hass.states.get("climate.room_thermostat")
+        state.attributes["hvac_modes"]=["off","heat"]
+        state.last_changed=datetime.fromtimestamp(1000,timezone.utc)
+        clock=[1000.]
+        driver=native.NativeClimateControl(hass,"storefail",clock=lambda:clock[0])
+        await driver.async_start()
+        async def bad_save(_):
+            raise OSError("Simulated disk failure")
+        driver._store.async_save=bad_save
+        clock[0]=4500.
+        cfg=settings(device_settings={"climate.room_thermostat":{
+            "auto_control":True,"presence_requirement":"home",
+            "absence_action":"off","hardware_confirmed":True,
+        }})
+        plan={**report(status="hold"),
+              "occupancy":"occupied","away":"away","sleeping":False}
+        await scheduled(driver,cfg,plan)
+        assert hass.services.calls==[]
+        assert driver.paused["living"]=="native_off_intent_storage_failed"
+        # Failed shutdown write cannot prevent HA controller unload.
+        try:
+            await driver.async_stop()
+        except OSError:
+            pass
+    asyncio.run(scenario())

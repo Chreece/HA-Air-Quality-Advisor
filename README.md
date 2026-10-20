@@ -1051,3 +1051,36 @@ non-compressor thermal actuators are included.
 This is validated using a simulated two-entry Home Assistant service
 registry, interleaved state changes, Python unit tests and HACS/Hassfest.
 Hardware commissioning remains mandatory for device-changing functions.
+
+
+### Compact options and per-device occupancy (next beta preview)
+
+The grouped options menu is reorganized as **Outside data** (weather, warnings,
+outdoor-air sensors, AQI scales and international pollen), **General settings**
+(shared occupancy sensors, resident trackers, and occupied/sleep-room lists held
+in a Home Assistant entity state or named attribute), **Area settings**
+(per-room air, humidity, window sensor exclusions, climate and device inventory),
+Announcements and Advanced thresholds. The old saved configuration keys and
+Home Assistant domain remain intact.
+
+The new **Area settings → Devices** wizard preselects all compatible native
+`climate.*`, `humidifier.*` and `fan.*` devices in an assigned Home Assistant
+area for **inventory only**; no automatic device control is implied. Select
+an individual device to configure its control method, independent opt-in,
+normal/sleep targets, room occupancy/whole-home occupancy requirement,
+absence action (hold or hardware-confirmed OFF) and relevant runtime bounds.
+
+Shared occupied-room/sleep-room entities may contain a list of actual
+Home Assistant area IDs or room names as JSON in their state or a selected
+attribute (e.g. `["living_room","kitchen"]`). Unknown/stale/unrecognized
+sources do **not** mean the house is empty and will never justify a new
+physical shutdown. Any confirmed presence overrides conflicting absence
+signals. Unoccupied conditions require a configurable stability period.
+Native thermostat OFF is supported only when separately attested and remains
+OFF until the user restarts it manually; no controller restarts an OFF
+compressor. Humidifier/fan power OFF follows their existing owned-output
+minimum-on, runtime and acknowledgement rules.
+
+This refinement is **work in progress**, not part of the published
+`v0.6.0b1` prerelease. Existing automation stays off until explicitly opted
+in, and the new power-control paths require field commissioning.

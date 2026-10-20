@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+from datetime import datetime
 from typing import Any
 
 from .pid_math import bounded_command, target_from_unit, finite
@@ -30,6 +31,9 @@ class NativeClimateControl:
         self.paused={}
         self.expected={}
         self.expected_hvac={}
+        self.off_intent={}
+        self._configured={}
+        self._planned={}
         self.last_mode={}
         self.last_write={}
         self._store=None
@@ -64,12 +68,26 @@ class NativeClimateControl:
             lw=loaded.get("last_write",{})
             if isinstance(lw,dict):
                 self.last_write={k:float(v) for k,v in lw.items() if isinstance(v,(float,int))}
+            previous=loaded.get("off_intent",{})
+            if not isinstance(previous,dict) or any(
+                not isinstance(area,str) or not isinstance(value,dict)
+                or value.get("phase") not in ("intent","commanded")
+                for area,value in previous.items()
+            ):
+                _LOGGER.error("Unrecognized native OFF history; output commands disabled")
+                self._active=False
+                return
+            self.off_intent={k:dict(v) for k,v in previous.items()}
+            for area in self.off_intent:
+                self.paused[area]="native_off_requires_manual_reconciliation"
         self.ready=True
 
     def _snapshot(self):
-        return {"version":1,"paused":self.paused,"last_mode":self.last_mode,
-                "expected":self.expected,"expected_hvac":self.expected_hvac,
-                "last_write":self.last_write}
+        return {"version":1,"paused":dict(self.paused),"last_mode":dict(self.last_mode),
+                "expected":{k:dict(v) for k,v in self.expected.items()},
+                "expected_hvac":dict(self.expected_hvac),
+                "off_intent":{k:dict(v) for k,v in self.off_intent.items()},
+                "last_write":dict(self.last_write)}
 
     def _save(self):
         if self._store is not None:
@@ -94,6 +112,17 @@ class NativeClimateControl:
         if action=="pause":
             self.paused[area]="user_paused"
         else:
+            old=self.off_intent.get(area)
+            if isinstance(old,dict):
+                entity=old.get("entity_id")
+                current=self.hass.states.get(entity) if isinstance(entity,str) else None
+                changed=getattr(current,"last_changed",None)
+                now=self.clock()
+                if not (current is not None and current.state=="off" and
+                        isinstance(changed,datetime) and changed.tzinfo is not None and
+                        0<=now-changed.timestamp() and now-changed.timestamp()>=1800):
+                    return {"accepted":False,"reason":"native_output_must_be_verified_off_30_minutes"}
+                self.off_intent.pop(area,None)
             self.paused.pop(area,None)
             self.expected.pop(area,None)
             self.expected_hvac.pop(area,None)
@@ -107,6 +136,8 @@ class NativeClimateControl:
         if not self._active or not self.ready or not isinstance(config,dict):
             return
         now=self.clock()
+        self._configured=config
+        self._planned=plans
         owners={}
         pid_owners=set()
         for pid in (pid_rooms or {}).values():
@@ -162,8 +193,124 @@ class NativeClimateControl:
                         self._save()
             task.add_done_callback(done)
 
+    async def _absence_off(self,area:str,settings:dict,report:dict,now:float)->bool:
+        """Physically OFF only a specific, explicitly commissioned native HVAC.
+
+        Never switches equipment back on; it remains OFF until a user restarts
+        it manually. A durable intent is saved before a compressor-affecting
+        OFF request, so interruption cannot cause an unsafe automatic retry.
+        """
+        entity=settings.get("climate_entity")
+        devices=settings.get("device_settings",{})
+        device=devices.get(entity,{}) if isinstance(devices,dict) else {}
+        if not isinstance(device,dict) or device.get("auto_control") is not True:
+            return False
+        from .occupancy_policy import device_permission
+        decision,reason=device_permission(
+            device,report.get("occupancy","unknown"),
+            report.get("away","home"),report.get("sleeping"),
+        )
+        if decision!="absent":
+            return False
+        self.statuses[area]={"status":"presence_hold","reason":reason}
+        if device.get("absence_action")!="off":
+            return True
+        if not (
+            settings.get("allow_actuation") is True and
+            settings.get("enabled") is True and
+            device.get("hardware_confirmed") is True and
+            device.get("presence_requirement") in ("home","room") and
+            isinstance(entity,str) and entity.startswith("climate.") and
+            entity_area(self.hass,entity)==area and self._store is not None
+        ):
+            self.statuses[area]={"status":"uncommissioned_absence_off"}
+            return True
+        from .climate_entry_ownership import foreign_owner_hold
+        if foreign_owner_hold(self.hass,self.entry_id,entity) is not None:
+            self.statuses[area]={"status":"foreign_equipment_owner"}
+            return True
+        state=self.hass.states.get(entity)
+        if state is None or state.state in ("unknown","unavailable"):
+            return True
+        if state.state=="off":
+            self.statuses[area]={"status":"native_already_off"}
+            return True
+        modes=state.attributes.get("hvac_modes")
+        # DRY/defrost/heating+cooling sharing require actual device safety
+        # verification, and are NOT automatically powered down here.
+        if (state.state not in ("heat","cool") or not isinstance(modes,list)
+                or "off" not in modes or
+                state.attributes.get("hvac_action") in ("defrosting","drying")):
+            self.statuses[area]={"status":"native_absence_off_mode_unsupported"}
+            return True
+        last=getattr(state,"last_changed",None)
+        if (not isinstance(last,datetime) or last.tzinfo is None or
+                now-last.timestamp()<MODE_DWELL_SECONDS or
+                now-last.timestamp()<0 or
+                now-self.last_mode.get(area,self.started or now)<MODE_DWELL_SECONDS):
+            self.statuses[area]={"status":"native_absence_off_wait_dwell"}
+            return True
+        # One exact room/device. Persist intent before any HA physical call.
+        self.off_intent[area]={"entity_id":entity,"phase":"intent","when":now}
+        try:
+            await self._store.async_save(self._snapshot())
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            self.paused[area]="native_off_intent_storage_failed"
+            self._save()
+            return True
+        # A new options flow/room plan may revoke the stale command while
+        # Store.save awaits I/O. Keep the saved intent for human reconciliation.
+        if (not self._active or settings!=self._configured.get(area) or
+                self._planned.get(area) is not report or area in self.paused or
+                entity_area(self.hass,entity)!=area or
+                foreign_owner_hold(self.hass,self.entry_id,entity) is not None):
+            self.paused[area]="native_off_permission_revoked_after_intent"
+            self._save()
+            return True
+        latest=self.hass.states.get(entity)
+        changed=getattr(latest,"last_changed",None)
+        if (latest is None or latest.state!=state.state or
+                not isinstance(changed,datetime) or changed.tzinfo is None or
+                now-changed.timestamp()<MODE_DWELL_SECONDS):
+            self.paused[area]="native_off_state_changed_after_intent"
+            self._save()
+            return True
+        try:
+            if not self.hass.services.has_service("climate","set_hvac_mode"):
+                raise RuntimeError("Native HVAC OFF service unavailable")
+            await asyncio.wait_for(
+                self.hass.services.async_call("climate","set_hvac_mode",
+                    {"hvac_mode":"off"},target={"entity_id":entity},
+                    blocking=True),WRITE_TIMEOUT_SECONDS
+            )
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            _LOGGER.exception("Failed commissioned native absence OFF for %s",entity)
+            self.paused[area]="native_off_service_unacknowledged"
+            self._save()
+            return True
+        self.off_intent[area]["phase"]="commanded"
+        self.last_mode[area]=now
+        self.last_write[area]=now
+        self.paused[area]="native_off_requires_manual_reconciliation"
+        try:
+            await self._store.async_save(self._snapshot())
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            self.off_intent[area]["phase"]="intent"
+            self.paused[area]="native_off_ack_storage_failed"
+            self._save()
+        self.statuses[area]={"status":"native_off_requested_for_absence"}
+        return True
+
     async def _apply(self,area:str,settings:dict,report:dict,now:float):
         if not self._active or area in self.paused:return
+        if await self._absence_off(area,settings,report,now):
+            return
         if report.get("status")!="ready" or report.get("window_safe") is not True:
             self.statuses[area]={"status":"hold","reason":report.get("reason","no_valid_plan")}
             return
@@ -176,6 +323,25 @@ class NativeClimateControl:
             return
         mode=report.get("mode")
         entity=settings.get("climate_entity")
+        # Device-specific profile targets override shared room bands, but
+        # cannot change the controller's native safety or capability checks.
+        device=(settings.get("device_settings",{}).get(entity,{})
+                if isinstance(settings.get("device_settings"),dict) else {})
+        if isinstance(device,dict) and device.get("auto_control") is True:
+            profile=report.get("profile")
+            if profile not in ("home","unoccupied","away","sleep"):
+                profile="home"
+            if profile=="sleep" and device.get("sleep_behavior")!="sleep_targets":
+                profile="home"
+            if mode in ("heat","cool"):
+                desired=finite(device.get(f"{profile}_{mode}_c"),5,40)
+                if desired is not None:
+                    report={**report,"temperature_target_c":desired}
+            elif mode=="heat_cool":
+                low=finite(device.get(f"{profile}_heat_c"),5,35)
+                high=finite(device.get(f"{profile}_cool_c"),6,40)
+                if low is not None and high is not None and high-low>=1:
+                    report={**report,"low_target_c":low,"high_target_c":high}
         if mode in ("heat","cool","heat_cool"):
             conflict=new_command_gate(
                 self.hass,area,settings,report,"thermal",entity,now=now,entry_id=self.entry_id,

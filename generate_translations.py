@@ -371,3 +371,7 @@ apply_pid_i18n(root)
 # Opt-in climate profiles and international occupancy/away configuration.
 from apply_climate_i18n import apply_climate_i18n
 apply_climate_i18n(root)
+
+# Compact grouped options, per-device configuration and 38-language labels.
+from apply_compact_i18n import apply_compact_i18n
+apply_compact_i18n(root)

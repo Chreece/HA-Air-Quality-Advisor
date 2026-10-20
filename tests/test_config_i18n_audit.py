@@ -70,7 +70,14 @@ def test_translated_help_thresholds_errors_abort_and_menu_do_not_regress_to_engl
             # New optional scientific methods ship with English technical-help
             # fallback in non-primary languages until reviewed translations exist.
             # All pre-existing configuration strings remain fully localized.
-            if (key.startswith(("options.step.environment", "options.error.invalid_environment",
+            if (key.startswith(("options.step.outside_data", "options.step.general_settings",
+                                "options.step.area_settings", "options.step.pollen",
+                                "options.step.outside_aqi", "options.step.area_devices",
+                                "options.step.select_devices", "options.step.device_choice",
+                                "options.step.device_settings", "options.step.device_menu",
+                                "options.step.device_done", "options.error.general_",
+                                "options.error.device_", "options.error.invalid_selected_devices"))
+                    or key.startswith(("options.step.environment", "options.error.invalid_environment",
                                "options.error.pmv_requires_explicit",
                                "options.step.pid", "options.error.pid_",
                                "options.step.climate", "options.error.climate_",
@@ -170,3 +177,30 @@ def test_all_locales_include_live_mold_weather_and_room_readiness_hints():
             assert "{mold_weather_notice}" in weather["description"], code
             assert "{mold_room_notice}" in room["description"], code
             assert "temperature" in weather["data_description"]["weather_entities"], code
+
+
+
+def test_new_compact_options_have_complete_38_locale_labels_and_greek_guidance():
+    docs=_translations()
+    root=("outside_data","general_settings","area_settings","delivery","thresholds")
+    for lang, doc in docs.items():
+        step=doc["options"]["step"]
+        assert tuple(step["init"]["menu_options"])==root
+        assert tuple(step["outside_data"]["menu_options"])==(
+            "weather","outdoor","outside_aqi","pollen",
+        )
+        assert "window_sensors" in step["area_settings"]["menu_options"]
+        assert "area_devices" in step["area_settings"]["menu_options"]
+        for name in ("general_settings","pollen","outside_aqi",
+                     "select_devices","device_choice","device_settings"):
+            assert step[name]["title"] and step[name]["data"]
+        for key in ("device_method","device_presence_requirement",
+                    "device_absence_action","device_sleep_behavior",
+                    "general_home_policy","outside_aqi_scale"):
+            assert doc["selector"][key]["options"]==docs["en"]["selector"][key]["options"] or (
+                set(doc["selector"][key]["options"])==set(docs["en"]["selector"][key]["options"])
+            )
+    assert "Εξωτερικά δεδομένα"==docs["el"]["options"]["step"]["init"]["menu_options"]["outside_data"]
+    assert "Γενικές ρυθμίσεις"==docs["el"]["options"]["step"]["init"]["menu_options"]["general_settings"]
+    assert "Άγνωστα ή παλιά" in docs["el"]["options"]["step"]["general_settings"]["description"]
+    assert "Γύρη" in docs["el"]["options"]["step"]["pollen"]["title"]

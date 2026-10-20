@@ -25,6 +25,7 @@ from .const import (
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
+    CONF_OCCUPANCY_GLOBAL,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
@@ -232,6 +233,17 @@ class AirQualityManager:
         )
         environment["__outside__"] = {"pollen": pollen}
         room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
+        shared_presence=config.get(CONF_OCCUPANCY_GLOBAL,{})
+        if not isinstance(shared_presence,dict):
+            shared_presence={}
+        for key in ("occupied_rooms_entity","sleep_rooms_entity"):
+            entity=shared_presence.get(key)
+            if isinstance(entity,str):
+                self._tracked.add(entity)
+        for key in ("room_occupancy_sensors","home_trackers"):
+            for entity in shared_presence.get(key,[]):
+                if isinstance(entity,str):
+                    self._tracked.add(entity)
         climate_only=()
         if isinstance(room_climate_configs,dict):
             # Climate may be configured in any real HA area; window monitoring
@@ -272,6 +284,8 @@ class AirQualityManager:
                     outdoor_safe=base_plan.outdoor_safe,
                     duplicate_equipment=duplicate_devices,
                     require_window_contact=monitored.area_id in monitored_areas,
+                    global_presence=shared_presence,
+                    known_areas=set(room_climate_configs) | set(monitored_areas),
                 )
                 state["target_source"]=settings.get("target_source","temperature")
                 state["comfort_target_evidence"]=pmv_air.get("status","not_configured")

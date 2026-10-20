@@ -48,7 +48,9 @@ def _presence_ids(hass:Any,area:str,config:dict) -> list[str]:
 def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
            now:float|None=None,comfort_target_c:float|None=None,
            outdoor_safe:bool|None=None,duplicate_equipment:dict|None=None,
-           require_window_contact:bool=False)->tuple[dict,set[str]]:
+           require_window_contact:bool=False,
+           global_presence:dict|None=None,
+           known_areas:set[str]|None=None)->tuple[dict,set[str]]:
     """Expose what should happen, with provenance, without operating devices."""
     if not isinstance(settings,dict) or not settings.get("enabled"):
         return {"status":"disabled"},set()
@@ -80,11 +82,46 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
             if seconds<0 or seconds<delay*60:
                 occupied,occ_reason="occupied","awaiting_stable_unoccupied_period"
                 break
+    # The shared configuration may supply an authoritative occupied-rooms
+    # list in an entity state/attribute, global area sensors and trackers.
+    # Missing evidence never becomes a negative/off signal.
+    if isinstance(global_presence,dict) and global_presence:
+        from .occupancy_policy import room_presence, home_presence
+        occupied,occ_reason,sensors=room_presence(
+            hass,area,settings,global_presence,
+            known_areas=known_areas or {area},
+        )
+        if occupied == "unoccupied":
+            # A room-list entity can change while the last person leaves.
+            # Require a stable empty indication over the same vacancy delay
+            # used for individual room presence sensors.
+            delay = settings.get("unoccupied_delay_minutes", 10)
+            try:
+                delay = float(delay)
+            except (ValueError,TypeError,OverflowError):
+                delay = 10.
+            if not 0 <= delay <= 240:
+                delay = 10.
+            sources = list(sensors)
+            if isinstance(global_presence.get("occupied_rooms_entity"),str):
+                sources.append(global_presence["occupied_rooms_entity"])
+            now_clock=time.time() if now is None else now
+            for source in sources:
+                state = hass.states.get(source)
+                changed = (getattr(state,"last_changed",None) or
+                           getattr(state,"last_updated",None))
+                if (not isinstance(changed,datetime) or changed.tzinfo is None
+                        or not 0<=now_clock-changed.timestamp()
+                        or now_clock-changed.timestamp()<delay*60):
+                    occupied,occ_reason="unknown","awaiting_stable_unoccupied_period"
+                    break
     tracker_ids=settings.get("away_entities",[])
     if not isinstance(tracker_ids,list): tracker_ids=[]
     trackers=[e for e in tracker_ids if isinstance(e,str) and e.startswith(("person.","device_tracker.","binary_sensor."))]
     at_home,home_reason=home_away_evidence([_bool_state(hass,x) for x in trackers],
                                            mode=settings.get("away_policy","any_home"))
+    if isinstance(global_presence,dict) and global_presence:
+        at_home,home_reason,trackers=home_presence(hass,global_presence,trackers)
     temperature_id=settings.get("temperature_entity")
     temp=temperature_sensor_c(hass,temperature_id,10) if isinstance(temperature_id,str) else None
     climate_id=settings.get("climate_entity")
@@ -125,6 +162,18 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
     sleeping,sleep_evidence=scheduled_sleep(
         settings,time.time() if now is None else now,time_zone,
     )
+    sleep_verified=bool(sleeping)
+    if isinstance(global_presence,dict) and global_presence.get("sleep_rooms_entity"):
+        from .occupancy_policy import sleep_presence
+        global_sleep,global_reason=sleep_presence(
+            hass,area,global_presence,known_areas or {area})
+        if global_sleep is True:
+            sleeping,sleep_evidence=True,global_reason
+        elif global_sleep is None:
+            sleep_verified=False
+            sleep_evidence=global_reason
+        else:
+            sleep_verified=True
     result=policy(settings,temp_c=temp,capability=cap,at_home=at_home,
                   occupied=occupied,sleeping=sleeping,
                   manual_profile=settings.get("manual_profile"),prior_mode=prior_mode,
@@ -154,6 +203,7 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "presence_entities":sensors,"away":at_home,"away_evidence":home_reason,
         "absence_delay_minutes":settings.get("unoccupied_delay_minutes",10),
         "sleep_schedule_active":sleeping,"sleep_schedule_evidence":sleep_evidence,
+        "sleeping":sleeping if sleep_verified else None,
         "tracker_entities":trackers,
         "climate_entity":climate_id,"climate_capabilities":primary_cap,
         "room_planning_capabilities":cap,

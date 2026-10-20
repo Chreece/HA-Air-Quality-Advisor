@@ -27,6 +27,7 @@ from .const import (
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
     CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
+from .compact_options import CompactOptionsMixin
 from .mold import calibration_factor, estimate_mold_for_room
 from .climate_pid import DEFAULT_PID, ClimatePidCoordinator
 from .pid_math import validate_settings
@@ -85,7 +86,7 @@ def _real_number(low: float, high: float, unit: str | None = None) -> selector.N
     ))
 
 
-class _FlowMixin:
+class _FlowMixin(CompactOptionsMixin):
     """Use the same pages in initial setup and reconfiguration."""
 
     _values: dict[str, Any]
@@ -1875,8 +1876,8 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         return self.async_show_menu(
             step_id="init",
             menu_options=[
-                "areas", "weather", "indoor_sensors", "window_sensors",
-                "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid", "climate",
+                "outside_data", "general_settings", "area_settings",
+                "delivery", "thresholds",
             ],
         )
 

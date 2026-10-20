@@ -277,6 +277,18 @@ class HumiditySetpointControl:
                     self._pause(area,"manual_setpoint_change_or_unacknowledged_write")
                 return
         desired=reading_advice["target_band_rh"][0 if action=="humidify" else 1]
+        # A user may choose independent device setpoints during normal hours
+        # and sleep; this never switches the device ON or bypasses native
+        # humidity demand, bounds, write-rate or reconciliation guards.
+        chosen=(cfg.get("device_settings",{}).get(entity,{})
+                if isinstance(cfg.get("device_settings"),dict) else {})
+        if isinstance(chosen,dict) and chosen.get("auto_control") is True:
+            sleeping=(plan.get("sleeping") is True and
+                      chosen.get("sleep_behavior")=="sleep_targets")
+            value=finite(chosen.get(
+                "sleep_humidity_target" if sleeping else "humidity_target"),20,80)
+            if value is not None:
+                desired=value
         status,target=_bounded_setpoint(attrs,observed,desired)
         if status!="command":
             self._status(area,status,entity_id=entity)

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — Compact settings and evidence-qualified device occupancy
+
+- Reorganize 11 flat settings into **Outside data**, **General settings**, **Area settings**, Announcements and Advanced thresholds; move international pollen/AQI into Outside data and window exclusions into Area settings.
+- Replace dynamic AQI/pollen options with isolated, validated provider controls. Fix a crash-prone menu involving dynamically numbered selectors.
+- Add global room presence sensor selection, an occupied-room source (state or named attribute), home trackers and a sleep-room source. Only fresh recognized HA area IDs/names count as reliable negative occupancy evidence.
+- Auto-select compatible room climate/humidifier/fan entities for inventory only, with a separate per-device configuration page for opt-in automation, setpoint targets, occupancy prerequisites, safe absence actions and sleep behavior.
+- Hold commands on unknown occupancy, conflicting device assignments, manual intervention or incomplete hardware protections; verified native HEAT/COOL OFF uses durable command intent and never automatically restarts equipment.
+- Generate compact option titles, field labels, selector choices and contextual guidance across all 38 supported languages, with fuller Greek/German/English explanations. Existing v0.6.0b1 prerelease and v0.5.1 stable release remain untouched.
+
 ## 0.6.0b1 — v0.6 public beta 1 (opt-in, October 20, 2026)
 
 - Add room-specific comfort and away profiles, occupancy debounce, local-time sleeping schedules and explicit device/control configuration.
