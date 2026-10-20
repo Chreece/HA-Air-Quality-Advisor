@@ -918,7 +918,8 @@ class _FlowMixin:
                       "unknown_occupancy":user_input.get("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied"))}
             if proposal["enabled"]:
                 if (proposal["controller"]!="environment" and
-                    proposal["temperature_entity"] not in {c["value"] for c in temp_choices}):
+                    not (proposal["controller"]=="device" and proposal["mode"]=="dry")
+                    and proposal["temperature_entity"] not in {c["value"] for c in temp_choices}):
                     errors["base"]="climate_temperature_required"
                 elif proposal["controller"] in ("device","setpoint_pid") and proposal["climate_entity"] not in {
                         c["value"] for c in climate_choices}:
@@ -931,7 +932,9 @@ class _FlowMixin:
                     errors["base"]="climate_mode_invalid"
                 elif proposal["unknown_occupancy"] not in ("occupied","hold"):
                     errors["base"]="climate_mode_invalid"
-                elif proposal["mode"] not in ("auto","heat","cool","off"):
+                elif proposal["mode"] not in ("auto","heat","cool","dry","off") or (
+                    proposal["mode"]=="dry" and proposal["controller"]!="device"
+                ):
                     errors["base"]="climate_mode_invalid"
                 elif not all(x in {c["value"] for c in occupant_choices} for x in proposal["occupancy_sensors"]):
                     errors["base"]="climate_occupancy_invalid"
@@ -956,7 +959,7 @@ class _FlowMixin:
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_mode",draft.get("mode","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["auto","heat","cool","off"],multiple=False,custom_value=False,
+                    options=["auto","heat","cool","dry","off"],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_entity",draft.get("climate_entity")):selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
