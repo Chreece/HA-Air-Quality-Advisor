@@ -262,8 +262,6 @@ class NativeAirModeControl:
         action=state.attributes.get("hvac_action")
         if state.state=="fan_only" and action not in ("fan","idle"):
             return "fan_state_or_compressor_unknown",None
-        if state.state=="dry" and action not in ("idle","fan"):
-            return "active_compressor_wait_for_idle",None
         fresh=room_equipment_plan(
             self.hass,area,cfg,
             {"status":plan.get("status"),"mode":plan.get("mode"),
@@ -285,6 +283,12 @@ class NativeAirModeControl:
         # Use the proven advisory policy as one reusable source for
         # deciding the desired mode, then add hardware-specific guards.
         suggestion=native_air_mode_advice(self.hass,area,cfg,fresh,now)
+        if suggestion.get("status")=="already_in_suitable_mode":
+            return "already_in_suitable_mode",None
+        # DRY compressor may be actively removing moisture. Never request
+        # FAN_ONLY until the device itself reports the compressor idle.
+        if state.state=="dry" and action not in ("idle","fan"):
+            return "active_compressor_wait_for_idle",None
         if suggestion.get("status")!="manual_mode_transition_suggested":
             return suggestion.get("status","advice_unavailable"),None
         selected=suggestion.get("recommended_mode")
