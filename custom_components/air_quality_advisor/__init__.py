@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +30,14 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
-    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.5.1")
+    manifest = json.loads(
+        (Path(__file__).parent / "manifest.json").read_text(encoding="utf-8")
+    )
+    # Bundled asset and HACS release version share ONE authoritative source.
+    # Rebranding must not change the original integration domain/path.
+    add_extra_js_url(
+        hass, f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest['version']}"
+    )
     return True
 
 
@@ -58,8 +66,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.config_entries.async_update_entry(entry, title="Home Environment Manager")
     manager = AirQualityManager(hass, entry)
     entry.runtime_data = manager
-    await manager.async_start()
+    # Even if an experimental device controller fails during its startup,
+    # attempt to stop any earlier-started controllers. Leave the original
+    # installation error visible and never register partial service routes.
     try:
+        await manager.async_start()
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     except BaseException:
         await manager.async_stop()
