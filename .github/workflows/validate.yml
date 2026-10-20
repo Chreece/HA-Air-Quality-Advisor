@@ -254,7 +254,7 @@ jobs:
               assert names and all(name.startswith(prefix) for name in names)
               assert not any("__pycache__" in n or n.endswith((".pyc",".pyo")) for n in names)
               version = json.loads(z.read(prefix+"manifest.json"))["version"]
-              assert version == "0.6.0b1"
+              assert version == "0.6.0b2"
               for path in ("__init__.py","sensor.py","icons.json",
                            "frontend/air-quality-advisor-card.js",
                            "brand/icon.png","brand/icon@2x.png",
