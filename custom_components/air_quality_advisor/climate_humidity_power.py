@@ -163,9 +163,15 @@ class HumidityPowerControl:
             return
         self._configured = configs
         now = self.clock()
-        for area, config in configs.items():
-            if not isinstance(area, str) or not isinstance(config, dict):
+        # Config entry/room removal must NOT abandon a previously powered
+        # humidifier: continue its independent bounded OFF/reconciliation
+        # handling even when the room is no longer configured.
+        for area in set(configs) | set(self.records):
+            if not isinstance(area, str):
                 continue
+            config=configs.get(area,{})
+            if not isinstance(config,dict):
+                config={}
             active_record = self.records.get(area)
             if (not active_record and not (
                 config.get("enabled") is True and
@@ -269,9 +275,22 @@ class HumidityPowerControl:
             return
         min_on, min_off, max_on = dwell
         if record is not None:
-            # An existing owned output must be reconciled before we attempt
-            # any fresh ON command, even if the options were disabled.
-            await self._owned_tick(area, cfg, plan, now, record, min_on, max_on)
+            # Persist the minimum physical dwell and maximum owned-runtime
+            # policy AT TURN-ON; an options change or room removal must not
+            # accidentally shorten compressor protection or erase history.
+            prior_on=finite(record.get("min_on_s"),300,7200)
+            prior_max=finite(record.get("max_on_s"),900,28800)
+            if prior_on is None or prior_max is None or prior_max<=prior_on:
+                if cfg:
+                    # Pre-migration records can be reconciled using their
+                    # still-known configuration; never guess after removal.
+                    prior_on,prior_max=min_on,max_on
+                else:
+                    self._pause(area,"original_power_dwell_unknown_reconcile_manually")
+                    return
+            min_on=max(min_on,prior_on)
+            max_on=max(min_on+1,min(max_on,prior_max))
+            await self._owned_tick(area,cfg,plan,now,record,min_on,max_on)
             return
         if area in self.paused:
             self._status(area, "paused", reason=self.paused[area])
@@ -368,7 +387,8 @@ class HumidityPowerControl:
             return
         record = {"entity_id":entity,"role":role,"area":area,
                   "power":"off","when":now,"acknowledged":True,
-                  "target":native_humidity_target(native.attributes)}
+                  "target":native_humidity_target(native.attributes),
+                  "min_on_s":min_on,"max_on_s":max_on}
         await self._send(area,record,"on",now)
 
     async def _owned_tick(self, area: str, cfg: dict, plan: dict, now: float,
