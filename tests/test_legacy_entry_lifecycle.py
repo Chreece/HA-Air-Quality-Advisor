@@ -130,6 +130,10 @@ def integration(adapter,monkeypatch):
     probatio.EnsureList=lambda:list
     probatio.All=lambda *parts:parts
     native.AirQualityManager=FakeManager
+    # Earlier tests may have cached the concrete manager as a package
+    # attribute even after its sys.modules entry was temporarily replaced.
+    parent=sys.modules["custom_components.air_quality_advisor"]
+    monkeypatch.setattr(parent,"manager",native,raising=False)
     for name,obj in {
         pkg+".components":comps,
         pkg+".components.frontend":frontend,
