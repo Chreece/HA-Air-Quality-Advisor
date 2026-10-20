@@ -1,13 +1,6 @@
 # Changelog
 
-## 0.5.1 — Python 3.14 / Alpine dependency compatibility
-
-- Remove the mandatory `pythermalcomfort` runtime package and its Numba/LLVM transitive dependencies.
-- Keep self-contained ISO 7730 PMV/PPD scientific estimates tested against published reference values.
-- Fix Home Assistant installation on Alpine Python 3.14 while retaining the climate controller, monitoring and compatibility safeguards.
-
-
-## Unreleased — Per-room automatic climate control (draft)
+## 0.6.0b1 — v0.6 public beta 1 (opt-in, October 20, 2026)
 
 - Add room-specific comfort and away profiles, occupancy debounce, local-time sleeping schedules and explicit device/control configuration.
 - Implement guarded native heat/cool selection, native low/high temperature range support, and direct non-compressor relay, PWM and percentage-based output drivers, each with independent equipment constraints.
@@ -15,6 +8,16 @@
 - Enforce room-level ownership, temperature sensor freshness, mode-change dwell, manual-override pause, output acknowledgement, maximum-on watchdog, interlocks and restart handling.
 - Persist direct actuator ON intentions *before* Home Assistant service dispatch; block interrupted writes until verified physical OFF and full minimum-OFF dwell, preserve unknown future safety history, revalidate grants after storage I/O, and retire formerly owned outputs when a room or actuator assignment changes.
 - Expand Home Assistant configuration, tests, translations, documentation and rendered Lovelace-card examples. Remains unreleased pending end-to-end device validation.
+
+- Add a HACS-selectable GitHub prerelease with a pinned beta manifest, manual ZIP asset, verified native light/dark brand images and service/state icons. Stable v0.5.1 remains the latest production release.
+- Explicit beta hardware-commissioning warning and read-only device diagnostics. Automatic compressor-affecting and other experimental power controls are disabled by default and are NOT field-certified.
+
+## 0.5.1 — Python 3.14 / Alpine dependency compatibility
+
+- Remove the mandatory `pythermalcomfort` runtime package and its Numba/LLVM transitive dependencies.
+- Keep self-contained ISO 7730 PMV/PPD scientific estimates tested against published reference values.
+- Fix Home Assistant installation on Alpine Python 3.14 while retaining the climate controller, monitoring and compatibility safeguards.
+
 
 ## 0.5.0 — Opt-in bounded climate PID control
 

@@ -1,13 +1,15 @@
 {
-  "version": "0.5.1",
-  "intent": "metadata for automatic post-push validation and release",
-  "note": "Every completed push to main automatically validates and publishes a new unreleased manifest/request version only if all checks pass and the commit is still current.",
+  "version": "0.6.0b1",
+  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
+  "note": "Beta release is opt-in. Keep physical power/compressor controls disabled without representative equipment commissioning. Stable 0.5.1 remains latest.",
   "validation_attempt": 0,
   "changes": [
-    "Fix Home Assistant Alpine/musl Python 3.14 installation failure caused by pythermalcomfort pulling Numba/llvmlite source builds",
-    "Bundle dependency-free scalar ISO 7730 Fanger PMV/PPD computation with published reference numerical regression tests",
-    "Remove mandatory external pythermalcomfort/Numba/llvmlite/LLVM requirements without disabling scientific comfort diagnostics",
-    "Maintain original integration domain, entities, configuration, Announcement Hub outputs, and v0.5 PID actuator behavior",
-    "Run tests, translation consistency, Hassfest, and HACS validation; auto-publish versioned v0.5.1 only after all pass"
-  ]
+    "Complete per-room climate coordinator and room-native thermostat targets with occupied/unoccupied/away/sleep profiles",
+    "Capability-gated heat-only/cool-only/dry-only devices and independent, opt-in native setpoint, fan, humidity and direct controls",
+    "Physical moisture, CO2, PM2.5, outdoor-air and window-efficiency advisory with exact Announcement Hub room handoff",
+    "Cross-entry actuator ownership, durable command intents, safe rollback and read-only climate diagnostics",
+    "Custom HA brand assets, translated dashboard and HACS beta installation plus manual package"
+  ],
+  "channel": "beta",
+  "release_branch": "beta/v0.6.0b1"
 }

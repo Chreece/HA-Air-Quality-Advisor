@@ -29,7 +29,7 @@ class AirQualityRecommendation(SensorEntity):
     _attr_translation_key = "recommendation"
     _attr_device_class = SensorDeviceClass.ENUM
     _attr_options = ["open", "close", "idle", "blocked"]
-    _attr_icon = "mdi:window-open-variant"
+    # icons.json supplies distinct Home Assistant icons for open/close/idle/blocked.
     _attr_should_poll = False
 
     def __init__(self, manager: Any, entry_id: str) -> None:

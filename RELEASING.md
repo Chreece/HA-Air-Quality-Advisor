@@ -1,5 +1,13 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b1 opt-in HACS beta (no stable-branch merge)
+
+The first 0.6 preview publishes from `beta/v0.6.0b1` as the GitHub **prerelease** tag `v0.6.0b1`, with the same `0.6.0b1` manifest version. The beta workflow is branch- and version-locked and runs the Python 3.13/3.14 tests, generated translations, frontend, Hassfest, HACS checks and package smoke test **before** creating the release. It pins the tag to the validated exact Git SHA, never retags/overwrites it, and uses `--prerelease --latest=false` so v0.5.1 remains stable/latest.
+
+The existing `hacs.json` intentionally uses HACS's supported release-tag source-tree installation from `custom_components/air_quality_advisor/` rather than `zip_release`. Changing `zip_release` retroactively could strand v0.5.1 installs whose assets had different names. The attached ZIP is **for manual installation only**; its contents are verified to begin at `custom_components/air_quality_advisor/`, include the manifest and Home Assistant brand PNGs, and exclude bytecode/cache files.
+
+For HACS beta testers: Add this repository as a custom **Integration**, open its entry, choose Redownload/version selection and enable **Show beta versions** before choosing `v0.6.0b1`; then restart HA. If the beta isn't selectable, use the manual ZIP from the release page. Users must back up before changing a major controller branch and may choose stable `v0.5.1` again. Experimental power and compressor-mode controls require independently commissioned real hardware; CI alone cannot grant hardware approval.
+
 **First public GitHub/HACS release:** v0.1.8. Earlier 0.1.x changelog entries are development milestones and were not individually tagged.
 
 ## v0.2.0 language checks
