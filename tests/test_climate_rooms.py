@@ -117,3 +117,29 @@ def test_room_mode_can_plan_secondary_ac_without_claiming_radiator_cooling(adapt
     assert report["room_planning_capabilities"]["cool"] is True
     assert report["equipment_plan"]["thermal"]["entity_id"]==ac.entity_id
     assert ac.entity_id in tracked
+
+
+def test_environment_only_plans_moisture_without_temperature_or_climate_device(adapter):
+    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.air_quality_advisor.logic import Reading
+    from test_discovery import FakeHass,MockState
+    humidity=MockState("sensor.bathroom_humidity",74,
+                       device_class="humidity",unit="%")
+    dryer=MockState("humidifier.bathroom_dehumidifier","off",
+                    device_class="dehumidifier")
+    hass=FakeHass([humidity,dryer],{
+        humidity.entity_id:"bathroom",dryer.entity_id:"bathroom",
+    })
+    room=Room("bathroom","Bathroom",(),(
+        Reading(humidity.entity_id,"Humidity","humidity",74),
+    ))
+    config={"enabled":True,"controller":"environment",
+            "mode":"auto","humidity_entity":humidity.entity_id,
+            "dehumidifier_entity":dryer.entity_id,
+            "humidity_low_rh":40,"humidity_high_rh":60}
+    result,tracked=gather(hass,room,config,require_window_contact=False)
+    assert result["status"]=="advisory"
+    assert result["controller"]=="environment"
+    assert result["temperature_c"] is None
+    assert result["equipment_plan"]["moisture"]["entity_id"]==dryer.entity_id
+    assert humidity.entity_id in tracked and dryer.entity_id in tracked
