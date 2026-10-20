@@ -1158,6 +1158,21 @@ class _FlowMixin:
             proposal["humidity_setpoint_auto"]=user_input.get(
                 "climate_humidity_setpoint_auto",draft.get("humidity_setpoint_auto",False)
             ) is True
+            proposal["dry_fan_mode_auto"]=user_input.get(
+                "climate_dry_fan_mode_auto",draft.get("dry_fan_mode_auto",False)
+            ) is True
+            proposal["dry_fan_hardware_confirmed"]=user_input.get(
+                "climate_dry_fan_hardware_confirmed",
+                draft.get("dry_fan_hardware_confirmed",False),
+            ) is True
+            proposal["dry_fan_windowless_confirmed"]=user_input.get(
+                "climate_dry_fan_windowless_confirmed",
+                draft.get("dry_fan_windowless_confirmed",False),
+            ) is True
+            proposal["dry_fan_mode_dwell_s"]=user_input.get(
+                "climate_dry_fan_mode_dwell_s",
+                draft.get("dry_fan_mode_dwell_s",1800),
+            )
             # Existing users retain their delivery policy. An explicit
             # optional choice authorizes an alternative-window notification
             # for this configured room, routed by the existing Hub.
@@ -1189,6 +1204,29 @@ class _FlowMixin:
                     for role in ("heat_climate_entity","cool_climate_entity"))
             ):
                 errors["base"]="climate_secondary_control_inputs_missing"
+            if proposal["dry_fan_mode_auto"]:
+                from .climate_air_mode_native import allowed_dwell
+                selected_device=proposal.get("dry_climate_entity")
+                native=self.hass.states.get(selected_device) if isinstance(
+                    selected_device,str) else None
+                modes=native.attributes.get("hvac_modes") if native else None
+                if not (
+                    proposal.get("enabled") is True and
+                    proposal.get("allow_actuation") is True and
+                    proposal.get("dry_fan_hardware_confirmed") is True and
+                    (proposal.get("controller")=="environment" or
+                     (proposal.get("controller")=="device" and
+                      proposal.get("mode")=="dry")) and
+                    proposal.get("humidity_entity") and
+                    isinstance(selected_device,str) and
+                    entity_area(self.hass,selected_device)==area and
+                    isinstance(modes,(list,tuple)) and
+                    "dry" in modes and "fan_only" in modes and
+                    proposal.get("humidity_setpoint_auto") is not True and
+                    proposal.get("humidity_power_auto") is not True and
+                    allowed_dwell(proposal) is not None
+                ):
+                    errors["base"]="climate_dry_fan_control_inputs_missing"
             if proposal["humidity_power_auto"]:
                 from .climate_humidity_power import timings
                 supported = False
@@ -1264,6 +1302,22 @@ class _FlowMixin:
         fields[_marker("climate_window_efficiency_notify",
                        draft.get("window_efficiency_notify",False))]=(
             selector.BooleanSelector()
+        )
+        fields[_marker("climate_dry_fan_mode_auto",
+                       draft.get("dry_fan_mode_auto",False))]=(
+            selector.BooleanSelector()
+        )
+        fields[_marker("climate_dry_fan_hardware_confirmed",
+                       draft.get("dry_fan_hardware_confirmed",False))]=(
+            selector.BooleanSelector()
+        )
+        fields[_marker("climate_dry_fan_windowless_confirmed",
+                       draft.get("dry_fan_windowless_confirmed",False))]=(
+            selector.BooleanSelector()
+        )
+        fields[_marker("climate_dry_fan_mode_dwell_s",
+                       draft.get("dry_fan_mode_dwell_s",1800))]=(
+            _real_number(1800,14400,"s")
         )
         for field in ("humidity_power_auto","humidity_power_hardware_confirmed",
                       "humidity_power_windowless_confirmed"):
