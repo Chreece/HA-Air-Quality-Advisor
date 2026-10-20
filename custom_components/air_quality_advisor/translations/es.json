@@ -153,17 +153,11 @@
         "title": "Elegir ajustes para editar",
         "description": "Elige una sección. El resto de ajustes permanecerá sin cambios.",
         "menu_options": {
-          "areas": "Áreas",
-          "weather": "Tiempo y alertas",
-          "indoor_sensors": "Configuración por habitación — aire y moho",
-          "window_sensors": "Excluir sensores de ventana",
-          "outdoor": "Calidad del aire exterior",
+          "outside_data": "Exterior · fuente",
+          "general_settings": "General · ajustes",
+          "area_settings": "Área · ajustes",
           "delivery": "Anuncios (opcional)",
-          "thresholds": "Umbrales avanzados",
-          "environment": "Fuentes internacionales de calidad del aire y polen",
-          "environment_room": "Elegir habitación para análisis ambiental",
-          "pid": "PID climático — elegir habitación",
-          "climate": "Clima — elegir habitación"
+          "thresholds": "Umbrales avanzados"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Exterior · fuente",
+        "description": "Exterior · fuente: Elegir fuente, sensor / Dispositivos · control.",
+        "menu_options": {
+          "weather": "Tiempo y alertas",
+          "outdoor": "Calidad del aire exterior",
+          "outside_aqi": "Exterior · AQI",
+          "pollen": "Polen"
+        }
+      },
+      "area_settings": {
+        "title": "Área · ajustes",
+        "description": "Área · ajustes: Elegir fuente, sensor / Dispositivos · control.",
+        "menu_options": {
+          "areas": "Áreas",
+          "indoor_sensors": "Configuración por habitación — aire y moho",
+          "window_sensors": "Excluir sensores de ventana",
+          "environment_room": "Elegir habitación para análisis ambiental",
+          "climate": "Clima — elegir habitación",
+          "pid": "PID climático — elegir habitación",
+          "area_devices": "Área · Dispositivos"
+        }
+      },
+      "device_menu": {
+        "title": "Dispositivos · ajustes",
+        "description": "Dispositivos · ajustes: Elegir fuente, sensor / Dispositivos · control.",
+        "menu_options": {
+          "device_settings": "Dispositivos · control",
+          "device_choice": "Elegir · Dispositivos",
+          "device_done": "ajustes · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "General · ajustes",
+        "description": "General · ajustes: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "general_room_occupancy_sensors": "Habitación · Ocupación · sensor",
+          "general_occupied_rooms_entity": "Ocupación · Habitación · fuente (state)",
+          "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
+          "general_home_trackers": "Casa · Ocupación · Dispositivos",
+          "general_home_policy": "Casa · Ocupación · control",
+          "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
+          "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
+          "general_source_stale_minutes": "fuente · Obligatorio (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_occupied_rooms_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_occupied_rooms_attribute": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_home_trackers": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_home_policy": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_sleep_rooms_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_sleep_rooms_attribute": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "general_source_stale_minutes": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "pollen_high_from": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "pollen_max_scale": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "pollen_avoid_ventilation": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "outside_aqi": {
+        "title": "Exterior · AQI",
+        "description": "Exterior · AQI: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · fuente",
+          "outside_aqi_limit": "AQI · objetivo",
+          "outside_aqi_no_sources": "AQI · sensor · Obligatorio"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "outside_aqi_scale": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "outside_aqi_limit": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "outside_aqi_no_sources": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "area_devices": {
+        "title": "Área · Dispositivos",
+        "description": "Área · Dispositivos: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "area_devices_area": "Elegir · Área"
+        },
+        "data_description": {
+          "area_devices_area": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "select_devices": {
+        "title": "Elegir · Dispositivos",
+        "description": "Elegir · Dispositivos: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "selected_devices": "Elegir · Dispositivos"
+        },
+        "data_description": {
+          "selected_devices": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "device_choice": {
+        "title": "Elegir · Dispositivos",
+        "description": "Elegir · Dispositivos: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "device_choice": "Elegir · Dispositivos"
+        },
+        "data_description": {
+          "device_choice": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
+      },
+      "device_settings": {
+        "title": "Dispositivos · control",
+        "description": "Dispositivos · control: Elegir fuente, sensor / Dispositivos · control.",
+        "data": {
+          "device_auto_control": "Automático control",
+          "device_method": "control · fuente",
+          "device_presence_requirement": "control · Ocupación",
+          "device_absence_action": "Apagar · Ocupación",
+          "device_sleep_behavior": "Sueño · control",
+          "device_hardware_confirmed": "Obligatorio · Dispositivos · Potencia",
+          "device_temperature_entity": "Temperatura · sensor",
+          "device_humidity_entity": "Humedad · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "control · Dispositivos",
+          "device_sensor_verified": "sensor · Obligatorio",
+          "device_fan_speed_percent": "Velocidad (%)",
+          "device_humidity_target": "Humedad · objetivo (%)",
+          "device_sleep_humidity_target": "Sueño · Humedad · objetivo (%)",
+          "device_min_on_s": "Potencia · min ON (s)",
+          "device_min_off_s": "Potencia · min OFF (s)",
+          "device_max_on_s": "Potencia · max ON (s)",
+          "device_home_heat_c": "Casa · Temperatura + · objetivo (°C)",
+          "device_home_cool_c": "Casa · Temperatura − · objetivo (°C)",
+          "device_unoccupied_heat_c": "Habitación · Apagar · Temperatura + · objetivo (°C)",
+          "device_unoccupied_cool_c": "Habitación · Apagar · Temperatura − · objetivo (°C)",
+          "device_away_heat_c": "Casa · Apagar · Temperatura + · objetivo (°C)",
+          "device_away_cool_c": "Casa · Apagar · Temperatura − · objetivo (°C)",
+          "device_sleep_heat_c": "Sueño · Temperatura + · objetivo (°C)",
+          "device_sleep_cool_c": "Sueño · Temperatura − · objetivo (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_method": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_presence_requirement": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_absence_action": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_sleep_behavior": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_hardware_confirmed": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_temperature_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_humidity_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_co2_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_pm25_entity": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_fan_purpose": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_sensor_verified": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_fan_speed_percent": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_humidity_target": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_sleep_humidity_target": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_min_on_s": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_min_off_s": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_max_on_s": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_home_heat_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_home_cool_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_unoccupied_heat_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_unoccupied_cool_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_away_heat_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_away_cool_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_sleep_heat_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos.",
+          "device_sleep_cool_c": "Elegir fuente; Obligatorio · control · sensor / Dispositivos."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "No válido · Ocupación · ajustes",
+      "general_invalid_trackers": "No válido · Casa · ajustes",
+      "general_invalid_rooms_entity": "No válido · Habitación · ajustes",
+      "general_invalid_attribute": "No válido · fuente · ajustes",
+      "general_invalid_source_age": "No válido · fuente · ajustes",
+      "invalid_selected_devices": "No válido · Dispositivos · ajustes",
+      "device_policy_invalid": "No válido · Ocupación · ajustes",
+      "device_method_invalid": "No válido · control · ajustes",
+      "device_hardware_required": "No válido · Obligatorio · ajustes",
+      "device_power_required_for_off": "No válido · Potencia · ajustes",
+      "device_temperature_required": "No válido · Temperatura · ajustes",
+      "device_humidity_required": "No válido · Humedad · ajustes",
+      "device_air_sensor_required": "No válido · sensor · ajustes",
+      "device_temperature_band_invalid": "No válido · Temperatura · ajustes",
+      "device_humidity_invalid": "No válido · Humedad · ajustes",
+      "device_runtime_invalid": "No válido · Potencia · ajustes"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Casa · Ocupación",
+        "all_home": "Casa · Dispositivos · Ocupación"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "objetivo · control",
+        "native": "Dispositivos · control",
+        "power": "Potencia",
+        "speed": "Velocidad"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automático",
+        "room": "Habitación · Ocupación",
+        "home": "Casa · Ocupación"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pausar",
+        "off": "Apagar"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automático",
+        "pause": "Pausar",
+        "sleep_targets": "Sueño · objetivo"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Exterior · control",
+        "filtration": "PM2.5 · control"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "fuente · No válido",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "objetivo · ajustes"
       }
     }
   }

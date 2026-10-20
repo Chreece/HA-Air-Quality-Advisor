@@ -153,17 +153,11 @@
         "title": "⚙️ 選択してください",
         "description": "選択してください: 部屋 / 天気と警報 / 通知（任意） / 詳細なしきい値",
         "menu_options": {
-          "areas": "部屋",
-          "weather": "天気と警報",
-          "indoor_sensors": "部屋 · カビ指標",
-          "window_sensors": "窓センサーを除外",
-          "outdoor": "屋外の空気質",
+          "outside_data": "屋外 · 情報源",
+          "general_settings": "一般 · 設定",
+          "area_settings": "エリア · 設定",
           "delivery": "通知（任意）",
-          "thresholds": "詳細なしきい値",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "詳細なしきい値"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "屋外 · 情報源",
+        "description": "屋外 · 情報源: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "weather": "天気と警報",
+          "outdoor": "屋外の空気質",
+          "outside_aqi": "屋外 · AQI",
+          "pollen": "花粉"
+        }
+      },
+      "area_settings": {
+        "title": "エリア · 設定",
+        "description": "エリア · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "areas": "部屋",
+          "indoor_sensors": "部屋 · カビ指標",
+          "window_sensors": "窓センサーを除外",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "エリア · デバイス"
+        }
+      },
+      "device_menu": {
+        "title": "デバイス · 設定",
+        "description": "デバイス · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "device_settings": "デバイス · 制御",
+          "device_choice": "選択 · デバイス",
+          "device_done": "設定 · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "一般 · 設定",
+        "description": "一般 · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "general_room_occupancy_sensors": "部屋 · 在室 · センサー",
+          "general_occupied_rooms_entity": "在室 · 部屋 · 情報源 (state)",
+          "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
+          "general_home_trackers": "自宅 · 在室 · デバイス",
+          "general_home_policy": "自宅 · 在室 · 制御",
+          "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
+          "general_source_stale_minutes": "情報源 · 必須 (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_occupied_rooms_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_occupied_rooms_attribute": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_home_trackers": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_home_policy": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_sleep_rooms_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_sleep_rooms_attribute": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "general_source_stale_minutes": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "pollen": {
+        "title": "花粉",
+        "description": "花粉: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "pollen_high_from": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "pollen_max_scale": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "pollen_avoid_ventilation": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "outside_aqi": {
+        "title": "屋外 · AQI",
+        "description": "屋外 · AQI: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "outside_aqi_entity": "AQI · センサー",
+          "outside_aqi_scale": "AQI · 情報源",
+          "outside_aqi_limit": "AQI · 目標",
+          "outside_aqi_no_sources": "AQI · センサー · 必須"
+        },
+        "data_description": {
+          "outside_aqi_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "outside_aqi_scale": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "outside_aqi_limit": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "outside_aqi_no_sources": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "area_devices": {
+        "title": "エリア · デバイス",
+        "description": "エリア · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "area_devices_area": "選択 · エリア"
+        },
+        "data_description": {
+          "area_devices_area": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "select_devices": {
+        "title": "選択 · デバイス",
+        "description": "選択 · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "selected_devices": "選択 · デバイス"
+        },
+        "data_description": {
+          "selected_devices": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "device_choice": {
+        "title": "選択 · デバイス",
+        "description": "選択 · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "device_choice": "選択 · デバイス"
+        },
+        "data_description": {
+          "device_choice": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
+      },
+      "device_settings": {
+        "title": "デバイス · 制御",
+        "description": "デバイス · 制御: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "device_auto_control": "自動 制御",
+          "device_method": "制御 · 情報源",
+          "device_presence_requirement": "制御 · 在室",
+          "device_absence_action": "オフ · 在室",
+          "device_sleep_behavior": "睡眠 · 制御",
+          "device_hardware_confirmed": "必須 · デバイス · 電力",
+          "device_temperature_entity": "温度 · センサー",
+          "device_humidity_entity": "湿度 · センサー",
+          "device_co2_entity": "CO₂ · センサー",
+          "device_pm25_entity": "PM2.5 · センサー",
+          "device_fan_purpose": "制御 · デバイス",
+          "device_sensor_verified": "センサー · 必須",
+          "device_fan_speed_percent": "速度 (%)",
+          "device_humidity_target": "湿度 · 目標 (%)",
+          "device_sleep_humidity_target": "睡眠 · 湿度 · 目標 (%)",
+          "device_min_on_s": "電力 · min ON (s)",
+          "device_min_off_s": "電力 · min OFF (s)",
+          "device_max_on_s": "電力 · max ON (s)",
+          "device_home_heat_c": "自宅 · 温度 + · 目標 (°C)",
+          "device_home_cool_c": "自宅 · 温度 − · 目標 (°C)",
+          "device_unoccupied_heat_c": "部屋 · オフ · 温度 + · 目標 (°C)",
+          "device_unoccupied_cool_c": "部屋 · オフ · 温度 − · 目標 (°C)",
+          "device_away_heat_c": "自宅 · オフ · 温度 + · 目標 (°C)",
+          "device_away_cool_c": "自宅 · オフ · 温度 − · 目標 (°C)",
+          "device_sleep_heat_c": "睡眠 · 温度 + · 目標 (°C)",
+          "device_sleep_cool_c": "睡眠 · 温度 − · 目標 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_method": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_presence_requirement": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_absence_action": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_sleep_behavior": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_hardware_confirmed": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_temperature_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_humidity_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_co2_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_pm25_entity": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_fan_purpose": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_sensor_verified": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_fan_speed_percent": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_humidity_target": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_sleep_humidity_target": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_min_on_s": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_min_off_s": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_max_on_s": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_home_heat_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_home_cool_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_unoccupied_heat_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_unoccupied_cool_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_away_heat_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_away_cool_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_sleep_heat_c": "選択 情報源; 必須 · 制御 · センサー / デバイス.",
+          "device_sleep_cool_c": "選択 情報源; 必須 · 制御 · センサー / デバイス."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "無効 · 在室 · 設定",
+      "general_invalid_trackers": "無効 · 自宅 · 設定",
+      "general_invalid_rooms_entity": "無効 · 部屋 · 設定",
+      "general_invalid_attribute": "無効 · 情報源 · 設定",
+      "general_invalid_source_age": "無効 · 情報源 · 設定",
+      "invalid_selected_devices": "無効 · デバイス · 設定",
+      "device_policy_invalid": "無効 · 在室 · 設定",
+      "device_method_invalid": "無効 · 制御 · 設定",
+      "device_hardware_required": "無効 · 必須 · 設定",
+      "device_power_required_for_off": "無効 · 電力 · 設定",
+      "device_temperature_required": "無効 · 温度 · 設定",
+      "device_humidity_required": "無効 · 湿度 · 設定",
+      "device_air_sensor_required": "無効 · センサー · 設定",
+      "device_temperature_band_invalid": "無効 · 温度 · 設定",
+      "device_humidity_invalid": "無効 · 湿度 · 設定",
+      "device_runtime_invalid": "無効 · 電力 · 設定"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "自宅 · 在室",
+        "all_home": "自宅 · デバイス · 在室"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "目標 · 制御",
+        "native": "デバイス · 制御",
+        "power": "電力",
+        "speed": "速度"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "自動",
+        "room": "部屋 · 在室",
+        "home": "自宅 · 在室"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "一時停止",
+        "off": "オフ"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "自動",
+        "pause": "一時停止",
+        "sleep_targets": "睡眠 · 目標"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "屋外 · 制御",
+        "filtration": "PM2.5 · 制御"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "情報源 · 無効",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "目標 · 設定"
       }
     }
   }

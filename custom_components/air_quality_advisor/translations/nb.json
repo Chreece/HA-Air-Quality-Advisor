@@ -153,17 +153,11 @@
         "title": "⚙️ Velg",
         "description": "Velg: Rom / Vær og varsler / Kunngjøringer (valgfritt) / Avanserte grenseverdier",
         "menu_options": {
-          "areas": "Rom",
-          "weather": "Vær og varsler",
-          "indoor_sensors": "Rom · Muggindikator",
-          "window_sensors": "Ekskluder vindussensorer",
-          "outdoor": "Luftkvalitet ute",
+          "outside_data": "Utendørs · kilde",
+          "general_settings": "Generelle · innstillinger",
+          "area_settings": "Område · innstillinger",
           "delivery": "Kunngjøringer (valgfritt)",
-          "thresholds": "Avanserte grenseverdier",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Avanserte grenseverdier"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Utendørs · kilde",
+        "description": "Utendørs · kilde: Velg kilde, sensor / Enheter · styring.",
+        "menu_options": {
+          "weather": "Vær og varsler",
+          "outdoor": "Luftkvalitet ute",
+          "outside_aqi": "Utendørs · AQI",
+          "pollen": "Pollen"
+        }
+      },
+      "area_settings": {
+        "title": "Område · innstillinger",
+        "description": "Område · innstillinger: Velg kilde, sensor / Enheter · styring.",
+        "menu_options": {
+          "areas": "Rom",
+          "indoor_sensors": "Rom · Muggindikator",
+          "window_sensors": "Ekskluder vindussensorer",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Område · Enheter"
+        }
+      },
+      "device_menu": {
+        "title": "Enheter · innstillinger",
+        "description": "Enheter · innstillinger: Velg kilde, sensor / Enheter · styring.",
+        "menu_options": {
+          "device_settings": "Enheter · styring",
+          "device_choice": "Velg · Enheter",
+          "device_done": "innstillinger · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Generelle · innstillinger",
+        "description": "Generelle · innstillinger: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "general_room_occupancy_sensors": "Rom · Tilstedeværelse · sensor",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rom · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rom · kilde (attribute)",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheter",
+          "general_home_policy": "Hjem · Tilstedeværelse · styring",
+          "general_sleep_rooms_entity": "Søvn · Rom · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rom · kilde (attribute)",
+          "general_source_stale_minutes": "kilde · Påkrevd (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_occupied_rooms_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_occupied_rooms_attribute": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_home_trackers": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_home_policy": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_sleep_rooms_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_sleep_rooms_attribute": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "general_source_stale_minutes": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Pollen: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "pollen_high_from": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "pollen_max_scale": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "pollen_avoid_ventilation": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "outside_aqi": {
+        "title": "Utendørs · AQI",
+        "description": "Utendørs · AQI: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · kilde",
+          "outside_aqi_limit": "AQI · mål",
+          "outside_aqi_no_sources": "AQI · sensor · Påkrevd"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "outside_aqi_scale": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "outside_aqi_limit": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "outside_aqi_no_sources": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "area_devices": {
+        "title": "Område · Enheter",
+        "description": "Område · Enheter: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "area_devices_area": "Velg · Område"
+        },
+        "data_description": {
+          "area_devices_area": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "select_devices": {
+        "title": "Velg · Enheter",
+        "description": "Velg · Enheter: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "selected_devices": "Velg · Enheter"
+        },
+        "data_description": {
+          "selected_devices": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "device_choice": {
+        "title": "Velg · Enheter",
+        "description": "Velg · Enheter: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "device_choice": "Velg · Enheter"
+        },
+        "data_description": {
+          "device_choice": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
+      },
+      "device_settings": {
+        "title": "Enheter · styring",
+        "description": "Enheter · styring: Velg kilde, sensor / Enheter · styring.",
+        "data": {
+          "device_auto_control": "Automatisk styring",
+          "device_method": "styring · kilde",
+          "device_presence_requirement": "styring · Tilstedeværelse",
+          "device_absence_action": "Slå av · Tilstedeværelse",
+          "device_sleep_behavior": "Søvn · styring",
+          "device_hardware_confirmed": "Påkrevd · Enheter · Effekt",
+          "device_temperature_entity": "Temperatur · sensor",
+          "device_humidity_entity": "Luftfuktighet · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "styring · Enheter",
+          "device_sensor_verified": "sensor · Påkrevd",
+          "device_fan_speed_percent": "Hastighet (%)",
+          "device_humidity_target": "Luftfuktighet · mål (%)",
+          "device_sleep_humidity_target": "Søvn · Luftfuktighet · mål (%)",
+          "device_min_on_s": "Effekt · min ON (s)",
+          "device_min_off_s": "Effekt · min OFF (s)",
+          "device_max_on_s": "Effekt · max ON (s)",
+          "device_home_heat_c": "Hjem · Temperatur + · mål (°C)",
+          "device_home_cool_c": "Hjem · Temperatur − · mål (°C)",
+          "device_unoccupied_heat_c": "Rom · Slå av · Temperatur + · mål (°C)",
+          "device_unoccupied_cool_c": "Rom · Slå av · Temperatur − · mål (°C)",
+          "device_away_heat_c": "Hjem · Slå av · Temperatur + · mål (°C)",
+          "device_away_cool_c": "Hjem · Slå av · Temperatur − · mål (°C)",
+          "device_sleep_heat_c": "Søvn · Temperatur + · mål (°C)",
+          "device_sleep_cool_c": "Søvn · Temperatur − · mål (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_method": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_presence_requirement": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_absence_action": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_sleep_behavior": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_hardware_confirmed": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_temperature_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_humidity_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_co2_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_pm25_entity": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_fan_purpose": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_sensor_verified": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_fan_speed_percent": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_humidity_target": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_sleep_humidity_target": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_min_on_s": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_min_off_s": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_max_on_s": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_home_heat_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_home_cool_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_unoccupied_heat_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_unoccupied_cool_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_away_heat_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_away_cool_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_sleep_heat_c": "Velg kilde; Påkrevd · styring · sensor / Enheter.",
+          "device_sleep_cool_c": "Velg kilde; Påkrevd · styring · sensor / Enheter."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Ugyldig · Tilstedeværelse · innstillinger",
+      "general_invalid_trackers": "Ugyldig · Hjem · innstillinger",
+      "general_invalid_rooms_entity": "Ugyldig · Rom · innstillinger",
+      "general_invalid_attribute": "Ugyldig · kilde · innstillinger",
+      "general_invalid_source_age": "Ugyldig · kilde · innstillinger",
+      "invalid_selected_devices": "Ugyldig · Enheter · innstillinger",
+      "device_policy_invalid": "Ugyldig · Tilstedeværelse · innstillinger",
+      "device_method_invalid": "Ugyldig · styring · innstillinger",
+      "device_hardware_required": "Ugyldig · Påkrevd · innstillinger",
+      "device_power_required_for_off": "Ugyldig · Effekt · innstillinger",
+      "device_temperature_required": "Ugyldig · Temperatur · innstillinger",
+      "device_humidity_required": "Ugyldig · Luftfuktighet · innstillinger",
+      "device_air_sensor_required": "Ugyldig · sensor · innstillinger",
+      "device_temperature_band_invalid": "Ugyldig · Temperatur · innstillinger",
+      "device_humidity_invalid": "Ugyldig · Luftfuktighet · innstillinger",
+      "device_runtime_invalid": "Ugyldig · Effekt · innstillinger"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Hjem · Tilstedeværelse",
+        "all_home": "Hjem · Enheter · Tilstedeværelse"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "mål · styring",
+        "native": "Enheter · styring",
+        "power": "Effekt",
+        "speed": "Hastighet"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatisk",
+        "room": "Rom · Tilstedeværelse",
+        "home": "Hjem · Tilstedeværelse"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pause",
+        "off": "Slå av"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatisk",
+        "pause": "Pause",
+        "sleep_targets": "Søvn · mål"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Utendørs · styring",
+        "filtration": "PM2.5 · styring"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "kilde · Ugyldig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "mål · innstillinger"
       }
     }
   }

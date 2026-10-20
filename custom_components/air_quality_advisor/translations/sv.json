@@ -153,17 +153,11 @@
         "title": "⚙️ Välj",
         "description": "Välj: Rum / Väder och varningar / Meddelanden (valfritt) / Avancerade gränsvärden",
         "menu_options": {
-          "areas": "Rum",
-          "weather": "Väder och varningar",
-          "indoor_sensors": "Rum · Mögelindikator",
-          "window_sensors": "Undanta fönstersensorer",
-          "outdoor": "Utomhusluftens kvalitet",
+          "outside_data": "Utomhus · källa",
+          "general_settings": "Allmänna · inställningar",
+          "area_settings": "Område · inställningar",
           "delivery": "Meddelanden (valfritt)",
-          "thresholds": "Avancerade gränsvärden",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Avancerade gränsvärden"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Utomhus · källa",
+        "description": "Utomhus · källa: Välj källa, sensor / Enheter · styrning.",
+        "menu_options": {
+          "weather": "Väder och varningar",
+          "outdoor": "Utomhusluftens kvalitet",
+          "outside_aqi": "Utomhus · AQI",
+          "pollen": "Pollen"
+        }
+      },
+      "area_settings": {
+        "title": "Område · inställningar",
+        "description": "Område · inställningar: Välj källa, sensor / Enheter · styrning.",
+        "menu_options": {
+          "areas": "Rum",
+          "indoor_sensors": "Rum · Mögelindikator",
+          "window_sensors": "Undanta fönstersensorer",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Område · Enheter"
+        }
+      },
+      "device_menu": {
+        "title": "Enheter · inställningar",
+        "description": "Enheter · inställningar: Välj källa, sensor / Enheter · styrning.",
+        "menu_options": {
+          "device_settings": "Enheter · styrning",
+          "device_choice": "Välj · Enheter",
+          "device_done": "inställningar · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Allmänna · inställningar",
+        "description": "Allmänna · inställningar: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "general_room_occupancy_sensors": "Rum · Närvaro · sensor",
+          "general_occupied_rooms_entity": "Närvaro · Rum · källa (state)",
+          "general_occupied_rooms_attribute": "Närvaro · Rum · källa (attribute)",
+          "general_home_trackers": "Hem · Närvaro · Enheter",
+          "general_home_policy": "Hem · Närvaro · styrning",
+          "general_sleep_rooms_entity": "Sömn · Rum · källa (state)",
+          "general_sleep_rooms_attribute": "Sömn · Rum · källa (attribute)",
+          "general_source_stale_minutes": "källa · Krävs (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_occupied_rooms_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_occupied_rooms_attribute": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_home_trackers": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_home_policy": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_sleep_rooms_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_sleep_rooms_attribute": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "general_source_stale_minutes": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Pollen: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "pollen_high_from": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "pollen_max_scale": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "pollen_avoid_ventilation": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "outside_aqi": {
+        "title": "Utomhus · AQI",
+        "description": "Utomhus · AQI: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · källa",
+          "outside_aqi_limit": "AQI · mål",
+          "outside_aqi_no_sources": "AQI · sensor · Krävs"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "outside_aqi_scale": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "outside_aqi_limit": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "outside_aqi_no_sources": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "area_devices": {
+        "title": "Område · Enheter",
+        "description": "Område · Enheter: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "area_devices_area": "Välj · Område"
+        },
+        "data_description": {
+          "area_devices_area": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "select_devices": {
+        "title": "Välj · Enheter",
+        "description": "Välj · Enheter: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "selected_devices": "Välj · Enheter"
+        },
+        "data_description": {
+          "selected_devices": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "device_choice": {
+        "title": "Välj · Enheter",
+        "description": "Välj · Enheter: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "device_choice": "Välj · Enheter"
+        },
+        "data_description": {
+          "device_choice": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
+      },
+      "device_settings": {
+        "title": "Enheter · styrning",
+        "description": "Enheter · styrning: Välj källa, sensor / Enheter · styrning.",
+        "data": {
+          "device_auto_control": "Automatisk styrning",
+          "device_method": "styrning · källa",
+          "device_presence_requirement": "styrning · Närvaro",
+          "device_absence_action": "Stäng av · Närvaro",
+          "device_sleep_behavior": "Sömn · styrning",
+          "device_hardware_confirmed": "Krävs · Enheter · Effekt",
+          "device_temperature_entity": "Temperatur · sensor",
+          "device_humidity_entity": "Luftfuktighet · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "styrning · Enheter",
+          "device_sensor_verified": "sensor · Krävs",
+          "device_fan_speed_percent": "Hastighet (%)",
+          "device_humidity_target": "Luftfuktighet · mål (%)",
+          "device_sleep_humidity_target": "Sömn · Luftfuktighet · mål (%)",
+          "device_min_on_s": "Effekt · min ON (s)",
+          "device_min_off_s": "Effekt · min OFF (s)",
+          "device_max_on_s": "Effekt · max ON (s)",
+          "device_home_heat_c": "Hem · Temperatur + · mål (°C)",
+          "device_home_cool_c": "Hem · Temperatur − · mål (°C)",
+          "device_unoccupied_heat_c": "Rum · Stäng av · Temperatur + · mål (°C)",
+          "device_unoccupied_cool_c": "Rum · Stäng av · Temperatur − · mål (°C)",
+          "device_away_heat_c": "Hem · Stäng av · Temperatur + · mål (°C)",
+          "device_away_cool_c": "Hem · Stäng av · Temperatur − · mål (°C)",
+          "device_sleep_heat_c": "Sömn · Temperatur + · mål (°C)",
+          "device_sleep_cool_c": "Sömn · Temperatur − · mål (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_method": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_presence_requirement": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_absence_action": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_sleep_behavior": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_hardware_confirmed": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_temperature_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_humidity_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_co2_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_pm25_entity": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_fan_purpose": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_sensor_verified": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_fan_speed_percent": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_humidity_target": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_sleep_humidity_target": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_min_on_s": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_min_off_s": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_max_on_s": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_home_heat_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_home_cool_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_unoccupied_heat_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_unoccupied_cool_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_away_heat_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_away_cool_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_sleep_heat_c": "Välj källa; Krävs · styrning · sensor / Enheter.",
+          "device_sleep_cool_c": "Välj källa; Krävs · styrning · sensor / Enheter."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Ogiltig · Närvaro · inställningar",
+      "general_invalid_trackers": "Ogiltig · Hem · inställningar",
+      "general_invalid_rooms_entity": "Ogiltig · Rum · inställningar",
+      "general_invalid_attribute": "Ogiltig · källa · inställningar",
+      "general_invalid_source_age": "Ogiltig · källa · inställningar",
+      "invalid_selected_devices": "Ogiltig · Enheter · inställningar",
+      "device_policy_invalid": "Ogiltig · Närvaro · inställningar",
+      "device_method_invalid": "Ogiltig · styrning · inställningar",
+      "device_hardware_required": "Ogiltig · Krävs · inställningar",
+      "device_power_required_for_off": "Ogiltig · Effekt · inställningar",
+      "device_temperature_required": "Ogiltig · Temperatur · inställningar",
+      "device_humidity_required": "Ogiltig · Luftfuktighet · inställningar",
+      "device_air_sensor_required": "Ogiltig · sensor · inställningar",
+      "device_temperature_band_invalid": "Ogiltig · Temperatur · inställningar",
+      "device_humidity_invalid": "Ogiltig · Luftfuktighet · inställningar",
+      "device_runtime_invalid": "Ogiltig · Effekt · inställningar"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Hem · Närvaro",
+        "all_home": "Hem · Enheter · Närvaro"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "mål · styrning",
+        "native": "Enheter · styrning",
+        "power": "Effekt",
+        "speed": "Hastighet"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatisk",
+        "room": "Rum · Närvaro",
+        "home": "Hem · Närvaro"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pausa",
+        "off": "Stäng av"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatisk",
+        "pause": "Pausa",
+        "sleep_targets": "Sömn · mål"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Utomhus · styrning",
+        "filtration": "PM2.5 · styrning"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "källa · Ogiltig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "mål · inställningar"
       }
     }
   }

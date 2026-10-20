@@ -153,17 +153,11 @@
         "title": "⚙️ Оберіть",
         "description": "Оберіть: Кімнати / Погода та попередження / Оголошення (необов’язково) / Додаткові пороги",
         "menu_options": {
-          "areas": "Кімнати",
-          "weather": "Погода та попередження",
-          "indoor_sensors": "Кімнати · Індикатор цвілі",
-          "window_sensors": "Виключити датчики вікон",
-          "outdoor": "Якість повітря надворі",
+          "outside_data": "Зовнішні · джерело",
+          "general_settings": "Загальні · налаштування",
+          "area_settings": "Зона · налаштування",
           "delivery": "Оголошення (необов’язково)",
-          "thresholds": "Додаткові пороги",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Додаткові пороги"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Зовнішні · джерело",
+        "description": "Зовнішні · джерело: Обрати джерело, датчик / Пристрої · керування.",
+        "menu_options": {
+          "weather": "Погода та попередження",
+          "outdoor": "Якість повітря надворі",
+          "outside_aqi": "Зовнішні · AQI",
+          "pollen": "Пилок"
+        }
+      },
+      "area_settings": {
+        "title": "Зона · налаштування",
+        "description": "Зона · налаштування: Обрати джерело, датчик / Пристрої · керування.",
+        "menu_options": {
+          "areas": "Кімнати",
+          "indoor_sensors": "Кімнати · Індикатор цвілі",
+          "window_sensors": "Виключити датчики вікон",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Зона · Пристрої"
+        }
+      },
+      "device_menu": {
+        "title": "Пристрої · налаштування",
+        "description": "Пристрої · налаштування: Обрати джерело, датчик / Пристрої · керування.",
+        "menu_options": {
+          "device_settings": "Пристрої · керування",
+          "device_choice": "Обрати · Пристрої",
+          "device_done": "налаштування · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Загальні · налаштування",
+        "description": "Загальні · налаштування: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "general_room_occupancy_sensors": "Кімната · Присутність · датчик",
+          "general_occupied_rooms_entity": "Присутність · Кімната · джерело (state)",
+          "general_occupied_rooms_attribute": "Присутність · Кімната · джерело (attribute)",
+          "general_home_trackers": "Дім · Присутність · Пристрої",
+          "general_home_policy": "Дім · Присутність · керування",
+          "general_sleep_rooms_entity": "Сон · Кімната · джерело (state)",
+          "general_sleep_rooms_attribute": "Сон · Кімната · джерело (attribute)",
+          "general_source_stale_minutes": "джерело · Обов'язково (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_occupied_rooms_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_occupied_rooms_attribute": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_home_trackers": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_home_policy": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_sleep_rooms_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_sleep_rooms_attribute": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "general_source_stale_minutes": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "pollen": {
+        "title": "Пилок",
+        "description": "Пилок: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "pollen_high_from": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "pollen_max_scale": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "pollen_avoid_ventilation": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "outside_aqi": {
+        "title": "Зовнішні · AQI",
+        "description": "Зовнішні · AQI: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "outside_aqi_entity": "AQI · датчик",
+          "outside_aqi_scale": "AQI · джерело",
+          "outside_aqi_limit": "AQI · ціль",
+          "outside_aqi_no_sources": "AQI · датчик · Обов'язково"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "outside_aqi_scale": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "outside_aqi_limit": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "outside_aqi_no_sources": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "area_devices": {
+        "title": "Зона · Пристрої",
+        "description": "Зона · Пристрої: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "area_devices_area": "Обрати · Зона"
+        },
+        "data_description": {
+          "area_devices_area": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "select_devices": {
+        "title": "Обрати · Пристрої",
+        "description": "Обрати · Пристрої: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "selected_devices": "Обрати · Пристрої"
+        },
+        "data_description": {
+          "selected_devices": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "device_choice": {
+        "title": "Обрати · Пристрої",
+        "description": "Обрати · Пристрої: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "device_choice": "Обрати · Пристрої"
+        },
+        "data_description": {
+          "device_choice": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
+      },
+      "device_settings": {
+        "title": "Пристрої · керування",
+        "description": "Пристрої · керування: Обрати джерело, датчик / Пристрої · керування.",
+        "data": {
+          "device_auto_control": "Автоматичне керування",
+          "device_method": "керування · джерело",
+          "device_presence_requirement": "керування · Присутність",
+          "device_absence_action": "Вимкнути · Присутність",
+          "device_sleep_behavior": "Сон · керування",
+          "device_hardware_confirmed": "Обов'язково · Пристрої · Потужність",
+          "device_temperature_entity": "Температура · датчик",
+          "device_humidity_entity": "Вологість · датчик",
+          "device_co2_entity": "CO₂ · датчик",
+          "device_pm25_entity": "PM2.5 · датчик",
+          "device_fan_purpose": "керування · Пристрої",
+          "device_sensor_verified": "датчик · Обов'язково",
+          "device_fan_speed_percent": "Швидкість (%)",
+          "device_humidity_target": "Вологість · ціль (%)",
+          "device_sleep_humidity_target": "Сон · Вологість · ціль (%)",
+          "device_min_on_s": "Потужність · min ON (s)",
+          "device_min_off_s": "Потужність · min OFF (s)",
+          "device_max_on_s": "Потужність · max ON (s)",
+          "device_home_heat_c": "Дім · Температура + · ціль (°C)",
+          "device_home_cool_c": "Дім · Температура − · ціль (°C)",
+          "device_unoccupied_heat_c": "Кімната · Вимкнути · Температура + · ціль (°C)",
+          "device_unoccupied_cool_c": "Кімната · Вимкнути · Температура − · ціль (°C)",
+          "device_away_heat_c": "Дім · Вимкнути · Температура + · ціль (°C)",
+          "device_away_cool_c": "Дім · Вимкнути · Температура − · ціль (°C)",
+          "device_sleep_heat_c": "Сон · Температура + · ціль (°C)",
+          "device_sleep_cool_c": "Сон · Температура − · ціль (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_method": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_presence_requirement": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_absence_action": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_sleep_behavior": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_hardware_confirmed": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_temperature_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_humidity_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_co2_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_pm25_entity": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_fan_purpose": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_sensor_verified": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_fan_speed_percent": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_humidity_target": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_sleep_humidity_target": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_min_on_s": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_min_off_s": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_max_on_s": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_home_heat_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_home_cool_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_unoccupied_heat_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_unoccupied_cool_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_away_heat_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_away_cool_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_sleep_heat_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої.",
+          "device_sleep_cool_c": "Обрати джерело; Обов'язково · керування · датчик / Пристрої."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Неправильно · Присутність · налаштування",
+      "general_invalid_trackers": "Неправильно · Дім · налаштування",
+      "general_invalid_rooms_entity": "Неправильно · Кімната · налаштування",
+      "general_invalid_attribute": "Неправильно · джерело · налаштування",
+      "general_invalid_source_age": "Неправильно · джерело · налаштування",
+      "invalid_selected_devices": "Неправильно · Пристрої · налаштування",
+      "device_policy_invalid": "Неправильно · Присутність · налаштування",
+      "device_method_invalid": "Неправильно · керування · налаштування",
+      "device_hardware_required": "Неправильно · Обов'язково · налаштування",
+      "device_power_required_for_off": "Неправильно · Потужність · налаштування",
+      "device_temperature_required": "Неправильно · Температура · налаштування",
+      "device_humidity_required": "Неправильно · Вологість · налаштування",
+      "device_air_sensor_required": "Неправильно · датчик · налаштування",
+      "device_temperature_band_invalid": "Неправильно · Температура · налаштування",
+      "device_humidity_invalid": "Неправильно · Вологість · налаштування",
+      "device_runtime_invalid": "Неправильно · Потужність · налаштування"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Дім · Присутність",
+        "all_home": "Дім · Пристрої · Присутність"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "ціль · керування",
+        "native": "Пристрої · керування",
+        "power": "Потужність",
+        "speed": "Швидкість"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Автоматичне",
+        "room": "Кімната · Присутність",
+        "home": "Дім · Присутність"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Призупинити",
+        "off": "Вимкнути"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Автоматичне",
+        "pause": "Призупинити",
+        "sleep_targets": "Сон · ціль"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Зовнішні · керування",
+        "filtration": "PM2.5 · керування"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "джерело · Неправильно",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "ціль · налаштування"
       }
     }
   }

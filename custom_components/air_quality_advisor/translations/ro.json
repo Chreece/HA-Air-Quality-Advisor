@@ -153,17 +153,11 @@
         "title": "⚙️ Alegeți",
         "description": "Alegeți: Camere / Vreme și avertizări / Anunțuri (opțional) / Praguri avansate",
         "menu_options": {
-          "areas": "Camere",
-          "weather": "Vreme și avertizări",
-          "indoor_sensors": "Camere · Indicator de mucegai",
-          "window_sensors": "Exclude senzori de fereastră",
-          "outdoor": "Calitatea aerului exterior",
+          "outside_data": "Exterior · sursă",
+          "general_settings": "Generale · setări",
+          "area_settings": "Zonă · setări",
           "delivery": "Anunțuri (opțional)",
-          "thresholds": "Praguri avansate",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Praguri avansate"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Exterior · sursă",
+        "description": "Exterior · sursă: Selectați sursă, senzor / Dispozitive · control.",
+        "menu_options": {
+          "weather": "Vreme și avertizări",
+          "outdoor": "Calitatea aerului exterior",
+          "outside_aqi": "Exterior · AQI",
+          "pollen": "Polen"
+        }
+      },
+      "area_settings": {
+        "title": "Zonă · setări",
+        "description": "Zonă · setări: Selectați sursă, senzor / Dispozitive · control.",
+        "menu_options": {
+          "areas": "Camere",
+          "indoor_sensors": "Camere · Indicator de mucegai",
+          "window_sensors": "Exclude senzori de fereastră",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Zonă · Dispozitive"
+        }
+      },
+      "device_menu": {
+        "title": "Dispozitive · setări",
+        "description": "Dispozitive · setări: Selectați sursă, senzor / Dispozitive · control.",
+        "menu_options": {
+          "device_settings": "Dispozitive · control",
+          "device_choice": "Selectați · Dispozitive",
+          "device_done": "setări · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Generale · setări",
+        "description": "Generale · setări: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_home_policy": "Acasă · Ocupare · control",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "general_source_stale_minutes": "sursă · Obligatoriu (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_occupied_rooms_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_occupied_rooms_attribute": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_home_trackers": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_home_policy": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_sleep_rooms_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_sleep_rooms_attribute": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "general_source_stale_minutes": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "pollen_high_from": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "pollen_max_scale": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "pollen_avoid_ventilation": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "outside_aqi": {
+        "title": "Exterior · AQI",
+        "description": "Exterior · AQI: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "outside_aqi_entity": "AQI · senzor",
+          "outside_aqi_scale": "AQI · sursă",
+          "outside_aqi_limit": "AQI · țintă",
+          "outside_aqi_no_sources": "AQI · senzor · Obligatoriu"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "outside_aqi_scale": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "outside_aqi_limit": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "outside_aqi_no_sources": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "area_devices": {
+        "title": "Zonă · Dispozitive",
+        "description": "Zonă · Dispozitive: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "area_devices_area": "Selectați · Zonă"
+        },
+        "data_description": {
+          "area_devices_area": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "select_devices": {
+        "title": "Selectați · Dispozitive",
+        "description": "Selectați · Dispozitive: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "selected_devices": "Selectați · Dispozitive"
+        },
+        "data_description": {
+          "selected_devices": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "device_choice": {
+        "title": "Selectați · Dispozitive",
+        "description": "Selectați · Dispozitive: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "device_choice": "Selectați · Dispozitive"
+        },
+        "data_description": {
+          "device_choice": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
+      },
+      "device_settings": {
+        "title": "Dispozitive · control",
+        "description": "Dispozitive · control: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "device_auto_control": "Automat control",
+          "device_method": "control · sursă",
+          "device_presence_requirement": "control · Ocupare",
+          "device_absence_action": "Oprire · Ocupare",
+          "device_sleep_behavior": "Somn · control",
+          "device_hardware_confirmed": "Obligatoriu · Dispozitive · Putere",
+          "device_temperature_entity": "Temperatură · senzor",
+          "device_humidity_entity": "Umiditate · senzor",
+          "device_co2_entity": "CO₂ · senzor",
+          "device_pm25_entity": "PM2.5 · senzor",
+          "device_fan_purpose": "control · Dispozitive",
+          "device_sensor_verified": "senzor · Obligatoriu",
+          "device_fan_speed_percent": "Viteză (%)",
+          "device_humidity_target": "Umiditate · țintă (%)",
+          "device_sleep_humidity_target": "Somn · Umiditate · țintă (%)",
+          "device_min_on_s": "Putere · min ON (s)",
+          "device_min_off_s": "Putere · min OFF (s)",
+          "device_max_on_s": "Putere · max ON (s)",
+          "device_home_heat_c": "Acasă · Temperatură + · țintă (°C)",
+          "device_home_cool_c": "Acasă · Temperatură − · țintă (°C)",
+          "device_unoccupied_heat_c": "Cameră · Oprire · Temperatură + · țintă (°C)",
+          "device_unoccupied_cool_c": "Cameră · Oprire · Temperatură − · țintă (°C)",
+          "device_away_heat_c": "Acasă · Oprire · Temperatură + · țintă (°C)",
+          "device_away_cool_c": "Acasă · Oprire · Temperatură − · țintă (°C)",
+          "device_sleep_heat_c": "Somn · Temperatură + · țintă (°C)",
+          "device_sleep_cool_c": "Somn · Temperatură − · țintă (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_method": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_presence_requirement": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_absence_action": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_sleep_behavior": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_hardware_confirmed": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_temperature_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_humidity_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_co2_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_pm25_entity": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_fan_purpose": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_sensor_verified": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_fan_speed_percent": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_humidity_target": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_sleep_humidity_target": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_min_on_s": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_min_off_s": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_max_on_s": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_home_heat_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_home_cool_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_unoccupied_heat_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_unoccupied_cool_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_away_heat_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_away_cool_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_sleep_heat_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive.",
+          "device_sleep_cool_c": "Selectați sursă; Obligatoriu · control · senzor / Dispozitive."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Invalid · Ocupare · setări",
+      "general_invalid_trackers": "Invalid · Acasă · setări",
+      "general_invalid_rooms_entity": "Invalid · Cameră · setări",
+      "general_invalid_attribute": "Invalid · sursă · setări",
+      "general_invalid_source_age": "Invalid · sursă · setări",
+      "invalid_selected_devices": "Invalid · Dispozitive · setări",
+      "device_policy_invalid": "Invalid · Ocupare · setări",
+      "device_method_invalid": "Invalid · control · setări",
+      "device_hardware_required": "Invalid · Obligatoriu · setări",
+      "device_power_required_for_off": "Invalid · Putere · setări",
+      "device_temperature_required": "Invalid · Temperatură · setări",
+      "device_humidity_required": "Invalid · Umiditate · setări",
+      "device_air_sensor_required": "Invalid · senzor · setări",
+      "device_temperature_band_invalid": "Invalid · Temperatură · setări",
+      "device_humidity_invalid": "Invalid · Umiditate · setări",
+      "device_runtime_invalid": "Invalid · Putere · setări"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Acasă · Ocupare",
+        "all_home": "Acasă · Dispozitive · Ocupare"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "țintă · control",
+        "native": "Dispozitive · control",
+        "power": "Putere",
+        "speed": "Viteză"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automat",
+        "room": "Cameră · Ocupare",
+        "home": "Acasă · Ocupare"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pauză",
+        "off": "Oprire"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automat",
+        "pause": "Pauză",
+        "sleep_targets": "Somn · țintă"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Exterior · control",
+        "filtration": "PM2.5 · control"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "sursă · Invalid",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "țintă · setări"
       }
     }
   }

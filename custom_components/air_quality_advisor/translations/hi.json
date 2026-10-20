@@ -153,17 +153,11 @@
         "title": "⚙️ चुनें",
         "description": "चुनें: कमरे / मौसम और चेतावनियाँ / घोषणाएँ (वैकल्पिक) / उन्नत सीमाएँ",
         "menu_options": {
-          "areas": "कमरे",
-          "weather": "मौसम और चेतावनियाँ",
-          "indoor_sensors": "कमरे · फफूंद संकेतक",
-          "window_sensors": "खिड़की सेंसर बाहर रखें",
-          "outdoor": "बाहरी वायु गुणवत्ता",
+          "outside_data": "बाहरी · स्रोत",
+          "general_settings": "सामान्य · सेटिंग",
+          "area_settings": "क्षेत्र · सेटिंग",
           "delivery": "घोषणाएँ (वैकल्पिक)",
-          "thresholds": "उन्नत सीमाएँ",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "उन्नत सीमाएँ"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "बाहरी · स्रोत",
+        "description": "बाहरी · स्रोत: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "menu_options": {
+          "weather": "मौसम और चेतावनियाँ",
+          "outdoor": "बाहरी वायु गुणवत्ता",
+          "outside_aqi": "बाहरी · AQI",
+          "pollen": "पराग"
+        }
+      },
+      "area_settings": {
+        "title": "क्षेत्र · सेटिंग",
+        "description": "क्षेत्र · सेटिंग: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "menu_options": {
+          "areas": "कमरे",
+          "indoor_sensors": "कमरे · फफूंद संकेतक",
+          "window_sensors": "खिड़की सेंसर बाहर रखें",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "क्षेत्र · उपकरण"
+        }
+      },
+      "device_menu": {
+        "title": "उपकरण · सेटिंग",
+        "description": "उपकरण · सेटिंग: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "menu_options": {
+          "device_settings": "उपकरण · नियंत्रण",
+          "device_choice": "चुनें · उपकरण",
+          "device_done": "सेटिंग · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "सामान्य · सेटिंग",
+        "description": "सामान्य · सेटिंग: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "general_room_occupancy_sensors": "कमरा · उपस्थिति · सेंसर",
+          "general_occupied_rooms_entity": "उपस्थिति · कमरा · स्रोत (state)",
+          "general_occupied_rooms_attribute": "उपस्थिति · कमरा · स्रोत (attribute)",
+          "general_home_trackers": "घर · उपस्थिति · उपकरण",
+          "general_home_policy": "घर · उपस्थिति · नियंत्रण",
+          "general_sleep_rooms_entity": "नींद · कमरा · स्रोत (state)",
+          "general_sleep_rooms_attribute": "नींद · कमरा · स्रोत (attribute)",
+          "general_source_stale_minutes": "स्रोत · आवश्यक (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_occupied_rooms_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_occupied_rooms_attribute": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_home_trackers": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_home_policy": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_sleep_rooms_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_sleep_rooms_attribute": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "general_source_stale_minutes": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "pollen": {
+        "title": "पराग",
+        "description": "पराग: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "pollen_high_from": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "pollen_max_scale": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "pollen_avoid_ventilation": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "outside_aqi": {
+        "title": "बाहरी · AQI",
+        "description": "बाहरी · AQI: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "outside_aqi_entity": "AQI · सेंसर",
+          "outside_aqi_scale": "AQI · स्रोत",
+          "outside_aqi_limit": "AQI · लक्ष्य",
+          "outside_aqi_no_sources": "AQI · सेंसर · आवश्यक"
+        },
+        "data_description": {
+          "outside_aqi_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "outside_aqi_scale": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "outside_aqi_limit": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "outside_aqi_no_sources": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "area_devices": {
+        "title": "क्षेत्र · उपकरण",
+        "description": "क्षेत्र · उपकरण: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "area_devices_area": "चुनें · क्षेत्र"
+        },
+        "data_description": {
+          "area_devices_area": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "select_devices": {
+        "title": "चुनें · उपकरण",
+        "description": "चुनें · उपकरण: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "selected_devices": "चुनें · उपकरण"
+        },
+        "data_description": {
+          "selected_devices": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "device_choice": {
+        "title": "चुनें · उपकरण",
+        "description": "चुनें · उपकरण: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "device_choice": "चुनें · उपकरण"
+        },
+        "data_description": {
+          "device_choice": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
+      },
+      "device_settings": {
+        "title": "उपकरण · नियंत्रण",
+        "description": "उपकरण · नियंत्रण: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "data": {
+          "device_auto_control": "स्वचालित नियंत्रण",
+          "device_method": "नियंत्रण · स्रोत",
+          "device_presence_requirement": "नियंत्रण · उपस्थिति",
+          "device_absence_action": "बंद करें · उपस्थिति",
+          "device_sleep_behavior": "नींद · नियंत्रण",
+          "device_hardware_confirmed": "आवश्यक · उपकरण · शक्ति",
+          "device_temperature_entity": "तापमान · सेंसर",
+          "device_humidity_entity": "आर्द्रता · सेंसर",
+          "device_co2_entity": "CO₂ · सेंसर",
+          "device_pm25_entity": "PM2.5 · सेंसर",
+          "device_fan_purpose": "नियंत्रण · उपकरण",
+          "device_sensor_verified": "सेंसर · आवश्यक",
+          "device_fan_speed_percent": "गति (%)",
+          "device_humidity_target": "आर्द्रता · लक्ष्य (%)",
+          "device_sleep_humidity_target": "नींद · आर्द्रता · लक्ष्य (%)",
+          "device_min_on_s": "शक्ति · min ON (s)",
+          "device_min_off_s": "शक्ति · min OFF (s)",
+          "device_max_on_s": "शक्ति · max ON (s)",
+          "device_home_heat_c": "घर · तापमान + · लक्ष्य (°C)",
+          "device_home_cool_c": "घर · तापमान − · लक्ष्य (°C)",
+          "device_unoccupied_heat_c": "कमरा · बंद करें · तापमान + · लक्ष्य (°C)",
+          "device_unoccupied_cool_c": "कमरा · बंद करें · तापमान − · लक्ष्य (°C)",
+          "device_away_heat_c": "घर · बंद करें · तापमान + · लक्ष्य (°C)",
+          "device_away_cool_c": "घर · बंद करें · तापमान − · लक्ष्य (°C)",
+          "device_sleep_heat_c": "नींद · तापमान + · लक्ष्य (°C)",
+          "device_sleep_cool_c": "नींद · तापमान − · लक्ष्य (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_method": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_presence_requirement": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_absence_action": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_sleep_behavior": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_hardware_confirmed": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_temperature_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_humidity_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_co2_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_pm25_entity": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_fan_purpose": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_sensor_verified": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_fan_speed_percent": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_humidity_target": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_sleep_humidity_target": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_min_on_s": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_min_off_s": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_max_on_s": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_home_heat_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_home_cool_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_unoccupied_heat_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_unoccupied_cool_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_away_heat_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_away_cool_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_sleep_heat_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण.",
+          "device_sleep_cool_c": "चुनें स्रोत; आवश्यक · नियंत्रण · सेंसर / उपकरण."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "अमान्य · उपस्थिति · सेटिंग",
+      "general_invalid_trackers": "अमान्य · घर · सेटिंग",
+      "general_invalid_rooms_entity": "अमान्य · कमरा · सेटिंग",
+      "general_invalid_attribute": "अमान्य · स्रोत · सेटिंग",
+      "general_invalid_source_age": "अमान्य · स्रोत · सेटिंग",
+      "invalid_selected_devices": "अमान्य · उपकरण · सेटिंग",
+      "device_policy_invalid": "अमान्य · उपस्थिति · सेटिंग",
+      "device_method_invalid": "अमान्य · नियंत्रण · सेटिंग",
+      "device_hardware_required": "अमान्य · आवश्यक · सेटिंग",
+      "device_power_required_for_off": "अमान्य · शक्ति · सेटिंग",
+      "device_temperature_required": "अमान्य · तापमान · सेटिंग",
+      "device_humidity_required": "अमान्य · आर्द्रता · सेटिंग",
+      "device_air_sensor_required": "अमान्य · सेंसर · सेटिंग",
+      "device_temperature_band_invalid": "अमान्य · तापमान · सेटिंग",
+      "device_humidity_invalid": "अमान्य · आर्द्रता · सेटिंग",
+      "device_runtime_invalid": "अमान्य · शक्ति · सेटिंग"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "घर · उपस्थिति",
+        "all_home": "घर · उपकरण · उपस्थिति"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "लक्ष्य · नियंत्रण",
+        "native": "उपकरण · नियंत्रण",
+        "power": "शक्ति",
+        "speed": "गति"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "स्वचालित",
+        "room": "कमरा · उपस्थिति",
+        "home": "घर · उपस्थिति"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "रोकें",
+        "off": "बंद करें"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "स्वचालित",
+        "pause": "रोकें",
+        "sleep_targets": "नींद · लक्ष्य"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "बाहरी · नियंत्रण",
+        "filtration": "PM2.5 · नियंत्रण"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "स्रोत · अमान्य",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "लक्ष्य · सेटिंग"
       }
     }
   }

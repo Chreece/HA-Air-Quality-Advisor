@@ -153,17 +153,11 @@
         "title": "⚙️ Kies",
         "description": "Kies: Kamers / Weer en waarschuwingen / Meldingen (optioneel) / Geavanceerde grenswaarden",
         "menu_options": {
-          "areas": "Kamers",
-          "weather": "Weer en waarschuwingen",
-          "indoor_sensors": "Kamers · Schimmelindicator",
-          "window_sensors": "Raamsensoren uitsluiten",
-          "outdoor": "Buitenluchtkwaliteit",
+          "outside_data": "Buiten · bron",
+          "general_settings": "Algemene · instellingen",
+          "area_settings": "Ruimte · instellingen",
           "delivery": "Meldingen (optioneel)",
-          "thresholds": "Geavanceerde grenswaarden",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Geavanceerde grenswaarden"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Buiten · bron",
+        "description": "Buiten · bron: Kiezen bron, sensor / Apparaten · regeling.",
+        "menu_options": {
+          "weather": "Weer en waarschuwingen",
+          "outdoor": "Buitenluchtkwaliteit",
+          "outside_aqi": "Buiten · AQI",
+          "pollen": "Pollen"
+        }
+      },
+      "area_settings": {
+        "title": "Ruimte · instellingen",
+        "description": "Ruimte · instellingen: Kiezen bron, sensor / Apparaten · regeling.",
+        "menu_options": {
+          "areas": "Kamers",
+          "indoor_sensors": "Kamers · Schimmelindicator",
+          "window_sensors": "Raamsensoren uitsluiten",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Ruimte · Apparaten"
+        }
+      },
+      "device_menu": {
+        "title": "Apparaten · instellingen",
+        "description": "Apparaten · instellingen: Kiezen bron, sensor / Apparaten · regeling.",
+        "menu_options": {
+          "device_settings": "Apparaten · regeling",
+          "device_choice": "Kiezen · Apparaten",
+          "device_done": "instellingen · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Algemene · instellingen",
+        "description": "Algemene · instellingen: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_home_policy": "Thuis · Aanwezigheid · regeling",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "general_source_stale_minutes": "bron · Vereist (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_occupied_rooms_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_occupied_rooms_attribute": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_home_trackers": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_home_policy": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_sleep_rooms_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_sleep_rooms_attribute": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "general_source_stale_minutes": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Pollen: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "pollen_high_from": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "pollen_max_scale": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "pollen_avoid_ventilation": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "outside_aqi": {
+        "title": "Buiten · AQI",
+        "description": "Buiten · AQI: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · bron",
+          "outside_aqi_limit": "AQI · doelwaarde",
+          "outside_aqi_no_sources": "AQI · sensor · Vereist"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "outside_aqi_scale": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "outside_aqi_limit": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "outside_aqi_no_sources": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "area_devices": {
+        "title": "Ruimte · Apparaten",
+        "description": "Ruimte · Apparaten: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "area_devices_area": "Kiezen · Ruimte"
+        },
+        "data_description": {
+          "area_devices_area": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "select_devices": {
+        "title": "Kiezen · Apparaten",
+        "description": "Kiezen · Apparaten: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "selected_devices": "Kiezen · Apparaten"
+        },
+        "data_description": {
+          "selected_devices": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "device_choice": {
+        "title": "Kiezen · Apparaten",
+        "description": "Kiezen · Apparaten: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "device_choice": "Kiezen · Apparaten"
+        },
+        "data_description": {
+          "device_choice": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
+      },
+      "device_settings": {
+        "title": "Apparaten · regeling",
+        "description": "Apparaten · regeling: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "device_auto_control": "Automatische regeling",
+          "device_method": "regeling · bron",
+          "device_presence_requirement": "regeling · Aanwezigheid",
+          "device_absence_action": "Uitschakelen · Aanwezigheid",
+          "device_sleep_behavior": "Slaap · regeling",
+          "device_hardware_confirmed": "Vereist · Apparaten · Vermogen",
+          "device_temperature_entity": "Temperatuur · sensor",
+          "device_humidity_entity": "Vochtigheid · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "regeling · Apparaten",
+          "device_sensor_verified": "sensor · Vereist",
+          "device_fan_speed_percent": "Snelheid (%)",
+          "device_humidity_target": "Vochtigheid · doelwaarde (%)",
+          "device_sleep_humidity_target": "Slaap · Vochtigheid · doelwaarde (%)",
+          "device_min_on_s": "Vermogen · min ON (s)",
+          "device_min_off_s": "Vermogen · min OFF (s)",
+          "device_max_on_s": "Vermogen · max ON (s)",
+          "device_home_heat_c": "Thuis · Temperatuur + · doelwaarde (°C)",
+          "device_home_cool_c": "Thuis · Temperatuur − · doelwaarde (°C)",
+          "device_unoccupied_heat_c": "Kamer · Uitschakelen · Temperatuur + · doelwaarde (°C)",
+          "device_unoccupied_cool_c": "Kamer · Uitschakelen · Temperatuur − · doelwaarde (°C)",
+          "device_away_heat_c": "Thuis · Uitschakelen · Temperatuur + · doelwaarde (°C)",
+          "device_away_cool_c": "Thuis · Uitschakelen · Temperatuur − · doelwaarde (°C)",
+          "device_sleep_heat_c": "Slaap · Temperatuur + · doelwaarde (°C)",
+          "device_sleep_cool_c": "Slaap · Temperatuur − · doelwaarde (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_method": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_presence_requirement": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_absence_action": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_sleep_behavior": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_hardware_confirmed": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_temperature_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_humidity_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_co2_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_pm25_entity": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_fan_purpose": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_sensor_verified": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_fan_speed_percent": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_humidity_target": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_sleep_humidity_target": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_min_on_s": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_min_off_s": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_max_on_s": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_home_heat_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_home_cool_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_unoccupied_heat_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_unoccupied_cool_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_away_heat_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_away_cool_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_sleep_heat_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten.",
+          "device_sleep_cool_c": "Kiezen bron; Vereist · regeling · sensor / Apparaten."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Ongeldig · Aanwezigheid · instellingen",
+      "general_invalid_trackers": "Ongeldig · Thuis · instellingen",
+      "general_invalid_rooms_entity": "Ongeldig · Kamer · instellingen",
+      "general_invalid_attribute": "Ongeldig · bron · instellingen",
+      "general_invalid_source_age": "Ongeldig · bron · instellingen",
+      "invalid_selected_devices": "Ongeldig · Apparaten · instellingen",
+      "device_policy_invalid": "Ongeldig · Aanwezigheid · instellingen",
+      "device_method_invalid": "Ongeldig · regeling · instellingen",
+      "device_hardware_required": "Ongeldig · Vereist · instellingen",
+      "device_power_required_for_off": "Ongeldig · Vermogen · instellingen",
+      "device_temperature_required": "Ongeldig · Temperatuur · instellingen",
+      "device_humidity_required": "Ongeldig · Vochtigheid · instellingen",
+      "device_air_sensor_required": "Ongeldig · sensor · instellingen",
+      "device_temperature_band_invalid": "Ongeldig · Temperatuur · instellingen",
+      "device_humidity_invalid": "Ongeldig · Vochtigheid · instellingen",
+      "device_runtime_invalid": "Ongeldig · Vermogen · instellingen"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Thuis · Aanwezigheid",
+        "all_home": "Thuis · Apparaten · Aanwezigheid"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "doelwaarde · regeling",
+        "native": "Apparaten · regeling",
+        "power": "Vermogen",
+        "speed": "Snelheid"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatische",
+        "room": "Kamer · Aanwezigheid",
+        "home": "Thuis · Aanwezigheid"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pauzeren",
+        "off": "Uitschakelen"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatische",
+        "pause": "Pauzeren",
+        "sleep_targets": "Slaap · doelwaarde"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Buiten · regeling",
+        "filtration": "PM2.5 · regeling"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "bron · Ongeldig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "doelwaarde · instellingen"
       }
     }
   }

@@ -153,17 +153,11 @@
         "title": "⚙️ Vyberte",
         "description": "Vyberte: Miestnosti / Počasie a výstrahy / Oznámenia (voliteľné) / Pokročilé limity",
         "menu_options": {
-          "areas": "Miestnosti",
-          "weather": "Počasie a výstrahy",
-          "indoor_sensors": "Miestnosti · Indikátor plesní",
-          "window_sensors": "Vylúčiť snímače okien",
-          "outdoor": "Kvalita vonkajšieho vzduchu",
+          "outside_data": "Vonkajšie · zdroj",
+          "general_settings": "Všeobecné · nastavenia",
+          "area_settings": "Oblasť · nastavenia",
           "delivery": "Oznámenia (voliteľné)",
-          "thresholds": "Pokročilé limity",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Pokročilé limity"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Vonkajšie · zdroj",
+        "description": "Vonkajšie · zdroj: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "menu_options": {
+          "weather": "Počasie a výstrahy",
+          "outdoor": "Kvalita vonkajšieho vzduchu",
+          "outside_aqi": "Vonkajšie · AQI",
+          "pollen": "Peľ"
+        }
+      },
+      "area_settings": {
+        "title": "Oblasť · nastavenia",
+        "description": "Oblasť · nastavenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "menu_options": {
+          "areas": "Miestnosti",
+          "indoor_sensors": "Miestnosti · Indikátor plesní",
+          "window_sensors": "Vylúčiť snímače okien",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Oblasť · Zariadenia"
+        }
+      },
+      "device_menu": {
+        "title": "Zariadenia · nastavenia",
+        "description": "Zariadenia · nastavenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "menu_options": {
+          "device_settings": "Zariadenia · ovládanie",
+          "device_choice": "Vybrať · Zariadenia",
+          "device_done": "nastavenia · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Všeobecné · nastavenia",
+        "description": "Všeobecné · nastavenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "general_room_occupancy_sensors": "Miestnosť · Obsadenosť · senzor",
+          "general_occupied_rooms_entity": "Obsadenosť · Miestnosť · zdroj (state)",
+          "general_occupied_rooms_attribute": "Obsadenosť · Miestnosť · zdroj (attribute)",
+          "general_home_trackers": "Domov · Obsadenosť · Zariadenia",
+          "general_home_policy": "Domov · Obsadenosť · ovládanie",
+          "general_sleep_rooms_entity": "Spánok · Miestnosť · zdroj (state)",
+          "general_sleep_rooms_attribute": "Spánok · Miestnosť · zdroj (attribute)",
+          "general_source_stale_minutes": "zdroj · Povinné (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_occupied_rooms_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_occupied_rooms_attribute": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_home_trackers": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_home_policy": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_sleep_rooms_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_sleep_rooms_attribute": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "general_source_stale_minutes": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "pollen": {
+        "title": "Peľ",
+        "description": "Peľ: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "pollen_high_from": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "pollen_max_scale": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "pollen_avoid_ventilation": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "outside_aqi": {
+        "title": "Vonkajšie · AQI",
+        "description": "Vonkajšie · AQI: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "outside_aqi_entity": "AQI · senzor",
+          "outside_aqi_scale": "AQI · zdroj",
+          "outside_aqi_limit": "AQI · cieľ",
+          "outside_aqi_no_sources": "AQI · senzor · Povinné"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "outside_aqi_scale": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "outside_aqi_limit": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "outside_aqi_no_sources": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "area_devices": {
+        "title": "Oblasť · Zariadenia",
+        "description": "Oblasť · Zariadenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "area_devices_area": "Vybrať · Oblasť"
+        },
+        "data_description": {
+          "area_devices_area": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "select_devices": {
+        "title": "Vybrať · Zariadenia",
+        "description": "Vybrať · Zariadenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "selected_devices": "Vybrať · Zariadenia"
+        },
+        "data_description": {
+          "selected_devices": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "device_choice": {
+        "title": "Vybrať · Zariadenia",
+        "description": "Vybrať · Zariadenia: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "device_choice": "Vybrať · Zariadenia"
+        },
+        "data_description": {
+          "device_choice": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
+      },
+      "device_settings": {
+        "title": "Zariadenia · ovládanie",
+        "description": "Zariadenia · ovládanie: Vybrať zdroj, senzor / Zariadenia · ovládanie.",
+        "data": {
+          "device_auto_control": "Automatické ovládanie",
+          "device_method": "ovládanie · zdroj",
+          "device_presence_requirement": "ovládanie · Obsadenosť",
+          "device_absence_action": "Vypnúť · Obsadenosť",
+          "device_sleep_behavior": "Spánok · ovládanie",
+          "device_hardware_confirmed": "Povinné · Zariadenia · Výkon",
+          "device_temperature_entity": "Teplota · senzor",
+          "device_humidity_entity": "Vlhkosť · senzor",
+          "device_co2_entity": "CO₂ · senzor",
+          "device_pm25_entity": "PM2.5 · senzor",
+          "device_fan_purpose": "ovládanie · Zariadenia",
+          "device_sensor_verified": "senzor · Povinné",
+          "device_fan_speed_percent": "Rýchlosť (%)",
+          "device_humidity_target": "Vlhkosť · cieľ (%)",
+          "device_sleep_humidity_target": "Spánok · Vlhkosť · cieľ (%)",
+          "device_min_on_s": "Výkon · min ON (s)",
+          "device_min_off_s": "Výkon · min OFF (s)",
+          "device_max_on_s": "Výkon · max ON (s)",
+          "device_home_heat_c": "Domov · Teplota + · cieľ (°C)",
+          "device_home_cool_c": "Domov · Teplota − · cieľ (°C)",
+          "device_unoccupied_heat_c": "Miestnosť · Vypnúť · Teplota + · cieľ (°C)",
+          "device_unoccupied_cool_c": "Miestnosť · Vypnúť · Teplota − · cieľ (°C)",
+          "device_away_heat_c": "Domov · Vypnúť · Teplota + · cieľ (°C)",
+          "device_away_cool_c": "Domov · Vypnúť · Teplota − · cieľ (°C)",
+          "device_sleep_heat_c": "Spánok · Teplota + · cieľ (°C)",
+          "device_sleep_cool_c": "Spánok · Teplota − · cieľ (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_method": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_presence_requirement": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_absence_action": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_sleep_behavior": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_hardware_confirmed": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_temperature_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_humidity_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_co2_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_pm25_entity": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_fan_purpose": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_sensor_verified": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_fan_speed_percent": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_humidity_target": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_sleep_humidity_target": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_min_on_s": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_min_off_s": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_max_on_s": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_home_heat_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_home_cool_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_unoccupied_heat_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_unoccupied_cool_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_away_heat_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_away_cool_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_sleep_heat_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia.",
+          "device_sleep_cool_c": "Vybrať zdroj; Povinné · ovládanie · senzor / Zariadenia."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Neplatné · Obsadenosť · nastavenia",
+      "general_invalid_trackers": "Neplatné · Domov · nastavenia",
+      "general_invalid_rooms_entity": "Neplatné · Miestnosť · nastavenia",
+      "general_invalid_attribute": "Neplatné · zdroj · nastavenia",
+      "general_invalid_source_age": "Neplatné · zdroj · nastavenia",
+      "invalid_selected_devices": "Neplatné · Zariadenia · nastavenia",
+      "device_policy_invalid": "Neplatné · Obsadenosť · nastavenia",
+      "device_method_invalid": "Neplatné · ovládanie · nastavenia",
+      "device_hardware_required": "Neplatné · Povinné · nastavenia",
+      "device_power_required_for_off": "Neplatné · Výkon · nastavenia",
+      "device_temperature_required": "Neplatné · Teplota · nastavenia",
+      "device_humidity_required": "Neplatné · Vlhkosť · nastavenia",
+      "device_air_sensor_required": "Neplatné · senzor · nastavenia",
+      "device_temperature_band_invalid": "Neplatné · Teplota · nastavenia",
+      "device_humidity_invalid": "Neplatné · Vlhkosť · nastavenia",
+      "device_runtime_invalid": "Neplatné · Výkon · nastavenia"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Domov · Obsadenosť",
+        "all_home": "Domov · Zariadenia · Obsadenosť"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cieľ · ovládanie",
+        "native": "Zariadenia · ovládanie",
+        "power": "Výkon",
+        "speed": "Rýchlosť"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatické",
+        "room": "Miestnosť · Obsadenosť",
+        "home": "Domov · Obsadenosť"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pozastaviť",
+        "off": "Vypnúť"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatické",
+        "pause": "Pozastaviť",
+        "sleep_targets": "Spánok · cieľ"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Vonkajšie · ovládanie",
+        "filtration": "PM2.5 · ovládanie"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "zdroj · Neplatné",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cieľ · nastavenia"
       }
     }
   }

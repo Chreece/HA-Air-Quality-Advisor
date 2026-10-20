@@ -153,17 +153,11 @@
         "title": "Επιλογή ρυθμίσεων",
         "description": "Επίλεξε μία ενότητα. Όλες οι υπόλοιπες ρυθμίσεις παραμένουν αμετάβλητες.",
         "menu_options": {
-          "areas": "Χώροι",
-          "weather": "Καιρός και προειδοποιήσεις",
-          "indoor_sensors": "Ρυθμίσεις δωματίων — αέρας και μούχλα",
-          "window_sensors": "Εξαίρεση αισθητήρων παραθύρων",
-          "outdoor": "Ποιότητα εξωτερικού αέρα",
+          "outside_data": "Εξωτερικά δεδομένα",
+          "general_settings": "Γενικές ρυθμίσεις",
+          "area_settings": "Ρυθμίσεις χώρων",
           "delivery": "Ανακοινώσεις (προαιρετικά)",
-          "thresholds": "Προχωρημένα όρια",
-          "environment": "Διεθνείς πηγές ποιότητας αέρα και γύρης",
-          "environment_room": "Επιλογή δωματίου για περιβαλλοντικές μετρήσεις",
-          "pid": "Κλιματικός PID — επιλογή δωματίου",
-          "climate": "Κλίμα — επιλογή δωματίου"
+          "thresholds": "Προχωρημένα όρια"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Εξωτερικά δεδομένα",
+        "description": "Καιρός, προειδοποιήσεις, εξωτερική ατμοσφαιρική ποιότητα, κλίμακες AQI και γύρη. Επίλεξε υπομενού.",
+        "menu_options": {
+          "weather": "Καιρός και προειδοποιήσεις",
+          "outdoor": "Ποιότητα εξωτερικού αέρα",
+          "outside_aqi": "Εξωτερικά · AQI",
+          "pollen": "Γύρη"
+        }
+      },
+      "area_settings": {
+        "title": "Ρυθμίσεις χώρων",
+        "description": "Επίλεξε χώρους, εξαιρέσεις παραθύρων, περιβαλλοντικές μετρήσεις και ξεχωριστή ρύθμιση κάθε κλιματικής συσκευής.",
+        "menu_options": {
+          "areas": "Χώροι",
+          "indoor_sensors": "Ρυθμίσεις δωματίων — αέρας και μούχλα",
+          "window_sensors": "Εξαίρεση αισθητήρων παραθύρων",
+          "environment_room": "Επιλογή δωματίου για περιβαλλοντικές μετρήσεις",
+          "climate": "Κλίμα — επιλογή δωματίου",
+          "pid": "Κλιματικός PID — επιλογή δωματίου",
+          "area_devices": "Χώρου · Συσκευές"
+        }
+      },
+      "device_menu": {
+        "title": "Συσκευές · ρυθμίσεις",
+        "description": "Ρύθμισε αυτόματο έλεγχο, στόχους, παρουσία και συμπεριφορά ύπνου για τη συσκευή ή άλλαξε συσκευή.",
+        "menu_options": {
+          "device_settings": "Συσκευές · έλεγχος",
+          "device_choice": "Επιλογή · Συσκευές",
+          "device_done": "ρυθμίσεις · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Γενικές ρυθμίσεις",
+        "description": "Επίλεξε αισθητήρες παρουσίας, συσκευές εντοπισμού κατοίκων και οντότητες που περιέχουν τα κατειλημμένα ή τα δωμάτια ύπνου. Η λίστα μπορεί να βρίσκεται στην κατάσταση ή σε ένα συγκεκριμένο χαρακτηριστικό. Άγνωστα ή παλιά δεδομένα ΔΕΝ σημαίνουν άδειο σπίτι.",
+        "data": {
+          "general_room_occupancy_sensors": "Δωμάτιο · Παρουσία · αισθητήρας",
+          "general_occupied_rooms_entity": "Παρουσία · Δωμάτιο · πηγή (state)",
+          "general_occupied_rooms_attribute": "Παρουσία · Δωμάτιο · πηγή (attribute)",
+          "general_home_trackers": "Σπίτι · Παρουσία · Συσκευές",
+          "general_home_policy": "Σπίτι · Παρουσία · έλεγχος",
+          "general_sleep_rooms_entity": "Ύπνος · Δωμάτιο · πηγή (state)",
+          "general_sleep_rooms_attribute": "Ύπνος · Δωμάτιο · πηγή (attribute)",
+          "general_source_stale_minutes": "πηγή · Απαιτείται (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_occupied_rooms_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_occupied_rooms_attribute": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_home_trackers": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_home_policy": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_sleep_rooms_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_sleep_rooms_attribute": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "general_source_stale_minutes": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
+      },
+      "pollen": {
+        "title": "Γύρη",
+        "description": "Επίλεξε αισθητήρα πρόγνωσης γύρης από οποιαδήποτε ενσωμάτωση του Home Assistant. Δήλωσε την κλίμακα και αν η υψηλή γύρη θα εμποδίζει τον αερισμό.",
+        "data": {
+          "pollen_entity": "Αισθητήρας πρόγνωσης γύρης (οποιαδήποτε χώρα)",
+          "pollen_high_from": "Υψηλή γύρη από αυτή την τιμή",
+          "pollen_max_scale": "Μέγιστη τιμή κλίμακας γύρης",
+          "pollen_avoid_ventilation": "Αποφυγή αερισμού με υψηλή γύρη"
+        },
+        "data_description": {
+          "pollen_entity": "Αισθητήρας αριθμητικού δείκτη γύρης από οποιονδήποτε πάροχο του Home Assistant.",
+          "pollen_high_from": "Το όριο υψηλής γύρης εξαρτάται από την κλίμακα του παρόχου.",
+          "pollen_max_scale": "Η ανώτατη τιμή της κλίμακας του παρόχου, π.χ. 5.",
+          "pollen_avoid_ventilation": "Όταν ενεργοποιηθεί, η υψηλή γύρη εμποδίζει τις συστάσεις ανοίγματος παραθύρων."
+        }
+      },
+      "outside_aqi": {
+        "title": "Εξωτερικά · AQI",
+        "description": "Δήλωσε την πραγματική κλίμακα κάθε εξωτερικού αισθητήρα AQI. Άγνωστη κλίμακα δεν θεωρείται ασφαλής.",
+        "data": {
+          "outside_aqi_entity": "AQI · αισθητήρας",
+          "outside_aqi_scale": "AQI · πηγή",
+          "outside_aqi_limit": "AQI · στόχος",
+          "outside_aqi_no_sources": "AQI · αισθητήρας · Απαιτείται"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "outside_aqi_scale": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "outside_aqi_limit": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "outside_aqi_no_sources": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
+      },
+      "area_devices": {
+        "title": "Χώρου · Συσκευές",
+        "description": "Χώρου · Συσκευές: Επιλογή πηγή, αισθητήρας / Συσκευές · έλεγχος.",
+        "data": {
+          "area_devices_area": "Επιλογή · Χώρου"
+        },
+        "data_description": {
+          "area_devices_area": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
+      },
+      "select_devices": {
+        "title": "Επιλογή · Συσκευές",
+        "description": "Οι συμβατές συσκευές του χώρου επιλέγονται αρχικά όλες για παρακολούθηση. Η επιλογή ΔΕΝ ενεργοποιεί αυτόματο έλεγχο.",
+        "data": {
+          "selected_devices": "Επιλογή · Συσκευές"
+        },
+        "data_description": {
+          "selected_devices": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
+      },
+      "device_choice": {
+        "title": "Επιλογή · Συσκευές",
+        "description": "Επίλεξε μία συσκευή για μεμονωμένη ρύθμιση.",
+        "data": {
+          "device_choice": "Επιλογή · Συσκευές"
+        },
+        "data_description": {
+          "device_choice": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
+      },
+      "device_settings": {
+        "title": "Συσκευές · έλεγχος",
+        "description": "Κάθε συσκευή χρειάζεται ξεχωριστή άδεια. Άγνωστη παρουσία σημαίνει παύση, όχι άδειο σπίτι. Για απενεργοποίηση απαιτείται επιβεβαίωση φυσικής προστασίας. Η κλιματική συσκευή δεν επανεκκινείται αυτόματα.",
+        "data": {
+          "device_auto_control": "Αυτόματος έλεγχος",
+          "device_method": "έλεγχος · πηγή",
+          "device_presence_requirement": "έλεγχος · Παρουσία",
+          "device_absence_action": "Απενεργοποίηση · Παρουσία",
+          "device_sleep_behavior": "Ύπνος · έλεγχος",
+          "device_hardware_confirmed": "Απαιτείται · Συσκευές · Ισχύς",
+          "device_temperature_entity": "Θερμοκρασία · αισθητήρας",
+          "device_humidity_entity": "Υγρασία · αισθητήρας",
+          "device_co2_entity": "CO₂ · αισθητήρας",
+          "device_pm25_entity": "PM2.5 · αισθητήρας",
+          "device_fan_purpose": "έλεγχος · Συσκευές",
+          "device_sensor_verified": "αισθητήρας · Απαιτείται",
+          "device_fan_speed_percent": "Ταχύτητα (%)",
+          "device_humidity_target": "Υγρασία · στόχος (%)",
+          "device_sleep_humidity_target": "Ύπνος · Υγρασία · στόχος (%)",
+          "device_min_on_s": "Ισχύς · min ON (s)",
+          "device_min_off_s": "Ισχύς · min OFF (s)",
+          "device_max_on_s": "Ισχύς · max ON (s)",
+          "device_home_heat_c": "Σπίτι · Θερμοκρασία + · στόχος (°C)",
+          "device_home_cool_c": "Σπίτι · Θερμοκρασία − · στόχος (°C)",
+          "device_unoccupied_heat_c": "Δωμάτιο · Απενεργοποίηση · Θερμοκρασία + · στόχος (°C)",
+          "device_unoccupied_cool_c": "Δωμάτιο · Απενεργοποίηση · Θερμοκρασία − · στόχος (°C)",
+          "device_away_heat_c": "Σπίτι · Απενεργοποίηση · Θερμοκρασία + · στόχος (°C)",
+          "device_away_cool_c": "Σπίτι · Απενεργοποίηση · Θερμοκρασία − · στόχος (°C)",
+          "device_sleep_heat_c": "Ύπνος · Θερμοκρασία + · στόχος (°C)",
+          "device_sleep_cool_c": "Ύπνος · Θερμοκρασία − · στόχος (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_method": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_presence_requirement": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_absence_action": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_sleep_behavior": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_hardware_confirmed": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_temperature_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_humidity_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_co2_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_pm25_entity": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_fan_purpose": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_sensor_verified": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_fan_speed_percent": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_humidity_target": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_sleep_humidity_target": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_min_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_min_off_s": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_max_on_s": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_home_heat_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_home_cool_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_unoccupied_heat_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_unoccupied_cool_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_away_heat_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_away_cool_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_sleep_heat_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές.",
+          "device_sleep_cool_c": "Επιλογή πηγή; Απαιτείται · έλεγχος · αισθητήρας / Συσκευές."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Μη έγκυρο · Παρουσία · ρυθμίσεις",
+      "general_invalid_trackers": "Μη έγκυρο · Σπίτι · ρυθμίσεις",
+      "general_invalid_rooms_entity": "Μη έγκυρο · Δωμάτιο · ρυθμίσεις",
+      "general_invalid_attribute": "Μη έγκυρο · πηγή · ρυθμίσεις",
+      "general_invalid_source_age": "Μη έγκυρο · πηγή · ρυθμίσεις",
+      "invalid_selected_devices": "Μη έγκυρο · Συσκευές · ρυθμίσεις",
+      "device_policy_invalid": "Μη έγκυρο · Παρουσία · ρυθμίσεις",
+      "device_method_invalid": "Μη έγκυρο · έλεγχος · ρυθμίσεις",
+      "device_hardware_required": "Μη έγκυρο · Απαιτείται · ρυθμίσεις",
+      "device_power_required_for_off": "Μη έγκυρο · Ισχύς · ρυθμίσεις",
+      "device_temperature_required": "Μη έγκυρο · Θερμοκρασία · ρυθμίσεις",
+      "device_humidity_required": "Μη έγκυρο · Υγρασία · ρυθμίσεις",
+      "device_air_sensor_required": "Μη έγκυρο · αισθητήρας · ρυθμίσεις",
+      "device_temperature_band_invalid": "Μη έγκυρο · Θερμοκρασία · ρυθμίσεις",
+      "device_humidity_invalid": "Μη έγκυρο · Υγρασία · ρυθμίσεις",
+      "device_runtime_invalid": "Μη έγκυρο · Ισχύς · ρυθμίσεις"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Σπίτι · Παρουσία",
+        "all_home": "Σπίτι · Συσκευές · Παρουσία"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "στόχος · έλεγχος",
+        "native": "Συσκευές · έλεγχος",
+        "power": "Ισχύς",
+        "speed": "Ταχύτητα"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Αυτόματος",
+        "room": "Δωμάτιο · Παρουσία",
+        "home": "Σπίτι · Παρουσία"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Παύση",
+        "off": "Απενεργοποίηση"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Αυτόματος",
+        "pause": "Παύση",
+        "sleep_targets": "Ύπνος · στόχος"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Εξωτερικά · έλεγχος",
+        "filtration": "PM2.5 · έλεγχος"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "πηγή · Μη έγκυρο",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "στόχος · ρυθμίσεις"
       }
     }
   }

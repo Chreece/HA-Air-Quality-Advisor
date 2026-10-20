@@ -153,17 +153,11 @@
         "title": "⚙️ בחרו",
         "description": "בחרו: חדרים / מזג אוויר ואזהרות / הודעות (אופציונלי) / ספי התראה מתקדמים",
         "menu_options": {
-          "areas": "חדרים",
-          "weather": "מזג אוויר ואזהרות",
-          "indoor_sensors": "חדרים · מדד עובש",
-          "window_sensors": "החרגת חיישני חלונות",
-          "outdoor": "איכות האוויר בחוץ",
+          "outside_data": "חוץ · מקור",
+          "general_settings": "כלליות · הגדרות",
+          "area_settings": "אזור · הגדרות",
           "delivery": "הודעות (אופציונלי)",
-          "thresholds": "ספי התראה מתקדמים",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "ספי התראה מתקדמים"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "חוץ · מקור",
+        "description": "חוץ · מקור: בחר מקור, חיישן / התקנים · בקרה.",
+        "menu_options": {
+          "weather": "מזג אוויר ואזהרות",
+          "outdoor": "איכות האוויר בחוץ",
+          "outside_aqi": "חוץ · AQI",
+          "pollen": "אבקנים"
+        }
+      },
+      "area_settings": {
+        "title": "אזור · הגדרות",
+        "description": "אזור · הגדרות: בחר מקור, חיישן / התקנים · בקרה.",
+        "menu_options": {
+          "areas": "חדרים",
+          "indoor_sensors": "חדרים · מדד עובש",
+          "window_sensors": "החרגת חיישני חלונות",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "אזור · התקנים"
+        }
+      },
+      "device_menu": {
+        "title": "התקנים · הגדרות",
+        "description": "התקנים · הגדרות: בחר מקור, חיישן / התקנים · בקרה.",
+        "menu_options": {
+          "device_settings": "התקנים · בקרה",
+          "device_choice": "בחר · התקנים",
+          "device_done": "הגדרות · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "כלליות · הגדרות",
+        "description": "כלליות · הגדרות: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_home_policy": "בית · נוכחות · בקרה",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "general_source_stale_minutes": "מקור · נדרש (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_occupied_rooms_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_occupied_rooms_attribute": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_home_trackers": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_home_policy": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_sleep_rooms_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_sleep_rooms_attribute": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "general_source_stale_minutes": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "pollen": {
+        "title": "אבקנים",
+        "description": "אבקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "pollen_high_from": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "pollen_max_scale": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "pollen_avoid_ventilation": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "outside_aqi": {
+        "title": "חוץ · AQI",
+        "description": "חוץ · AQI: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "outside_aqi_entity": "AQI · חיישן",
+          "outside_aqi_scale": "AQI · מקור",
+          "outside_aqi_limit": "AQI · יעד",
+          "outside_aqi_no_sources": "AQI · חיישן · נדרש"
+        },
+        "data_description": {
+          "outside_aqi_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "outside_aqi_scale": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "outside_aqi_limit": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "outside_aqi_no_sources": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "area_devices": {
+        "title": "אזור · התקנים",
+        "description": "אזור · התקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "area_devices_area": "בחר · אזור"
+        },
+        "data_description": {
+          "area_devices_area": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "select_devices": {
+        "title": "בחר · התקנים",
+        "description": "בחר · התקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "selected_devices": "בחר · התקנים"
+        },
+        "data_description": {
+          "selected_devices": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "device_choice": {
+        "title": "בחר · התקנים",
+        "description": "בחר · התקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "device_choice": "בחר · התקנים"
+        },
+        "data_description": {
+          "device_choice": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
+      },
+      "device_settings": {
+        "title": "התקנים · בקרה",
+        "description": "התקנים · בקרה: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "device_auto_control": "אוטומטי בקרה",
+          "device_method": "בקרה · מקור",
+          "device_presence_requirement": "בקרה · נוכחות",
+          "device_absence_action": "כיבוי · נוכחות",
+          "device_sleep_behavior": "שינה · בקרה",
+          "device_hardware_confirmed": "נדרש · התקנים · הספק",
+          "device_temperature_entity": "טמפרטורה · חיישן",
+          "device_humidity_entity": "לחות · חיישן",
+          "device_co2_entity": "CO₂ · חיישן",
+          "device_pm25_entity": "PM2.5 · חיישן",
+          "device_fan_purpose": "בקרה · התקנים",
+          "device_sensor_verified": "חיישן · נדרש",
+          "device_fan_speed_percent": "מהירות (%)",
+          "device_humidity_target": "לחות · יעד (%)",
+          "device_sleep_humidity_target": "שינה · לחות · יעד (%)",
+          "device_min_on_s": "הספק · min ON (s)",
+          "device_min_off_s": "הספק · min OFF (s)",
+          "device_max_on_s": "הספק · max ON (s)",
+          "device_home_heat_c": "בית · טמפרטורה + · יעד (°C)",
+          "device_home_cool_c": "בית · טמפרטורה − · יעד (°C)",
+          "device_unoccupied_heat_c": "חדר · כיבוי · טמפרטורה + · יעד (°C)",
+          "device_unoccupied_cool_c": "חדר · כיבוי · טמפרטורה − · יעד (°C)",
+          "device_away_heat_c": "בית · כיבוי · טמפרטורה + · יעד (°C)",
+          "device_away_cool_c": "בית · כיבוי · טמפרטורה − · יעד (°C)",
+          "device_sleep_heat_c": "שינה · טמפרטורה + · יעד (°C)",
+          "device_sleep_cool_c": "שינה · טמפרטורה − · יעד (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_method": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_presence_requirement": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_absence_action": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_sleep_behavior": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_hardware_confirmed": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_temperature_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_humidity_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_co2_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_pm25_entity": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_fan_purpose": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_sensor_verified": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_fan_speed_percent": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_humidity_target": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_sleep_humidity_target": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_min_on_s": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_min_off_s": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_max_on_s": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_home_heat_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_home_cool_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_unoccupied_heat_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_unoccupied_cool_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_away_heat_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_away_cool_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_sleep_heat_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים.",
+          "device_sleep_cool_c": "בחר מקור; נדרש · בקרה · חיישן / התקנים."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "לא תקין · נוכחות · הגדרות",
+      "general_invalid_trackers": "לא תקין · בית · הגדרות",
+      "general_invalid_rooms_entity": "לא תקין · חדר · הגדרות",
+      "general_invalid_attribute": "לא תקין · מקור · הגדרות",
+      "general_invalid_source_age": "לא תקין · מקור · הגדרות",
+      "invalid_selected_devices": "לא תקין · התקנים · הגדרות",
+      "device_policy_invalid": "לא תקין · נוכחות · הגדרות",
+      "device_method_invalid": "לא תקין · בקרה · הגדרות",
+      "device_hardware_required": "לא תקין · נדרש · הגדרות",
+      "device_power_required_for_off": "לא תקין · הספק · הגדרות",
+      "device_temperature_required": "לא תקין · טמפרטורה · הגדרות",
+      "device_humidity_required": "לא תקין · לחות · הגדרות",
+      "device_air_sensor_required": "לא תקין · חיישן · הגדרות",
+      "device_temperature_band_invalid": "לא תקין · טמפרטורה · הגדרות",
+      "device_humidity_invalid": "לא תקין · לחות · הגדרות",
+      "device_runtime_invalid": "לא תקין · הספק · הגדרות"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "בית · נוכחות",
+        "all_home": "בית · התקנים · נוכחות"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "יעד · בקרה",
+        "native": "התקנים · בקרה",
+        "power": "הספק",
+        "speed": "מהירות"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "אוטומטי",
+        "room": "חדר · נוכחות",
+        "home": "בית · נוכחות"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "השהיה",
+        "off": "כיבוי"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "אוטומטי",
+        "pause": "השהיה",
+        "sleep_targets": "שינה · יעד"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "חוץ · בקרה",
+        "filtration": "PM2.5 · בקרה"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "מקור · לא תקין",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "יעד · הגדרות"
       }
     }
   }

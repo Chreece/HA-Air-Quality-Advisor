@@ -153,17 +153,11 @@
         "title": "⚙️ Pilih",
         "description": "Pilih: Ruangan / Cuaca dan peringatan / Pengumuman (opsional) / Ambang batas lanjutan",
         "menu_options": {
-          "areas": "Ruangan",
-          "weather": "Cuaca dan peringatan",
-          "indoor_sensors": "Ruangan · Indikator jamur",
-          "window_sensors": "Kecualikan sensor jendela",
-          "outdoor": "Kualitas udara luar",
+          "outside_data": "Luar · sumber",
+          "general_settings": "Umum · pengaturan",
+          "area_settings": "Area · pengaturan",
           "delivery": "Pengumuman (opsional)",
-          "thresholds": "Ambang batas lanjutan",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Ambang batas lanjutan"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Luar · sumber",
+        "description": "Luar · sumber: Pilih sumber, sensor / Perangkat · kendali.",
+        "menu_options": {
+          "weather": "Cuaca dan peringatan",
+          "outdoor": "Kualitas udara luar",
+          "outside_aqi": "Luar · AQI",
+          "pollen": "Serbuk sari"
+        }
+      },
+      "area_settings": {
+        "title": "Area · pengaturan",
+        "description": "Area · pengaturan: Pilih sumber, sensor / Perangkat · kendali.",
+        "menu_options": {
+          "areas": "Ruangan",
+          "indoor_sensors": "Ruangan · Indikator jamur",
+          "window_sensors": "Kecualikan sensor jendela",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Area · Perangkat"
+        }
+      },
+      "device_menu": {
+        "title": "Perangkat · pengaturan",
+        "description": "Perangkat · pengaturan: Pilih sumber, sensor / Perangkat · kendali.",
+        "menu_options": {
+          "device_settings": "Perangkat · kendali",
+          "device_choice": "Pilih · Perangkat",
+          "device_done": "pengaturan · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Umum · pengaturan",
+        "description": "Umum · pengaturan: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_home_policy": "Rumah · Kehadiran · kendali",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "general_source_stale_minutes": "sumber · Wajib (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_occupied_rooms_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_occupied_rooms_attribute": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_home_trackers": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_home_policy": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_sleep_rooms_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_sleep_rooms_attribute": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "general_source_stale_minutes": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "pollen": {
+        "title": "Serbuk sari",
+        "description": "Serbuk sari: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "pollen_high_from": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "pollen_max_scale": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "pollen_avoid_ventilation": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "outside_aqi": {
+        "title": "Luar · AQI",
+        "description": "Luar · AQI: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · sumber",
+          "outside_aqi_limit": "AQI · target",
+          "outside_aqi_no_sources": "AQI · sensor · Wajib"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "outside_aqi_scale": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "outside_aqi_limit": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "outside_aqi_no_sources": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "area_devices": {
+        "title": "Area · Perangkat",
+        "description": "Area · Perangkat: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "area_devices_area": "Pilih · Area"
+        },
+        "data_description": {
+          "area_devices_area": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "select_devices": {
+        "title": "Pilih · Perangkat",
+        "description": "Pilih · Perangkat: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "selected_devices": "Pilih · Perangkat"
+        },
+        "data_description": {
+          "selected_devices": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "device_choice": {
+        "title": "Pilih · Perangkat",
+        "description": "Pilih · Perangkat: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "device_choice": "Pilih · Perangkat"
+        },
+        "data_description": {
+          "device_choice": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
+      },
+      "device_settings": {
+        "title": "Perangkat · kendali",
+        "description": "Perangkat · kendali: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "device_auto_control": "Otomatis kendali",
+          "device_method": "kendali · sumber",
+          "device_presence_requirement": "kendali · Kehadiran",
+          "device_absence_action": "Matikan · Kehadiran",
+          "device_sleep_behavior": "Tidur · kendali",
+          "device_hardware_confirmed": "Wajib · Perangkat · Daya",
+          "device_temperature_entity": "Suhu · sensor",
+          "device_humidity_entity": "Kelembapan · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "kendali · Perangkat",
+          "device_sensor_verified": "sensor · Wajib",
+          "device_fan_speed_percent": "Kecepatan (%)",
+          "device_humidity_target": "Kelembapan · target (%)",
+          "device_sleep_humidity_target": "Tidur · Kelembapan · target (%)",
+          "device_min_on_s": "Daya · min ON (s)",
+          "device_min_off_s": "Daya · min OFF (s)",
+          "device_max_on_s": "Daya · max ON (s)",
+          "device_home_heat_c": "Rumah · Suhu + · target (°C)",
+          "device_home_cool_c": "Rumah · Suhu − · target (°C)",
+          "device_unoccupied_heat_c": "Ruangan · Matikan · Suhu + · target (°C)",
+          "device_unoccupied_cool_c": "Ruangan · Matikan · Suhu − · target (°C)",
+          "device_away_heat_c": "Rumah · Matikan · Suhu + · target (°C)",
+          "device_away_cool_c": "Rumah · Matikan · Suhu − · target (°C)",
+          "device_sleep_heat_c": "Tidur · Suhu + · target (°C)",
+          "device_sleep_cool_c": "Tidur · Suhu − · target (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_method": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_presence_requirement": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_absence_action": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_sleep_behavior": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_hardware_confirmed": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_temperature_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_humidity_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_co2_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_pm25_entity": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_fan_purpose": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_sensor_verified": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_fan_speed_percent": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_humidity_target": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_sleep_humidity_target": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_min_on_s": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_min_off_s": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_max_on_s": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_home_heat_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_home_cool_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_unoccupied_heat_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_unoccupied_cool_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_away_heat_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_away_cool_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_sleep_heat_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat.",
+          "device_sleep_cool_c": "Pilih sumber; Wajib · kendali · sensor / Perangkat."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Tidak valid · Kehadiran · pengaturan",
+      "general_invalid_trackers": "Tidak valid · Rumah · pengaturan",
+      "general_invalid_rooms_entity": "Tidak valid · Ruangan · pengaturan",
+      "general_invalid_attribute": "Tidak valid · sumber · pengaturan",
+      "general_invalid_source_age": "Tidak valid · sumber · pengaturan",
+      "invalid_selected_devices": "Tidak valid · Perangkat · pengaturan",
+      "device_policy_invalid": "Tidak valid · Kehadiran · pengaturan",
+      "device_method_invalid": "Tidak valid · kendali · pengaturan",
+      "device_hardware_required": "Tidak valid · Wajib · pengaturan",
+      "device_power_required_for_off": "Tidak valid · Daya · pengaturan",
+      "device_temperature_required": "Tidak valid · Suhu · pengaturan",
+      "device_humidity_required": "Tidak valid · Kelembapan · pengaturan",
+      "device_air_sensor_required": "Tidak valid · sensor · pengaturan",
+      "device_temperature_band_invalid": "Tidak valid · Suhu · pengaturan",
+      "device_humidity_invalid": "Tidak valid · Kelembapan · pengaturan",
+      "device_runtime_invalid": "Tidak valid · Daya · pengaturan"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Rumah · Kehadiran",
+        "all_home": "Rumah · Perangkat · Kehadiran"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "target · kendali",
+        "native": "Perangkat · kendali",
+        "power": "Daya",
+        "speed": "Kecepatan"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Otomatis",
+        "room": "Ruangan · Kehadiran",
+        "home": "Rumah · Kehadiran"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Jeda",
+        "off": "Matikan"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Otomatis",
+        "pause": "Jeda",
+        "sleep_targets": "Tidur · target"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Luar · kendali",
+        "filtration": "PM2.5 · kendali"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "sumber · Tidak valid",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "target · pengaturan"
       }
     }
   }

@@ -153,17 +153,11 @@
         "title": "⚙️ 선택하세요",
         "description": "선택하세요: 방 / 날씨 및 경보 / 알림(선택 사항) / 고급 임계값",
         "menu_options": {
-          "areas": "방",
-          "weather": "날씨 및 경보",
-          "indoor_sensors": "방 · 곰팡이 지표",
-          "window_sensors": "창문 센서 제외",
-          "outdoor": "실외 공기질",
+          "outside_data": "외부 · 정보원",
+          "general_settings": "일반 · 설정",
+          "area_settings": "구역 · 설정",
           "delivery": "알림(선택 사항)",
-          "thresholds": "고급 임계값",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "고급 임계값"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "외부 · 정보원",
+        "description": "외부 · 정보원: 선택 정보원, 센서 / 장치 · 제어.",
+        "menu_options": {
+          "weather": "날씨 및 경보",
+          "outdoor": "실외 공기질",
+          "outside_aqi": "외부 · AQI",
+          "pollen": "꽃가루"
+        }
+      },
+      "area_settings": {
+        "title": "구역 · 설정",
+        "description": "구역 · 설정: 선택 정보원, 센서 / 장치 · 제어.",
+        "menu_options": {
+          "areas": "방",
+          "indoor_sensors": "방 · 곰팡이 지표",
+          "window_sensors": "창문 센서 제외",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "구역 · 장치"
+        }
+      },
+      "device_menu": {
+        "title": "장치 · 설정",
+        "description": "장치 · 설정: 선택 정보원, 센서 / 장치 · 제어.",
+        "menu_options": {
+          "device_settings": "장치 · 제어",
+          "device_choice": "선택 · 장치",
+          "device_done": "설정 · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "일반 · 설정",
+        "description": "일반 · 설정: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_home_policy": "집 · 재실 · 제어",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "general_source_stale_minutes": "정보원 · 필수 (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_occupied_rooms_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_occupied_rooms_attribute": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_home_trackers": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_home_policy": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_sleep_rooms_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_sleep_rooms_attribute": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "general_source_stale_minutes": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "pollen": {
+        "title": "꽃가루",
+        "description": "꽃가루: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "pollen_high_from": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "pollen_max_scale": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "pollen_avoid_ventilation": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "outside_aqi": {
+        "title": "외부 · AQI",
+        "description": "외부 · AQI: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "outside_aqi_entity": "AQI · 센서",
+          "outside_aqi_scale": "AQI · 정보원",
+          "outside_aqi_limit": "AQI · 목표",
+          "outside_aqi_no_sources": "AQI · 센서 · 필수"
+        },
+        "data_description": {
+          "outside_aqi_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "outside_aqi_scale": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "outside_aqi_limit": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "outside_aqi_no_sources": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "area_devices": {
+        "title": "구역 · 장치",
+        "description": "구역 · 장치: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "area_devices_area": "선택 · 구역"
+        },
+        "data_description": {
+          "area_devices_area": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "select_devices": {
+        "title": "선택 · 장치",
+        "description": "선택 · 장치: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "selected_devices": "선택 · 장치"
+        },
+        "data_description": {
+          "selected_devices": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "device_choice": {
+        "title": "선택 · 장치",
+        "description": "선택 · 장치: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "device_choice": "선택 · 장치"
+        },
+        "data_description": {
+          "device_choice": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
+      },
+      "device_settings": {
+        "title": "장치 · 제어",
+        "description": "장치 · 제어: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "device_auto_control": "자동 제어",
+          "device_method": "제어 · 정보원",
+          "device_presence_requirement": "제어 · 재실",
+          "device_absence_action": "끄기 · 재실",
+          "device_sleep_behavior": "수면 · 제어",
+          "device_hardware_confirmed": "필수 · 장치 · 전력",
+          "device_temperature_entity": "온도 · 센서",
+          "device_humidity_entity": "습도 · 센서",
+          "device_co2_entity": "CO₂ · 센서",
+          "device_pm25_entity": "PM2.5 · 센서",
+          "device_fan_purpose": "제어 · 장치",
+          "device_sensor_verified": "센서 · 필수",
+          "device_fan_speed_percent": "속도 (%)",
+          "device_humidity_target": "습도 · 목표 (%)",
+          "device_sleep_humidity_target": "수면 · 습도 · 목표 (%)",
+          "device_min_on_s": "전력 · min ON (s)",
+          "device_min_off_s": "전력 · min OFF (s)",
+          "device_max_on_s": "전력 · max ON (s)",
+          "device_home_heat_c": "집 · 온도 + · 목표 (°C)",
+          "device_home_cool_c": "집 · 온도 − · 목표 (°C)",
+          "device_unoccupied_heat_c": "방 · 끄기 · 온도 + · 목표 (°C)",
+          "device_unoccupied_cool_c": "방 · 끄기 · 온도 − · 목표 (°C)",
+          "device_away_heat_c": "집 · 끄기 · 온도 + · 목표 (°C)",
+          "device_away_cool_c": "집 · 끄기 · 온도 − · 목표 (°C)",
+          "device_sleep_heat_c": "수면 · 온도 + · 목표 (°C)",
+          "device_sleep_cool_c": "수면 · 온도 − · 목표 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_method": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_presence_requirement": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_absence_action": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_sleep_behavior": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_hardware_confirmed": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_temperature_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_humidity_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_co2_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_pm25_entity": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_fan_purpose": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_sensor_verified": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_fan_speed_percent": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_humidity_target": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_sleep_humidity_target": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_min_on_s": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_min_off_s": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_max_on_s": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_home_heat_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_home_cool_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_unoccupied_heat_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_unoccupied_cool_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_away_heat_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_away_cool_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_sleep_heat_c": "선택 정보원; 필수 · 제어 · 센서 / 장치.",
+          "device_sleep_cool_c": "선택 정보원; 필수 · 제어 · 센서 / 장치."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "잘못됨 · 재실 · 설정",
+      "general_invalid_trackers": "잘못됨 · 집 · 설정",
+      "general_invalid_rooms_entity": "잘못됨 · 방 · 설정",
+      "general_invalid_attribute": "잘못됨 · 정보원 · 설정",
+      "general_invalid_source_age": "잘못됨 · 정보원 · 설정",
+      "invalid_selected_devices": "잘못됨 · 장치 · 설정",
+      "device_policy_invalid": "잘못됨 · 재실 · 설정",
+      "device_method_invalid": "잘못됨 · 제어 · 설정",
+      "device_hardware_required": "잘못됨 · 필수 · 설정",
+      "device_power_required_for_off": "잘못됨 · 전력 · 설정",
+      "device_temperature_required": "잘못됨 · 온도 · 설정",
+      "device_humidity_required": "잘못됨 · 습도 · 설정",
+      "device_air_sensor_required": "잘못됨 · 센서 · 설정",
+      "device_temperature_band_invalid": "잘못됨 · 온도 · 설정",
+      "device_humidity_invalid": "잘못됨 · 습도 · 설정",
+      "device_runtime_invalid": "잘못됨 · 전력 · 설정"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "집 · 재실",
+        "all_home": "집 · 장치 · 재실"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "목표 · 제어",
+        "native": "장치 · 제어",
+        "power": "전력",
+        "speed": "속도"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "자동",
+        "room": "방 · 재실",
+        "home": "집 · 재실"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "일시 중지",
+        "off": "끄기"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "자동",
+        "pause": "일시 중지",
+        "sleep_targets": "수면 · 목표"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "외부 · 제어",
+        "filtration": "PM2.5 · 제어"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "정보원 · 잘못됨",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "목표 · 설정"
       }
     }
   }

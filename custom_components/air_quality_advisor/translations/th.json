@@ -153,17 +153,11 @@
         "title": "⚙️ เลือก",
         "description": "เลือก: ห้อง / สภาพอากาศและคำเตือน / การประกาศ (ไม่บังคับ) / ค่าขีดจำกัดขั้นสูง",
         "menu_options": {
-          "areas": "ห้อง",
-          "weather": "สภาพอากาศและคำเตือน",
-          "indoor_sensors": "ห้อง · ตัวชี้วัดเชื้อรา",
-          "window_sensors": "ยกเว้นเซ็นเซอร์หน้าต่าง",
-          "outdoor": "คุณภาพอากาศภายนอก",
+          "outside_data": "ภายนอก · แหล่งข้อมูล",
+          "general_settings": "ทั่วไป · การตั้งค่า",
+          "area_settings": "พื้นที่ · การตั้งค่า",
           "delivery": "การประกาศ (ไม่บังคับ)",
-          "thresholds": "ค่าขีดจำกัดขั้นสูง",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "ค่าขีดจำกัดขั้นสูง"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "ภายนอก · แหล่งข้อมูล",
+        "description": "ภายนอก · แหล่งข้อมูล: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "menu_options": {
+          "weather": "สภาพอากาศและคำเตือน",
+          "outdoor": "คุณภาพอากาศภายนอก",
+          "outside_aqi": "ภายนอก · AQI",
+          "pollen": "ละอองเกสร"
+        }
+      },
+      "area_settings": {
+        "title": "พื้นที่ · การตั้งค่า",
+        "description": "พื้นที่ · การตั้งค่า: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "menu_options": {
+          "areas": "ห้อง",
+          "indoor_sensors": "ห้อง · ตัวชี้วัดเชื้อรา",
+          "window_sensors": "ยกเว้นเซ็นเซอร์หน้าต่าง",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "พื้นที่ · อุปกรณ์"
+        }
+      },
+      "device_menu": {
+        "title": "อุปกรณ์ · การตั้งค่า",
+        "description": "อุปกรณ์ · การตั้งค่า: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "menu_options": {
+          "device_settings": "อุปกรณ์ · ควบคุม",
+          "device_choice": "เลือก · อุปกรณ์",
+          "device_done": "การตั้งค่า · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "ทั่วไป · การตั้งค่า",
+        "description": "ทั่วไป · การตั้งค่า: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "general_room_occupancy_sensors": "ห้อง · การมีคนอยู่ · เซนเซอร์",
+          "general_occupied_rooms_entity": "การมีคนอยู่ · ห้อง · แหล่งข้อมูล (state)",
+          "general_occupied_rooms_attribute": "การมีคนอยู่ · ห้อง · แหล่งข้อมูล (attribute)",
+          "general_home_trackers": "บ้าน · การมีคนอยู่ · อุปกรณ์",
+          "general_home_policy": "บ้าน · การมีคนอยู่ · ควบคุม",
+          "general_sleep_rooms_entity": "นอน · ห้อง · แหล่งข้อมูล (state)",
+          "general_sleep_rooms_attribute": "นอน · ห้อง · แหล่งข้อมูล (attribute)",
+          "general_source_stale_minutes": "แหล่งข้อมูล · จำเป็น (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_occupied_rooms_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_occupied_rooms_attribute": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_home_trackers": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_home_policy": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_sleep_rooms_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_sleep_rooms_attribute": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "general_source_stale_minutes": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "pollen": {
+        "title": "ละอองเกสร",
+        "description": "ละอองเกสร: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "pollen_high_from": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "pollen_max_scale": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "pollen_avoid_ventilation": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "outside_aqi": {
+        "title": "ภายนอก · AQI",
+        "description": "ภายนอก · AQI: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "outside_aqi_entity": "AQI · เซนเซอร์",
+          "outside_aqi_scale": "AQI · แหล่งข้อมูล",
+          "outside_aqi_limit": "AQI · เป้าหมาย",
+          "outside_aqi_no_sources": "AQI · เซนเซอร์ · จำเป็น"
+        },
+        "data_description": {
+          "outside_aqi_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "outside_aqi_scale": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "outside_aqi_limit": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "outside_aqi_no_sources": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "area_devices": {
+        "title": "พื้นที่ · อุปกรณ์",
+        "description": "พื้นที่ · อุปกรณ์: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "area_devices_area": "เลือก · พื้นที่"
+        },
+        "data_description": {
+          "area_devices_area": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "select_devices": {
+        "title": "เลือก · อุปกรณ์",
+        "description": "เลือก · อุปกรณ์: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "selected_devices": "เลือก · อุปกรณ์"
+        },
+        "data_description": {
+          "selected_devices": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "device_choice": {
+        "title": "เลือก · อุปกรณ์",
+        "description": "เลือก · อุปกรณ์: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "device_choice": "เลือก · อุปกรณ์"
+        },
+        "data_description": {
+          "device_choice": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
+      },
+      "device_settings": {
+        "title": "อุปกรณ์ · ควบคุม",
+        "description": "อุปกรณ์ · ควบคุม: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "data": {
+          "device_auto_control": "อัตโนมัติ ควบคุม",
+          "device_method": "ควบคุม · แหล่งข้อมูล",
+          "device_presence_requirement": "ควบคุม · การมีคนอยู่",
+          "device_absence_action": "ปิด · การมีคนอยู่",
+          "device_sleep_behavior": "นอน · ควบคุม",
+          "device_hardware_confirmed": "จำเป็น · อุปกรณ์ · กำลังไฟ",
+          "device_temperature_entity": "อุณหภูมิ · เซนเซอร์",
+          "device_humidity_entity": "ความชื้น · เซนเซอร์",
+          "device_co2_entity": "CO₂ · เซนเซอร์",
+          "device_pm25_entity": "PM2.5 · เซนเซอร์",
+          "device_fan_purpose": "ควบคุม · อุปกรณ์",
+          "device_sensor_verified": "เซนเซอร์ · จำเป็น",
+          "device_fan_speed_percent": "ความเร็ว (%)",
+          "device_humidity_target": "ความชื้น · เป้าหมาย (%)",
+          "device_sleep_humidity_target": "นอน · ความชื้น · เป้าหมาย (%)",
+          "device_min_on_s": "กำลังไฟ · min ON (s)",
+          "device_min_off_s": "กำลังไฟ · min OFF (s)",
+          "device_max_on_s": "กำลังไฟ · max ON (s)",
+          "device_home_heat_c": "บ้าน · อุณหภูมิ + · เป้าหมาย (°C)",
+          "device_home_cool_c": "บ้าน · อุณหภูมิ − · เป้าหมาย (°C)",
+          "device_unoccupied_heat_c": "ห้อง · ปิด · อุณหภูมิ + · เป้าหมาย (°C)",
+          "device_unoccupied_cool_c": "ห้อง · ปิด · อุณหภูมิ − · เป้าหมาย (°C)",
+          "device_away_heat_c": "บ้าน · ปิด · อุณหภูมิ + · เป้าหมาย (°C)",
+          "device_away_cool_c": "บ้าน · ปิด · อุณหภูมิ − · เป้าหมาย (°C)",
+          "device_sleep_heat_c": "นอน · อุณหภูมิ + · เป้าหมาย (°C)",
+          "device_sleep_cool_c": "นอน · อุณหภูมิ − · เป้าหมาย (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_method": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_presence_requirement": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_absence_action": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_sleep_behavior": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_hardware_confirmed": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_temperature_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_humidity_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_co2_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_pm25_entity": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_fan_purpose": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_sensor_verified": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_fan_speed_percent": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_humidity_target": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_sleep_humidity_target": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_min_on_s": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_min_off_s": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_max_on_s": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_home_heat_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_home_cool_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_unoccupied_heat_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_unoccupied_cool_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_away_heat_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_away_cool_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_sleep_heat_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์.",
+          "device_sleep_cool_c": "เลือก แหล่งข้อมูล; จำเป็น · ควบคุม · เซนเซอร์ / อุปกรณ์."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "ไม่ถูกต้อง · การมีคนอยู่ · การตั้งค่า",
+      "general_invalid_trackers": "ไม่ถูกต้อง · บ้าน · การตั้งค่า",
+      "general_invalid_rooms_entity": "ไม่ถูกต้อง · ห้อง · การตั้งค่า",
+      "general_invalid_attribute": "ไม่ถูกต้อง · แหล่งข้อมูล · การตั้งค่า",
+      "general_invalid_source_age": "ไม่ถูกต้อง · แหล่งข้อมูล · การตั้งค่า",
+      "invalid_selected_devices": "ไม่ถูกต้อง · อุปกรณ์ · การตั้งค่า",
+      "device_policy_invalid": "ไม่ถูกต้อง · การมีคนอยู่ · การตั้งค่า",
+      "device_method_invalid": "ไม่ถูกต้อง · ควบคุม · การตั้งค่า",
+      "device_hardware_required": "ไม่ถูกต้อง · จำเป็น · การตั้งค่า",
+      "device_power_required_for_off": "ไม่ถูกต้อง · กำลังไฟ · การตั้งค่า",
+      "device_temperature_required": "ไม่ถูกต้อง · อุณหภูมิ · การตั้งค่า",
+      "device_humidity_required": "ไม่ถูกต้อง · ความชื้น · การตั้งค่า",
+      "device_air_sensor_required": "ไม่ถูกต้อง · เซนเซอร์ · การตั้งค่า",
+      "device_temperature_band_invalid": "ไม่ถูกต้อง · อุณหภูมิ · การตั้งค่า",
+      "device_humidity_invalid": "ไม่ถูกต้อง · ความชื้น · การตั้งค่า",
+      "device_runtime_invalid": "ไม่ถูกต้อง · กำลังไฟ · การตั้งค่า"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "บ้าน · การมีคนอยู่",
+        "all_home": "บ้าน · อุปกรณ์ · การมีคนอยู่"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "เป้าหมาย · ควบคุม",
+        "native": "อุปกรณ์ · ควบคุม",
+        "power": "กำลังไฟ",
+        "speed": "ความเร็ว"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "อัตโนมัติ",
+        "room": "ห้อง · การมีคนอยู่",
+        "home": "บ้าน · การมีคนอยู่"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "หยุดชั่วคราว",
+        "off": "ปิด"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "อัตโนมัติ",
+        "pause": "หยุดชั่วคราว",
+        "sleep_targets": "นอน · เป้าหมาย"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "ภายนอก · ควบคุม",
+        "filtration": "PM2.5 · ควบคุม"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "แหล่งข้อมูล · ไม่ถูกต้อง",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "เป้าหมาย · การตั้งค่า"
       }
     }
   }

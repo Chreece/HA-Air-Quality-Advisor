@@ -153,17 +153,11 @@
         "title": "⚙️ 请选择",
         "description": "请选择: 房间 / 天气与预警 / 播报（可选） / 高级阈值",
         "menu_options": {
-          "areas": "房间",
-          "weather": "天气与预警",
-          "indoor_sensors": "房间 · 霉菌指标",
-          "window_sensors": "排除窗户传感器",
-          "outdoor": "室外空气质量",
+          "outside_data": "室外 · 来源",
+          "general_settings": "常规 · 设置",
+          "area_settings": "区域 · 设置",
           "delivery": "播报（可选）",
-          "thresholds": "高级阈值",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "高级阈值"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "室外 · 来源",
+        "description": "室外 · 来源: 选择 来源, 传感器 / 设备 · 控制.",
+        "menu_options": {
+          "weather": "天气与预警",
+          "outdoor": "室外空气质量",
+          "outside_aqi": "室外 · AQI",
+          "pollen": "花粉"
+        }
+      },
+      "area_settings": {
+        "title": "区域 · 设置",
+        "description": "区域 · 设置: 选择 来源, 传感器 / 设备 · 控制.",
+        "menu_options": {
+          "areas": "房间",
+          "indoor_sensors": "房间 · 霉菌指标",
+          "window_sensors": "排除窗户传感器",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "区域 · 设备"
+        }
+      },
+      "device_menu": {
+        "title": "设备 · 设置",
+        "description": "设备 · 设置: 选择 来源, 传感器 / 设备 · 控制.",
+        "menu_options": {
+          "device_settings": "设备 · 控制",
+          "device_choice": "选择 · 设备",
+          "device_done": "设置 · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "常规 · 设置",
+        "description": "常规 · 设置: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_home_policy": "家中 · 占用 · 控制",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "general_source_stale_minutes": "来源 · 必填 (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_occupied_rooms_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_occupied_rooms_attribute": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_home_trackers": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_home_policy": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_sleep_rooms_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_sleep_rooms_attribute": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "general_source_stale_minutes": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "pollen": {
+        "title": "花粉",
+        "description": "花粉: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "pollen_high_from": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "pollen_max_scale": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "pollen_avoid_ventilation": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "outside_aqi": {
+        "title": "室外 · AQI",
+        "description": "室外 · AQI: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "outside_aqi_entity": "AQI · 传感器",
+          "outside_aqi_scale": "AQI · 来源",
+          "outside_aqi_limit": "AQI · 目标",
+          "outside_aqi_no_sources": "AQI · 传感器 · 必填"
+        },
+        "data_description": {
+          "outside_aqi_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "outside_aqi_scale": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "outside_aqi_limit": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "outside_aqi_no_sources": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "area_devices": {
+        "title": "区域 · 设备",
+        "description": "区域 · 设备: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "area_devices_area": "选择 · 区域"
+        },
+        "data_description": {
+          "area_devices_area": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "select_devices": {
+        "title": "选择 · 设备",
+        "description": "选择 · 设备: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "selected_devices": "选择 · 设备"
+        },
+        "data_description": {
+          "selected_devices": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "device_choice": {
+        "title": "选择 · 设备",
+        "description": "选择 · 设备: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "device_choice": "选择 · 设备"
+        },
+        "data_description": {
+          "device_choice": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
+      },
+      "device_settings": {
+        "title": "设备 · 控制",
+        "description": "设备 · 控制: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "device_auto_control": "自动 控制",
+          "device_method": "控制 · 来源",
+          "device_presence_requirement": "控制 · 占用",
+          "device_absence_action": "关闭 · 占用",
+          "device_sleep_behavior": "睡眠 · 控制",
+          "device_hardware_confirmed": "必填 · 设备 · 功率",
+          "device_temperature_entity": "温度 · 传感器",
+          "device_humidity_entity": "湿度 · 传感器",
+          "device_co2_entity": "CO₂ · 传感器",
+          "device_pm25_entity": "PM2.5 · 传感器",
+          "device_fan_purpose": "控制 · 设备",
+          "device_sensor_verified": "传感器 · 必填",
+          "device_fan_speed_percent": "速度 (%)",
+          "device_humidity_target": "湿度 · 目标 (%)",
+          "device_sleep_humidity_target": "睡眠 · 湿度 · 目标 (%)",
+          "device_min_on_s": "功率 · min ON (s)",
+          "device_min_off_s": "功率 · min OFF (s)",
+          "device_max_on_s": "功率 · max ON (s)",
+          "device_home_heat_c": "家中 · 温度 + · 目标 (°C)",
+          "device_home_cool_c": "家中 · 温度 − · 目标 (°C)",
+          "device_unoccupied_heat_c": "房间 · 关闭 · 温度 + · 目标 (°C)",
+          "device_unoccupied_cool_c": "房间 · 关闭 · 温度 − · 目标 (°C)",
+          "device_away_heat_c": "家中 · 关闭 · 温度 + · 目标 (°C)",
+          "device_away_cool_c": "家中 · 关闭 · 温度 − · 目标 (°C)",
+          "device_sleep_heat_c": "睡眠 · 温度 + · 目标 (°C)",
+          "device_sleep_cool_c": "睡眠 · 温度 − · 目标 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_method": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_presence_requirement": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_absence_action": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_sleep_behavior": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_hardware_confirmed": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_temperature_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_humidity_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_co2_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_pm25_entity": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_fan_purpose": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_sensor_verified": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_fan_speed_percent": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_humidity_target": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_sleep_humidity_target": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_min_on_s": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_min_off_s": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_max_on_s": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_home_heat_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_home_cool_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_unoccupied_heat_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_unoccupied_cool_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_away_heat_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_away_cool_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_sleep_heat_c": "选择 来源; 必填 · 控制 · 传感器 / 设备.",
+          "device_sleep_cool_c": "选择 来源; 必填 · 控制 · 传感器 / 设备."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "无效 · 占用 · 设置",
+      "general_invalid_trackers": "无效 · 家中 · 设置",
+      "general_invalid_rooms_entity": "无效 · 房间 · 设置",
+      "general_invalid_attribute": "无效 · 来源 · 设置",
+      "general_invalid_source_age": "无效 · 来源 · 设置",
+      "invalid_selected_devices": "无效 · 设备 · 设置",
+      "device_policy_invalid": "无效 · 占用 · 设置",
+      "device_method_invalid": "无效 · 控制 · 设置",
+      "device_hardware_required": "无效 · 必填 · 设置",
+      "device_power_required_for_off": "无效 · 功率 · 设置",
+      "device_temperature_required": "无效 · 温度 · 设置",
+      "device_humidity_required": "无效 · 湿度 · 设置",
+      "device_air_sensor_required": "无效 · 传感器 · 设置",
+      "device_temperature_band_invalid": "无效 · 温度 · 设置",
+      "device_humidity_invalid": "无效 · 湿度 · 设置",
+      "device_runtime_invalid": "无效 · 功率 · 设置"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "家中 · 占用",
+        "all_home": "家中 · 设备 · 占用"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "目标 · 控制",
+        "native": "设备 · 控制",
+        "power": "功率",
+        "speed": "速度"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "自动",
+        "room": "房间 · 占用",
+        "home": "家中 · 占用"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "暂停",
+        "off": "关闭"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "自动",
+        "pause": "暂停",
+        "sleep_targets": "睡眠 · 目标"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "室外 · 控制",
+        "filtration": "PM2.5 · 控制"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "来源 · 无效",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "目标 · 设置"
       }
     }
   }

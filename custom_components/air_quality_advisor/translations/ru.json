@@ -153,17 +153,11 @@
         "title": "⚙️ Выберите",
         "description": "Выберите: Комнаты / Погода и предупреждения / Оповещения (необязательно) / Дополнительные пороги",
         "menu_options": {
-          "areas": "Комнаты",
-          "weather": "Погода и предупреждения",
-          "indoor_sensors": "Комнаты · Индикатор плесени",
-          "window_sensors": "Исключить датчики окон",
-          "outdoor": "Качество воздуха снаружи",
+          "outside_data": "Снаружи · источник",
+          "general_settings": "Общие · настройки",
+          "area_settings": "Область · настройки",
           "delivery": "Оповещения (необязательно)",
-          "thresholds": "Дополнительные пороги",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Дополнительные пороги"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Снаружи · источник",
+        "description": "Снаружи · источник: Выбрать источник, датчик / Устройства · управление.",
+        "menu_options": {
+          "weather": "Погода и предупреждения",
+          "outdoor": "Качество воздуха снаружи",
+          "outside_aqi": "Снаружи · AQI",
+          "pollen": "Пыльца"
+        }
+      },
+      "area_settings": {
+        "title": "Область · настройки",
+        "description": "Область · настройки: Выбрать источник, датчик / Устройства · управление.",
+        "menu_options": {
+          "areas": "Комнаты",
+          "indoor_sensors": "Комнаты · Индикатор плесени",
+          "window_sensors": "Исключить датчики окон",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Область · Устройства"
+        }
+      },
+      "device_menu": {
+        "title": "Устройства · настройки",
+        "description": "Устройства · настройки: Выбрать источник, датчик / Устройства · управление.",
+        "menu_options": {
+          "device_settings": "Устройства · управление",
+          "device_choice": "Выбрать · Устройства",
+          "device_done": "настройки · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Общие · настройки",
+        "description": "Общие · настройки: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "general_room_occupancy_sensors": "Комната · Присутствие · датчик",
+          "general_occupied_rooms_entity": "Присутствие · Комната · источник (state)",
+          "general_occupied_rooms_attribute": "Присутствие · Комната · источник (attribute)",
+          "general_home_trackers": "Дом · Присутствие · Устройства",
+          "general_home_policy": "Дом · Присутствие · управление",
+          "general_sleep_rooms_entity": "Сон · Комната · источник (state)",
+          "general_sleep_rooms_attribute": "Сон · Комната · источник (attribute)",
+          "general_source_stale_minutes": "источник · Обязательно (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_occupied_rooms_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_occupied_rooms_attribute": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_home_trackers": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_home_policy": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_sleep_rooms_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_sleep_rooms_attribute": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "general_source_stale_minutes": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "pollen": {
+        "title": "Пыльца",
+        "description": "Пыльца: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "pollen_high_from": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "pollen_max_scale": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "pollen_avoid_ventilation": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "outside_aqi": {
+        "title": "Снаружи · AQI",
+        "description": "Снаружи · AQI: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "outside_aqi_entity": "AQI · датчик",
+          "outside_aqi_scale": "AQI · источник",
+          "outside_aqi_limit": "AQI · цель",
+          "outside_aqi_no_sources": "AQI · датчик · Обязательно"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "outside_aqi_scale": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "outside_aqi_limit": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "outside_aqi_no_sources": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "area_devices": {
+        "title": "Область · Устройства",
+        "description": "Область · Устройства: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "area_devices_area": "Выбрать · Область"
+        },
+        "data_description": {
+          "area_devices_area": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "select_devices": {
+        "title": "Выбрать · Устройства",
+        "description": "Выбрать · Устройства: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "selected_devices": "Выбрать · Устройства"
+        },
+        "data_description": {
+          "selected_devices": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "device_choice": {
+        "title": "Выбрать · Устройства",
+        "description": "Выбрать · Устройства: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "device_choice": "Выбрать · Устройства"
+        },
+        "data_description": {
+          "device_choice": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
+      },
+      "device_settings": {
+        "title": "Устройства · управление",
+        "description": "Устройства · управление: Выбрать источник, датчик / Устройства · управление.",
+        "data": {
+          "device_auto_control": "Автоматическое управление",
+          "device_method": "управление · источник",
+          "device_presence_requirement": "управление · Присутствие",
+          "device_absence_action": "Выключить · Присутствие",
+          "device_sleep_behavior": "Сон · управление",
+          "device_hardware_confirmed": "Обязательно · Устройства · Мощность",
+          "device_temperature_entity": "Температура · датчик",
+          "device_humidity_entity": "Влажность · датчик",
+          "device_co2_entity": "CO₂ · датчик",
+          "device_pm25_entity": "PM2.5 · датчик",
+          "device_fan_purpose": "управление · Устройства",
+          "device_sensor_verified": "датчик · Обязательно",
+          "device_fan_speed_percent": "Скорость (%)",
+          "device_humidity_target": "Влажность · цель (%)",
+          "device_sleep_humidity_target": "Сон · Влажность · цель (%)",
+          "device_min_on_s": "Мощность · min ON (s)",
+          "device_min_off_s": "Мощность · min OFF (s)",
+          "device_max_on_s": "Мощность · max ON (s)",
+          "device_home_heat_c": "Дом · Температура + · цель (°C)",
+          "device_home_cool_c": "Дом · Температура − · цель (°C)",
+          "device_unoccupied_heat_c": "Комната · Выключить · Температура + · цель (°C)",
+          "device_unoccupied_cool_c": "Комната · Выключить · Температура − · цель (°C)",
+          "device_away_heat_c": "Дом · Выключить · Температура + · цель (°C)",
+          "device_away_cool_c": "Дом · Выключить · Температура − · цель (°C)",
+          "device_sleep_heat_c": "Сон · Температура + · цель (°C)",
+          "device_sleep_cool_c": "Сон · Температура − · цель (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_method": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_presence_requirement": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_absence_action": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_sleep_behavior": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_hardware_confirmed": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_temperature_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_humidity_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_co2_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_pm25_entity": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_fan_purpose": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_sensor_verified": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_fan_speed_percent": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_humidity_target": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_sleep_humidity_target": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_min_on_s": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_min_off_s": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_max_on_s": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_home_heat_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_home_cool_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_unoccupied_heat_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_unoccupied_cool_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_away_heat_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_away_cool_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_sleep_heat_c": "Выбрать источник; Обязательно · управление · датчик / Устройства.",
+          "device_sleep_cool_c": "Выбрать источник; Обязательно · управление · датчик / Устройства."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Ошибка · Присутствие · настройки",
+      "general_invalid_trackers": "Ошибка · Дом · настройки",
+      "general_invalid_rooms_entity": "Ошибка · Комната · настройки",
+      "general_invalid_attribute": "Ошибка · источник · настройки",
+      "general_invalid_source_age": "Ошибка · источник · настройки",
+      "invalid_selected_devices": "Ошибка · Устройства · настройки",
+      "device_policy_invalid": "Ошибка · Присутствие · настройки",
+      "device_method_invalid": "Ошибка · управление · настройки",
+      "device_hardware_required": "Ошибка · Обязательно · настройки",
+      "device_power_required_for_off": "Ошибка · Мощность · настройки",
+      "device_temperature_required": "Ошибка · Температура · настройки",
+      "device_humidity_required": "Ошибка · Влажность · настройки",
+      "device_air_sensor_required": "Ошибка · датчик · настройки",
+      "device_temperature_band_invalid": "Ошибка · Температура · настройки",
+      "device_humidity_invalid": "Ошибка · Влажность · настройки",
+      "device_runtime_invalid": "Ошибка · Мощность · настройки"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Дом · Присутствие",
+        "all_home": "Дом · Устройства · Присутствие"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "цель · управление",
+        "native": "Устройства · управление",
+        "power": "Мощность",
+        "speed": "Скорость"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Автоматическое",
+        "room": "Комната · Присутствие",
+        "home": "Дом · Присутствие"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Приостановить",
+        "off": "Выключить"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Автоматическое",
+        "pause": "Приостановить",
+        "sleep_targets": "Сон · цель"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Снаружи · управление",
+        "filtration": "PM2.5 · управление"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "источник · Ошибка",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "цель · настройки"
       }
     }
   }

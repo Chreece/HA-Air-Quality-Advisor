@@ -153,17 +153,11 @@
         "title": "⚙️ Valitse",
         "description": "Valitse: Huoneet / Sää ja varoitukset / Ilmoitukset (valinnainen) / Lisäraja-arvot",
         "menu_options": {
-          "areas": "Huoneet",
-          "weather": "Sää ja varoitukset",
-          "indoor_sensors": "Huoneet · Homeindikaattori",
-          "window_sensors": "Ohita ikkuna-anturit",
-          "outdoor": "Ulkoilman laatu",
+          "outside_data": "Ulko · lähde",
+          "general_settings": "Yleiset · asetukset",
+          "area_settings": "Alue · asetukset",
           "delivery": "Ilmoitukset (valinnainen)",
-          "thresholds": "Lisäraja-arvot",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Lisäraja-arvot"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Ulko · lähde",
+        "description": "Ulko · lähde: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "menu_options": {
+          "weather": "Sää ja varoitukset",
+          "outdoor": "Ulkoilman laatu",
+          "outside_aqi": "Ulko · AQI",
+          "pollen": "Siitepöly"
+        }
+      },
+      "area_settings": {
+        "title": "Alue · asetukset",
+        "description": "Alue · asetukset: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "menu_options": {
+          "areas": "Huoneet",
+          "indoor_sensors": "Huoneet · Homeindikaattori",
+          "window_sensors": "Ohita ikkuna-anturit",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Alue · Laitteet"
+        }
+      },
+      "device_menu": {
+        "title": "Laitteet · asetukset",
+        "description": "Laitteet · asetukset: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "menu_options": {
+          "device_settings": "Laitteet · ohjaus",
+          "device_choice": "Valitse · Laitteet",
+          "device_done": "asetukset · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Yleiset · asetukset",
+        "description": "Yleiset · asetukset: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "general_room_occupancy_sensors": "Huone · Läsnäolo · anturi",
+          "general_occupied_rooms_entity": "Läsnäolo · Huone · lähde (state)",
+          "general_occupied_rooms_attribute": "Läsnäolo · Huone · lähde (attribute)",
+          "general_home_trackers": "Koti · Läsnäolo · Laitteet",
+          "general_home_policy": "Koti · Läsnäolo · ohjaus",
+          "general_sleep_rooms_entity": "Uni · Huone · lähde (state)",
+          "general_sleep_rooms_attribute": "Uni · Huone · lähde (attribute)",
+          "general_source_stale_minutes": "lähde · Vaaditaan (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_occupied_rooms_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_occupied_rooms_attribute": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_home_trackers": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_home_policy": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_sleep_rooms_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_sleep_rooms_attribute": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "general_source_stale_minutes": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "pollen": {
+        "title": "Siitepöly",
+        "description": "Siitepöly: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "pollen_high_from": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "pollen_max_scale": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "pollen_avoid_ventilation": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "outside_aqi": {
+        "title": "Ulko · AQI",
+        "description": "Ulko · AQI: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "outside_aqi_entity": "AQI · anturi",
+          "outside_aqi_scale": "AQI · lähde",
+          "outside_aqi_limit": "AQI · tavoite",
+          "outside_aqi_no_sources": "AQI · anturi · Vaaditaan"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "outside_aqi_scale": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "outside_aqi_limit": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "outside_aqi_no_sources": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "area_devices": {
+        "title": "Alue · Laitteet",
+        "description": "Alue · Laitteet: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "area_devices_area": "Valitse · Alue"
+        },
+        "data_description": {
+          "area_devices_area": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "select_devices": {
+        "title": "Valitse · Laitteet",
+        "description": "Valitse · Laitteet: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "selected_devices": "Valitse · Laitteet"
+        },
+        "data_description": {
+          "selected_devices": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "device_choice": {
+        "title": "Valitse · Laitteet",
+        "description": "Valitse · Laitteet: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "device_choice": "Valitse · Laitteet"
+        },
+        "data_description": {
+          "device_choice": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
+      },
+      "device_settings": {
+        "title": "Laitteet · ohjaus",
+        "description": "Laitteet · ohjaus: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "device_auto_control": "Automaattinen ohjaus",
+          "device_method": "ohjaus · lähde",
+          "device_presence_requirement": "ohjaus · Läsnäolo",
+          "device_absence_action": "Sammuta · Läsnäolo",
+          "device_sleep_behavior": "Uni · ohjaus",
+          "device_hardware_confirmed": "Vaaditaan · Laitteet · Teho",
+          "device_temperature_entity": "Lämpötila · anturi",
+          "device_humidity_entity": "Kosteus · anturi",
+          "device_co2_entity": "CO₂ · anturi",
+          "device_pm25_entity": "PM2.5 · anturi",
+          "device_fan_purpose": "ohjaus · Laitteet",
+          "device_sensor_verified": "anturi · Vaaditaan",
+          "device_fan_speed_percent": "Nopeus (%)",
+          "device_humidity_target": "Kosteus · tavoite (%)",
+          "device_sleep_humidity_target": "Uni · Kosteus · tavoite (%)",
+          "device_min_on_s": "Teho · min ON (s)",
+          "device_min_off_s": "Teho · min OFF (s)",
+          "device_max_on_s": "Teho · max ON (s)",
+          "device_home_heat_c": "Koti · Lämpötila + · tavoite (°C)",
+          "device_home_cool_c": "Koti · Lämpötila − · tavoite (°C)",
+          "device_unoccupied_heat_c": "Huone · Sammuta · Lämpötila + · tavoite (°C)",
+          "device_unoccupied_cool_c": "Huone · Sammuta · Lämpötila − · tavoite (°C)",
+          "device_away_heat_c": "Koti · Sammuta · Lämpötila + · tavoite (°C)",
+          "device_away_cool_c": "Koti · Sammuta · Lämpötila − · tavoite (°C)",
+          "device_sleep_heat_c": "Uni · Lämpötila + · tavoite (°C)",
+          "device_sleep_cool_c": "Uni · Lämpötila − · tavoite (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_method": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_presence_requirement": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_absence_action": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_sleep_behavior": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_hardware_confirmed": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_temperature_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_humidity_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_co2_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_pm25_entity": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_fan_purpose": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_sensor_verified": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_fan_speed_percent": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_humidity_target": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_sleep_humidity_target": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_min_on_s": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_min_off_s": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_max_on_s": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_home_heat_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_home_cool_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_unoccupied_heat_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_unoccupied_cool_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_away_heat_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_away_cool_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_sleep_heat_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet.",
+          "device_sleep_cool_c": "Valitse lähde; Vaaditaan · ohjaus · anturi / Laitteet."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Virheellinen · Läsnäolo · asetukset",
+      "general_invalid_trackers": "Virheellinen · Koti · asetukset",
+      "general_invalid_rooms_entity": "Virheellinen · Huone · asetukset",
+      "general_invalid_attribute": "Virheellinen · lähde · asetukset",
+      "general_invalid_source_age": "Virheellinen · lähde · asetukset",
+      "invalid_selected_devices": "Virheellinen · Laitteet · asetukset",
+      "device_policy_invalid": "Virheellinen · Läsnäolo · asetukset",
+      "device_method_invalid": "Virheellinen · ohjaus · asetukset",
+      "device_hardware_required": "Virheellinen · Vaaditaan · asetukset",
+      "device_power_required_for_off": "Virheellinen · Teho · asetukset",
+      "device_temperature_required": "Virheellinen · Lämpötila · asetukset",
+      "device_humidity_required": "Virheellinen · Kosteus · asetukset",
+      "device_air_sensor_required": "Virheellinen · anturi · asetukset",
+      "device_temperature_band_invalid": "Virheellinen · Lämpötila · asetukset",
+      "device_humidity_invalid": "Virheellinen · Kosteus · asetukset",
+      "device_runtime_invalid": "Virheellinen · Teho · asetukset"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Koti · Läsnäolo",
+        "all_home": "Koti · Laitteet · Läsnäolo"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "tavoite · ohjaus",
+        "native": "Laitteet · ohjaus",
+        "power": "Teho",
+        "speed": "Nopeus"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automaattinen",
+        "room": "Huone · Läsnäolo",
+        "home": "Koti · Läsnäolo"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Keskeytä",
+        "off": "Sammuta"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automaattinen",
+        "pause": "Keskeytä",
+        "sleep_targets": "Uni · tavoite"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Ulko · ohjaus",
+        "filtration": "PM2.5 · ohjaus"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "lähde · Virheellinen",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "tavoite · asetukset"
       }
     }
   }

@@ -153,17 +153,11 @@
         "title": "⚙️ منتخب کریں",
         "description": "منتخب کریں: کمرے / موسم اور انتباہات / اعلانات (اختیاری) / اعلیٰ حدود",
         "menu_options": {
-          "areas": "کمرے",
-          "weather": "موسم اور انتباہات",
-          "indoor_sensors": "کمرے · پھپھوندی کی نشاندہی",
-          "window_sensors": "کھڑکی کے سینسر خارج کریں",
-          "outdoor": "بیرونی ہوا کا معیار",
+          "outside_data": "باہر · ماخذ",
+          "general_settings": "عمومی · ترتیبات",
+          "area_settings": "علاقہ · ترتیبات",
           "delivery": "اعلانات (اختیاری)",
-          "thresholds": "اعلیٰ حدود",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "اعلیٰ حدود"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "باہر · ماخذ",
+        "description": "باہر · ماخذ: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "menu_options": {
+          "weather": "موسم اور انتباہات",
+          "outdoor": "بیرونی ہوا کا معیار",
+          "outside_aqi": "باہر · AQI",
+          "pollen": "زرگل"
+        }
+      },
+      "area_settings": {
+        "title": "علاقہ · ترتیبات",
+        "description": "علاقہ · ترتیبات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "menu_options": {
+          "areas": "کمرے",
+          "indoor_sensors": "کمرے · پھپھوندی کی نشاندہی",
+          "window_sensors": "کھڑکی کے سینسر خارج کریں",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "علاقہ · آلات"
+        }
+      },
+      "device_menu": {
+        "title": "آلات · ترتیبات",
+        "description": "آلات · ترتیبات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "menu_options": {
+          "device_settings": "آلات · کنٹرول",
+          "device_choice": "منتخب کریں · آلات",
+          "device_done": "ترتیبات · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "عمومی · ترتیبات",
+        "description": "عمومی · ترتیبات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "general_room_occupancy_sensors": "کمرہ · موجودگی · سینسر",
+          "general_occupied_rooms_entity": "موجودگی · کمرہ · ماخذ (state)",
+          "general_occupied_rooms_attribute": "موجودگی · کمرہ · ماخذ (attribute)",
+          "general_home_trackers": "گھر · موجودگی · آلات",
+          "general_home_policy": "گھر · موجودگی · کنٹرول",
+          "general_sleep_rooms_entity": "نیند · کمرہ · ماخذ (state)",
+          "general_sleep_rooms_attribute": "نیند · کمرہ · ماخذ (attribute)",
+          "general_source_stale_minutes": "ماخذ · ضروری (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_occupied_rooms_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_occupied_rooms_attribute": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_home_trackers": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_home_policy": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_sleep_rooms_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_sleep_rooms_attribute": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "general_source_stale_minutes": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "pollen": {
+        "title": "زرگل",
+        "description": "زرگل: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "pollen_high_from": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "pollen_max_scale": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "pollen_avoid_ventilation": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "outside_aqi": {
+        "title": "باہر · AQI",
+        "description": "باہر · AQI: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "outside_aqi_entity": "AQI · سینسر",
+          "outside_aqi_scale": "AQI · ماخذ",
+          "outside_aqi_limit": "AQI · ہدف",
+          "outside_aqi_no_sources": "AQI · سینسر · ضروری"
+        },
+        "data_description": {
+          "outside_aqi_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "outside_aqi_scale": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "outside_aqi_limit": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "outside_aqi_no_sources": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "area_devices": {
+        "title": "علاقہ · آلات",
+        "description": "علاقہ · آلات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "area_devices_area": "منتخب کریں · علاقہ"
+        },
+        "data_description": {
+          "area_devices_area": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "select_devices": {
+        "title": "منتخب کریں · آلات",
+        "description": "منتخب کریں · آلات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "selected_devices": "منتخب کریں · آلات"
+        },
+        "data_description": {
+          "selected_devices": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "device_choice": {
+        "title": "منتخب کریں · آلات",
+        "description": "منتخب کریں · آلات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "device_choice": "منتخب کریں · آلات"
+        },
+        "data_description": {
+          "device_choice": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
+      },
+      "device_settings": {
+        "title": "آلات · کنٹرول",
+        "description": "آلات · کنٹرول: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "device_auto_control": "خودکار کنٹرول",
+          "device_method": "کنٹرول · ماخذ",
+          "device_presence_requirement": "کنٹرول · موجودگی",
+          "device_absence_action": "بند · موجودگی",
+          "device_sleep_behavior": "نیند · کنٹرول",
+          "device_hardware_confirmed": "ضروری · آلات · طاقت",
+          "device_temperature_entity": "درجہ حرارت · سینسر",
+          "device_humidity_entity": "نمی · سینسر",
+          "device_co2_entity": "CO₂ · سینسر",
+          "device_pm25_entity": "PM2.5 · سینسر",
+          "device_fan_purpose": "کنٹرول · آلات",
+          "device_sensor_verified": "سینسر · ضروری",
+          "device_fan_speed_percent": "رفتار (%)",
+          "device_humidity_target": "نمی · ہدف (%)",
+          "device_sleep_humidity_target": "نیند · نمی · ہدف (%)",
+          "device_min_on_s": "طاقت · min ON (s)",
+          "device_min_off_s": "طاقت · min OFF (s)",
+          "device_max_on_s": "طاقت · max ON (s)",
+          "device_home_heat_c": "گھر · درجہ حرارت + · ہدف (°C)",
+          "device_home_cool_c": "گھر · درجہ حرارت − · ہدف (°C)",
+          "device_unoccupied_heat_c": "کمرہ · بند · درجہ حرارت + · ہدف (°C)",
+          "device_unoccupied_cool_c": "کمرہ · بند · درجہ حرارت − · ہدف (°C)",
+          "device_away_heat_c": "گھر · بند · درجہ حرارت + · ہدف (°C)",
+          "device_away_cool_c": "گھر · بند · درجہ حرارت − · ہدف (°C)",
+          "device_sleep_heat_c": "نیند · درجہ حرارت + · ہدف (°C)",
+          "device_sleep_cool_c": "نیند · درجہ حرارت − · ہدف (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_method": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_presence_requirement": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_absence_action": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_sleep_behavior": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_hardware_confirmed": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_temperature_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_humidity_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_co2_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_pm25_entity": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_fan_purpose": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_sensor_verified": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_fan_speed_percent": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_humidity_target": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_sleep_humidity_target": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_min_on_s": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_min_off_s": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_max_on_s": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_home_heat_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_home_cool_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_unoccupied_heat_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_unoccupied_cool_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_away_heat_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_away_cool_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_sleep_heat_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات.",
+          "device_sleep_cool_c": "منتخب کریں ماخذ; ضروری · کنٹرول · سینسر / آلات."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "غلط · موجودگی · ترتیبات",
+      "general_invalid_trackers": "غلط · گھر · ترتیبات",
+      "general_invalid_rooms_entity": "غلط · کمرہ · ترتیبات",
+      "general_invalid_attribute": "غلط · ماخذ · ترتیبات",
+      "general_invalid_source_age": "غلط · ماخذ · ترتیبات",
+      "invalid_selected_devices": "غلط · آلات · ترتیبات",
+      "device_policy_invalid": "غلط · موجودگی · ترتیبات",
+      "device_method_invalid": "غلط · کنٹرول · ترتیبات",
+      "device_hardware_required": "غلط · ضروری · ترتیبات",
+      "device_power_required_for_off": "غلط · طاقت · ترتیبات",
+      "device_temperature_required": "غلط · درجہ حرارت · ترتیبات",
+      "device_humidity_required": "غلط · نمی · ترتیبات",
+      "device_air_sensor_required": "غلط · سینسر · ترتیبات",
+      "device_temperature_band_invalid": "غلط · درجہ حرارت · ترتیبات",
+      "device_humidity_invalid": "غلط · نمی · ترتیبات",
+      "device_runtime_invalid": "غلط · طاقت · ترتیبات"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "گھر · موجودگی",
+        "all_home": "گھر · آلات · موجودگی"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "ہدف · کنٹرول",
+        "native": "آلات · کنٹرول",
+        "power": "طاقت",
+        "speed": "رفتار"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "خودکار",
+        "room": "کمرہ · موجودگی",
+        "home": "گھر · موجودگی"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "وقفہ",
+        "off": "بند"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "خودکار",
+        "pause": "وقفہ",
+        "sleep_targets": "نیند · ہدف"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "باہر · کنٹرول",
+        "filtration": "PM2.5 · کنٹرول"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "ماخذ · غلط",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "ہدف · ترتیبات"
       }
     }
   }

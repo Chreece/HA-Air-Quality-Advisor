@@ -153,17 +153,11 @@
         "title": "⚙️ Seçin",
         "description": "Seçin: Odalar / Hava durumu ve uyarılar / Duyurular (isteğe bağlı) / Gelişmiş eşikler",
         "menu_options": {
-          "areas": "Odalar",
-          "weather": "Hava durumu ve uyarılar",
-          "indoor_sensors": "Odalar · Küf göstergesi",
-          "window_sensors": "Pencere sensörlerini hariç tut",
-          "outdoor": "Dış hava kalitesi",
+          "outside_data": "Dış · kaynak",
+          "general_settings": "Genel · ayarlar",
+          "area_settings": "Alan · ayarlar",
           "delivery": "Duyurular (isteğe bağlı)",
-          "thresholds": "Gelişmiş eşikler",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Gelişmiş eşikler"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Dış · kaynak",
+        "description": "Dış · kaynak: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "menu_options": {
+          "weather": "Hava durumu ve uyarılar",
+          "outdoor": "Dış hava kalitesi",
+          "outside_aqi": "Dış · AQI",
+          "pollen": "Polen"
+        }
+      },
+      "area_settings": {
+        "title": "Alan · ayarlar",
+        "description": "Alan · ayarlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "menu_options": {
+          "areas": "Odalar",
+          "indoor_sensors": "Odalar · Küf göstergesi",
+          "window_sensors": "Pencere sensörlerini hariç tut",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Alan · Cihazlar"
+        }
+      },
+      "device_menu": {
+        "title": "Cihazlar · ayarlar",
+        "description": "Cihazlar · ayarlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "menu_options": {
+          "device_settings": "Cihazlar · kontrol",
+          "device_choice": "Seç · Cihazlar",
+          "device_done": "ayarlar · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Genel · ayarlar",
+        "description": "Genel · ayarlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_home_policy": "Ev · Doluluk · kontrol",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "general_source_stale_minutes": "kaynak · Gerekli (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_occupied_rooms_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_occupied_rooms_attribute": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_home_trackers": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_home_policy": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_sleep_rooms_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_sleep_rooms_attribute": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "general_source_stale_minutes": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "pollen_high_from": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "pollen_max_scale": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "pollen_avoid_ventilation": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "outside_aqi": {
+        "title": "Dış · AQI",
+        "description": "Dış · AQI: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensör",
+          "outside_aqi_scale": "AQI · kaynak",
+          "outside_aqi_limit": "AQI · hedef",
+          "outside_aqi_no_sources": "AQI · sensör · Gerekli"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "outside_aqi_scale": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "outside_aqi_limit": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "outside_aqi_no_sources": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "area_devices": {
+        "title": "Alan · Cihazlar",
+        "description": "Alan · Cihazlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "area_devices_area": "Seç · Alan"
+        },
+        "data_description": {
+          "area_devices_area": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "select_devices": {
+        "title": "Seç · Cihazlar",
+        "description": "Seç · Cihazlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "selected_devices": "Seç · Cihazlar"
+        },
+        "data_description": {
+          "selected_devices": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "device_choice": {
+        "title": "Seç · Cihazlar",
+        "description": "Seç · Cihazlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "device_choice": "Seç · Cihazlar"
+        },
+        "data_description": {
+          "device_choice": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
+      },
+      "device_settings": {
+        "title": "Cihazlar · kontrol",
+        "description": "Cihazlar · kontrol: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "device_auto_control": "Otomatik kontrol",
+          "device_method": "kontrol · kaynak",
+          "device_presence_requirement": "kontrol · Doluluk",
+          "device_absence_action": "Kapat · Doluluk",
+          "device_sleep_behavior": "Uyku · kontrol",
+          "device_hardware_confirmed": "Gerekli · Cihazlar · Güç",
+          "device_temperature_entity": "Sıcaklık · sensör",
+          "device_humidity_entity": "Nem · sensör",
+          "device_co2_entity": "CO₂ · sensör",
+          "device_pm25_entity": "PM2.5 · sensör",
+          "device_fan_purpose": "kontrol · Cihazlar",
+          "device_sensor_verified": "sensör · Gerekli",
+          "device_fan_speed_percent": "Hız (%)",
+          "device_humidity_target": "Nem · hedef (%)",
+          "device_sleep_humidity_target": "Uyku · Nem · hedef (%)",
+          "device_min_on_s": "Güç · min ON (s)",
+          "device_min_off_s": "Güç · min OFF (s)",
+          "device_max_on_s": "Güç · max ON (s)",
+          "device_home_heat_c": "Ev · Sıcaklık + · hedef (°C)",
+          "device_home_cool_c": "Ev · Sıcaklık − · hedef (°C)",
+          "device_unoccupied_heat_c": "Oda · Kapat · Sıcaklık + · hedef (°C)",
+          "device_unoccupied_cool_c": "Oda · Kapat · Sıcaklık − · hedef (°C)",
+          "device_away_heat_c": "Ev · Kapat · Sıcaklık + · hedef (°C)",
+          "device_away_cool_c": "Ev · Kapat · Sıcaklık − · hedef (°C)",
+          "device_sleep_heat_c": "Uyku · Sıcaklık + · hedef (°C)",
+          "device_sleep_cool_c": "Uyku · Sıcaklık − · hedef (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_method": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_presence_requirement": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_absence_action": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_sleep_behavior": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_hardware_confirmed": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_temperature_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_humidity_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_co2_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_pm25_entity": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_fan_purpose": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_sensor_verified": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_fan_speed_percent": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_humidity_target": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_sleep_humidity_target": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_min_on_s": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_min_off_s": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_max_on_s": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_home_heat_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_home_cool_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_unoccupied_heat_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_unoccupied_cool_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_away_heat_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_away_cool_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_sleep_heat_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar.",
+          "device_sleep_cool_c": "Seç kaynak; Gerekli · kontrol · sensör / Cihazlar."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Geçersiz · Doluluk · ayarlar",
+      "general_invalid_trackers": "Geçersiz · Ev · ayarlar",
+      "general_invalid_rooms_entity": "Geçersiz · Oda · ayarlar",
+      "general_invalid_attribute": "Geçersiz · kaynak · ayarlar",
+      "general_invalid_source_age": "Geçersiz · kaynak · ayarlar",
+      "invalid_selected_devices": "Geçersiz · Cihazlar · ayarlar",
+      "device_policy_invalid": "Geçersiz · Doluluk · ayarlar",
+      "device_method_invalid": "Geçersiz · kontrol · ayarlar",
+      "device_hardware_required": "Geçersiz · Gerekli · ayarlar",
+      "device_power_required_for_off": "Geçersiz · Güç · ayarlar",
+      "device_temperature_required": "Geçersiz · Sıcaklık · ayarlar",
+      "device_humidity_required": "Geçersiz · Nem · ayarlar",
+      "device_air_sensor_required": "Geçersiz · sensör · ayarlar",
+      "device_temperature_band_invalid": "Geçersiz · Sıcaklık · ayarlar",
+      "device_humidity_invalid": "Geçersiz · Nem · ayarlar",
+      "device_runtime_invalid": "Geçersiz · Güç · ayarlar"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Ev · Doluluk",
+        "all_home": "Ev · Cihazlar · Doluluk"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "hedef · kontrol",
+        "native": "Cihazlar · kontrol",
+        "power": "Güç",
+        "speed": "Hız"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Otomatik",
+        "room": "Oda · Doluluk",
+        "home": "Ev · Doluluk"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Duraklat",
+        "off": "Kapat"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Otomatik",
+        "pause": "Duraklat",
+        "sleep_targets": "Uyku · hedef"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Dış · kontrol",
+        "filtration": "PM2.5 · kontrol"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "kaynak · Geçersiz",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "hedef · ayarlar"
       }
     }
   }

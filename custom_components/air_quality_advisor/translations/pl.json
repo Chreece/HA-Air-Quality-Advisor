@@ -153,17 +153,11 @@
         "title": "⚙️ Wybierz",
         "description": "Wybierz: Pomieszczenia / Pogoda i ostrzeżenia / Komunikaty (opcjonalnie) / Zaawansowane progi",
         "menu_options": {
-          "areas": "Pomieszczenia",
-          "weather": "Pogoda i ostrzeżenia",
-          "indoor_sensors": "Pomieszczenia · Wskaźnik pleśni",
-          "window_sensors": "Wyklucz czujniki okien",
-          "outdoor": "Jakość powietrza na zewnątrz",
+          "outside_data": "Zewnętrzne · źródło",
+          "general_settings": "Ogólne · ustawienia",
+          "area_settings": "Obszar · ustawienia",
           "delivery": "Komunikaty (opcjonalnie)",
-          "thresholds": "Zaawansowane progi",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Zaawansowane progi"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Zewnętrzne · źródło",
+        "description": "Zewnętrzne · źródło: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "menu_options": {
+          "weather": "Pogoda i ostrzeżenia",
+          "outdoor": "Jakość powietrza na zewnątrz",
+          "outside_aqi": "Zewnętrzne · AQI",
+          "pollen": "Pyłki"
+        }
+      },
+      "area_settings": {
+        "title": "Obszar · ustawienia",
+        "description": "Obszar · ustawienia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "menu_options": {
+          "areas": "Pomieszczenia",
+          "indoor_sensors": "Pomieszczenia · Wskaźnik pleśni",
+          "window_sensors": "Wyklucz czujniki okien",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Obszar · Urządzenia"
+        }
+      },
+      "device_menu": {
+        "title": "Urządzenia · ustawienia",
+        "description": "Urządzenia · ustawienia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "menu_options": {
+          "device_settings": "Urządzenia · sterowanie",
+          "device_choice": "Wybierz · Urządzenia",
+          "device_done": "ustawienia · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Ogólne · ustawienia",
+        "description": "Ogólne · ustawienia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_home_policy": "Dom · Obecność · sterowanie",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "general_source_stale_minutes": "źródło · Wymagane (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_occupied_rooms_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_occupied_rooms_attribute": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_home_trackers": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_home_policy": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_sleep_rooms_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_sleep_rooms_attribute": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "general_source_stale_minutes": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "pollen": {
+        "title": "Pyłki",
+        "description": "Pyłki: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "pollen_high_from": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "pollen_max_scale": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "pollen_avoid_ventilation": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "outside_aqi": {
+        "title": "Zewnętrzne · AQI",
+        "description": "Zewnętrzne · AQI: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "outside_aqi_entity": "AQI · czujnik",
+          "outside_aqi_scale": "AQI · źródło",
+          "outside_aqi_limit": "AQI · cel",
+          "outside_aqi_no_sources": "AQI · czujnik · Wymagane"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "outside_aqi_scale": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "outside_aqi_limit": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "outside_aqi_no_sources": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "area_devices": {
+        "title": "Obszar · Urządzenia",
+        "description": "Obszar · Urządzenia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "area_devices_area": "Wybierz · Obszar"
+        },
+        "data_description": {
+          "area_devices_area": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "select_devices": {
+        "title": "Wybierz · Urządzenia",
+        "description": "Wybierz · Urządzenia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "selected_devices": "Wybierz · Urządzenia"
+        },
+        "data_description": {
+          "selected_devices": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "device_choice": {
+        "title": "Wybierz · Urządzenia",
+        "description": "Wybierz · Urządzenia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "device_choice": "Wybierz · Urządzenia"
+        },
+        "data_description": {
+          "device_choice": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
+      },
+      "device_settings": {
+        "title": "Urządzenia · sterowanie",
+        "description": "Urządzenia · sterowanie: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "device_auto_control": "Automatyczne sterowanie",
+          "device_method": "sterowanie · źródło",
+          "device_presence_requirement": "sterowanie · Obecność",
+          "device_absence_action": "Wyłącz · Obecność",
+          "device_sleep_behavior": "Sen · sterowanie",
+          "device_hardware_confirmed": "Wymagane · Urządzenia · Moc",
+          "device_temperature_entity": "Temperatura · czujnik",
+          "device_humidity_entity": "Wilgotność · czujnik",
+          "device_co2_entity": "CO₂ · czujnik",
+          "device_pm25_entity": "PM2.5 · czujnik",
+          "device_fan_purpose": "sterowanie · Urządzenia",
+          "device_sensor_verified": "czujnik · Wymagane",
+          "device_fan_speed_percent": "Prędkość (%)",
+          "device_humidity_target": "Wilgotność · cel (%)",
+          "device_sleep_humidity_target": "Sen · Wilgotność · cel (%)",
+          "device_min_on_s": "Moc · min ON (s)",
+          "device_min_off_s": "Moc · min OFF (s)",
+          "device_max_on_s": "Moc · max ON (s)",
+          "device_home_heat_c": "Dom · Temperatura + · cel (°C)",
+          "device_home_cool_c": "Dom · Temperatura − · cel (°C)",
+          "device_unoccupied_heat_c": "Pokój · Wyłącz · Temperatura + · cel (°C)",
+          "device_unoccupied_cool_c": "Pokój · Wyłącz · Temperatura − · cel (°C)",
+          "device_away_heat_c": "Dom · Wyłącz · Temperatura + · cel (°C)",
+          "device_away_cool_c": "Dom · Wyłącz · Temperatura − · cel (°C)",
+          "device_sleep_heat_c": "Sen · Temperatura + · cel (°C)",
+          "device_sleep_cool_c": "Sen · Temperatura − · cel (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_method": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_presence_requirement": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_absence_action": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_sleep_behavior": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_hardware_confirmed": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_temperature_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_humidity_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_co2_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_pm25_entity": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_fan_purpose": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_sensor_verified": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_fan_speed_percent": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_humidity_target": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_sleep_humidity_target": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_min_on_s": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_min_off_s": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_max_on_s": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_home_heat_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_home_cool_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_unoccupied_heat_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_unoccupied_cool_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_away_heat_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_away_cool_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_sleep_heat_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia.",
+          "device_sleep_cool_c": "Wybierz źródło; Wymagane · sterowanie · czujnik / Urządzenia."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Nieprawidłowe · Obecność · ustawienia",
+      "general_invalid_trackers": "Nieprawidłowe · Dom · ustawienia",
+      "general_invalid_rooms_entity": "Nieprawidłowe · Pokój · ustawienia",
+      "general_invalid_attribute": "Nieprawidłowe · źródło · ustawienia",
+      "general_invalid_source_age": "Nieprawidłowe · źródło · ustawienia",
+      "invalid_selected_devices": "Nieprawidłowe · Urządzenia · ustawienia",
+      "device_policy_invalid": "Nieprawidłowe · Obecność · ustawienia",
+      "device_method_invalid": "Nieprawidłowe · sterowanie · ustawienia",
+      "device_hardware_required": "Nieprawidłowe · Wymagane · ustawienia",
+      "device_power_required_for_off": "Nieprawidłowe · Moc · ustawienia",
+      "device_temperature_required": "Nieprawidłowe · Temperatura · ustawienia",
+      "device_humidity_required": "Nieprawidłowe · Wilgotność · ustawienia",
+      "device_air_sensor_required": "Nieprawidłowe · czujnik · ustawienia",
+      "device_temperature_band_invalid": "Nieprawidłowe · Temperatura · ustawienia",
+      "device_humidity_invalid": "Nieprawidłowe · Wilgotność · ustawienia",
+      "device_runtime_invalid": "Nieprawidłowe · Moc · ustawienia"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Dom · Obecność",
+        "all_home": "Dom · Urządzenia · Obecność"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cel · sterowanie",
+        "native": "Urządzenia · sterowanie",
+        "power": "Moc",
+        "speed": "Prędkość"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatyczne",
+        "room": "Pokój · Obecność",
+        "home": "Dom · Obecność"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Wstrzymaj",
+        "off": "Wyłącz"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatyczne",
+        "pause": "Wstrzymaj",
+        "sleep_targets": "Sen · cel"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Zewnętrzne · sterowanie",
+        "filtration": "PM2.5 · sterowanie"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "źródło · Nieprawidłowe",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cel · ustawienia"
       }
     }
   }

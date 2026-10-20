@@ -153,17 +153,11 @@
         "title": "⚙️ Válassz",
         "description": "Válassz: Helyiségek / Időjárás és riasztások / Értesítések (opcionális) / Speciális határértékek",
         "menu_options": {
-          "areas": "Helyiségek",
-          "weather": "Időjárás és riasztások",
-          "indoor_sensors": "Helyiségek · Penészesedési mutató",
-          "window_sensors": "Ablakérzékelők kizárása",
-          "outdoor": "Kültéri levegőminőség",
+          "outside_data": "Kültéri · forrás",
+          "general_settings": "Általános · beállítások",
+          "area_settings": "Terület · beállítások",
           "delivery": "Értesítések (opcionális)",
-          "thresholds": "Speciális határértékek",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Speciális határértékek"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Kültéri · forrás",
+        "description": "Kültéri · forrás: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "menu_options": {
+          "weather": "Időjárás és riasztások",
+          "outdoor": "Kültéri levegőminőség",
+          "outside_aqi": "Kültéri · AQI",
+          "pollen": "Pollen"
+        }
+      },
+      "area_settings": {
+        "title": "Terület · beállítások",
+        "description": "Terület · beállítások: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "menu_options": {
+          "areas": "Helyiségek",
+          "indoor_sensors": "Helyiségek · Penészesedési mutató",
+          "window_sensors": "Ablakérzékelők kizárása",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Terület · Eszközök"
+        }
+      },
+      "device_menu": {
+        "title": "Eszközök · beállítások",
+        "description": "Eszközök · beállítások: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "menu_options": {
+          "device_settings": "Eszközök · vezérlés",
+          "device_choice": "Választás · Eszközök",
+          "device_done": "beállítások · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Általános · beállítások",
+        "description": "Általános · beállítások: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_home_policy": "Otthon · Jelenlét · vezérlés",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "general_source_stale_minutes": "forrás · Kötelező (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_occupied_rooms_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_occupied_rooms_attribute": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_home_trackers": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_home_policy": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_sleep_rooms_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_sleep_rooms_attribute": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "general_source_stale_minutes": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Pollen: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "pollen_high_from": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "pollen_max_scale": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "pollen_avoid_ventilation": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "outside_aqi": {
+        "title": "Kültéri · AQI",
+        "description": "Kültéri · AQI: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "outside_aqi_entity": "AQI · érzékelő",
+          "outside_aqi_scale": "AQI · forrás",
+          "outside_aqi_limit": "AQI · cél",
+          "outside_aqi_no_sources": "AQI · érzékelő · Kötelező"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "outside_aqi_scale": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "outside_aqi_limit": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "outside_aqi_no_sources": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "area_devices": {
+        "title": "Terület · Eszközök",
+        "description": "Terület · Eszközök: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "area_devices_area": "Választás · Terület"
+        },
+        "data_description": {
+          "area_devices_area": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "select_devices": {
+        "title": "Választás · Eszközök",
+        "description": "Választás · Eszközök: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "selected_devices": "Választás · Eszközök"
+        },
+        "data_description": {
+          "selected_devices": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "device_choice": {
+        "title": "Választás · Eszközök",
+        "description": "Választás · Eszközök: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "device_choice": "Választás · Eszközök"
+        },
+        "data_description": {
+          "device_choice": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
+      },
+      "device_settings": {
+        "title": "Eszközök · vezérlés",
+        "description": "Eszközök · vezérlés: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "device_auto_control": "Automatikus vezérlés",
+          "device_method": "vezérlés · forrás",
+          "device_presence_requirement": "vezérlés · Jelenlét",
+          "device_absence_action": "Kikapcsolás · Jelenlét",
+          "device_sleep_behavior": "Alvás · vezérlés",
+          "device_hardware_confirmed": "Kötelező · Eszközök · Teljesítmény",
+          "device_temperature_entity": "Hőmérséklet · érzékelő",
+          "device_humidity_entity": "Páratartalom · érzékelő",
+          "device_co2_entity": "CO₂ · érzékelő",
+          "device_pm25_entity": "PM2.5 · érzékelő",
+          "device_fan_purpose": "vezérlés · Eszközök",
+          "device_sensor_verified": "érzékelő · Kötelező",
+          "device_fan_speed_percent": "Sebesség (%)",
+          "device_humidity_target": "Páratartalom · cél (%)",
+          "device_sleep_humidity_target": "Alvás · Páratartalom · cél (%)",
+          "device_min_on_s": "Teljesítmény · min ON (s)",
+          "device_min_off_s": "Teljesítmény · min OFF (s)",
+          "device_max_on_s": "Teljesítmény · max ON (s)",
+          "device_home_heat_c": "Otthon · Hőmérséklet + · cél (°C)",
+          "device_home_cool_c": "Otthon · Hőmérséklet − · cél (°C)",
+          "device_unoccupied_heat_c": "Szoba · Kikapcsolás · Hőmérséklet + · cél (°C)",
+          "device_unoccupied_cool_c": "Szoba · Kikapcsolás · Hőmérséklet − · cél (°C)",
+          "device_away_heat_c": "Otthon · Kikapcsolás · Hőmérséklet + · cél (°C)",
+          "device_away_cool_c": "Otthon · Kikapcsolás · Hőmérséklet − · cél (°C)",
+          "device_sleep_heat_c": "Alvás · Hőmérséklet + · cél (°C)",
+          "device_sleep_cool_c": "Alvás · Hőmérséklet − · cél (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_method": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_presence_requirement": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_absence_action": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_sleep_behavior": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_hardware_confirmed": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_temperature_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_humidity_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_co2_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_pm25_entity": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_fan_purpose": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_sensor_verified": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_fan_speed_percent": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_humidity_target": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_sleep_humidity_target": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_min_on_s": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_min_off_s": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_max_on_s": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_home_heat_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_home_cool_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_unoccupied_heat_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_unoccupied_cool_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_away_heat_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_away_cool_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_sleep_heat_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök.",
+          "device_sleep_cool_c": "Választás forrás; Kötelező · vezérlés · érzékelő / Eszközök."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Érvénytelen · Jelenlét · beállítások",
+      "general_invalid_trackers": "Érvénytelen · Otthon · beállítások",
+      "general_invalid_rooms_entity": "Érvénytelen · Szoba · beállítások",
+      "general_invalid_attribute": "Érvénytelen · forrás · beállítások",
+      "general_invalid_source_age": "Érvénytelen · forrás · beállítások",
+      "invalid_selected_devices": "Érvénytelen · Eszközök · beállítások",
+      "device_policy_invalid": "Érvénytelen · Jelenlét · beállítások",
+      "device_method_invalid": "Érvénytelen · vezérlés · beállítások",
+      "device_hardware_required": "Érvénytelen · Kötelező · beállítások",
+      "device_power_required_for_off": "Érvénytelen · Teljesítmény · beállítások",
+      "device_temperature_required": "Érvénytelen · Hőmérséklet · beállítások",
+      "device_humidity_required": "Érvénytelen · Páratartalom · beállítások",
+      "device_air_sensor_required": "Érvénytelen · érzékelő · beállítások",
+      "device_temperature_band_invalid": "Érvénytelen · Hőmérséklet · beállítások",
+      "device_humidity_invalid": "Érvénytelen · Páratartalom · beállítások",
+      "device_runtime_invalid": "Érvénytelen · Teljesítmény · beállítások"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Otthon · Jelenlét",
+        "all_home": "Otthon · Eszközök · Jelenlét"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cél · vezérlés",
+        "native": "Eszközök · vezérlés",
+        "power": "Teljesítmény",
+        "speed": "Sebesség"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatikus",
+        "room": "Szoba · Jelenlét",
+        "home": "Otthon · Jelenlét"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Szünet",
+        "off": "Kikapcsolás"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatikus",
+        "pause": "Szünet",
+        "sleep_targets": "Alvás · cél"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Kültéri · vezérlés",
+        "filtration": "PM2.5 · vezérlés"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "forrás · Érvénytelen",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cél · beállítások"
       }
     }
   }

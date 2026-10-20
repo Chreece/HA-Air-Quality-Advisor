@@ -153,17 +153,11 @@
         "title": "⚙️ Vyberte",
         "description": "Vyberte: Místnosti / Počasí a výstrahy / Oznámení (volitelně) / Pokročilé limity",
         "menu_options": {
-          "areas": "Místnosti",
-          "weather": "Počasí a výstrahy",
-          "indoor_sensors": "Místnosti · Indikátor plísní",
-          "window_sensors": "Vyloučit senzory oken",
-          "outdoor": "Kvalita venkovního vzduchu",
+          "outside_data": "Venkovní · zdroj",
+          "general_settings": "Obecná · nastavení",
+          "area_settings": "Oblast · nastavení",
           "delivery": "Oznámení (volitelně)",
-          "thresholds": "Pokročilé limity",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Pokročilé limity"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Venkovní · zdroj",
+        "description": "Venkovní · zdroj: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "menu_options": {
+          "weather": "Počasí a výstrahy",
+          "outdoor": "Kvalita venkovního vzduchu",
+          "outside_aqi": "Venkovní · AQI",
+          "pollen": "Pyl"
+        }
+      },
+      "area_settings": {
+        "title": "Oblast · nastavení",
+        "description": "Oblast · nastavení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "menu_options": {
+          "areas": "Místnosti",
+          "indoor_sensors": "Místnosti · Indikátor plísní",
+          "window_sensors": "Vyloučit senzory oken",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Oblast · Zařízení"
+        }
+      },
+      "device_menu": {
+        "title": "Zařízení · nastavení",
+        "description": "Zařízení · nastavení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "menu_options": {
+          "device_settings": "Zařízení · řízení",
+          "device_choice": "Vybrat · Zařízení",
+          "device_done": "nastavení · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Obecná · nastavení",
+        "description": "Obecná · nastavení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "general_room_occupancy_sensors": "Místnost · Obsazenost · senzor",
+          "general_occupied_rooms_entity": "Obsazenost · Místnost · zdroj (state)",
+          "general_occupied_rooms_attribute": "Obsazenost · Místnost · zdroj (attribute)",
+          "general_home_trackers": "Domov · Obsazenost · Zařízení",
+          "general_home_policy": "Domov · Obsazenost · řízení",
+          "general_sleep_rooms_entity": "Spánek · Místnost · zdroj (state)",
+          "general_sleep_rooms_attribute": "Spánek · Místnost · zdroj (attribute)",
+          "general_source_stale_minutes": "zdroj · Povinné (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_occupied_rooms_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_occupied_rooms_attribute": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_home_trackers": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_home_policy": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_sleep_rooms_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_sleep_rooms_attribute": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "general_source_stale_minutes": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "pollen": {
+        "title": "Pyl",
+        "description": "Pyl: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "pollen_high_from": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "pollen_max_scale": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "pollen_avoid_ventilation": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "outside_aqi": {
+        "title": "Venkovní · AQI",
+        "description": "Venkovní · AQI: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "outside_aqi_entity": "AQI · senzor",
+          "outside_aqi_scale": "AQI · zdroj",
+          "outside_aqi_limit": "AQI · cíl",
+          "outside_aqi_no_sources": "AQI · senzor · Povinné"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "outside_aqi_scale": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "outside_aqi_limit": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "outside_aqi_no_sources": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "area_devices": {
+        "title": "Oblast · Zařízení",
+        "description": "Oblast · Zařízení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "area_devices_area": "Vybrat · Oblast"
+        },
+        "data_description": {
+          "area_devices_area": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "select_devices": {
+        "title": "Vybrat · Zařízení",
+        "description": "Vybrat · Zařízení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "selected_devices": "Vybrat · Zařízení"
+        },
+        "data_description": {
+          "selected_devices": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "device_choice": {
+        "title": "Vybrat · Zařízení",
+        "description": "Vybrat · Zařízení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "device_choice": "Vybrat · Zařízení"
+        },
+        "data_description": {
+          "device_choice": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
+      },
+      "device_settings": {
+        "title": "Zařízení · řízení",
+        "description": "Zařízení · řízení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "data": {
+          "device_auto_control": "Automatické řízení",
+          "device_method": "řízení · zdroj",
+          "device_presence_requirement": "řízení · Obsazenost",
+          "device_absence_action": "Vypnout · Obsazenost",
+          "device_sleep_behavior": "Spánek · řízení",
+          "device_hardware_confirmed": "Povinné · Zařízení · Výkon",
+          "device_temperature_entity": "Teplota · senzor",
+          "device_humidity_entity": "Vlhkost · senzor",
+          "device_co2_entity": "CO₂ · senzor",
+          "device_pm25_entity": "PM2.5 · senzor",
+          "device_fan_purpose": "řízení · Zařízení",
+          "device_sensor_verified": "senzor · Povinné",
+          "device_fan_speed_percent": "Rychlost (%)",
+          "device_humidity_target": "Vlhkost · cíl (%)",
+          "device_sleep_humidity_target": "Spánek · Vlhkost · cíl (%)",
+          "device_min_on_s": "Výkon · min ON (s)",
+          "device_min_off_s": "Výkon · min OFF (s)",
+          "device_max_on_s": "Výkon · max ON (s)",
+          "device_home_heat_c": "Domov · Teplota + · cíl (°C)",
+          "device_home_cool_c": "Domov · Teplota − · cíl (°C)",
+          "device_unoccupied_heat_c": "Místnost · Vypnout · Teplota + · cíl (°C)",
+          "device_unoccupied_cool_c": "Místnost · Vypnout · Teplota − · cíl (°C)",
+          "device_away_heat_c": "Domov · Vypnout · Teplota + · cíl (°C)",
+          "device_away_cool_c": "Domov · Vypnout · Teplota − · cíl (°C)",
+          "device_sleep_heat_c": "Spánek · Teplota + · cíl (°C)",
+          "device_sleep_cool_c": "Spánek · Teplota − · cíl (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_method": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_presence_requirement": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_absence_action": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_sleep_behavior": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_hardware_confirmed": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_temperature_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_humidity_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_co2_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_pm25_entity": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_fan_purpose": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_sensor_verified": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_fan_speed_percent": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_humidity_target": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_sleep_humidity_target": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_min_on_s": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_min_off_s": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_max_on_s": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_home_heat_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_home_cool_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_unoccupied_heat_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_unoccupied_cool_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_away_heat_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_away_cool_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_sleep_heat_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení.",
+          "device_sleep_cool_c": "Vybrat zdroj; Povinné · řízení · senzor / Zařízení."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Neplatné · Obsazenost · nastavení",
+      "general_invalid_trackers": "Neplatné · Domov · nastavení",
+      "general_invalid_rooms_entity": "Neplatné · Místnost · nastavení",
+      "general_invalid_attribute": "Neplatné · zdroj · nastavení",
+      "general_invalid_source_age": "Neplatné · zdroj · nastavení",
+      "invalid_selected_devices": "Neplatné · Zařízení · nastavení",
+      "device_policy_invalid": "Neplatné · Obsazenost · nastavení",
+      "device_method_invalid": "Neplatné · řízení · nastavení",
+      "device_hardware_required": "Neplatné · Povinné · nastavení",
+      "device_power_required_for_off": "Neplatné · Výkon · nastavení",
+      "device_temperature_required": "Neplatné · Teplota · nastavení",
+      "device_humidity_required": "Neplatné · Vlhkost · nastavení",
+      "device_air_sensor_required": "Neplatné · senzor · nastavení",
+      "device_temperature_band_invalid": "Neplatné · Teplota · nastavení",
+      "device_humidity_invalid": "Neplatné · Vlhkost · nastavení",
+      "device_runtime_invalid": "Neplatné · Výkon · nastavení"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Domov · Obsazenost",
+        "all_home": "Domov · Zařízení · Obsazenost"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cíl · řízení",
+        "native": "Zařízení · řízení",
+        "power": "Výkon",
+        "speed": "Rychlost"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatické",
+        "room": "Místnost · Obsazenost",
+        "home": "Domov · Obsazenost"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pozastavit",
+        "off": "Vypnout"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatické",
+        "pause": "Pozastavit",
+        "sleep_targets": "Spánek · cíl"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Venkovní · řízení",
+        "filtration": "PM2.5 · řízení"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "zdroj · Neplatné",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cíl · nastavení"
       }
     }
   }

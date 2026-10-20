@@ -153,17 +153,11 @@
         "title": "⚙️ Chọn",
         "description": "Chọn: Phòng / Thời tiết và cảnh báo / Thông báo (tùy chọn) / Ngưỡng nâng cao",
         "menu_options": {
-          "areas": "Phòng",
-          "weather": "Thời tiết và cảnh báo",
-          "indoor_sensors": "Phòng · Chỉ số nấm mốc",
-          "window_sensors": "Loại trừ cảm biến cửa sổ",
-          "outdoor": "Chất lượng không khí ngoài trời",
+          "outside_data": "Bên ngoài · nguồn",
+          "general_settings": "Chung · cài đặt",
+          "area_settings": "Khu vực · cài đặt",
           "delivery": "Thông báo (tùy chọn)",
-          "thresholds": "Ngưỡng nâng cao",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Ngưỡng nâng cao"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Bên ngoài · nguồn",
+        "description": "Bên ngoài · nguồn: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "menu_options": {
+          "weather": "Thời tiết và cảnh báo",
+          "outdoor": "Chất lượng không khí ngoài trời",
+          "outside_aqi": "Bên ngoài · AQI",
+          "pollen": "Phấn hoa"
+        }
+      },
+      "area_settings": {
+        "title": "Khu vực · cài đặt",
+        "description": "Khu vực · cài đặt: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "menu_options": {
+          "areas": "Phòng",
+          "indoor_sensors": "Phòng · Chỉ số nấm mốc",
+          "window_sensors": "Loại trừ cảm biến cửa sổ",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Khu vực · Thiết bị"
+        }
+      },
+      "device_menu": {
+        "title": "Thiết bị · cài đặt",
+        "description": "Thiết bị · cài đặt: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "menu_options": {
+          "device_settings": "Thiết bị · điều khiển",
+          "device_choice": "Chọn · Thiết bị",
+          "device_done": "cài đặt · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Chung · cài đặt",
+        "description": "Chung · cài đặt: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "general_room_occupancy_sensors": "Phòng · Hiện diện · cảm biến",
+          "general_occupied_rooms_entity": "Hiện diện · Phòng · nguồn (state)",
+          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
+          "general_home_trackers": "Nhà · Hiện diện · Thiết bị",
+          "general_home_policy": "Nhà · Hiện diện · điều khiển",
+          "general_sleep_rooms_entity": "Ngủ · Phòng · nguồn (state)",
+          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)",
+          "general_source_stale_minutes": "nguồn · Bắt buộc (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_occupied_rooms_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_occupied_rooms_attribute": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_home_trackers": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_home_policy": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_sleep_rooms_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_sleep_rooms_attribute": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "general_source_stale_minutes": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "pollen": {
+        "title": "Phấn hoa",
+        "description": "Phấn hoa: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "pollen_high_from": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "pollen_max_scale": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "pollen_avoid_ventilation": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "outside_aqi": {
+        "title": "Bên ngoài · AQI",
+        "description": "Bên ngoài · AQI: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "outside_aqi_entity": "AQI · cảm biến",
+          "outside_aqi_scale": "AQI · nguồn",
+          "outside_aqi_limit": "AQI · mục tiêu",
+          "outside_aqi_no_sources": "AQI · cảm biến · Bắt buộc"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "outside_aqi_scale": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "outside_aqi_limit": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "outside_aqi_no_sources": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "area_devices": {
+        "title": "Khu vực · Thiết bị",
+        "description": "Khu vực · Thiết bị: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "area_devices_area": "Chọn · Khu vực"
+        },
+        "data_description": {
+          "area_devices_area": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "select_devices": {
+        "title": "Chọn · Thiết bị",
+        "description": "Chọn · Thiết bị: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "selected_devices": "Chọn · Thiết bị"
+        },
+        "data_description": {
+          "selected_devices": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "device_choice": {
+        "title": "Chọn · Thiết bị",
+        "description": "Chọn · Thiết bị: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "device_choice": "Chọn · Thiết bị"
+        },
+        "data_description": {
+          "device_choice": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
+      },
+      "device_settings": {
+        "title": "Thiết bị · điều khiển",
+        "description": "Thiết bị · điều khiển: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "device_auto_control": "Tự động điều khiển",
+          "device_method": "điều khiển · nguồn",
+          "device_presence_requirement": "điều khiển · Hiện diện",
+          "device_absence_action": "Tắt · Hiện diện",
+          "device_sleep_behavior": "Ngủ · điều khiển",
+          "device_hardware_confirmed": "Bắt buộc · Thiết bị · Công suất",
+          "device_temperature_entity": "Nhiệt độ · cảm biến",
+          "device_humidity_entity": "Độ ẩm · cảm biến",
+          "device_co2_entity": "CO₂ · cảm biến",
+          "device_pm25_entity": "PM2.5 · cảm biến",
+          "device_fan_purpose": "điều khiển · Thiết bị",
+          "device_sensor_verified": "cảm biến · Bắt buộc",
+          "device_fan_speed_percent": "Tốc độ (%)",
+          "device_humidity_target": "Độ ẩm · mục tiêu (%)",
+          "device_sleep_humidity_target": "Ngủ · Độ ẩm · mục tiêu (%)",
+          "device_min_on_s": "Công suất · min ON (s)",
+          "device_min_off_s": "Công suất · min OFF (s)",
+          "device_max_on_s": "Công suất · max ON (s)",
+          "device_home_heat_c": "Nhà · Nhiệt độ + · mục tiêu (°C)",
+          "device_home_cool_c": "Nhà · Nhiệt độ − · mục tiêu (°C)",
+          "device_unoccupied_heat_c": "Phòng · Tắt · Nhiệt độ + · mục tiêu (°C)",
+          "device_unoccupied_cool_c": "Phòng · Tắt · Nhiệt độ − · mục tiêu (°C)",
+          "device_away_heat_c": "Nhà · Tắt · Nhiệt độ + · mục tiêu (°C)",
+          "device_away_cool_c": "Nhà · Tắt · Nhiệt độ − · mục tiêu (°C)",
+          "device_sleep_heat_c": "Ngủ · Nhiệt độ + · mục tiêu (°C)",
+          "device_sleep_cool_c": "Ngủ · Nhiệt độ − · mục tiêu (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_method": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_presence_requirement": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_absence_action": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_sleep_behavior": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_hardware_confirmed": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_temperature_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_humidity_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_co2_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_pm25_entity": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_fan_purpose": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_sensor_verified": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_fan_speed_percent": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_humidity_target": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_sleep_humidity_target": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_min_on_s": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_min_off_s": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_max_on_s": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_home_heat_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_home_cool_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_unoccupied_heat_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_unoccupied_cool_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_away_heat_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_away_cool_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_sleep_heat_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị.",
+          "device_sleep_cool_c": "Chọn nguồn; Bắt buộc · điều khiển · cảm biến / Thiết bị."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Không hợp lệ · Hiện diện · cài đặt",
+      "general_invalid_trackers": "Không hợp lệ · Nhà · cài đặt",
+      "general_invalid_rooms_entity": "Không hợp lệ · Phòng · cài đặt",
+      "general_invalid_attribute": "Không hợp lệ · nguồn · cài đặt",
+      "general_invalid_source_age": "Không hợp lệ · nguồn · cài đặt",
+      "invalid_selected_devices": "Không hợp lệ · Thiết bị · cài đặt",
+      "device_policy_invalid": "Không hợp lệ · Hiện diện · cài đặt",
+      "device_method_invalid": "Không hợp lệ · điều khiển · cài đặt",
+      "device_hardware_required": "Không hợp lệ · Bắt buộc · cài đặt",
+      "device_power_required_for_off": "Không hợp lệ · Công suất · cài đặt",
+      "device_temperature_required": "Không hợp lệ · Nhiệt độ · cài đặt",
+      "device_humidity_required": "Không hợp lệ · Độ ẩm · cài đặt",
+      "device_air_sensor_required": "Không hợp lệ · cảm biến · cài đặt",
+      "device_temperature_band_invalid": "Không hợp lệ · Nhiệt độ · cài đặt",
+      "device_humidity_invalid": "Không hợp lệ · Độ ẩm · cài đặt",
+      "device_runtime_invalid": "Không hợp lệ · Công suất · cài đặt"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Nhà · Hiện diện",
+        "all_home": "Nhà · Thiết bị · Hiện diện"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "mục tiêu · điều khiển",
+        "native": "Thiết bị · điều khiển",
+        "power": "Công suất",
+        "speed": "Tốc độ"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Tự động",
+        "room": "Phòng · Hiện diện",
+        "home": "Nhà · Hiện diện"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Tạm dừng",
+        "off": "Tắt"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Tự động",
+        "pause": "Tạm dừng",
+        "sleep_targets": "Ngủ · mục tiêu"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Bên ngoài · điều khiển",
+        "filtration": "PM2.5 · điều khiển"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "nguồn · Không hợp lệ",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "mục tiêu · cài đặt"
       }
     }
   }

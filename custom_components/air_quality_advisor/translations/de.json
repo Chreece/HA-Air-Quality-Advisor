@@ -153,17 +153,11 @@
         "title": "Einstellungen auswählen",
         "description": "Wähle eine Einstellungsgruppe. Alle anderen Einstellungen bleiben unverändert.",
         "menu_options": {
-          "areas": "Bereiche",
-          "weather": "Wetter und Warnungen",
-          "indoor_sensors": "Raumeinstellungen – Innenluft und Schimmel",
-          "window_sensors": "Fenstersensoren ausschließen",
-          "outdoor": "Außenluftqualität",
+          "outside_data": "Außendaten",
+          "general_settings": "Allgemeine Einstellungen",
+          "area_settings": "Bereichseinstellungen",
           "delivery": "Ansagen (optional)",
-          "thresholds": "Erweiterte Grenzwerte",
-          "environment": "Internationale Luftqualitätsquellen und Pollen",
-          "environment_room": "Raum für Umweltanalysen wählen",
-          "pid": "Klima-PID — Raum wählen",
-          "climate": "Klima — Raum auswählen"
+          "thresholds": "Erweiterte Grenzwerte"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Außendaten",
+        "description": "Wetter, Warnungen, Außenluftqualität, AQI-Skalen und Pollen. Wähle einen Unterpunkt.",
+        "menu_options": {
+          "weather": "Wetter und Warnungen",
+          "outdoor": "Außenluftqualität",
+          "outside_aqi": "Außen · AQI",
+          "pollen": "Pollen"
+        }
+      },
+      "area_settings": {
+        "title": "Bereichseinstellungen",
+        "description": "Raumüberwachung, Fensterausschlüsse, Messungen und Geräte einzeln einstellen.",
+        "menu_options": {
+          "areas": "Bereiche",
+          "indoor_sensors": "Raumeinstellungen – Innenluft und Schimmel",
+          "window_sensors": "Fenstersensoren ausschließen",
+          "environment_room": "Raum für Umweltanalysen wählen",
+          "climate": "Klima — Raum auswählen",
+          "pid": "Klima-PID — Raum wählen",
+          "area_devices": "Bereich · Geräte"
+        }
+      },
+      "device_menu": {
+        "title": "Geräte · Einstellungen",
+        "description": "Automatik, Sollwerte, Anwesenheit und Schlaf für dieses Gerät einstellen.",
+        "menu_options": {
+          "device_settings": "Geräte · Steuerung",
+          "device_choice": "Auswählen · Geräte",
+          "device_done": "Einstellungen · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Allgemeine Einstellungen",
+        "description": "Präsenzsensoren, Anwesenheitstracker und Sensoren für belegte oder schlafende Räume festlegen. Raumlisten im Zustand oder einem benannten Attribut (z. B. JSON). Fehlende oder alte Werte bedeuten NIEMALS, dass das Haus leer ist.",
+        "data": {
+          "general_room_occupancy_sensors": "Raum · Belegung · Sensor",
+          "general_occupied_rooms_entity": "Belegung · Raum · Quelle (state)",
+          "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
+          "general_home_trackers": "Zuhause · Belegung · Geräte",
+          "general_home_policy": "Zuhause · Belegung · Steuerung",
+          "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
+          "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
+          "general_source_stale_minutes": "Quelle · Erforderlich (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_occupied_rooms_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_occupied_rooms_attribute": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_home_trackers": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_home_policy": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_sleep_rooms_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_sleep_rooms_attribute": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "general_source_stale_minutes": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Pollenindex aus einer beliebigen Home-Assistant-Quelle wählen. Skala und optionale Lüftungssperre bei hoher Belastung festlegen.",
+        "data": {
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "pollen_high_from": "Pollenindex ab diesem Wert hoch",
+          "pollen_max_scale": "Maximalwert der Pollen-Skala",
+          "pollen_avoid_ventilation": "Bei hoher Pollenbelastung Lüften vermeiden"
+        },
+        "data_description": {
+          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
+          "pollen_high_from": "Die Pollen-Warnschwelle hängt von der Skala des Anbieters ab.",
+          "pollen_max_scale": "Oberster Zahlenwert der Anbieterskala, z. B. 5.",
+          "pollen_avoid_ventilation": "Hohe Pollenwerte können die Empfehlung zum Fensteröffnen optional sperren."
+        }
+      },
+      "outside_aqi": {
+        "title": "Außen · AQI",
+        "description": "Jedem AQI-Sensor seine dokumentierte Skala zuordnen. Unbekannte Skalen beweisen keine sichere Außenluft.",
+        "data": {
+          "outside_aqi_entity": "AQI · Sensor",
+          "outside_aqi_scale": "AQI · Quelle",
+          "outside_aqi_limit": "AQI · Sollwert",
+          "outside_aqi_no_sources": "AQI · Sensor · Erforderlich"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "outside_aqi_scale": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "outside_aqi_limit": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "outside_aqi_no_sources": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
+      },
+      "area_devices": {
+        "title": "Bereich · Geräte",
+        "description": "Bereich · Geräte: Auswählen Quelle, Sensor / Geräte · Steuerung.",
+        "data": {
+          "area_devices_area": "Auswählen · Bereich"
+        },
+        "data_description": {
+          "area_devices_area": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
+      },
+      "select_devices": {
+        "title": "Auswählen · Geräte",
+        "description": "Alle kompatiblen Geräte dieses HA-Raums werden zur Überwachung vorausgewählt. Die Auswahl erlaubt KEINE Gerätesteuerung.",
+        "data": {
+          "selected_devices": "Auswählen · Geräte"
+        },
+        "data_description": {
+          "selected_devices": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
+      },
+      "device_choice": {
+        "title": "Auswählen · Geräte",
+        "description": "Genau ein ausgewähltes Gerät konfigurieren.",
+        "data": {
+          "device_choice": "Auswählen · Geräte"
+        },
+        "data_description": {
+          "device_choice": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
+      },
+      "device_settings": {
+        "title": "Geräte · Steuerung",
+        "description": "Gerätefreigabe erfolgt separat. Unbekannte Anwesenheit sperrt Befehle; Ausschalten erfordert geprüften Hardware-Schutz. HVAC startet nicht automatisch neu.",
+        "data": {
+          "device_auto_control": "Automatische Steuerung",
+          "device_method": "Steuerung · Quelle",
+          "device_presence_requirement": "Steuerung · Belegung",
+          "device_absence_action": "Ausschalten · Belegung",
+          "device_sleep_behavior": "Schlaf · Steuerung",
+          "device_hardware_confirmed": "Erforderlich · Geräte · Leistung",
+          "device_temperature_entity": "Temperatur · Sensor",
+          "device_humidity_entity": "Luftfeuchtigkeit · Sensor",
+          "device_co2_entity": "CO₂ · Sensor",
+          "device_pm25_entity": "PM2.5 · Sensor",
+          "device_fan_purpose": "Steuerung · Geräte",
+          "device_sensor_verified": "Sensor · Erforderlich",
+          "device_fan_speed_percent": "Geschwindigkeit (%)",
+          "device_humidity_target": "Luftfeuchtigkeit · Sollwert (%)",
+          "device_sleep_humidity_target": "Schlaf · Luftfeuchtigkeit · Sollwert (%)",
+          "device_min_on_s": "Leistung · min ON (s)",
+          "device_min_off_s": "Leistung · min OFF (s)",
+          "device_max_on_s": "Leistung · max ON (s)",
+          "device_home_heat_c": "Zuhause · Temperatur + · Sollwert (°C)",
+          "device_home_cool_c": "Zuhause · Temperatur − · Sollwert (°C)",
+          "device_unoccupied_heat_c": "Raum · Ausschalten · Temperatur + · Sollwert (°C)",
+          "device_unoccupied_cool_c": "Raum · Ausschalten · Temperatur − · Sollwert (°C)",
+          "device_away_heat_c": "Zuhause · Ausschalten · Temperatur + · Sollwert (°C)",
+          "device_away_cool_c": "Zuhause · Ausschalten · Temperatur − · Sollwert (°C)",
+          "device_sleep_heat_c": "Schlaf · Temperatur + · Sollwert (°C)",
+          "device_sleep_cool_c": "Schlaf · Temperatur − · Sollwert (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_method": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_presence_requirement": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_absence_action": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_sleep_behavior": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_hardware_confirmed": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_temperature_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_humidity_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_co2_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_pm25_entity": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_fan_purpose": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_sensor_verified": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_fan_speed_percent": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_humidity_target": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_sleep_humidity_target": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_min_on_s": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_min_off_s": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_max_on_s": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_home_heat_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_home_cool_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_unoccupied_heat_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_unoccupied_cool_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_away_heat_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_away_cool_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_sleep_heat_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte.",
+          "device_sleep_cool_c": "Auswählen Quelle; Erforderlich · Steuerung · Sensor / Geräte."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Ungültig · Belegung · Einstellungen",
+      "general_invalid_trackers": "Ungültig · Zuhause · Einstellungen",
+      "general_invalid_rooms_entity": "Ungültig · Raum · Einstellungen",
+      "general_invalid_attribute": "Ungültig · Quelle · Einstellungen",
+      "general_invalid_source_age": "Ungültig · Quelle · Einstellungen",
+      "invalid_selected_devices": "Ungültig · Geräte · Einstellungen",
+      "device_policy_invalid": "Ungültig · Belegung · Einstellungen",
+      "device_method_invalid": "Ungültig · Steuerung · Einstellungen",
+      "device_hardware_required": "Ungültig · Erforderlich · Einstellungen",
+      "device_power_required_for_off": "Ungültig · Leistung · Einstellungen",
+      "device_temperature_required": "Ungültig · Temperatur · Einstellungen",
+      "device_humidity_required": "Ungültig · Luftfeuchtigkeit · Einstellungen",
+      "device_air_sensor_required": "Ungültig · Sensor · Einstellungen",
+      "device_temperature_band_invalid": "Ungültig · Temperatur · Einstellungen",
+      "device_humidity_invalid": "Ungültig · Luftfeuchtigkeit · Einstellungen",
+      "device_runtime_invalid": "Ungültig · Leistung · Einstellungen"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Zuhause · Belegung",
+        "all_home": "Zuhause · Geräte · Belegung"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "Sollwert · Steuerung",
+        "native": "Geräte · Steuerung",
+        "power": "Leistung",
+        "speed": "Geschwindigkeit"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatische",
+        "room": "Raum · Belegung",
+        "home": "Zuhause · Belegung"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pausieren",
+        "off": "Ausschalten"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatische",
+        "pause": "Pausieren",
+        "sleep_targets": "Schlaf · Sollwert"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Außen · Steuerung",
+        "filtration": "PM2.5 · Steuerung"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "Quelle · Ungültig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "Sollwert · Einstellungen"
       }
     }
   }

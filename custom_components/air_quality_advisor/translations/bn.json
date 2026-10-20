@@ -153,17 +153,11 @@
         "title": "⚙️ নির্বাচন করুন",
         "description": "নির্বাচন করুন: কক্ষ / আবহাওয়া ও সতর্কতা / ঘোষণা (ঐচ্ছিক) / উন্নত সীমা",
         "menu_options": {
-          "areas": "কক্ষ",
-          "weather": "আবহাওয়া ও সতর্কতা",
-          "indoor_sensors": "কক্ষ · ছাঁচের সূচক",
-          "window_sensors": "জানালার সেন্সর বাদ দিন",
-          "outdoor": "বাইরের বায়ুর মান",
+          "outside_data": "বাইরের · উৎস",
+          "general_settings": "সাধারণ · সেটিংস",
+          "area_settings": "এলাকা · সেটিংস",
           "delivery": "ঘোষণা (ঐচ্ছিক)",
-          "thresholds": "উন্নত সীমা",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "উন্নত সীমা"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "বাইরের · উৎস",
+        "description": "বাইরের · উৎস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "menu_options": {
+          "weather": "আবহাওয়া ও সতর্কতা",
+          "outdoor": "বাইরের বায়ুর মান",
+          "outside_aqi": "বাইরের · AQI",
+          "pollen": "পরাগ"
+        }
+      },
+      "area_settings": {
+        "title": "এলাকা · সেটিংস",
+        "description": "এলাকা · সেটিংস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "menu_options": {
+          "areas": "কক্ষ",
+          "indoor_sensors": "কক্ষ · ছাঁচের সূচক",
+          "window_sensors": "জানালার সেন্সর বাদ দিন",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "এলাকা · ডিভাইস"
+        }
+      },
+      "device_menu": {
+        "title": "ডিভাইস · সেটিংস",
+        "description": "ডিভাইস · সেটিংস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "menu_options": {
+          "device_settings": "ডিভাইস · নিয়ন্ত্রণ",
+          "device_choice": "নির্বাচন · ডিভাইস",
+          "device_done": "সেটিংস · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "সাধারণ · সেটিংস",
+        "description": "সাধারণ · সেটিংস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "general_room_occupancy_sensors": "ঘর · উপস্থিতি · সেন্সর",
+          "general_occupied_rooms_entity": "উপস্থিতি · ঘর · উৎস (state)",
+          "general_occupied_rooms_attribute": "উপস্থিতি · ঘর · উৎস (attribute)",
+          "general_home_trackers": "বাড়ি · উপস্থিতি · ডিভাইস",
+          "general_home_policy": "বাড়ি · উপস্থিতি · নিয়ন্ত্রণ",
+          "general_sleep_rooms_entity": "ঘুম · ঘর · উৎস (state)",
+          "general_sleep_rooms_attribute": "ঘুম · ঘর · উৎস (attribute)",
+          "general_source_stale_minutes": "উৎস · আবশ্যক (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_occupied_rooms_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_occupied_rooms_attribute": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_home_trackers": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_home_policy": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_sleep_rooms_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_sleep_rooms_attribute": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "general_source_stale_minutes": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "pollen": {
+        "title": "পরাগ",
+        "description": "পরাগ: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "pollen_high_from": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "pollen_max_scale": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "pollen_avoid_ventilation": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "outside_aqi": {
+        "title": "বাইরের · AQI",
+        "description": "বাইরের · AQI: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "outside_aqi_entity": "AQI · সেন্সর",
+          "outside_aqi_scale": "AQI · উৎস",
+          "outside_aqi_limit": "AQI · লক্ষ্য",
+          "outside_aqi_no_sources": "AQI · সেন্সর · আবশ্যক"
+        },
+        "data_description": {
+          "outside_aqi_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "outside_aqi_scale": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "outside_aqi_limit": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "outside_aqi_no_sources": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "area_devices": {
+        "title": "এলাকা · ডিভাইস",
+        "description": "এলাকা · ডিভাইস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "area_devices_area": "নির্বাচন · এলাকা"
+        },
+        "data_description": {
+          "area_devices_area": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "select_devices": {
+        "title": "নির্বাচন · ডিভাইস",
+        "description": "নির্বাচন · ডিভাইস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "selected_devices": "নির্বাচন · ডিভাইস"
+        },
+        "data_description": {
+          "selected_devices": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "device_choice": {
+        "title": "নির্বাচন · ডিভাইস",
+        "description": "নির্বাচন · ডিভাইস: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "device_choice": "নির্বাচন · ডিভাইস"
+        },
+        "data_description": {
+          "device_choice": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
+      },
+      "device_settings": {
+        "title": "ডিভাইস · নিয়ন্ত্রণ",
+        "description": "ডিভাইস · নিয়ন্ত্রণ: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "data": {
+          "device_auto_control": "স্বয়ংক্রিয় নিয়ন্ত্রণ",
+          "device_method": "নিয়ন্ত্রণ · উৎস",
+          "device_presence_requirement": "নিয়ন্ত্রণ · উপস্থিতি",
+          "device_absence_action": "বন্ধ · উপস্থিতি",
+          "device_sleep_behavior": "ঘুম · নিয়ন্ত্রণ",
+          "device_hardware_confirmed": "আবশ্যক · ডিভাইস · শক্তি",
+          "device_temperature_entity": "তাপমাত্রা · সেন্সর",
+          "device_humidity_entity": "আর্দ্রতা · সেন্সর",
+          "device_co2_entity": "CO₂ · সেন্সর",
+          "device_pm25_entity": "PM2.5 · সেন্সর",
+          "device_fan_purpose": "নিয়ন্ত্রণ · ডিভাইস",
+          "device_sensor_verified": "সেন্সর · আবশ্যক",
+          "device_fan_speed_percent": "গতি (%)",
+          "device_humidity_target": "আর্দ্রতা · লক্ষ্য (%)",
+          "device_sleep_humidity_target": "ঘুম · আর্দ্রতা · লক্ষ্য (%)",
+          "device_min_on_s": "শক্তি · min ON (s)",
+          "device_min_off_s": "শক্তি · min OFF (s)",
+          "device_max_on_s": "শক্তি · max ON (s)",
+          "device_home_heat_c": "বাড়ি · তাপমাত্রা + · লক্ষ্য (°C)",
+          "device_home_cool_c": "বাড়ি · তাপমাত্রা − · লক্ষ্য (°C)",
+          "device_unoccupied_heat_c": "ঘর · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)",
+          "device_unoccupied_cool_c": "ঘর · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)",
+          "device_away_heat_c": "বাড়ি · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)",
+          "device_away_cool_c": "বাড়ি · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)",
+          "device_sleep_heat_c": "ঘুম · তাপমাত্রা + · লক্ষ্য (°C)",
+          "device_sleep_cool_c": "ঘুম · তাপমাত্রা − · লক্ষ্য (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_method": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_presence_requirement": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_absence_action": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_sleep_behavior": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_hardware_confirmed": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_temperature_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_humidity_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_co2_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_pm25_entity": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_fan_purpose": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_sensor_verified": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_fan_speed_percent": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_humidity_target": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_sleep_humidity_target": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_min_on_s": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_min_off_s": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_max_on_s": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_home_heat_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_home_cool_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_unoccupied_heat_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_unoccupied_cool_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_away_heat_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_away_cool_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_sleep_heat_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস.",
+          "device_sleep_cool_c": "নির্বাচন উৎস; আবশ্যক · নিয়ন্ত্রণ · সেন্সর / ডিভাইস."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "অবৈধ · উপস্থিতি · সেটিংস",
+      "general_invalid_trackers": "অবৈধ · বাড়ি · সেটিংস",
+      "general_invalid_rooms_entity": "অবৈধ · ঘর · সেটিংস",
+      "general_invalid_attribute": "অবৈধ · উৎস · সেটিংস",
+      "general_invalid_source_age": "অবৈধ · উৎস · সেটিংস",
+      "invalid_selected_devices": "অবৈধ · ডিভাইস · সেটিংস",
+      "device_policy_invalid": "অবৈধ · উপস্থিতি · সেটিংস",
+      "device_method_invalid": "অবৈধ · নিয়ন্ত্রণ · সেটিংস",
+      "device_hardware_required": "অবৈধ · আবশ্যক · সেটিংস",
+      "device_power_required_for_off": "অবৈধ · শক্তি · সেটিংস",
+      "device_temperature_required": "অবৈধ · তাপমাত্রা · সেটিংস",
+      "device_humidity_required": "অবৈধ · আর্দ্রতা · সেটিংস",
+      "device_air_sensor_required": "অবৈধ · সেন্সর · সেটিংস",
+      "device_temperature_band_invalid": "অবৈধ · তাপমাত্রা · সেটিংস",
+      "device_humidity_invalid": "অবৈধ · আর্দ্রতা · সেটিংস",
+      "device_runtime_invalid": "অবৈধ · শক্তি · সেটিংস"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "বাড়ি · উপস্থিতি",
+        "all_home": "বাড়ি · ডিভাইস · উপস্থিতি"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "লক্ষ্য · নিয়ন্ত্রণ",
+        "native": "ডিভাইস · নিয়ন্ত্রণ",
+        "power": "শক্তি",
+        "speed": "গতি"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "স্বয়ংক্রিয়",
+        "room": "ঘর · উপস্থিতি",
+        "home": "বাড়ি · উপস্থিতি"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "বিরতি",
+        "off": "বন্ধ"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "স্বয়ংক্রিয়",
+        "pause": "বিরতি",
+        "sleep_targets": "ঘুম · লক্ষ্য"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "বাইরের · নিয়ন্ত্রণ",
+        "filtration": "PM2.5 · নিয়ন্ত্রণ"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "উৎস · অবৈধ",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "লক্ষ্য · সেটিংস"
       }
     }
   }

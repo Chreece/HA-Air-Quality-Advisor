@@ -153,17 +153,11 @@
         "title": "⚙️ Изаберите",
         "description": "Изаберите: Собе / Време и упозорења / Обавештења (опционо) / Напредни прагови",
         "menu_options": {
-          "areas": "Собе",
-          "weather": "Време и упозорења",
-          "indoor_sensors": "Собе · Индикатор буђи",
-          "window_sensors": "Изузми сензоре прозора",
-          "outdoor": "Квалитет спољног ваздуха",
+          "outside_data": "Spoljašnji · izvor",
+          "general_settings": "Opšta · podešavanja",
+          "area_settings": "Oblast · podešavanja",
           "delivery": "Обавештења (опционо)",
-          "thresholds": "Напредни прагови",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "Напредни прагови"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "Spoljašnji · izvor",
+        "description": "Spoljašnji · izvor: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "menu_options": {
+          "weather": "Време и упозорења",
+          "outdoor": "Квалитет спољног ваздуха",
+          "outside_aqi": "Spoljašnji · AQI",
+          "pollen": "Polen"
+        }
+      },
+      "area_settings": {
+        "title": "Oblast · podešavanja",
+        "description": "Oblast · podešavanja: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "menu_options": {
+          "areas": "Собе",
+          "indoor_sensors": "Собе · Индикатор буђи",
+          "window_sensors": "Изузми сензоре прозора",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Oblast · Uređaji"
+        }
+      },
+      "device_menu": {
+        "title": "Uređaji · podešavanja",
+        "description": "Uređaji · podešavanja: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "menu_options": {
+          "device_settings": "Uređaji · upravljanje",
+          "device_choice": "Izaberi · Uređaji",
+          "device_done": "podešavanja · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "Opšta · podešavanja",
+        "description": "Opšta · podešavanja: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "general_room_occupancy_sensors": "Soba · Prisustvo · senzor",
+          "general_occupied_rooms_entity": "Prisustvo · Soba · izvor (state)",
+          "general_occupied_rooms_attribute": "Prisustvo · Soba · izvor (attribute)",
+          "general_home_trackers": "Dom · Prisustvo · Uređaji",
+          "general_home_policy": "Dom · Prisustvo · upravljanje",
+          "general_sleep_rooms_entity": "Spavanje · Soba · izvor (state)",
+          "general_sleep_rooms_attribute": "Spavanje · Soba · izvor (attribute)",
+          "general_source_stale_minutes": "izvor · Obavezno (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_occupied_rooms_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_occupied_rooms_attribute": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_home_trackers": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_home_policy": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_sleep_rooms_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_sleep_rooms_attribute": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "general_source_stale_minutes": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "pollen_high_from": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "pollen_max_scale": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "pollen_avoid_ventilation": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "outside_aqi": {
+        "title": "Spoljašnji · AQI",
+        "description": "Spoljašnji · AQI: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "outside_aqi_entity": "AQI · senzor",
+          "outside_aqi_scale": "AQI · izvor",
+          "outside_aqi_limit": "AQI · cilj",
+          "outside_aqi_no_sources": "AQI · senzor · Obavezno"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "outside_aqi_scale": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "outside_aqi_limit": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "outside_aqi_no_sources": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "area_devices": {
+        "title": "Oblast · Uređaji",
+        "description": "Oblast · Uređaji: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "area_devices_area": "Izaberi · Oblast"
+        },
+        "data_description": {
+          "area_devices_area": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "select_devices": {
+        "title": "Izaberi · Uređaji",
+        "description": "Izaberi · Uređaji: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "selected_devices": "Izaberi · Uređaji"
+        },
+        "data_description": {
+          "selected_devices": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "device_choice": {
+        "title": "Izaberi · Uređaji",
+        "description": "Izaberi · Uređaji: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "device_choice": "Izaberi · Uređaji"
+        },
+        "data_description": {
+          "device_choice": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
+      },
+      "device_settings": {
+        "title": "Uređaji · upravljanje",
+        "description": "Uređaji · upravljanje: Izaberi izvor, senzor / Uređaji · upravljanje.",
+        "data": {
+          "device_auto_control": "Automatsko upravljanje",
+          "device_method": "upravljanje · izvor",
+          "device_presence_requirement": "upravljanje · Prisustvo",
+          "device_absence_action": "Isključi · Prisustvo",
+          "device_sleep_behavior": "Spavanje · upravljanje",
+          "device_hardware_confirmed": "Obavezno · Uređaji · Snaga",
+          "device_temperature_entity": "Temperatura · senzor",
+          "device_humidity_entity": "Vlažnost · senzor",
+          "device_co2_entity": "CO₂ · senzor",
+          "device_pm25_entity": "PM2.5 · senzor",
+          "device_fan_purpose": "upravljanje · Uređaji",
+          "device_sensor_verified": "senzor · Obavezno",
+          "device_fan_speed_percent": "Brzina (%)",
+          "device_humidity_target": "Vlažnost · cilj (%)",
+          "device_sleep_humidity_target": "Spavanje · Vlažnost · cilj (%)",
+          "device_min_on_s": "Snaga · min ON (s)",
+          "device_min_off_s": "Snaga · min OFF (s)",
+          "device_max_on_s": "Snaga · max ON (s)",
+          "device_home_heat_c": "Dom · Temperatura + · cilj (°C)",
+          "device_home_cool_c": "Dom · Temperatura − · cilj (°C)",
+          "device_unoccupied_heat_c": "Soba · Isključi · Temperatura + · cilj (°C)",
+          "device_unoccupied_cool_c": "Soba · Isključi · Temperatura − · cilj (°C)",
+          "device_away_heat_c": "Dom · Isključi · Temperatura + · cilj (°C)",
+          "device_away_cool_c": "Dom · Isključi · Temperatura − · cilj (°C)",
+          "device_sleep_heat_c": "Spavanje · Temperatura + · cilj (°C)",
+          "device_sleep_cool_c": "Spavanje · Temperatura − · cilj (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_method": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_presence_requirement": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_absence_action": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_sleep_behavior": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_hardware_confirmed": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_temperature_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_humidity_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_co2_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_pm25_entity": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_fan_purpose": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_sensor_verified": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_fan_speed_percent": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_humidity_target": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_sleep_humidity_target": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_min_on_s": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_min_off_s": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_max_on_s": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_home_heat_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_home_cool_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_unoccupied_heat_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_unoccupied_cool_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_away_heat_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_away_cool_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_sleep_heat_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji.",
+          "device_sleep_cool_c": "Izaberi izvor; Obavezno · upravljanje · senzor / Uređaji."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Neispravno · Prisustvo · podešavanja",
+      "general_invalid_trackers": "Neispravno · Dom · podešavanja",
+      "general_invalid_rooms_entity": "Neispravno · Soba · podešavanja",
+      "general_invalid_attribute": "Neispravno · izvor · podešavanja",
+      "general_invalid_source_age": "Neispravno · izvor · podešavanja",
+      "invalid_selected_devices": "Neispravno · Uređaji · podešavanja",
+      "device_policy_invalid": "Neispravno · Prisustvo · podešavanja",
+      "device_method_invalid": "Neispravno · upravljanje · podešavanja",
+      "device_hardware_required": "Neispravno · Obavezno · podešavanja",
+      "device_power_required_for_off": "Neispravno · Snaga · podešavanja",
+      "device_temperature_required": "Neispravno · Temperatura · podešavanja",
+      "device_humidity_required": "Neispravno · Vlažnost · podešavanja",
+      "device_air_sensor_required": "Neispravno · senzor · podešavanja",
+      "device_temperature_band_invalid": "Neispravno · Temperatura · podešavanja",
+      "device_humidity_invalid": "Neispravno · Vlažnost · podešavanja",
+      "device_runtime_invalid": "Neispravno · Snaga · podešavanja"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Dom · Prisustvo",
+        "all_home": "Dom · Uređaji · Prisustvo"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cilj · upravljanje",
+        "native": "Uređaji · upravljanje",
+        "power": "Snaga",
+        "speed": "Brzina"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatsko",
+        "room": "Soba · Prisustvo",
+        "home": "Dom · Prisustvo"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pauziraj",
+        "off": "Isključi"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatsko",
+        "pause": "Pauziraj",
+        "sleep_targets": "Spavanje · cilj"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Spoljašnji · upravljanje",
+        "filtration": "PM2.5 · upravljanje"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "izvor · Neispravno",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cilj · podešavanja"
       }
     }
   }

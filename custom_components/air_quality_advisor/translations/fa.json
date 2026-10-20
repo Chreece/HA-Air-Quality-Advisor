@@ -153,17 +153,11 @@
         "title": "⚙️ انتخاب کنید",
         "description": "انتخاب کنید: اتاق‌ها / آب‌وهوا و هشدارها / اعلان‌ها (اختیاری) / آستانه‌های پیشرفته",
         "menu_options": {
-          "areas": "اتاق‌ها",
-          "weather": "آب‌وهوا و هشدارها",
-          "indoor_sensors": "اتاق‌ها · شاخص کپک",
-          "window_sensors": "حذف حسگرهای پنجره",
-          "outdoor": "کیفیت هوای بیرون",
+          "outside_data": "بیرون · منبع",
+          "general_settings": "عمومی · تنظیمات",
+          "area_settings": "ناحیه · تنظیمات",
           "delivery": "اعلان‌ها (اختیاری)",
-          "thresholds": "آستانه‌های پیشرفته",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "آستانه‌های پیشرفته"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "بیرون · منبع",
+        "description": "بیرون · منبع: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "menu_options": {
+          "weather": "آب‌وهوا و هشدارها",
+          "outdoor": "کیفیت هوای بیرون",
+          "outside_aqi": "بیرون · AQI",
+          "pollen": "گرده"
+        }
+      },
+      "area_settings": {
+        "title": "ناحیه · تنظیمات",
+        "description": "ناحیه · تنظیمات: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "menu_options": {
+          "areas": "اتاق‌ها",
+          "indoor_sensors": "اتاق‌ها · شاخص کپک",
+          "window_sensors": "حذف حسگرهای پنجره",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "ناحیه · دستگاه‌ها"
+        }
+      },
+      "device_menu": {
+        "title": "دستگاه‌ها · تنظیمات",
+        "description": "دستگاه‌ها · تنظیمات: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "menu_options": {
+          "device_settings": "دستگاه‌ها · کنترل",
+          "device_choice": "انتخاب · دستگاه‌ها",
+          "device_done": "تنظیمات · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "عمومی · تنظیمات",
+        "description": "عمومی · تنظیمات: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "general_room_occupancy_sensors": "اتاق · حضور · حسگر",
+          "general_occupied_rooms_entity": "حضور · اتاق · منبع (state)",
+          "general_occupied_rooms_attribute": "حضور · اتاق · منبع (attribute)",
+          "general_home_trackers": "خانه · حضور · دستگاه‌ها",
+          "general_home_policy": "خانه · حضور · کنترل",
+          "general_sleep_rooms_entity": "خواب · اتاق · منبع (state)",
+          "general_sleep_rooms_attribute": "خواب · اتاق · منبع (attribute)",
+          "general_source_stale_minutes": "منبع · الزامی (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_occupied_rooms_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_occupied_rooms_attribute": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_home_trackers": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_home_policy": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_sleep_rooms_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_sleep_rooms_attribute": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "general_source_stale_minutes": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "pollen": {
+        "title": "گرده",
+        "description": "گرده: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "pollen_high_from": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "pollen_max_scale": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "pollen_avoid_ventilation": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "outside_aqi": {
+        "title": "بیرون · AQI",
+        "description": "بیرون · AQI: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "outside_aqi_entity": "AQI · حسگر",
+          "outside_aqi_scale": "AQI · منبع",
+          "outside_aqi_limit": "AQI · هدف",
+          "outside_aqi_no_sources": "AQI · حسگر · الزامی"
+        },
+        "data_description": {
+          "outside_aqi_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "outside_aqi_scale": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "outside_aqi_limit": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "outside_aqi_no_sources": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "area_devices": {
+        "title": "ناحیه · دستگاه‌ها",
+        "description": "ناحیه · دستگاه‌ها: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "area_devices_area": "انتخاب · ناحیه"
+        },
+        "data_description": {
+          "area_devices_area": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "select_devices": {
+        "title": "انتخاب · دستگاه‌ها",
+        "description": "انتخاب · دستگاه‌ها: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "selected_devices": "انتخاب · دستگاه‌ها"
+        },
+        "data_description": {
+          "selected_devices": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "device_choice": {
+        "title": "انتخاب · دستگاه‌ها",
+        "description": "انتخاب · دستگاه‌ها: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "device_choice": "انتخاب · دستگاه‌ها"
+        },
+        "data_description": {
+          "device_choice": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
+      },
+      "device_settings": {
+        "title": "دستگاه‌ها · کنترل",
+        "description": "دستگاه‌ها · کنترل: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "data": {
+          "device_auto_control": "خودکار کنترل",
+          "device_method": "کنترل · منبع",
+          "device_presence_requirement": "کنترل · حضور",
+          "device_absence_action": "خاموش · حضور",
+          "device_sleep_behavior": "خواب · کنترل",
+          "device_hardware_confirmed": "الزامی · دستگاه‌ها · توان",
+          "device_temperature_entity": "دما · حسگر",
+          "device_humidity_entity": "رطوبت · حسگر",
+          "device_co2_entity": "CO₂ · حسگر",
+          "device_pm25_entity": "PM2.5 · حسگر",
+          "device_fan_purpose": "کنترل · دستگاه‌ها",
+          "device_sensor_verified": "حسگر · الزامی",
+          "device_fan_speed_percent": "سرعت (%)",
+          "device_humidity_target": "رطوبت · هدف (%)",
+          "device_sleep_humidity_target": "خواب · رطوبت · هدف (%)",
+          "device_min_on_s": "توان · min ON (s)",
+          "device_min_off_s": "توان · min OFF (s)",
+          "device_max_on_s": "توان · max ON (s)",
+          "device_home_heat_c": "خانه · دما + · هدف (°C)",
+          "device_home_cool_c": "خانه · دما − · هدف (°C)",
+          "device_unoccupied_heat_c": "اتاق · خاموش · دما + · هدف (°C)",
+          "device_unoccupied_cool_c": "اتاق · خاموش · دما − · هدف (°C)",
+          "device_away_heat_c": "خانه · خاموش · دما + · هدف (°C)",
+          "device_away_cool_c": "خانه · خاموش · دما − · هدف (°C)",
+          "device_sleep_heat_c": "خواب · دما + · هدف (°C)",
+          "device_sleep_cool_c": "خواب · دما − · هدف (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_method": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_presence_requirement": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_absence_action": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_sleep_behavior": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_hardware_confirmed": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_temperature_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_humidity_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_co2_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_pm25_entity": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_fan_purpose": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_sensor_verified": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_fan_speed_percent": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_humidity_target": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_sleep_humidity_target": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_min_on_s": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_min_off_s": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_max_on_s": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_home_heat_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_home_cool_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_unoccupied_heat_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_unoccupied_cool_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_away_heat_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_away_cool_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_sleep_heat_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها.",
+          "device_sleep_cool_c": "انتخاب منبع; الزامی · کنترل · حسگر / دستگاه‌ها."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "نامعتبر · حضور · تنظیمات",
+      "general_invalid_trackers": "نامعتبر · خانه · تنظیمات",
+      "general_invalid_rooms_entity": "نامعتبر · اتاق · تنظیمات",
+      "general_invalid_attribute": "نامعتبر · منبع · تنظیمات",
+      "general_invalid_source_age": "نامعتبر · منبع · تنظیمات",
+      "invalid_selected_devices": "نامعتبر · دستگاه‌ها · تنظیمات",
+      "device_policy_invalid": "نامعتبر · حضور · تنظیمات",
+      "device_method_invalid": "نامعتبر · کنترل · تنظیمات",
+      "device_hardware_required": "نامعتبر · الزامی · تنظیمات",
+      "device_power_required_for_off": "نامعتبر · توان · تنظیمات",
+      "device_temperature_required": "نامعتبر · دما · تنظیمات",
+      "device_humidity_required": "نامعتبر · رطوبت · تنظیمات",
+      "device_air_sensor_required": "نامعتبر · حسگر · تنظیمات",
+      "device_temperature_band_invalid": "نامعتبر · دما · تنظیمات",
+      "device_humidity_invalid": "نامعتبر · رطوبت · تنظیمات",
+      "device_runtime_invalid": "نامعتبر · توان · تنظیمات"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "خانه · حضور",
+        "all_home": "خانه · دستگاه‌ها · حضور"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "هدف · کنترل",
+        "native": "دستگاه‌ها · کنترل",
+        "power": "توان",
+        "speed": "سرعت"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "خودکار",
+        "room": "اتاق · حضور",
+        "home": "خانه · حضور"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "توقف",
+        "off": "خاموش"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "خودکار",
+        "pause": "توقف",
+        "sleep_targets": "خواب · هدف"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "بیرون · کنترل",
+        "filtration": "PM2.5 · کنترل"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "منبع · نامعتبر",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "هدف · تنظیمات"
       }
     }
   }

@@ -153,17 +153,11 @@
         "title": "⚙️ اختر",
         "description": "اختر: الغرف / الطقس والتحذيرات / الإعلانات (اختياري) / حدود متقدمة",
         "menu_options": {
-          "areas": "الغرف",
-          "weather": "الطقس والتحذيرات",
-          "indoor_sensors": "الغرف · مؤشر العفن",
-          "window_sensors": "استبعاد مستشعرات النوافذ",
-          "outdoor": "جودة الهواء الخارجي",
+          "outside_data": "خارجي · المصدر",
+          "general_settings": "عام · الإعدادات",
+          "area_settings": "منطقة · الإعدادات",
           "delivery": "الإعلانات (اختياري)",
-          "thresholds": "حدود متقدمة",
-          "environment": "International air-quality sources and pollen",
-          "environment_room": "Choose a room for environmental science",
-          "pid": "Climate PID — select a room",
-          "climate": "Climate — select room"
+          "thresholds": "حدود متقدمة"
         }
       },
       "window_sensors": {
@@ -785,6 +779,184 @@
           "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
           "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
         }
+      },
+      "outside_data": {
+        "title": "خارجي · المصدر",
+        "description": "خارجي · المصدر: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "menu_options": {
+          "weather": "الطقس والتحذيرات",
+          "outdoor": "جودة الهواء الخارجي",
+          "outside_aqi": "خارجي · AQI",
+          "pollen": "حبوب اللقاح"
+        }
+      },
+      "area_settings": {
+        "title": "منطقة · الإعدادات",
+        "description": "منطقة · الإعدادات: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "menu_options": {
+          "areas": "الغرف",
+          "indoor_sensors": "الغرف · مؤشر العفن",
+          "window_sensors": "استبعاد مستشعرات النوافذ",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "منطقة · الأجهزة"
+        }
+      },
+      "device_menu": {
+        "title": "الأجهزة · الإعدادات",
+        "description": "الأجهزة · الإعدادات: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "menu_options": {
+          "device_settings": "الأجهزة · التحكم",
+          "device_choice": "اختيار · الأجهزة",
+          "device_done": "الإعدادات · ✓"
+        }
+      },
+      "general_settings": {
+        "title": "عام · الإعدادات",
+        "description": "عام · الإعدادات: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "general_room_occupancy_sensors": "غرفة · الإشغال · مستشعر",
+          "general_occupied_rooms_entity": "الإشغال · غرفة · المصدر (state)",
+          "general_occupied_rooms_attribute": "الإشغال · غرفة · المصدر (attribute)",
+          "general_home_trackers": "المنزل · الإشغال · الأجهزة",
+          "general_home_policy": "المنزل · الإشغال · التحكم",
+          "general_sleep_rooms_entity": "النوم · غرفة · المصدر (state)",
+          "general_sleep_rooms_attribute": "النوم · غرفة · المصدر (attribute)",
+          "general_source_stale_minutes": "المصدر · مطلوب (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_occupied_rooms_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_occupied_rooms_attribute": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_home_trackers": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_home_policy": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_sleep_rooms_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_sleep_rooms_attribute": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "general_source_stale_minutes": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "pollen": {
+        "title": "حبوب اللقاح",
+        "description": "حبوب اللقاح: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "pollen_high_from": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "pollen_max_scale": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "pollen_avoid_ventilation": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "outside_aqi": {
+        "title": "خارجي · AQI",
+        "description": "خارجي · AQI: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "outside_aqi_entity": "AQI · مستشعر",
+          "outside_aqi_scale": "AQI · المصدر",
+          "outside_aqi_limit": "AQI · الهدف",
+          "outside_aqi_no_sources": "AQI · مستشعر · مطلوب"
+        },
+        "data_description": {
+          "outside_aqi_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "outside_aqi_scale": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "outside_aqi_limit": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "outside_aqi_no_sources": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "area_devices": {
+        "title": "منطقة · الأجهزة",
+        "description": "منطقة · الأجهزة: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "area_devices_area": "اختيار · منطقة"
+        },
+        "data_description": {
+          "area_devices_area": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "select_devices": {
+        "title": "اختيار · الأجهزة",
+        "description": "اختيار · الأجهزة: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "selected_devices": "اختيار · الأجهزة"
+        },
+        "data_description": {
+          "selected_devices": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "device_choice": {
+        "title": "اختيار · الأجهزة",
+        "description": "اختيار · الأجهزة: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "device_choice": "اختيار · الأجهزة"
+        },
+        "data_description": {
+          "device_choice": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
+      },
+      "device_settings": {
+        "title": "الأجهزة · التحكم",
+        "description": "الأجهزة · التحكم: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "device_auto_control": "تلقائي التحكم",
+          "device_method": "التحكم · المصدر",
+          "device_presence_requirement": "التحكم · الإشغال",
+          "device_absence_action": "إيقاف · الإشغال",
+          "device_sleep_behavior": "النوم · التحكم",
+          "device_hardware_confirmed": "مطلوب · الأجهزة · الطاقة",
+          "device_temperature_entity": "الحرارة · مستشعر",
+          "device_humidity_entity": "الرطوبة · مستشعر",
+          "device_co2_entity": "CO₂ · مستشعر",
+          "device_pm25_entity": "PM2.5 · مستشعر",
+          "device_fan_purpose": "التحكم · الأجهزة",
+          "device_sensor_verified": "مستشعر · مطلوب",
+          "device_fan_speed_percent": "السرعة (%)",
+          "device_humidity_target": "الرطوبة · الهدف (%)",
+          "device_sleep_humidity_target": "النوم · الرطوبة · الهدف (%)",
+          "device_min_on_s": "الطاقة · min ON (s)",
+          "device_min_off_s": "الطاقة · min OFF (s)",
+          "device_max_on_s": "الطاقة · max ON (s)",
+          "device_home_heat_c": "المنزل · الحرارة + · الهدف (°C)",
+          "device_home_cool_c": "المنزل · الحرارة − · الهدف (°C)",
+          "device_unoccupied_heat_c": "غرفة · إيقاف · الحرارة + · الهدف (°C)",
+          "device_unoccupied_cool_c": "غرفة · إيقاف · الحرارة − · الهدف (°C)",
+          "device_away_heat_c": "المنزل · إيقاف · الحرارة + · الهدف (°C)",
+          "device_away_cool_c": "المنزل · إيقاف · الحرارة − · الهدف (°C)",
+          "device_sleep_heat_c": "النوم · الحرارة + · الهدف (°C)",
+          "device_sleep_cool_c": "النوم · الحرارة − · الهدف (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_method": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_presence_requirement": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_absence_action": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_sleep_behavior": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_hardware_confirmed": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_temperature_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_humidity_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_co2_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_pm25_entity": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_fan_purpose": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_sensor_verified": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_fan_speed_percent": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_humidity_target": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_sleep_humidity_target": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_min_on_s": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_min_off_s": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_max_on_s": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_home_heat_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_home_cool_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_unoccupied_heat_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_unoccupied_cool_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_away_heat_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_away_cool_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_sleep_heat_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة.",
+          "device_sleep_cool_c": "اختيار المصدر; مطلوب · التحكم · مستشعر / الأجهزة."
+        }
       }
     },
     "error": {
@@ -835,7 +1007,23 @@
       "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
       "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
       "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
-      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "غير صالح · الإشغال · الإعدادات",
+      "general_invalid_trackers": "غير صالح · المنزل · الإعدادات",
+      "general_invalid_rooms_entity": "غير صالح · غرفة · الإعدادات",
+      "general_invalid_attribute": "غير صالح · المصدر · الإعدادات",
+      "general_invalid_source_age": "غير صالح · المصدر · الإعدادات",
+      "invalid_selected_devices": "غير صالح · الأجهزة · الإعدادات",
+      "device_policy_invalid": "غير صالح · الإشغال · الإعدادات",
+      "device_method_invalid": "غير صالح · التحكم · الإعدادات",
+      "device_hardware_required": "غير صالح · مطلوب · الإعدادات",
+      "device_power_required_for_off": "غير صالح · الطاقة · الإعدادات",
+      "device_temperature_required": "غير صالح · الحرارة · الإعدادات",
+      "device_humidity_required": "غير صالح · الرطوبة · الإعدادات",
+      "device_air_sensor_required": "غير صالح · مستشعر · الإعدادات",
+      "device_temperature_band_invalid": "غير صالح · الحرارة · الإعدادات",
+      "device_humidity_invalid": "غير صالح · الرطوبة · الإعدادات",
+      "device_runtime_invalid": "غير صالح · الطاقة · الإعدادات"
     }
   },
   "entity": {
@@ -927,6 +1115,54 @@
         "bn": "বাংলা",
         "ur": "اردو",
         "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "المنزل · الإشغال",
+        "all_home": "المنزل · الأجهزة · الإشغال"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "الهدف · التحكم",
+        "native": "الأجهزة · التحكم",
+        "power": "الطاقة",
+        "speed": "السرعة"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "تلقائي",
+        "room": "غرفة · الإشغال",
+        "home": "المنزل · الإشغال"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "تعليق",
+        "off": "إيقاف"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "تلقائي",
+        "pause": "تعليق",
+        "sleep_targets": "النوم · الهدف"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "خارجي · التحكم",
+        "filtration": "PM2.5 · التحكم"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "المصدر · غير صالح",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "الهدف · الإعدادات"
       }
     }
   }
