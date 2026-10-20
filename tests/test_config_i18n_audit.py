@@ -204,7 +204,7 @@ def test_new_compact_options_have_complete_38_locale_labels_and_greek_guidance()
             )
     assert "Εξωτερικά δεδομένα"==docs["el"]["options"]["step"]["init"]["menu_options"]["outside_data"]
     assert "Γενικές ρυθμίσεις"==docs["el"]["options"]["step"]["init"]["menu_options"]["general_settings"]
-    assert "Άγνωστα ή παλιά" in docs["el"]["options"]["step"]["general_settings"]["description"]
+    assert "ΟΧΙ διάρκεια ύπνου" in docs["el"]["options"]["step"]["general_settings"]["description"]
     assert "Γύρη" in docs["el"]["options"]["step"]["pollen"]["title"]
 
 
