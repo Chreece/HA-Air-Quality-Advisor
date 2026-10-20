@@ -424,3 +424,42 @@ responsibility.
 
 No new compressor-mode control was enabled in this checkpoint. Native
 DRY/FAN_ONLY remain advisory until independently commissioned.
+
+
+## Owned-device recovery during configuration edits and integration upgrades
+
+A dedicated dehumidifier or ventilation fan may still be operating when
+an administrator removes its room or changes its options. An automatic
+controller must not silently lose that output, assume its maximum runtime
+has reset, or substitute new default minimum-on limits mid-cycle.
+
+The native \`HumidityPowerControl\` and \`FanPowerControl\` now record the
+**commissioned minimum-on and maximum-on durations at every successful
+new ON command**. While an output remains owned, those original bounds
+govern the runtime and confirmation steps even if its configuration is
+deleted, disabled or changed to shorter values. Scheduler enumeration
+includes persisted owned outputs, not just currently configured rooms.
+
+- If the original safety bounds are missing from an older ownership record
+  AND no valid surviving configuration exists, the integration stops issuing
+  automatic writes and requests physical OFF reconciliation. It never
+  guesses the required compressor or fan dwell.
+- A room-removal safety check may still issue an exact-target OFF command
+  only after the originally recorded minimum-on interval, with the
+  previously established acknowledgement and owner checks. No new ON is
+  authorized for a removed or disabled room.
+- If the fan has an owned output, processing that output terminates the
+  current tick; it cannot silently overwrite a safety status with
+  \`advisory_only\` or start another fan while the earlier command settles.
+- The HA entry setup path now attempts controller teardown if **either**
+  controller startup or sensor-platform forwarding fails, rather than
+  leaving a partially started runtime. The original integration domain and
+  config-entry data remain unchanged for v0.5.1 upgrades.
+- The Lovelace card asset cache URL now derives its version directly from
+  \`manifest.json\`, preventing a stale pinned version when the release
+  advances.
+
+Simulated regression tests cover room deletion, options edits, invalid
+persisted records, setup failure, service registration and unload. These
+are preflight software checks; no physical operating interval or hardware
+safety certification is inferred from them.
