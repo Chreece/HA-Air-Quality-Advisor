@@ -365,3 +365,61 @@ fan presets, speed, room-wide broadcasts or motorized windows. Exhaust
 systems may have special backdraft/fire/pressure requirements; simulated
 tests are not hardware certification. Keep the feature in the v0.6 draft
 until tested on supported real devices.
+
+
+## Unified room purpose arbitration (v0.6 development checkpoint)
+
+The \`climate_arbitration.py\` module implements a single, deterministic,
+side-effect-free room policy. Every configured room exposes one
+\`climate_plan.coordination\` record, with four separately documented
+purposes: \`thermal\`, \`humidity\`, \`extraction\`, and \`filtration\`.
+
+The coordinator uses the existing same-room device inventory, current
+Home Assistant HVAC states, user-selected climate/humidity targets,
+window interlocks, actual outdoor-air verification, and the existing
+evidence-qualified CO₂/PM2.5 treatment intentions. It never invents
+an HVAC mode, humidity sensor, target temperature or device capability.
+\`eligible\` means *evidence-qualified to continue to a driver's own safety
+checks*, **NOT** permission to power a device on. Explicit per-actuator
+opt-in, real device safety protections and commissioning still apply.
+
+The coordinator prioritizes qualified CO₂ extraction, measured indoor
+particle filtration, temperature regulation and humidity management for
+room diagnostics. These are distinct physical objectives; they may operate
+in parallel ONLY if their actual device modes do not conflict.
+
+- Opposing HEAT/COOL/AUTO/DRY modes can be armed while \`hvac_action\` reads
+  \`idle\`. Any other live unit armed in an opposing mode blocks new native
+  setpoint and direct thermal writes.
+- A separate dehumidifier is conservatively deferred when native COOL is
+  armed and RH is within 10 percentage points above the configured upper
+  bound. This is a **control preference**, not scientific proof that the
+  room's AC has effectively dried the room. High measured RH still allows
+  dedicated dehumidification after all existing safety gates pass.
+- Simultaneous humidification and cooling, or a separate humidifier and
+  dehumidifier running against each other, hold humidity actuation.
+  Native DRY already armed also blocks new separate dehumidifier starts.
+- Extraction requires measured elevated CO₂ and verified safe outdoor
+  conditions; a later-opened window blocks a new extractor command.
+  Verified PM2.5 filtration remains independent of outdoor pollution and
+  remains possible with a window already open.
+- An energy-saving **open-window suggestion never forces a running unit
+  off**, falsely grants power permissions, or bypasses minimum runtime.
+
+**Fresh-write verification:** All primary/secondary native thermostats,
+attested slow-load relays, native humidity setpoints, separately owned
+dehumidifier power, fan-speed supervision and fan power now check the
+shared planned permission AND recompute the affected channel's live
+interlocks before a new write. A previous \`eligible\` decision is never
+treated as permission after a competing device becomes armed, a window
+opens, an owner changes, or outdoor data expires.
+
+**Already-owned outputs** are a different case. A safety hold never
+strands controller-owned power: its device-specific manual intervention,
+minimum-on timing, OFF acknowledgement, maximum-runtime and restart
+reconciliation logic remains authoritative. New ON, modulation or target
+commands are held; physical emergency protection remains the device's
+responsibility.
+
+No new compressor-mode control was enabled in this checkpoint. Native
+DRY/FAN_ONLY remain advisory until independently commissioned.
