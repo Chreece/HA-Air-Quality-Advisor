@@ -1158,6 +1158,13 @@ class _FlowMixin:
             proposal["humidity_setpoint_auto"]=user_input.get(
                 "climate_humidity_setpoint_auto",draft.get("humidity_setpoint_auto",False)
             ) is True
+            # Existing users retain their delivery policy. An explicit
+            # optional choice authorizes an alternative-window notification
+            # for this configured room, routed by the existing Hub.
+            proposal["window_efficiency_notify"]=user_input.get(
+                "climate_window_efficiency_notify",
+                draft.get("window_efficiency_notify",False),
+            ) is True
             for field in ("humidity_power_auto","humidity_power_hardware_confirmed",
                           "humidity_power_windowless_confirmed"):
                 proposal[field]=user_input.get(
@@ -1244,6 +1251,10 @@ class _FlowMixin:
         )
         fields[_marker("climate_humidity_setpoint_auto",
                        draft.get("humidity_setpoint_auto",False))]=(
+            selector.BooleanSelector()
+        )
+        fields[_marker("climate_window_efficiency_notify",
+                       draft.get("window_efficiency_notify",False))]=(
             selector.BooleanSelector()
         )
         for field in ("humidity_power_auto","humidity_power_hardware_confirmed",
