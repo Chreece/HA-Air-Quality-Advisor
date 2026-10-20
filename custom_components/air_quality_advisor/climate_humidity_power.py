@@ -18,6 +18,7 @@ from typing import Any, Callable
 
 from .climate_coordination import device_inventory, duplicate_owners
 from .climate_equipment import humidity_advice
+from .climate_arbitration import new_command_gate
 from .climate_humidity_native import _target as native_humidity_target
 from .discovery import entity_area, reading
 from .pid_math import finite
@@ -359,6 +360,12 @@ class HumidityPowerControl:
         if not self._internal_target_suitable(native, desired, cfg):
             self._status(area, "native_target_must_be_commissioned")
             return
+        conflict=new_command_gate(
+            self.hass,area,cfg,plan,"humidity",entity,now=now,
+        )
+        if conflict is not None:
+            self._status(area,"coordination_hold",reason=conflict)
+            return
         record = {"entity_id":entity,"role":role,"area":area,
                   "power":"off","when":now,"acknowledged":True,
                   "target":native_humidity_target(native.attributes)}
@@ -449,6 +456,15 @@ class HumidityPowerControl:
                 opposite and opposite.get("status") != "ready"
             ):
                 stop = True
+        if not stop:
+            # A newly armed cooling/drying device may change the room
+            # priority during the minimum-on period. Never abandon owned
+            # hardware; request an acknowledged, bounded OFF after dwell.
+            conflict=new_command_gate(
+                self.hass,area,cfg,plan,"humidity",entity,now=now,
+            )
+            if conflict is not None:
+                stop=True
         if not stop:
             self._status(area,"owned_running",entity_id=entity,
                          elapsed_s=int(now-on_since))
