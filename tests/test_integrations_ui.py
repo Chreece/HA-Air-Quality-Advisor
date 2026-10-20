@@ -31,7 +31,8 @@ def test_exclusion_selector_is_translated_for_setup_and_options():
         assert document["options"]["step"]["window_sensors"]["data"]["excluded_window_entities"]
         assert next(iter(document["config"]["step"])) == "areas"
         assert document["options"]["step"]["init"]["menu_options"]
-        assert next(iter(document["options"]["step"]["init"]["menu_options"])) == "areas"
+        assert next(iter(document["options"]["step"]["init"]["menu_options"])) == "outside_data"
+        assert "window_sensors" in document["options"]["step"]["area_settings"]["menu_options"]
         for context in ("config", "options"):
             room = document[context]["step"]["indoor_sensors"]
             assert room["data"]["excluded_indoor_entities"]

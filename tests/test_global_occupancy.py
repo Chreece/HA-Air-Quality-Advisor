@@ -134,3 +134,19 @@ def test_live_gate_rejects_entered_room_and_invalidated_sleep_after_planning(ada
     assert live_device_permission(h,"living",room_config,plan,device)[0]=="held"
     device["sleep_behavior"]="sleep_targets"
     assert live_device_permission(h,"living",room_config,plan,device)[0]=="held"
+
+
+
+def test_sleep_pause_takes_priority_over_absence_off(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import device_permission
+    device={"auto_control":True,"presence_requirement":"home",
+            "absence_action":"off","sleep_behavior":"pause"}
+    assert device_permission(device,"unoccupied","away",True)==(
+        "held","sleep_room_control_paused"
+    )
+    assert device_permission(device,"unoccupied","away",None)==(
+        "held","sleep_room_evidence_unknown"
+    )
+    assert device_permission(device,"unoccupied","away",False)[0]=="absent"
+    device["sleep_behavior"]="sleep_targets"
+    assert device_permission(device,"unoccupied","away",None)[0]=="held"

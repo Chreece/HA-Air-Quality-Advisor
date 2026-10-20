@@ -442,11 +442,16 @@ class CompactOptionsMixin:
                     errors["base"]="device_humidity_invalid"
             if (data["presence_requirement"] not in ("always", "room", "home") or
                 data["absence_action"] not in ("hold", "off") or
-                data["sleep_behavior"] not in ("normal", "pause", "sleep_targets")):
+                data["sleep_behavior"] not in ("normal", "pause", "sleep_targets") or
+                (data["absence_action"] == "off" and
+                 data["presence_requirement"] == "always")):
                 errors["base"] = "device_policy_invalid"
             if data["auto_control"]:
                 if domain == "climate" and data["method"] not in ("setpoint", "native"):
                     errors["base"] = "device_method_invalid"
+                elif domain == "climate" and data["method"] == "native" and (
+                     not data["hardware_confirmed"]):
+                    errors["base"] = "device_hardware_required"
                 elif domain in ("humidifier","fan") and data["method"] not in (
                     "setpoint","power","speed"):
                     errors["base"] = "device_method_invalid"
@@ -511,6 +516,20 @@ class CompactOptionsMixin:
                 maximum = _valid_temperature(data["max_on_s"],300,86400)
                 if minimum is None or off is None or maximum is None or maximum < minimum:
                     errors["base"] = "device_runtime_invalid"
+            if not errors and data["auto_control"] and domain in ("fan","humidifier"):
+                # One controller method per room/device domain. The current
+                # native backend cannot simultaneously own fan-power and fan-
+                # speed (or humidity-power and humidity-setpoint) in one room.
+                for another,configured in options.items():
+                    if another==entity or another.split(".",1)[0]!=domain:
+                        continue
+                    if not isinstance(configured,dict) or configured.get("auto_control") is not True:
+                        continue
+                    if configured.get("method")!=data["method"] or (
+                        domain=="fan" and configured.get("fan_purpose")==data["fan_purpose"]
+                    ):
+                        errors["base"]="device_policy_invalid"
+                        break
             if not errors:
                 options[entity] = data
                 draft["device_settings"] = options

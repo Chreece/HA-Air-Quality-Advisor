@@ -189,9 +189,24 @@ def sleep_presence(hass: Any, area: str, global_settings: Mapping,
 
 def device_permission(device: Mapping, room_status: str, home_status: str,
                       sleeping: bool | None) -> tuple[str, str]:
-    """No physical command here; drivers must also enforce their own safety."""
-    if not device.get("auto_control"):
+    """Prioritize explicit sleep pause over occupancy-triggered power OFF.
+
+    Device controllers must still pass the independent electrical,
+    compressor and minimum-run protections. An unknown input is NEVER empty.
+    """
+    if device.get("auto_control") is not True:
         return "held", "device_auto_control_disabled"
+    sleep = device.get("sleep_behavior", "normal")
+    if sleep == "pause":
+        if sleeping is True:
+            return "held", "sleep_room_control_paused"
+        if sleeping is None:
+            return "held", "sleep_room_evidence_unknown"
+    elif sleep == "sleep_targets":
+        if sleeping is None:
+            return "held", "sleep_room_evidence_unknown"
+    elif sleep != "normal":
+        return "held", "invalid_sleep_policy"
     source = device.get("presence_requirement", "always")
     if source == "room":
         if room_status == "unoccupied":
@@ -205,16 +220,6 @@ def device_permission(device: Mapping, room_status: str, home_status: str,
             return "held", "house_occupancy_unknown"
     elif source != "always":
         return "held", "invalid_presence_policy"
-    sleep = device.get("sleep_behavior", "normal")
-    if sleep == "pause":
-        if sleeping is True:
-            return "held", "sleep_room_control_paused"
-        if sleeping is None:
-            return "held", "sleep_room_evidence_unknown"
-    elif sleep == "sleep_targets" and sleeping is None:
-        return "held", "sleep_room_evidence_unknown"
-    elif sleep not in ("normal", "sleep_targets"):
-        return "held", "invalid_sleep_policy"
     return "eligible", "device_policy_approved"
 
 
