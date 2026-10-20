@@ -581,3 +581,38 @@ for(const [language,word] of [
   assert.ok(html.includes('climate.dry_only'));
   assert.ok(!html.includes('data-hvac-mode='));
 }
+
+
+// Automatic native fan power belongs to a separately authorized driver,
+// including single-room IDs and runtime pause/resume.
+const poweredFan=JSON.parse(JSON.stringify(input));
+poweredFan.rooms=[{
+  area_id:'kitchen',name:'Kitchen',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    actuation:{status:'advisory_only'},fan_actuation:{status:'advisory_only'},
+    fan_power_actuation:{status:'owned_fan_running',
+                         entity_id:'fan.kitchen_extraction'},
+    air_actions:{status:'advisory',extraction:{
+      status:'recommended',entity_id:'fan.kitchen_extraction'}},
+  }},
+}];
+const fanPowerCard=new Card();
+fanPowerCard.setConfig({entity:'sensor.powered_fan'});
+for(const [language,label] of [
+  ['en','Fan power'],['de','Lüfter Ein/Aus'],
+  ['el','Ισχύς ανεμιστήρων'],
+]){
+  fanPowerCard.hass={language,states:{
+    'sensor.powered_fan':{state:'idle',attributes:{dashboard:poweredFan}},
+  }};
+  assert.ok(fanPowerCard.shadowRoot.innerHTML.includes(label),language+': '+label);
+  assert.ok(fanPowerCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+poweredFan.rooms[0].environment.climate_plan.fan_power_actuation={
+  status:'paused',reason:'restart_requires_manual_fan_off_reconciliation'};
+fanPowerCard.hass={language:'en',states:{
+  'sensor.powered_fan':{state:'idle',attributes:{dashboard:poweredFan}},
+}};
+assert.ok(fanPowerCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
