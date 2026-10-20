@@ -156,6 +156,8 @@ def apply_compact_i18n(root: Path) -> None:
     actual = {p.stem for p in existing}
     if set(locales) != actual or len(locales)!=38:
         raise ValueError(f"Compact flow locale mismatch {set(locales)^actual}")
+    en_climate_names=json.loads((root/"translations"/"en.json").read_text(encoding="utf-8"))["options"]["step"]
+    en_climate_names={k:v.get("data",{}) for k,v in en_climate_names.items()}
     for path in existing:
         lang=path.stem
         vocab=locales[lang]
@@ -289,6 +291,54 @@ def apply_compact_i18n(root: Path) -> None:
             "us_epa":"US EPA AQI (0–500)","eea_category":"EEA AQI (1–6)",
             "custom":f"{vocab['target']} · {vocab['settings']}",
         }}
+        # The older climate generator still supplies English fallback names for
+        # less-common per-room options. Replace those with localized labels
+        # across every supported language rather than translating only menus.
+        for step_name in ("climate","climate_room","climate_presence",
+                          "climate_equipment","climate_air_strategy",
+                          "climate_profiles","climate_actuators","pid","pid_room",
+                          "pid_tuning","environment_room","environment_room_air",
+                          "environment_room_exposure","environment_room_comfort"):
+            details=steps.get(step_name)
+            if not isinstance(details,dict):
+                continue
+            fields=details.get("data",{})
+            if not isinstance(fields,dict):
+                continue
+            for field,existing in list(fields.items()):
+                if lang=="en":
+                    continue
+                key=field.lower()
+                nouns=[]
+                for part,word in (("temperature",vocab["temperature"]),
+                                  ("humidity",vocab["humidity"]),
+                                  ("presence",vocab["presence"]),
+                                  ("occupancy",vocab["presence"]),
+                                  ("sleep",vocab["sleep"]),
+                                  ("home",vocab["house"]),
+                                  ("away",vocab["house"]),
+                                  ("entity",vocab["source"]),
+                                  ("sensor",vocab["sensor"]),
+                                  ("fan",vocab["speed"]),
+                                  ("device",vocab["devices"]),
+                                  ("actuator",vocab["devices"]),
+                                  ("power",vocab["power"]),
+                                  ("enabled",vocab["automatic"]),
+                                  ("auto",vocab["automatic"]),
+                                  ("control",vocab["control"]),
+                                  ("target",vocab["target"])):
+                    if part in key and word not in nouns:
+                        nouns.append(word)
+                # Preserve high-quality existing localizations; only replace
+                # inherited English or key-derived English placeholders.
+                if nouns and isinstance(existing,str) and (
+                    existing==en_climate_names.get(step_name,{}).get(field)
+                    or existing==field.replace("_"," ").capitalize()
+                    or existing==field
+                ):
+                    fields[field]=" · ".join(nouns[:3])+(
+                        " (°C)" if key.endswith(("_heat","_cool","_c")) else ""
+                    )
         path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",
                         encoding="utf-8")
         if lang=="en":
