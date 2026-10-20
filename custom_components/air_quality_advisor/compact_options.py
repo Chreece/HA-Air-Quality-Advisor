@@ -145,6 +145,7 @@ class CompactOptionsMixin:
         """Shared presence and sleep sources, independent of any HVAC device."""
         old = self._values.get(CONF_OCCUPANCY_GLOBAL, {})
         old = dict(old) if isinstance(old, dict) else {}
+        old.update(getattr(self, "_general_source_draft", {}))
         room_sensors = sorted(
             [{"value": s.entity_id, "label": s.name or s.entity_id}
              for s in self.hass.states.async_all("binary_sensor")
@@ -195,15 +196,22 @@ class CompactOptionsMixin:
             elif not math.isfinite(age) or not 10 <= age <= 1440:
                 errors["base"] = "general_invalid_source_age"
             elif ((occupied_entity and occupied_entity != old.get("occupied_rooms_entity")) or
-                  (sleep_entity and sleep_entity != old.get("sleep_rooms_entity"))) and (
-                  "general_occupied_rooms_attribute" not in user_input or
-                  "general_sleep_rooms_attribute" not in user_input):
-                # HA forms do not dynamically refresh an attribute picker.
-                # Re-render after source selection, with only the new source's
-                # genuinely parseable attributes + its state.
-                old={**old,"occupied_rooms_entity":occupied_entity,
-                     "sleep_rooms_entity":sleep_entity}
+                  (sleep_entity and sleep_entity != old.get("sleep_rooms_entity"))):
+                # HA has no live cross-field refresh. Re-open the form after
+                # a source change so only the *new* entity's parseable
+                # attributes and its State option are offered.
+                self._general_source_draft={
+                    **old,"occupied_rooms_entity":occupied_entity,
+                    "sleep_rooms_entity":sleep_entity,
+                    "occupied_rooms_attribute":"",
+                    "sleep_rooms_attribute":"",
+                    "room_occupancy_sensors":selected,
+                    "home_trackers":at_home,
+                    "source_stale_minutes":age,
+                }
+                return await self.async_step_general_settings()
             else:
+                self._general_source_draft={}
                 self._values[CONF_OCCUPANCY_GLOBAL] = {
                     **old,
                     "room_occupancy_sensors": list(dict.fromkeys(selected)),
