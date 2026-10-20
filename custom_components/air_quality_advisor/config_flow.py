@@ -1318,6 +1318,18 @@ class _FlowMixin:
             proposal=dict(draft)
             proposal["fan_speed_auto"]=user_input.get(
                 "climate_fan_speed_auto",draft.get("fan_speed_auto",False)) is True
+            proposal["fan_power_auto"]=user_input.get(
+                "climate_fan_power_auto",draft.get("fan_power_auto",False)) is True
+            proposal["fan_power_hardware_confirmed"]=user_input.get(
+                "climate_fan_power_hardware_confirmed",
+                draft.get("fan_power_hardware_confirmed",False)) is True
+            for setting,default in (
+                ("fan_power_min_on_s",300),("fan_power_min_off_s",300),
+                ("fan_power_max_on_s",14400),
+            ):
+                proposal[setting]=user_input.get(
+                    "climate_"+setting,draft.get(setting,default)
+                )
             proposal["pm25_sensor_verified"]=user_input.get(
                 "climate_pm25_sensor_verified",
                 draft.get("pm25_sensor_verified",False)) is True
@@ -1349,11 +1361,30 @@ class _FlowMixin:
                          (purifier and proposal.get("pm25_entity") and
                           proposal.get("pm25_sensor_verified")))):
                     errors["base"]="climate_fan_control_inputs_missing"
+            if proposal["fan_power_auto"]:
+                from .climate_fan_power import dwell_settings
+                extractor=proposal.get("extraction_fan_entity")
+                purifier=proposal.get("purifier_fan_entity")
+                if (proposal.get("enabled") is not True or
+                    proposal.get("allow_actuation") is not True or
+                    proposal.get("fan_power_hardware_confirmed") is not True or
+                    proposal.get("fan_speed_auto") is True or
+                    (extractor and extractor==purifier) or
+                    dwell_settings(proposal) is None or
+                    not ((extractor and proposal.get("co2_entity")) or
+                         (purifier and proposal.get("pm25_entity") and
+                          proposal.get("pm25_sensor_verified")))):
+                    errors["base"]="climate_fan_power_inputs_missing"
             if not errors:
                 self._climate_draft=proposal
                 return await self.async_step_climate_profiles()
         fields={
             _marker("climate_fan_speed_auto",draft.get("fan_speed_auto",False)):
+                selector.BooleanSelector(),
+            _marker("climate_fan_power_auto",draft.get("fan_power_auto",False)):
+                selector.BooleanSelector(),
+            _marker("climate_fan_power_hardware_confirmed",
+                    draft.get("fan_power_hardware_confirmed",False)):
                 selector.BooleanSelector(),
             _marker("climate_pm25_sensor_verified",
                     draft.get("pm25_sensor_verified",False)):
@@ -1372,6 +1403,12 @@ class _FlowMixin:
                 "extraction_speed_percent",65)):_real_number(30,100,"%"),
             _marker("climate_purifier_speed_percent",draft.get(
                 "purifier_speed_percent",65)):_real_number(30,100,"%"),
+            _marker("climate_fan_power_min_on_s",draft.get(
+                "fan_power_min_on_s",300)):_real_number(120,3600,"s"),
+            _marker("climate_fan_power_min_off_s",draft.get(
+                "fan_power_min_off_s",300)):_real_number(120,7200,"s"),
+            _marker("climate_fan_power_max_on_s",draft.get(
+                "fan_power_max_on_s",14400)):_real_number(900,86400,"s"),
         })
         return self.async_show_form(
             step_id="climate_air_strategy",errors=errors,
