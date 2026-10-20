@@ -1307,6 +1307,8 @@ def test_shared_general_presence_sources_saved_without_touching_room_settings(mo
     tracker=MockState("person.occupant","home")
     global_rooms=MockState("sensor.house_occupied_rooms",'["living"]')
     sleep=MockState("sensor.sleep_rooms",'[]')
+    global_rooms.attributes["occupied"]=["living"]
+    sleep.attributes["rooms"]=["living"]
     sensor=MockState("binary_sensor.living_occupancy","on",device_class="occupancy")
     for st in (tracker,global_rooms,sleep,sensor):
         opt.hass._values[st.entity_id]=st
@@ -1315,6 +1317,21 @@ def test_shared_general_presence_sources_saved_without_touching_room_settings(mo
     form=asyncio.run(opt.async_step_general_settings())
     assert form["step_id"]=="general_settings"
     assert "general_sleep_rooms_attribute" in form["data_schema"]
+    done=asyncio.run(opt.async_step_general_settings({
+        "general_room_occupancy_sensors":[sensor.entity_id],
+        "general_occupied_rooms_entity":global_rooms.entity_id,
+        "general_occupied_rooms_attribute":"occupied",
+        "general_home_trackers":[tracker.entity_id],
+        "general_home_policy":"any_home",
+        "general_sleep_rooms_entity":sleep.entity_id,
+        "general_sleep_rooms_attribute":"rooms",
+        "general_source_stale_minutes":240,
+    }))
+    assert done["step_id"]=="general_settings"
+    attr_picker=next(v for k,v in done["data_schema"].items()
+                     if k=="general_sleep_rooms_attribute")
+    assert "rooms" in [x["value"] for x in attr_picker.config.options]
+    assert "__state__" in [x["value"] for x in attr_picker.config.options]
     done=asyncio.run(opt.async_step_general_settings({
         "general_room_occupancy_sensors":[sensor.entity_id],
         "general_occupied_rooms_entity":global_rooms.entity_id,
