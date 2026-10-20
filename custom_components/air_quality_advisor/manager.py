@@ -507,6 +507,7 @@ class AirQualityManager:
                if isinstance(value,dict)}
         return climate_commissioning_report(
             self.hass,configured,plans,area=area,
+            entry_id=self.entry.entry_id,
         )
 
     async def async_climate_control(self, area:str, action:str) -> dict[str, Any]:
