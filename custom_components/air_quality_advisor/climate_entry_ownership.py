@@ -43,7 +43,13 @@ def _configured_owners(config: Mapping) -> dict[str,set[str]]:
             if (not isinstance(area,str) or not isinstance(profile,Mapping)
                     or profile.get("enabled") is not True):
                 continue
-            for entity in profile.get("climate_entities",()):
+            selected=profile.get("climate_entities")
+            if selected is None:
+                value=profile.get("climate_entity")
+                selected=[value] if isinstance(value,str) else []
+            if not isinstance(selected,(tuple,list)):
+                selected=[]
+            for entity in selected:
                 if isinstance(entity,str) and entity.startswith("climate."):
                     outputs[entity].add(area)
     return outputs
