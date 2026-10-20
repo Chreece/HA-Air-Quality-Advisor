@@ -114,3 +114,32 @@ def test_default_legacy_climate_configuration_never_attests_hardware(adapter):
     assert not detail["hardware_confirmed_by_user"]
     assert not detail["software_preflight_ready"]
     assert detail["real_hardware_commissioned_by_integration"] is False
+
+
+
+def test_commissioning_flags_device_shared_by_separate_entry_without_exposing_id(
+    adapter,
+):
+    from types import SimpleNamespace
+    from custom_components.air_quality_advisor.climate_commissioning import report
+    hass,cfg=sample()
+    foreign=SimpleNamespace(
+        entry_id="another-private-config-id",disabled_by=None,
+        data={"climate_rooms":{"bathroom":{"enabled":True,
+            "dry_climate_entity":"climate.bathroom_ac"}}},
+        options={},
+    )
+    own=SimpleNamespace(
+        entry_id="mine",disabled_by=None,
+        data={"climate_rooms":{"bathroom":cfg}},
+        options={},
+    )
+    hass.config_entries=SimpleNamespace(
+        async_entries=lambda domain:[own,foreign],
+    )
+    result=report(hass,{"bathroom":cfg},entry_id="mine",
+                  area="bathroom",now=5000)
+    item=result["rooms"][0]["native_dry_fan"]
+    assert item["software_preflight_ready"] is False
+    assert "equipment_assigned_to_multiple_rooms" in item["blockers"]
+    assert "another-private-config-id" not in repr(result)
