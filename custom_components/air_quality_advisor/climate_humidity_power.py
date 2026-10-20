@@ -376,7 +376,7 @@ class HumidityPowerControl:
             self._status(area, "native_target_must_be_commissioned")
             return
         conflict=new_command_gate(
-            self.hass,area,cfg,plan,"humidity",entity,now=now,
+            self.hass,area,cfg,plan,"humidity",entity,now=now,entry_id=self.entry_id,
         )
         if conflict is not None:
             self._status(area,"coordination_hold",reason=conflict)
@@ -477,7 +477,7 @@ class HumidityPowerControl:
             # priority during the minimum-on period. Never abandon owned
             # hardware; request an acknowledged, bounded OFF after dwell.
             conflict=new_command_gate(
-                self.hass,area,cfg,plan,"humidity",entity,now=now,
+                self.hass,area,cfg,plan,"humidity",entity,now=now,entry_id=self.entry_id,
             )
             if conflict is not None:
                 stop=True
