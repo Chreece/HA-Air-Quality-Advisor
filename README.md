@@ -21,6 +21,10 @@
 
 # Home Environment Manager for Home Assistant
 
+> **New opt-in beta: [Home Environment Manager v0.6.0b1](https://github.com/Chreece/HA-Air-Quality-Advisor/releases/tag/v0.6.0b1).** Stable users remain on **v0.5.1**. The beta adds coordinated room climate, humidity and air-treatment policies with strict hardware-commissioning safeguards. [See the beta README, features and installation instructions](https://github.com/Chreece/HA-Air-Quality-Advisor/blob/v0.6.0b1/README.md).
+
+**Install the beta with HACS:** Open this custom Integration repository in HACS → **Redownload / version selection** → enable **Show beta versions** → choose **v0.6.0b1** → restart Home Assistant. Back up your HA configuration before upgrading. If your HACS UI doesn't expose prereleases, the beta GitHub release provides a manual installation ZIP. All experimental power and compressor-affecting controls remain opt-in and require verified physical equipment safety; automated tests are not hardware certification. The beta is a separate prerelease, not the latest stable version.
+
 **Home Environment Manager** combines local sensor data, international environmental sources,
 building physics and optional advanced comfort models to recommend how to keep a room
 comfortable while balancing ventilation, air quality, moisture and potential
