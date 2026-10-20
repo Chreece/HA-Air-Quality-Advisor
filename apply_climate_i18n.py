@@ -49,6 +49,7 @@ BASE={
  "climate_humidity_high_rh":"Maximum target relative humidity (%)",
  "climate_humidity_hysteresis_rh":"Humidity decision hysteresis (percentage points)",
  "climate_humidity_setpoint_auto":"Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
+ "climate_window_efficiency_notify":"Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
  "climate_humidity_power_auto":"Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
  "climate_humidity_power_hardware_confirmed":"I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
  "climate_humidity_power_windowless_confirmed":"Allow moisture control in this room without a window contact (extra opt-in)",
@@ -102,6 +103,7 @@ LABELS={
        "climate_profiles":"Klima — Temperaturbereiche je Betriebsart",
        "climate_presence":"Klima — Anwesenheit, Abwesenheit, Schlaf und Komfort",
        "climate_equipment":"Klima — zusätzliche Geräte und Luftfeuchtigkeit",
+       "climate_window_efficiency_notify":"Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt",
        "climate_allow_actuation":"Befehle an ausdrücklich ausgewählte Raumregler zulassen (separate Freigaben)",
        "climate_humidity_power_auto":"Automatische Ein-/Ausschaltung des geprüften Be-/Entfeuchters erlauben (separate Zustimmung)",
        "climate_humidity_power_hardware_confirmed":"Unabhängige Tank-, Frost-, Überhitzungs- und Kompressorschutzfunktionen bestätigt",
@@ -157,6 +159,7 @@ LABELS={
        "climate_profiles":"Κλίμα — όρια θέρμανσης/ψύξης ανά λειτουργία",
        "climate_presence":"Κλίμα — παρουσία, απουσία, ύπνος και άνεση",
        "climate_equipment":"Κλίμα — πρόσθετες συσκευές και υγρασία",
+       "climate_window_efficiency_notify":"Ειδοποίηση όταν ασφαλής αερισμός από παράθυρο μπορεί να βοηθήσει αντί θέρμανσης, ψύξης ή αφύγρανσης",
        "climate_allow_actuation":"Άδεια εντολών στους επιλεγμένους ελεγκτές δωματίου (ξεχωριστές επιλογές)",
        "climate_humidity_power_auto":"Αυτόματη ενεργοποίηση/απενεργοποίηση ειδικού υγραντήρα/αφυγραντήρα (ξεχωριστή άδεια)",
        "climate_humidity_power_hardware_confirmed":"Επιβεβαιώνω ανεξάρτητες προστασίες δοχείου, παγετού, υπερθέρμανσης και συμπιεστή",
@@ -246,7 +249,7 @@ def apply_climate_i18n(root:Path)->None:
               "climate_extraction_fan_entity","climate_purifier_fan_entity",
               "climate_humidity_entity","climate_humidity_low_rh",
               "climate_humidity_high_rh","climate_humidity_hysteresis_rh",
-              "climate_humidity_setpoint_auto",
+              "climate_humidity_setpoint_auto","climate_window_efficiency_notify",
               "climate_humidity_power_auto","climate_humidity_power_hardware_confirmed",
               "climate_humidity_power_windowless_confirmed",
               "climate_humidity_power_min_on_s","climate_humidity_power_min_off_s",
@@ -288,6 +291,8 @@ def apply_climate_i18n(root:Path)->None:
                 "data":{field:vocab.get(field,
                     field.replace("_"," ").capitalize()) for field in fields},
                 "data_description":{field:(
+                    "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply."
+                    if field=="climate_window_efficiency_notify" else
                     "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
                     if field not in ("climate_occupancy_sensors","climate_away_entities") else
                     "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.")
