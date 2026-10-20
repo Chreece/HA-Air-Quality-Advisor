@@ -515,3 +515,42 @@ minimum off time. Do not merge or publish the experimental feature until
 representative units and shared outdoor-unit safety are verified.
 
 Reference API contract: https://www.home-assistant.io/actions/climate.set_hvac_mode/
+
+
+### Native DRY/FAN_ONLY: durable command recovery and live revalidation
+
+The DRY/FAN_ONLY native driver now follows a **durable write-ahead
+contract**, because a successful Home Assistant service may reach the physical
+AC just before the integration or host stops:
+
+1. Before requesting a change, save a persistent record with the exact
+   climate entity, intended native mode, timestamp and \`phase=intent\`.
+   Storage errors abort the command with a latched safety pause.
+2. After this asynchronous save returns, **recheck live** closed-window
+   contacts, fresh RH, current native HVAC mode/action, competing room
+   equipment and intended target. Changes during the save abort the service
+   request and preserve the intent for manual reconciliation.
+3. Only then call exact-target \`climate.set_hvac_mode\`. Persist
+   \`phase=commanded\` on success and wait for the observed mode to
+   acknowledge the target; failures leave the durable intent/last-write
+   record in place. A crash or cancellation cannot silently trigger a retry.
+4. Restore interrupted \`phase=intent\` writes as an *immediate* paused
+   status on startup, not an apparently harmless warmup. Unsupported schema
+   versions, malformed stored records and unreliable timestamps fail closed,
+   preserving their original saved data for diagnosis.
+5. Explicit Resume cannot erase \`last_write\` or clear an ambiguous command
+   without verified manual reconciliation: the physical device must already
+   be in FAN_ONLY, report a FAN/IDLE action, remain stable for its full native
+   dwell, and observe the last write's full cooldown. Resume starts a further
+   warmup before any new command.
+
+A separate **five-minute consecutive observed compressor-IDLE requirement**
+is now imposed for a DRY → FAN_ONLY request. A renewed DRYING report resets
+that elapsed observation. An IDLE reading at just one instant is not enough
+to stop an AC drying mode. The time is a software protection on top of the
+native 30-minute mode dwell, **not** proof of manufacturer compressor safety.
+It is not a license to bypass compressor defrost, short-cycling, humidity
+condensation or shared outdoor-unit protections.
+
+No new native modes were invented, no HA area-wide commands were added, and
+this remains off by default pending representative hardware commissioning.
