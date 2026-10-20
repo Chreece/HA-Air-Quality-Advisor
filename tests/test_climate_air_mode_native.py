@@ -364,6 +364,10 @@ def test_mode_write_intent_is_durable_before_hvac_service_and_after_restart(
             hass,"interrupted",clock=lambda:clock[0],
         )
         await second.async_start()
+        assert second.paused["bedroom"]==(
+            "interrupted_mode_write_requires_manual_reconciliation"
+        )
+        assert second.statuses["bedroom"]["status"]=="paused"
         clock[0]=5400
         await tick(second,cfg(),plan(hass,cfg()))
         assert second.paused["bedroom"]==(
@@ -440,4 +444,91 @@ def test_manual_resume_requires_physical_fan_only_and_keeps_last_hvac_dwell(
         await tick(driver,cfg(),plan(hass,cfg()))
         assert len(hass.services.calls)==1
         await driver.async_stop()
+    asyncio.run(case())
+
+
+
+@pytest.mark.parametrize("payload",[
+    {"version":2,"expected":{},"paused":{},"last_write":{}},
+    {"version":1,"expected":[],"paused":{},"last_write":{}},
+    {"version":1,"expected":{"bedroom":None},"paused":{},"last_write":{}},
+    {"version":1,"expected":{},"paused":{},"last_write":{"bedroom":"nan"}},
+])
+def test_corrupt_or_future_mode_safety_history_disables_actuation(
+    mode_module,monkeypatch,payload,
+):
+    async def case():
+        class Store:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return payload
+            def async_delay_save(self,fn,delay):
+                raise AssertionError("Must not overwrite unsupported store")
+            async def async_save(self,payload):
+                raise AssertionError("Must not overwrite unsupported store")
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",Store)
+        hass,clock=system()
+        driver=mode_module.NativeAirModeControl(
+            hass,"future-store",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        assert driver._ready is False
+        assert driver.statuses["*"]["status"]=="safety_history_unsupported"
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert not hass.services.calls
+        await driver.async_stop()
+    asyncio.run(case())
+
+
+def test_mode_resume_preserves_earliest_possible_next_write_after_restart(
+    mode_module,monkeypatch,
+):
+    async def case():
+        payload={}
+        class Store:
+            def __init__(self,*args):
+                self.key=args[-1]
+            async def async_load(self):
+                return payload.get(self.key)
+            def async_delay_save(self,fn,delay):
+                payload[self.key]=fn()
+            async def async_save(self,value):
+                payload[self.key]=value
+        monkeypatch.setattr(sys.modules["homeassistant.helpers.storage"],
+                            "Store",Store)
+        hass,clock=system()
+        driver=mode_module.NativeAirModeControl(
+            hass,"manual-resume-restart",clock=lambda:clock[0],
+        )
+        await driver.async_start()
+        clock[0]=5000
+        await tick(driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==1
+        await driver.command("bedroom","pause")
+        await driver.async_stop()
+        next_driver=mode_module.NativeAirModeControl(
+            hass,"manual-resume-restart",clock=lambda:clock[0],
+        )
+        await next_driver.async_start()
+        assert next_driver.paused["bedroom"]=="user_paused"
+        ac=hass.states.get("climate.bedroom_ac")
+        ac.state="fan_only"
+        ac.attributes["hvac_action"]="fan"
+        ac.last_changed=datetime.fromtimestamp(5200,timezone.utc)
+        clock[0]=7000
+        await tick(next_driver,cfg(),plan(hass,cfg()))
+        attempt=await next_driver.command("bedroom","resume")
+        assert attempt["accepted"] is True
+        assert next_driver.last_write["bedroom"]==5000
+        # A fresh resumed controller must honor warmup as well as dwell.
+        clock[0]=7150
+        await tick(next_driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==1
+        clock[0]=7400
+        await tick(next_driver,cfg(),plan(hass,cfg()))
+        assert len(hass.services.calls)==2
+        await next_driver.async_stop()
     asyncio.run(case())
