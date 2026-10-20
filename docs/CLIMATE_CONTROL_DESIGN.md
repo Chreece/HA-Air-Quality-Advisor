@@ -392,10 +392,11 @@ in parallel ONLY if their actual device modes do not conflict.
   \`idle\`. Any other live unit armed in an opposing mode blocks new native
   setpoint and direct thermal writes.
 - A separate dehumidifier is conservatively deferred when native COOL is
-  armed and RH is within 10 percentage points above the configured upper
-  bound. This is a **control preference**, not scientific proof that the
-  room's AC has effectively dried the room. High measured RH still allows
-  dedicated dehumidification after all existing safety gates pass.
+  armed and RH is below the configured upper boundary plus the owner's
+  `cooling_dry_deferral_rh_points` (default 10; range 0–20). Zero
+  disables the deferral. This is a **control preference**, not scientific
+  proof that the AC effectively dehumidifies. High measured RH still
+  allows dedicated dehumidification after all other safeguards pass.
 - Simultaneous humidification and cooling, or a separate humidifier and
   dehumidifier running against each other, hold humidity actuation.
   Native DRY already armed also blocks new separate dehumidifier starts.
