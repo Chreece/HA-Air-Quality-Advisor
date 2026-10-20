@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 from .climate_strategy import guarded_transition, pwm_slot, relay_demand
+from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
 from .pid_math import Memory, finite, step
 
@@ -325,6 +326,13 @@ class DirectClimateControl:
         heat=cfg.get("heat_actuator")
         cool=cfg.get("cool_actuator")
         active=heat if mode=="heat" else cool if mode=="cool" else None
+        coordination_reason=None
+        if can_run and isinstance(active,str):
+            coordination_reason=new_command_gate(
+                self.hass,area,cfg,report,"thermal",active,now=now,
+            )
+            if coordination_reason is not None:
+                can_run=False
         all_entities=self._entities(cfg)
         if not all_entities:
             self._status(area,"no_actuator")
@@ -402,7 +410,8 @@ class DirectClimateControl:
                     if not await self._send(area,e,0.0 if strategy=="proportional" else False,
                                             percentage=strategy=="proportional",now=now):
                         return
-            self._status(area,"safe_off",reason=report.get("reason","no_heat_cool_demand"))
+            self._status(area,"safe_off",reason=coordination_reason or
+                         report.get("reason","no_heat_cool_demand"))
             return
         last_mode=self._rooms.get(area,RoomCycle()).mode
         if last_mode not in (None,mode):
