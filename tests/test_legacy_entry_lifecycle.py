@@ -349,3 +349,46 @@ def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
     }
     asyncio.run(module.async_unload_entry(hass,first))
     asyncio.run(module.async_unload_entry(hass,second))
+
+
+
+def test_announce_routes_only_actionable_rooms_to_exact_entries(integration):
+    module,_=integration
+    hass=make_hass()
+    first,second=legacy_entry(1),legacy_entry(2)
+    asyncio.run(module.async_setup_entry(hass,first))
+    asyncio.run(module.async_setup_entry(hass,second))
+    a,b=FakeManager.instances
+    def rec(area):
+        return SimpleNamespace(area_id=area)
+    a.plan=SimpleNamespace(recommendations=(rec("bedroom"),),
+                           climate_recommendations=())
+    b.plan=SimpleNamespace(recommendations=(),
+                           climate_recommendations=(rec("kitchen"),))
+    def req(areas=None):
+        return SimpleNamespace(data=({} if areas is None else {"areas":areas}),
+                               return_response=True)
+    service=hass.services.callbacks[("air_quality_advisor","announce")]
+    assert asyncio.run(service(req(["kitchen"])))["submitted"]==1
+    assert a.calls==[]
+    assert b.calls==[("announce",{
+        "language":None,"channels":"both","areas":["kitchen"],
+    })]
+    a.calls.clear()
+    b.calls.clear()
+    assert asyncio.run(service(req()))["submitted"]==2
+    assert [v[1]["areas"] for v in a.calls]==[["bedroom"]]
+    assert [v[1]["areas"] for v in b.calls]==[["kitchen"]]
+    a.calls.clear()
+    b.calls.clear()
+    # One room with two eligible recommenders is an ownership conflict,
+    # not permission for duplicate announcements.
+    b.plan.climate_recommendations=(rec("kitchen"),rec("bedroom"))
+    result=asyncio.run(service(req()))
+    assert result["submitted"]==0
+    assert result["reason"]=="ambiguous_room_across_config_entries"
+    assert a.calls==b.calls==[]
+    assert asyncio.run(service(req(["unknown"])))["submitted"]==0
+    assert a.calls==b.calls==[]
+    asyncio.run(module.async_unload_entry(hass,first))
+    asyncio.run(module.async_unload_entry(hass,second))
