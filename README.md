@@ -991,3 +991,25 @@ cleaned up.
 
 All of this remains development code in [draft PR #2](https://github.com/Chreece/HA-Air-Quality-Advisor/pull/2).
 Production v0.5.1 is unchanged pending representative hardware testing.
+
+
+### Multiple Home Assistant entries: exact control routing (v0.6 draft)
+
+The same integration may retain historical independent config entries.
+Room-scoped \`climate_control\` and \`pid_control\` actions now resolve
+**exactly one enabled configured-room owner**, rather than forwarding every
+request to whichever entry happened to load first. A missing or ambiguous
+area returns a clean error without issuing any device command or attempting
+a broadcast. Both original and rebranded action aliases behave identically.
+
+Within each entry, explicit advisory-only room configurations can continue
+to monitor the same device without claiming actuator ownership. When a
+separate entry also has authorized control over the output, live write-time
+interlocks hold new commands in both entries until ownership is corrected.
+The \`climate_diagnostics\` action identifies the conflict without exposing
+another config entry's internal identifier. Legacy PID targets and
+non-compressor thermal actuators are included.
+
+This is validated using a simulated two-entry Home Assistant service
+registry, interleaved state changes, Python unit tests and HACS/Hassfest.
+Hardware commissioning remains mandatory for device-changing functions.
