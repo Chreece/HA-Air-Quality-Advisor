@@ -335,3 +335,9 @@ def test_fast_air_supervision_refreshes_stale_evidence_before_fan_commands(
     manager._on_fast_climate_interval(None)
     assert refreshed==[]
     assert len(schedules)==len(drivers)
+    # An HA area removed from the registry cannot cause a 30-second
+    # recalculation loop while waiting for a registry restoration event.
+    manager.plan=replace(manager.plan,environment={})
+    manager._on_fast_climate_interval(None)
+    assert refreshed==[]
+    assert len(schedules)==2*len(drivers)
