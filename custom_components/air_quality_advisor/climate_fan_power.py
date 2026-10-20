@@ -337,7 +337,7 @@ class FanPowerControl:
             purpose=("extraction" if role=="extraction_fan_entity"
                      else "filtration")
             conflict=new_command_gate(
-                self.hass,area,cfg,plan,purpose,entity,now=now,
+                self.hass,area,cfg,plan,purpose,entity,now=now,entry_id=self.entry_id,
             )
             if conflict is not None:
                 self._status(area,"coordination_hold",entity_id=entity,
@@ -398,7 +398,7 @@ class FanPowerControl:
             purpose=("extraction" if role=="extraction_fan_entity"
                      else "filtration")
             conflict=new_command_gate(
-                self.hass,area,cfg,plan,purpose,entity,now=now,
+                self.hass,area,cfg,plan,purpose,entity,now=now,entry_id=self.entry_id,
             )
             if conflict is not None:
                 needed=False
