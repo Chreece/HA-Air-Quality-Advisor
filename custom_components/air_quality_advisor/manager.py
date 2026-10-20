@@ -35,6 +35,7 @@ from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
 from .climate_rooms import gather as climate_room_plan
 from .climate_coordination import duplicate_owners, native_plan_hold_reason
+from .climate_arbitration import room_coordination
 from .climate_native import NativeClimateControl
 from .climate_direct import DirectClimateControl
 from .climate_humidity_native import HumiditySetpointControl
@@ -345,6 +346,12 @@ class AirQualityManager:
                     )
                     state["fan_power_actuation"] = self.fan_power.statuses.get(
                         monitored.area_id,{"status":"advisory_only"}
+                    )
+                    # All independent device drivers consume ONE per-room
+                    # priority/exclusivity decision. They still recheck the
+                    # physical state immediately before a device write.
+                    state["coordination"]=room_coordination(
+                        self.hass,monitored.area_id,settings,state,now=time(),
                     )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
