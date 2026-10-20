@@ -578,6 +578,34 @@
       </section>`;
     }
 
+    _metricHelp(item) {
+      const lang = this._language();
+      const gr = lang === 'el';
+      const de = lang === 'de';
+      const texts = {
+        co2: ['CO₂ shows how much exhaled air accumulates indoors. Elevated levels suggest insufficient ventilation and may coincide with sleepiness and impaired concentration.', 'Το CO₂ δείχνει πόσος εκπνεόμενος αέρας συσσωρεύεται. Υψηλή συγκέντρωση υποδηλώνει ανεπαρκή αερισμό και μπορεί να συνδέεται με υπνηλία και μειωμένη συγκέντρωση.', 'CO₂ zeigt die Ansammlung ausgeatmeter Luft und kann auf unzureichende Lüftung hinweisen.'],
+        pm25: ['PM2.5 particles can penetrate deeply into the lungs. Filtration and avoiding polluted outdoor air may reduce exposure.', 'Τα σωματίδια PM2.5 διεισδύουν βαθιά στους πνεύμονες. Ο καθαρισμός και η αποφυγή ρυπασμένου εξωτερικού αέρα μειώνουν την έκθεση.', 'PM2,5-Partikel können tief in die Lunge eindringen. Filtration kann die Belastung senken.'],
+        pm10: ['PM10 is inhalable particulate matter. High exposure can irritate the airways.', 'Τα PM10 είναι εισπνεόμενα αιωρούμενα σωματίδια που μπορούν να ερεθίσουν τους αεραγωγούς.', 'PM10 ist einatembarer Feinstaub, der die Atemwege reizen kann.'],
+        humidity: ['Relative humidity depends on temperature. Persistently high RH increases condensation and mold risk; low RH may cause dryness.', 'Η σχετική υγρασία εξαρτάται από τη θερμοκρασία. Η παρατεταμένα υψηλή υγρασία αυξάνει τον κίνδυνο συμπύκνωσης και μούχλας· η χαμηλή προκαλεί ξηρότητα.', 'Relative Luftfeuchte hängt von der Temperatur ab. Dauerhaft hohe Werte fördern Kondenswasser und Schimmel.'],
+        mold: ['This is an estimated critical-surface moisture indicator, not a mold detector. Cold surfaces and persistent high RH can raise risk.', 'Πρόκειται για εκτίμηση υγρασίας κρίσιμης επιφάνειας, όχι ανιχνευτή μούχλας. Οι κρύες επιφάνειες και η επίμονη υγρασία αυξάνουν τον κίνδυνο.', 'Dies ist eine Schätzung der Oberflächenfeuchte, kein Schimmeldetektor.'],
+        aqi: ['Air Quality Index summarizes pollution according to the selected provider scale. Different national scales are not interchangeable.', 'Ο δείκτης AQI συνοψίζει τη ρύπανση βάσει της κλίμακας του παρόχου. Οι εθνικές κλίμακες δεν είναι ισοδύναμες.', 'Der Luftqualitätsindex verwendet die Skala des Anbieters. Nationale Skalen sind nicht austauschbar.'],
+        voc: ['Volatile organic compounds may originate from cleaning agents, paints and furnishings. Sensor accuracy and compound coverage vary.', 'Οι πτητικές οργανικές ενώσεις προέρχονται μεταξύ άλλων από καθαριστικά, βαφές και έπιπλα. Η ακρίβεια του αισθητήρα διαφέρει.', 'Flüchtige organische Stoffe stammen etwa aus Reinigern, Farben und Möbeln.'],
+        voc_parts: ['VOC concentration in parts per billion depends on sensor calibration and reference gas; high readings merit source inspection.', 'Οι VOC σε ppb εξαρτώνται από τη βαθμονόμηση και το αέριο αναφοράς. Οι υψηλές τιμές απαιτούν έλεγχο της πηγής.', 'VOC in ppb sind stark von Kalibrierung und Referenzgas abhängig.'],
+        no2: ['Nitrogen dioxide can aggravate respiratory symptoms; sources include traffic and combustion.', 'Το διοξείδιο του αζώτου μπορεί να επιδεινώσει αναπνευστικά συμπτώματα· προέρχεται από κυκλοφορία και καύση.', 'Stickstoffdioxid aus Verkehr oder Verbrennung belastet die Atemwege.'],
+        o3: ['Ground-level ozone can irritate the lungs and worsen asthma symptoms.', 'Το όζον κοντά στο έδαφος μπορεί να ερεθίσει τους πνεύμονες και να επιδεινώσει το άσθμα.', 'Bodennahes Ozon kann die Atemwege reizen.'],
+        so2: ['Sulfur dioxide from combustion can irritate breathing passages.', 'Το διοξείδιο του θείου από καύσεις μπορεί να ερεθίσει το αναπνευστικό.', 'Schwefeldioxid aus Verbrennung kann die Atemwege reizen.']
+      };
+      const base = texts[item.metric] || [
+        'Measured environmental data from the selected Home Assistant sensor. Use the recorded source, units and freshness to interpret it.',
+        'Περιβαλλοντική μέτρηση από αισθητήρα Home Assistant. Ελέγξτε την πηγή, τις μονάδες και την ενημέρωση.',
+        'Umweltmessung des ausgewählten Home-Assistant-Sensors. Quelle, Einheit und Aktualität beachten.'
+      ];
+      const limit = typeof item.threshold === 'number' && Number.isFinite(item.threshold)
+        ? (gr ? ' Όριο ρύθμισης: ' : de ? ' Konfiguriertes Limit: ' : ' Configured threshold: ') + item.threshold + (item.unit ? ' ' + item.unit : '') + '.'
+        : '';
+      return (gr ? base[1] : de ? base[2] : base[0]) + limit;
+    }
+
     _metric(item, miniature = false) {
       const metric = item.details?.fallback_for_mold
         ? `${this._t('humidity')} Ø (RH)` : this._metricName(item.metric);
@@ -615,7 +643,7 @@
         ? `<div class="mold-summary">${average}${surface}</div>` : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
-          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)}</span>
+          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)} <span class="metric-info" role="button" tabindex="0" aria-label="${escape(metric)} information" title="${escape(this._metricHelp(item))}">${this._icon('mdi:information-outline')}</span></span>
           <span class="metric-number">${escape(display)} <small>${escape(unit)}</small></span>
         </div>
         ${hasLimit ? `<div class="meter" role="progressbar" aria-label="${escape(metric)}"
