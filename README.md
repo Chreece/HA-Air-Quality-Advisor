@@ -859,10 +859,11 @@ verification immediately before it sends a Home Assistant service call.
 
 The climate card displays the current control priority and why any
 physical objective is held. A heat-only radiator will not compete against
-an armed cooling-only AC. Separate dehumidifier startup waits while an
-air conditioner may already be cooling at moderately high RH, but
-verified severe humidity can still be treated with dedicated drying
-equipment. High CO₂ extraction has priority for air-quality guidance
+an armed cooling-only AC. Separate dehumidifier startup can wait while an
+air conditioner is already cooling. The owner can configure the
+deferral margin between 0 and 20 RH percentage points (default 10);
+zero disables this preference. Verified severe humidity can still be
+treated with dedicated drying equipment. High CO₂ extraction has priority for air-quality guidance
 when outdoor air is verified safe, while PM2.5 filtration can remain
 eligible even if outside air is polluted.
 
