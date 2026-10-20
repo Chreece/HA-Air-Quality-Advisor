@@ -650,9 +650,10 @@ rate-limited and acknowledged; manual target changes suspend control until
 explicit resume. It never turns the device on or off or changes its mode.
 
 **Remaining limits:** The existing primary thermostat retains its own native
-heat/cool control. Additional radiator/AC/heat-pump routing, switching into
-DRY/FAN_ONLY, and operating extraction/purifier fans are still **advisory**:
-no unverified device mode or compressor-power commands are issued. Actual
+heat/cool control. Additional devices require their own explicitly commissioned
+native or guarded controller. DRY/FAN_ONLY monitoring remains advisory
+by default; the draft has a separately authorized transition driver, but
+no unverified device mode or compressor-power commands are permitted. Actual
 hardware commissioning and restart tests are still mandatory before releasing
 v0.6.
 
@@ -896,3 +897,29 @@ heating, cooling or DRY equipment.
 CI includes coordinated room and live-transition regressions on both
 Python 3.13 and 3.14. Representative hardware commissioning remains
 mandatory before releasing the experimental control functions.
+
+
+### Native DRY ↔ FAN_ONLY management (v0.6 development only)
+
+The climate equipment wizard now offers a **separate, disabled-by-default**
+permission for already-running native \`climate.*\` units that actually support
+both \`dry\` and \`fan_only\`. After physical commissioning, the controller
+can choose a native mode based on fresh measured indoor RH and comfort
+interlocks. For example, it may switch FAN_ONLY → DRY when verified humidity
+is too high, then DRY → FAN_ONLY **only after its compressor reports idle**
+and RH has recovered with hysteresis.
+
+This driver cannot switch equipment ON/OFF, never requests HEAT/COOL/AUTO,
+never controls a generic relay or invents FAN_ONLY for a DRY-only unit,
+and never targets an entire HA area or device. It requires exact area
+ownership, window and humidity evidence, independent manufacturer-proven
+compressor/frost/electrical protections, a minimum 30-minute mode dwell
+with persistent acknowledgement, and another explicit consent to operate
+without a window contact. Manual overrides and missing acknowledgements
+persistently pause the controller; resume never immediately sends a command.
+
+You can keep the permission disabled and still see the original native
+DRY/FAN_ONLY suggestions in the climate dashboard. **Do not enable the
+automatic mode controller in an uncommissioned home.** Tests using simulated
+Home Assistant devices do not establish hardware compressor safety. This
+work remains in draft PR #2, not the published v0.5.1 release.
