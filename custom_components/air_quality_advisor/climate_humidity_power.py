@@ -269,29 +269,25 @@ class HumidityPowerControl:
         if not self._ready or not self._active:
             return
         record = self.records.get(area)
+        if record is not None:
+            # Freeze compressor minimum-ON and maximum-ON protections at
+            # initial power-on. An options edit must not retroactively alter
+            # the operating envelope of equipment that is already running.
+            min_on=finite(record.get("min_on_s"),300,7200)
+            max_on=finite(record.get("max_on_s"),900,28800)
+            if min_on is None or max_on is None or max_on<=min_on:
+                previous=timings(cfg) if cfg else None
+                if previous is None:
+                    self._pause(area,"original_power_dwell_unknown_reconcile_manually")
+                    return
+                min_on,_,max_on=previous
+            await self._owned_tick(area,cfg,plan,now,record,min_on,max_on)
+            return
         dwell = timings(cfg)
         if dwell is None:
             self._status(area, "invalid_hardware_dwell_config")
             return
         min_on, min_off, max_on = dwell
-        if record is not None:
-            # Persist the minimum physical dwell and maximum owned-runtime
-            # policy AT TURN-ON; an options change or room removal must not
-            # accidentally shorten compressor protection or erase history.
-            prior_on=finite(record.get("min_on_s"),300,7200)
-            prior_max=finite(record.get("max_on_s"),900,28800)
-            if prior_on is None or prior_max is None or prior_max<=prior_on:
-                if cfg:
-                    # Pre-migration records can be reconciled using their
-                    # still-known configuration; never guess after removal.
-                    prior_on,prior_max=min_on,max_on
-                else:
-                    self._pause(area,"original_power_dwell_unknown_reconcile_manually")
-                    return
-            min_on=max(min_on,prior_on)
-            max_on=max(min_on+1,min(max_on,prior_max))
-            await self._owned_tick(area,cfg,plan,now,record,min_on,max_on)
-            return
         if area in self.paused:
             self._status(area, "paused", reason=self.paused[area])
             return
