@@ -1222,6 +1222,14 @@ class _FlowMixin:
                 ("humidity_hysteresis_rh",3),
             ):
                 proposal[key]=user_input.get("climate_"+key,draft.get(key,default))
+            margin=user_input.get("climate_cooling_dry_deferral_rh_points",
+                                  draft.get("cooling_dry_deferral_rh_points",10))
+            from .pid_math import finite
+            margin=finite(margin,0,20)
+            if margin is None:
+                errors["base"]="climate_mode_invalid"
+            else:
+                proposal["cooling_dry_deferral_rh_points"]=margin
             if humidity_advice(50,
                     low_rh=proposal["humidity_low_rh"],
                     high_rh=proposal["humidity_high_rh"],
@@ -1280,6 +1288,7 @@ class _FlowMixin:
             ("humidity_low_rh",40,20,70),
             ("humidity_high_rh",60,30,80),
             ("humidity_hysteresis_rh",3,0.5,10),
+            ("cooling_dry_deferral_rh_points",10,0,20),
         ):
             fields[_marker("climate_"+key,draft.get(key,default))]=(
                 _real_number(lower,upper,"%")
