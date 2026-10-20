@@ -263,6 +263,7 @@ def test_native_rechecks_window_contacts_after_plan_capture(native):
 def test_native_refuses_armed_opposing_secondary_climate(native):
     async def scenario():
         hass,_=fake_home()
+        hass.states.get("climate.room_thermostat").attributes["hvac_modes"]=["off","heat","cool"]
         from test_discovery import MockState
         other=MockState("climate.ac","cool")
         other.attributes["hvac_action"]="idle"
