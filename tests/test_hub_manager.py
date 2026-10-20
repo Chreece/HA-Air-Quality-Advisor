@@ -255,3 +255,48 @@ def test_live_hub_uses_current_ha_area_name_from_recommendation(
     assert payload["text"]
     assert "occupied_only" not in payload
     assert "service" not in payload
+
+
+def test_climate_only_window_advice_routes_exact_selected_room_through_hub(delivery_module):
+    from dataclasses import replace
+    rec=Recommendation(
+        "open","bedroom","Bedroom",
+        (Window("binary_sensor.bedroom_window","Bedroom window",False),),
+        (Reason("climate_window_cool","climate.bedroom_ac","4 °C"),),
+    )
+    m, calls=advisor(delivery_module,{
+        "ai_rewrite_announcements":False,
+        "notify_entities":[],
+        "media_players":[],
+    })
+    # Climate-only messages never become air-quality monitored-room totals.
+    m.plan=replace(m.plan,recommendations=(),climate_recommendations=(rec,))
+    assert asyncio.run(m.async_announce(channels="notification",areas=["bedroom"]))["submitted"]==1
+    assert len(calls.calls)==1
+    domain,action,payload,_=calls.calls[0]
+    assert (domain,action)==("notify","announcement_hub")
+    assert payload["area"]==["Bedroom"]
+    assert "text_notify" in payload and "text_tts" not in payload
+    assert "Window airing" in payload["title"]
+    assert "cooling" in payload["text_notify"]
+    assert not any(k in payload for k in ("output","occupied_only","device"))
+    assert asyncio.run(m.async_announce(channels="notification",areas=["kitchen"]))["submitted"]==0
+
+
+def test_climate_only_hub_rejection_never_falls_back_to_broadcast(delivery_module):
+    from dataclasses import replace
+    services=Services(hub_response={"accepted":False},direct=True,tts=True)
+    m,calls=advisor(delivery_module,{
+        "ai_rewrite_announcements":False,
+    },services=services)
+    rec=Recommendation(
+        "open","bedroom","Bedroom",
+        (Window("binary_sensor.bedroom_window","Bedroom window",False),),
+        (Reason("climate_window_dry","humidifier.dehum","3.2 g/kg"),),
+    )
+    m.plan=replace(m.plan,recommendations=(),climate_recommendations=(rec,))
+    res=asyncio.run(m.async_announce(channels="both",areas=["bedroom"]))
+    assert res["submitted"]==0
+    assert len(calls.calls)==1
+    assert calls.calls[0][:2]==("notify","announcement_hub")
+    assert calls.calls[0][2]["area"]==["Bedroom"]
