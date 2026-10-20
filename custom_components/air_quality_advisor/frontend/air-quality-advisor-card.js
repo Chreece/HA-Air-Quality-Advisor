@@ -741,6 +741,35 @@
     }
 
 
+    _scienceHelp(topic) {
+      const lang = this._language();
+      const explanations = {
+        moisture: ['Moisture-ratio difference estimates whether outside air can dry or humidify the room. Relative humidity alone does not show this.', 'Η διαφορά στην ποσότητα υδρατμών δείχνει αν ο εξωτερικός αέρας μπορεί να ξηράνει ή να υγράνει το δωμάτιο. Η σχετική υγρασία μόνη της δεν επαρκεί.'],
+        predicted: ['Outdoor relative humidity projected after the air warms indoors; this is a physical estimate, not a humidity forecast.', 'Εκτίμηση σχετικής υγρασίας του εξωτερικού αέρα αφού θερμανθεί μέσα. Δεν αποτελεί πρόγνωση.'],
+        band: ['Adaptive comfort band derived from outdoor temperature history. It describes expected comfort, not a mandatory medical limit.', 'Προσαρμοστική ζώνη θερμικής άνεσης βάσει ιστορικού εξωτερικής θερμοκρασίας, όχι ιατρικό όριο.'],
+        cooling: ['Positive outdoor cooling advantage suggests a possible window-airing opportunity if outdoor air quality and weather are safe.', 'Πιθανή φυσική ψύξη από τον εξωτερικό αέρα, μόνο εφόσον επιτρέπουν η ρύπανση και ο καιρός.'],
+        surface: ['Condensation margin estimates how near a cold surface is to its dew point. A small margin increases moisture risk.', 'Το περιθώριο συμπύκνωσης δείχνει πόσο πλησιάζει μια ψυχρή επιφάνεια στο σημείο δρόσου. Μικρή διαφορά αυξάνει τον κίνδυνο υγρασίας.'],
+        exposure: ['Hours with estimated surface RH above the displayed exposure threshold. Persistent moisture raises mold risk; it is not proof of mold.', 'Ώρες με εκτιμώμενη υγρασία επιφάνειας πάνω από το εμφανιζόμενο όριο. Η παρατεταμένη υγρασία ευνοεί τη μούχλα, δεν την αποδεικνύει.'],
+        pm: ['Measured 24-hour particulate mean, only shown when history coverage is sufficient. Exposure duration matters, not just one reading.', 'Μέσος όρος σωματιδίων 24 ωρών μόνο με επαρκές ιστορικό. Η διάρκεια έκθεσης έχει σημασία.'],
+        co2: ['CO₂ rate of change can help evaluate ventilation or occupancy but does not independently measure air changes.', 'Ο ρυθμός μεταβολής CO₂ βοηθά στην αξιολόγηση αερισμού ή παρουσίας αλλά δεν μετρά απευθείας τις εναλλαγές αέρα.'],
+        ach: ['Conditional air-change estimate from a qualified CO₂ decay sequence. It is not a certified ventilation airflow measurement.', 'Εκτίμηση εναλλαγών αέρα από αξιόπιστη πτώση CO₂· δεν αποτελεί πιστοποιημένη μέτρηση παροχής αέρα.'],
+        energy: ['Approximate heat required per cubic meter of exchanged air. Mechanical efficiency and actual device power are not included.', 'Εκτιμώμενη θερμική ενέργεια ανά κυβικό μέτρο ανανέωσης αέρα· δεν περιλαμβάνει πραγματική κατανάλωση συσκευών.'],
+        purification: ['Nominal clean-air changes from entered room volume and purifier CADR; real performance varies with filters and airflow.', 'Ονομαστικές εναλλαγές καθαρού αέρα από όγκο χώρου και CADR. Η πραγματική απόδοση εξαρτάται από φίλτρα και ροή.'],
+        ventilation: ['Indicative minutes to a selected target based on observed improvement. Changes in occupancy or windows can invalidate the estimate.', 'Ενδεικτικά λεπτά μέχρι τον στόχο βάσει μετρήσεων. Αλλαγές παρουσίας και παραθύρων επηρεάζουν την εκτίμηση.'],
+        humidity_event: ['Recent relative-humidity increase can indicate moisture generation (showering, cooking or drying), but source attribution is uncertain.', 'Πρόσφατη άνοδος σχετικής υγρασίας μπορεί να οφείλεται σε ντους, μαγείρεμα ή στέγνωμα· η πηγή δεν αποδεικνύεται.'],
+        formaldehyde: ['Formaldehyde can irritate the eyes and airways. The short measurement period is not a long-term exposure assessment.', 'Η φορμαλδεΰδη μπορεί να ερεθίσει μάτια και αεραγωγούς. Η σύντομη μέτρηση δεν εκτιμά τη μακροχρόνια έκθεση.'],
+        radon: ['Radon is a radioactive gas associated with increased lung cancer risk from long-term exposure. Meaningful assessment requires an adequately long calibrated measurement.', 'Το ραδόνιο είναι ραδιενεργό αέριο και η μακροχρόνια έκθεση αυξάνει τον κίνδυνο καρκίνου πνεύμονα. Χρειάζεται αξιόπιστη μακρά μέτρηση.'],
+        noise: ['Sound levels in dB(A) depend on measurement period and calibration. Sustained or nighttime noise may disrupt sleep.', 'Η στάθμη dB(A) εξαρτάται από τη διάρκεια και τη βαθμονόμηση. Επίμονος ή νυχτερινός θόρυβος μπορεί να επηρεάσει τον ύπνο.'],
+        light: ['Observed daylight availability can help assess light exposure, but ordinary lux does not determine circadian stimulus.', 'Η διάρκεια φυσικού φωτισμού περιγράφει την έκθεση στο φως, αλλά τα κοινά lux δεν προσδιορίζουν τον κιρκάδιο ερεθισμό.'],
+        melanopic: ['Melanopic equivalent daylight illuminance approximates biological light stimulation only from a verified spectral measurement.', 'Τα μελανοπικά lux εκτιμούν τη βιολογική επίδραση φωτός μόνο με κατάλληλη φασματική μέτρηση.'],
+        overheating: ['Cumulative degrees above an overheating reference reflect both intensity and duration of indoor heat.', 'Σωρευτικοί βαθμοώρες πάνω από όριο υπερθέρμανσης δείχνουν ένταση και διάρκεια ζέστης.'],
+        pmv: ['PMV predicts average thermal sensation and PPD the predicted percentage dissatisfied under declared clothing, activity, airflow and radiation assumptions.', 'Το PMV εκτιμά θερμική αίσθηση και το PPD το ποσοστό δυσαρέσκειας, με υποθέσεις ένδυσης, δραστηριότητας και ροής αέρα.'],
+        particle: ['Indoor/outdoor particle ratio compares measured concentrations; differences do not by themselves prove filtration efficiency.', 'Ο λόγος εσωτερικών/εξωτερικών σωματιδίων συγκρίνει μετρήσεις, αλλά δεν αποδεικνύει μόνος του απόδοση φίλτρων.'],
+      };
+      const record = explanations[topic] || ['Measured environmental estimate; interpret only with its source and units.', 'Περιβαλλοντική εκτίμηση: ελέγξτε πηγή και μονάδες.'];
+      return record[lang === 'el' ? 1 : 0];
+    }
+
     _environmentReport(room) {
       const e = room.environment || {};
       const m = e.moisture || {};
@@ -751,65 +780,70 @@
       const labels = SCIENCE_LABELS[this._language()] || SCIENCE_LABELS.en;
       const fmt = (v, digits = 1) => this._format(v, digits);
       const lines = [];
-      const add = (label, value) => {
+      const add = (label, value, topic = '') => {
+        const help = this._scienceHelp(topic);
         lines.push('<div class="science-line"><span>' + escape(label) +
-          '</span><strong>' + escape(value) + '</strong></div>');
+          ' <details class="metric-help"><summary aria-label="' + escape(label) +
+          ' information" title="' + escape(help) + '">' +
+          this._icon('mdi:information-outline') +
+          '</summary><div class="metric-help-content" role="note">' +
+          escape(help) + '</div></details></span><strong>' + escape(value) + '</strong></div>');
       };
       if (m.status === 'drying' || m.status === 'humidifying' || m.status === 'neutral') {
         add(m.status === 'drying' ? labels.drying :
             m.status === 'humidifying' ? labels.humidifying : labels.neutral,
-          fmt(m.drying_potential_g_kg, 2) + ' g/kg');
+          fmt(m.drying_potential_g_kg, 2) + ' g/kg','moisture');
         if (typeof m.outside_air_rh_when_warmed_percent === 'number')
-          add(labels.predicted, fmt(m.outside_air_rh_when_warmed_percent) + '% RH');
+          add(labels.predicted, fmt(m.outside_air_rh_when_warmed_percent) + '% RH','predicted');
       }
       if (t.status === 'within_band' || t.status === 'above_band' || t.status === 'below_band') {
         add(labels.band + ' · ' +
             (t.status === 'above_band' ? labels.heat :
              t.status === 'below_band' ? labels.cool : labels.normal),
-          fmt(t.lower_80_c) + '–' + fmt(t.upper_80_c) + ' °C');
+          fmt(t.lower_80_c) + '–' + fmt(t.upper_80_c) + ' °C','band');
       }
       if (p.status === 'cooling_opportunity')
-        add(labels.cooling, fmt(p.cooling_delta_c) + ' °C');
+        add(labels.cooling, fmt(p.cooling_delta_c) + ' °C','cooling');
       if (s.status && s.status !== 'unavailable')
-        add(labels.surface, fmt(s.condensation_margin_c) + ' °C');
+        add(labels.surface, fmt(s.condensation_margin_c) + ' °C','surface');
       if (h.status === 'ready')
-        add(labels.exposure, fmt(h.above_threshold_hours) + ' h');
+        add(labels.exposure, fmt(h.above_threshold_hours) + ' h','exposure');
       for (const [key, label] of [['pm25_24h', labels.pm25], ['pm10_24h', labels.pm10]]) {
         const value = e[key] || {};
-        if (value.status === 'ready') add(label, fmt(value.mean) + ' µg/m³');
+        if (value.status === 'ready') add(label, fmt(value.mean) + ' µg/m³','pm');
       }
       if (e.co2_trend?.status === 'ready')
-        add(labels.co2, fmt(e.co2_trend.trend_ppm_per_hour) + ' ppm/h');
+        add(labels.co2, fmt(e.co2_trend.trend_ppm_per_hour) + ' ppm/h','co2');
       if (e.co2_decay_ach?.status === 'estimate')
-        add(labels.ach, fmt(e.co2_decay_ach.ach_per_hour, 2) + ' h⁻¹');
+        add(labels.ach, fmt(e.co2_decay_ach.ach_per_hour, 2) + ' h⁻¹','ach');
       if (typeof e.heat_per_full_air_exchange_wh_m3 === 'number')
-        add(labels.energy, fmt(e.heat_per_full_air_exchange_wh_m3) + ' Wh/m³');
+        add(labels.energy, fmt(e.heat_per_full_air_exchange_wh_m3) + ' Wh/m³','energy');
       const extra = e.international || {};
       const eLabels = EXTRA_LABELS[this._language()] || EXTRA_LABELS.en;
       if (extra.air_purification?.nominal_particle_clean_air_changes_h !== undefined)
-        add(eLabels.purification,fmt(extra.air_purification.nominal_particle_clean_air_changes_h,2)+' h⁻¹');
+        add(eLabels.purification,fmt(extra.air_purification.nominal_particle_clean_air_changes_h,2)+' h⁻¹','purification');
       if (extra.ventilation_learning?.status === 'indicative')
-        add(eLabels.toTarget,'~'+fmt(extra.ventilation_learning.estimated_minutes_to_target)+' min');
+        add(eLabels.toTarget,'~'+fmt(extra.ventilation_learning.estimated_minutes_to_target)+' min','ventilation');
       if (extra.moisture_event?.status === 'relative_humidity_rise')
-        add(eLabels.sourceMoisture,'+'+fmt(extra.moisture_event.rh_change_percent_points)+' %');
+        add(eLabels.sourceMoisture,'+'+fmt(extra.moisture_event.rh_change_percent_points)+' %','humidity_event');
       if (extra.formaldehyde_30min?.status === 'ready')
-        add(eLabels.hcho,fmt(extra.formaldehyde_30min.mean)+' µg/m³');
+        add(eLabels.hcho,fmt(extra.formaldehyde_30min.mean)+' µg/m³','formaldehyde');
       if (extra.radon?.status === 'annual_screening')
-        add(eLabels.radon,fmt(extra.radon.mean_bq_m3)+' Bq/m³');
+        add(eLabels.radon,fmt(extra.radon.mean_bq_m3)+' Bq/m³','radon');
       if (extra.sound_24h?.status === 'indicative_laeq')
-        add(eLabels.noise,fmt(extra.sound_24h.db_a)+' dB(A)');
+        add(eLabels.noise,fmt(extra.sound_24h.db_a)+' dB(A)','noise');
       if (extra.sound_last_night?.status === 'indicative_night_laeq')
-        add(eLabels.nightNoise,fmt(extra.sound_last_night.db_a)+' dB(A)');
+        add(eLabels.nightNoise,fmt(extra.sound_last_night.db_a)+' dB(A)','noise');
       if (extra.daylight?.status === 'descriptive')
-        add(eLabels.light,fmt(extra.daylight.observed_hours_above_threshold)+' h');
+        add(eLabels.light,fmt(extra.daylight.observed_hours_above_threshold)+' h','light');
       if (extra.daylight?.melanopic_edi_status === 'sensor_reported_not_from_photopic_lux')
-        add(eLabels.melanopic,fmt(extra.daylight.melanopic_edi_lux)+' lx');
+        add(eLabels.melanopic,fmt(extra.daylight.melanopic_edi_lux)+' lx','melanopic');
       if (extra.overheating_degree_hours?.status === 'ready')
-        add(eLabels.overheated,fmt(extra.overheating_degree_hours.degree_hours_over_reference)+' °C·h');
+        add(eLabels.overheated,fmt(extra.overheating_degree_hours.degree_hours_over_reference)+' °C·h','overheating');
       if (extra.pmv_ppd?.status === 'estimate')
-        add(eLabels.pmv,fmt(extra.pmv_ppd.pmv,2)+' / '+fmt(extra.pmv_ppd.ppd_percent)+'%');
+        add(eLabels.pmv,fmt(extra.pmv_ppd.pmv,2)+' / '+fmt(extra.pmv_ppd.ppd_percent)+'%','pmv');
       if (extra.particle_indoor_outdoor_ratio?.status === 'descriptive_only')
-        add(eLabels.particle,fmt(extra.particle_indoor_outdoor_ratio.ratio,2));
+        add(eLabels.particle,fmt(extra.particle_indoor_outdoor_ratio.ratio,2),'particle');
       if (!lines.length) return '';
       return '<section class="science-section" aria-label="' + escape(labels.title) + '">' +
         '<div class="field-label">' + this._icon('mdi:flask-outline') +
