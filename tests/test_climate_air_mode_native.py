@@ -663,3 +663,82 @@ def test_competing_ac_armed_during_persist_is_rejected_before_service(
         assert not hass.services.calls
         await driver.async_stop()
     asyncio.run(case())
+
+
+def test_permission_revoked_during_durable_intent_never_changes_native_mode(
+    mode_module,monkeypatch,
+):
+    async def scenario():
+        hass,clock=system()
+        config=cfg()
+        approved=plan(hass,config)
+        snapshots=[]
+        class Store:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,fn,delay):
+                pass
+            async def async_save(self,record):
+                snapshots.append(record["expected"].get("bedroom",{}).get("phase"))
+                if snapshots[-1]=="intent":
+                    # A second options evaluation revokes consent while
+                    # the service is awaiting the durable write-ahead.
+                    config["dry_fan_mode_auto"]=False
+        monkeypatch.setattr(
+            sys.modules["homeassistant.helpers.storage"],"Store",Store,
+        )
+        controller=mode_module.NativeAirModeControl(
+            hass,"revoked-permission",clock=lambda:clock[0],
+        )
+        await controller.async_start()
+        clock[0]=5000
+        await tick(controller,config,approved)
+        assert snapshots==["intent"]
+        assert not hass.services.calls
+        assert controller.paused["bedroom"]=="mode_intent_aborted_by_live_interlock"
+        assert controller.expected["bedroom"]["phase"]=="intent"
+        await controller.async_stop()
+    asyncio.run(scenario())
+
+
+def test_plan_superseded_while_persisting_dry_intent_never_commands_ac(
+    mode_module,monkeypatch,
+):
+    async def scenario():
+        hass,clock=system()
+        settings=cfg()
+        approved=plan(hass,settings)
+        updated=[]
+        controller=None
+        class Store:
+            def __init__(self,*args):
+                pass
+            async def async_load(self):
+                return None
+            def async_delay_save(self,fn,delay):
+                pass
+            async def async_save(self,payload):
+                if payload["expected"].get("bedroom",{}).get("phase")=="intent":
+                    updated.append("new_room_plan")
+                    # Another HA recalculation invalidates the original
+                    # room decision after the write was durably staged.
+                    controller._planned["bedroom"]={
+                        **approved,"window_safe":False,
+                    }
+        monkeypatch.setattr(
+            sys.modules["homeassistant.helpers.storage"],"Store",Store,
+        )
+        controller=mode_module.NativeAirModeControl(
+            hass,"superseded-plan",clock=lambda:clock[0],
+        )
+        await controller.async_start()
+        clock[0]=5000
+        await tick(controller,settings,approved)
+        assert updated==["new_room_plan"]
+        assert not hass.services.calls
+        assert controller.paused["bedroom"]=="mode_intent_aborted_by_live_interlock"
+        assert controller.expected["bedroom"]["phase"]=="intent"
+        await controller.async_stop()
+    asyncio.run(scenario())
