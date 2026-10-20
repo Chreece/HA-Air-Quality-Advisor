@@ -452,7 +452,7 @@ def test_humidity_power_options_edit_does_not_change_owned_compressor_dwell(driv
 
 def test_humidity_legacy_active_record_without_dwell_fails_closed_when_removed(driver):
     async def scenario():
-        hass=home(device_state=True)
+        hass=home(device_on=True)
         clock=[2000.]
         control=driver.HumidityPowerControl(
             hass,"legacy-removed",clock=lambda:clock[0],
