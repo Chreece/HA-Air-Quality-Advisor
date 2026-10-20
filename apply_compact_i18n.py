@@ -291,6 +291,35 @@ def apply_compact_i18n(root: Path) -> None:
             "us_epa":"US EPA AQI (0–500)","eea_category":"EEA AQI (1–6)",
             "custom":f"{vocab['target']} · {vocab['settings']}",
         }}
+        # Explain actual source/attribute semantics, not a generic selector
+        # instruction. The freshness value applies to BOTH occupied-room
+        # and sleep-room sources; it is not a minimum sleep duration.
+        if lang=="el":
+            steps["general_settings"]["data"].update({
+                "general_occupied_rooms_entity":"Οντότητα με λίστα κατειλημμένων χώρων",
+                "general_occupied_rooms_attribute":"Πηγή λίστας: κατάσταση ή χαρακτηριστικό",
+                "general_sleep_rooms_entity":"Οντότητα με λίστα δωματίων ύπνου",
+                "general_sleep_rooms_attribute":"Πηγή ύπνου: κατάσταση ή χαρακτηριστικό",
+                "general_source_stale_minutes":"Μέγιστη ηλικία δεδομένων παρουσίας/ύπνου (λεπτά)",
+            })
+            steps["general_settings"]["data_description"].update({
+                "general_occupied_rooms_entity":"Εμφανίζονται μόνο οντότητες με αναγνωρίσιμη λίστα χώρων στην κατάσταση ή σε χαρακτηριστικό.",
+                "general_occupied_rooms_attribute":"Επίλεξε «Κατάσταση» ή ένα από τα χαρακτηριστικά που πράγματι περιέχουν λίστα χώρων. Αν αλλάξεις οντότητα, συνέχισε για ενημέρωση των διαθέσιμων επιλογών.",
+                "general_sleep_rooms_entity":"Οντότητα με τους χώρους όπου κοιμούνται άνθρωποι, π.χ. [\"upnodomatio\"].",
+                "general_sleep_rooms_attribute":"Η κατάσταση είναι διαθέσιμη ως επιλογή μαζί με τα έγκυρα χαρακτηριστικά της επιλεγμένης οντότητας.",
+                "general_source_stale_minutes":"Μέγιστος χρόνος, σε λεπτά, από την τελευταία ενημέρωση της πηγής πριν θεωρηθεί παλιά. Δεν είναι διάρκεια ύπνου ή ελάχιστη απουσία. Προεπιλογή: 240 λεπτά. Παλιές τιμές δεν επιτρέπουν αυτόματη απενεργοποίηση.",
+            })
+        elif lang=="de":
+            steps["general_settings"]["data"]["general_source_stale_minutes"]="Maximales Datenalter für Raumbelegung/Schlaf (Minuten)"
+            steps["general_settings"]["data_description"]["general_source_stale_minutes"]="Maximales Alter der letzten Quellenaktualisierung, bevor die Raum-/Schlafliste als unbekannt gilt. Keine Mindestschlafdauer. Standard: 240 Minuten. Veraltete Daten dürfen kein automatisches Ausschalten auslösen."
+            steps["general_settings"]["data_description"]["general_sleep_rooms_attribute"]="Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen."
+        elif lang=="en":
+            steps["general_settings"]["data"]["general_source_stale_minutes"]="Maximum room/sleep source age (minutes)"
+            steps["general_settings"]["data_description"]["general_source_stale_minutes"]="How many minutes since the source last updated before its occupied/sleep room data becomes untrusted. It is NOT minimum sleep duration. Default 240 minutes. Stale or unknown data never authorizes power OFF."
+            steps["general_settings"]["data_description"]["general_sleep_rooms_attribute"]="Choose State or an actual attribute containing a room list. The choices are populated from the selected entity."
+        else:
+            steps["general_settings"]["data"]["general_source_stale_minutes"]=f"{vocab['source']} · max (min)"
+            steps["general_settings"]["data_description"]["general_source_stale_minutes"]=f"{vocab['source']} · {vocab['sleep']} / {vocab['presence']} · max 240 min. {vocab['invalid']} · {vocab['off']}."
         # The older climate generator still supplies English fallback names for
         # less-common per-room options. Replace those with localized labels
         # across every supported language rather than translating only menus.
