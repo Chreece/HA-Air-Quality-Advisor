@@ -258,3 +258,42 @@ def test_restart_with_owned_fan_requires_reconciliation_not_power_command(driver
         assert len(h.services.calls)==1
         await again.async_stop()
     asyncio.run(run())
+
+
+def test_live_room_gate_prevents_unsafe_extractor_start_after_window_change(driver):
+    async def scenario():
+        from custom_components.air_quality_advisor.climate_arbitration import (
+            room_coordination,
+        )
+        h=home()
+        contact=MockState("binary_sensor.bedroom_window","off",
+                          device_class="window")
+        h._values[contact.entity_id]=contact
+        h._entity_areas[contact.entity_id]="bedroom"
+        conf=cfg()
+        t=[1000.]
+        manager=driver.FanPowerControl(h,"coordinated",clock=lambda:t[0])
+        await manager.async_start()
+        t[0]=1400
+        pending=plan(t[0])
+        pending["window_contacts"]=[contact.entity_id]
+        pending["coordination"]=room_coordination(
+            h,"bedroom",conf,pending,now=t[0],
+        )
+        assert pending["coordination"]["channels"]["extraction"]["status"]=="eligible"
+        await tick(manager,conf,pending)
+        t[0]=1750
+        pending["air_evidence_at"]=t[0]  # fresh indoor/outdoor source update
+        contact.state="on"  # room window opened AFTER plan validation
+        await tick(manager,conf,pending)
+        assert manager.statuses["bedroom"]=={
+            "status":"coordination_hold",
+            "entity_id":"fan.bedroom_extractor",
+            "reason":"window_open_or_unknown",
+        }
+        assert not h.services.calls
+        contact.state="off"
+        await tick(manager,conf,pending)
+        assert h.services.calls[0][:2]==("fan","turn_on")
+        await manager.async_stop()
+    asyncio.run(scenario())
