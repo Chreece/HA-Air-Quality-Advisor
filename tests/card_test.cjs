@@ -695,3 +695,34 @@ nativeDryCard.hass={language:'en',states:{
   'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
 }};
 assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Contextual info controls must be present for each displayed reading and
+// computed environmental value, and never fabricate a measurement limit.
+const helpCard=new Card();
+helpCard.setConfig({entity:'sensor.help_demo'});
+helpCard.hass={language:'el',states:{
+  'sensor.help_demo':{state:'open',attributes:{dashboard:input}},
+}};
+const markup=helpCard.shadowRoot.innerHTML;
+assert.ok(markup.includes('class="info-help"'),'missing tap/keyboard info bubbles');
+assert.ok(markup.includes('aria-label="Πληροφορίες: CO₂"'));
+assert.ok(markup.includes('mdi:information-outline'));
+assert.ok(markup.includes('1370'));
+assert.ok(markup.includes('1.000') || markup.includes('1000'),'missing actual CO2 operational limit');
+assert.ok(markup.includes('Δεν διαπιστώθηκε') || markup.includes('Οι αριθμοί'));
+// User-controlled sensor labels are escaped in help as well as ordinary cards.
+const escapedHelp=helpCard._help('metric_co2','<img src=x onerror=alert(1)>');
+assert.ok(escapedHelp.includes('&lt;img'));
+assert.ok(!escapedHelp.includes('<img src=x onerror=alert(1)>'));
+const noLimit=helpCard._help('metric_temperature','Θερμοκρασία',null,'°C');
+assert.ok(!noLimit.includes('info-limit'),'limits must only be shown when configured');
+const withLimit=helpCard._help('metric_pm25','PM2.5',25,'µg/m³');
+assert.ok(withLimit.includes('info-limit'));
+assert.ok(withLimit.includes('25'));
+const englishHelp=new Card();
+englishHelp.setConfig({entity:'sensor.help_demo'});
+englishHelp.hass={language:'en',states:{
+  'sensor.help_demo':{state:'open',attributes:{dashboard:input}},
+}};
+assert.ok(englishHelp.shadowRoot.innerHTML.includes('operational limit'));

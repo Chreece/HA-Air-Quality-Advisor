@@ -150,3 +150,36 @@ def test_sleep_pause_takes_priority_over_absence_off(adapter):
     assert device_permission(device,"unoccupied","away",False)[0]=="absent"
     device["sleep_behavior"]="sleep_targets"
     assert device_permission(device,"unoccupied","away",None)[0]=="held"
+
+
+def test_filtered_room_list_sources_offer_state_and_valid_attributes(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import (
+        ROOM_STATE_VALUE, room_list_fields, room_list_entities, configured_rooms
+    )
+    valid = MockState("sensor.list_source", '["kitchen"]')
+    valid.attributes["sleeping_rooms"]=["kitchen"]
+    valid.attributes["temperature"]=20.3
+    invalid = MockState("sensor.unsuitable_source","sleeprooms")
+    invalid.attributes["battery"]=78
+    h=FakeHass([valid,invalid])
+    fields=room_list_fields(h, valid.entity_id, {"kitchen"})
+    assert {r["value"] for r in fields}=={ROOM_STATE_VALUE,"sleeping_rooms"}
+    assert room_list_fields(h, invalid.entity_id, {"kitchen"})==[]
+    options=room_list_entities(h,{"kitchen"})
+    assert valid.entity_id in {r["value"] for r in options}
+    assert invalid.entity_id not in {r["value"] for r in options}
+    names, reason=configured_rooms(h, valid.entity_id,"sleeping_rooms",{"kitchen"})
+    assert names=={"kitchen"} and reason=="verified_rooms_list"
+    names, reason=configured_rooms(h, valid.entity_id,"",{"kitchen"})
+    assert names=={"kitchen"} and reason=="verified_rooms_list"
+
+
+def test_invalid_mixed_rooms_list_never_authorizes_empty_home(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import room_list_fields
+    item=MockState("sensor.mixed_rooms",'["kitchen","unknown_room"]')
+    h=FakeHass([item])
+    assert room_list_fields(h,item.entity_id,{"kitchen"})==[]
+    item.state="[]"
+    assert room_list_fields(h,item.entity_id,{"kitchen"})==[
+        {"value":"__state__","label":"State"}
+    ]

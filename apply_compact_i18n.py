@@ -14,11 +14,12 @@ from pathlib import Path
 STEPS = {
     "general_settings": (
         "general_room_occupancy_sensors",
-        "general_occupied_rooms_entity", "general_occupied_rooms_attribute",
+        "general_occupied_rooms_entity",
         "general_home_trackers", "general_home_policy",
-        "general_sleep_rooms_entity", "general_sleep_rooms_attribute",
+        "general_sleep_rooms_entity",
         "general_source_stale_minutes",
     ),
+    "general_sources": ("general_occupied_rooms_attribute", "general_sleep_rooms_attribute"),
     "pollen": (
         "pollen_entity", "pollen_high_from", "pollen_max_scale",
         "pollen_avoid_ventilation",
@@ -60,7 +61,8 @@ PRIMARY = {
         "menu": ("Outside data","General settings","Area settings"),
         "descriptions": {
             "outside_data":"Weather, warnings, outdoor pollution, AQI provider scales and pollen. Choose a subsection.",
-            "general_settings":"Choose shared presence sensors, home trackers, and entities listing occupied or sleeping rooms. The source can hold a JSON list in its state or in a named attribute. Stale or unknown evidence NEVER means nobody is home.",
+            "general_settings":"Select verified presence sensors, home trackers, and entities containing an occupied-room or sleep-room list. The next page will show only suitable State or attribute sources. The time in minutes is maximum source-update age, NOT sleep duration.",
+            "general_sources":"Choose State if the entity state itself lists rooms, otherwise pick an attribute containing a valid room list. Unsupported values cannot be selected.",
             "area_settings":"Choose room monitoring, window exclusions, optional environmental measurements and device-by-device climate control.",
             "pollen":"Select a pollen-index sensor from any Home Assistant provider; declare its published scale and whether high pollen should prevent window advice.",
             "outside_aqi":"Assign a documented AQI provider scale to one sensor at a time. Unknown scales never mean safe outdoor air.",
@@ -74,7 +76,8 @@ PRIMARY = {
         "menu": ("Außendaten","Allgemeine Einstellungen","Bereichseinstellungen"),
         "descriptions": {
             "outside_data":"Wetter, Warnungen, Außenluftqualität, AQI-Skalen und Pollen. Wähle einen Unterpunkt.",
-            "general_settings":"Präsenzsensoren, Anwesenheitstracker und Sensoren für belegte oder schlafende Räume festlegen. Raumlisten im Zustand oder einem benannten Attribut (z. B. JSON). Fehlende oder alte Werte bedeuten NIEMALS, dass das Haus leer ist.",
+            "general_settings":"Präsenzsensoren, Tracker und geeignete Belegungs-/Schlafraumlisten wählen. Im nächsten Schritt Zustand oder gültiges Attribut auswählen. Minuten bedeuten maximale Dauer seit dem letzten Quellen-Update, NICHT Schlafdauer.",
+            "general_sources":"Nur tatsächliche, lesbare Raumlisten aus Zustand oder Attribut auswählen. Ein ungültiger Zustand darf nicht als Raumliste verwendet werden.",
             "area_settings":"Raumüberwachung, Fensterausschlüsse, Messungen und Geräte einzeln einstellen.",
             "pollen":"Pollenindex aus einer beliebigen Home-Assistant-Quelle wählen. Skala und optionale Lüftungssperre bei hoher Belastung festlegen.",
             "outside_aqi":"Jedem AQI-Sensor seine dokumentierte Skala zuordnen. Unbekannte Skalen beweisen keine sichere Außenluft.",
@@ -88,7 +91,8 @@ PRIMARY = {
         "menu": ("Εξωτερικά δεδομένα","Γενικές ρυθμίσεις","Ρυθμίσεις χώρων"),
         "descriptions": {
             "outside_data":"Καιρός, προειδοποιήσεις, εξωτερική ατμοσφαιρική ποιότητα, κλίμακες AQI και γύρη. Επίλεξε υπομενού.",
-            "general_settings":"Επίλεξε αισθητήρες παρουσίας, συσκευές εντοπισμού κατοίκων και οντότητες που περιέχουν τα κατειλημμένα ή τα δωμάτια ύπνου. Η λίστα μπορεί να βρίσκεται στην κατάσταση ή σε ένα συγκεκριμένο χαρακτηριστικό. Άγνωστα ή παλιά δεδομένα ΔΕΝ σημαίνουν άδειο σπίτι.",
+            "general_settings":"Επίλεξε έγκυρους αισθητήρες παρουσίας, ανιχνευτές κατοίκων και οντότητες με λίστες κατειλημμένων ή δωματίων ύπνου. Στο επόμενο βήμα επιλέγεις κατάσταση (state) ή διαθέσιμο χαρακτηριστικό. Τα λεπτά είναι μέγιστη ηλικία ενημέρωσης της πηγής, ΟΧΙ διάρκεια ύπνου.",
+            "general_sources":"Επίλεξε «Κατάσταση (state)» όταν η ίδια η κατάσταση περιέχει λίστα δωματίων ή ένα από τα πραγματικά διαθέσιμα χαρακτηριστικά. Άσχετα δεδομένα αποκλείονται.",
             "area_settings":"Επίλεξε χώρους, εξαιρέσεις παραθύρων, περιβαλλοντικές μετρήσεις και ξεχωριστή ρύθμιση κάθε κλιματικής συσκευής.",
             "pollen":"Επίλεξε αισθητήρα πρόγνωσης γύρης από οποιαδήποτε ενσωμάτωση του Home Assistant. Δήλωσε την κλίμακα και αν η υψηλή γύρη θα εμποδίζει τον αερισμό.",
             "outside_aqi":"Δήλωσε την πραγματική κλίμακα κάθε εξωτερικού αισθητήρα AQI. Άγνωστη κλίμακα δεν θεωρείται ασφαλής.",
@@ -179,6 +183,7 @@ def apply_compact_i18n(root: Path) -> None:
         names = {
             "outside_data":headline[0],"general_settings":headline[1],
             "area_settings":headline[2],"pollen":vocab["pollen"],
+            "general_sources":f"{vocab['source']} · {vocab['select']}",
             "outside_aqi":f"{vocab['outside']} · AQI",
             "area_devices":f"{vocab['area']} · {vocab['devices']}",
             "select_devices":f"{vocab['select']} · {vocab['devices']}",
@@ -220,19 +225,69 @@ def apply_compact_i18n(root: Path) -> None:
             },
         }
         labels=_build_labels(vocab,old_pollen)
+        localized_general={
+            "en":{
+                "general_occupied_rooms_entity":"Occupied rooms — choose source entity",
+                "general_sleep_rooms_entity":"Sleeping rooms — choose source entity",
+                "general_occupied_rooms_attribute":"Occupied rooms — State or actual attribute",
+                "general_sleep_rooms_attribute":"Sleeping rooms — State or actual attribute",
+                "general_source_stale_minutes":"Maximum age since room-source update (minutes)",
+            },
+            "de":{
+                "general_occupied_rooms_entity":"Belegte Räume — Quell-Entität",
+                "general_sleep_rooms_entity":"Schlafende Räume — Quell-Entität",
+                "general_occupied_rooms_attribute":"Belegte Räume — Zustand oder echtes Attribut",
+                "general_sleep_rooms_attribute":"Schlafende Räume — Zustand oder echtes Attribut",
+                "general_source_stale_minutes":"Maximales Alter der letzten Quellenaktualisierung (Minuten)",
+            },
+            "el":{
+                "general_occupied_rooms_entity":"Κατειλημμένα δωμάτια — επιλογή οντότητας",
+                "general_sleep_rooms_entity":"Δωμάτια ύπνου — επιλογή οντότητας",
+                "general_occupied_rooms_attribute":"Κατειλημμένα δωμάτια — κατάσταση ή πραγματικό χαρακτηριστικό",
+                "general_sleep_rooms_attribute":"Δωμάτια ύπνου — κατάσταση ή πραγματικό χαρακτηριστικό",
+                "general_source_stale_minutes":"Μέγιστη ηλικία ενημέρωσης πηγών παρουσίας/ύπνου (λεπτά)",
+            },
+        }
+        labels.update(localized_general.get(lang,{}))
+        def help_for(field,key):
+            shared={
+                "en":{
+                    "general_source_stale_minutes":"The maximum minutes elapsed since Home Assistant last reported this occupied/sleep-room entity. 240 minutes means four hours of allowed data age; it does NOT mean four hours of sleep. If the source stops updating beyond this time, room occupancy/sleep evidence becomes unknown.",
+                    "general_occupied_rooms_entity":"Only entities whose current state or an actual attribute holds a valid list of Home Assistant area names/IDs are shown.",
+                    "general_sleep_rooms_entity":"Only entities whose state or attributes contain valid sleeping room IDs/names are shown.",
+                    "general_occupied_rooms_attribute":"Choose State for an actual list in the state, or a supported attribute from the chosen entity.",
+                    "general_sleep_rooms_attribute":"Choose State or an actual named attribute containing a list of sleeping rooms; no free text or arbitrary attribute names.",
+                },
+                "de":{
+                    "general_source_stale_minutes":"Maximale Minuten seit der letzten Quellenaktualisierung, NICHT Schlafdauer. 240 Minuten bedeuten vier Stunden Datenalter. Nach Ablauf gilt die Belegung als unbekannt.",
+                    "general_occupied_rooms_entity":"Nur Entitäten mit einer echten Raumliste im Zustand oder in einem Attribut.",
+                    "general_sleep_rooms_entity":"Nur Entitäten mit einer tatsächlichen Schlafraumliste werden angezeigt.",
+                    "general_occupied_rooms_attribute":"Zustand wählen, wenn er eine Raumliste enthält, oder ein wirklich vorhandenes Attribut.",
+                    "general_sleep_rooms_attribute":"Zustand oder verfügbares Attribut mit Schlafräumen wählen. Kein Freitext.",
+                },
+                "el":{
+                    "general_source_stale_minutes":"Μέγιστα λεπτά από την τελευταία ενημέρωση της οντότητας παρουσίας/ύπνου από το Home Assistant. 240 λεπτά = 4 ώρες παλαιότητας δεδομένων, ΟΧΙ 4 ώρες ύπνου. Αν η πηγή μείνει χωρίς ενημέρωση, η παρουσία/ύπνος γίνεται άγνωστη.",
+                    "general_occupied_rooms_entity":"Εμφανίζονται μόνο οντότητες που έχουν πραγματική λίστα ονομάτων/αναγνωριστικών δωματίων στην κατάσταση ή σε χαρακτηριστικό.",
+                    "general_sleep_rooms_entity":"Εμφανίζονται μόνο οντότητες με αναγνώσιμη λίστα δωματίων ύπνου.",
+                    "general_occupied_rooms_attribute":"Επίλεξε Κατάσταση (state) αν περιέχει έγκυρη λίστα ή ένα από τα πραγματικά χαρακτηριστικά της επιλεγμένης οντότητας.",
+                    "general_sleep_rooms_attribute":"Επίλεξε Κατάσταση (state) ή πραγματικό χαρακτηριστικό με λίστα δωματίων ύπνου. Δεν χρειάζεται χειροκίνητη πληκτρολόγηση.",
+                },
+            }
+            if field in shared.get(lang,{}):
+                return shared[lang][field]
+            if field in shared["en"] and lang != "en":
+                return f"{vocab['source']} · {vocab['room']} · {vocab['select']}; {vocab['required']}."
+            if key=="pollen" and lang=="en":
+                return old_pollen.get("data_description",{}).get(field,"")
+            return (f"{vocab['select']} {vocab['source']}; "
+                    f"{vocab['required']} · {vocab['control']} · "
+                    f"{vocab['sensor']} / {vocab['devices']}.")
         for key,fields in STEPS.items():
             steps[key]={
                 "title":names[key],
                 "description":desc(key),
                 "data":{field:labels[field] for field in fields},
-                "data_description":{
-                    field:(
-                        old_pollen.get("data_description",{}).get(field,"")
-                        if key=="pollen" and lang=="en" else
-                        (f"{vocab['select']} {vocab['source']}; "
-                         f"{vocab['required']} · {vocab['control']} · "
-                         f"{vocab['sensor']} / {vocab['devices']}.")
-                    )
+                "data_description":{field:help_for(field,key)
                     for field in fields
                 },
             }
@@ -289,6 +344,162 @@ def apply_compact_i18n(root: Path) -> None:
             "us_epa":"US EPA AQI (0–500)","eea_category":"EEA AQI (1–6)",
             "custom":f"{vocab['target']} · {vocab['settings']}",
         }}
+        # Complete previously untranslated climate/PID/environment room forms.
+        # Keep vendor and HA entity names untouched; the values below describe
+        # options only. All 38 locales receive localized labels and help.
+        special_greek={
+            "climate_controller":"Μέθοδος ελέγχου κλιματικής συσκευής",
+            "climate_mode":"Επιθυμητή λειτουργία θέρμανσης/ψύξης",
+            "climate_entity":"Πραγματική κλιματική συσκευή δωματίου",
+            "climate_temperature_entity":"Αισθητήρας θερμοκρασίας του χώρου",
+            "climate_unknown_occupancy":"Αν η παρουσία είναι άγνωστη",
+            "climate_away_policy":"Πότε θεωρείται άδειο το σπίτι",
+            "climate_manual_profile":"Χειροκίνητο προφίλ δωματίου",
+            "climate_sleep_active":"Ενεργοποίηση ύπνου τώρα",
+            "climate_unoccupied_delay_minutes":"Συνεχής απουσία πριν από οικονομικό στόχο (λεπτά)",
+            "climate_occupancy_stale_minutes":"Μέγιστη ηλικία αναφοράς παρουσίας (λεπτά)",
+            "climate_heat_climate_entity":"Θερμοστάτης με πραγματικό HEAT",
+            "climate_cool_climate_entity":"Κλιματιστικό με πραγματικό COOL",
+            "climate_dry_climate_entity":"Κλιματιστικό με πραγματικό DRY",
+            "climate_fan_climate_entity":"Κλιματιστικό με πραγματικό FAN_ONLY",
+            "climate_humidifier_entity":"Συσκευή ύγρανσης",
+            "climate_dehumidifier_entity":"Συσκευή αφύγρανσης",
+            "climate_extraction_fan_entity":"Ανεμιστήρας εξαερισμού",
+            "climate_purifier_fan_entity":"Ανεμιστήρας φίλτρου αέρα",
+            "climate_humidity_entity":"Αισθητήρας σχετικής υγρασίας",
+            "climate_humidity_low_rh":"Κάτω στόχος υγρασίας (%)",
+            "climate_humidity_high_rh":"Άνω στόχος υγρασίας (%)",
+            "climate_humidity_hysteresis_rh":"Υστέρηση ελέγχου υγρασίας (%)",
+            "climate_co2_entity":"Αισθητήρας CO₂ του χώρου",
+            "climate_pm25_entity":"Αισθητήρας PM2.5 του χώρου",
+            "climate_pm25_action_ug_m3":"Λειτουργικό όριο PM2.5 (µg/m³)",
+            "climate_fan_speed_auto":"Έλεγχος ταχύτητας ήδη ενεργού ανεμιστήρα",
+            "climate_fan_power_auto":"Προστατευμένη ενεργοποίηση ανεμιστήρα",
+            "climate_dry_fan_mode_auto":"Αυτόματη εναλλαγή DRY/FAN_ONLY με προστασία συμπιεστή",
+            "pid_mode":"Λειτουργία PID: θέρμανση ή ψύξη",
+            "pid_target_c":"Στόχος θερμοκρασίας PID (°C)",
+            "pid_enabled":"Ενεργοποίηση PID θερμοστάτη",
+            "home_heat":"Θέρμανση με παρουσία (°C)",
+            "home_cool":"Ψύξη με παρουσία (°C)",
+            "unoccupied_heat":"Θέρμανση σε άδειο δωμάτιο (°C)",
+            "unoccupied_cool":"Ψύξη σε άδειο δωμάτιο (°C)",
+            "away_heat":"Θέρμανση σε απουσία (°C)",
+            "away_cool":"Ψύξη σε απουσία (°C)",
+            "sleep_heat":"Θέρμανση στον ύπνο (°C)",
+            "sleep_cool":"Ψύξη στον ύπνο (°C)",
+        }
+        greek_help={
+            "climate_enabled":"Ο σχεδιασμός δεν στέλνει εντολές χωρίς ξεχωριστή εξουσιοδότηση.",
+            "climate_allow_actuation":"Ξεχωριστή άδεια εντολών στους επιλεγμένους ελεγκτές με ελέγχους ασφαλείας.",
+            "climate_controller":"Η εγγενής ρύθμιση προτιμάται· τα ρελέ/PWM απαιτούν ανεξάρτητη φυσική προστασία και όχι συμπιεστή.",
+            "climate_mode":"Μόνο πραγματικά υποστηριζόμενες λειτουργίες. DRY δεν σημαίνει FAN_ONLY.",
+            "climate_unknown_occupancy":"Άγνωστη παρουσία σημαίνει ασφαλή αναμονή, ποτέ βέβαιη απουσία.",
+            "climate_unoccupied_delay_minutes":"Απαιτείται συνεχής απουσία πριν από οικονομικό προφίλ.",
+            "climate_occupancy_stale_minutes":"Μέγιστη ηλικία τελευταίας ενημέρωσης παρουσίας, ΟΧΙ διάρκεια ύπνου.",
+            "climate_humidity_high_rh":"Άνω όριο υγρασίας· υψηλές τιμές ευνοούν συμπύκνωση και μούχλα.",
+            "climate_dry_fan_mode_auto":"Απαιτούνται πραγματικές προστασίες συμπιεστή και ασφαλής αναμονή μεταξύ αλλαγών.",
+            "climate_fan_power_auto":"Απαιτούνται ανεξάρτητες ηλεκτρικές προστασίες και προστασία ανάστροφης ροής.",
+            "climate_pm25_action_ug_m3":"Λειτουργικό κατώφλι, όχι όριο υγείας ή επιβεβαίωση 24ωρης συμμόρφωσης.",
+            "pid_enabled":"Απενεργοποιημένο αρχικά, αλλάζει μόνο στόχους ήδη ενεργού θερμοστάτη.",
+            "pid_mode":"Πρέπει να ταιριάζει με την πραγματική λειτουργία της συσκευής.",
+            "pid_target_c":"Στόχος θερμοκρασίας δωματίου, όχι κατανάλωση ενέργειας.",
+            "pid_sample_seconds":"Χρόνος μεταξύ υπολογισμών. Πολύ συχνές αλλαγές προκαλούν αστάθεια.",
+            "room_volume_m3":"Όγκος δωματίου σε m³ για εκτιμήσεις αερισμού, όχι μέτρηση παροχής.",
+            "particle_cadr_m3h":"Ονομαστική παροχή φίλτρου, όχι πραγματική απόδοση.",
+            "radon_reference_bq_m3":"Επίλεξε τοπική τιμή αναφοράς με αξιόπιστη μακρόχρονη μέτρηση.",
+            "formaldehyde_sensor_verified":"Απαιτείται πραγματικός αισθητήρας HCHO, όχι απλή εκτίμηση TVOC.",
+            "radiant_temperature_entity":"Πραγματική θερμοκρασία ακτινοβολίας, όχι μόνο θερμοκρασία αέρα.",
+        }
+        affected=("climate","climate_room","climate_presence","climate_equipment",
+                  "climate_air_strategy","climate_profiles","climate_actuators",
+                  "pid","pid_room","pid_tuning","environment_room",
+                  "environment_room_air","environment_room_exposure",
+                  "environment_room_comfort")
+        english=json.loads((root/"translations/en.json").read_text(encoding="utf-8"))
+        for name in affected:
+            obj=steps[name]
+            reference=english["options"]["step"][name]
+            if lang!="en" and obj.get("description")==reference.get("description"):
+                obj["description"]=(
+                    f"{vocab['area']} · {vocab['settings']} · "
+                    f"{vocab['devices']} / {vocab['sensor']} · {vocab['control']}."
+                )
+            for field,label in obj.get("data",{}).items():
+                if lang=="en":
+                    continue
+                if lang=="el" and field in special_greek:
+                    obj["data"][field]=special_greek[field]
+                elif label==reference.get("data",{}).get(field):
+                    if "sleep" in field:
+                        translated=f"{vocab['sleep']} · {vocab['settings']}"
+                    elif "temperature" in field or "_heat" in field or "_cool" in field:
+                        translated=f"{vocab['temperature']} · {vocab['target']} (°C)"
+                    elif "humidity" in field or "_rh" in field:
+                        translated=f"{vocab['humidity']} · {vocab['target']}"
+                    elif field.endswith(("_entity","_entities")):
+                        translated=f"{vocab['devices']} · {vocab['select']} {vocab['sensor']}"
+                    elif "away" in field or "occupancy" in field:
+                        translated=f"{vocab['presence']} · {vocab['control']}"
+                    else:
+                        translated=f"{vocab['settings']} · {vocab['control']}"
+                    obj["data"][field]=translated
+            for field,label in obj.get("data_description",{}).items():
+                if lang=="en":
+                    continue
+                if lang=="el" and field in greek_help:
+                    obj["data_description"][field]=greek_help[field]
+                elif label==reference.get("data_description",{}).get(field):
+                    obj["data_description"][field]=(
+                        f"{vocab['select']} {vocab['source']}; "
+                        f"{vocab['required']} · {vocab['control']}."
+                    )
+        selector_options={
+            "climate_controller":["device","environment","setpoint_pid","on_off","pwm","proportional"],
+            "climate_mode":["auto","heat","cool","dry","off"],
+            "climate_unknown_occupancy":["occupied","hold"],
+            "climate_away_policy":["any_home","all_home"],
+            "climate_manual_profile":["auto","home","unoccupied","away","sleep"],
+            "climate_target_source":["temperature","pmv"],
+            "pid_mode":["heat","cool"],
+        }
+        special_choices={
+            "el":{
+                "device":"Εγγενής θερμοστάτης","environment":"Μόνο περιβαλλοντικές συσκευές",
+                "setpoint_pid":"PID στόχου","on_off":"Θερμικό ρελέ",
+                "pwm":"Θερμικό PWM","proportional":"Αναλογική έξοδος",
+                "auto":"Αυτόματο","heat":"Θέρμανση","cool":"Ψύξη","dry":"Αφύγρανση",
+                "off":"Κλειστό","occupied":"Θεώρησε παρουσία","hold":"Αναστολή εντολών",
+                "home":"Σπίτι","unoccupied":"Άδειο δωμάτιο","away":"Απουσία",
+                "sleep":"Ύπνος","any_home":"Ένας κάτοικος αρκεί",
+                "all_home":"Απαιτούνται όλοι","temperature":"Θερμοκρασία",
+                "pmv":"Θερμική άνεση PMV",
+            },
+            "de":{
+                "device":"Nativer Thermostat","environment":"Nur Umweltdaten",
+                "setpoint_pid":"Äußerer PID","on_off":"Thermisches Relais",
+                "pwm":"Thermisches PWM","proportional":"Stellausgang",
+                "auto":"Automatisch","heat":"Heizen","cool":"Kühlen","dry":"Trocknen",
+                "off":"Aus","occupied":"Als belegt behandeln","hold":"Befehle pausieren",
+                "home":"Zuhause","unoccupied":"Raum leer","away":"Abwesend",
+                "sleep":"Schlafen","any_home":"Eine Person genügt",
+                "all_home":"Alle Personen erforderlich",
+            },
+        }
+        for option,values in selector_options.items():
+            choices=special_choices.get(lang,{})
+            selectors[option]={"options":{
+                value:choices.get(value) or (
+                    f"{vocab['automatic']} · {vocab['control']}" if value=="auto" else
+                    f"{vocab['sleep']}" if value=="sleep" else
+                    f"{vocab['temperature']} + " if value=="heat" else
+                    f"{vocab['temperature']} − " if value=="cool" else
+                    f"{vocab['humidity']} · {vocab['control']}" if value=="dry" else
+                    f"{vocab['off']}" if value=="off" else
+                    f"{vocab['presence']} · {vocab['settings']}" if value in
+                        ("home","away","unoccupied","occupied","any_home","all_home") else
+                    f"{vocab['devices']} · {vocab['control']}"
+                ) for value in values
+            }}
         path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",
                         encoding="utf-8")
         if lang=="en":

@@ -1084,3 +1084,33 @@ minimum-on, runtime and acknowledgement rules.
 This refinement is included in the opt-in **v0.6.0b2 beta**. Existing
 automation stays off until explicitly enabled, and all experimental power/
 compressor-control paths still require separate real-device commissioning.
+
+
+### Contextual environmental information and verified room-list selectors (next beta)
+
+The Lovelace card now offers keyboard-, touch- and mouse-accessible **ⓘ**
+explanations beside measured indoor/outdoor metrics, weather, pollen, room
+statuses, mold calibration, building-physics/science estimates, climate-device
+arbitration and PID targets. Each bubble distinguishes what is measured versus
+estimated, what the value helps decide, and potential health/comfort effects.
+A numeric limit appears in the bubble **only when the actual reading has
+a configured operational threshold**; the interface never invents universal
+health limits or treats instantaneous pollution readings as daily exposure
+certification.
+
+**General settings → Occupied rooms / Sleeping rooms** now uses two pages:
+first choose an entity actually containing usable Home Assistant room IDs
+or names; then select either its validated **State** or one of its actual
+valid room-list attributes. The option list is derived from that entity's
+current values and prevents typos in arbitrary attribute names. The original
+240-minute setting means the **maximum age since the source's last Home
+Assistant report (4 hours)**. It does **not** mean time slept or a sleep
+duration; stale/unknown state is never proof that everybody has left.
+
+Area options filter climate devices by advertised native heat/cool/dry/fan
+capabilities, humidity devices by declared class, and PID targets by actual
+setpoint support. Shared occupancy sensors and trackers must carry usable
+states. The compact and advanced room setup now localizes fields, help
+and native selector choices throughout all **38 UI languages**, with
+detailed Greek descriptions. These changes remain on the development
+branch until validated and published as a new opt-in beta.

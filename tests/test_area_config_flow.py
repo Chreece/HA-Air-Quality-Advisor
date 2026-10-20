@@ -1302,34 +1302,78 @@ def test_outside_aqi_submenu_no_sources_still_renders_nonempty_form(monkeypatch,
     assert done["completed"]["data"]["weather_entities"]==["weather.home"]
 
 
-def test_shared_general_presence_sources_saved_without_touching_room_settings(monkeypatch,adapter):
+def test_shared_general_presence_sources_saved_without_touching_room_settings(monkeypatch, adapter):
     opt=_make_options(monkeypatch,adapter)
     tracker=MockState("person.occupant","home")
-    global_rooms=MockState("sensor.house_occupied_rooms",'["living"]')
-    sleep=MockState("sensor.sleep_rooms",'[]')
+    rooms=MockState("sensor.house_occupied_rooms",'["living"]')
+    rooms.attributes["occupied"]=["living"]
+    sleep=MockState("sensor.sleep_rooms","sleeprooms")
+    sleep.attributes["rooms"]=["living"]
     sensor=MockState("binary_sensor.living_occupancy","on",device_class="occupancy")
-    for st in (tracker,global_rooms,sleep,sensor):
+    for st in (tracker,rooms,sleep,sensor):
         opt.hass._values[st.entity_id]=st
     opt.hass._entity_areas[sensor.entity_id]="living"
     asyncio.run(opt.async_step_init())
     form=asyncio.run(opt.async_step_general_settings())
-    assert form["step_id"]=="general_settings"
-    assert "general_sleep_rooms_attribute" in form["data_schema"]
-    done=asyncio.run(opt.async_step_general_settings({
+    assert "general_sleep_rooms_entity" in form["data_schema"]
+    pending=asyncio.run(opt.async_step_general_settings({
         "general_room_occupancy_sensors":[sensor.entity_id],
-        "general_occupied_rooms_entity":global_rooms.entity_id,
-        "general_occupied_rooms_attribute":"occupied",
+        "general_occupied_rooms_entity":rooms.entity_id,
         "general_home_trackers":[tracker.entity_id],
-        "general_home_policy":"any_home",
         "general_sleep_rooms_entity":sleep.entity_id,
-        "general_sleep_rooms_attribute":"rooms",
         "general_source_stale_minutes":240,
     }))
-    config=done["completed"]["data"]
-    assert config["occupancy_global"]["occupied_rooms_entity"]==global_rooms.entity_id
+    assert pending["step_id"]=="general_sources"
+    occ=next(v for k,v in pending["data_schema"].items()
+             if k=="general_occupied_rooms_attribute").config.options
+    sno=next(v for k,v in pending["data_schema"].items()
+             if k=="general_sleep_rooms_attribute").config.options
+    assert {"value":"__state__","label":"State"} in occ
+    assert "occupied" in {x["value"] for x in occ}
+    assert {x["value"] for x in sno}=={"rooms"}
+    invalid=asyncio.run(opt.async_step_general_sources({
+        "general_sleep_rooms_attribute":"anything",
+    }))
+    assert invalid["errors"]["base"]=="general_invalid_attribute"
+    result=asyncio.run(opt.async_step_general_sources({
+        "general_occupied_rooms_attribute":"__state__",
+        "general_sleep_rooms_attribute":"rooms",
+    }))
+    config=result["completed"]["data"]
+    assert config["occupancy_global"]["occupied_rooms_entity"]==rooms.entity_id
+    assert config["occupancy_global"]["occupied_rooms_attribute"]==""
     assert config["occupancy_global"]["sleep_rooms_attribute"]=="rooms"
+    assert config["occupancy_global"]["source_stale_minutes"]==240
     assert config["areas"]==["living"]
     assert config["thresholds"]=={"indoor_co2":1200}
+
+
+def test_only_structurally_usable_room_sources_appear_in_general_entity_choices(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    valid=MockState("sensor.occupied","unavailable")
+    valid.state="ready"
+    valid.attributes["room_names"]=["living"]
+    bad=MockState("sensor.traffic","heavy")
+    no=MockState("sensor.other",42)
+    actual=MockState("sensor.direct_rooms",'["living"]')
+    for st in (valid,bad,no,actual):
+        h._values[st.entity_id]=st
+    asyncio.run(options.async_step_init())
+    form=asyncio.run(options.async_step_general_settings())
+    choices=next(v for k,v in form["data_schema"].items()
+                 if k=="general_sleep_rooms_entity").config.options
+    ids={x["value"] for x in choices}
+    assert valid.entity_id in ids and actual.entity_id in ids
+    assert bad.entity_id not in ids and no.entity_id not in ids
+    step=asyncio.run(options.async_step_general_settings({
+        "general_sleep_rooms_entity":valid.entity_id,
+    }))
+    assert step["step_id"]=="general_sources"
+    fields=next(v for k,v in step["data_schema"].items()
+                if k=="general_sleep_rooms_attribute").config.options
+    assert {x["value"] for x in fields}=={"room_names"}
+    assert "general_source_stale_minutes" in form["data_schema"]
 
 
 def test_area_device_list_preselects_every_supported_room_entity_without_actuation(monkeypatch,adapter):

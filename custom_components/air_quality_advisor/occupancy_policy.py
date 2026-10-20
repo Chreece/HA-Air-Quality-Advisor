@@ -265,3 +265,69 @@ def live_device_permission(hass: Any, area: str, room_config: Mapping,
     if isinstance(trackers,list) and trackers:
         home,_,_=home_presence(hass,{"home_trackers":trackers})
     return device_permission(device,room,home,plan.get("sleeping"))
+
+
+ROOM_STATE_VALUE = "__state__"
+
+
+def _room_value_allowed(hass: Any, raw: Any, known_areas: set[str]) -> bool:
+    """Recognize a list, even empty; never interpret arbitrary text as a room."""
+    parsed = _tokens(raw)
+    if parsed is None:
+        return False
+    aliases = _area_aliases(hass, known_areas)
+    return all(isinstance(name, str) and
+               name.strip().casefold() in aliases for name in parsed)
+
+
+def room_list_fields(hass: Any, entity_id: str, known_areas: set[str]
+                     ) -> list[dict[str, str]]:
+    """Only attributes that currently contain a usable HA-room list.
+
+    The entity's *state* is treated as one selectable source, not a free text
+    attribute name. Invalid state values are omitted. Prevent bogus list
+    sources from appearing in the options flow.
+    """
+    state = hass.states.get(entity_id)
+    if state is None or getattr(state, "state", None) in (
+        "unknown", "unavailable", "none", ""
+    ):
+        return []
+    options = []
+    if _room_value_allowed(hass, state.state, known_areas):
+        options.append({"value": ROOM_STATE_VALUE, "label": "State"})
+    attrs = getattr(state, "attributes", {})
+    if not isinstance(attrs, Mapping):
+        return options
+    for key in sorted(attrs):
+        if (not isinstance(key, str) or not key or key.startswith("_")
+                or len(key) > 128):
+            continue
+        if _room_value_allowed(hass, attrs[key], known_areas):
+            options.append({"value": key, "label": key})
+    return options
+
+
+def room_list_entities(hass: Any, known_areas: set[str],
+                       previous: tuple[str | None, ...] = ()
+                       ) -> list[dict[str, str]]:
+    """Populate selectors with usable list sources, not arbitrary entities."""
+    candidates = []
+    seen = set()
+    for state in hass.states.async_all():
+        entity = getattr(state, "entity_id", "")
+        if (not isinstance(entity, str) or "." not in entity
+                or entity in seen):
+            continue
+        fields = room_list_fields(hass, entity, known_areas)
+        if not fields:
+            continue
+        seen.add(entity)
+        label = str(getattr(state, "name", None) or entity)
+        candidates.append({"value": entity, "label": label + " · " + entity})
+    # Previously saved sources can be temporarily unavailable: allow the
+    # user to *see* them but require valid data to complete a new selection.
+    for entity in previous:
+        if isinstance(entity, str) and entity not in seen and entity:
+            candidates.append({"value": entity, "label": entity + " · unavailable"})
+    return sorted(candidates, key=lambda x: x["label"].casefold())

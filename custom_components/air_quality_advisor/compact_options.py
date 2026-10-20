@@ -102,97 +102,186 @@ class CompactOptionsMixin:
             ],
         )
 
+    def _general_area_ids(self):
+        from homeassistant.helpers import area_registry
+        registry = area_registry.async_get(self.hass)
+        areas = set(self._values.get(CONF_AREAS, []) or [])
+        climates = self._values.get(CONF_CLIMATE_ROOMS, {})
+        if isinstance(climates, dict):
+            areas.update(climates)
+        if hasattr(registry, "async_list_areas"):
+            areas.update(area.id for area in registry.async_list_areas()
+                         if isinstance(getattr(area, "id", None), str))
+        return {area for area in areas if isinstance(area, str) and area}
+
     async def async_step_general_settings(self, user_input=None):
-        """Shared presence and sleep sources, independent of any HVAC device."""
-        old = self._values.get(CONF_OCCUPANCY_GLOBAL, {})
-        old = dict(old) if isinstance(old, dict) else {}
-        room_sensors = sorted(
-            [{"value": s.entity_id, "label": s.name or s.entity_id}
-             for s in self.hass.states.async_all("binary_sensor")
-             if str(s.attributes.get("device_class", "")).casefold()
-                in ("occupancy", "presence")],
-            key=lambda x: x["label"].casefold(),
+        """First select usable source ENTITIES; next page selects their fields.
+
+        Home Assistant does not dynamically update dependent selectors while
+        a config form is open. A second page safely enumerates actual current
+        attribute names only after each entity has been selected.
+        """
+        from .occupancy_policy import room_list_entities
+        saved = self._values.get(CONF_OCCUPANCY_GLOBAL, {})
+        saved = dict(saved) if isinstance(saved, dict) else {}
+        areas = self._general_area_ids()
+        source_choices = room_list_entities(
+            self.hass, areas,
+            (saved.get("occupied_rooms_entity"), saved.get("sleep_rooms_entity"))
         )
-        trackers = sorted(
-            [{"value": s.entity_id, "label": s.name or s.entity_id}
-             for s in self.hass.states.async_all()
-             if s.domain in ("person", "device_tracker") or
-                (s.domain == "binary_sensor" and
-                 str(s.attributes.get("device_class", "")).casefold()
-                 in ("occupancy", "presence"))],
-            key=lambda x: x["label"].casefold(),
-        )
+        source_ids = {option["value"] for option in source_choices}
+        source_choices = [{"value": "none", "label": "—"}] + source_choices
+        room_sensors = sorted([
+            {"value": st.entity_id, "label": st.name or st.entity_id}
+            for st in self.hass.states.async_all("binary_sensor")
+            if str(st.attributes.get("device_class","")).casefold()
+               in ("presence","occupancy") and st.state in ("on","off")
+        ], key=lambda row: row["label"].casefold())
+        tracker_opts = sorted([
+            {"value": st.entity_id, "label": st.name or st.entity_id}
+            for st in self.hass.states.async_all()
+            if (
+                st.domain in ("person","device_tracker")
+                and isinstance(st.state,str)
+                and st.state not in ("unknown","unavailable","none","")
+            ) or (
+                st.domain == "binary_sensor"
+                and str(st.attributes.get("device_class","")).casefold()
+                  in ("presence","occupancy") and st.state in ("on","off")
+            )
+        ], key=lambda row: row["label"].casefold())
         errors = {}
         if user_input is not None:
-            selected = user_input.get("general_room_occupancy_sensors", old.get("room_occupancy_sensors", []))
-            at_home = user_input.get("general_home_trackers", old.get("home_trackers", []))
-            occupied_entity = user_input.get("general_occupied_rooms_entity", old.get("occupied_rooms_entity"))
-            sleep_entity = user_input.get("general_sleep_rooms_entity", old.get("sleep_rooms_entity"))
-            occupancy_attr = (user_input.get("general_occupied_rooms_attribute",
-                              old.get("occupied_rooms_attribute", "")) or "").strip()
-            sleep_attr = (user_input.get("general_sleep_rooms_attribute",
-                         old.get("sleep_rooms_attribute", "")) or "").strip()
-            stale = user_input.get("general_source_stale_minutes", old.get("source_stale_minutes", 240))
+            selected = user_input.get("general_room_occupancy_sensors",
+                                      saved.get("room_occupancy_sensors", []))
+            people = user_input.get("general_home_trackers",
+                                    saved.get("home_trackers", []))
+            occupancy = user_input.get("general_occupied_rooms_entity",
+                                       saved.get("occupied_rooms_entity")) or "none"
+            sleep = user_input.get("general_sleep_rooms_entity",
+                                   saved.get("sleep_rooms_entity")) or "none"
+            stale = user_input.get("general_source_stale_minutes",
+                                   saved.get("source_stale_minutes", 240))
+            policy = user_input.get("general_home_policy",
+                                    saved.get("home_policy", "any_home"))
             try:
                 age = float(stale)
-            except (TypeError, ValueError, OverflowError):
+            except (ValueError, TypeError, OverflowError):
                 age = float("nan")
-            known = {s.entity_id for s in self.hass.states.async_all()}
             if (not isinstance(selected, list) or
-                    any(v not in {s["value"] for s in room_sensors} for v in selected)):
+                any(x not in {s["value"] for s in room_sensors} for x in selected)):
                 errors["base"] = "general_invalid_presence"
-            elif (not isinstance(at_home, list) or
-                  any(v not in {s["value"] for s in trackers} for v in at_home)):
+            elif (not isinstance(people, list) or
+                  any(x not in {s["value"] for s in tracker_opts} for x in people)):
                 errors["base"] = "general_invalid_trackers"
-            elif any(e and e not in known for e in (occupied_entity, sleep_entity)):
+            elif any(x not in source_ids | {"none"} for x in (occupancy,sleep)):
                 errors["base"] = "general_invalid_rooms_entity"
-            elif any(len(a) > 128 or a.startswith("_") for a in (occupancy_attr, sleep_attr)):
-                errors["base"] = "general_invalid_attribute"
+            elif policy not in ("any_home","all_home"):
+                errors["base"] = "general_invalid_presence"
             elif not math.isfinite(age) or not 10 <= age <= 1440:
                 errors["base"] = "general_invalid_source_age"
             else:
-                self._values[CONF_OCCUPANCY_GLOBAL] = {
-                    **old,
+                self._general_pending = {
+                    **saved,
                     "room_occupancy_sensors": list(dict.fromkeys(selected)),
-                    "occupied_rooms_entity": occupied_entity or None,
-                    "occupied_rooms_attribute": occupancy_attr,
-                    "sleep_rooms_entity": sleep_entity or None,
-                    "sleep_rooms_attribute": sleep_attr,
-                    "home_trackers": list(dict.fromkeys(at_home)),
-                    "home_policy": user_input.get(
-                        "general_home_policy", old.get("home_policy", "any_home")
-                    ) if user_input.get("general_home_policy",
-                                        old.get("home_policy", "any_home")) in (
-                                            "any_home", "all_home") else "any_home",
+                    "home_trackers": list(dict.fromkeys(people)),
+                    "occupied_rooms_entity": None if occupancy=="none" else occupancy,
+                    "sleep_rooms_entity": None if sleep=="none" else sleep,
+                    "home_policy": policy,
                     "source_stale_minutes": age,
                 }
+                # Always let the user review the extracted State/attribute
+                # choices before saving. No old free-text attribute survives
+                # a changed source without validation.
+                return await self.async_step_general_sources()
+        fields = {
+            _field("general_room_occupancy_sensors",saved.get("room_occupancy_sensors",[])):
+                _select(room_sensors,multi=True),
+            _field("general_occupied_rooms_entity",
+                   saved.get("occupied_rooms_entity") or "none"):
+                _select(source_choices),
+            _field("general_home_trackers",saved.get("home_trackers",[])):
+                _select(tracker_opts,multi=True),
+            _field("general_home_policy",saved.get("home_policy","any_home")):
+                _select(["any_home","all_home"],translation_key="general_home_policy"),
+            _field("general_sleep_rooms_entity",
+                   saved.get("sleep_rooms_entity") or "none"):
+                _select(source_choices),
+            _field("general_source_stale_minutes",saved.get("source_stale_minutes",240)):
+                _number(10,1440),
+        }
+        return self.async_show_form(step_id="general_settings",
+                                    errors=errors,data_schema=probatio.Schema(fields))
+
+    async def async_step_general_sources(self, user_input=None):
+        """Show only valid State/attribute choices for each chosen entity."""
+        from .occupancy_policy import room_list_fields, ROOM_STATE_VALUE
+        pending = getattr(self, "_general_pending", None)
+        if not isinstance(pending, dict):
+            return await self.async_step_general_settings()
+        prior = self._values.get(CONF_OCCUPANCY_GLOBAL,{})
+        prior = prior if isinstance(prior,dict) else {}
+        areas = self._general_area_ids()
+        definitions = (
+            ("occupied_rooms_entity","occupied_rooms_attribute",
+             "general_occupied_rooms_attribute"),
+            ("sleep_rooms_entity","sleep_rooms_attribute",
+             "general_sleep_rooms_attribute"),
+        )
+        options = {}
+        errors = {}
+        for entity_key, attr_key, field in definitions:
+            entity = pending.get(entity_key)
+            if not entity:
+                pending[attr_key] = ""
+                continue
+            possible = room_list_fields(self.hass, entity, areas)
+            choices = {opt["value"] for opt in possible}
+            if not choices:
+                errors["base"] = "general_invalid_rooms_entity"
+            default = (prior.get(attr_key) if prior.get(entity_key)==entity
+                       else None) or ROOM_STATE_VALUE
+            if default not in choices and choices:
+                default = possible[0]["value"]
+            options[field] = (possible, default, choices, attr_key)
+        if user_input is not None and not errors:
+            for field, (_, default, choices, attr_key) in options.items():
+                value = user_input.get(field, default)
+                if value not in choices:
+                    errors["base"] = "general_invalid_attribute"
+                else:
+                    pending[attr_key] = "" if value==ROOM_STATE_VALUE else value
+            if not errors:
+                self._values[CONF_OCCUPANCY_GLOBAL] = pending
+                self._general_pending = None
                 return await self._finish()
         fields = {
-            _field("general_room_occupancy_sensors", old.get("room_occupancy_sensors", [])):
-                _select(room_sensors, multi=True),
-            _field("general_occupied_rooms_entity", old.get("occupied_rooms_entity")):
-                selector.EntitySelector(selector.EntitySelectorConfig()),
-            _field("general_occupied_rooms_attribute", old.get("occupied_rooms_attribute", "")):
-                selector.TextSelector(),
-            _field("general_home_trackers", old.get("home_trackers", [])):
-                _select(trackers, multi=True),
-            _field("general_home_policy", old.get("home_policy", "any_home")):
-                _select(["any_home", "all_home"], translation_key="general_home_policy"),
-            _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity")):
-                selector.EntitySelector(selector.EntitySelectorConfig()),
-            _field("general_sleep_rooms_attribute", old.get("sleep_rooms_attribute", "")):
-                selector.TextSelector(),
-            _field("general_source_stale_minutes", old.get("source_stale_minutes", 240)):
-                _number(10, 1440),
+            _field(field, default, required=True): _select(possible)
+            for field, (possible, default, _, _) in options.items()
+            if possible
         }
-        return self.async_show_form(
-            step_id="general_settings", data_schema=probatio.Schema(fields), errors=errors
-        )
+        if not fields and not errors:
+            # No source entity was selected. Preserve other general settings.
+            self._values[CONF_OCCUPANCY_GLOBAL] = pending
+            self._general_pending = None
+            return await self._finish()
+        return self.async_show_form(step_id="general_sources",
+                                    data_schema=probatio.Schema(fields),errors=errors)
 
     async def async_step_pollen(self, user_input=None):
         """Dedicated, robust pollen editor: no dynamic AQI selectors."""
         data = self._values.get(CONF_ENVIRONMENT_GLOBAL, {})
         current = dict(data) if isinstance(data, dict) else {}
+        pollen_sources = []
+        for st in self.hass.states.async_all("sensor"):
+            try:
+                value = float(st.state)
+            except (ValueError, TypeError, OverflowError):
+                continue
+            if math.isfinite(value) and 0 <= value <= 100000:
+                pollen_sources.append({"value": st.entity_id,
+                                       "label": (st.name or st.entity_id) + " · " + st.entity_id})
+        pollen_sources = sorted(pollen_sources,key=lambda x:x["label"].casefold())
         errors = {}
         if user_input is not None:
             source = user_input.get("pollen_entity", current.get("pollen_entity"))
@@ -201,9 +290,9 @@ class CompactOptionsMixin:
                 maximum = float(user_input.get("pollen_max_scale", current.get("pollen_max_scale", 5)))
             except (TypeError, ValueError, OverflowError):
                 threshold, maximum = float("nan"), float("nan")
-            if source and (not isinstance(source, str) or
-                           not source.startswith("sensor.") or
-                           self.hass.states.get(source) is None):
+            if source and source != "none" and source not in {
+                row["value"] for row in pollen_sources
+            }:
                 errors["base"] = "invalid_environment_scale"
             elif not all(math.isfinite(v) for v in (threshold, maximum)) or not (
                 0 <= threshold <= maximum <= 100
@@ -211,7 +300,7 @@ class CompactOptionsMixin:
                 errors["base"] = "invalid_environment_scale"
             else:
                 current.update({
-                    "pollen_entity": source or None,
+                    "pollen_entity": None if source in (None, "none") else source,
                     "pollen_high_from": threshold,
                     "pollen_max_scale": maximum,
                     "pollen_avoid_ventilation": user_input.get(
@@ -222,8 +311,8 @@ class CompactOptionsMixin:
                 self._values[CONF_ENVIRONMENT_GLOBAL] = current
                 return await self._finish()
         fields = {
-            _field("pollen_entity", current.get("pollen_entity")):
-                selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
+            _field("pollen_entity", current.get("pollen_entity") or "none"):
+                _select([{"value":"none","label":"—"}]+pollen_sources),
             _field("pollen_high_from", current.get("pollen_high_from", 3)): _number(0, 100, .1),
             _field("pollen_max_scale", current.get("pollen_max_scale", 5)): _number(1, 100, .1),
             _field("pollen_avoid_ventilation", current.get("pollen_avoid_ventilation", False)):

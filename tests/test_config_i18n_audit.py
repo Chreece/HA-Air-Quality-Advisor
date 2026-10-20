@@ -206,3 +206,47 @@ def test_new_compact_options_have_complete_38_locale_labels_and_greek_guidance()
     assert "Γενικές ρυθμίσεις"==docs["el"]["options"]["step"]["init"]["menu_options"]["general_settings"]
     assert "Άγνωστα ή παλιά" in docs["el"]["options"]["step"]["general_settings"]["description"]
     assert "Γύρη" in docs["el"]["options"]["step"]["pollen"]["title"]
+
+
+
+def test_sleep_source_attribute_selector_and_240minute_explanation_localized():
+    docs=_translations()
+    for lang,doc in docs.items():
+        steps=doc["options"]["step"]
+        assert "general_sources" in steps,lang
+        for field in ("general_occupied_rooms_attribute","general_sleep_rooms_attribute"):
+            assert field in steps["general_sources"]["data"],lang
+            assert steps["general_sources"]["data_description"][field],lang
+        assert "general_source_stale_minutes" in steps["general_settings"]["data"],lang
+        assert steps["general_settings"]["data_description"]["general_source_stale_minutes"],lang
+    el=docs["el"]["options"]["step"]
+    assert "Μέγιστη ηλικία" in el["general_settings"]["data"]["general_source_stale_minutes"]
+    assert "ΟΧΙ 4 ώρες ύπνου" in el["general_settings"]["data_description"]["general_source_stale_minutes"]
+    assert "Κατάσταση" in el["general_sources"]["data_description"]["general_sleep_rooms_attribute"]
+
+
+def test_all_locales_have_nonempty_localized_climate_pid_area_option_labels():
+    docs=_translations()
+    english=docs["en"]
+    sections=("climate_room","climate_presence","climate_equipment",
+              "climate_air_strategy","climate_profiles","climate_actuators",
+              "pid_room","pid_tuning","environment_room_air",
+              "environment_room_exposure","environment_room_comfort")
+    for lang,doc in docs.items():
+        for section in sections:
+            step=doc["options"]["step"][section]
+            assert step.get("title") and step.get("description"),(lang,section)
+            assert set(step["data"])==set(english["options"]["step"][section]["data"])
+            assert all(isinstance(value,str) and value.strip() for value in step["data"].values())
+            assert all(isinstance(value,str) and value.strip()
+                       for value in step["data_description"].values())
+        for selector in ("climate_controller","climate_mode",
+                         "climate_unknown_occupancy","climate_manual_profile","pid_mode"):
+            assert selector in doc["selector"],(lang,selector)
+            assert set(doc["selector"][selector]["options"])==set(
+                english["selector"][selector]["options"])
+    greek=docs["el"]["options"]["step"]
+    assert greek["climate_room"]["data"]["climate_controller"]=="Μέθοδος ελέγχου κλιματικής συσκευής"
+    assert "Άγνωστη παρουσία" in greek["climate_presence"]["data_description"]["climate_unknown_occupancy"]
+    assert "ανεξάρτητη" in greek["climate_room"]["data_description"]["climate_controller"]
+    assert greek["climate_equipment"]["data"]["climate_dry_climate_entity"]=="Κλιματιστικό με πραγματικό DRY"

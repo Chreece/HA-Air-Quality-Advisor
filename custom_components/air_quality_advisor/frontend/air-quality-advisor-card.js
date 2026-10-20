@@ -6,6 +6,258 @@
   'use strict';
 
   const BRAND_TITLE = "Home Environment Manager";
+  const HELP_GUIDE = {
+  "en": {
+    "general": "Home and outdoor data support ventilation, comfort and safety advice; this is not a medical or emergency monitor.",
+    "outside": "Outdoor weather, pollution and warnings guide window advice. Missing sources mean uncertainty, not clean air.",
+    "weather": "Reported weather helps avoid unsafe airing during rain, wind and extreme temperatures.",
+    "weatherTemperature": "Outdoor temperature helps assess heat loss and natural cooling or warming opportunities.",
+    "weatherHumidity": "Outdoor relative humidity depends on temperature; absolute moisture is needed to judge drying.",
+    "wind": "High wind may make opening windows uncomfortable or unsafe.",
+    "outdoorSensors": "Actual outside sensor readings, compared with each configured operational limit where one exists.",
+    "warnings": "Severe weather warnings can prevent opening. Unavailable warnings do not indicate safety.",
+    "pollen": "Provider-specific pollen scale. High levels can aggravate allergies; ventilation blocking is an opt-in policy.",
+    "summary": "Room counts reflect measured safe, attention and missing-data categories, not medical conditions.",
+    "safe": "No known issue among the available selected measurements. Unknown hazards may remain.",
+    "attention": "At least one reading or condition deserves attention; inspect its source and trend.",
+    "unknown": "Sensor evidence is missing, stale or ambiguous and cannot establish safety.",
+    "roomStatus": "Combines indoor readings, open windows and current outdoor-air suitability.",
+    "windows": "Actual Window-class contact status (open/closed/unknown). Unknown contacts inhibit unsafe actions.",
+    "recommendation": "Suggested window action derived from data; no physical window or HVAC operation occurs here.",
+    "rhFallback": "Average measured indoor humidity substitutes when critical cold-surface mold-risk estimation is unavailable.",
+    "moldCalibration": "Model estimates surface moisture from humidity and temperature; it cannot detect actual mold.",
+    "metric_aqi": "Air Quality Index is a provider-defined pollutant scale. High values may reflect harmful outdoor exposure; scales differ.",
+    "metric_co2": "CO₂ (ppm) is a useful occupied-room ventilation indicator. Elevated levels may accompany poor fresh-air supply and reduced alertness.",
+    "metric_pm25": "Particles ≤2.5 µm can penetrate deeply into lungs. Long exposure can affect breathing and cardiovascular health.",
+    "metric_pm10": "Particles ≤10 µm are inhalable and may irritate the respiratory tract.",
+    "metric_voc": "Total volatile organic compounds are a combined sensor signal. The chemical and its risk cannot be identified from TVOC alone.",
+    "metric_voc_parts": "VOC concentration in ppb. Interpretation depends on sensor technology and calibration.",
+    "metric_humidity": "Relative humidity indicates moisture saturation at current temperature. High RH can favor dampness and mold; low RH can cause dryness.",
+    "metric_mold": "Estimated critical-surface humidity and associated mold-growth potential, NOT an actual mold detection.",
+    "metric_temperature": "Air temperature affects comfort and heat/cool demand; radiant temperature and humidity also matter.",
+    "metric_no2": "Nitrogen dioxide from combustion may irritate respiratory passages.",
+    "metric_o3": "Ground-level ozone can irritate the lungs.",
+    "metric_so2": "Sulfur dioxide may aggravate breathing, especially asthma.",
+    "metric_hcho": "Formaldehyde may irritate eyes and airways; long exposure is concerning.",
+    "science_drying": "Potential moisture removed when indoor air is exchanged with outdoor air, in g/kg dry air.",
+    "science_humidifying": "Outdoor exchange may introduce more water vapor than it removes.",
+    "science_neutral": "No meaningful indoor/outdoor moisture advantage was detected.",
+    "science_predicted": "Estimated relative humidity after outdoor air warms indoors, assuming no extra moisture.",
+    "science_band": "Estimated comfort temperature band from model inputs, not a strict health threshold.",
+    "science_cooling": "Difference showing a possible passive cooling opportunity; not guaranteed energy savings.",
+    "science_surface": "Surface temperature above dew point; small or negative margins raise condensation risk.",
+    "science_exposure": "Time exceeding the configured surface humidity threshold; persistent wetness may promote mold.",
+    "science_pm25": "Time-weighted PM2.5 average over 24 hours when data coverage is sufficient.",
+    "science_pm10": "Time-weighted PM10 average over 24 hours when data coverage is sufficient.",
+    "science_co2": "Measured rate of CO₂ change (ppm/h) helps assess ventilation response.",
+    "science_ach": "Conditional air changes per hour estimated from CO₂ decay; not measured ventilation flow.",
+    "science_energy": "Estimated heating energy for full air exchange; not actual metered consumption.",
+    "science_purification": "Nominal particle clean-air changes based on rated CADR and room size; not measured removal.",
+    "science_toTarget": "Indicative minutes to a CO₂ target if occupancy and airflow remain unchanged.",
+    "science_sourceMoisture": "A measured indoor RH rise possibly indicating a moisture source, not identifying its cause.",
+    "science_hcho": "30-minute formaldehyde average. Exposure may irritate eyes and breathing passages.",
+    "science_radon": "Radioactive gas; long-term exposure increases lung-cancer risk. Reliable long-duration measurement is important.",
+    "science_noise": "Indicative A-weighted noise. High/long sound exposure can disturb comfort and hearing.",
+    "science_nightNoise": "Nighttime sound exposure can disturb sleep quality.",
+    "science_light": "Time spent above a selected daylight sensor threshold.",
+    "science_melanopic": "Spectral/circadian light stimulus; differs from ordinary photopic lux.",
+    "science_overheated": "Accumulated degree-hours above an assumed warm reference, indicating extended overheating.",
+    "science_pmv": "PMV predicts average thermal sensation; PPD estimates likely dissatisfaction, not a diagnosis.",
+    "science_particle": "Indoor/outdoor particle concentration ratio, not verified purifier efficiency.",
+    "science_generic": "Derived environmental estimate, useful for trends but dependent on complete, accurate data.",
+    "climate_overview": "Coordinated room climate status. Device controls require separate permission and live safety checks.",
+    "climate_primary": "Primary thermostat accepts bounded targets for actual supported heating/cooling modes.",
+    "climate_secondary": "Secondary native heater/cooler receives setpoints only when independently eligible.",
+    "climate_humidity": "Native humidifier target adjustment on an already-running device.",
+    "climate_humidityPower": "Commissioned humidity-device power control with minimum on/off time and maximum runtime.",
+    "climate_fan": "Verified fan-speed adjustment on an already-running fan.",
+    "climate_fanPower": "Separately commissioned fan on/off with electrical, fire and backdraft protections.",
+    "climate_dryFanAuto": "Native DRY/FAN_ONLY switching may affect compressors; independent physical protection and dwell required.",
+    "climate_target": "Requested temperature or range, possibly held by an interlock.",
+    "climate_mode": "Requested mode; actual equipment may lack certain heat, cool or dry modes.",
+    "climate_profile": "Occupied, unoccupied, away and sleep evidence select different targets.",
+    "climate_source": "Exact Home Assistant entity selected for control or advice.",
+    "climate_moisture": "Humidity demand based on measured RH and configured hysteresis.",
+    "climate_extraction": "CO₂-based outside-air extraction only if outside conditions allow.",
+    "climate_filtration": "Particle filtration can help when indoor PM2.5 is elevated.",
+    "climate_manualDry": "Recommendation to change native DRY/FAN_ONLY manually.",
+    "climate_window": "Window airing could condition or dry the room when outdoor conditions suit.",
+    "climate_priority": "Priority arbitration holds conflicting heating, drying or fan demands.",
+    "climate_held": "One or more safety checks blocked a new device command.",
+    "climate_reason": "Diagnostic reason for the current hold or wait state.",
+    "pid_overview": "Optional outer PID adjusts native thermostat targets gradually, not compressor power.",
+    "pid_target": "Desired room temperature selected for PID.",
+    "pid_effort": "Controller demand percentage, not measured electric power.",
+    "pid_requested": "Bounded native thermostat setpoint calculated by PID.",
+    "default": "Explanation of this measured or estimated item, subject to sensor quality and any configured operating threshold."
+  },
+  "el": {
+    "general": "Οι μετρήσεις καθοδηγούν αερισμό και άνεση, όχι ιατρική διάγνωση ή επίσημες προειδοποιήσεις.",
+    "outside": "Ο εξωτερικός αέρας, ο καιρός και οι προειδοποιήσεις καθορίζουν αν συμφέρει ο αερισμός. Ελλιπή στοιχεία δεν σημαίνουν ασφαλή αέρα.",
+    "weather": "Ο καιρός βοηθά στην αποφυγή αερισμού σε βροχή, ισχυρό άνεμο ή ακραίες θερμοκρασίες.",
+    "weatherTemperature": "Η εξωτερική θερμοκρασία δείχνει απώλειες θέρμανσης ή ευκαιρίες φυσικής ψύξης.",
+    "weatherHumidity": "Η σχετική υγρασία εξαρτάται από τη θερμοκρασία· η δυνατότητα ξήρανσης απαιτεί και υπολογισμό απόλυτης υγρασίας.",
+    "wind": "Ισχυρός άνεμος μπορεί να κάνει το άνοιγμα παραθύρων αναποτελεσματικό ή επικίνδυνο.",
+    "outdoorSensors": "Πραγματικές εξωτερικές μετρήσεις με λειτουργικά όρια μόνο όπου έχουν ρυθμιστεί.",
+    "warnings": "Σοβαρές καιρικές προειδοποιήσεις εμποδίζουν αερισμό. Άγνωστη κατάσταση δεν είναι «όλα καλά».",
+    "pollen": "Η κλίμακα γύρης διαφέρει ανά πάροχο. Η υψηλή γύρη μπορεί να επιδεινώσει αλλεργίες.",
+    "summary": "Οι αριθμοί κατηγοριοποιούν τα δωμάτια από τις διαθέσιμες μετρήσεις, όχι βάσει ιατρικής διάγνωσης.",
+    "safe": "Δεν διαπιστώθηκε πρόβλημα στα διαθέσιμα δεδομένα. Άγνωστοι κίνδυνοι μπορεί να υπάρχουν.",
+    "attention": "Κάποια ένδειξη απαιτεί προσοχή· έλεγξε την πηγή και τη μεταβολή της.",
+    "unknown": "Απουσία, παλαιότητα ή ασάφεια δεδομένων δεν αποδεικνύει ασφάλεια.",
+    "roomStatus": "Συνδυαστική κατάσταση από εσωτερικές μετρήσεις, παράθυρα και εξωτερικό αέρα.",
+    "windows": "Πραγματική ένδειξη επαφών παραθύρων: ανοικτά, κλειστά, άγνωστα. Άγνωστες καταστάσεις εμποδίζουν επισφαλείς ενέργειες.",
+    "recommendation": "Πρόταση ανοίγματος/κλεισίματος παραθύρων· δεν εκτελείται φυσικός χειρισμός.",
+    "rhFallback": "Όταν δεν υπάρχει υπολογισμός ψυχρής επιφάνειας, χρησιμοποιείται η μέση μετρούμενη υγρασία δωματίου.",
+    "moldCalibration": "Μοντέλο υγρασίας επιφανειών από θερμοκρασία και RH. Δεν ανιχνεύει πραγματική μούχλα.",
+    "metric_aqi": "Δείκτης ποιότητας αέρα στην κλίμακα συγκεκριμένου παρόχου. Υψηλές τιμές μπορεί να υποδηλώνουν βλαβερή ρύπανση.",
+    "metric_co2": "Το CO₂ (ppm) δείχνει ενδεικτικά αν επαρκεί ο αερισμός. Υψηλές τιμές μπορεί να συνοδεύονται από υπνηλία και μειωμένη συγκέντρωση.",
+    "metric_pm25": "Σωματίδια έως 2,5 μm φθάνουν βαθιά στους πνεύμονες και η παρατεταμένη έκθεση επηρεάζει αναπνοή και καρδιά.",
+    "metric_pm10": "Εισπνεύσιμα σωματίδια έως 10 μm μπορούν να ερεθίσουν το αναπνευστικό.",
+    "metric_voc": "Συνολική ένδειξη πτητικών ουσιών. Δεν ταυτοποιεί την ουσία ή τον ειδικό κίνδυνό της.",
+    "metric_voc_parts": "Ένδειξη πτητικών ουσιών σε ppb· εξαρτάται από βαθμονόμηση και τεχνολογία αισθητήρα.",
+    "metric_humidity": "Η υψηλή σχετική υγρασία ευνοεί υγρασία επιφανειών και μούχλα· η πολύ χαμηλή προκαλεί ξηρότητα.",
+    "metric_mold": "Εκτίμηση υγρασίας στην κρισιμότερη ψυχρή επιφάνεια, όχι ανίχνευση μούχλας.",
+    "metric_temperature": "Η θερμοκρασία επηρεάζει άνεση και θέρμανση/ψύξη, μαζί με υγρασία και ακτινοβολία.",
+    "metric_no2": "Το NO₂ από καύσεις μπορεί να ερεθίσει τις αναπνευστικές οδούς.",
+    "metric_o3": "Το όζον χαμηλά στην ατμόσφαιρα μπορεί να ερεθίσει τους πνεύμονες.",
+    "metric_so2": "Το SO₂ μπορεί να δυσκολέψει την αναπνοή, ιδιαίτερα σε άσθμα.",
+    "metric_hcho": "Η φορμαλδεΰδη μπορεί να ερεθίσει μάτια και αεραγωγούς· η μακροχρόνια έκθεση έχει κίνδυνο.",
+    "science_drying": "Δυνατότητα απομάκρυνσης υδρατμών (g/kg ξηρού αέρα) με ανανέωση του αέρα.",
+    "science_humidifying": "Η ανταλλαγή αέρα μπορεί να αυξήσει την εσωτερική υγρασία.",
+    "science_neutral": "Δεν διαπιστώνεται ισχυρό πλεονέκτημα υγρασίας υπέρ του αερισμού.",
+    "science_predicted": "Εκτίμηση RH εξωτερικού αέρα αφού θερμανθεί στο δωμάτιο, χωρίς νέα πηγή υγρασίας.",
+    "science_band": "Περιοχή προβλεπόμενης θερμικής άνεσης, όχι ιατρικό όριο.",
+    "science_cooling": "Διαφορά θερμοκρασίας που ίσως επιτρέπει φυσική ψύξη, χωρίς εγγύηση εξοικονόμησης.",
+    "science_surface": "Περιθώριο πάνω από το σημείο δρόσου. Μικρό/αρνητικό δείχνει κίνδυνο συμπύκνωσης.",
+    "science_exposure": "Ώρες πάνω από το όριο επιφανειακής υγρασίας· παρατεταμένη υγρασία ευνοεί μούχλα.",
+    "science_pm25": "Χρονικά σταθμισμένη μέση τιμή PM2.5 24 ωρών με επαρκείς μετρήσεις.",
+    "science_pm10": "Χρονικά σταθμισμένη μέση τιμή PM10 24 ωρών με επαρκή δείγματα.",
+    "science_co2": "Ρυθμός μεταβολής CO₂ ανά ώρα ως ένδειξη αποτελεσματικότητας αερισμού.",
+    "science_ach": "Εκτίμηση ανανεώσεων αέρα ανά ώρα από πτώση CO₂, όχι μέτρηση παροχής.",
+    "science_energy": "Υπολογισμένη ενέργεια πλήρους ανανέωσης αέρα, όχι μετρημένη κατανάλωση.",
+    "science_purification": "Ονομαστική παροχή καθαρού αέρα ανά όγκο χώρου, όχι αποδεδειγμένη απόδοση φίλτρου.",
+    "science_toTarget": "Ενδεικτικά λεπτά ως τον στόχο CO₂, αν οι συνθήκες δεν αλλάξουν.",
+    "science_sourceMoisture": "Άνοδος σχετικής υγρασίας που μπορεί να προέρχεται από νέα πηγή υδρατμών.",
+    "science_hcho": "Μέση φορμαλδεΰδη 30 λεπτών· μπορεί να ερεθίσει μάτια και αναπνοή.",
+    "science_radon": "Το ραδόνιο είναι ραδιενεργό αέριο· η μακροχρόνια έκθεση αυξάνει τον κίνδυνο καρκίνου πνεύμονα.",
+    "science_noise": "Ενδεικτικό επίπεδο θορύβου dB(A), όχι πιστοποιημένο ηχόμετρο.",
+    "science_nightNoise": "Νυχτερινός θόρυβος που μπορεί να επηρεάσει την ποιότητα ύπνου.",
+    "science_light": "Ώρες με φωτεινότητα πάνω από ένα ρυθμισμένο όριο.",
+    "science_melanopic": "Φασματική επίδραση φωτός στον κιρκάδιο ρυθμό, διαφορετική από τα κοινά lux.",
+    "science_overheated": "Αθροιστικές βαθμοώρες πάνω από θερμική αναφορά, ένδειξη παρατεταμένης υπερθέρμανσης.",
+    "science_pmv": "Μοντέλο θερμικής αίσθησης PMV και ποσοστού δυσφορίας PPD, όχι διάγνωση.",
+    "science_particle": "Αναλογία σωματιδίων μέσα/έξω, όχι απόδειξη αποτελεσματικότητας φίλτρου.",
+    "science_generic": "Εκτίμηση με φυσικά μοντέλα και διαθέσιμες μετρήσεις, χρήσιμη για τάσεις και όχι βεβαιότητα.",
+    "climate_overview": "Συντονισμένη κατάσταση κλιματικού ελέγχου· οι εντολές απαιτούν ξεχωριστή άδεια και ελέγχους ασφαλείας.",
+    "climate_primary": "Κύριος θερμοστάτης με περιορισμένες μεταβολές στόχου.",
+    "climate_secondary": "Δεύτερη θέρμανση/ψύξη με επιτρεπόμενες μεταβολές στόχου.",
+    "climate_humidity": "Μεταβολή στόχου υγρασίας σε ήδη ενεργή κατάλληλη συσκευή.",
+    "climate_humidityPower": "Έλεγχος ισχύος υγραντήρα/αφυγραντήρα με ελάχιστη διάρκεια και μέγιστο χρόνο λειτουργίας.",
+    "climate_fan": "Ταχύτητα ήδη ενεργού, ελεγμένου ανεμιστήρα.",
+    "climate_fanPower": "Ξεχωριστός έλεγχος on/off ανεμιστήρα, απαιτεί φυσικές προστασίες.",
+    "climate_dryFanAuto": "DRY/FAN_ONLY ενδέχεται να επηρεάζει συμπιεστή· απαιτείται επιβεβαίωση προστασιών και χρόνων.",
+    "climate_target": "Επιθυμητή θερμοκρασία ή εύρος, που μπορεί να ανασταλεί για λόγους ασφαλείας.",
+    "climate_mode": "Επιθυμητή λειτουργία μόνο αν υποστηρίζεται από την πραγματική συσκευή.",
+    "climate_profile": "Η παρουσία, απουσία και ύπνος καθορίζουν διαφορετικούς στόχους.",
+    "climate_source": "Η συγκεκριμένη πραγματική οντότητα Home Assistant που συνδέεται με το σχέδιο.",
+    "climate_moisture": "Ένδειξη υγρασίας και ανάγκη ύγρανσης ή ξήρανσης με υστέρηση.",
+    "climate_extraction": "Εξαγωγή αέρα για CO₂ μόνο όταν οι εξωτερικές συνθήκες το επιτρέπουν.",
+    "climate_filtration": "Φιλτράρισμα υψηλού PM2.5 ακόμη και όταν δεν πρέπει να ανοίξουν παράθυρα.",
+    "climate_manualDry": "Σύσταση χειροκίνητης αλλαγής DRY/FAN_ONLY.",
+    "climate_window": "Ο αερισμός από παράθυρο ίσως βοηθήσει ψύξη/θέρμανση/ξήρανση με σωστές μετρήσεις.",
+    "climate_priority": "Ο συντονιστής κρατά σε αναμονή αντικρουόμενες ενέργειες.",
+    "climate_held": "Μια δικλείδα ασφαλείας μπλοκάρει νέα εντολή.",
+    "climate_reason": "Διαγνωστική εξήγηση καθυστέρησης ή αναστολής.",
+    "pid_overview": "Το προαιρετικό PID αλλάζει σταδιακά στόχο θερμοστάτη, όχι απευθείας τον συμπιεστή.",
+    "pid_target": "Επιθυμητή θερμοκρασία δωματίου για το PID.",
+    "pid_effort": "Ποσοστό απαίτησης ελεγκτή, όχι μετρημένη ηλεκτρική κατανάλωση.",
+    "pid_requested": "Περιορισμένος υπολογισμένος στόχος θερμοστάτη.",
+    "default": "Πληροφορίες βασισμένες σε μετρήσεις/εκτιμήσεις, με αβεβαιότητα και όρια μόνο αν ορίστηκαν."
+  },
+  "de": {
+    "general": "Messungen liefern Hinweise zur Lüftung und Behaglichkeit, aber keine medizinische Diagnose.",
+    "outside": "Außenluft, Wetter und Warnungen entscheiden über Fensterempfehlungen. Fehlende Daten beweisen keine Entwarnung.",
+    "weather": "Regen, Wind und Temperatur werden für sichere Lüftung berücksichtigt.",
+    "weatherTemperature": "Außentemperatur bestimmt Wärmeverlust und mögliche freie Kühlung.",
+    "weatherHumidity": "Relative Luftfeuchte hängt von Temperatur ab; zum Trocknen zählt Wasserdampfmasse.",
+    "wind": "Starker Wind kann Fensterlüftung unsicher oder unangenehm machen.",
+    "outdoorSensors": "Reale Außensensorwerte mit eigenen konfigurierten betrieblichen Grenzwerten.",
+    "warnings": "Aktive Warnungen blockieren Lüftung; unbekannt ist keine Entwarnung.",
+    "pollen": "Anbieterabhängiger Pollenindex. Hohe Werte können Allergien verschlimmern.",
+    "summary": "Gut, Achtung und Unbekannt beruhen auf vorhandenen Daten, nicht auf ärztlicher Beurteilung.",
+    "safe": "Kein erkannter Verstoß unter gemessenen Werten.",
+    "attention": "Ein Messwert oder eine Bedingung benötigt Aufmerksamkeit.",
+    "unknown": "Alte oder fehlende Werte bedeuten nicht automatisch sichere Luft.",
+    "roomStatus": "Kombination aus Innenmessungen, Fensterzustand und Außenluft.",
+    "windows": "Reale Fensterkontaktzustände offen, geschlossen oder unbekannt.",
+    "recommendation": "Begründete Empfehlung ohne physische Fenster- oder Heizungssteuerung.",
+    "rhFallback": "Mittlere Raumfeuchte ersetzt bei fehlender Oberflächenkalibrierung die Schimmelschätzung.",
+    "moldCalibration": "Modell zur Schimmelgefahr an kalten Oberflächen, kein Nachweis eines Befalls.",
+    "metric_aqi": "Luftqualitätsindex nach Anbieter-Skala; hohe Werte können gesundheitlich belastend sein.",
+    "metric_co2": "CO₂ (ppm) zeigt Lüftung in belegten Räumen. Hohe Werte können Müdigkeit begleiten.",
+    "metric_pm25": "Feine Partikel bis 2,5 µm können tief in die Lunge gelangen und Herz sowie Atemwege belasten.",
+    "metric_pm10": "Einatembare Partikel bis 10 µm können Atemwege reizen.",
+    "metric_voc": "TVOC sind Gesamtwerte verschiedener Gase ohne genaue Stoffidentifikation.",
+    "metric_voc_parts": "VOC in ppb, abhängig von Sensor und Kalibrierung.",
+    "metric_humidity": "Hohe RH begünstigt Nässe und Schimmel; sehr niedrige Luftfeuchte verursacht Trockenheit.",
+    "metric_mold": "Geschätzte Oberflächenfeuchte als Schimmelrisiko, kein Schimmelnachweis.",
+    "metric_temperature": "Temperatur beeinflusst Komfort und Heiz-/Kühlbedarf.",
+    "metric_no2": "Stickstoffdioxid kann Atemwege reizen.",
+    "metric_o3": "Bodennahes Ozon kann die Lunge reizen.",
+    "metric_so2": "Schwefeldioxid kann die Atmung belasten.",
+    "metric_hcho": "Formaldehyd reizt Augen/Atemwege und langfristige Exposition ist bedenklich.",
+    "science_drying": "Potenzielle Wasserdampfentfernung in g/kg trockener Luft durch Lüftung.",
+    "science_predicted": "Geschätzte RH der Außenluft nach Erwärmung im Zimmer.",
+    "science_band": "Modellierter Komfortbereich ohne medizinische Sicherheitsgrenze.",
+    "science_cooling": "Temperaturvorteil durch kältere Außenluft, keine garantierte Einsparung.",
+    "science_surface": "Taupunktabstand kalter Oberflächen als Kondensationsindikator.",
+    "science_exposure": "Dauer über einer Oberflächenfeuchte-Schwelle, mögliche Schimmelgefahr.",
+    "science_pm25": "Zeitgewichteter PM2,5-Mittelwert aus ausreichenden Daten über 24 h.",
+    "science_pm10": "PM10-Mittelwert über 24 h.",
+    "science_co2": "CO₂-Änderung in ppm/h als Lüftungsindikator.",
+    "science_ach": "Geschätzte Luftwechselzahl aus CO₂-Abfall, kein gemessener Luftstrom.",
+    "science_energy": "Wärmebedarf einer Luftwechselrunde, keine gemessene Energie.",
+    "science_purification": "Nominelle Filterleistung relativ zum Raumvolumen.",
+    "science_toTarget": "Geschätzte Zeit bis zum CO₂-Ziel bei unveränderten Bedingungen.",
+    "science_sourceMoisture": "RH-Anstieg kann eine neue Feuchtequelle anzeigen.",
+    "science_hcho": "30-Minuten-Mittelwert Formaldehyd; kann Atemwege reizen.",
+    "science_radon": "Radon erhöht bei langer Exposition das Lungenkrebsrisiko.",
+    "science_noise": "Indikativer Geräuschpegel, kein geeichtes Schallmessgerät.",
+    "science_nightNoise": "Nächtlicher Lärm kann den Schlaf stören.",
+    "science_light": "Tageslichtstunden oberhalb des eingestellten Schwellenwerts.",
+    "science_melanopic": "Spektral gewichtete Lichtwirkung, anders als normales Lux.",
+    "science_overheated": "Aufsummierte Überwärmung in Gradstunden.",
+    "science_pmv": "PMV/PPD modelliert thermisches Empfinden und mögliche Unzufriedenheit.",
+    "science_particle": "Innen-/Außen-Partikelverhältnis, keine gemessene Filtereffizienz.",
+    "climate_overview": "Raumbezogener Regelstatus mit getrennten Gerätefreigaben.",
+    "climate_primary": "Hauptthermostat mit begrenzten Sollwertschritten.",
+    "climate_secondary": "Zweites Heiz-/Kühlgerät mit zulässigen Sollwerten.",
+    "climate_humidity": "Feuchteziel nur bei laufendem, geeignetem Gerät.",
+    "climate_humidityPower": "Feuchtegeräte-Schaltung mit Mindestlaufzeiten und maximaler Laufzeit.",
+    "climate_fan": "Drehzahlregelung bei bereits laufendem Ventilator.",
+    "climate_fanPower": "Separat freigegebene Lüfterein-/ausschaltung mit Hardware-Schutz.",
+    "climate_dryFanAuto": "DRY/FAN_ONLY kann Kompressoren beeinflussen und erfordert besondere Schutzmaßnahmen.",
+    "climate_target": "Solltemperatur oder Bereich, kann sicherheitshalber ausgesetzt sein.",
+    "climate_mode": "Gewünschte Betriebsart, abhängig von den Gerätemodi.",
+    "climate_profile": "Anwesenheit, Abwesenheit und Schlaf bestimmen die Zielwerte.",
+    "climate_source": "Exakte Home-Assistant-Geräteentität.",
+    "climate_moisture": "Raumfeuchte und Befeuchtungs-/Trocknungsabsicht.",
+    "climate_extraction": "CO₂-Lüftung nur bei geeigneter Außenluft.",
+    "climate_filtration": "Partikelfilterung bei erhöhtem PM2,5.",
+    "climate_manualDry": "Empfohlener manueller DRY/FAN_ONLY-Wechsel.",
+    "climate_window": "Fensterlüftung kann kühlen, wärmen oder trocknen helfen.",
+    "climate_priority": "Koordination verhindert widersprüchliche Befehle.",
+    "climate_held": "Sicherheitsprüfung verhindert neue Befehle.",
+    "climate_reason": "Diagnosegrund für aktuellen Wartezustand.",
+    "pid_overview": "PID korrigiert einen Thermostatsollwert, steuert keinen Kompressor direkt.",
+    "pid_target": "Gewünschte PID-Raumtemperatur.",
+    "pid_effort": "Reglerbedarf in Prozent, keine elektrische Leistung.",
+    "pid_requested": "Berechneter begrenzter Thermostatsollwert.",
+    "default": "Erläuterung des Werts, abhängig von Messqualität und eingestelltem Grenzwert."
+  }
+};
+
   const LANGUAGE = {
     en: {
       title:'Air quality', subtitle:'Your home at a glance', outside:'Outside',
@@ -501,6 +753,26 @@
       return key === "title" ? BRAND_TITLE : (LANGUAGE[lang]?.[key] || LANGUAGE.en[key] || key);
     }
 
+
+    _help(key, title, threshold = null, unit = '') {
+      const messages = HELP_GUIDE[this._language()] || HELP_GUIDE.en;
+      const explanation = messages[key] || HELP_GUIDE.en[key] || messages.default || HELP_GUIDE.en.default;
+      const hasLimit = typeof threshold === 'number' && Number.isFinite(threshold) && threshold > 0;
+      const limit = hasLimit ? '<p class="info-limit">' + escape(this._t('limits')) +
+        ': <b>' + escape(this._format(threshold)) + ' ' + escape(unit) + '</b><small>' +
+        escape(this._language() === 'el' ? 'Ρυθμισμένο λειτουργικό όριο, όχι υποχρεωτικά ιατρικό όριο.' :
+          this._language() === 'de' ? 'Betrieblicher Grenzwert, nicht unbedingt medizinisch.' :
+          'Configured operational limit, not automatically a health-based threshold.') +
+        '</small></p>' : '';
+      const label = this._language() === 'el' ? 'Πληροφορίες' :
+                    this._language() === 'de' ? 'Informationen' : 'Information';
+      return '<details class="info-help"><summary role="button" aria-label="' +
+        escape(label + ': ' + title) + '" title="' + escape(label) + '">' +
+        this._icon('mdi:information-outline') + '</summary>' +
+        '<div class="info-bubble" role="note"><strong>' + escape(title) +
+        '</strong><p>' + escape(explanation) + '</p>' + limit + '</div></details>';
+    }
+
     _format(value, digits = 1) {
       if (typeof value !== 'number' || !Number.isFinite(value)) return '–';
       try { return new Intl.NumberFormat(this._hass?.language || 'en', {
@@ -569,7 +841,7 @@
         ? `${escape(this._format(value))}°C` : '–';
       return `<section class="mold-calibration-details" role="group"
           aria-label="${escape(labels[4])}">
-        <div><span>${escape(labels[4])}</span>
+        <div><span>${escape(labels[4])}${this._help('moldCalibration',labels[4])}</span>
           <strong title="${escape(String(details.calibration_factor))}">${escape(this._formatCalibration(details.calibration_factor))}</strong></div>
         <div><span>${escape(labels[5])}</span>
           <strong>${temperature(details.indoor_temperature_c)}</strong></div>
@@ -616,6 +888,7 @@
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
           <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)}</span>
+          ${this._help('metric_' + String(item.metric), metric, hasLimit ? limit : null, unit)}
           <span class="metric-number">${escape(display)} <small>${escape(unit)}</small></span>
         </div>
         ${hasLimit ? `<div class="meter" role="progressbar" aria-label="${escape(metric)}"
@@ -671,18 +944,20 @@
       const warnings = safeArray(outdoor.warnings).filter((item) => item.active !== false);
       return `<section class="outside outside-${status}" aria-label="${escape(this._t('outside'))}">
         <div class="outdoor-head"><div class="outdoor-icon">${this._icon(icon)}</div>
-          <div class="outdoor-text"><span class="eyebrow">${escape(this._t('outside'))}</span>
+          <div class="outdoor-text"><span class="eyebrow">${escape(this._t('outside'))}${this._help('outside',this._t('outside'))}</span>
             <div class="outside-title">${escape(main)}</div>
             <div class="weather-line">${escape(wx?.condition ? this._weatherName(wx.condition) : this._t('missing'))}
-              ${temperature ? `<strong>${escape(temperature)}</strong>` : ''}
+              ${temperature ? `<strong>${escape(temperature)}</strong>${this._help('weatherTemperature',this._t('weather'))}` : ''}
               ${extras.length ? `<span>${extras.join('<span class="sep">·</span>')}</span>` : ''}
+               ${typeof wx?.humidity === 'number' ? this._help('weatherHumidity',this._t('humidity')) : ''}
+               ${typeof wx?.wind_kmh === 'number' ? this._help('wind',this._t('wind')) : ''}
             </div>
           </div>
           <div class="outdoor-status">${this._icon(status === 'safe' ? 'mdi:check' : status === 'unsafe' ? 'mdi:alert' : 'mdi:information-outline')}</div>
         </div>
         ${readings.length ? `<div class="out-metrics" aria-label="${escape(this._t('outdoorSensors'))}">
           ${readings.map((item) => `<span class="out-chip ${!item.available ? 'dim' : item.exceeded ? 'elevated' : ''}">
-            ${escape(this._metricName(item.metric))} <b>${item.available ? escape(this._format(item.value)) : '–'}</b>
+            ${escape(this._metricName(item.metric))} ${this._help('metric_' + String(item.metric),this._metricName(item.metric),item.threshold,item.unit)} <b>${item.available ? escape(this._format(item.value)) : '–'}</b>
             <small>${escape(item.unit)}</small></span>`).join('')}
         </div>` : `<div class="out-empty">${escape(this._t('noOutdoor'))}</div>`}
         ${blockers.length ? `<div class="outside-alerts">${blockers.slice(0,5).map((item) => this._outsideBlocker(item)).join('')}
@@ -697,7 +972,7 @@
       const total = counts.reduce((acc, value) => acc + value, 0);
       const first = total ? counts[0] / total * 100 : 0;
       const second = total ? (counts[0] + counts[1]) / total * 100 : 0;
-      return `<div class="section-head"><span class="section-title">${this._icon('mdi:home-heart')} ${escape(this._t('roomStatus'))}</span>
+      return `<div class="section-head"><span class="section-title">${this._icon('mdi:home-heart')} ${escape(this._t('roomStatus'))}${this._help('summary',this._t('roomStatus'))}</span>
         <span class="subdued">${total}</span></div>
         <div class="overview">
           <div class="donut-wrap"><div class="donut" role="img"
@@ -707,7 +982,7 @@
           </div></div>
           <div class="counts">${['safe','attention','unknown'].map((k,i) => `<div class="count count-${k}">
             <span class="count-icon">${this._icon(ICON[k])}</span>
-            <strong>${counts[i]}</strong><small>${escape(this._t(k))}</small>
+            <strong>${counts[i]}</strong><small>${escape(this._t(k))}${this._help(k,this._t(k))}</small>
           </div>`).join('')}</div>
         </div>`;
     }
@@ -721,11 +996,15 @@
       const s = e.condensation || {};
       const h = e.surface_rh_exposure_24h || {};
       const labels = SCIENCE_LABELS[this._language()] || SCIENCE_LABELS.en;
+      const extraLabels = EXTRA_LABELS[this._language()] || EXTRA_LABELS.en;
       const fmt = (v, digits = 1) => this._format(v, digits);
       const lines = [];
-      const add = (label, value) => {
-        lines.push('<div class="science-line"><span>' + escape(label) +
-          '</span><strong>' + escape(value) + '</strong></div>');
+      const add = (label, value, threshold = null, unit = '') => {
+        const found = [...Object.entries(labels), ...Object.entries(extraLabels)].find(
+          ([,name]) => typeof name === 'string' && (label === name || label.startsWith(name + ' · ')));
+        const key = found ? 'science_' + found[0] : 'science_generic';
+        lines.push('<div class="science-line"><span>' + escape(label) + '</span>' +
+          this._help(key,label,threshold,unit) + '<strong>' + escape(value) + '</strong></div>');
       };
       if (m.status === 'drying' || m.status === 'humidifying' || m.status === 'neutral') {
         add(m.status === 'drying' ? labels.drying :
@@ -797,7 +1076,7 @@
         this._icon('mdi:flower-pollen') +
         escape(title.pollen) + ': <strong>' + escape(this._format(p.value)) + ' / ' +
         escape(this._format(p.max_scale)) + (p.high ? ' · ' + escape(title.pollenHigh) : '') +
-        '</strong></div>';
+        '</strong>' + this._help('pollen',title.pollen) + '</div>';
     }
 
     _climatePanel(room) {
@@ -812,13 +1091,13 @@
       const fanPower=p.fan_power_actuation || {};
       const dryFan=p.native_air_mode_actuation || {};
       const controllers=[
-        {label:l.primary, status:primary.status || 'advisory_only'},
-        {label:l.secondary, status:secondary.status || 'advisory_only'},
-        {label:l.humidity, status:moisture.status || 'advisory_only'},
-        {label:l.humidityPower, status:power.status || 'advisory_only'},
-        {label:l.fan, status:fan.status || 'advisory_only'},
-        {label:l.fanPower, status:fanPower.status || 'advisory_only'},
-        {label:l.dryFanAuto, status:dryFan.status || 'advisory_only'},
+        {key:'primary', label:l.primary, status:primary.status || 'advisory_only'},
+        {key:'secondary', label:l.secondary, status:secondary.status || 'advisory_only'},
+        {key:'humidity', label:l.humidity, status:moisture.status || 'advisory_only'},
+        {key:'humidityPower', label:l.humidityPower, status:power.status || 'advisory_only'},
+        {key:'fan', label:l.fan, status:fan.status || 'advisory_only'},
+        {key:'fanPower', label:l.fanPower, status:fanPower.status || 'advisory_only'},
+        {key:'dryFanAuto', label:l.dryFanAuto, status:dryFan.status || 'advisory_only'},
       ];
       const working=['setpoint_commanded','native_range_commanded',
         'at_setpoint','native_range_at_setpoint','holding','commanded',
@@ -852,20 +1131,19 @@
       const humidity=equipment.humidity || {};
       const sources=[
         thermal.entity_id ? '<span>'+escape(l.selectedDevice)+': <b>'+
-          escape(thermal.entity_id)+'</b></span>' : '',
+          escape(thermal.entity_id)+'</b></span>' + this._help('climate_source',l.selectedDevice) : '',
         wet.entity_id ? '<span>'+escape(l.humidity)+': <b>'+
-          escape(wet.entity_id)+'</b></span>' : '',
+          escape(wet.entity_id)+'</b></span>' + this._help('climate_moisture',l.humidity) : '',
       ].filter(Boolean).join('');
       const controllerDetails=controllers.filter((part)=>
         part.status!=='advisory_only' && part.status!=='disabled').map((part)=>
-        '<small>'+escape(part.label)+': '+escape(String(part.status).replaceAll('_',' '))+
-        '</small>').join('');
+        '<small>'+escape(part.label)+': '+escape(String(part.status).replaceAll('_',' '))+'</small>'+this._help('climate_'+part.key,part.label)).join('');
       const humidityDetails=humidity.status==='advisory' ?
         '<small>'+escape(l.moistureAction)+': '+escape(humidity.action||'idle')+
         (typeof humidity.measured_rh==='number' ?
           ' · '+escape(l.currentHumidity)+': '+escape(this._format(humidity.measured_rh))+'%' : '')+
         ' · '+escape(l.sourceStatus)+': '+escape(equipment.humidity_evidence||'unknown')+
-        '</small>' : '';
+        '</small>' : '' + (humidity.status==='advisory' ? this._help('climate_moisture',l.moistureAction) : '');
       const air=p.air_actions || {};
       const extract=air.extraction || {};
       const filter=air.filtration || {};
@@ -874,18 +1152,18 @@
           (extract.entity_id || l.advisory) : '',
         filter.status==='recommended' ? l.filtration+': '+
           (filter.entity_id || l.advisory) : '',
-      ].filter(Boolean).map((v)=>'<small>'+escape(v)+'</small>').join('');
+      ].filter(Boolean).map((v)=>'<small>'+escape(v)+'</small>' + this._help(v.startsWith(l.extraction) ? 'climate_extraction' : 'climate_filtration',v.startsWith(l.extraction) ? l.extraction : l.filtration)).join('');
       const nativeAir=p.native_air_mode_advice || {};
       const dryAdvice=['manual_mode_transition_suggested',
         'manual_stop_dry_suggested'].includes(nativeAir.status) ?
         '<small>'+escape(l.manualDry)+': '+escape(nativeAir.recommended_mode||'')+
-        ' · '+escape(nativeAir.climate_entity||'')+'</small>' : '';
+        ' · '+escape(nativeAir.climate_entity||'')+'</small>' : '' + (['manual_mode_transition_suggested','manual_stop_dry_suggested'].includes(nativeAir.status) ? this._help('climate_manualDry',l.manualDry) : '');
       const windowPlan=p.window_efficiency || {};
       const windowAdvice=windowPlan.status==='opportunity' ?
         '<small>'+escape(l.windowHelp)+': '+
         escape(String(windowPlan.effect||''))+' · '+
         escape(String(windowPlan.active_device||''))+
-        '</small>' : '';
+        '</small>' : '' + (windowPlan.status==='opportunity' ? this._help('climate_window',l.windowHelp) : '');
       const coordinator=p.coordination || {};
       const purposes=coordinator.channels || {};
       const priorities={
@@ -898,22 +1176,22 @@
       };
       const priorityDetail=coordinator.priority ?
         '<small>'+escape(l.priority)+': '+
-        escape(priorities[coordinator.priority] || l.noPriority)+'</small>' : '';
+        escape(priorities[coordinator.priority] || l.noPriority)+'</small>' : '' + (coordinator.priority ? this._help('climate_priority',l.priority) : '');
       const heldDetails=Object.entries(purposes)
         .filter(([,data])=>data?.status==='held').slice(0,3)
         .map(([kind,data])=>'<small>'+escape(l.heldPurpose)+' · '+
           escape(kind)+': '+escape(String(data.reason||'unverified').replaceAll('_',' '))+
-          '</small>').join('');
+          '</small>'+this._help('climate_held',l.heldPurpose)).join('');
       const reason=(p.reason==='secondary_thermal_driver_pending' && active)
         ? '' : (p.reason || '');
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
         '<div class="pid-title">'+this._icon('mdi:thermostat')+
-        '<strong>'+escape(l.title)+'</strong><span>'+escape(title)+'</span></div>'+
+        '<strong>'+escape(l.title)+'</strong>'+this._help('climate_overview',l.title)+'<span>'+escape(title)+'</span></div>'+
         '<div class="pid-metrics">'+
         (p.controller==='environment' ? '' :
-          '<span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
-          '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>')+
-        '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
+          '<span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+this._help('climate_target',l.target)+
+          '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>'+this._help('climate_mode',l.mode))+
+        '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+this._help('climate_profile',l[p.profile] || p.profile || 'home')+sources+'</div>'+
         controllerDetails+priorityDetail+heldDetails+
         humidityDetails+airDetails+dryAdvice+windowAdvice+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
@@ -929,16 +1207,15 @@
       const paused = pid.status === 'paused';
       const title = paused ? l.paused : active ? l.active : l.pending;
       const metrics = [];
-      const show = (title,value)=> metrics.push('<span class="pid-metric">'+escape(title)+
-                                              ': <strong>'+escape(value)+'</strong></span>');
-      if (typeof pid.target_c === 'number') show(l.target,this._format(pid.target_c)+' °C');
-      if (typeof pid.demand_percent === 'number') show(l.effort,this._format(pid.demand_percent)+'%');
-      if (typeof pid.desired_setpoint_c === 'number') show(l.requested,this._format(pid.desired_setpoint_c)+' °C');
+      const show = (title,value,key)=> metrics.push('<span class="pid-metric">'+escape(title)+': <strong>'+escape(value)+'</strong></span>'+this._help(key,title));
+      if (typeof pid.target_c === 'number') show(l.target,this._format(pid.target_c)+' °C','pid_target');
+      if (typeof pid.demand_percent === 'number') show(l.effort,this._format(pid.demand_percent)+'%','pid_effort');
+      if (typeof pid.desired_setpoint_c === 'number') show(l.requested,this._format(pid.desired_setpoint_c)+' °C','pid_requested');
       const action = paused ? 'resume' : 'pause';
       const button = paused || active ? '<button type="button" class="pid-button" data-pid-area="' +
         escape(room.area_id) + '" data-pid-action="'+action+'">'+escape(paused ? l.resume : l.pause)+'</button>' : '';
       return '<section class="pid-panel"><div class="pid-title">' +
-        this._icon('mdi:thermostat')+'<strong>'+escape(l.title)+'</strong><span>'+escape(title)+
+        this._icon('mdi:thermostat')+'<strong>'+escape(l.title)+'</strong>'+this._help('pid_overview',l.title)+'<span>'+escape(title)+
         '</span></div><div class="pid-metrics">'+metrics.join('')+'</div>'+
         '<small>'+escape(l.caution)+'</small>'+button+'</section>';
     }
@@ -965,7 +1242,7 @@
       const rhFallback = room.rh_fallback?.active === true
         ? `<div class="rh-fallback" role="note">
           ${this._icon('mdi:water-percent')}
-          <span><b>${escape(RH_FALLBACK_TEXT[this._language()] || RH_FALLBACK_TEXT.en)}</b>
+          <span><b>${escape(RH_FALLBACK_TEXT[this._language()] || RH_FALLBACK_TEXT.en)}</b>${this._help('rhFallback',this._t('humidity'))}
           · ${escape(this._format(room.rh_fallback.value))}%
           · ${escape(this._t('limits'))} ${escape(this._format(room.rh_fallback.threshold))}%</span>
         </div>` : '';
@@ -997,7 +1274,7 @@
       const actionable = room.action === 'open' || urgent;
       const recommendation = actionable
         ? `<div class="advice advice-${urgent ? 'close' : 'open'}">${this._icon(urgent ? 'mdi:window-closed-variant' : 'mdi:window-open-variant')}
-            <span><b>${escape(this._t(urgent ? 'closeAdvice' : 'openAdvice'))}</b><small>${escape(windows
+            <span><b>${escape(this._t(urgent ? 'closeAdvice' : 'openAdvice'))}</b>${this._help('recommendation',this._t('action'))}<small>${escape(windows
               .filter((win) => safeArray(room.action_window_ids).includes(win.entity_id))
               .map((win) => win.name).join(' · '))}</small></span></div>`
         : status === 'attention' && room.ventilating
@@ -1024,6 +1301,7 @@
           <div class="room-icon">${this._icon(status === 'safe' ? 'mdi:home-check-outline' : status === 'attention' ? 'mdi:home-alert-outline' : 'mdi:home-outline')}</div>
           <div class="room-main"><h3>${escape(room.name)}</h3><span>${escape(subheading)}</span></div>
           <span class="status-tag">${this._icon(ICON[status])}${escape(roomStatusLabel)}</span>
+          ${this._help('roomStatus',this._t('roomStatus'))}
         </div>
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
           : `<div class="empty-measurements">${this._icon('mdi:gauge-empty')} ${escape(this._t('missingIndoor'))}</div>`}
@@ -1037,6 +1315,7 @@
         ${warningList}
         <div class="window-section">
           <span class="field-label">${this._icon('mdi:window-closed-variant')}${escape(this._t('windows'))}</span>
+          ${this._help('windows',this._t('windows'))}
           ${windows.length ? `<div class="window-list">${windows.map((window) => this._window(window)).join('')}</div>`
             : `<span class="subdued">${escape(this._t('noWindows'))}</span>`}
         </div>
@@ -1065,7 +1344,7 @@
         String(a.name).localeCompare(String(b.name), this._hass.language));
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card class="shell" dir="${RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr'}">
         <header class="card-heading"><div><div class="overline">HOME ASSISTANT</div>
-        <h2>${escape(this._config.title || this._t('title'))}</h2><span>${escape(this._t('subtitle'))}</span></div>
+        <h2>${escape(this._config.title || this._t('title'))}</h2>${this._help('general',this._config.title || this._t('title'))}<span>${escape(this._t('subtitle'))}</span></div>
         <div class="card-logo">${this._icon('mdi:air-filter')}</div></header>
         <div class="content">
           ${this._outside(data.outdoor || {})}
@@ -1083,7 +1362,7 @@
         --aqa-muted:var(--secondary-text-color,#78848f);--aqa-text:var(--primary-text-color,#1a313d);
         --aqa-surface:var(--card-background-color,#fff);--aqa-edge:var(--divider-color,rgba(110,135,145,.17));
         font-family:var(--paper-font-body1_-_font-family,Roboto,Arial,sans-serif);color:var(--aqa-text)}
-      .shell{overflow:hidden;border-radius:22px;background:var(--aqa-surface);box-shadow:var(--ha-card-box-shadow,0 2px 16px rgba(0,0,0,.06))}
+      .shell{overflow:visible;border-radius:22px;background:var(--aqa-surface);box-shadow:var(--ha-card-box-shadow,0 2px 16px rgba(0,0,0,.06))}
       .card-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 26px 20px}
       .overline{color:var(--aqa-blue);font-size:10px;letter-spacing:2.2px;font-weight:800;margin-bottom:5px}
       h2{font-size:25px;line-height:1.15;margin:0 0 5px;font-weight:780;letter-spacing:-.8px}
@@ -1244,6 +1523,23 @@
       .empty-rooms{grid-column:1/-1;justify-content:center;padding:30px}
       footer{display:flex;gap:5px;align-items:center;justify-content:center;color:var(--aqa-muted);font-size:10px;padding:17px 8px 4px;text-align:center}
       footer ha-icon{--mdc-icon-size:14px}
+
+      .info-help{display:inline-flex;position:relative;vertical-align:middle;align-items:center;margin-inline:3px;flex:0 0 auto;font-weight:400;text-transform:none;letter-spacing:normal}
+      .info-help summary{display:inline-flex;list-style:none;cursor:pointer;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;color:var(--primary-color,var(--aqa-blue))}
+      .info-help summary::-webkit-details-marker{display:none}
+      .info-help summary ha-icon{--mdc-icon-size:18px}
+      .info-help summary:focus-visible{outline:2px solid var(--primary-color,var(--aqa-blue));outline-offset:2px}
+      .info-help summary:hover,.info-help[open] summary{background:color-mix(in srgb,var(--aqa-blue),transparent 88%)}
+      .info-bubble{position:absolute;z-index:99;inset-block-start:calc(100% + 4px);inset-inline-start:0;width:min(300px,calc(100vw - 60px));max-width:calc(100vw - 60px);padding:13px 14px;border:1px solid var(--aqa-edge);background:var(--card-background-color,var(--aqa-surface));color:var(--aqa-text);box-shadow:0 10px 24px rgba(0,0,0,.22);border-radius:12px;white-space:normal;text-align:start;font-size:12px;line-height:1.5;overflow-wrap:anywhere;font-weight:400;letter-spacing:normal}
+      .info-bubble strong{font-weight:750;font-size:13px}
+      .info-bubble p{margin:7px 0 0}
+      .info-bubble .info-limit{border-top:1px solid var(--aqa-edge);padding-top:7px}
+      .info-bubble small{display:block;color:var(--aqa-muted);font-size:10px;margin-top:4px}
+      .metric-line .info-help,.science-line .info-help{margin-inline-start:auto}
+      .metric-line .info-bubble,.science-line .info-bubble{inset-inline-start:auto;inset-inline-end:0}
+      .room:has(.info-help[open]),.outside:has(.info-help[open]),.overview:has(.info-help[open]){position:relative;z-index:20}
+      .pid-panel:has(.info-help[open]),.science-section:has(.info-help[open]){position:relative;z-index:21}
+      .outside,.room,.overview,.pid-panel,.science-section{overflow:visible}
       @media(max-width:420px){.card-heading{padding:19px 18px 16px}h2{font-size:22px}.content{padding:0 12px 12px}
         .outside{padding:13px}.outdoor-icon{height:48px;width:48px;flex-basis:48px;border-radius:13px}.outdoor-icon ha-icon{--mdc-icon-size:29px}
         .outside-title{font-size:15px}.overview{gap:8px;padding:12px 8px}.donut{width:89px;height:89px;padding:10px}

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — Contextual explanations, source attributes and complete room translation
+
+- Add ⓘ help bubbles to actual card measurements, derived science, weather, mold, climate and PID values. Only display a numeric operational limit when the specific measurement has one; document uncertainty and relevant comfort/health implications.
+- Replace free-text occupied/sleep attribute names with entity-dependent State/attribute selectors generated from valid Home Assistant room lists; explain that 240 minutes is source-data freshness, not sleep duration.
+- Filter candidate room-list sources, trackers, presence sensors, climate modes, humidifiers, extraction/purifier fans and PID targets by actual supported capabilities.
+- Extend Greek and all 38 supported translations to the advanced per-room environment, climate and PID menus, including option descriptions and native selector labels.
+
 ## 0.6.0b2 — Compact settings and evidence-qualified device occupancy (beta)
 
 - Reorganize 11 flat settings into **Outside data**, **General settings**, **Area settings**, Announcements and Advanced thresholds; move international pollen/AQI into Outside data and window exclusions into Area settings.

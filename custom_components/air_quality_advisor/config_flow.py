@@ -884,20 +884,26 @@ class _FlowMixin(CompactOptionsMixin):
         draft=self._climate_draft
         from .climate_strategy import profiles,capabilities
         from .discovery import entity_area
-        climate_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
-                         for s in self.hass.states.async_all("climate")
-                         if entity_area(self.hass,s.entity_id)==area]
+        climate_choices=[{"value":st.entity_id,"label":st.name or st.entity_id}
+                         for st in self.hass.states.async_all("climate")
+                         if entity_area(self.hass,st.entity_id)==area
+                         and isinstance(st.attributes.get("hvac_modes"),(list,tuple))
+                         and any(mode in st.attributes["hvac_modes"] for mode in
+                                 ("heat","cool","heat_cool","dry"))]
         temp_choices=[
             {"value":"none","label":"No temperature sensor (environmental-only)"}
         ]+indoor_temperature_choices(self.hass,area,draft.get("temperature_entity"))
         occupant_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
             for s in self.hass.states.async_all("binary_sensor")
             if entity_area(self.hass,s.entity_id)==area
-            and str(s.attributes.get("device_class","")).casefold() in ("occupancy","presence")]
+            and str(s.attributes.get("device_class","")).casefold() in ("occupancy","presence")
+            and s.state in ("on","off")]
         away_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
             for s in self.hass.states.async_all()
-            if s.domain in ("person","device_tracker")
-            or (s.domain=="binary_sensor" and "home" in s.entity_id)]
+            if ((s.domain in ("person","device_tracker") and
+                 s.state not in ("unknown","unavailable","none",""))
+                or (s.domain=="binary_sensor" and "home" in s.entity_id
+                    and s.state in ("on","off")))]
         errors={}
         if user_input is not None:
             proposal={**draft,
@@ -951,18 +957,17 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("climate_prefer_native_auto",draft.get("prefer_native_auto",True)):selector.BooleanSelector(),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=[{"value":"device","label":"Device native thermostat / internal PID"},
-                             {"value":"environment","label":"Environmental devices only — no thermostat required"},
-                             {"value":"setpoint_pid","label":"Outer-loop PID setpoint (separate v0.5 controller)"},
-                             {"value":"on_off","label":"On/off slow-load relay (requires independent safety)"},
-                             {"value":"pwm","label":"Time-proportioning slow-load relay (non-compressor only)"},
-                             {"value":"proportional","label":"Verified 0–100% modulation output (number entity)"}],
+                    options=["device","environment","setpoint_pid","on_off","pwm","proportional"],
+                    translation_key="climate_controller",
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_mode",draft.get("mode","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["auto","heat","cool","dry","off"],multiple=False,custom_value=False,
+                    options=["auto","heat","cool","dry","off"],translation_key="climate_mode",multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_entity",draft.get("climate_entity")):selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
+            _marker("climate_entity",draft.get("climate_entity") or "none"):
+                selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=[{"value":"none","label":"—"}]+climate_choices,
+                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
                 selector.SelectSelector(selector.SelectSelectorConfig(options=temp_choices,
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
@@ -1072,7 +1077,7 @@ class _FlowMixin(CompactOptionsMixin):
                 _multi(away_options),
             _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["occupied","hold"],multiple=False,custom_value=False,
+                    options=["occupied","hold"],translation_key="climate_unknown_occupancy",multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_unoccupied_delay_minutes",draft.get("unoccupied_delay_minutes",10)):
                 _real_number(0,240,"min"),
@@ -1080,12 +1085,12 @@ class _FlowMixin(CompactOptionsMixin):
                 _real_number(10,1440,"min"),
             _marker("climate_away_policy",draft.get("away_policy","any_home")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["any_home","all_home"],multiple=False,custom_value=False,
+                    options=["any_home","all_home"],translation_key="climate_away_policy",multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_manual_profile",draft.get("manual_profile","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["auto","home","unoccupied","away","sleep"],
-                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+                    translation_key="climate_manual_profile",multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_sleep_active",draft.get("sleep_active",False)):
                 selector.BooleanSelector(),
             _marker("climate_sleep_schedule_enabled",draft.get("sleep_schedule_enabled",False)):
@@ -1096,7 +1101,7 @@ class _FlowMixin(CompactOptionsMixin):
                 selector.TimeSelector(),
             _marker("climate_target_source",draft.get("target_source","temperature")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["temperature","pmv"],multiple=False,custom_value=False,
+                    options=["temperature","pmv"],translation_key="climate_target_source",multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_comfort_adjustment_max_c",
                     draft.get("comfort_adjustment_max_c",1.5)):
@@ -1121,16 +1126,34 @@ class _FlowMixin(CompactOptionsMixin):
         area=self._climate_area
         roles={role:domain for role,domain in ROLE_KINDS.items()
                if role!="climate_entity"}
+        # Exact supported native roles, not arbitrary HVAC entities.
         choices={}
-        for domain in ("climate","humidifier","fan"):
-            choices[domain]=[
-                {"value":"none","label":"No additional equipment"}
-            ]+[
-                {"value":st.entity_id,
-                 "label":(st.name or st.entity_id)+" · "+st.entity_id}
-                for st in self.hass.states.async_all(domain)
-                if entity_area(self.hass,st.entity_id)==area
-            ]
+        role_modes={
+            "heat_climate_entity":("heat","heat_cool"),
+            "cool_climate_entity":("cool","heat_cool"),
+            "dry_climate_entity":("dry",),
+            "fan_climate_entity":("fan_only",),
+        }
+        for role,domain in roles.items():
+            found=[]
+            for st in self.hass.states.async_all(domain):
+                if entity_area(self.hass,st.entity_id)!=area:
+                    continue
+                if domain=="climate":
+                    modes=st.attributes.get("hvac_modes",())
+                    if not isinstance(modes,(list,tuple)) or not any(
+                        mode in modes for mode in role_modes.get(role,())):
+                        continue
+                elif domain=="humidifier":
+                    required=("dehumidifier" if role=="dehumidifier_entity"
+                              else "humidifier")
+                    if st.attributes.get("device_class")!=required:
+                        continue
+                elif domain=="fan" and st.state not in ("on","off"):
+                    continue
+                found.append({"value":st.entity_id,
+                              "label":(st.name or st.entity_id)+" · "+st.entity_id})
+            choices[role]=[{"value":"none","label":"No additional equipment"}]+found
         humidity=[
             {"value":"none","label":"No selected humidity sensor"}
         ]+[
@@ -1148,7 +1171,7 @@ class _FlowMixin(CompactOptionsMixin):
                 if value=="none":
                     value=None
                 if value is not None and value not in {
-                    item["value"] for item in choices[domain]}:
+                    item["value"] for item in choices[role]}:
                     errors["base"]="climate_target_required"
                 proposal[role]=value
             selected=user_input.get("climate_humidity_entity",
@@ -1288,7 +1311,7 @@ class _FlowMixin(CompactOptionsMixin):
         for role,domain in roles.items():
             fields[_marker("climate_"+role,draft.get(role) or "none")]=(
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=choices[domain],multiple=False,custom_value=False,
+                    options=choices[role],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 ))
             )
@@ -1674,7 +1697,11 @@ class _FlowMixin(CompactOptionsMixin):
         allowed = []
         for state in self.hass.states.async_all("climate"):
             assigned = entity_area(self.hass, state.entity_id)
-            if assigned is None or assigned == self._pid_area:
+            modes=state.attributes.get("hvac_modes",())
+            features=state.attributes.get("supported_features",0)
+            if (assigned==self._pid_area and isinstance(modes,(list,tuple))
+                    and any(m in modes for m in ("heat","cool","heat_cool"))
+                    and isinstance(features,int) and features & 3):
                 allowed.append({
                     "value": state.entity_id,
                     "label": f"{state.name or state.entity_id} · {state.entity_id}",
@@ -1697,8 +1724,7 @@ class _FlowMixin(CompactOptionsMixin):
                 )),
             _marker("pid_mode", config.get("mode", "heat")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=[{"value":"heat","label":"Heat"},
-                             {"value":"cool","label":"Cool"}],
+                    options=["heat","cool"],translation_key="pid_mode",
                     multiple=False, custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )),
