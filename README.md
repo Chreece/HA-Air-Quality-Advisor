@@ -822,3 +822,28 @@ messages. A climate-only area can receive a notice for its actual recognized
 window without becoming a new general air-quality monitoring room. The
 integration never automatically opens a window or switches off a running
 heater, air conditioner or dehumidifier to exploit the potential savings.
+
+
+### Native extraction and air-purifier fan power (v0.6 draft)
+
+The climate room air-treatment page now has two **mutually exclusive**
+control options: adjust the speed of an *already-running* verified fan,
+or separately authorize the new guarded \`fan.*\` power controller.
+The latter is OFF by default and requires independent fire, backdraft,
+pressure and electrical-safety confirmation along with minimum ON/OFF
+and maximum continuous runtime limits.
+
+For extraction it verifies actual indoor CO₂, sensor technology,
+outdoor air quality/weather, fresh source evidence and the specific
+room's window state before any ON request. For particle filtration it
+uses measured room PM2.5 and can run even when outdoor pollution
+makes opening a window unsuitable. A running fan that the integration
+did not turn on remains user-controlled; the integration does not turn
+it off. Runtime acknowledgments, persistent ownership, user override
+and restart reconciliation are mandatory before later power commands.
+
+All calls target one actual \`fan.*\` entity through Home Assistant's
+native fan power services. There are no automatic compressor or
+\`climate.set_hvac_mode\` commands, and no claim that a powered fan
+guarantees a measured air-change rate or equivalent pollutant removal.
+This remains a draft pending field commissioning.
