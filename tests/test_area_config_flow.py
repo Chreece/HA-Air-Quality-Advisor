@@ -1455,3 +1455,28 @@ def test_dry_only_climate_is_inventory_and_advisory_not_temperature_auto(monkeyp
     assert result["completed"]["data"]["climate_rooms"]["living"][
         "device_settings"
     ][ac.entity_id]["auto_control"] is False
+
+
+def test_room_source_picker_excludes_irrelevant_entities_and_only_valid_attributes(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    irrelevant=MockState("sensor.rubbish",'["not_a_real_area"]')
+    valid=MockState("sensor.sleep_rooms","active")
+    valid.attributes["sleeping_areas"]=["living"]
+    valid.attributes["unrelated"]={"other":["something"]}
+    for state in (irrelevant,valid):
+        h._values[state.entity_id]=state
+    asyncio.run(options.async_step_init())
+    form=asyncio.run(options.async_step_general_settings())
+    ent=next(v for k,v in form["data_schema"].items()
+             if k=="general_sleep_rooms_entity")
+    eligible=[x["value"] for x in ent.config.options]
+    assert valid.entity_id in eligible
+    assert irrelevant.entity_id not in eligible
+    choose=asyncio.run(options.async_step_general_settings({
+        "general_sleep_rooms_entity":valid.entity_id,
+    }))
+    assert choose["step_id"]=="general_settings"
+    attrs=next(v for k,v in choose["data_schema"].items()
+               if k=="general_sleep_rooms_attribute")
+    assert [x["value"] for x in attrs.config.options]==["sleeping_areas"]
