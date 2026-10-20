@@ -309,3 +309,28 @@ def test_no_hardware_commands_for_conflicting_room_owner(driver):
         assert c.statuses["bedroom"]["status"]=="duplicate_humidity_device_owner"
         await c.async_stop()
     asyncio.run(run())
+
+
+def test_real_ha_last_changed_blocks_recent_manual_toggle(driver):
+    async def run():
+        from datetime import datetime,timezone
+        hass=home()
+        t=[1000.]
+        c=driver.HumidityPowerControl(hass,"manual-recent-toggle",
+                                     clock=lambda:t[0])
+        await c.async_start()
+        t[0]=1400
+        await tick(c,cfg(),plan())
+        # Even after 600 seconds of apparent OFF observations, Home
+        # Assistant reports a real state transition three minutes ago.
+        t[0]=2000
+        hass.states.get("humidifier.bedroom_dehumidifier").last_changed=(
+            datetime.fromtimestamp(1820,timezone.utc))
+        await tick(c,cfg(),plan())
+        assert c.statuses["bedroom"]["status"]=="minimum_native_device_off_hold"
+        assert not hass.services.calls
+        t[0]=2500
+        await tick(c,cfg(),plan())
+        assert hass.services.calls[0][1]=="turn_on"
+        await c.async_stop()
+    asyncio.run(run())
