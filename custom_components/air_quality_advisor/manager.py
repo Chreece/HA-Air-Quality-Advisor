@@ -41,10 +41,11 @@ from .climate_humidity_native import HumiditySetpointControl
 from .climate_humidity_power import HumidityPowerControl
 from .climate_secondary_native import SecondaryClimateSetpoint
 from .climate_air_actions import air_treatment_plan
+from .climate_window import window_substitution, window_reason
 from .climate_fan_native import RunningFanSpeedControl
 from .building_physics import moisture_potential
 from .environment_extended import global_pollen, global_aqi
-from .logic import Reading, Reason
+from .logic import Reading, Reason, Recommendation
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -277,6 +278,18 @@ class AirQualityManager:
                 # Fast fan polling may reuse this plan; record when its
                 # outdoor-air and sensor evidence was actually evaluated.
                 state["air_evidence_at"]=time()
+                substitute=window_substitution(
+                    self.hass, raw_for_climate[monitored.area_id],
+                    settings, state,
+                    environment.get(monitored.area_id,{}),
+                    current_weather, outdoor_readings,
+                    outside_safe=base_plan.outdoor_safe,
+                )
+                substitute["notify_enabled"]=(
+                    settings.get("window_efficiency_notify") is True
+                    if isinstance(settings,dict) else False
+                )
+                state["window_efficiency"]=substitute
                 if isinstance(settings,dict) and settings.get("enabled"):
                     equipment=state.get("equipment_plan",{})
                     thermal=equipment.get("thermal",{})
@@ -317,6 +330,7 @@ class AirQualityManager:
                     )
                     environment.setdefault(monitored.area_id,{})["climate_plan"]=state
                     self._tracked.update(tracked)
+                    self._tracked.update(w.entity_id for w in monitored.windows)
                     self._tracked.update(r.entity_id for r in raw_for_climate[
                         monitored.area_id].readings)
         pid_configs = config.get(CONF_PID_ROOMS, {})
@@ -362,7 +376,26 @@ class AirQualityManager:
         extra=tuple(room for room in climate_only if
                     isinstance(room_climate_configs.get(room.area_id),dict) and
                     room_climate_configs[room.area_id].get("enabled") is True)
-        return replace(air_plan,climate_rooms=extra)
+        extra_notices=[]
+        if base_plan.outdoor_safe is True:
+            for room in extra:
+                report=environment.get(room.area_id,{}).get("climate_plan",{})
+                option=report.get("window_efficiency",{})
+                if (option.get("status") != "opportunity" or
+                        option.get("notify_enabled") is not True):
+                    continue
+                # No synthetic window; this includes only true HA window
+                # contacts in the explicitly selected climate room.
+                closed=tuple(w for w in room.windows if w.opened is False)
+                if not closed or len(closed)!=len(room.windows):
+                    continue
+                extra_notices.append(Recommendation(
+                    "open",room.area_id,room.name,closed,(window_reason(option),),
+                ))
+        return replace(
+            air_plan,climate_rooms=extra,
+            climate_recommendations=tuple(extra_notices),
+        )
 
     async def async_start(self) -> None:
         """Track sensor changes and periodically recheck freshness and new entities."""
@@ -584,9 +617,10 @@ class AirQualityManager:
         self.running_fans.schedule(native_configs,plans)
 
         previous = self._active_actions
+        notices=(*new_plan.recommendations,*new_plan.climate_recommendations)
         current = {
             rec.area_id: (rec.action_signature, rec.reason_signature)
-            for rec in new_plan.recommendations
+            for rec in notices
         }
         for area_id in previous.keys() - current.keys():
             self._cancel_pending(area_id)
@@ -594,7 +628,7 @@ class AirQualityManager:
         # Install the current keys before arming timers, so callbacks always
         # recheck the latest action and cause.
         self._active_actions = current
-        for rec in new_plan.recommendations:
+        for rec in notices:
             area_id = rec.area_id
             new_keys = current[area_id]
             old_keys = previous.get(area_id)
@@ -665,7 +699,9 @@ class AirQualityManager:
         ):
             return
         rec = next(
-            (rec for rec in self.plan.recommendations if rec.area_id == area_id),
+            (rec for rec in
+             (*self.plan.recommendations,*self.plan.climate_recommendations)
+             if rec.area_id == area_id),
             None,
         )
         if rec is None:
@@ -771,14 +807,15 @@ class AirQualityManager:
         visual = (channels in ("notification", "both")) if channels != "auto" else bool(config.get(CONF_AUTO_NOTIFY))
         if not speech and not visual:
             return {"submitted": 0, "reason": "Both automatic channels are disabled"}
-        if not self.plan.recommendations:
+        all_notices=(*self.plan.recommendations,*self.plan.climate_recommendations)
+        if not all_notices:
             return {"submitted": 0, "reason": "No actionable window recommendations"}
 
         localized = self.get_language(language)
         requested_language = language or config.get(CONF_LANGUAGE, "auto")
         sent = 0
         errors: list[str] = []
-        for rec in self.plan.recommendations:
+        for rec in all_notices:
             if areas is not None and rec.area_id not in areas:
                 continue
             title, message = announcement(rec, localized)
