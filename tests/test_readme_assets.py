@@ -7,7 +7,7 @@ from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
-RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/"
+RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/"
 LOCAL_ASSET_ROOT = ".github/assets/"
 
 
@@ -39,7 +39,7 @@ def test_all_readme_images_use_absolute_https_urls_for_hacs() -> None:
                 f"Repository image unexpectedly points elsewhere: {src}"
             )
             relative = unquote(url.path).removeprefix(
-                "/Chreece/HA-Air-Quality-Advisor/main/"
+                "/Chreece/HA-Home-Environment-Manager/main/"
             )
             assert relative.startswith(LOCAL_ASSET_ROOT)
             file = ROOT / relative
