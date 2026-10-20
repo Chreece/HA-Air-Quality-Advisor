@@ -451,3 +451,44 @@ def test_missing_continuous_runtime_history_is_fail_safe_even_with_valid_ack(run
         assert hass.states.get("number.living_heat").state=="0.0"
         await driver.async_stop()
     asyncio.run(case())
+
+
+def test_direct_noncompressor_heat_off_holds_when_opposing_ac_arms(runtime):
+    async def case():
+        from custom_components.air_quality_advisor.climate_arbitration import (
+            room_coordination,
+        )
+        hass=home()
+        cooling=MockState("climate.living_ac","off")
+        cooling.attributes.update({
+            "hvac_modes":["off","cool"],"supported_features":1,
+            "hvac_action":"idle",
+        })
+        hass._values[cooling.entity_id]=cooling
+        hass._entity_areas[cooling.entity_id]="living"
+        conf=settings(cool_climate_entity=cooling.entity_id)
+        proposed=planned()
+        proposed["equipment_plan"]={
+            "status":"ready",
+            "thermal":{"status":"no_thermal_demand"},
+        }
+        proposed["coordination"]=room_coordination(
+            hass,"living",conf,proposed,now=1400,
+        )
+        assert proposed["coordination"]["channels"]["thermal"]["status"]=="eligible"
+        clock=[1000.]
+        controller=runtime.DirectClimateControl(
+            hass,"shared-coordination",clock=lambda:clock[0],
+        )
+        await controller.async_start()
+        clock[0]=2000
+        cooling.state="cool"
+        await advance(controller,clock,conf,proposed)
+        assert not hass.services.calls
+        assert controller.statuses["living"]["status"]=="safe_off"
+        assert controller.statuses["living"]["reason"]=="opposing_native_mode_armed"
+        cooling.state="off"
+        await advance(controller,clock,conf,proposed)
+        assert hass.services.calls[0][:2]==("switch","turn_on")
+        await controller.async_stop()
+    asyncio.run(case())
