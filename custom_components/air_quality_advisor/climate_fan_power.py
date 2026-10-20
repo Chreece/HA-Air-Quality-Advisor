@@ -279,6 +279,10 @@ class FanPowerControl:
                 original_on,_,original_max=interval
             await self._owned_tick(area,cfg,plan,entity,record,now,
                                    original_on,original_max)
+        if active_owned:
+            # Never override owned-device safety status with "advisory only",
+            # nor start a new fan while a prior ON/OFF is still reconciling.
+            return
         if area in self.paused:
             self._status(area,"paused",reason=self.paused[area])
             return
