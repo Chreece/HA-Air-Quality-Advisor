@@ -501,3 +501,49 @@ for(const [lang,word] of [
   assert.ok(dryCard.shadowRoot.innerHTML.includes('climate.kitchen_ac'));
   assert.ok(!dryCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
 }
+
+
+// Environmental-only climate rooms show actual humidity power status without
+// invented thermostat targets, preserve localized names and pause/resume.
+const humidityOnly=JSON.parse(JSON.stringify(input));
+humidityOnly.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,
+  status:'unknown',readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    mode:null,actuation:{status:'advisory_only'},
+    secondary_actuation:{status:'advisory_only'},
+    humidity_actuation:{status:'advisory_only'},
+    humidity_power_actuation:{status:'owned_running',
+                               entity_id:'humidifier.bathroom_dryer'},
+    fan_actuation:{status:'advisory_only'},
+    equipment_plan:{moisture:{status:'selected',
+                              entity_id:'humidifier.bathroom_dryer',
+                              action:'dry'},
+                    humidity:{status:'advisory',action:'dry',
+                              measured_rh:68}},
+  }},
+}];
+const humidityCard=new Card();
+humidityCard.setConfig({entity:'sensor.humidity_only'});
+for(const [language,label] of [
+  ['en','Humidity power'],
+  ['de','Be-/Entfeuchter schalten'],
+  ['el','Έλεγχος ισχύος υγρασίας'],
+]){
+  humidityCard.hass={language,states:{
+    'sensor.humidity_only':{state:'idle',attributes:{dashboard:humidityOnly}},
+  }};
+  const html=humidityCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(label),language+': '+label);
+  assert.ok(html.includes('humidifier.bathroom_dryer'));
+  assert.ok(html.includes('data-climate-action="pause"'));
+  assert.ok(!html.includes('NaN °C'));
+}
+humidityOnly.rooms[0].environment.climate_plan.humidity_power_actuation={
+  status:'paused',reason:'restart_requires_manual_output_reconciliation',
+};
+humidityCard.hass={language:'en',states:{
+  'sensor.humidity_only':{state:'idle',attributes:{dashboard:humidityOnly}},
+}};
+assert.ok(humidityCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
