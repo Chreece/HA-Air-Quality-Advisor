@@ -300,3 +300,38 @@ def test_climate_only_hub_rejection_never_falls_back_to_broadcast(delivery_modul
     assert len(calls.calls)==1
     assert calls.calls[0][:2]==("notify","announcement_hub")
     assert calls.calls[0][2]["area"]==["Bedroom"]
+
+
+def test_fast_air_supervision_refreshes_stale_evidence_before_fan_commands(
+    delivery_module,
+):
+    from dataclasses import replace
+    from time import time
+
+    manager,_=advisor(delivery_module,config={
+        "climate_rooms":{"bedroom":{"enabled":True,"fan_power_auto":True}},
+    })
+    manager._active=True
+    refreshed=[]
+    manager._recalculate=lambda **kwargs: refreshed.append("fresh_air_policy")
+    drivers=(manager.direct_climate,manager.native_humidity,
+             manager.humidity_power,manager.secondary_climate,
+             manager.running_fans,manager.fan_power)
+    schedules=[]
+    for driver in drivers:
+        driver.schedule=lambda *args,**kwargs: schedules.append("schedule")
+
+    manager.plan=replace(manager.plan,environment={
+        "bedroom":{"climate_plan":{"air_evidence_at":time()-95}},
+    })
+    manager._on_fast_climate_interval(None)
+    assert refreshed==["fresh_air_policy"]
+    assert schedules==[]
+
+    refreshed.clear()
+    manager.plan=replace(manager.plan,environment={
+        "bedroom":{"climate_plan":{"air_evidence_at":time()-20}},
+    })
+    manager._on_fast_climate_interval(None)
+    assert refreshed==[]
+    assert len(schedules)==len(drivers)
