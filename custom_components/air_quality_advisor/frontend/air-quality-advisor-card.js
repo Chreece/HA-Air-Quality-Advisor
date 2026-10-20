@@ -643,7 +643,7 @@
         ? `<div class="mold-summary">${average}${surface}</div>` : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
-          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)} <span class="metric-info" role="button" tabindex="0" aria-label="${escape(metric)} information" title="${escape(this._metricHelp(item))}">${this._icon('mdi:information-outline')}</span></span>
+          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)} <details class="metric-help"><summary aria-label="${escape(metric)} information" title="${escape(this._metricHelp(item))}">${this._icon('mdi:information-outline')}</summary><div class="metric-help-content" role="note">${escape(this._metricHelp(item))}</div></details></span>
           <span class="metric-number">${escape(display)} <small>${escape(unit)}</small></span>
         </div>
         ${hasLimit ? `<div class="meter" role="progressbar" aria-label="${escape(metric)}"
@@ -1223,6 +1223,12 @@
       .metric-line{display:flex;align-items:flex-start;gap:7px;justify-content:space-between;flex-wrap:wrap}
       .metric-name{font-size:10px;color:var(--aqa-muted);display:inline-flex;align-items:center;gap:3px;font-weight:700}
       .metric-name ha-icon{--mdc-icon-size:15px}
+      .metric-help{display:inline-flex;position:relative;align-items:center}
+      .metric-help summary{display:flex;align-items:center;cursor:pointer;list-style:none;color:var(--primary-color,#03a9f4);padding:2px}
+      .metric-help summary::-webkit-details-marker{display:none}
+      .metric-help-content{position:absolute;z-index:25;top:100%;left:-30px;width:min(280px,72vw);padding:12px;border-radius:12px;box-shadow:0 6px 24px #0006;background:var(--card-background-color,#20252b);color:var(--primary-text-color,#fff);font-size:12px;line-height:1.5;font-weight:400;white-space:normal}
+      .metric-help[open] summary{color:var(--accent-color,#00bcd4)}
+
       .metric-number{font-size:15px;font-weight:760;white-space:nowrap;line-height:1.2}
       .metric-number small{font-size:9px;color:var(--aqa-muted);font-weight:500}
       .meter{position:relative;display:block;height:6px;border-radius:99px;margin-top:11px;background:color-mix(in srgb,var(--aqa-muted),transparent 80%);overflow:hidden}
