@@ -377,3 +377,96 @@ def test_power_owner_refuses_live_competing_cooling_after_shared_plan(driver):
         assert hass.services.calls[0][1]=="turn_on"
         await owner.async_stop()
     asyncio.run(scenario())
+
+
+
+def test_owned_humidity_output_survives_removed_config_without_shortening_dwell(driver):
+    async def scenario():
+        hass=home()
+        clock=[1000.]
+        control=driver.HumidityPowerControl(
+            hass,"removed-room",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        original=cfg(humidity_power_min_on_s=1500,
+                     humidity_power_min_off_s=600,
+                     humidity_power_max_on_s=2700)
+        clock[0]=1400
+        await tick(control,original,plan())
+        clock[0]=2050
+        await tick(control,original,plan())
+        assert [event[1] for event in hass.services.calls]==["turn_on"]
+        assert control.records["bedroom"]["min_on_s"]==1500
+        assert control.records["bedroom"]["max_on_s"]==2700
+        # Options room removed while the actual humidifier is powered ON.
+        # This must still inspect owned output and enforce original 1500 s,
+        # rather than silently drop the record or use default 600 s.
+        clock[0]=2750
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert [event[1] for event in hass.services.calls]==["turn_on"]
+        assert control.statuses["bedroom"]["status"]=="minimum_on_hold_before_safe_off"
+        clock[0]=3551
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert [event[1] for event in hass.services.calls]==["turn_on","turn_off"]
+        clock[0]=3580
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert "bedroom" not in control.records
+        await control.async_stop()
+    asyncio.run(scenario())
+
+
+def test_humidity_power_options_edit_does_not_change_owned_compressor_dwell(driver):
+    async def scenario():
+        hass=home()
+        clock=[1000.]
+        control=driver.HumidityPowerControl(
+            hass,"dwell-edit",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        original=cfg(humidity_power_min_on_s=1500,
+                     humidity_power_max_on_s=2400)
+        clock[0]=1400
+        await tick(control,original,plan())
+        clock[0]=2050
+        await tick(control,original,plan())
+        # New settings cannot cut an existing run short, even when someone
+        # sets a new (otherwise allowed) 600-second min on duration.
+        changed=cfg(humidity_power_min_on_s=600,
+                    humidity_power_max_on_s=900,
+                    enabled=False)
+        clock[0]=2700
+        await tick(control,changed,plan())
+        assert [event[1] for event in hass.services.calls]==["turn_on"]
+        clock[0]=3551
+        await tick(control,changed,plan())
+        assert [event[1] for event in hass.services.calls]==["turn_on","turn_off"]
+        await control.async_stop()
+    asyncio.run(scenario())
+
+
+def test_humidity_legacy_active_record_without_dwell_fails_closed_when_removed(driver):
+    async def scenario():
+        hass=home(device_state=True)
+        clock=[2000.]
+        control=driver.HumidityPowerControl(
+            hass,"legacy-removed",clock=lambda:clock[0],
+        )
+        await control.async_start()
+        control.records["bedroom"]={
+            "entity_id":"humidifier.bedroom_dehumidifier",
+            "role":"dehumidifier_entity","area":"bedroom",
+            "power":"on","when":1000,"acknowledged":True,"target":60,
+        }
+        control.schedule({}, {})
+        for _ in range(8):
+            await asyncio.sleep(0)
+        assert control.paused["bedroom"]=="original_power_dwell_unknown_reconcile_manually"
+        assert not hass.services.calls
+        await control.async_stop()
+    asyncio.run(scenario())
