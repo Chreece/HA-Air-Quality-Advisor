@@ -209,3 +209,47 @@ def test_manual_pause_always_blocks_future_device_writes(adapter,pid_store):
         assert not hass.services.calls
         await engine.async_stop()
     asyncio.run(scenario())
+
+
+
+def test_pid_never_writes_target_claimed_by_another_ha_config_entry(
+    adapter,pid_store,
+):
+    async def scenario():
+        hass,room=fake_home()
+        clock=[1000.]
+        engine=pid_store.Coordinator(
+            hass,"entry-main",report_changed=lambda:None,
+            clock=lambda:clock[0],
+        )
+        await engine.async_start()
+        profile=config()
+        clock[0]=1600
+        await tick(engine,room,profile,clock)
+        assert not hass.services.calls
+        # The other entry claims this thermostat after the PID warmup.
+        foreign=SimpleNamespace(
+            entry_id="other-entry",disabled_by=None,
+            data={"climate_rooms":{"living":{
+                "enabled":True,"controller":"device",
+                "allow_actuation":True,
+                "climate_entity":"climate.room_thermostat",
+            }}},options={},
+        )
+        main=SimpleNamespace(
+            entry_id="entry-main",disabled_by=None,
+            data={"pid_rooms":{"living":profile}},options={},
+        )
+        hass.config_entries=SimpleNamespace(
+            async_entries=lambda domain:[main,foreign],
+        )
+        clock[0]=1900
+        await tick(engine,room,profile,clock)
+        assert hass.services.calls==[]
+        assert engine.statuses["living"]=={
+            "status":"cross_entry_control_hold",
+            "entity":"climate.room_thermostat",
+            "reason":"cross_entry_equipment_owner",
+        }
+        await engine.async_stop()
+    asyncio.run(scenario())
