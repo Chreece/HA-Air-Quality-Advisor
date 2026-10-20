@@ -231,3 +231,25 @@ def test_restart_detects_manual_fan_speed_and_never_rewrites_it(fan_module):
         assert len(h.services.calls)==1
         await recovered.async_stop()
     asyncio.run(scenario())
+
+
+def test_expired_air_evidence_never_commands_fan_speed(fan_module):
+    async def run():
+        h=home()
+        t=[1000.]
+        engine=fan_module.RunningFanSpeedControl(h,"ttl",clock=lambda:t[0])
+        await engine.async_start()
+        t[0]=1400
+        stale={**plan(),"air_evidence_at":1200}
+        await tick(engine,config(),stale)
+        assert engine.statuses["bedroom"]["status"]=="air_quality_decision_expired"
+        assert not h.services.calls
+        future={**plan(),"air_evidence_at":2000}
+        await tick(engine,config(),future)
+        assert engine.statuses["bedroom"]["status"]=="air_quality_decision_expired"
+        assert not h.services.calls
+        current={**plan(),"air_evidence_at":1390}
+        await tick(engine,config(),current)
+        assert len(h.services.calls)==1
+        await engine.async_stop()
+    asyncio.run(run())
