@@ -46,6 +46,10 @@ NATIVE_CLIMATE_SCHEMA = probatio.Schema({
     probatio.Required("action"): probatio.In(["pause", "resume"]),
 })
 
+CLIMATE_DIAGNOSTICS_SCHEMA = probatio.Schema({
+    probatio.Optional("area"): cv.string,
+})
+
 PID_CONTROL_SCHEMA = probatio.Schema({
     probatio.Required("area"): cv.string,
     probatio.Required("action"): probatio.In(["pause", "resume", "reset"]),
@@ -135,6 +139,37 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     schema=NATIVE_CLIMATE_SCHEMA,
                     supports_response=SupportsResponse.OPTIONAL,
                 )
+    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_diagnostics"):
+        async def async_diagnostics(call: ServiceCall) -> ServiceResponse:
+            # This is an explicit read-only request. Only configured rooms
+            # are reported; no raw registry secrets, device identifiers, or
+            # HA service commands are collected or executed.
+            managers = list(hass.data.get(DOMAIN, {}).values())
+            if not managers:
+                return {"schema_version": 1, "status": "not_loaded",
+                        "read_only": True, "no_commands_sent": True, "rooms": []}
+            area = call.data.get("area")
+            responses = [manager.climate_diagnostics(area=area)
+                         for manager in managers]
+            rooms = [room for response in responses
+                     for room in response.get("rooms", [])]
+            response = {
+                "schema_version": 1,
+                "status": "ok" if rooms or area is None else "area_not_configured",
+                "read_only": True,
+                "no_commands_sent": True,
+                "physical_hardware_safety_verified": False,
+                "rooms": rooms,
+            }
+            return response if call.return_response else None
+
+        for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN):
+            if not hass.services.has_service(domain, "climate_diagnostics"):
+                hass.services.async_register(
+                    domain, "climate_diagnostics", async_diagnostics,
+                    schema=CLIMATE_DIAGNOSTICS_SCHEMA,
+                    supports_response=SupportsResponse.OPTIONAL,
+                )
     return True
 
 
@@ -152,4 +187,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 hass.services.async_remove(service_domain, "pid_control")
             if hass.services.has_service(service_domain, "climate_control"):
                 hass.services.async_remove(service_domain, "climate_control")
+            if hass.services.has_service(service_domain, "climate_diagnostics"):
+                hass.services.async_remove(service_domain, "climate_diagnostics")
     return True
