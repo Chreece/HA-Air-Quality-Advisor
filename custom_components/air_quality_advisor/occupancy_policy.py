@@ -280,8 +280,8 @@ def _room_value_allowed(hass: Any, raw: Any, known_areas: set[str]) -> bool:
                name.strip().casefold() in aliases for name in parsed)
 
 
-def room_list_fields(hass: Any, entity_id: str, known_areas: set[str]
-                     ) -> list[dict[str, str]]:
+def room_list_fields(hass: Any, entity_id: str, known_areas: set[str],
+                     *, state_label: str = "State") -> list[dict[str, str]]:
     """Only attributes that currently contain a usable HA-room list.
 
     The entity's *state* is treated as one selectable source, not a free text
@@ -295,7 +295,7 @@ def room_list_fields(hass: Any, entity_id: str, known_areas: set[str]
         return []
     options = []
     if _room_value_allowed(hass, state.state, known_areas):
-        options.append({"value": ROOM_STATE_VALUE, "label": "State"})
+        options.append({"value": ROOM_STATE_VALUE, "label": state_label})
     attrs = getattr(state, "attributes", {})
     if not isinstance(attrs, Mapping):
         return options

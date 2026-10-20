@@ -230,12 +230,24 @@ class CompactOptionsMixin:
         )
         options = {}
         errors = {}
+        language = str(getattr(getattr(self.hass,"config",None),
+                               "language","en") or "en").replace("_","-").split("-")[0].lower()
+        state_label = {
+            "el":"Κατάσταση (state)", "de":"Zustand (state)",
+            "fr":"État (state)", "es":"Estado (state)",
+            "it":"Stato (state)", "nl":"Status (state)",
+            "pt":"Estado (state)", "pl":"Stan (state)",
+            "ru":"Состояние (state)", "uk":"Стан (state)",
+            "tr":"Durum (state)", "zh":"状态 (state)",
+            "ja":"状態 (state)", "ko":"상태 (state)",
+            "ar":"الحالة (state)", "he":"מצב (state)"
+        }.get(language,"State")
         for entity_key, attr_key, field in definitions:
             entity = pending.get(entity_key)
             if not entity:
                 pending[attr_key] = ""
                 continue
-            possible = room_list_fields(self.hass, entity, areas)
+            possible = room_list_fields(self.hass, entity, areas, state_label=state_label)
             choices = {opt["value"] for opt in possible}
             if not choices:
                 errors["base"] = "general_invalid_rooms_entity"
