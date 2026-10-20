@@ -60,6 +60,7 @@ class DirectClimateControl:
         self._active = False
         self._started: float | None = None
         self._last_config: dict[str,dict] = {}
+        self._last_plans: dict[str,dict] = {}
         self._write_lock = asyncio.Lock()
 
     def _snapshot(self) -> dict:
@@ -270,6 +271,7 @@ class DirectClimateControl:
                               if isinstance(v,dict) and v.get("enabled")
                               for t in v.get("climate_entities",[]) if isinstance(t,str)}
         now = self.clock()
+        self._last_plans = plans if isinstance(plans,dict) else {}
         self._last_config={
             area:dict(settings) for area,settings in config.items()
             if isinstance(area,str) and isinstance(settings,dict)
@@ -324,7 +326,8 @@ class DirectClimateControl:
             task.add_done_callback(done)
 
     async def _send(self, area: str, entity: str, state: bool | float,
-                    *, percentage: bool=False, now:float)->bool:
+                    *, percentage: bool=False, now:float,
+                    cfg:dict|None=None, report:dict|None=None)->bool:
         """Durably record ON intent before the first physical command."""
         domain, service = (("number", "set_value") if percentage else
                            ("switch", "turn_on" if state is True else "turn_off"))
@@ -365,7 +368,13 @@ class DirectClimateControl:
                         latest.get("allow_actuation") is not True or
                         latest.get("direct_hardware_confirmed") is not True or
                         entity not in self._entities(latest) or
-                        entity_area(self.hass,entity)!=area):
+                        entity_area(self.hass,entity)!=area or
+                        cfg is None or latest != cfg or
+                        report is None or self._last_plans.get(area) is not report or
+                        temperature_sensor_c(self.hass, cfg.get("temperature_entity"),
+                                             MAX_SENSOR_AGE_MINUTES) is None or
+                        new_command_gate(self.hass,area,cfg,report,"thermal",entity,
+                                         now=self.clock(),entry_id=self.entry_id) is not None):
                     self._pause(area, "direct_intent_revoked_before_dispatch")
                     return False
             try:
@@ -628,7 +637,8 @@ class DirectClimateControl:
                 if now_last is not None and now-now_last < sample:
                     self._status(area,"proportional_rate_limit")
                     return
-                if await self._send(area,active,desired,percentage=True,now=now):
+                if await self._send(area,active,desired,percentage=True,now=now,
+                                    cfg=cfg,report=report):
                     self._status(area,"modulating",demand_percent=demand,
                                  commanded_percent=desired)
                 return
@@ -656,6 +666,7 @@ class DirectClimateControl:
         if change_status!="transition":
             self._status(area,change_status,mode=mode)
             return
-        if await self._send(area,active,next_state,now=now):
+        if await self._send(area,active,next_state,now=now,
+                            cfg=cfg,report=report):
             self._status(area,"commanded",mode=mode,
                          output_on=next_state,demand_percent=cycle.pid_percent)
