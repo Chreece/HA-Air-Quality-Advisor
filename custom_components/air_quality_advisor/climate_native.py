@@ -170,6 +170,50 @@ class NativeClimateControl:
             return
         mode=report.get("mode")
         entity=settings.get("climate_entity")
+        # Recheck live ownership and contacts immediately before every write.
+        # The advisory plan can be older than the last entity/area change.
+        if (not isinstance(entity,str) or not entity.startswith("climate.") or
+                entity_area(self.hass,entity)!=area):
+            self.statuses[area]={"status":"climate_target_wrong_room"}
+            return
+        contacts=report.get("window_contacts")
+        if contacts is not None:
+            if not isinstance(contacts,list):
+                self.statuses[area]={"status":"window_contacts_invalid"}
+                return
+            for contact in contacts:
+                current=self.hass.states.get(contact)
+                if (not isinstance(contact,str) or current is None or
+                        current.domain!="binary_sensor" or
+                        current.attributes.get("device_class")!="window" or
+                        current.state!="off" or entity_area(self.hass,contact)!=area):
+                    self.statuses[area]={"status":"window_changed_since_plan"}
+                    return
+        # Explicit extra native equipment must not silently oppose this
+        # thermostat. Its state can change between capture and command.
+        for key in ("heat_climate_entity","cool_climate_entity",
+                    "dry_climate_entity","fan_climate_entity"):
+            other=settings.get(key)
+            if not other or other==entity:
+                continue
+            if (not isinstance(other,str) or not other.startswith("climate.") or
+                    entity_area(self.hass,other)!=area):
+                self.statuses[area]={"status":"competing_climate_wrong_room"}
+                return
+            observed=self.hass.states.get(other)
+            if observed is None or observed.state in ("unknown","unavailable"):
+                self.statuses[area]={"status":"competing_climate_unavailable"}
+                return
+            other_mode=observed.state
+            action=observed.attributes.get("hvac_action")
+            # Heat/cool/auto/DRY can self-restart even while currently idle.
+            if ((mode=="heat" and other_mode in ("cool","heat_cool","auto","dry")) or
+                (mode=="cool" and other_mode in ("heat","heat_cool","auto")) or
+                (mode=="heat_cool" and other_mode not in ("off","fan_only")) or
+                action in ("heating","cooling","drying","preheating") or
+                (other_mode!="off" and action is None)):
+                self.statuses[area]={"status":"competing_climate_active_or_armed"}
+                return
         if mode=="heat_cool":
             from .climate_range import async_apply_native_range
             await async_apply_native_range(self,area,settings,report,now)
