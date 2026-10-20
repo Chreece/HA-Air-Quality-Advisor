@@ -554,3 +554,34 @@ condensation or shared outdoor-unit protections.
 
 No new native modes were invented, no HA area-wide commands were added, and
 this remains off by default pending representative hardware commissioning.
+
+
+## Audit-only hardware commissioning interface and final write-time guards
+
+\`climate_commissioning.report\` produces a bounded, entirely read-only
+view of each explicitly configured HA room's native HVAC capabilities,
+reported activity, current allowed modes, selected humidity/temperature/CO₂/
+PM2.5 sensor values and ages, matched area registry ownership, window contacts,
+user opt-ins and live arbitration status. It cannot operate device services
+or infer protected compressor readiness. Credentials, token attributes,
+device serial identifiers, unrelated rooms and network metadata are never
+collected.
+
+The optional HA actions \`air_quality_advisor.climate_diagnostics\` and
+\`home_environment_manager.climate_diagnostics\` expose that same report as
+a response for all configured climate rooms or for a selected exact
+\`area\`. All service aliases are unregistered after the last config entry
+unloads, and the v0.5.1 config-entry title, data and entity IDs are preserved.
+
+The commissioned DRY↔FAN_ONLY controller has additional final-phase
+protections against concurrent HA option edits: a new command holds if its
+room's selected permissions, equipment, or environmental decision was
+superseded while the durable write-ahead intent was being saved. Immediately
+before the service call, it rechecks the **user-selected physical dwell**,
+not just the advisor's default 30-minute threshold. Failed completion
+persistence retains an uncertain \`intent\` rather than permitting an
+automatic retry on subsequent startup.
+
+These software checks are exercised with injected Home Assistant state
+changes during asynchronous storage I/O and legacy entry teardown. Real
+compressor/electrical safety is not measured or certified by the report.
