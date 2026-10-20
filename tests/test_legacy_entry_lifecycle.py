@@ -154,6 +154,10 @@ def integration(adapter,monkeypatch):
     name="custom_components.air_quality_advisor._lifecycle_under_test"
     spec=importlib.util.spec_from_file_location(name,COMPONENT/"__init__.py")
     module=importlib.util.module_from_spec(spec)
+    # spec_from_file_location sees "__init__.py" and otherwise treats the
+    # test alias as a brand-new nested package. Preserve the real parent
+    # for relative imports without altering the installed HA package.
+    module.__package__="custom_components.air_quality_advisor"
     monkeypatch.setitem(sys.modules,name,module)
     spec.loader.exec_module(module)
     return module,extras
