@@ -334,3 +334,46 @@ def test_real_ha_last_changed_blocks_recent_manual_toggle(driver):
         assert hass.services.calls[0][1]=="turn_on"
         await c.async_stop()
     asyncio.run(run())
+
+
+def test_power_owner_refuses_live_competing_cooling_after_shared_plan(driver):
+    async def scenario():
+        from custom_components.air_quality_advisor.climate_arbitration import (
+            room_coordination,
+        )
+        hass=home(rh=66)
+        cooling=MockState("climate.bedroom_ac","off")
+        cooling.attributes.update({"hvac_modes":["off","cool"],
+                                   "supported_features":1,"hvac_action":"idle"})
+        hass._values[cooling.entity_id]=cooling
+        hass._entity_areas[cooling.entity_id]="bedroom"
+        config=cfg(cool_climate_entity=cooling.entity_id)
+        report=plan()
+        report["status"]="advisory"
+        report["equipment_plan"]["humidity"]={
+            "status":"advisory","action":"dry","measured_rh":66,
+        }
+        t=[1000.]
+        owner=driver.HumidityPowerControl(
+            hass,"coordinated-dry",clock=lambda:t[0],
+        )
+        await owner.async_start()
+        t[0]=1400
+        report["coordination"]=room_coordination(
+            hass,"bedroom",config,report,now=1400,
+        )
+        assert report["coordination"]["channels"]["humidity"]["status"]=="eligible"
+        await tick(owner,config,report)
+        t[0]=2000
+        cooling.state="cool"  # Auto-climate armed after initial plan.
+        await tick(owner,config,report)
+        assert owner.statuses["bedroom"]=={
+            "status":"coordination_hold",
+            "reason":"cooling_priority_observe_rh",
+        }
+        assert not hass.services.calls
+        cooling.state="off"
+        await tick(owner,config,report)
+        assert hass.services.calls[0][1]=="turn_on"
+        await owner.async_stop()
+    asyncio.run(scenario())
