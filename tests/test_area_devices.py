@@ -132,7 +132,8 @@ def test_one_device_per_selected_area_and_only_calculated_optional_sensor(area_m
     manager = example_manager()
     entry = SimpleNamespace(entry_id="entry-42", runtime_data=manager)
     entities = asyncio.run(module.async_area_entities(manager.hass, entry))
-    assert len(registry.created) == 2
+    assert len(registry.created) == 3  # Parent home device + two rooms
+    assert registry.created[0]["identifiers"] == {("air_quality_advisor", "entry-42")}
     assert [row[1]["area_id"] for row in registry.assigned] == [
         "kitchen", "bedroom",
     ]
