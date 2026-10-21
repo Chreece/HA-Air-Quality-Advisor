@@ -129,6 +129,25 @@ AREA_ENV_FLAGS = ("sleep_room", "enable_pmv")
 GLOBAL_ENV_FLAGS = ("pollen_avoid_ventilation",)
 
 
+AQI_SCALES = ("not_configured", "us_epa", "eea_category", "custom")
+
+
+def configured_aqi_entities(manager: Any) -> tuple[str, ...]:
+    """Only selected outdoor AQI sources, not arbitrary sensor entities."""
+    configured = manager.settings.get("outdoor_sensors", [])
+    if not isinstance(configured, list):
+        return ()
+    result = []
+    for entity in configured:
+        state = manager.hass.states.get(entity) if isinstance(entity, str) else None
+        if not entity.startswith("sensor.") or state is None:
+            continue
+        if (str(state.attributes.get("device_class", "")).casefold() == "aqi"
+                or entity.endswith(("_aqi", "_air_quality_index"))):
+            result.append(entity)
+    return tuple(dict.fromkeys(result))
+
+
 def _finite(value: Any, bounds: tuple) -> float:
     if isinstance(value, bool):
         raise HomeAssistantError("Boolean values are not numeric controller settings")
@@ -170,13 +189,14 @@ async def update_device_setting(manager: Any, kind: str, key: str,
         "pid", "profile", "climate_profile", "global_threshold", "global_setting",
         "pid_gain_source", "global_environment", "global_occupancy",
         "area_environment", "climate_operating", "global_policy", "climate_policy",
-        "device_target", "device_policy",
+        "device_target", "device_policy", "aqi_scale", "aqi_limit",
+        "climate_schedule",
     ):
         raise HomeAssistantError("Unsupported settings editor")
     if kind in (
         "pid", "profile", "climate_profile", "pid_gain_source",
         "area_environment", "climate_operating", "climate_policy",
-        "device_target", "device_policy",
+        "device_target", "device_policy", "climate_schedule",
     ) and not area:
         raise HomeAssistantError("A configured Home Assistant area is required")
 
@@ -313,6 +333,61 @@ async def update_device_setting(manager: Any, kind: str, key: str,
             if area is not None:
                 data[area] = room
             options[section] = data
+
+        elif kind in ("aqi_scale", "aqi_limit"):
+            from .const import CONF_ENVIRONMENT_GLOBAL
+            if area is not None or entity_id not in configured_aqi_entities(manager):
+                raise HomeAssistantError("The AQI source must be selected in outdoor data")
+            current_global = current.get(CONF_ENVIRONMENT_GLOBAL, {})
+            current_global = deepcopy(current_global) if isinstance(current_global, dict) else {}
+            scales = deepcopy(current_global.get("aqi_scales", {}))
+            scales = scales if isinstance(scales, dict) else {}
+            source_cfg = scales.get(entity_id, {})
+            source_cfg = dict(source_cfg) if isinstance(source_cfg, dict) else {}
+            if kind == "aqi_scale":
+                if key != "scale" or value not in AQI_SCALES:
+                    raise HomeAssistantError("Invalid AQI classification")
+                if value == "not_configured":
+                    scales.pop(entity_id, None)
+                else:
+                    source_cfg["scale"] = value
+                    scales[entity_id] = source_cfg
+            else:
+                if key != "custom_limit" or source_cfg.get("scale") != "custom":
+                    raise HomeAssistantError("Select custom AQI scale first")
+                source_cfg["custom_limit"] = _finite(value, (0.0, 10000.0))
+                scales[entity_id] = source_cfg
+            current_global["aqi_scales"] = scales
+            options[CONF_ENVIRONMENT_GLOBAL] = current_global
+
+        elif kind == "climate_schedule":
+            from datetime import time as ClockTime
+            from .climate_schedule import local_interval_active
+            if key not in ("sleep_start", "sleep_end"):
+                raise HomeAssistantError("Invalid sleep schedule setting")
+            if isinstance(value, ClockTime):
+                v = value.strftime("%H:%M")
+            elif isinstance(value, str):
+                try:
+                    v = ClockTime.fromisoformat(value).strftime("%H:%M")
+                except ValueError as error:
+                    raise HomeAssistantError("Invalid clock time") from error
+            else:
+                raise HomeAssistantError("Invalid clock time")
+            room_configs = deepcopy(current.get(CONF_CLIMATE_ROOMS, {}))
+            old_cfg = room_configs.get(area) if isinstance(room_configs, dict) else None
+            if not isinstance(old_cfg, dict) or old_cfg.get("enabled") is not True:
+                raise HomeAssistantError("Room climate management is not configured")
+            draft = dict(old_cfg)
+            draft[key] = v
+            if draft.get("sleep_schedule_enabled") is True:
+                if local_interval_active(
+                    1704067200, "UTC", draft.get("sleep_start", "22:00"),
+                    draft.get("sleep_end", "07:00")
+                )[0] is None:
+                    raise HomeAssistantError("Invalid sleep interval")
+            room_configs[area] = draft
+            options[CONF_CLIMATE_ROOMS] = room_configs
 
         elif kind in ("global_policy", "climate_policy", "device_policy"):
             from .const import CONF_OCCUPANCY_GLOBAL
