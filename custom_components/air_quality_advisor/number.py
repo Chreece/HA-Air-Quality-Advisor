@@ -1,7 +1,7 @@
 """Home-wide thresholds and room-specific supervisory number controls."""
 from __future__ import annotations
 
-from homeassistant.components.number import NumberEntity
+from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
@@ -47,7 +47,7 @@ class ConfigNumber(NumberEntity):
     _attr_has_entity_name = True
     _attr_should_poll = False
     _attr_entity_category = EntityCategory.CONFIG
-    _attr_mode = "box"
+    _attr_mode = NumberMode.BOX
 
     def __init__(self, manager, entry_id, area_id, kind, key, bounds):
         self._manager = manager
