@@ -3,7 +3,12 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const registered = new Map();
 class FakeElement {
-  attachShadow() { this.shadowRoot={innerHTML:'', addEventListener(){}};return this.shadowRoot; }
+  attachShadow() {
+    const listeners = {};
+    this.shadowRoot={innerHTML:'',listeners,
+      addEventListener(type,handler){listeners[type]=handler;}};
+    return this.shadowRoot;
+  }
 }
 global.HTMLElement = FakeElement;
 global.customElements = {
@@ -695,3 +700,54 @@ nativeDryCard.hass={language:'en',states:{
   'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
 }};
 assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Home and Area edit controls must use real device registry IDs rather than
+// guess them from HA area names. This uses the actual SPA navigation route.
+(async () => {
+  const navigate=[];
+  window.history={pushState(_state,_title,path){navigate.push(path);}};
+  window.dispatchEvent=()=>true;
+  const devices=[
+    {id:'home-registered-id', identifiers:[['air_quality_advisor','entry-42']]},
+    {id:'kitchen-registered-id', identifiers:[['air_quality_advisor','entry-42_area_kitchen']]},
+    {id:'living-registered-id', identifiers:[['air_quality_advisor','entry-42_area_living']]},
+    {id:'bedroom-registered-id', identifiers:[['air_quality_advisor','entry-42_area_bedroom']]},
+  ];
+  const editor=new Card();
+  editor.setConfig({entity:'sensor.air_quality_advisor_recommendations'});
+  let reads=0;
+  const hass={
+    language:'el',
+    states:{'sensor.air_quality_advisor_recommendations':{
+      state:'open',attributes:{dashboard:input}
+    }},
+    entities:{'sensor.air_quality_advisor_recommendations':{
+      device_id:'home-registered-id'
+    }},
+    callWS:async request=>{
+      assert.equal(request.type,'config/device_registry/list');
+      reads++;
+      return devices;
+    },
+  };
+  editor.hass=hass;
+  await new Promise((resolve)=>setImmediate(resolve));
+  const html=editor.shadowRoot.innerHTML;
+  assert.ok(html.includes('data-edit-home'),'missing home device edit button');
+  assert.ok(html.includes('data-edit-area="kitchen"'),'missing kitchen edit button');
+  assert.ok(html.includes('data-edit-area="living"'),'missing living edit button');
+  assert.ok(html.includes('Ρυθμίσεις χώρου'),'room edit action needs Greek text');
+  editor.hass=hass;
+  assert.equal(reads,1,'device registry must not be repeatedly fetched on state updates');
+
+  const element=(attrs)=>({getAttribute(name){return attrs[name]??null;}});
+  editor.shadowRoot.listeners.click({target:{closest(query){
+    return query.includes('data-edit-area') ? element({'data-edit-area':'kitchen'}) : null;
+  }}});
+  assert.equal(navigate.pop(),'/config/devices/device/kitchen-registered-id');
+  editor.shadowRoot.listeners.click({target:{closest(query){
+    return query.includes('data-edit-home') ? element({}) : null;
+  }}});
+  assert.equal(navigate.pop(),'/config/devices/device/home-registered-id');
+})().catch((err)=>{console.error(err);process.exitCode=1;});
