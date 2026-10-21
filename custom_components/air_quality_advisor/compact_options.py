@@ -654,8 +654,34 @@ class CompactOptionsMixin:
                     # Its compressor-mode driver is separately commissioned.
                     errors["base"]="device_method_invalid"
                 elif domain in ("humidifier","fan") and data["method"] not in (
-                    "setpoint","power","speed"):
+                    ("setpoint", "power") if domain == "humidifier" else ("speed", "power")
+                ):
                     errors["base"] = "device_method_invalid"
+                elif domain == "climate" and data["method"] == "setpoint":
+                    from .climate_equipment import classify_hvac
+                    features = classify_hvac(state.attributes, state.state)
+                    if not (features.get("temperature_setpoint") is True or
+                            (features.get("native_heat_cool") is True and
+                             features.get("temperature_range") is True)):
+                        errors["base"] = "device_method_invalid"
+                elif domain == "humidifier" and data["method"] == "setpoint":
+                    # The native controller refuses guessed target, limits or
+                    # resolution. Fail early instead of accepting a dead UI.
+                    from .climate_humidity_native import _target, _bounded_setpoint
+                    attrs = state.attributes
+                    measured = _target(attrs)
+                    if measured is None or _bounded_setpoint(
+                        attrs, measured, measured
+                    )[0] == "device_limits_or_resolution_unknown":
+                        errors["base"] = "device_method_invalid"
+                elif domain == "fan" and data["method"] == "speed":
+                    # Home Assistant FanEntityFeature.SET_SPEED == 1.
+                    try:
+                        features = int(state.attributes.get("supported_features", 0))
+                    except (ValueError, TypeError, OverflowError):
+                        features = 0
+                    if features & 1 == 0:
+                        errors["base"] = "device_method_invalid"
                 elif data["method"] == "power" and not data["hardware_confirmed"]:
                     errors["base"] = "device_hardware_required"
                 elif (data["absence_action"] == "off" and domain == "climate"
@@ -734,8 +760,15 @@ class CompactOptionsMixin:
             if not errors:
                 options[entity] = data
                 draft["device_settings"] = options
-                # Role assignment is exact, with no implied compressor switching.
+                # Role assignment is exact, with no implied compressor
+                # switching. Enabling a fan/humidifier must not implicitly
+                # arm a previously advisory-only thermostat in the same room.
                 if data["auto_control"]:
+                    was_authorized = draft.get("allow_actuation") is True
+                    if (domain in ("fan", "humidifier") and not was_authorized
+                            and draft.get("controller", "device") == "device"):
+                        draft["controller"] = "environment"
+                        draft["auto_switch_hvac"] = False
                     draft["enabled"] = True
                     draft["allow_actuation"] = True
                     if domain == "climate":
@@ -747,9 +780,17 @@ class CompactOptionsMixin:
                             draft["controller"] = "device"
                             draft["auto_switch_hvac"] = (data["method"] == "native"
                                                           and data["hardware_confirmed"])
-                            draft["mode"] = ("auto" if (
-                                modes.get("heating") or modes.get("cooling")
-                            ) else "dry")
+                            # A heat-only or cool-only thermostat cannot
+                            # implement a fabricated automatic dual mode.
+                            # Preserve the live mode for devices with both
+                            # capabilities but no commissioned switching.
+                            draft["mode"] = (
+                                "heat" if modes.get("heating") and not modes.get("cooling")
+                                else "cool" if modes.get("cooling") and not modes.get("heating")
+                                else "auto" if modes.get("native_heat_cool")
+                                else state.state if state.state in ("heat", "cool")
+                                else "auto"
+                            )
                         elif modes.get("heating"):
                             draft["heat_climate_entity"] = entity
                             draft["secondary_climate_setpoint_auto"] = True
