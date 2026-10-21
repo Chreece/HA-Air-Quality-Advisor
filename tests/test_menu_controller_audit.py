@@ -1,0 +1,235 @@
+"""Real options-flow bug regressions for menus and per-device permissions.
+
+The tests use Home Assistant boundary doubles; no physical devices are called.
+"""
+from __future__ import annotations
+
+import asyncio
+
+from test_area_config_flow import _make_options
+from test_discovery import MockState, adapter
+
+
+def _add(opt, *states):
+    for state in states:
+        opt.hass._values[state.entity_id] = state
+        opt.hass._entity_areas[state.entity_id] = "living"
+
+
+def _start_device(opt, selected, chosen):
+    asyncio.run(opt.async_step_init())
+    assert asyncio.run(opt.async_step_area_devices({
+        "area_devices_area": "living",
+    }))["step_id"] == "select_devices"
+    assert asyncio.run(opt.async_step_select_devices({
+        "selected_devices": selected,
+    }))["step_id"] == "device_choice"
+    assert asyncio.run(opt.async_step_device_choice({
+        "device_choice": chosen,
+    }))["step_id"] == "device_menu"
+
+
+def test_unselecting_previous_auto_thermostat_revokes_live_role(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    heat = MockState("climate.living_heat", "heat")
+    heat.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 1})
+    fan = MockState("fan.living_filter", "off")
+    _add(opt, heat, fan)
+    opt.config_entry.options["climate_rooms"] = {"living": {
+        "enabled": True, "allow_actuation": True, "controller": "device",
+        "climate_entity": heat.entity_id, "selected_devices": [heat.entity_id, fan.entity_id],
+        "device_settings": {
+            heat.entity_id: {"auto_control": True},
+            fan.entity_id: {"auto_control": False},
+        },
+    }}
+    asyncio.run(opt.async_step_init())
+    asyncio.run(opt.async_step_area_devices({"area_devices_area": "living"}))
+    asyncio.run(opt.async_step_select_devices({"selected_devices": [fan.entity_id]}))
+    result = asyncio.run(opt.async_step_device_done())
+    data = result["completed"]["data"]["climate_rooms"]["living"]
+    assert data["selected_devices"] == [fan.entity_id]
+    assert data["device_settings"][heat.entity_id]["auto_control"] is False
+    assert "climate_entity" not in data
+    assert data["controller"] == "environment"
+    assert data["allow_actuation"] is False
+
+
+def test_disabling_selected_thermostat_retires_previous_permission(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    heat = MockState("climate.living_heat", "heat")
+    heat.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 1})
+    _add(opt, heat)
+    opt.config_entry.options["climate_rooms"] = {"living": {
+        "enabled": True, "allow_actuation": True, "controller": "device",
+        "climate_entity": heat.entity_id, "selected_devices": [heat.entity_id],
+        "temperature_entity": "sensor.living_t",
+        "device_settings": {heat.entity_id: {"auto_control": True}},
+    }}
+    _start_device(opt, [heat.entity_id], heat.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({"device_auto_control": False}))
+    cfg = result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["device_settings"][heat.entity_id]["auto_control"] is False
+    assert "climate_entity" not in cfg
+    assert cfg["allow_actuation"] is False
+
+
+def test_fan_enable_does_not_arm_previous_advisory_thermostat(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    heat = MockState("climate.living_heat", "heat")
+    heat.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 1})
+    fan = MockState("fan.living_extract", "off")
+    fan.attributes["supported_features"] = 1
+    _add(opt, heat, fan)
+    opt.config_entry.options["climate_rooms"] = {"living": {
+        "enabled": True, "controller": "device", "allow_actuation": False,
+        "climate_entity": heat.entity_id,
+    }}
+    _start_device(opt, [heat.entity_id, fan.entity_id], fan.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True,
+        "device_method": "speed",
+        "device_fan_purpose": "extraction",
+        "device_co2_entity": "sensor.living_co2",
+        "device_sensor_verified": True,
+    }))
+    cfg = result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["controller"] == "environment"
+    assert cfg["auto_switch_hvac"] is False
+    assert cfg["fan_speed_auto"] is True
+    assert cfg["allow_actuation"] is True
+    assert cfg["climate_entity"] == heat.entity_id  # retained for observation
+
+
+def test_filtration_speed_target_uses_actual_driver_setting_name(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    fan = MockState("fan.living_filter", "off")
+    fan.attributes["supported_features"] = 1
+    pm = MockState("sensor.living_pm25", 25, device_class="pm25", unit="µg/m³")
+    _add(opt, fan, pm)
+    _start_device(opt, [fan.entity_id], fan.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "speed",
+        "device_fan_purpose": "filtration",
+        "device_pm25_entity": pm.entity_id, "device_sensor_verified": True,
+        "device_fan_speed_percent": 45,
+    }))
+    cfg = result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["purifier_fan_entity"] == fan.entity_id
+    assert cfg["purifier_speed_percent"] == 45
+    assert "filtration_speed_percent" not in cfg
+    assert cfg["fan_speed_auto"] is True
+
+
+def test_heat_only_thermostat_is_not_configured_as_dual_auto(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    climate = MockState("climate.living_heat", "heat")
+    climate.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 1})
+    t = MockState("sensor.living_temperature", 20, device_class="temperature", unit="°C")
+    _add(opt, climate, t)
+    _start_device(opt, [climate.entity_id], climate.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "setpoint",
+        "device_temperature_entity": t.entity_id,
+    }))
+    cfg = result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["mode"] == "heat"
+    assert cfg["auto_switch_hvac"] is False
+
+
+def test_auto_target_rejects_climate_without_target_feature(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    climate = MockState("climate.living_heat", "heat")
+    climate.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 0})
+    temp = MockState("sensor.living_temperature", 20, device_class="temperature", unit="°C")
+    _add(opt, climate, temp)
+    _start_device(opt, [climate.entity_id], climate.entity_id)
+    form = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "setpoint",
+        "device_temperature_entity": temp.entity_id,
+    }))
+    assert form["errors"]["base"] == "device_method_invalid"
+
+
+def test_fan_without_speed_capability_cannot_be_armed_for_speed(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    fan = MockState("fan.living_filter", "off")
+    fan.attributes["supported_features"] = 0
+    pm = MockState("sensor.living_pm25", 35, device_class="pm25", unit="µg/m³")
+    _add(opt, fan, pm)
+    _start_device(opt, [fan.entity_id], fan.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "speed",
+        "device_fan_purpose": "filtration",
+        "device_pm25_entity": pm.entity_id,
+        "device_sensor_verified": True,
+    }))
+    assert result["errors"]["base"] == "device_method_invalid"
+
+
+def test_humidifier_with_unknown_setpoint_resolution_is_not_armed(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    device = MockState("humidifier.living_humidifier", "on", device_class="humidifier")
+    rh = MockState("sensor.living_humidity", 50, device_class="humidity", unit="%")
+    _add(opt, device, rh)
+    _start_device(opt, [device.entity_id], device.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "setpoint",
+        "device_humidity_entity": rh.entity_id,
+    }))
+    assert result["errors"]["base"] == "device_method_invalid"
+
+
+def test_occupied_room_source_can_be_cleared_explicitly(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    src = MockState("sensor.occupied_rooms", '["living"]')
+    _add(opt, src)
+    opt.config_entry.options["occupancy_global"] = {
+        "occupied_rooms_entity": src.entity_id,
+        "occupied_rooms_attribute": "",
+        "room_occupancy_sensors": [], "home_trackers": [],
+    }
+    asyncio.run(opt.async_step_init())
+    form = asyncio.run(opt.async_step_general_settings())
+    ent = next(v for k, v in form["data_schema"].items()
+               if k == "general_occupied_rooms_entity")
+    assert "none" in [row["value"] for row in ent.config.options]
+    finished = asyncio.run(opt.async_step_general_settings({
+        "general_occupied_rooms_entity": "none",
+    }))
+    cfg = finished["completed"]["data"]["occupancy_global"]
+    assert cfg["occupied_rooms_entity"] is None
+    assert cfg["occupied_rooms_attribute"] == ""
+
+
+def test_aqi_source_change_refreshes_its_saved_scale_first(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    a = MockState("sensor.outdoor_aqi", 48, device_class="aqi")
+    b = MockState("sensor.outdoor_air_quality_index", 3, device_class="aqi")
+    _add(opt, a, b)
+    opt.config_entry.options["outdoor_sensors"] = [a.entity_id, b.entity_id]
+    opt.config_entry.options["environment_global"] = {
+        "aqi_scales": {
+            a.entity_id: {"scale": "us_epa"},
+            b.entity_id: {"scale": "eea_category"},
+        }
+    }
+    asyncio.run(opt.async_step_init())
+    form = asyncio.run(opt.async_step_outside_aqi())
+    assert form["step_id"] == "outside_aqi"
+    refreshed = asyncio.run(opt.async_step_outside_aqi({
+        "outside_aqi_entity": b.entity_id,
+        "outside_aqi_scale": "custom",
+        "outside_aqi_limit": 400,
+    }))
+    assert refreshed["step_id"] == "outside_aqi"
+    key = next(k for k in refreshed["data_schema"]
+               if k == "outside_aqi_scale")
+    assert key.default == "eea_category"
+    finished = asyncio.run(opt.async_step_outside_aqi({
+        "outside_aqi_entity": b.entity_id,
+        "outside_aqi_scale": "eea_category",
+    }))
+    saved = finished["completed"]["data"]["environment_global"]["aqi_scales"]
+    assert saved[a.entity_id]["scale"] == "us_epa"
+    assert saved[b.entity_id]["scale"] == "eea_category"
