@@ -12,7 +12,8 @@ from .const import (CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES,
 from .device_controls import (
     PID_NUMBERS, PROFILE_NUMBERS, THRESHOLD_NUMBERS,
     GLOBAL_ENV_NUMBERS, GLOBAL_OCCUPANCY_NUMBERS,
-    AREA_ENV_NUMBERS, CLIMATE_OPERATING_NUMBERS, DEVICE_TARGET_NUMBERS,
+    AREA_ENV_NUMBERS, CLIMATE_OPERATING_NUMBERS, DIRECT_CONTROLLER_NUMBERS,
+    DEVICE_TARGET_NUMBERS,
     pid_settings, climate_settings, update_device_setting, configured_aqi_entities,
 )
 from .climate_strategy import profiles
@@ -65,6 +66,15 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 for key, bounds in CLIMATE_OPERATING_NUMBERS.items()
             )
             cfg = manager.settings.get("climate_rooms", {}).get(area_id, {})
+            if isinstance(cfg, dict) and cfg.get("controller") in ("pwm", "proportional"):
+                for key, bounds in DIRECT_CONTROLLER_NUMBERS.items():
+                    if (cfg["controller"] == "pwm" and
+                            key in ("max_demand_change", "min_demand_change")):
+                        continue
+                    numbers.append(ConfigNumber(
+                        manager, entry.entry_id, area_id, "direct_tuning",
+                        key, bounds[:4],
+                    ))
             active = cfg.get("device_settings", {}) if isinstance(cfg, dict) else {}
             active = active if isinstance(active, dict) else {}
             selected = cfg.get("selected_devices", []) if isinstance(cfg, dict) else []
@@ -162,6 +172,11 @@ class ConfigNumber(NumberEntity):
             cfg = rooms.get(self._area_id, {}) if isinstance(rooms, dict) else {}
             cfg = cfg if isinstance(cfg, dict) else {}
             raw = cfg.get(self._key, bounds[self._key][4])
+            return float(raw) if raw is not None else None
+        if self._kind == "direct_tuning":
+            rooms = settings.get("climate_rooms", {})
+            cfg = rooms.get(self._area_id, {}) if isinstance(rooms, dict) else {}
+            raw = cfg.get(self._key, DIRECT_CONTROLLER_NUMBERS[self._key][4])
             return float(raw) if raw is not None else None
         if self._kind == "device_target":
             rooms = settings.get("climate_rooms", {})
