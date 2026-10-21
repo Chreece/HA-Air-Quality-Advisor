@@ -13,7 +13,7 @@ import probatio
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_ENVIRONMENT_GLOBAL,
+    CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_EXCLUDED_INDOOR, CONF_ENVIRONMENT_GLOBAL,
     CONF_ENVIRONMENT_ROOMS, CONF_OCCUPANCY_GLOBAL, CONF_OUTDOOR,
 )
 from .discovery import entity_area, indoor_temperature_choices, supported_metric
@@ -607,6 +607,17 @@ class CompactOptionsMixin:
         old = dict(old) if isinstance(old, dict) else {}
         domain = _device_type(entity)
         errors = {}
+        excluded_by_area = self._values.get(CONF_EXCLUDED_INDOOR, {})
+        raw_exclusions = (excluded_by_area.get(area, [])
+                          if isinstance(excluded_by_area, dict) else [])
+        excluded = set(raw_exclusions) if isinstance(raw_exclusions, list) else set()
+
+        def eligible_sensor(metric: str) -> list[dict[str, str]]:
+            # Excluded readings are not trustworthy enough for physical
+            # control, even if HA still provides a numeric live value.
+            return [candidate for candidate in _sensor_choices(self.hass, area, metric)
+                    if candidate["value"] not in excluded]
+
         kind = (old.get("method") or ("setpoint" if domain != "fan" else "speed"))
         if user_input is not None:
             data = {
@@ -682,7 +693,7 @@ class CompactOptionsMixin:
                 elif domain == "climate" and (
                     not isinstance(data["temperature_entity"], str) or
                     data["temperature_entity"] not in {
-                        s["value"] for s in _sensor_choices(self.hass,area,"temperature")
+                        s["value"] for s in eligible_sensor("temperature")
                     }):
                     from .climate_equipment import classify_hvac
                     capability=classify_hvac(state.attributes,state.state)
@@ -693,7 +704,7 @@ class CompactOptionsMixin:
                     else:
                         errors["base"] = "device_temperature_required"
                 elif domain == "humidifier" and data["humidity_entity"] not in {
-                    s["value"] for s in _sensor_choices(self.hass,area,"humidity")
+                    s["value"] for s in eligible_sensor("humidity")
                 }:
                     errors["base"] = "device_humidity_required"
                 elif domain == "fan" and (
@@ -881,7 +892,7 @@ class CompactOptionsMixin:
                 selector.BooleanSelector(),
         }
         if domain == "climate":
-            temp = _sensor_choices(self.hass,area,"temperature")
+            temp = eligible_sensor("temperature")
             fields[_field("device_temperature_entity",
                           old.get("temperature_entity") or draft.get("temperature_entity"))] = _select(temp)
             for profile in ("home","unoccupied","away","sleep"):
@@ -894,16 +905,16 @@ class CompactOptionsMixin:
         elif domain == "humidifier":
             fields[_field("device_humidity_entity",
                           old.get("humidity_entity") or draft.get("humidity_entity"))] = _select(
-                              _sensor_choices(self.hass,area,"humidity"))
+                              eligible_sensor("humidity"))
             fields[_field("device_humidity_target",old.get("humidity_target",50))]=_number(20,80)
             fields[_field("device_sleep_humidity_target",old.get("sleep_humidity_target",50))]=_number(20,80)
         else:
             fields[_field("device_fan_purpose",old.get("fan_purpose","extraction"))]=_select(
                 ["extraction","filtration"],translation_key="device_fan_purpose")
             fields[_field("device_co2_entity",old.get("co2_entity"))]=_select(
-                [{"value":"none","label":"—"}]+_sensor_choices(self.hass,area,"co2"))
+                [{"value":"none","label":"—"}]+eligible_sensor("co2"))
             fields[_field("device_pm25_entity",old.get("pm25_entity"))]=_select(
-                [{"value":"none","label":"—"}]+_sensor_choices(self.hass,area,"pm25"))
+                [{"value":"none","label":"—"}]+eligible_sensor("pm25"))
             fields[_field("device_sensor_verified",old.get("sensor_verified",False))]=selector.BooleanSelector()
             fields[_field("device_fan_speed_percent",old.get("fan_speed_percent",60))]=_number(10,100)
         if domain in ("fan","humidifier"):
