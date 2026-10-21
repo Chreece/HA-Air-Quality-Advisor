@@ -274,14 +274,21 @@ class CompactOptionsMixin:
                  in ("occupancy", "presence"))],
             key=lambda x: x["label"].casefold(),
         )
-        source_options=self._room_source_options(self.hass)
-        source_ids={v["value"] for v in source_options}
+        source_options=[{"value":"none","label":"— (no room-list source)"},
+                        *self._room_source_options(self.hass)]
+        source_ids={v["value"] for v in source_options if v["value"]!="none"}
         errors = {}
         if user_input is not None:
             selected = user_input.get("general_room_occupancy_sensors", old.get("room_occupancy_sensors", []))
             at_home = user_input.get("general_home_trackers", old.get("home_trackers", []))
             occupied_entity = user_input.get("general_occupied_rooms_entity", old.get("occupied_rooms_entity"))
             sleep_entity = user_input.get("general_sleep_rooms_entity", old.get("sleep_rooms_entity"))
+            # The select supports explicit clearing, which HA's optional
+            # SelectSelector cannot otherwise express reliably.
+            if occupied_entity in (None, "", "none"):
+                occupied_entity = None
+            if sleep_entity in (None, "", "none"):
+                sleep_entity = None
             occupancy_attr = (user_input.get("general_occupied_rooms_attribute",
                               old.get("occupied_rooms_attribute", "__state__")) or "__state__")
             sleep_attr = (user_input.get("general_sleep_rooms_attribute",
@@ -343,7 +350,7 @@ class CompactOptionsMixin:
         fields = {
             _field("general_room_occupancy_sensors", old.get("room_occupancy_sensors", [])):
                 _select(room_sensors, multi=True),
-            _field("general_occupied_rooms_entity", old.get("occupied_rooms_entity")):
+            _field("general_occupied_rooms_entity", old.get("occupied_rooms_entity") or "none"):
                 _select(source_options),
             _field("general_occupied_rooms_attribute", (
                 old.get("occupied_rooms_attribute") or "__state__"
@@ -356,7 +363,7 @@ class CompactOptionsMixin:
                 _select(trackers, multi=True),
             _field("general_home_policy", old.get("home_policy", "any_home")):
                 _select(["any_home", "all_home"], translation_key="general_home_policy"),
-            _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity")):
+            _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity") or "none"):
                 _select(source_options),
             _field("general_sleep_rooms_attribute", (
                 old.get("sleep_rooms_attribute") or "__state__"
@@ -432,7 +439,14 @@ class CompactOptionsMixin:
             )
         ]
         errors = {}
-        chosen = (user_input or {}).get("outside_aqi_entity") or (aqis[0] if aqis else "none")
+        shown = getattr(self, "_outside_aqi_selected", aqis[0] if aqis else "none")
+        chosen = (user_input or {}).get("outside_aqi_entity") or shown
+        if user_input is not None and chosen in aqis and chosen != shown:
+            # One form can't dynamically replace the scale/limit defaults.
+            # Re-render for the newly selected source rather than apply the
+            # previous source's scale to another sensor without confirmation.
+            self._outside_aqi_selected = chosen
+            return await self.async_step_outside_aqi()
         details = saved.get(chosen, {})
         details = details if isinstance(details, dict) else {}
         if user_input is not None:
