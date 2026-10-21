@@ -75,5 +75,115 @@ def apply_device_controls_i18n(root: Path) -> None:
         selects["area_pid_gain_source"] = {
             "name": words[2], "state": {"defaults": words[3], "manual": words[4]}
         }
+        # Device-first setup: reuse the existing localized options labels
+        # rather than duplicating a second translation catalog.
+        sections = {
+            name: settings.get(name, {}).get("data", {})
+            for name in (
+                "indoor_sensors", "pollen", "general_settings",
+                "environment_room_air", "environment_room_exposure",
+                "environment_room_comfort", "climate_presence",
+                "climate_equipment", "climate_air_strategy", "climate_actuators",
+            )
+        }
+        mold_labels = {
+            "el": "Εξωτερική πηγή θερμοκρασίας για μούχλα",
+            "de": "Außentemperaturquelle für Schimmelindikator",
+            "fr": "Source de température extérieure pour moisissure",
+            "es": "Fuente de temperatura exterior para moho",
+            "en": "Outdoor temperature source for mold calibration",
+        }
+        for scope in ("config", "options"):
+            step = doc.get(scope, {}).get("step", {}).get("indoor_sensors", {})
+            if isinstance(step, dict):
+                fields = step.setdefault("data", {})
+                fields["mold_outdoor_weather_entity"] = mold_labels.get(
+                    locale, mold_labels["en"]
+                )
+                hints = step.setdefault("data_description", {})
+                hints["mold_outdoor_weather_entity"] = fields[
+                    "mold_outdoor_weather_entity"
+                ]
+
+        env_air = sections["environment_room_air"]
+        env_exposure = sections["environment_room_exposure"]
+        env_comfort = sections["environment_room_comfort"]
+        general = sections["general_settings"]
+        pollen = sections["pollen"]
+        climate_presence = sections["climate_presence"]
+        climate_equipment = sections["climate_equipment"]
+        climate_air = sections["climate_air_strategy"]
+        direct = sections["climate_actuators"]
+        mold = sections["indoor_sensors"]
+
+        for key in ("pollen_high_from", "pollen_max_scale"):
+            number["global_environment_" + key] = {"name": pollen.get(key, key)}
+        number["global_occupancy_source_stale_minutes"] = {
+            "name": general.get("general_source_stale_minutes", "Source freshness (min)")
+        }
+        for key in (
+            "room_volume_m3", "particle_cadr_m3h", "co2_target_ppm",
+        ):
+            number["area_area_environment_" + key] = {"name": env_air.get(key, key)}
+        number["area_area_environment_radon_reference_bq_m3"] = {
+            "name": env_exposure.get("radon_reference_bq_m3", "Radon reference")
+        }
+        for key in ("air_speed_m_s", "met", "clo"):
+            number["area_area_environment_" + key] = {"name": env_comfort.get(key, key)}
+        for key in ("unoccupied_delay_minutes", "occupancy_stale_minutes",
+                    "comfort_adjustment_max_c"):
+            number["area_climate_operating_" + key] = {
+                "name": climate_presence.get("climate_" + key, key)
+            }
+        for key in ("humidity_low_rh", "humidity_high_rh",
+                    "humidity_hysteresis_rh", "cooling_dry_deferral_rh_points"):
+            number["area_climate_operating_" + key] = {
+                "name": climate_equipment.get("climate_" + key, key)
+            }
+        for key in ("pm25_action_ug_m3", "extraction_speed_percent",
+                    "purifier_speed_percent"):
+            number["area_climate_operating_" + key] = {
+                "name": climate_air.get("climate_" + key, key)
+            }
+        for key in ("kp", "ki", "kd", "sample_seconds",
+                    "max_demand_change", "min_demand_change"):
+            number["area_direct_tuning_" + key] = {"name": direct.get(key, key)}
+        number["area_mold_surface_critical_temperature_c"] = {
+            "name": mold.get("mold_critical_temperature_c", "Measured coldest surface °C")
+        }
+
+        switches["home_global_environment_pollen_avoid_ventilation"] = {
+            "name": pollen.get("pollen_avoid_ventilation", "Avoid ventilation when pollen high")
+        }
+        for key in ("sleep_room",):
+            switches["area_area_environment_" + key] = {"name": env_air.get(key, key)}
+        switches["area_area_environment_enable_pmv"] = {
+            "name": env_comfort.get("enable_pmv", "Enable PMV/PPD calculation")
+        }
+        for key in ("sleep_active", "sleep_schedule_enabled"):
+            switches["area_climate_operating_" + key] = {
+                "name": climate_presence.get("climate_" + key, key)
+            }
+        switches["area_climate_operating_window_efficiency_notify"] = {
+            "name": climate_equipment.get("climate_window_efficiency_notify",
+                                          "Window efficiency notifications")
+        }
+
+        selects["home_global_policy_home_policy"] = {
+            "name": general.get("general_home_policy", "Presence combination policy")
+        }
+        for key in ("unknown_occupancy", "away_policy", "target_source"):
+            selects["area_climate_policy_" + key] = {
+                "name": climate_presence.get("climate_" + key, key)
+            }
+        entity_time = doc.setdefault("entity", {}).setdefault("time", {})
+        for key in ("sleep_start", "sleep_end"):
+            entity_time["area_climate_" + key] = {
+                "name": climate_presence.get("climate_" + key, key)
+            }
+        doc.setdefault("entity", {}).setdefault("button", {})[
+            "area_recalculate_mold"
+        ] = {"name": mold.get("mold_recalibrate", "Recalculate mold factor")}
+
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
                         encoding="utf-8")
