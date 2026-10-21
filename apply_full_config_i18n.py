@@ -125,7 +125,7 @@ _GREEK_LABELS = {
 }
 _KEY_TAGS = (
     ("dry_fan", "DRY/FAN_ONLY"), ("humidity_power", "RH POWER"),
-    ("humidifier", "HUMIDIFIER"), ("dehumidifier", "DEHUMIDIFIER"),
+    ("dehumidifier", "DEHUMIDIFIER"), ("humidifier", "HUMIDIFIER"),
     ("heat_climate", "HEAT"), ("cool_climate", "COOL"),
     ("dry_climate", "DRY"), ("fan_climate", "FAN_ONLY"),
     ("pm25", "PM2.5"), ("co2", "CO₂"),
