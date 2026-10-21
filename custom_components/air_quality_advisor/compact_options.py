@@ -814,7 +814,11 @@ class CompactOptionsMixin:
                         from .climate_equipment import classify_hvac
                         modes = classify_hvac(state.attributes, state.state)
                         draft["temperature_entity"] = data["temperature_entity"]
-                        if not draft.get("climate_entity") or draft["climate_entity"] == entity:
+                        if (not draft.get("climate_entity") or
+                                draft["climate_entity"] == entity or
+                                draft["climate_entity"] not in draft.get("selected_devices", [])):
+                            # Promoting a newly selected thermostat must not
+                            # leave it as a secondary to an excluded old owner.
                             draft["climate_entity"] = entity
                             draft["controller"] = "device"
                             draft["auto_switch_hvac"] = (data["method"] == "native"
@@ -854,6 +858,13 @@ class CompactOptionsMixin:
                         draft["controller"] = draft.get("controller", "environment")
                         role = ("extraction_fan_entity" if data["fan_purpose"]=="extraction"
                                 else "purifier_fan_entity")
+                        previous_role = ("purifier_fan_entity"
+                                         if role=="extraction_fan_entity" else
+                                         "extraction_fan_entity")
+                        if draft.get(previous_role)==entity:
+                            # A change of purpose moves the same physical fan;
+                            # it must never occupy two conflicting roles.
+                            draft.pop(previous_role, None)
                         draft[role] = entity
                         draft["fan_speed_auto"] = data["method"] == "speed"
                         draft["fan_power_auto"] = data["method"] == "power"
