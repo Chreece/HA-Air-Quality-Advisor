@@ -40,6 +40,9 @@ def test_all_38_locales_have_complete_fixed_choice_translations():
     assert greek["selector"]["climate_mode"]["options"]["heat"]=="Θέρμανση"
     assert greek["selector"]["climate_mode"]["options"]["cool"]=="Ψύξη"
     assert "συμπιεστή" in greek["selector"]["climate_controller"]["options"]["pwm"]
+    assert greek["selector"]["climate_manual_profile"]["options"]["unoccupied"]=="Άδειος χώρος"
+    assert greek["selector"]["climate_manual_profile"]["options"]["away"]=="Απουσία από το σπίτι"
+    assert greek["selector"]["environment_aqi_scale"]["options"]["not_configured"]=="Δεν έχει οριστεί κλίμακα"
     assert greek["selector"]["pid_mode"]["options"]["heat"]=="Θέρμανση"
 
 
