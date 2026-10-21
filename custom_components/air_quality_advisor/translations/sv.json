@@ -6,11 +6,11 @@
         "title": "Rum",
         "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rum",
+          "areas": "inställningar · källa",
           "use_mold_indicator": "Mögelindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Välj: Rum · 🪟 binary_sensor (device_class: window).",
+          "areas": "Välj: inställningar · källa · 🪟 binary_sensor (device_class: window).",
           "use_mold_indicator": "🧱 Mögelindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "Undanta inomhusluftsensorer",
           "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "Mögelindikator · 🧊 °C",
-          "mold_recalibrate": "Mögelindikator · ↻ 🌡️"
+          "mold_recalibrate": "Mögelindikator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Välj: Undanta inomhusluftsensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "Ställ in ”Rum · 🌡️ (°C/°F)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
           "mold_critical_temperature_c": "🧊 Mögelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "Använd en riktig lämplig mätning för ”Mögelindikator · ↻ 🌡️”. En uppskattning ersätter inte kalibrerad sensor."
+          "mold_recalibrate": "Använd en riktig lämplig mätning för ”Mögelindikator · ↻ 🌡️”. En uppskattning ersätter inte kalibrerad sensor.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -67,25 +69,25 @@
         "description": "Meddelanden (valfritt). Automatiska aviseringar · Automatiska röstmeddelanden. Announcement Hub.",
         "data": {
           "language": "Språk",
-          "automatic_tts": "Automatiska röstmeddelanden",
-          "automatic_notifications": "Automatiska aviseringar",
+          "automatic_tts": "Automatisk",
+          "automatic_notifications": "Automatisk · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "Meddelanden (valfritt) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "Automatiska aviseringar",
-          "tts_engine": "Automatiska röstmeddelanden",
-          "media_players": "Automatiska röstmeddelanden",
+          "notify_entities": "inställningar · källa",
+          "tts_engine": "inställningar · källa · TTS_ENGINE",
+          "media_players": "inställningar · källa · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · Meddelanden (valfritt)",
           "ai_conversation_agent": "AI · Språk"
         },
         "data_description": {
           "language": "Ställ in ”Språk” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "automatic_tts": "Standard: ⛔ · Automatiska röstmeddelanden · 🪟 90 s.",
-          "automatic_notifications": "Standard: ⛔ · Automatiska aviseringar.",
+          "automatic_tts": "Standard: ⛔ · Automatisk · 🪟 90 s. Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "automatic_notifications": "Standard: ⛔ · Automatisk · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "Standard: 10 min · 0 = aldrig · Så länge samma orsak kvarstår · Rum.",
           "use_announcement_hub": "Announcement Hub · Inte tillgänglig → Home Assistant.",
-          "notify_entities": "Välj: notify.* · Automatiska aviseringar.",
-          "tts_engine": "Välj: tts.* · Automatiska röstmeddelanden.",
-          "media_players": "Välj: media_player.* · Automatiska röstmeddelanden.",
+          "notify_entities": "Välj: notify.* · inställningar · källa.",
+          "tts_engine": "Välj: tts.* · inställningar · källa · TTS_ENGINE.",
+          "media_players": "Välj: media_player.* · inställningar · källa · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · Meddelanden (valfritt) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "Välj: conversation.* (Home Assistant · Standard)."
         }
@@ -200,11 +202,11 @@
         "title": "Rum",
         "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
         "data": {
-          "areas": "Rum",
+          "areas": "inställningar · källa",
           "use_mold_indicator": "Mögelindikator · RH (%) → 70%"
         },
         "data_description": {
-          "areas": "Välj: Rum · 🪟 binary_sensor (device_class: window).",
+          "areas": "Välj: inställningar · källa · 🪟 binary_sensor (device_class: window).",
           "use_mold_indicator": "🧱 Mögelindikator · RH (%) → ≈70% · 🌡️ 🧊"
         }
       },
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "Undanta inomhusluftsensorer",
           "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "Mögelindikator · 🧊 °C",
-          "mold_recalibrate": "Mögelindikator · ↻ 🌡️"
+          "mold_recalibrate": "Mögelindikator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Välj: Undanta inomhusluftsensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "Ställ in ”Rum · 🌡️ (°C/°F)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
           "mold_critical_temperature_c": "🧊 Mögelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "Använd en riktig lämplig mätning för ”Mögelindikator · ↻ 🌡️”. En uppskattning ersätter inte kalibrerad sensor."
+          "mold_recalibrate": "Använd en riktig lämplig mätning för ”Mögelindikator · ↻ 🌡️”. En uppskattning ersätter inte kalibrerad sensor.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -251,25 +255,25 @@
         "description": "Meddelanden (valfritt). Automatiska aviseringar · Automatiska röstmeddelanden. Announcement Hub.",
         "data": {
           "language": "Språk",
-          "automatic_tts": "Automatiska röstmeddelanden",
-          "automatic_notifications": "Automatiska aviseringar",
+          "automatic_tts": "Automatisk",
+          "automatic_notifications": "Automatisk · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "Meddelanden (valfritt) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "Automatiska aviseringar",
-          "tts_engine": "Automatiska röstmeddelanden",
-          "media_players": "Automatiska röstmeddelanden",
+          "notify_entities": "inställningar · källa",
+          "tts_engine": "inställningar · källa · TTS_ENGINE",
+          "media_players": "inställningar · källa · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · Meddelanden (valfritt)",
           "ai_conversation_agent": "AI · Språk"
         },
         "data_description": {
           "language": "Ställ in ”Språk” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "automatic_tts": "Standard: ⛔ · Automatiska röstmeddelanden · 🪟 90 s.",
-          "automatic_notifications": "Standard: ⛔ · Automatiska aviseringar.",
+          "automatic_tts": "Standard: ⛔ · Automatisk · 🪟 90 s. Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "automatic_notifications": "Standard: ⛔ · Automatisk · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "Standard: 10 min · 0 = aldrig · Så länge samma orsak kvarstår · Rum.",
           "use_announcement_hub": "Announcement Hub · Inte tillgänglig → Home Assistant.",
-          "notify_entities": "Välj: notify.* · Automatiska aviseringar.",
-          "tts_engine": "Välj: tts.* · Automatiska röstmeddelanden.",
-          "media_players": "Välj: media_player.* · Automatiska röstmeddelanden.",
+          "notify_entities": "Välj: notify.* · inställningar · källa.",
+          "tts_engine": "Välj: tts.* · inställningar · källa · TTS_ENGINE.",
+          "media_players": "Välj: media_player.* · inställningar · källa · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · Meddelanden (valfritt) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "Välj: conversation.* (Home Assistant · Standard)."
         }
@@ -331,9 +335,9 @@
         "description": "Ställ in ”inställningar · inställningar · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
         "data": {
           "pollen_entity": "Pollen · källa",
-          "pollen_high_from": "Pollen",
-          "pollen_max_scale": "Pollen",
-          "pollen_avoid_ventilation": "Pollen",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT",
           "aqi_scale_0": "AQI #1 · källa",
           "aqi_custom_limit_0": "AQI #1 · mål",
           "aqi_scale_1": "AQI #2 · källa",
@@ -401,9 +405,9 @@
         },
         "data_description": {
           "pollen_entity": "Välj en riktig Home Assistant-källa för ”Pollen · källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "pollen_high_from": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "pollen_max_scale": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "pollen_avoid_ventilation": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_high_from": "Ställ in ”POLLEN · Pollen · HIGH” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_max_scale": "Ställ in ”POLLEN · Pollen · SCALE” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_avoid_ventilation": "Ställ in ”POLLEN · Pollen · NO VENT” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
           "aqi_scale_0": "Ställ in ”AQI #1 · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
           "aqi_custom_limit_0": "Beslutströskel för ”AQI #1 · mål”. Den styr råd, men är ingen medicinsk gräns.",
           "aqi_scale_1": "Ställ in ”AQI #2 · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
@@ -487,20 +491,20 @@
           "temperature_entity": "Temperatur · källa",
           "room_volume_m3": "inställningar · källa (m³)",
           "particle_cadr_m3h": "CADR (m³/h)",
-          "purifier_entity": "källa",
-          "extractor_entity": "källa",
+          "purifier_entity": "Luftrenare · källa",
+          "extractor_entity": "Frånluftsfläkt · källa",
           "co2_ndir_verified": "CO₂ · Krävs",
-          "co2_target_ppm": "mål",
+          "co2_target_ppm": "CO₂ · CO₂ · mål (ppm)",
           "sleep_room": "Sömn"
         },
         "data_description": {
           "temperature_entity": "Välj en riktig Home Assistant-källa för ”Temperatur · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "room_volume_m3": "Använd en riktig lämplig mätning för ”inställningar · källa (m³)”. En uppskattning ersätter inte kalibrerad sensor.",
           "particle_cadr_m3h": "Använd en riktig lämplig mätning för ”CADR (m³/h)”. En uppskattning ersätter inte kalibrerad sensor.",
-          "purifier_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "extractor_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "purifier_entity": "Välj en riktig Home Assistant-Luftrenare · källa för ”Luftrenare · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "extractor_entity": "Välj en riktig Home Assistant-Frånluftsfläkt · källa för ”Frånluftsfläkt · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "co2_ndir_verified": "Använd en riktig lämplig mätning för ”CO₂ · Krävs”. En uppskattning ersätter inte kalibrerad sensor.",
-          "co2_target_ppm": "Beslutströskel för ”mål”. Den styr råd, men är ingen medicinsk gräns.",
+          "co2_target_ppm": "Beslutströskel för ”CO₂ · CO₂ · mål (ppm)”. Den styr råd, men är ingen medicinsk gräns.",
           "sleep_room": "Ställ in ”Sömn” endast för valt rum. Ogiltiga värden stoppar åtgärden."
         }
       },
@@ -508,27 +512,27 @@
         "title": "inställningar · inställningar · källa",
         "description": "Ställ in ”inställningar · inställningar · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
         "data": {
-          "radon_entity": "källa",
-          "radon_sensor_verified": "sensor",
+          "radon_entity": "RADON · Rn · källa",
+          "radon_sensor_verified": "RADON · Rn · sensor · Krävs · SENSOR ✓ · VERIFIED",
           "radon_reference_bq_m3": "Rn (Bq/m³)",
-          "formaldehyde_entity": "källa",
-          "formaldehyde_sensor_verified": "sensor",
-          "noise_entity": "källa",
-          "noise_sensor_calibrated": "sensor",
-          "illuminance_entity": "källa",
-          "melanopic_edi_entity": "källa",
+          "formaldehyde_entity": "HCHO · källa",
+          "formaldehyde_sensor_verified": "HCHO · sensor · Krävs · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · källa · sensor (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · sensor · Krävs",
+          "illuminance_entity": "LUX · källa (lux)",
+          "melanopic_edi_entity": "EDI · EDI · källa (lx)",
           "melanopic_spectral_verified": "EDI · Krävs"
         },
         "data_description": {
-          "radon_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "radon_sensor_verified": "Använd en riktig lämplig mätning för ”sensor”. En uppskattning ersätter inte kalibrerad sensor.",
+          "radon_entity": "Välj en riktig Home Assistant-RADON · Rn · källa för ”RADON · Rn · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "radon_sensor_verified": "Använd en riktig lämplig mätning för ”RADON · Rn · sensor · Krävs · SENSOR ✓ · VERIFIED”. En uppskattning ersätter inte kalibrerad RADON · Rn · sensor · Krävs · SENSOR ✓ · VERIFIED.",
           "radon_reference_bq_m3": "Ställ in ”Rn (Bq/m³)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "formaldehyde_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "formaldehyde_sensor_verified": "Använd en riktig lämplig mätning för ”sensor”. En uppskattning ersätter inte kalibrerad sensor.",
-          "noise_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "noise_sensor_calibrated": "Använd en riktig lämplig mätning för ”sensor”. En uppskattning ersätter inte kalibrerad sensor.",
-          "illuminance_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "melanopic_edi_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "formaldehyde_entity": "Välj en riktig Home Assistant-HCHO · källa för ”HCHO · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "formaldehyde_sensor_verified": "Använd en riktig lämplig mätning för ”HCHO · sensor · Krävs · SENSOR ✓ · VERIFIED”. En uppskattning ersätter inte kalibrerad HCHO · sensor · Krävs · SENSOR ✓ · VERIFIED.",
+          "noise_entity": "Välj en riktig Home Assistant-dB(A) · källa · sensor (dB(A)) för ”dB(A) · källa · sensor (dB(A))”. Saknade eller gamla värden stoppar åtgärden.",
+          "noise_sensor_calibrated": "Använd en riktig lämplig mätning för ”dB(A) · sensor · Krävs”. En uppskattning ersätter inte kalibrerad dB(A) · sensor · Krävs.",
+          "illuminance_entity": "Välj en riktig Home Assistant-LUX · källa (lux) för ”LUX · källa (lux)”. Saknade eller gamla värden stoppar åtgärden.",
+          "melanopic_edi_entity": "Välj en riktig Home Assistant-EDI · EDI · källa (lx) för ”EDI · EDI · källa (lx)”. Saknade eller gamla värden stoppar åtgärden.",
           "melanopic_spectral_verified": "Använd en riktig lämplig mätning för ”EDI · Krävs”. En uppskattning ersätter inte kalibrerad sensor."
         }
       },
@@ -538,7 +542,7 @@
         "data": {
           "enable_pmv": "PMV / PPD · Automatisk",
           "radiant_temperature_entity": "Temperatur · källa",
-          "air_speed_entity": "källa",
+          "air_speed_entity": "källa · Hastighet · Utomhus (m/s)",
           "air_speed_m_s": "Hastighet · Utomhus (m/s)",
           "met": "inställningar · källa (met)",
           "clo": "inställningar · källa (clo)"
@@ -546,7 +550,7 @@
         "data_description": {
           "enable_pmv": "Ställ in ”PMV / PPD · Automatisk” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
           "radiant_temperature_entity": "Välj en riktig Home Assistant-källa för ”Temperatur · källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "air_speed_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "air_speed_entity": "Välj en riktig Home Assistant-källa · Hastighet · Utomhus (m/s) för ”källa · Hastighet · Utomhus (m/s)”. Saknade eller gamla värden stoppar åtgärden.",
           "air_speed_m_s": "Använd en riktig lämplig mätning för ”Hastighet · Utomhus (m/s)”. En uppskattning ersätter inte kalibrerad sensor.",
           "met": "Använd en riktig lämplig mätning för ”inställningar · källa (met)”. En uppskattning ersätter inte kalibrerad sensor.",
           "clo": "Använd en riktig lämplig mätning för ”inställningar · källa (clo)”. En uppskattning ersätter inte kalibrerad sensor."
@@ -566,7 +570,7 @@
         "title": "inställningar · PID",
         "description": "Ställ in ”inställningar · PID” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
         "data": {
-          "pid_enabled": "Automatisk",
+          "pid_enabled": "PID · Automatisk · AUTO",
           "pid_climate_entities": "PID · Enheter",
           "pid_temperature_entity": "Temperatur · källa",
           "pid_mode": "PID",
@@ -574,7 +578,7 @@
           "pid_pause_on_window_open": "PID · Utomhus"
         },
         "data_description": {
-          "pid_enabled": "Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "pid_enabled": "Detta alternativ styr ”PID · Automatisk · AUTO”. Fysiska kommandon kräver separat godkännande och skydd.",
           "pid_climate_entities": "Välj en riktig Home Assistant-källa för ”PID · Enheter”. Saknade eller gamla värden stoppar åtgärden.",
           "pid_temperature_entity": "Välj en riktig Home Assistant-källa för ”Temperatur · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "pid_mode": "Detta alternativ styr ”PID”. Fysiska kommandon kräver separat godkännande och skydd.",
@@ -586,26 +590,26 @@
         "title": "inställningar · PID",
         "description": "Ställ in ”inställningar · PID” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
         "data": {
-          "pid_kp": "PID (%, °C)",
-          "pid_ki": "PID (%, °C)",
-          "pid_kd": "PID (%, °C)",
-          "pid_offset_c": "PID (°C)",
-          "pid_min_setpoint_c": "PID (°C)",
-          "pid_max_setpoint_c": "PID (°C)",
+          "pid_kp": "PID Kp · styrning (% per °C)",
+          "pid_ki": "PID Ki · styrning (% per °C-minute)",
+          "pid_kd": "PID Kd · styrning (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
           "pid_sample_seconds": "PID (s)",
-          "pid_max_change_c": "PID (°C)",
-          "pid_min_change_c": "PID (°C)"
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
         },
         "data_description": {
-          "pid_kp": "Detta alternativ styr ”PID (%, °C)”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "pid_ki": "Detta alternativ styr ”PID (%, °C)”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "pid_kd": "Detta alternativ styr ”PID (%, °C)”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "pid_offset_c": "Beslutströskel för ”PID (°C)”. Den styr råd, men är ingen medicinsk gräns.",
-          "pid_min_setpoint_c": "Beslutströskel för ”PID (°C)”. Den styr råd, men är ingen medicinsk gräns.",
-          "pid_max_setpoint_c": "Beslutströskel för ”PID (°C)”. Den styr råd, men är ingen medicinsk gräns.",
+          "pid_kp": "Detta alternativ styr ”PID Kp · styrning (% per °C)”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "pid_ki": "Detta alternativ styr ”PID Ki · styrning (% per °C-minute)”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "pid_kd": "Detta alternativ styr ”PID Kd · styrning (%·minute per °C)”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "pid_offset_c": "Beslutströskel för ”PID (°C) · PID_OFFSET_C”. Den styr råd, men är ingen medicinsk gräns.",
+          "pid_min_setpoint_c": "Beslutströskel för ”PID (°C) · MIN TARGET”. Den styr råd, men är ingen medicinsk gräns.",
+          "pid_max_setpoint_c": "Beslutströskel för ”PID (°C) · MAX TARGET”. Den styr råd, men är ingen medicinsk gräns.",
           "pid_sample_seconds": "Denna tid styr ”PID (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "pid_max_change_c": "Beslutströskel för ”PID (°C)”. Den styr råd, men är ingen medicinsk gräns.",
-          "pid_min_change_c": "Beslutströskel för ”PID (°C)”. Den styr råd, men är ingen medicinsk gräns."
+          "pid_max_change_c": "Beslutströskel för ”PID (°C) · MAX Δ”. Den styr råd, men är ingen medicinsk gräns.",
+          "pid_min_change_c": "Beslutströskel för ”PID (°C) · MIN Δ”. Den styr råd, men är ingen medicinsk gräns."
         }
       },
       "climate": {
@@ -622,24 +626,24 @@
         "title": "inställningar · Enheter",
         "description": "Område · inställningar · Enheter · styrning. Närvaro · sensor · Krävs.",
         "data": {
-          "climate_enabled": "Automatisk",
-          "climate_allow_actuation": "Enheter",
-          "climate_auto_switch_hvac": "Automatisk",
-          "climate_prefer_native_auto": "Automatisk",
-          "climate_controller": "styrning",
-          "climate_mode": "Enheter",
-          "climate_entity": "källa",
+          "climate_enabled": "Enheter · Automatisk · AUTO",
+          "climate_allow_actuation": "Enheter · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Enheter · Automatisk · MODE SWITCH",
+          "climate_prefer_native_auto": "Enheter · Automatisk · NATIVE",
+          "climate_controller": "Enheter · styrning",
+          "climate_mode": "Enheter · MODE",
+          "climate_entity": "Enheter · källa",
           "climate_temperature_entity": "Temperatur · källa",
           "climate_hysteresis_c": "Enheter (°C)"
         },
         "data_description": {
-          "climate_enabled": "Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_allow_actuation": "Detta alternativ styr ”Enheter”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_auto_switch_hvac": "Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_prefer_native_auto": "Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_controller": "Detta alternativ styr ”styrning”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_mode": "Detta alternativ styr ”Enheter”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_enabled": "Detta alternativ styr ”Enheter · Automatisk · AUTO”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_allow_actuation": "Detta alternativ styr ”Enheter · CLIMATE_ALLOW_ACTUATION”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_auto_switch_hvac": "Detta alternativ styr ”Enheter · Automatisk · MODE SWITCH”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_prefer_native_auto": "Detta alternativ styr ”Enheter · Automatisk · NATIVE”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_controller": "Detta alternativ styr ”Enheter · styrning”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_mode": "Detta alternativ styr ”Enheter · MODE”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_entity": "Välj en riktig Home Assistant-Enheter · källa för ”Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "climate_temperature_entity": "Välj en riktig Home Assistant-källa för ”Temperatur · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "climate_hysteresis_c": "Beslutströskel för ”Enheter (°C)”. Den styr råd, men är ingen medicinsk gräns."
         }
@@ -649,32 +653,32 @@
         "description": "Område · inställningar · Enheter · styrning. Närvaro · sensor · Krävs.",
         "data": {
           "climate_occupancy_sensors": "Närvaro · sensor",
-          "climate_away_entities": "Hem",
-          "climate_unknown_occupancy": "Närvaro",
-          "climate_unoccupied_delay_minutes": "Enheter",
-          "climate_occupancy_stale_minutes": "Närvaro",
-          "climate_away_policy": "Hem",
-          "climate_manual_profile": "Enheter",
-          "climate_sleep_active": "Sömn",
+          "climate_away_entities": "Hem · Enheter",
+          "climate_unknown_occupancy": "Närvaro · Enheter",
+          "climate_unoccupied_delay_minutes": "Enheter · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Närvaro · Enheter · sensor · Krävs",
+          "climate_away_policy": "Hem · Enheter · POLICY",
+          "climate_manual_profile": "Enheter · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Sömn · Enheter",
           "climate_sleep_schedule_enabled": "Sömn · Automatisk",
-          "climate_sleep_start": "Sömn",
-          "climate_sleep_end": "Sömn",
-          "climate_target_source": "mål",
+          "climate_sleep_start": "Sömn · Enheter · START",
+          "climate_sleep_end": "Sömn · Enheter · END",
+          "climate_target_source": "Enheter · källa · mål",
           "climate_comfort_adjustment_max_c": "Enheter (°C)"
         },
         "data_description": {
           "climate_occupancy_sensors": "Välj en riktig Home Assistant-källa för ”Närvaro · sensor”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_away_entities": "Välj en riktig Home Assistant-källa för ”Hem”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_unknown_occupancy": "Detta alternativ styr ”Närvaro”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_unoccupied_delay_minutes": "Denna tid styr ”Enheter”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_occupancy_stale_minutes": "Denna tid styr ”Närvaro”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_away_policy": "Detta alternativ styr ”Hem”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_manual_profile": "Detta alternativ styr ”Enheter”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_sleep_active": "Detta alternativ styr ”Sömn”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_away_entities": "Välj en riktig Home Assistant-källa för ”Hem · Enheter”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_unknown_occupancy": "Detta alternativ styr ”Närvaro · Enheter”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_unoccupied_delay_minutes": "Denna tid styr ”Enheter · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_occupancy_stale_minutes": "Denna tid styr ”Närvaro · Enheter · sensor · Krävs”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_away_policy": "Detta alternativ styr ”Hem · Enheter · POLICY”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_manual_profile": "Detta alternativ styr ”Enheter · CLIMATE_MANUAL_PROFILE”. Fysiska kommandon kräver separat godkännande och skydd.",
+          "climate_sleep_active": "Detta alternativ styr ”Sömn · Enheter”. Fysiska kommandon kräver separat godkännande och skydd.",
           "climate_sleep_schedule_enabled": "Detta alternativ styr ”Sömn · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_sleep_start": "Denna tid styr ”Sömn”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_sleep_end": "Denna tid styr ”Sömn”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_target_source": "Beslutströskel för ”mål”. Den styr råd, men är ingen medicinsk gräns.",
+          "climate_sleep_start": "Denna tid styr ”Sömn · Enheter · START”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_sleep_end": "Denna tid styr ”Sömn · Enheter · END”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_target_source": "Beslutströskel för ”Enheter · källa · mål”. Den styr råd, men är ingen medicinsk gräns.",
           "climate_comfort_adjustment_max_c": "Beslutströskel för ”Enheter (°C)”. Den styr råd, men är ingen medicinsk gräns."
         }
       },
@@ -682,60 +686,60 @@
         "title": "inställningar · Enheter",
         "description": "Område · inställningar · Enheter · styrning. Närvaro · sensor · Krävs.",
         "data": {
-          "climate_heat_climate_entity": "källa",
-          "climate_cool_climate_entity": "källa",
-          "climate_dry_climate_entity": "källa",
-          "climate_fan_climate_entity": "källa · Hastighet",
-          "climate_humidifier_entity": "källa",
-          "climate_dehumidifier_entity": "källa",
-          "climate_extraction_fan_entity": "källa · Hastighet",
-          "climate_purifier_fan_entity": "källa · Hastighet",
+          "climate_heat_climate_entity": "HEAT · Enheter · källa · Temperatur +",
+          "climate_cool_climate_entity": "COOL · Enheter · källa · Temperatur −",
+          "climate_dry_climate_entity": "DRY · Enheter · källa",
+          "climate_fan_climate_entity": "FAN_ONLY · Hastighet · Enheter · källa",
+          "climate_humidifier_entity": "HUMIDIFIER · Enheter · källa",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Enheter · källa",
+          "climate_extraction_fan_entity": "EXTRACT · Hastighet · Enheter · källa",
+          "climate_purifier_fan_entity": "Luftrenare · källa",
           "climate_humidity_entity": "Luftfuktighet · källa",
-          "climate_humidity_low_rh": "Luftfuktighet",
-          "climate_humidity_high_rh": "Luftfuktighet",
-          "climate_humidity_hysteresis_rh": "Luftfuktighet",
+          "climate_humidity_low_rh": "RH · Luftfuktighet · Enheter (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Luftfuktighet · Enheter (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Luftfuktighet · Enheter · ± RH",
           "climate_cooling_dry_deferral_rh_points": "Enheter · Temperatur −",
           "climate_humidity_setpoint_auto": "Luftfuktighet · Automatisk",
           "climate_window_efficiency_notify": "Enheter · Utomhus",
           "climate_dry_fan_mode_auto": "Hastighet · Automatisk",
-          "climate_dry_fan_hardware_confirmed": "Hastighet",
-          "climate_dry_fan_windowless_confirmed": "Hastighet",
-          "climate_dry_fan_mode_dwell_s": "Hastighet",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Hastighet · Enheter · Krävs · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Hastighet · Enheter · Utomhus · Krävs · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Hastighet · Enheter (s) · MODE DWELL",
           "climate_humidity_power_auto": "Luftfuktighet · Effekt · Automatisk",
-          "climate_humidity_power_hardware_confirmed": "Luftfuktighet · Effekt",
-          "climate_humidity_power_windowless_confirmed": "Luftfuktighet · Effekt",
-          "climate_humidity_power_min_on_s": "Luftfuktighet · Effekt",
-          "climate_humidity_power_min_off_s": "Luftfuktighet · Effekt",
-          "climate_humidity_power_max_on_s": "Luftfuktighet · Effekt",
-          "climate_secondary_climate_setpoint_auto": "Automatisk"
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Luftfuktighet · Enheter · Effekt · Krävs · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Luftfuktighet · Enheter · Effekt · Utomhus · Krävs · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Luftfuktighet · Enheter · Effekt · Automatisk (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Luftfuktighet · Enheter · Effekt · Stäng av (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Luftfuktighet · Enheter · Effekt · Automatisk (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Enheter · Automatisk · TARGET AUTO"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_cool_climate_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_dry_climate_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_fan_climate_entity": "Välj en riktig Home Assistant-källa för ”källa · Hastighet”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_humidifier_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_dehumidifier_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_extraction_fan_entity": "Välj en riktig Home Assistant-källa för ”källa · Hastighet”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_purifier_fan_entity": "Välj en riktig Home Assistant-källa för ”källa · Hastighet”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_heat_climate_entity": "Välj en riktig Home Assistant-HEAT · Enheter · källa · Temperatur + för ”HEAT · Enheter · källa · Temperatur +”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_cool_climate_entity": "Välj en riktig Home Assistant-COOL · Enheter · källa · Temperatur − för ”COOL · Enheter · källa · Temperatur −”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_dry_climate_entity": "Välj en riktig Home Assistant-DRY · Enheter · källa för ”DRY · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_fan_climate_entity": "Välj en riktig Home Assistant-källa för ”FAN_ONLY · Hastighet · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_humidifier_entity": "Välj en riktig Home Assistant-HUMIDIFIER · Enheter · källa för ”HUMIDIFIER · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_dehumidifier_entity": "Välj en riktig Home Assistant-DEHUMIDIFIER · Enheter · källa för ”DEHUMIDIFIER · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_extraction_fan_entity": "Välj en riktig Home Assistant-källa för ”EXTRACT · Hastighet · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_purifier_fan_entity": "Välj en riktig Home Assistant-källa för ”Luftrenare · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "climate_humidity_entity": "Välj en riktig Home Assistant-källa för ”Luftfuktighet · källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_humidity_low_rh": "Beslutströskel för ”Luftfuktighet”. Den styr råd, men är ingen medicinsk gräns.",
-          "climate_humidity_high_rh": "Beslutströskel för ”Luftfuktighet”. Den styr råd, men är ingen medicinsk gräns.",
-          "climate_humidity_hysteresis_rh": "Beslutströskel för ”Luftfuktighet”. Den styr råd, men är ingen medicinsk gräns.",
+          "climate_humidity_low_rh": "Beslutströskel för ”RH · Luftfuktighet · Enheter (%) · RH MIN”. Den styr råd, men är ingen medicinsk gräns.",
+          "climate_humidity_high_rh": "Beslutströskel för ”RH · Luftfuktighet · Enheter (%) · RH MAX”. Den styr råd, men är ingen medicinsk gräns.",
+          "climate_humidity_hysteresis_rh": "Beslutströskel för ”RH · Luftfuktighet · Enheter · ± RH”. Den styr råd, men är ingen medicinsk gräns.",
           "climate_cooling_dry_deferral_rh_points": "Detta alternativ styr ”Enheter · Temperatur −”. Fysiska kommandon kräver separat godkännande och skydd.",
           "climate_humidity_setpoint_auto": "Detta alternativ styr ”Luftfuktighet · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
           "climate_window_efficiency_notify": "Detta alternativ styr ”Enheter · Utomhus”. Fysiska kommandon kräver separat godkännande och skydd.",
           "climate_dry_fan_mode_auto": "Detta alternativ styr ”Hastighet · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_dry_fan_hardware_confirmed": "Använd en riktig lämplig mätning för ”Hastighet”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_dry_fan_windowless_confirmed": "Använd en riktig lämplig mätning för ”Hastighet”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_dry_fan_mode_dwell_s": "Denna tid styr ”Hastighet”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_dry_fan_hardware_confirmed": "Använd en riktig lämplig mätning för ”DRY/FAN_ONLY · Hastighet · Enheter · Krävs · HW ✓”. En uppskattning ersätter inte kalibrerad sensor.",
+          "climate_dry_fan_windowless_confirmed": "Använd en riktig lämplig mätning för ”DRY/FAN_ONLY · Hastighet · Enheter · Utomhus · Krävs · NO WINDOW”. En uppskattning ersätter inte kalibrerad sensor.",
+          "climate_dry_fan_mode_dwell_s": "Denna tid styr ”DRY/FAN_ONLY · Hastighet · Enheter (s) · MODE DWELL”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
           "climate_humidity_power_auto": "Detta alternativ styr ”Luftfuktighet · Effekt · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_humidity_power_hardware_confirmed": "Använd en riktig lämplig mätning för ”Luftfuktighet · Effekt”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_humidity_power_windowless_confirmed": "Använd en riktig lämplig mätning för ”Luftfuktighet · Effekt”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_humidity_power_min_on_s": "Denna tid styr ”Luftfuktighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_humidity_power_min_off_s": "Denna tid styr ”Luftfuktighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_humidity_power_max_on_s": "Denna tid styr ”Luftfuktighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_secondary_climate_setpoint_auto": "Detta alternativ styr ”Automatisk”. Fysiska kommandon kräver separat godkännande och skydd."
+          "climate_humidity_power_hardware_confirmed": "Använd en riktig lämplig mätning för ”RH POWER · Luftfuktighet · Enheter · Effekt · Krävs · HW ✓”. En uppskattning ersätter inte kalibrerad sensor.",
+          "climate_humidity_power_windowless_confirmed": "Använd en riktig lämplig mätning för ”RH POWER · Luftfuktighet · Enheter · Effekt · Utomhus · Krävs · NO WINDOW”. En uppskattning ersätter inte kalibrerad sensor.",
+          "climate_humidity_power_min_on_s": "Denna tid styr ”RH POWER · Luftfuktighet · Enheter · Effekt · Automatisk (s) · MIN ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_humidity_power_min_off_s": "Denna tid styr ”RH POWER · Luftfuktighet · Enheter · Effekt · Stäng av (s) · MIN OFF”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_humidity_power_max_on_s": "Denna tid styr ”RH POWER · Luftfuktighet · Enheter · Effekt · Automatisk (s) · MAX ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_secondary_climate_setpoint_auto": "Detta alternativ styr ”Enheter · Automatisk · TARGET AUTO”. Fysiska kommandon kräver separat godkännande och skydd."
         }
       },
       "climate_air_strategy": {
@@ -744,54 +748,54 @@
         "data": {
           "climate_fan_speed_auto": "Hastighet · Automatisk",
           "climate_fan_power_auto": "Hastighet · Effekt · Automatisk",
-          "climate_fan_power_hardware_confirmed": "Hastighet · Effekt",
-          "climate_fan_power_min_on_s": "Hastighet · Effekt",
-          "climate_fan_power_min_off_s": "Hastighet · Effekt",
-          "climate_fan_power_max_on_s": "Hastighet · Effekt",
-          "climate_pm25_sensor_verified": "sensor",
-          "climate_co2_entity": "källa",
-          "climate_pm25_entity": "källa",
+          "climate_fan_power_hardware_confirmed": "FAN · Hastighet · Enheter · Effekt · Krävs · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Hastighet · Enheter · Effekt · Automatisk (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Hastighet · Enheter · Effekt · Stäng av (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Hastighet · Enheter · Effekt · Automatisk (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Enheter · sensor · Krävs · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Enheter · källa",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Enheter · källa",
           "climate_pm25_action_ug_m3": "PM2.5 · Enheter (µg/m³)",
-          "climate_extraction_speed_percent": "Enheter · Hastighet (%)",
-          "climate_purifier_speed_percent": "Enheter · Hastighet (%)"
+          "climate_extraction_speed_percent": "EXTRACT · Enheter · Hastighet (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Enheter · Hastighet (%) · SPEED %"
         },
         "data_description": {
           "climate_fan_speed_auto": "Detta alternativ styr ”Hastighet · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
           "climate_fan_power_auto": "Detta alternativ styr ”Hastighet · Effekt · Automatisk”. Fysiska kommandon kräver separat godkännande och skydd.",
-          "climate_fan_power_hardware_confirmed": "Använd en riktig lämplig mätning för ”Hastighet · Effekt”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_fan_power_min_on_s": "Denna tid styr ”Hastighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_fan_power_min_off_s": "Denna tid styr ”Hastighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_fan_power_max_on_s": "Denna tid styr ”Hastighet · Effekt”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "climate_pm25_sensor_verified": "Använd en riktig lämplig mätning för ”sensor”. En uppskattning ersätter inte kalibrerad sensor.",
-          "climate_co2_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "climate_pm25_entity": "Välj en riktig Home Assistant-källa för ”källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_fan_power_hardware_confirmed": "Använd en riktig lämplig mätning för ”FAN · Hastighet · Enheter · Effekt · Krävs · HW ✓”. En uppskattning ersätter inte kalibrerad sensor.",
+          "climate_fan_power_min_on_s": "Denna tid styr ”FAN · Hastighet · Enheter · Effekt · Automatisk (s) · MIN ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_fan_power_min_off_s": "Denna tid styr ”FAN · Hastighet · Enheter · Effekt · Stäng av (s) · MIN OFF”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_fan_power_max_on_s": "Denna tid styr ”FAN · Hastighet · Enheter · Effekt · Automatisk (s) · MAX ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "climate_pm25_sensor_verified": "Använd en riktig lämplig mätning för ”PM2.5 · PM2.5 · Enheter · sensor · Krävs · SENSOR ✓ · VERIFIED”. En uppskattning ersätter inte kalibrerad PM2.5 · PM2.5 · Enheter · sensor · Krävs · SENSOR ✓ · VERIFIED.",
+          "climate_co2_entity": "Välj en riktig Home Assistant-CO₂ · CO₂ · Enheter · källa för ”CO₂ · CO₂ · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "climate_pm25_entity": "Välj en riktig Home Assistant-PM2.5 · PM2.5 · Enheter · källa för ”PM2.5 · PM2.5 · Enheter · källa”. Saknade eller gamla värden stoppar åtgärden.",
           "climate_pm25_action_ug_m3": "Beslutströskel för ”PM2.5 · Enheter (µg/m³)”. Den styr råd, men är ingen medicinsk gräns.",
-          "climate_extraction_speed_percent": "Beslutströskel för ”Enheter · Hastighet (%)”. Den styr råd, men är ingen medicinsk gräns.",
-          "climate_purifier_speed_percent": "Beslutströskel för ”Enheter · Hastighet (%)”. Den styr råd, men är ingen medicinsk gräns."
+          "climate_extraction_speed_percent": "Beslutströskel för ”EXTRACT · Enheter · Hastighet (%) · SPEED %”. Den styr råd, men är ingen medicinsk gräns.",
+          "climate_purifier_speed_percent": "Beslutströskel för ”PURIFIER · Enheter · Hastighet (%) · SPEED %”. Den styr råd, men är ingen medicinsk gräns."
         }
       },
       "climate_profiles": {
         "title": "inställningar · Enheter",
         "description": "Område · inställningar · Enheter · styrning. Närvaro · sensor · Krävs.",
         "data": {
-          "home_heat": "Hem (°C)",
-          "home_cool": "Hem (°C)",
-          "unoccupied_heat": "Temperatur + (°C)",
-          "unoccupied_cool": "Temperatur − (°C)",
-          "away_heat": "Hem (°C)",
-          "away_cool": "Hem (°C)",
-          "sleep_heat": "Sömn (°C)",
-          "sleep_cool": "Sömn (°C)"
+          "home_heat": "Uppvärmning · Hemma (°C)",
+          "home_cool": "Kylning · Hemma (°C)",
+          "unoccupied_heat": "Uppvärmning · Tomt rum (°C)",
+          "unoccupied_cool": "Kylning · Tomt rum (°C)",
+          "away_heat": "Uppvärmning · Borta (°C)",
+          "away_cool": "Kylning · Borta (°C)",
+          "sleep_heat": "Uppvärmning · Sömn (°C)",
+          "sleep_cool": "Kylning · Sömn (°C)"
         },
         "data_description": {
-          "home_heat": "Mål för ”Hem (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "home_cool": "Mål för ”Hem (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "unoccupied_heat": "Mål för ”Temperatur + (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "unoccupied_cool": "Mål för ”Temperatur − (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "away_heat": "Mål för ”Hem (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "away_cool": "Mål för ”Hem (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "sleep_heat": "Mål för ”Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "sleep_cool": "Mål för ”Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum."
+          "home_heat": "Mål för ”Uppvärmning · Hemma (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "home_cool": "Mål för ”Kylning · Hemma (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "unoccupied_heat": "Mål för ”Uppvärmning · Tomt rum (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "unoccupied_cool": "Mål för ”Kylning · Tomt rum (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "away_heat": "Mål för ”Uppvärmning · Borta (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "away_cool": "Mål för ”Kylning · Borta (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "sleep_heat": "Mål för ”Uppvärmning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "sleep_cool": "Mål för ”Kylning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum."
         }
       },
       "climate_actuators": {
@@ -799,35 +803,35 @@
         "description": "Område · inställningar · Enheter · styrning. Närvaro · sensor · Krävs.",
         "data": {
           "direct_hardware_confirmed": "Krävs",
-          "heat_actuator": "Enheter",
-          "cool_actuator": "Enheter",
-          "min_on_s": "Effekt · Automatisk (s)",
+          "heat_actuator": "Uppvärmning · Enheter",
+          "cool_actuator": "Kylning · Enheter",
+          "min_on_s": "Effekt · Automatisk (s) · MIN ON",
           "min_off_s": "Effekt · Stäng av (s)",
-          "max_on_s": "Effekt · Automatisk (s)",
-          "mode_dwell_s": "inställningar · källa (s)",
-          "kp": "inställningar · källa (°C)",
-          "ki": "inställningar · källa (°C)",
-          "kd": "inställningar · källa (°C)",
-          "sample_seconds": "inställningar · källa (s)",
-          "pwm_period_s": "inställningar · källa (s)",
-          "max_demand_change": "inställningar · källa",
-          "min_demand_change": "inställningar · källa"
+          "max_on_s": "Effekt · Automatisk (s) · MAX ON",
+          "mode_dwell_s": "inställningar · källa (s) · MODE DWELL",
+          "kp": "PID Kp · styrning (percentage points/°C)",
+          "ki": "PID Ki · styrning (percentage points/(°C·minute))",
+          "kd": "PID Kd · styrning (percentage points·minute/°C)",
+          "sample_seconds": "inställningar · källa (s) · SAMPLE",
+          "pwm_period_s": "inställningar · källa (s) · PWM PERIOD",
+          "max_demand_change": "inställningar · källa · MAX Δ",
+          "min_demand_change": "inställningar · källa · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "Använd en riktig lämplig mätning för ”Krävs”. En uppskattning ersätter inte kalibrerad sensor.",
-          "heat_actuator": "Ställ in ”Enheter” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "cool_actuator": "Ställ in ”Enheter” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "min_on_s": "Denna tid styr ”Effekt · Automatisk (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "heat_actuator": "Ställ in ”Uppvärmning · Enheter” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "cool_actuator": "Ställ in ”Kylning · Enheter” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "min_on_s": "Denna tid styr ”Effekt · Automatisk (s) · MIN ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
           "min_off_s": "Denna tid styr ”Effekt · Stäng av (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "max_on_s": "Denna tid styr ”Effekt · Automatisk (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "mode_dwell_s": "Denna tid styr ”inställningar · källa (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "kp": "Ställ in ”inställningar · källa (°C)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "ki": "Ställ in ”inställningar · källa (°C)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "kd": "Ställ in ”inställningar · källa (°C)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "sample_seconds": "Denna tid styr ”inställningar · källa (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "pwm_period_s": "Denna tid styr ”inställningar · källa (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "max_demand_change": "Ställ in ”inställningar · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "min_demand_change": "Ställ in ”inställningar · källa” endast för valt rum. Ogiltiga värden stoppar åtgärden."
+          "max_on_s": "Denna tid styr ”Effekt · Automatisk (s) · MAX ON”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "mode_dwell_s": "Denna tid styr ”inställningar · källa (s) · MODE DWELL”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "kp": "Ställ in ”PID Kp · styrning (percentage points/°C)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "ki": "Ställ in ”PID Ki · styrning (percentage points/(°C·minute))” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "kd": "Ställ in ”PID Kd · styrning (percentage points·minute/°C)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "sample_seconds": "Denna tid styr ”inställningar · källa (s) · SAMPLE”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "pwm_period_s": "Denna tid styr ”inställningar · källa (s) · PWM PERIOD”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
+          "max_demand_change": "Ställ in ”inställningar · källa · MAX Δ” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "min_demand_change": "Ställ in ”inställningar · källa · MIN Δ” endast för valt rum. Ogiltiga värden stoppar åtgärden."
         }
       },
       "outside_data": {
@@ -897,15 +901,15 @@
         "description": "Pollen: Välj källa, sensor / Enheter · styrning.",
         "data": {
           "pollen_entity": "Pollen · källa",
-          "pollen_high_from": "Pollen",
-          "pollen_max_scale": "Pollen",
-          "pollen_avoid_ventilation": "Pollen"
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT"
         },
         "data_description": {
           "pollen_entity": "Välj en riktig Home Assistant-källa för ”Pollen · källa”. Saknade eller gamla värden stoppar åtgärden.",
-          "pollen_high_from": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "pollen_max_scale": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
-          "pollen_avoid_ventilation": "Ställ in ”Pollen” endast för valt rum. Ogiltiga värden stoppar åtgärden."
+          "pollen_high_from": "Ställ in ”POLLEN · Pollen · HIGH” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_max_scale": "Ställ in ”POLLEN · Pollen · SCALE” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_avoid_ventilation": "Ställ in ”POLLEN · Pollen · NO VENT” endast för valt rum. Ogiltiga värden stoppar åtgärden."
         }
       },
       "outside_aqi": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "Effekt · min ON (s)",
           "device_min_off_s": "Effekt · min OFF (s)",
           "device_max_on_s": "Effekt · max ON (s)",
-          "device_home_heat_c": "Hem · Temperatur + · mål (°C)",
-          "device_home_cool_c": "Hem · Temperatur − · mål (°C)",
-          "device_unoccupied_heat_c": "Rum · Stäng av · Temperatur + · mål (°C)",
-          "device_unoccupied_cool_c": "Rum · Stäng av · Temperatur − · mål (°C)",
-          "device_away_heat_c": "Hem · Stäng av · Temperatur + · mål (°C)",
-          "device_away_cool_c": "Hem · Stäng av · Temperatur − · mål (°C)",
-          "device_sleep_heat_c": "Sömn · Temperatur + · mål (°C)",
-          "device_sleep_cool_c": "Sömn · Temperatur − · mål (°C)"
+          "device_home_heat_c": "Uppvärmning · Hemma (°C)",
+          "device_home_cool_c": "Kylning · Hemma (°C)",
+          "device_unoccupied_heat_c": "Uppvärmning · Tomt rum (°C)",
+          "device_unoccupied_cool_c": "Kylning · Tomt rum (°C)",
+          "device_away_heat_c": "Uppvärmning · Borta (°C)",
+          "device_away_cool_c": "Kylning · Borta (°C)",
+          "device_sleep_heat_c": "Uppvärmning · Sömn (°C)",
+          "device_sleep_cool_c": "Kylning · Sömn (°C)"
         },
         "data_description": {
           "device_auto_control": "Detta alternativ styr ”Automatisk styrning”. Fysiska kommandon kräver separat godkännande och skydd.",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "Denna tid styr ”Effekt · min ON (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
           "device_min_off_s": "Denna tid styr ”Effekt · min OFF (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
           "device_max_on_s": "Denna tid styr ”Effekt · max ON (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd.",
-          "device_home_heat_c": "Mål för ”Hem · Temperatur + · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_home_cool_c": "Mål för ”Hem · Temperatur − · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_unoccupied_heat_c": "Mål för ”Rum · Stäng av · Temperatur + · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_unoccupied_cool_c": "Mål för ”Rum · Stäng av · Temperatur − · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_away_heat_c": "Mål för ”Hem · Stäng av · Temperatur + · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_away_cool_c": "Mål för ”Hem · Stäng av · Temperatur − · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_sleep_heat_c": "Mål för ”Sömn · Temperatur + · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
-          "device_sleep_cool_c": "Mål för ”Sömn · Temperatur − · mål (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum."
+          "device_home_heat_c": "Mål för ”Uppvärmning · Hemma (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_home_cool_c": "Mål för ”Kylning · Hemma (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_unoccupied_heat_c": "Mål för ”Uppvärmning · Tomt rum (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_unoccupied_cool_c": "Mål för ”Kylning · Tomt rum (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_away_heat_c": "Mål för ”Uppvärmning · Borta (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_away_cool_c": "Mål för ”Kylning · Borta (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_sleep_heat_c": "Mål för ”Uppvärmning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
+          "device_sleep_cool_c": "Mål för ”Kylning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum."
         }
       }
     },
@@ -1174,69 +1178,168 @@
         "name": "mål (°C)"
       },
       "area_pid_kp": {
-        "name": "PID (%, °C)"
+        "name": "PID Kp · styrning (% per °C)"
       },
       "area_pid_ki": {
-        "name": "PID (%, °C)"
+        "name": "PID Ki · styrning (% per °C-minute)"
       },
       "area_pid_kd": {
-        "name": "PID (%, °C)"
+        "name": "PID Kd · styrning (%·minute per °C)"
       },
       "area_pid_offset_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · PID_OFFSET_C"
       },
       "area_pid_min_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN TARGET"
       },
       "area_pid_max_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX TARGET"
       },
       "area_pid_sample_seconds": {
         "name": "PID (s)"
       },
       "area_pid_max_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX Δ"
       },
       "area_pid_min_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN Δ"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · Hem (°C)"
+        "name": "Uppvärmning · Hemma (°C)"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · Hem (°C)"
+        "name": "Kylning · Hemma (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · Temperatur + (°C)"
+        "name": "Uppvärmning · Tomt rum (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · Temperatur − (°C)"
+        "name": "Kylning · Tomt rum (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · Hem (°C)"
+        "name": "Uppvärmning · Borta (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · Hem (°C)"
+        "name": "Kylning · Borta (°C)"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · Sömn (°C)"
+        "name": "Uppvärmning · Sömn (°C)"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · Sömn (°C)"
+        "name": "Kylning · Sömn (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Pollen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Pollen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "källa · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "inställningar · källa (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · mål (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Hastighet · Utomhus (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "inställningar · källa (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "inställningar · källa (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Enheter · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Närvaro · Enheter · sensor · Krävs"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Enheter (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Luftfuktighet · Enheter (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Luftfuktighet · Enheter (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Luftfuktighet · Enheter · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Enheter · Temperatur −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Enheter (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Enheter · Hastighet (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Enheter · Hastighet (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · styrning (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · styrning (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · styrning (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "inställningar · källa (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "inställningar · källa · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "inställningar · källa · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Mögelindikator · 🧊 °C"
       }
     },
     "switch": {
       "home_automatic_notifications": {
-        "name": "Automatiska aviseringar"
+        "name": "Automatisk · AUTOMATIC_NOTIFICATIONS"
       },
       "home_automatic_tts": {
-        "name": "Automatiska röstmeddelanden"
+        "name": "Automatisk"
       },
       "home_use_announcement_hub": {
         "name": "Announcement Hub"
       },
       "home_ai_rewrite_announcements": {
         "name": "AI · Meddelanden (valfritt)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Pollen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Sömn"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automatisk"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Sömn · Enheter"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Sömn · Automatisk"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Enheter · Utomhus"
       }
     },
     "select": {
@@ -1244,7 +1347,7 @@
         "name": "Språk"
       },
       "area_manual_profile": {
-        "name": "Enheter"
+        "name": "Enheter · CLIMATE_MANUAL_PROFILE"
       },
       "area_pid_gain_source": {
         "name": "Gain source",
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Hem · Närvaro · styrning"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Närvaro · Enheter"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Hem · Enheter · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Enheter · källa · mål"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Sömn · Enheter · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Sömn · Enheter · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Mögelindikator · ↻ 🌡️"
       }
     }
   },

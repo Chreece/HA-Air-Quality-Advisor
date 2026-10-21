@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন",
           "mold_indoor_temperature": "কক্ষ · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "ছাঁচের সূচক · 🧊 °C",
-          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️"
+          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "“কক্ষ · 🌡️ (°C/°F)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "mold_critical_temperature_c": "🧊 ছাঁচের সূচক · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“ছাঁচের সূচক · ↻ 🌡️” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।"
+          "mold_recalibrate": "“ছাঁচের সূচক · ↻ 🌡️” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -67,25 +69,25 @@
         "description": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
         "data": {
           "language": "ভাষা",
-          "automatic_tts": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
-          "automatic_notifications": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "automatic_tts": "স্বয়ংক্রিয়",
+          "automatic_notifications": "স্বয়ংক্রিয় · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "ঘোষণা (ঐচ্ছিক) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
-          "tts_engine": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
-          "media_players": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "notify_entities": "সেটিংস · উৎস",
+          "tts_engine": "সেটিংস · উৎস · TTS_ENGINE",
+          "media_players": "সেটিংস · উৎস · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক)",
           "ai_conversation_agent": "AI · ভাষা"
         },
         "data_description": {
           "language": "“ভাষা” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় ভয়েস ঘোষণা · 🪟 90 s.",
-          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় · 🪟 90 s. এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "ডিফল্ট: 10 min · 0 = কখনো নয় · একই কারণ বজায় থাকলে · কক্ষ.",
           "use_announcement_hub": "Announcement Hub · পাওয়া যাচ্ছে না → Home Assistant.",
-          "notify_entities": "নির্বাচন করুন: notify.* · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
-          "tts_engine": "নির্বাচন করুন: tts.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
-          "media_players": "নির্বাচন করুন: media_player.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "notify_entities": "নির্বাচন করুন: notify.* · সেটিংস · উৎস.",
+          "tts_engine": "নির্বাচন করুন: tts.* · সেটিংস · উৎস · TTS_ENGINE.",
+          "media_players": "নির্বাচন করুন: media_player.* · সেটিংস · উৎস · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট)."
         }
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "ঘরের বায়ু সেন্সর বাদ দিন",
           "mold_indoor_temperature": "কক্ষ · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "ছাঁচের সূচক · 🧊 °C",
-          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️"
+          "mold_recalibrate": "ছাঁচের সূচক · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "নির্বাচন করুন: ঘরের বায়ু সেন্সর বাদ দিন · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "“কক্ষ · 🌡️ (°C/°F)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "mold_critical_temperature_c": "🧊 ছাঁচের সূচক · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“ছাঁচের সূচক · ↻ 🌡️” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।"
+          "mold_recalibrate": "“ছাঁচের সূচক · ↻ 🌡️” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -251,25 +255,25 @@
         "description": "ঘোষণা (ঐচ্ছিক). স্বয়ংক্রিয় বিজ্ঞপ্তি · স্বয়ংক্রিয় ভয়েস ঘোষণা. Announcement Hub.",
         "data": {
           "language": "ভাষা",
-          "automatic_tts": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
-          "automatic_notifications": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
+          "automatic_tts": "স্বয়ংক্রিয়",
+          "automatic_notifications": "স্বয়ংক্রিয় · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "ঘোষণা (ঐচ্ছিক) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "স্বয়ংক্রিয় বিজ্ঞপ্তি",
-          "tts_engine": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
-          "media_players": "স্বয়ংক্রিয় ভয়েস ঘোষণা",
+          "notify_entities": "সেটিংস · উৎস",
+          "tts_engine": "সেটিংস · উৎস · TTS_ENGINE",
+          "media_players": "সেটিংস · উৎস · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক)",
           "ai_conversation_agent": "AI · ভাষা"
         },
         "data_description": {
           "language": "“ভাষা” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় ভয়েস ঘোষণা · 🪟 90 s.",
-          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
+          "automatic_tts": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় · 🪟 90 s. এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "automatic_notifications": "ডিফল্ট: ⛔ · স্বয়ংক্রিয় · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "ডিফল্ট: 10 min · 0 = কখনো নয় · একই কারণ বজায় থাকলে · কক্ষ.",
           "use_announcement_hub": "Announcement Hub · পাওয়া যাচ্ছে না → Home Assistant.",
-          "notify_entities": "নির্বাচন করুন: notify.* · স্বয়ংক্রিয় বিজ্ঞপ্তি.",
-          "tts_engine": "নির্বাচন করুন: tts.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
-          "media_players": "নির্বাচন করুন: media_player.* · স্বয়ংক্রিয় ভয়েস ঘোষণা.",
+          "notify_entities": "নির্বাচন করুন: notify.* · সেটিংস · উৎস.",
+          "tts_engine": "নির্বাচন করুন: tts.* · সেটিংস · উৎস · TTS_ENGINE.",
+          "media_players": "নির্বাচন করুন: media_player.* · সেটিংস · উৎস · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · ঘোষণা (ঐচ্ছিক) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট)."
         }
@@ -331,9 +335,9 @@
         "description": "“সেটিংস · সেটিংস · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
         "data": {
           "pollen_entity": "পরাগ · উৎস",
-          "pollen_high_from": "পরাগ",
-          "pollen_max_scale": "পরাগ",
-          "pollen_avoid_ventilation": "পরাগ",
+          "pollen_high_from": "POLLEN · পরাগ · HIGH",
+          "pollen_max_scale": "POLLEN · পরাগ · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · পরাগ · NO VENT",
           "aqi_scale_0": "AQI #1 · উৎস",
           "aqi_custom_limit_0": "AQI #1 · লক্ষ্য",
           "aqi_scale_1": "AQI #2 · উৎস",
@@ -401,9 +405,9 @@
         },
         "data_description": {
           "pollen_entity": "“পরাগ · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "pollen_high_from": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_max_scale": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_avoid_ventilation": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "pollen_high_from": "“POLLEN · পরাগ · HIGH” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "pollen_max_scale": "“POLLEN · পরাগ · SCALE” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "pollen_avoid_ventilation": "“POLLEN · পরাগ · NO VENT” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "aqi_scale_0": "“AQI #1 · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "aqi_custom_limit_0": "“AQI #1 · লক্ষ্য” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
           "aqi_scale_1": "“AQI #2 · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
@@ -487,20 +491,20 @@
           "temperature_entity": "তাপমাত্রা · উৎস",
           "room_volume_m3": "সেটিংস · উৎস (m³)",
           "particle_cadr_m3h": "CADR (m³/h)",
-          "purifier_entity": "উৎস",
-          "extractor_entity": "উৎস",
+          "purifier_entity": "বায়ু পরিশোধক · উৎস",
+          "extractor_entity": "নিষ্কাশন পাখা · উৎস",
           "co2_ndir_verified": "CO₂ · আবশ্যক",
-          "co2_target_ppm": "লক্ষ্য",
+          "co2_target_ppm": "CO₂ · CO₂ · লক্ষ্য (ppm)",
           "sleep_room": "ঘুম"
         },
         "data_description": {
           "temperature_entity": "“তাপমাত্রা · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "room_volume_m3": "“সেটিংস · উৎস (m³)” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
           "particle_cadr_m3h": "“CADR (m³/h)” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "purifier_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "extractor_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "purifier_entity": "“বায়ু পরিশোধক · উৎস” এর জন্য প্রকৃত Home Assistant বায়ু পরিশোধক · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "extractor_entity": "“নিষ্কাশন পাখা · উৎস” এর জন্য প্রকৃত Home Assistant নিষ্কাশন পাখা · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "co2_ndir_verified": "“CO₂ · আবশ্যক” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "co2_target_ppm": "“লক্ষ্য” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "co2_target_ppm": "“CO₂ · CO₂ · লক্ষ্য (ppm)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
           "sleep_room": "“ঘুম” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।"
         }
       },
@@ -508,27 +512,27 @@
         "title": "সেটিংস · সেটিংস · উৎস",
         "description": "“সেটিংস · সেটিংস · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
         "data": {
-          "radon_entity": "উৎস",
-          "radon_sensor_verified": "সেন্সর",
+          "radon_entity": "RADON · Rn · উৎস",
+          "radon_sensor_verified": "RADON · Rn · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED",
           "radon_reference_bq_m3": "Rn (Bq/m³)",
-          "formaldehyde_entity": "উৎস",
-          "formaldehyde_sensor_verified": "সেন্সর",
-          "noise_entity": "উৎস",
-          "noise_sensor_calibrated": "সেন্সর",
-          "illuminance_entity": "উৎস",
-          "melanopic_edi_entity": "উৎস",
+          "formaldehyde_entity": "HCHO · উৎস",
+          "formaldehyde_sensor_verified": "HCHO · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · উৎস · সেন্সর (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · সেন্সর · আবশ্যক",
+          "illuminance_entity": "LUX · উৎস (lux)",
+          "melanopic_edi_entity": "EDI · EDI · উৎস (lx)",
           "melanopic_spectral_verified": "EDI · আবশ্যক"
         },
         "data_description": {
-          "radon_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "radon_sensor_verified": "“সেন্সর” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "radon_entity": "“RADON · Rn · উৎস” এর জন্য প্রকৃত Home Assistant RADON · Rn · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "radon_sensor_verified": "“RADON · Rn · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড RADON · Rn · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIEDের বিকল্প নয়।",
           "radon_reference_bq_m3": "“Rn (Bq/m³)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "formaldehyde_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "formaldehyde_sensor_verified": "“সেন্সর” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "noise_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "noise_sensor_calibrated": "“সেন্সর” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "illuminance_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "melanopic_edi_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "formaldehyde_entity": "“HCHO · উৎস” এর জন্য প্রকৃত Home Assistant HCHO · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "formaldehyde_sensor_verified": "“HCHO · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড HCHO · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIEDের বিকল্প নয়।",
+          "noise_entity": "“dB(A) · উৎস · সেন্সর (dB(A))” এর জন্য প্রকৃত Home Assistant dB(A) · উৎস · সেন্সর (dB(A)) বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "noise_sensor_calibrated": "“dB(A) · সেন্সর · আবশ্যক” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড dB(A) · সেন্সর · আবশ্যকের বিকল্প নয়।",
+          "illuminance_entity": "“LUX · উৎস (lux)” এর জন্য প্রকৃত Home Assistant LUX · উৎস (lux) বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "melanopic_edi_entity": "“EDI · EDI · উৎস (lx)” এর জন্য প্রকৃত Home Assistant EDI · EDI · উৎস (lx) বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "melanopic_spectral_verified": "“EDI · আবশ্যক” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।"
         }
       },
@@ -538,7 +542,7 @@
         "data": {
           "enable_pmv": "PMV / PPD · স্বয়ংক্রিয়",
           "radiant_temperature_entity": "তাপমাত্রা · উৎস",
-          "air_speed_entity": "উৎস",
+          "air_speed_entity": "উৎস · গতি · বাইরের (m/s)",
           "air_speed_m_s": "গতি · বাইরের (m/s)",
           "met": "সেটিংস · উৎস (met)",
           "clo": "সেটিংস · উৎস (clo)"
@@ -546,7 +550,7 @@
         "data_description": {
           "enable_pmv": "“PMV / PPD · স্বয়ংক্রিয়” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "radiant_temperature_entity": "“তাপমাত্রা · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "air_speed_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "air_speed_entity": "“উৎস · গতি · বাইরের (m/s)” এর জন্য প্রকৃত Home Assistant উৎস · গতি · বাইরের (m/s) বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "air_speed_m_s": "“গতি · বাইরের (m/s)” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
           "met": "“সেটিংস · উৎস (met)” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
           "clo": "“সেটিংস · উৎস (clo)” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।"
@@ -566,7 +570,7 @@
         "title": "সেটিংস · PID",
         "description": "“সেটিংস · PID” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
         "data": {
-          "pid_enabled": "স্বয়ংক্রিয়",
+          "pid_enabled": "PID · স্বয়ংক্রিয় · AUTO",
           "pid_climate_entities": "PID · ডিভাইস",
           "pid_temperature_entity": "তাপমাত্রা · উৎস",
           "pid_mode": "PID",
@@ -574,7 +578,7 @@
           "pid_pause_on_window_open": "PID · বাইরের"
         },
         "data_description": {
-          "pid_enabled": "এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "pid_enabled": "এই বিকল্প “PID · স্বয়ংক্রিয় · AUTO” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "pid_climate_entities": "“PID · ডিভাইস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "pid_temperature_entity": "“তাপমাত্রা · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "pid_mode": "এই বিকল্প “PID” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
@@ -586,26 +590,26 @@
         "title": "সেটিংস · PID",
         "description": "“সেটিংস · PID” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
         "data": {
-          "pid_kp": "PID (%, °C)",
-          "pid_ki": "PID (%, °C)",
-          "pid_kd": "PID (%, °C)",
-          "pid_offset_c": "PID (°C)",
-          "pid_min_setpoint_c": "PID (°C)",
-          "pid_max_setpoint_c": "PID (°C)",
+          "pid_kp": "PID Kp · নিয়ন্ত্রণ (% per °C)",
+          "pid_ki": "PID Ki · নিয়ন্ত্রণ (% per °C-minute)",
+          "pid_kd": "PID Kd · নিয়ন্ত্রণ (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
           "pid_sample_seconds": "PID (s)",
-          "pid_max_change_c": "PID (°C)",
-          "pid_min_change_c": "PID (°C)"
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
         },
         "data_description": {
-          "pid_kp": "এই বিকল্প “PID (%, °C)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "pid_ki": "এই বিকল্প “PID (%, °C)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "pid_kd": "এই বিকল্প “PID (%, °C)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "pid_offset_c": "“PID (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "pid_min_setpoint_c": "“PID (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "pid_max_setpoint_c": "“PID (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "pid_kp": "এই বিকল্প “PID Kp · নিয়ন্ত্রণ (% per °C)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "pid_ki": "এই বিকল্প “PID Ki · নিয়ন্ত্রণ (% per °C-minute)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "pid_kd": "এই বিকল্প “PID Kd · নিয়ন্ত্রণ (%·minute per °C)” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "pid_offset_c": "“PID (°C) · PID_OFFSET_C” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "pid_min_setpoint_c": "“PID (°C) · MIN TARGET” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "pid_max_setpoint_c": "“PID (°C) · MAX TARGET” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
           "pid_sample_seconds": "এই সময় “PID (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "pid_max_change_c": "“PID (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "pid_min_change_c": "“PID (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
+          "pid_max_change_c": "“PID (°C) · MAX Δ” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "pid_min_change_c": "“PID (°C) · MIN Δ” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
         }
       },
       "climate": {
@@ -622,24 +626,24 @@
         "title": "সেটিংস · ডিভাইস",
         "description": "এলাকা · সেটিংস · ডিভাইস · নিয়ন্ত্রণ. উপস্থিতি · সেন্সর · আবশ্যক.",
         "data": {
-          "climate_enabled": "স্বয়ংক্রিয়",
-          "climate_allow_actuation": "ডিভাইস",
-          "climate_auto_switch_hvac": "স্বয়ংক্রিয়",
-          "climate_prefer_native_auto": "স্বয়ংক্রিয়",
-          "climate_controller": "নিয়ন্ত্রণ",
-          "climate_mode": "ডিভাইস",
-          "climate_entity": "উৎস",
+          "climate_enabled": "ডিভাইস · স্বয়ংক্রিয় · AUTO",
+          "climate_allow_actuation": "ডিভাইস · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "ডিভাইস · স্বয়ংক্রিয় · MODE SWITCH",
+          "climate_prefer_native_auto": "ডিভাইস · স্বয়ংক্রিয় · NATIVE",
+          "climate_controller": "ডিভাইস · নিয়ন্ত্রণ",
+          "climate_mode": "ডিভাইস · MODE",
+          "climate_entity": "ডিভাইস · উৎস",
           "climate_temperature_entity": "তাপমাত্রা · উৎস",
           "climate_hysteresis_c": "ডিভাইস (°C)"
         },
         "data_description": {
-          "climate_enabled": "এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_allow_actuation": "এই বিকল্প “ডিভাইস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_auto_switch_hvac": "এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_prefer_native_auto": "এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_controller": "এই বিকল্প “নিয়ন্ত্রণ” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_mode": "এই বিকল্প “ডিভাইস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_enabled": "এই বিকল্প “ডিভাইস · স্বয়ংক্রিয় · AUTO” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_allow_actuation": "এই বিকল্প “ডিভাইস · CLIMATE_ALLOW_ACTUATION” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_auto_switch_hvac": "এই বিকল্প “ডিভাইস · স্বয়ংক্রিয় · MODE SWITCH” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_prefer_native_auto": "এই বিকল্প “ডিভাইস · স্বয়ংক্রিয় · NATIVE” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_controller": "এই বিকল্প “ডিভাইস · নিয়ন্ত্রণ” ডিভাইস · নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_mode": "এই বিকল্প “ডিভাইস · MODE” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_entity": "“ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "climate_temperature_entity": "“তাপমাত্রা · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "climate_hysteresis_c": "“ডিভাইস (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
         }
@@ -649,32 +653,32 @@
         "description": "এলাকা · সেটিংস · ডিভাইস · নিয়ন্ত্রণ. উপস্থিতি · সেন্সর · আবশ্যক.",
         "data": {
           "climate_occupancy_sensors": "উপস্থিতি · সেন্সর",
-          "climate_away_entities": "বাড়ি",
-          "climate_unknown_occupancy": "উপস্থিতি",
-          "climate_unoccupied_delay_minutes": "ডিভাইস",
-          "climate_occupancy_stale_minutes": "উপস্থিতি",
-          "climate_away_policy": "বাড়ি",
-          "climate_manual_profile": "ডিভাইস",
-          "climate_sleep_active": "ঘুম",
+          "climate_away_entities": "বাড়ি · ডিভাইস",
+          "climate_unknown_occupancy": "উপস্থিতি · ডিভাইস",
+          "climate_unoccupied_delay_minutes": "ডিভাইস · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "উপস্থিতি · ডিভাইস · সেন্সর · আবশ্যক",
+          "climate_away_policy": "বাড়ি · ডিভাইস · POLICY",
+          "climate_manual_profile": "ডিভাইস · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "ঘুম · ডিভাইস",
           "climate_sleep_schedule_enabled": "ঘুম · স্বয়ংক্রিয়",
-          "climate_sleep_start": "ঘুম",
-          "climate_sleep_end": "ঘুম",
-          "climate_target_source": "লক্ষ্য",
+          "climate_sleep_start": "ঘুম · ডিভাইস · START",
+          "climate_sleep_end": "ঘুম · ডিভাইস · END",
+          "climate_target_source": "ডিভাইস · উৎস · লক্ষ্য",
           "climate_comfort_adjustment_max_c": "ডিভাইস (°C)"
         },
         "data_description": {
           "climate_occupancy_sensors": "“উপস্থিতি · সেন্সর” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_away_entities": "“বাড়ি” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_unknown_occupancy": "এই বিকল্প “উপস্থিতি” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_unoccupied_delay_minutes": "এই সময় “ডিভাইস” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_occupancy_stale_minutes": "এই সময় “উপস্থিতি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_away_policy": "এই বিকল্প “বাড়ি” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_manual_profile": "এই বিকল্প “ডিভাইস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_sleep_active": "এই বিকল্প “ঘুম” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_away_entities": "“বাড়ি · ডিভাইস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_unknown_occupancy": "এই বিকল্প “উপস্থিতি · ডিভাইস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_unoccupied_delay_minutes": "এই সময় “ডিভাইস · CLIMATE_UNOCCUPIED_DELAY_MINUTES” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_occupancy_stale_minutes": "এই সময় “উপস্থিতি · ডিভাইস · সেন্সর · আবশ্যক” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_away_policy": "এই বিকল্প “বাড়ি · ডিভাইস · POLICY” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_manual_profile": "এই বিকল্প “ডিভাইস · CLIMATE_MANUAL_PROFILE” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
+          "climate_sleep_active": "এই বিকল্প “ঘুম · ডিভাইস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "climate_sleep_schedule_enabled": "এই বিকল্প “ঘুম · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_sleep_start": "এই সময় “ঘুম” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_sleep_end": "এই সময় “ঘুম” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_target_source": "“লক্ষ্য” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "climate_sleep_start": "এই সময় “ঘুম · ডিভাইস · START” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_sleep_end": "এই সময় “ঘুম · ডিভাইস · END” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_target_source": "“ডিভাইস · উৎস · লক্ষ্য” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
           "climate_comfort_adjustment_max_c": "“ডিভাইস (°C)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
         }
       },
@@ -682,60 +686,60 @@
         "title": "সেটিংস · ডিভাইস",
         "description": "এলাকা · সেটিংস · ডিভাইস · নিয়ন্ত্রণ. উপস্থিতি · সেন্সর · আবশ্যক.",
         "data": {
-          "climate_heat_climate_entity": "উৎস",
-          "climate_cool_climate_entity": "উৎস",
-          "climate_dry_climate_entity": "উৎস",
-          "climate_fan_climate_entity": "উৎস · গতি",
-          "climate_humidifier_entity": "উৎস",
-          "climate_dehumidifier_entity": "উৎস",
-          "climate_extraction_fan_entity": "উৎস · গতি",
-          "climate_purifier_fan_entity": "উৎস · গতি",
+          "climate_heat_climate_entity": "HEAT · ডিভাইস · উৎস · তাপমাত্রা +",
+          "climate_cool_climate_entity": "COOL · ডিভাইস · উৎস · তাপমাত্রা −",
+          "climate_dry_climate_entity": "DRY · ডিভাইস · উৎস",
+          "climate_fan_climate_entity": "FAN_ONLY · গতি · ডিভাইস · উৎস",
+          "climate_humidifier_entity": "HUMIDIFIER · ডিভাইস · উৎস",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · ডিভাইস · উৎস",
+          "climate_extraction_fan_entity": "EXTRACT · গতি · ডিভাইস · উৎস",
+          "climate_purifier_fan_entity": "বায়ু পরিশোধক · উৎস",
           "climate_humidity_entity": "আর্দ্রতা · উৎস",
-          "climate_humidity_low_rh": "আর্দ্রতা",
-          "climate_humidity_high_rh": "আর্দ্রতা",
-          "climate_humidity_hysteresis_rh": "আর্দ্রতা",
+          "climate_humidity_low_rh": "RH · আর্দ্রতা · ডিভাইস (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · আর্দ্রতা · ডিভাইস (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · আর্দ্রতা · ডিভাইস · ± RH",
           "climate_cooling_dry_deferral_rh_points": "ডিভাইস · তাপমাত্রা −",
           "climate_humidity_setpoint_auto": "আর্দ্রতা · স্বয়ংক্রিয়",
           "climate_window_efficiency_notify": "ডিভাইস · বাইরের",
           "climate_dry_fan_mode_auto": "গতি · স্বয়ংক্রিয়",
-          "climate_dry_fan_hardware_confirmed": "গতি",
-          "climate_dry_fan_windowless_confirmed": "গতি",
-          "climate_dry_fan_mode_dwell_s": "গতি",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · গতি · ডিভাইস · আবশ্যক · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · গতি · ডিভাইস · বাইরের · আবশ্যক · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · গতি · ডিভাইস (s) · MODE DWELL",
           "climate_humidity_power_auto": "আর্দ্রতা · শক্তি · স্বয়ংক্রিয়",
-          "climate_humidity_power_hardware_confirmed": "আর্দ্রতা · শক্তি",
-          "climate_humidity_power_windowless_confirmed": "আর্দ্রতা · শক্তি",
-          "climate_humidity_power_min_on_s": "আর্দ্রতা · শক্তি",
-          "climate_humidity_power_min_off_s": "আর্দ্রতা · শক্তি",
-          "climate_humidity_power_max_on_s": "আর্দ্রতা · শক্তি",
-          "climate_secondary_climate_setpoint_auto": "স্বয়ংক্রিয়"
+          "climate_humidity_power_hardware_confirmed": "RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · আবশ্যক · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · বাইরের · আবশ্যক · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · বন্ধ (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "ডিভাইস · স্বয়ংক্রিয় · TARGET AUTO"
         },
         "data_description": {
-          "climate_heat_climate_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_cool_climate_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_dry_climate_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_fan_climate_entity": "“উৎস · গতি” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_humidifier_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_dehumidifier_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_extraction_fan_entity": "“উৎস · গতি” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_purifier_fan_entity": "“উৎস · গতি” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_heat_climate_entity": "“HEAT · ডিভাইস · উৎস · তাপমাত্রা +” এর জন্য প্রকৃত Home Assistant HEAT · ডিভাইস · উৎস · তাপমাত্রা + বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_cool_climate_entity": "“COOL · ডিভাইস · উৎস · তাপমাত্রা −” এর জন্য প্রকৃত Home Assistant COOL · ডিভাইস · উৎস · তাপমাত্রা − বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_dry_climate_entity": "“DRY · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant DRY · ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_fan_climate_entity": "“FAN_ONLY · গতি · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_humidifier_entity": "“HUMIDIFIER · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant HUMIDIFIER · ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_dehumidifier_entity": "“DEHUMIDIFIER · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant DEHUMIDIFIER · ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_extraction_fan_entity": "“EXTRACT · গতি · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_purifier_fan_entity": "“বায়ু পরিশোধক · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "climate_humidity_entity": "“আর্দ্রতা · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_humidity_low_rh": "“আর্দ্রতা” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "climate_humidity_high_rh": "“আর্দ্রতা” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "climate_humidity_hysteresis_rh": "“আর্দ্রতা” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "climate_humidity_low_rh": "“RH · আর্দ্রতা · ডিভাইস (%) · RH MIN” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "climate_humidity_high_rh": "“RH · আর্দ্রতা · ডিভাইস (%) · RH MAX” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "climate_humidity_hysteresis_rh": "“RH · আর্দ্রতা · ডিভাইস · ± RH” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
           "climate_cooling_dry_deferral_rh_points": "এই বিকল্প “ডিভাইস · তাপমাত্রা −” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "climate_humidity_setpoint_auto": "এই বিকল্প “আর্দ্রতা · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "climate_window_efficiency_notify": "এই বিকল্প “ডিভাইস · বাইরের” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "climate_dry_fan_mode_auto": "এই বিকল্প “গতি · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_dry_fan_hardware_confirmed": "“গতি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_dry_fan_windowless_confirmed": "“গতি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_dry_fan_mode_dwell_s": "এই সময় “গতি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_dry_fan_hardware_confirmed": "“DRY/FAN_ONLY · গতি · ডিভাইস · আবশ্যক · HW ✓” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "climate_dry_fan_windowless_confirmed": "“DRY/FAN_ONLY · গতি · ডিভাইস · বাইরের · আবশ্যক · NO WINDOW” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "climate_dry_fan_mode_dwell_s": "এই সময় “DRY/FAN_ONLY · গতি · ডিভাইস (s) · MODE DWELL” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
           "climate_humidity_power_auto": "এই বিকল্প “আর্দ্রতা · শক্তি · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_humidity_power_hardware_confirmed": "“আর্দ্রতা · শক্তি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_humidity_power_windowless_confirmed": "“আর্দ্রতা · শক্তি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_humidity_power_min_on_s": "এই সময় “আর্দ্রতা · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_humidity_power_min_off_s": "এই সময় “আর্দ্রতা · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_humidity_power_max_on_s": "এই সময় “আর্দ্রতা · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_secondary_climate_setpoint_auto": "এই বিকল্প “স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।"
+          "climate_humidity_power_hardware_confirmed": "“RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · আবশ্যক · HW ✓” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "climate_humidity_power_windowless_confirmed": "“RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · বাইরের · আবশ্যক · NO WINDOW” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "climate_humidity_power_min_on_s": "এই সময় “RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MIN ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_humidity_power_min_off_s": "এই সময় “RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · বন্ধ (s) · MIN OFF” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_humidity_power_max_on_s": "এই সময় “RH POWER · আর্দ্রতা · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MAX ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_secondary_climate_setpoint_auto": "এই বিকল্প “ডিভাইস · স্বয়ংক্রিয় · TARGET AUTO” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।"
         }
       },
       "climate_air_strategy": {
@@ -744,54 +748,54 @@
         "data": {
           "climate_fan_speed_auto": "গতি · স্বয়ংক্রিয়",
           "climate_fan_power_auto": "গতি · শক্তি · স্বয়ংক্রিয়",
-          "climate_fan_power_hardware_confirmed": "গতি · শক্তি",
-          "climate_fan_power_min_on_s": "গতি · শক্তি",
-          "climate_fan_power_min_off_s": "গতি · শক্তি",
-          "climate_fan_power_max_on_s": "গতি · শক্তি",
-          "climate_pm25_sensor_verified": "সেন্সর",
-          "climate_co2_entity": "উৎস",
-          "climate_pm25_entity": "উৎস",
+          "climate_fan_power_hardware_confirmed": "FAN · গতি · ডিভাইস · শক্তি · আবশ্যক · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · গতি · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · গতি · ডিভাইস · শক্তি · বন্ধ (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · গতি · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · ডিভাইস · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · ডিভাইস · উৎস",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · ডিভাইস · উৎস",
           "climate_pm25_action_ug_m3": "PM2.5 · ডিভাইস (µg/m³)",
-          "climate_extraction_speed_percent": "ডিভাইস · গতি (%)",
-          "climate_purifier_speed_percent": "ডিভাইস · গতি (%)"
+          "climate_extraction_speed_percent": "EXTRACT · ডিভাইস · গতি (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · ডিভাইস · গতি (%) · SPEED %"
         },
         "data_description": {
           "climate_fan_speed_auto": "এই বিকল্প “গতি · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
           "climate_fan_power_auto": "এই বিকল্প “গতি · শক্তি · স্বয়ংক্রিয়” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
-          "climate_fan_power_hardware_confirmed": "“গতি · শক্তি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_fan_power_min_on_s": "এই সময় “গতি · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_fan_power_min_off_s": "এই সময় “গতি · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_fan_power_max_on_s": "এই সময় “গতি · শক্তি” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "climate_pm25_sensor_verified": "“সেন্সর” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "climate_co2_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "climate_pm25_entity": "“উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_fan_power_hardware_confirmed": "“FAN · গতি · ডিভাইস · শক্তি · আবশ্যক · HW ✓” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
+          "climate_fan_power_min_on_s": "এই সময় “FAN · গতি · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MIN ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_fan_power_min_off_s": "এই সময় “FAN · গতি · ডিভাইস · শক্তি · বন্ধ (s) · MIN OFF” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_fan_power_max_on_s": "এই সময় “FAN · গতি · ডিভাইস · শক্তি · স্বয়ংক্রিয় (s) · MAX ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "climate_pm25_sensor_verified": "“PM2.5 · PM2.5 · ডিভাইস · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIED” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড PM2.5 · PM2.5 · ডিভাইস · সেন্সর · আবশ্যক · SENSOR ✓ · VERIFIEDের বিকল্প নয়।",
+          "climate_co2_entity": "“CO₂ · CO₂ · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant CO₂ · CO₂ · ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
+          "climate_pm25_entity": "“PM2.5 · PM2.5 · ডিভাইস · উৎস” এর জন্য প্রকৃত Home Assistant PM2.5 · PM2.5 · ডিভাইস · উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "climate_pm25_action_ug_m3": "“PM2.5 · ডিভাইস (µg/m³)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "climate_extraction_speed_percent": "“ডিভাইস · গতি (%)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
-          "climate_purifier_speed_percent": "“ডিভাইস · গতি (%)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
+          "climate_extraction_speed_percent": "“EXTRACT · ডিভাইস · গতি (%) · SPEED %” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।",
+          "climate_purifier_speed_percent": "“PURIFIER · ডিভাইস · গতি (%) · SPEED %” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।"
         }
       },
       "climate_profiles": {
         "title": "সেটিংস · ডিভাইস",
         "description": "এলাকা · সেটিংস · ডিভাইস · নিয়ন্ত্রণ. উপস্থিতি · সেন্সর · আবশ্যক.",
         "data": {
-          "home_heat": "বাড়ি (°C)",
-          "home_cool": "বাড়ি (°C)",
-          "unoccupied_heat": "তাপমাত্রা + (°C)",
-          "unoccupied_cool": "তাপমাত্রা − (°C)",
-          "away_heat": "বাড়ি (°C)",
-          "away_cool": "বাড়ি (°C)",
-          "sleep_heat": "ঘুম (°C)",
-          "sleep_cool": "ঘুম (°C)"
+          "home_heat": "উত্তাপ · বাড়িতে (°C)",
+          "home_cool": "শীতলীকরণ · বাড়িতে (°C)",
+          "unoccupied_heat": "উত্তাপ · খালি ঘর (°C)",
+          "unoccupied_cool": "শীতলীকরণ · খালি ঘর (°C)",
+          "away_heat": "উত্তাপ · বাড়ির বাইরে (°C)",
+          "away_cool": "শীতলীকরণ · বাড়ির বাইরে (°C)",
+          "sleep_heat": "উত্তাপ · ঘুম (°C)",
+          "sleep_cool": "শীতলীকরণ · ঘুম (°C)"
         },
         "data_description": {
-          "home_heat": "“বাড়ি (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "home_cool": "“বাড়ি (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "unoccupied_heat": "“তাপমাত্রা + (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "unoccupied_cool": "“তাপমাত্রা − (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "away_heat": "“বাড়ি (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "away_cool": "“বাড়ি (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "sleep_heat": "“ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "sleep_cool": "“ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।"
+          "home_heat": "“উত্তাপ · বাড়িতে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "home_cool": "“শীতলীকরণ · বাড়িতে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "unoccupied_heat": "“উত্তাপ · খালি ঘর (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "unoccupied_cool": "“শীতলীকরণ · খালি ঘর (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "away_heat": "“উত্তাপ · বাড়ির বাইরে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "away_cool": "“শীতলীকরণ · বাড়ির বাইরে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "sleep_heat": "“উত্তাপ · ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "sleep_cool": "“শীতলীকরণ · ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।"
         }
       },
       "climate_actuators": {
@@ -799,35 +803,35 @@
         "description": "এলাকা · সেটিংস · ডিভাইস · নিয়ন্ত্রণ. উপস্থিতি · সেন্সর · আবশ্যক.",
         "data": {
           "direct_hardware_confirmed": "আবশ্যক",
-          "heat_actuator": "ডিভাইস",
-          "cool_actuator": "ডিভাইস",
-          "min_on_s": "শক্তি · স্বয়ংক্রিয় (s)",
+          "heat_actuator": "উত্তাপ · ডিভাইস",
+          "cool_actuator": "শীতলীকরণ · ডিভাইস",
+          "min_on_s": "শক্তি · স্বয়ংক্রিয় (s) · MIN ON",
           "min_off_s": "শক্তি · বন্ধ (s)",
-          "max_on_s": "শক্তি · স্বয়ংক্রিয় (s)",
-          "mode_dwell_s": "সেটিংস · উৎস (s)",
-          "kp": "সেটিংস · উৎস (°C)",
-          "ki": "সেটিংস · উৎস (°C)",
-          "kd": "সেটিংস · উৎস (°C)",
-          "sample_seconds": "সেটিংস · উৎস (s)",
-          "pwm_period_s": "সেটিংস · উৎস (s)",
-          "max_demand_change": "সেটিংস · উৎস",
-          "min_demand_change": "সেটিংস · উৎস"
+          "max_on_s": "শক্তি · স্বয়ংক্রিয় (s) · MAX ON",
+          "mode_dwell_s": "সেটিংস · উৎস (s) · MODE DWELL",
+          "kp": "PID Kp · নিয়ন্ত্রণ (percentage points/°C)",
+          "ki": "PID Ki · নিয়ন্ত্রণ (percentage points/(°C·minute))",
+          "kd": "PID Kd · নিয়ন্ত্রণ (percentage points·minute/°C)",
+          "sample_seconds": "সেটিংস · উৎস (s) · SAMPLE",
+          "pwm_period_s": "সেটিংস · উৎস (s) · PWM PERIOD",
+          "max_demand_change": "সেটিংস · উৎস · MAX Δ",
+          "min_demand_change": "সেটিংস · উৎস · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "“আবশ্যক” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়।",
-          "heat_actuator": "“ডিভাইস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "cool_actuator": "“ডিভাইস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "min_on_s": "এই সময় “শক্তি · স্বয়ংক্রিয় (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "heat_actuator": "“উত্তাপ · ডিভাইস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "cool_actuator": "“শীতলীকরণ · ডিভাইস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "min_on_s": "এই সময় “শক্তি · স্বয়ংক্রিয় (s) · MIN ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
           "min_off_s": "এই সময় “শক্তি · বন্ধ (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "max_on_s": "এই সময় “শক্তি · স্বয়ংক্রিয় (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "mode_dwell_s": "এই সময় “সেটিংস · উৎস (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "kp": "“সেটিংস · উৎস (°C)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "ki": "“সেটিংস · উৎস (°C)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "kd": "“সেটিংস · উৎস (°C)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "sample_seconds": "এই সময় “সেটিংস · উৎস (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "pwm_period_s": "এই সময় “সেটিংস · উৎস (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "max_demand_change": "“সেটিংস · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "min_demand_change": "“সেটিংস · উৎস” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।"
+          "max_on_s": "এই সময় “শক্তি · স্বয়ংক্রিয় (s) · MAX ON” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "mode_dwell_s": "এই সময় “সেটিংস · উৎস (s) · MODE DWELL” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "kp": "“PID Kp · নিয়ন্ত্রণ (percentage points/°C)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "ki": "“PID Ki · নিয়ন্ত্রণ (percentage points/(°C·minute))” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "kd": "“PID Kd · নিয়ন্ত্রণ (percentage points·minute/°C)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "sample_seconds": "এই সময় “সেটিংস · উৎস (s) · SAMPLE” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "pwm_period_s": "এই সময় “সেটিংস · উৎস (s) · PWM PERIOD” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
+          "max_demand_change": "“সেটিংস · উৎস · MAX Δ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "min_demand_change": "“সেটিংস · উৎস · MIN Δ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।"
         }
       },
       "outside_data": {
@@ -897,15 +901,15 @@
         "description": "পরাগ: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
         "data": {
           "pollen_entity": "পরাগ · উৎস",
-          "pollen_high_from": "পরাগ",
-          "pollen_max_scale": "পরাগ",
-          "pollen_avoid_ventilation": "পরাগ"
+          "pollen_high_from": "POLLEN · পরাগ · HIGH",
+          "pollen_max_scale": "POLLEN · পরাগ · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · পরাগ · NO VENT"
         },
         "data_description": {
           "pollen_entity": "“পরাগ · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
-          "pollen_high_from": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_max_scale": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_avoid_ventilation": "“পরাগ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।"
+          "pollen_high_from": "“POLLEN · পরাগ · HIGH” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "pollen_max_scale": "“POLLEN · পরাগ · SCALE” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
+          "pollen_avoid_ventilation": "“POLLEN · পরাগ · NO VENT” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।"
         }
       },
       "outside_aqi": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "শক্তি · min ON (s)",
           "device_min_off_s": "শক্তি · min OFF (s)",
           "device_max_on_s": "শক্তি · max ON (s)",
-          "device_home_heat_c": "বাড়ি · তাপমাত্রা + · লক্ষ্য (°C)",
-          "device_home_cool_c": "বাড়ি · তাপমাত্রা − · লক্ষ্য (°C)",
-          "device_unoccupied_heat_c": "ঘর · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)",
-          "device_unoccupied_cool_c": "ঘর · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)",
-          "device_away_heat_c": "বাড়ি · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)",
-          "device_away_cool_c": "বাড়ি · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)",
-          "device_sleep_heat_c": "ঘুম · তাপমাত্রা + · লক্ষ্য (°C)",
-          "device_sleep_cool_c": "ঘুম · তাপমাত্রা − · লক্ষ্য (°C)"
+          "device_home_heat_c": "উত্তাপ · বাড়িতে (°C)",
+          "device_home_cool_c": "শীতলীকরণ · বাড়িতে (°C)",
+          "device_unoccupied_heat_c": "উত্তাপ · খালি ঘর (°C)",
+          "device_unoccupied_cool_c": "শীতলীকরণ · খালি ঘর (°C)",
+          "device_away_heat_c": "উত্তাপ · বাড়ির বাইরে (°C)",
+          "device_away_cool_c": "শীতলীকরণ · বাড়ির বাইরে (°C)",
+          "device_sleep_heat_c": "উত্তাপ · ঘুম (°C)",
+          "device_sleep_cool_c": "শীতলীকরণ · ঘুম (°C)"
         },
         "data_description": {
           "device_auto_control": "এই বিকল্প “স্বয়ংক্রিয় নিয়ন্ত্রণ” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার।",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "এই সময় “শক্তি · min ON (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
           "device_min_off_s": "এই সময় “শক্তি · min OFF (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
           "device_max_on_s": "এই সময় “শক্তি · max ON (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়।",
-          "device_home_heat_c": "“বাড়ি · তাপমাত্রা + · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_home_cool_c": "“বাড়ি · তাপমাত্রা − · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_unoccupied_heat_c": "“ঘর · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_unoccupied_cool_c": "“ঘর · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_away_heat_c": "“বাড়ি · বন্ধ · তাপমাত্রা + · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_away_cool_c": "“বাড়ি · বন্ধ · তাপমাত্রা − · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_sleep_heat_c": "“ঘুম · তাপমাত্রা + · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
-          "device_sleep_cool_c": "“ঘুম · তাপমাত্রা − · লক্ষ্য (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।"
+          "device_home_heat_c": "“উত্তাপ · বাড়িতে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_home_cool_c": "“শীতলীকরণ · বাড়িতে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_unoccupied_heat_c": "“উত্তাপ · খালি ঘর (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_unoccupied_cool_c": "“শীতলীকরণ · খালি ঘর (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_away_heat_c": "“উত্তাপ · বাড়ির বাইরে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_away_cool_c": "“শীতলীকরণ · বাড়ির বাইরে (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_sleep_heat_c": "“উত্তাপ · ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।",
+          "device_sleep_cool_c": "“শীতলীকরণ · ঘুম (°C)” লক্ষ্য কেবল উপস্থিতি বা ঘুম নিশ্চিত হলে প্রযোজ্য। অজানা মানে খালি ঘর নয়।"
         }
       }
     },
@@ -1174,69 +1178,168 @@
         "name": "লক্ষ্য (°C)"
       },
       "area_pid_kp": {
-        "name": "PID (%, °C)"
+        "name": "PID Kp · নিয়ন্ত্রণ (% per °C)"
       },
       "area_pid_ki": {
-        "name": "PID (%, °C)"
+        "name": "PID Ki · নিয়ন্ত্রণ (% per °C-minute)"
       },
       "area_pid_kd": {
-        "name": "PID (%, °C)"
+        "name": "PID Kd · নিয়ন্ত্রণ (%·minute per °C)"
       },
       "area_pid_offset_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · PID_OFFSET_C"
       },
       "area_pid_min_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN TARGET"
       },
       "area_pid_max_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX TARGET"
       },
       "area_pid_sample_seconds": {
         "name": "PID (s)"
       },
       "area_pid_max_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX Δ"
       },
       "area_pid_min_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN Δ"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · বাড়ি (°C)"
+        "name": "উত্তাপ · বাড়িতে (°C)"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · বাড়ি (°C)"
+        "name": "শীতলীকরণ · বাড়িতে (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · তাপমাত্রা + (°C)"
+        "name": "উত্তাপ · খালি ঘর (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · তাপমাত্রা − (°C)"
+        "name": "শীতলীকরণ · খালি ঘর (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · বাড়ি (°C)"
+        "name": "উত্তাপ · বাড়ির বাইরে (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · বাড়ি (°C)"
+        "name": "শীতলীকরণ · বাড়ির বাইরে (°C)"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · ঘুম (°C)"
+        "name": "উত্তাপ · ঘুম (°C)"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · ঘুম (°C)"
+        "name": "শীতলীকরণ · ঘুম (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · পরাগ · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · পরাগ · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "উৎস · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "সেটিংস · উৎস (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · লক্ষ্য (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "গতি · বাইরের (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "সেটিংস · উৎস (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "সেটিংস · উৎস (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "ডিভাইস · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "উপস্থিতি · ডিভাইস · সেন্সর · আবশ্যক"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "ডিভাইস (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · আর্দ্রতা · ডিভাইস (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · আর্দ্রতা · ডিভাইস (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · আর্দ্রতা · ডিভাইস · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "ডিভাইস · তাপমাত্রা −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · ডিভাইস (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · ডিভাইস · গতি (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · ডিভাইস · গতি (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · নিয়ন্ত্রণ (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · নিয়ন্ত্রণ (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · নিয়ন্ত্রণ (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "সেটিংস · উৎস (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "সেটিংস · উৎস · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "সেটিংস · উৎস · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "ছাঁচের সূচক · 🧊 °C"
       }
     },
     "switch": {
       "home_automatic_notifications": {
-        "name": "স্বয়ংক্রিয় বিজ্ঞপ্তি"
+        "name": "স্বয়ংক্রিয় · AUTOMATIC_NOTIFICATIONS"
       },
       "home_automatic_tts": {
-        "name": "স্বয়ংক্রিয় ভয়েস ঘোষণা"
+        "name": "স্বয়ংক্রিয়"
       },
       "home_use_announcement_hub": {
         "name": "Announcement Hub"
       },
       "home_ai_rewrite_announcements": {
         "name": "AI · ঘোষণা (ঐচ্ছিক)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · পরাগ · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "ঘুম"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · স্বয়ংক্রিয়"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "ঘুম · ডিভাইস"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "ঘুম · স্বয়ংক্রিয়"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "ডিভাইস · বাইরের"
       }
     },
     "select": {
@@ -1244,7 +1347,7 @@
         "name": "ভাষা"
       },
       "area_manual_profile": {
-        "name": "ডিভাইস"
+        "name": "ডিভাইস · CLIMATE_MANUAL_PROFILE"
       },
       "area_pid_gain_source": {
         "name": "Gain source",
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "বাড়ি · উপস্থিতি · নিয়ন্ত্রণ"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "উপস্থিতি · ডিভাইস"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "বাড়ি · ডিভাইস · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "ডিভাইস · উৎস · লক্ষ্য"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "ঘুম · ডিভাইস · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "ঘুম · ডিভাইস · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "ছাঁচের সূচক · ↻ 🌡️"
       }
     }
   },

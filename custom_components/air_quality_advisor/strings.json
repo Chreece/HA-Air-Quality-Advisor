@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "Sensors to exclude in this room",
           "mold_indoor_temperature": "Room temperature sensor for mold calibration",
           "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
-          "mold_recalibrate": "Recalibrate with current room and outdoor readings"
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
           "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
           "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
-          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration."
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "Sensors to exclude in this room",
           "mold_indoor_temperature": "Room temperature sensor for mold calibration",
           "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
-          "mold_recalibrate": "Recalibrate with current room and outdoor readings"
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
           "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
           "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
-          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration."
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -1201,28 +1205,109 @@
         "name": "Minimum meaningful setpoint change (°C)"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · Home heat"
+        "name": "Home heat"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · Home cool"
+        "name": "Home cool"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · Unoccupied heat"
+        "name": "Unoccupied heat"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · Unoccupied cool"
+        "name": "Unoccupied cool"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · Away heat"
+        "name": "Away heat"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · Away cool"
+        "name": "Away cool"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · Sleep heat"
+        "name": "Sleep heat"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · Sleep cool"
+        "name": "Sleep cool"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "Pollen scale: threshold treated as high"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "Pollen provider's maximum scale value"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "Maximum room/sleep source age (minutes)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "Measured room air volume (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "Air purifier rated particle CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ ventilation target (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Annual radon screening reference (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Otherwise: explicitly estimated air speed (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "Occupant activity rate (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "Occupant clothing insulation (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Delay before considering a room unoccupied (minutes)"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Maximum age of last occupancy sensor report (minutes)"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Maximum comfort adjustment (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "Minimum target relative humidity (%)"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "Maximum target relative humidity (%)"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "Humidity decision hysteresis (percentage points)"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "Highest target speed for already-on extraction fan (%)"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "Highest target speed for already-on purifier fan (%)"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID proportional gain (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID integral gain (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID derivative gain (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "PID sampling period (seconds)"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "Maximum percentage-point change per cycle"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "Minimum meaningful percentage-point change"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Measured coldest surface temperature (°C)"
       }
     },
     "switch": {
@@ -1237,6 +1322,24 @@
       },
       "home_ai_rewrite_announcements": {
         "name": "Use AI for announcements"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "Avoid window ventilation when pollen is high (opt in)"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "This is a sleeping room"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "Calculate full ISO 7730 PMV/PPD (opt in)"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Sleep profile currently active in this room"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Use a local-time sleep schedule"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)"
       }
     },
     "select": {
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Home · Occupancy · control"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "If occupancy is unknown: assume occupied or hold"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Whole-house away tracking policy"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Fixed temperatures or optional ISO 7730 comfort"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Sleep period begins (local time)"
+      },
+      "area_climate_sleep_end": {
+        "name": "Sleep period ends (local time)"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Recalibrate with current room and outdoor readings"
       }
     }
   },

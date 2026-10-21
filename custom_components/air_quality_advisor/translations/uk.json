@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "Виключити датчики повітря в приміщенні",
           "mold_indoor_temperature": "Кімнати · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "Індикатор цвілі · 🧊 °C",
-          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️"
+          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "Кімнати: 🌡️ °C/°F · Індикатор цвілі.",
           "mold_critical_temperature_c": "🧊 Індикатор цвілі · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "Використовуйте реальний відповідний вимір для «Індикатор цвілі · ↻ 🌡️». Оцінка не замінює калібрований датчик."
+          "mold_recalibrate": "Використовуйте реальний відповідний вимір для «Індикатор цвілі · ↻ 🌡️». Оцінка не замінює калібрований датчик.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -67,25 +69,25 @@
         "description": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
         "data": {
           "language": "Мова",
-          "automatic_tts": "Автоматичні голосові оголошення",
-          "automatic_notifications": "Автоматичні сповіщення",
+          "automatic_tts": "Автоматичне",
+          "automatic_notifications": "Автоматичне · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "Оголошення (необов’язково) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "Автоматичні сповіщення",
-          "tts_engine": "Автоматичні голосові оголошення",
-          "media_players": "Автоматичні голосові оголошення",
+          "notify_entities": "налаштування · джерело",
+          "tts_engine": "налаштування · джерело · TTS_ENGINE",
+          "media_players": "налаштування · джерело · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · Оголошення (необов’язково)",
           "ai_conversation_agent": "AI · Мова"
         },
         "data_description": {
           "language": "Налаштовуйте «Мова» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "automatic_tts": "Типово: ⛔ · Автоматичні голосові оголошення · 🪟 90 s.",
-          "automatic_notifications": "Типово: ⛔ · Автоматичні сповіщення.",
+          "automatic_tts": "Типово: ⛔ · Автоматичне · 🪟 90 s. Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
+          "automatic_notifications": "Типово: ⛔ · Автоматичне · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "Типово: 10 min · 0 = ніколи · Доки зберігається та сама причина · Кімнати.",
           "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
-          "notify_entities": "Оберіть: notify.* · Автоматичні сповіщення.",
-          "tts_engine": "Оберіть: tts.* · Автоматичні голосові оголошення.",
-          "media_players": "Оберіть: media_player.* · Автоматичні голосові оголошення.",
+          "notify_entities": "Оберіть: notify.* · налаштування · джерело.",
+          "tts_engine": "Оберіть: tts.* · налаштування · джерело · TTS_ENGINE.",
+          "media_players": "Оберіть: media_player.* · налаштування · джерело · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово)."
         }
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "Виключити датчики повітря в приміщенні",
           "mold_indoor_temperature": "Кімнати · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "Індикатор цвілі · 🧊 °C",
-          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️"
+          "mold_recalibrate": "Індикатор цвілі · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "Оберіть: Виключити датчики повітря в приміщенні · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "Кімнати: 🌡️ °C/°F · Індикатор цвілі.",
           "mold_critical_temperature_c": "🧊 Індикатор цвілі · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "Використовуйте реальний відповідний вимір для «Індикатор цвілі · ↻ 🌡️». Оцінка не замінює калібрований датчик."
+          "mold_recalibrate": "Використовуйте реальний відповідний вимір для «Індикатор цвілі · ↻ 🌡️». Оцінка не замінює калібрований датчик.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -251,25 +255,25 @@
         "description": "Оголошення (необов’язково). Автоматичні сповіщення · Автоматичні голосові оголошення. Announcement Hub.",
         "data": {
           "language": "Мова",
-          "automatic_tts": "Автоматичні голосові оголошення",
-          "automatic_notifications": "Автоматичні сповіщення",
+          "automatic_tts": "Автоматичне",
+          "automatic_notifications": "Автоматичне · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "Оголошення (необов’язково) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "Автоматичні сповіщення",
-          "tts_engine": "Автоматичні голосові оголошення",
-          "media_players": "Автоматичні голосові оголошення",
+          "notify_entities": "налаштування · джерело",
+          "tts_engine": "налаштування · джерело · TTS_ENGINE",
+          "media_players": "налаштування · джерело · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · Оголошення (необов’язково)",
           "ai_conversation_agent": "AI · Мова"
         },
         "data_description": {
           "language": "Налаштовуйте «Мова» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "automatic_tts": "Типово: ⛔ · Автоматичні голосові оголошення · 🪟 90 s.",
-          "automatic_notifications": "Типово: ⛔ · Автоматичні сповіщення.",
+          "automatic_tts": "Типово: ⛔ · Автоматичне · 🪟 90 s. Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
+          "automatic_notifications": "Типово: ⛔ · Автоматичне · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "Типово: 10 min · 0 = ніколи · Доки зберігається та сама причина · Кімнати.",
           "use_announcement_hub": "Announcement Hub · Недоступно → Home Assistant.",
-          "notify_entities": "Оберіть: notify.* · Автоматичні сповіщення.",
-          "tts_engine": "Оберіть: tts.* · Автоматичні голосові оголошення.",
-          "media_players": "Оберіть: media_player.* · Автоматичні голосові оголошення.",
+          "notify_entities": "Оберіть: notify.* · налаштування · джерело.",
+          "tts_engine": "Оберіть: tts.* · налаштування · джерело · TTS_ENGINE.",
+          "media_players": "Оберіть: media_player.* · налаштування · джерело · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · Оголошення (необов’язково) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово)."
         }
@@ -331,9 +335,9 @@
         "description": "Налаштовуйте «налаштування · налаштування · джерело» лише для вибраної кімнати. Недійсні дані блокують дію.",
         "data": {
           "pollen_entity": "Пилок · джерело",
-          "pollen_high_from": "Пилок",
-          "pollen_max_scale": "Пилок",
-          "pollen_avoid_ventilation": "Пилок",
+          "pollen_high_from": "POLLEN · Пилок · HIGH",
+          "pollen_max_scale": "POLLEN · Пилок · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Пилок · NO VENT",
           "aqi_scale_0": "AQI #1 · джерело",
           "aqi_custom_limit_0": "AQI #1 · ціль",
           "aqi_scale_1": "AQI #2 · джерело",
@@ -401,9 +405,9 @@
         },
         "data_description": {
           "pollen_entity": "Оберіть справжнє джерело Home Assistant для «Пилок · джерело». Відсутні чи застарілі дані блокують дію.",
-          "pollen_high_from": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_max_scale": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_avoid_ventilation": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "pollen_high_from": "Налаштовуйте «POLLEN · Пилок · HIGH» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "pollen_max_scale": "Налаштовуйте «POLLEN · Пилок · SCALE» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "pollen_avoid_ventilation": "Налаштовуйте «POLLEN · Пилок · NO VENT» лише для вибраної кімнати. Недійсні дані блокують дію.",
           "aqi_scale_0": "Налаштовуйте «AQI #1 · джерело» лише для вибраної кімнати. Недійсні дані блокують дію.",
           "aqi_custom_limit_0": "Поріг рішення для «AQI #1 · ціль». Впливає на поради, але не є медичною нормою.",
           "aqi_scale_1": "Налаштовуйте «AQI #2 · джерело» лише для вибраної кімнати. Недійсні дані блокують дію.",
@@ -487,20 +491,20 @@
           "temperature_entity": "Температура · джерело",
           "room_volume_m3": "налаштування · джерело (m³)",
           "particle_cadr_m3h": "CADR (m³/h)",
-          "purifier_entity": "джерело",
-          "extractor_entity": "джерело",
+          "purifier_entity": "Очищувач повітря · джерело",
+          "extractor_entity": "Витяжний вентилятор · джерело",
           "co2_ndir_verified": "CO₂ · Обов'язково",
-          "co2_target_ppm": "ціль",
+          "co2_target_ppm": "CO₂ · CO₂ · ціль (ppm)",
           "sleep_room": "Сон"
         },
         "data_description": {
           "temperature_entity": "Оберіть справжнє джерело Home Assistant для «Температура · джерело». Відсутні чи застарілі дані блокують дію.",
           "room_volume_m3": "Використовуйте реальний відповідний вимір для «налаштування · джерело (m³)». Оцінка не замінює калібрований датчик.",
           "particle_cadr_m3h": "Використовуйте реальний відповідний вимір для «CADR (m³/h)». Оцінка не замінює калібрований датчик.",
-          "purifier_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "extractor_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
+          "purifier_entity": "Оберіть справжнє Очищувач повітря · джерело Home Assistant для «Очищувач повітря · джерело». Відсутні чи застарілі дані блокують дію.",
+          "extractor_entity": "Оберіть справжнє Витяжний вентилятор · джерело Home Assistant для «Витяжний вентилятор · джерело». Відсутні чи застарілі дані блокують дію.",
           "co2_ndir_verified": "Використовуйте реальний відповідний вимір для «CO₂ · Обов'язково». Оцінка не замінює калібрований датчик.",
-          "co2_target_ppm": "Поріг рішення для «ціль». Впливає на поради, але не є медичною нормою.",
+          "co2_target_ppm": "Поріг рішення для «CO₂ · CO₂ · ціль (ppm)». Впливає на поради, але не є медичною нормою.",
           "sleep_room": "Налаштовуйте «Сон» лише для вибраної кімнати. Недійсні дані блокують дію."
         }
       },
@@ -508,27 +512,27 @@
         "title": "налаштування · налаштування · джерело",
         "description": "Налаштовуйте «налаштування · налаштування · джерело» лише для вибраної кімнати. Недійсні дані блокують дію.",
         "data": {
-          "radon_entity": "джерело",
-          "radon_sensor_verified": "датчик",
+          "radon_entity": "RADON · Rn · джерело",
+          "radon_sensor_verified": "RADON · Rn · датчик · Обов'язково · SENSOR ✓ · VERIFIED",
           "radon_reference_bq_m3": "Rn (Bq/m³)",
-          "formaldehyde_entity": "джерело",
-          "formaldehyde_sensor_verified": "датчик",
-          "noise_entity": "джерело",
-          "noise_sensor_calibrated": "датчик",
-          "illuminance_entity": "джерело",
-          "melanopic_edi_entity": "джерело",
+          "formaldehyde_entity": "HCHO · джерело",
+          "formaldehyde_sensor_verified": "HCHO · датчик · Обов'язково · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · джерело · датчик (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · датчик · Обов'язково",
+          "illuminance_entity": "LUX · джерело (lux)",
+          "melanopic_edi_entity": "EDI · EDI · джерело (lx)",
           "melanopic_spectral_verified": "EDI · Обов'язково"
         },
         "data_description": {
-          "radon_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "radon_sensor_verified": "Використовуйте реальний відповідний вимір для «датчик». Оцінка не замінює калібрований датчик.",
+          "radon_entity": "Оберіть справжнє RADON · Rn · джерело Home Assistant для «RADON · Rn · джерело». Відсутні чи застарілі дані блокують дію.",
+          "radon_sensor_verified": "Використовуйте реальний відповідний вимір для «RADON · Rn · датчик · Обов'язково · SENSOR ✓ · VERIFIED». Оцінка не замінює калібрований RADON · Rn · датчик · Обов'язково · SENSOR ✓ · VERIFIED.",
           "radon_reference_bq_m3": "Налаштовуйте «Rn (Bq/m³)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "formaldehyde_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "formaldehyde_sensor_verified": "Використовуйте реальний відповідний вимір для «датчик». Оцінка не замінює калібрований датчик.",
-          "noise_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "noise_sensor_calibrated": "Використовуйте реальний відповідний вимір для «датчик». Оцінка не замінює калібрований датчик.",
-          "illuminance_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "melanopic_edi_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
+          "formaldehyde_entity": "Оберіть справжнє HCHO · джерело Home Assistant для «HCHO · джерело». Відсутні чи застарілі дані блокують дію.",
+          "formaldehyde_sensor_verified": "Використовуйте реальний відповідний вимір для «HCHO · датчик · Обов'язково · SENSOR ✓ · VERIFIED». Оцінка не замінює калібрований HCHO · датчик · Обов'язково · SENSOR ✓ · VERIFIED.",
+          "noise_entity": "Оберіть справжнє dB(A) · джерело · датчик (dB(A)) Home Assistant для «dB(A) · джерело · датчик (dB(A))». Відсутні чи застарілі дані блокують дію.",
+          "noise_sensor_calibrated": "Використовуйте реальний відповідний вимір для «dB(A) · датчик · Обов'язково». Оцінка не замінює калібрований dB(A) · датчик · Обов'язково.",
+          "illuminance_entity": "Оберіть справжнє LUX · джерело (lux) Home Assistant для «LUX · джерело (lux)». Відсутні чи застарілі дані блокують дію.",
+          "melanopic_edi_entity": "Оберіть справжнє EDI · EDI · джерело (lx) Home Assistant для «EDI · EDI · джерело (lx)». Відсутні чи застарілі дані блокують дію.",
           "melanopic_spectral_verified": "Використовуйте реальний відповідний вимір для «EDI · Обов'язково». Оцінка не замінює калібрований датчик."
         }
       },
@@ -538,7 +542,7 @@
         "data": {
           "enable_pmv": "PMV / PPD · Автоматичне",
           "radiant_temperature_entity": "Температура · джерело",
-          "air_speed_entity": "джерело",
+          "air_speed_entity": "джерело · Швидкість · Зовнішні (m/s)",
           "air_speed_m_s": "Швидкість · Зовнішні (m/s)",
           "met": "налаштування · джерело (met)",
           "clo": "налаштування · джерело (clo)"
@@ -546,7 +550,7 @@
         "data_description": {
           "enable_pmv": "Налаштовуйте «PMV / PPD · Автоматичне» лише для вибраної кімнати. Недійсні дані блокують дію.",
           "radiant_temperature_entity": "Оберіть справжнє джерело Home Assistant для «Температура · джерело». Відсутні чи застарілі дані блокують дію.",
-          "air_speed_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
+          "air_speed_entity": "Оберіть справжнє джерело · Швидкість · Зовнішні (m/s) Home Assistant для «джерело · Швидкість · Зовнішні (m/s)». Відсутні чи застарілі дані блокують дію.",
           "air_speed_m_s": "Використовуйте реальний відповідний вимір для «Швидкість · Зовнішні (m/s)». Оцінка не замінює калібрований датчик.",
           "met": "Використовуйте реальний відповідний вимір для «налаштування · джерело (met)». Оцінка не замінює калібрований датчик.",
           "clo": "Використовуйте реальний відповідний вимір для «налаштування · джерело (clo)». Оцінка не замінює калібрований датчик."
@@ -566,7 +570,7 @@
         "title": "налаштування · PID",
         "description": "Налаштовуйте «налаштування · PID» лише для вибраної кімнати. Недійсні дані блокують дію.",
         "data": {
-          "pid_enabled": "Автоматичне",
+          "pid_enabled": "PID · Автоматичне · AUTO",
           "pid_climate_entities": "PID · Пристрої",
           "pid_temperature_entity": "Температура · джерело",
           "pid_mode": "PID",
@@ -574,7 +578,7 @@
           "pid_pause_on_window_open": "PID · Зовнішні"
         },
         "data_description": {
-          "pid_enabled": "Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
+          "pid_enabled": "Це налаштування керує «PID · Автоматичне · AUTO». Фізичні команди потребують окремого дозволу й захисту.",
           "pid_climate_entities": "Оберіть справжнє джерело Home Assistant для «PID · Пристрої». Відсутні чи застарілі дані блокують дію.",
           "pid_temperature_entity": "Оберіть справжнє джерело Home Assistant для «Температура · джерело». Відсутні чи застарілі дані блокують дію.",
           "pid_mode": "Це налаштування керує «PID». Фізичні команди потребують окремого дозволу й захисту.",
@@ -586,26 +590,26 @@
         "title": "налаштування · PID",
         "description": "Налаштовуйте «налаштування · PID» лише для вибраної кімнати. Недійсні дані блокують дію.",
         "data": {
-          "pid_kp": "PID (%, °C)",
-          "pid_ki": "PID (%, °C)",
-          "pid_kd": "PID (%, °C)",
-          "pid_offset_c": "PID (°C)",
-          "pid_min_setpoint_c": "PID (°C)",
-          "pid_max_setpoint_c": "PID (°C)",
+          "pid_kp": "PID Kp · керування (% per °C)",
+          "pid_ki": "PID Ki · керування (% per °C-minute)",
+          "pid_kd": "PID Kd · керування (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
           "pid_sample_seconds": "PID (s)",
-          "pid_max_change_c": "PID (°C)",
-          "pid_min_change_c": "PID (°C)"
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
         },
         "data_description": {
-          "pid_kp": "Це налаштування керує «PID (%, °C)». Фізичні команди потребують окремого дозволу й захисту.",
-          "pid_ki": "Це налаштування керує «PID (%, °C)». Фізичні команди потребують окремого дозволу й захисту.",
-          "pid_kd": "Це налаштування керує «PID (%, °C)». Фізичні команди потребують окремого дозволу й захисту.",
-          "pid_offset_c": "Поріг рішення для «PID (°C)». Впливає на поради, але не є медичною нормою.",
-          "pid_min_setpoint_c": "Поріг рішення для «PID (°C)». Впливає на поради, але не є медичною нормою.",
-          "pid_max_setpoint_c": "Поріг рішення для «PID (°C)». Впливає на поради, але не є медичною нормою.",
+          "pid_kp": "Це налаштування керує «PID Kp · керування (% per °C)». Фізичні команди потребують окремого дозволу й захисту.",
+          "pid_ki": "Це налаштування керує «PID Ki · керування (% per °C-minute)». Фізичні команди потребують окремого дозволу й захисту.",
+          "pid_kd": "Це налаштування керує «PID Kd · керування (%·minute per °C)». Фізичні команди потребують окремого дозволу й захисту.",
+          "pid_offset_c": "Поріг рішення для «PID (°C) · PID_OFFSET_C». Впливає на поради, але не є медичною нормою.",
+          "pid_min_setpoint_c": "Поріг рішення для «PID (°C) · MIN TARGET». Впливає на поради, але не є медичною нормою.",
+          "pid_max_setpoint_c": "Поріг рішення для «PID (°C) · MAX TARGET». Впливає на поради, але не є медичною нормою.",
           "pid_sample_seconds": "Цей інтервал визначає «PID (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "pid_max_change_c": "Поріг рішення для «PID (°C)». Впливає на поради, але не є медичною нормою.",
-          "pid_min_change_c": "Поріг рішення для «PID (°C)». Впливає на поради, але не є медичною нормою."
+          "pid_max_change_c": "Поріг рішення для «PID (°C) · MAX Δ». Впливає на поради, але не є медичною нормою.",
+          "pid_min_change_c": "Поріг рішення для «PID (°C) · MIN Δ». Впливає на поради, але не є медичною нормою."
         }
       },
       "climate": {
@@ -622,24 +626,24 @@
         "title": "налаштування · Пристрої",
         "description": "Зона · налаштування · Пристрої · керування. Присутність · датчик · Обов'язково.",
         "data": {
-          "climate_enabled": "Автоматичне",
-          "climate_allow_actuation": "Пристрої",
-          "climate_auto_switch_hvac": "Автоматичне",
-          "climate_prefer_native_auto": "Автоматичне",
-          "climate_controller": "керування",
-          "climate_mode": "Пристрої",
-          "climate_entity": "джерело",
+          "climate_enabled": "Пристрої · Автоматичне · AUTO",
+          "climate_allow_actuation": "Пристрої · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Пристрої · Автоматичне · MODE SWITCH",
+          "climate_prefer_native_auto": "Пристрої · Автоматичне · NATIVE",
+          "climate_controller": "Пристрої · керування",
+          "climate_mode": "Пристрої · MODE",
+          "climate_entity": "Пристрої · джерело",
           "climate_temperature_entity": "Температура · джерело",
           "climate_hysteresis_c": "Пристрої (°C)"
         },
         "data_description": {
-          "climate_enabled": "Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_allow_actuation": "Це налаштування керує «Пристрої». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_auto_switch_hvac": "Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_prefer_native_auto": "Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_controller": "Це налаштування керує «керування». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_mode": "Це налаштування керує «Пристрої». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_enabled": "Це налаштування керує «Пристрої · Автоматичне · AUTO». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_allow_actuation": "Це налаштування керує «Пристрої · CLIMATE_ALLOW_ACTUATION». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_auto_switch_hvac": "Це налаштування керує «Пристрої · Автоматичне · MODE SWITCH». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_prefer_native_auto": "Це налаштування керує «Пристрої · Автоматичне · NATIVE». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_controller": "Це налаштування керує «Пристрої · керування». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_mode": "Це налаштування керує «Пристрої · MODE». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_entity": "Оберіть справжнє Пристрої · джерело Home Assistant для «Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
           "climate_temperature_entity": "Оберіть справжнє джерело Home Assistant для «Температура · джерело». Відсутні чи застарілі дані блокують дію.",
           "climate_hysteresis_c": "Поріг рішення для «Пристрої (°C)». Впливає на поради, але не є медичною нормою."
         }
@@ -649,32 +653,32 @@
         "description": "Зона · налаштування · Пристрої · керування. Присутність · датчик · Обов'язково.",
         "data": {
           "climate_occupancy_sensors": "Присутність · датчик",
-          "climate_away_entities": "Дім",
-          "climate_unknown_occupancy": "Присутність",
-          "climate_unoccupied_delay_minutes": "Пристрої",
-          "climate_occupancy_stale_minutes": "Присутність",
-          "climate_away_policy": "Дім",
-          "climate_manual_profile": "Пристрої",
-          "climate_sleep_active": "Сон",
+          "climate_away_entities": "Дім · Пристрої",
+          "climate_unknown_occupancy": "Присутність · Пристрої",
+          "climate_unoccupied_delay_minutes": "Пристрої · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Присутність · Пристрої · датчик · Обов'язково",
+          "climate_away_policy": "Дім · Пристрої · POLICY",
+          "climate_manual_profile": "Пристрої · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Сон · Пристрої",
           "climate_sleep_schedule_enabled": "Сон · Автоматичне",
-          "climate_sleep_start": "Сон",
-          "climate_sleep_end": "Сон",
-          "climate_target_source": "ціль",
+          "climate_sleep_start": "Сон · Пристрої · START",
+          "climate_sleep_end": "Сон · Пристрої · END",
+          "climate_target_source": "Пристрої · джерело · ціль",
           "climate_comfort_adjustment_max_c": "Пристрої (°C)"
         },
         "data_description": {
           "climate_occupancy_sensors": "Оберіть справжнє джерело Home Assistant для «Присутність · датчик». Відсутні чи застарілі дані блокують дію.",
-          "climate_away_entities": "Оберіть справжнє джерело Home Assistant для «Дім». Відсутні чи застарілі дані блокують дію.",
-          "climate_unknown_occupancy": "Це налаштування керує «Присутність». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_unoccupied_delay_minutes": "Цей інтервал визначає «Пристрої». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_occupancy_stale_minutes": "Цей інтервал визначає «Присутність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_away_policy": "Це налаштування керує «Дім». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_manual_profile": "Це налаштування керує «Пристрої». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_sleep_active": "Це налаштування керує «Сон». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_away_entities": "Оберіть справжнє джерело Home Assistant для «Дім · Пристрої». Відсутні чи застарілі дані блокують дію.",
+          "climate_unknown_occupancy": "Це налаштування керує «Присутність · Пристрої». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_unoccupied_delay_minutes": "Цей інтервал визначає «Пристрої · CLIMATE_UNOCCUPIED_DELAY_MINUTES». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_occupancy_stale_minutes": "Цей інтервал визначає «Присутність · Пристрої · датчик · Обов'язково». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_away_policy": "Це налаштування керує «Дім · Пристрої · POLICY». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_manual_profile": "Це налаштування керує «Пристрої · CLIMATE_MANUAL_PROFILE». Фізичні команди потребують окремого дозволу й захисту.",
+          "climate_sleep_active": "Це налаштування керує «Сон · Пристрої». Фізичні команди потребують окремого дозволу й захисту.",
           "climate_sleep_schedule_enabled": "Це налаштування керує «Сон · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_sleep_start": "Цей інтервал визначає «Сон». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_sleep_end": "Цей інтервал визначає «Сон». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_target_source": "Поріг рішення для «ціль». Впливає на поради, але не є медичною нормою.",
+          "climate_sleep_start": "Цей інтервал визначає «Сон · Пристрої · START». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_sleep_end": "Цей інтервал визначає «Сон · Пристрої · END». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_target_source": "Поріг рішення для «Пристрої · джерело · ціль». Впливає на поради, але не є медичною нормою.",
           "climate_comfort_adjustment_max_c": "Поріг рішення для «Пристрої (°C)». Впливає на поради, але не є медичною нормою."
         }
       },
@@ -682,60 +686,60 @@
         "title": "налаштування · Пристрої",
         "description": "Зона · налаштування · Пристрої · керування. Присутність · датчик · Обов'язково.",
         "data": {
-          "climate_heat_climate_entity": "джерело",
-          "climate_cool_climate_entity": "джерело",
-          "climate_dry_climate_entity": "джерело",
-          "climate_fan_climate_entity": "джерело · Швидкість",
-          "climate_humidifier_entity": "джерело",
-          "climate_dehumidifier_entity": "джерело",
-          "climate_extraction_fan_entity": "джерело · Швидкість",
-          "climate_purifier_fan_entity": "джерело · Швидкість",
+          "climate_heat_climate_entity": "HEAT · Пристрої · джерело · Температура +",
+          "climate_cool_climate_entity": "COOL · Пристрої · джерело · Температура −",
+          "climate_dry_climate_entity": "DRY · Пристрої · джерело",
+          "climate_fan_climate_entity": "FAN_ONLY · Швидкість · Пристрої · джерело",
+          "climate_humidifier_entity": "HUMIDIFIER · Пристрої · джерело",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Пристрої · джерело",
+          "climate_extraction_fan_entity": "EXTRACT · Швидкість · Пристрої · джерело",
+          "climate_purifier_fan_entity": "Очищувач повітря · джерело",
           "climate_humidity_entity": "Вологість · джерело",
-          "climate_humidity_low_rh": "Вологість",
-          "climate_humidity_high_rh": "Вологість",
-          "climate_humidity_hysteresis_rh": "Вологість",
+          "climate_humidity_low_rh": "RH · Вологість · Пристрої (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Вологість · Пристрої (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Вологість · Пристрої · ± RH",
           "climate_cooling_dry_deferral_rh_points": "Пристрої · Температура −",
           "climate_humidity_setpoint_auto": "Вологість · Автоматичне",
           "climate_window_efficiency_notify": "Пристрої · Зовнішні",
           "climate_dry_fan_mode_auto": "Швидкість · Автоматичне",
-          "climate_dry_fan_hardware_confirmed": "Швидкість",
-          "climate_dry_fan_windowless_confirmed": "Швидкість",
-          "climate_dry_fan_mode_dwell_s": "Швидкість",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Швидкість · Пристрої · Обов'язково · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Швидкість · Пристрої · Зовнішні · Обов'язково · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Швидкість · Пристрої (s) · MODE DWELL",
           "climate_humidity_power_auto": "Вологість · Потужність · Автоматичне",
-          "climate_humidity_power_hardware_confirmed": "Вологість · Потужність",
-          "climate_humidity_power_windowless_confirmed": "Вологість · Потужність",
-          "climate_humidity_power_min_on_s": "Вологість · Потужність",
-          "climate_humidity_power_min_off_s": "Вологість · Потужність",
-          "climate_humidity_power_max_on_s": "Вологість · Потужність",
-          "climate_secondary_climate_setpoint_auto": "Автоматичне"
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Вологість · Пристрої · Потужність · Обов'язково · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Вологість · Пристрої · Потужність · Зовнішні · Обов'язково · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Вологість · Пристрої · Потужність · Автоматичне (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Вологість · Пристрої · Потужність · Вимкнути (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Вологість · Пристрої · Потужність · Автоматичне (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Пристрої · Автоматичне · TARGET AUTO"
         },
         "data_description": {
-          "climate_heat_climate_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_cool_climate_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_dry_climate_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_fan_climate_entity": "Оберіть справжнє джерело Home Assistant для «джерело · Швидкість». Відсутні чи застарілі дані блокують дію.",
-          "climate_humidifier_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_dehumidifier_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_extraction_fan_entity": "Оберіть справжнє джерело Home Assistant для «джерело · Швидкість». Відсутні чи застарілі дані блокують дію.",
-          "climate_purifier_fan_entity": "Оберіть справжнє джерело Home Assistant для «джерело · Швидкість». Відсутні чи застарілі дані блокують дію.",
+          "climate_heat_climate_entity": "Оберіть справжнє HEAT · Пристрої · джерело · Температура + Home Assistant для «HEAT · Пристрої · джерело · Температура +». Відсутні чи застарілі дані блокують дію.",
+          "climate_cool_climate_entity": "Оберіть справжнє COOL · Пристрої · джерело · Температура − Home Assistant для «COOL · Пристрої · джерело · Температура −». Відсутні чи застарілі дані блокують дію.",
+          "climate_dry_climate_entity": "Оберіть справжнє DRY · Пристрої · джерело Home Assistant для «DRY · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_fan_climate_entity": "Оберіть справжнє джерело Home Assistant для «FAN_ONLY · Швидкість · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_humidifier_entity": "Оберіть справжнє HUMIDIFIER · Пристрої · джерело Home Assistant для «HUMIDIFIER · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_dehumidifier_entity": "Оберіть справжнє DEHUMIDIFIER · Пристрої · джерело Home Assistant для «DEHUMIDIFIER · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_extraction_fan_entity": "Оберіть справжнє джерело Home Assistant для «EXTRACT · Швидкість · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_purifier_fan_entity": "Оберіть справжнє джерело Home Assistant для «Очищувач повітря · джерело». Відсутні чи застарілі дані блокують дію.",
           "climate_humidity_entity": "Оберіть справжнє джерело Home Assistant для «Вологість · джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_humidity_low_rh": "Поріг рішення для «Вологість». Впливає на поради, але не є медичною нормою.",
-          "climate_humidity_high_rh": "Поріг рішення для «Вологість». Впливає на поради, але не є медичною нормою.",
-          "climate_humidity_hysteresis_rh": "Поріг рішення для «Вологість». Впливає на поради, але не є медичною нормою.",
+          "climate_humidity_low_rh": "Поріг рішення для «RH · Вологість · Пристрої (%) · RH MIN». Впливає на поради, але не є медичною нормою.",
+          "climate_humidity_high_rh": "Поріг рішення для «RH · Вологість · Пристрої (%) · RH MAX». Впливає на поради, але не є медичною нормою.",
+          "climate_humidity_hysteresis_rh": "Поріг рішення для «RH · Вологість · Пристрої · ± RH». Впливає на поради, але не є медичною нормою.",
           "climate_cooling_dry_deferral_rh_points": "Це налаштування керує «Пристрої · Температура −». Фізичні команди потребують окремого дозволу й захисту.",
           "climate_humidity_setpoint_auto": "Це налаштування керує «Вологість · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
           "climate_window_efficiency_notify": "Це налаштування керує «Пристрої · Зовнішні». Фізичні команди потребують окремого дозволу й захисту.",
           "climate_dry_fan_mode_auto": "Це налаштування керує «Швидкість · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_dry_fan_hardware_confirmed": "Використовуйте реальний відповідний вимір для «Швидкість». Оцінка не замінює калібрований датчик.",
-          "climate_dry_fan_windowless_confirmed": "Використовуйте реальний відповідний вимір для «Швидкість». Оцінка не замінює калібрований датчик.",
-          "climate_dry_fan_mode_dwell_s": "Цей інтервал визначає «Швидкість». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_dry_fan_hardware_confirmed": "Використовуйте реальний відповідний вимір для «DRY/FAN_ONLY · Швидкість · Пристрої · Обов'язково · HW ✓». Оцінка не замінює калібрований датчик.",
+          "climate_dry_fan_windowless_confirmed": "Використовуйте реальний відповідний вимір для «DRY/FAN_ONLY · Швидкість · Пристрої · Зовнішні · Обов'язково · NO WINDOW». Оцінка не замінює калібрований датчик.",
+          "climate_dry_fan_mode_dwell_s": "Цей інтервал визначає «DRY/FAN_ONLY · Швидкість · Пристрої (s) · MODE DWELL». Обмежує часті перемикання, але не замінює захист обладнання.",
           "climate_humidity_power_auto": "Це налаштування керує «Вологість · Потужність · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_humidity_power_hardware_confirmed": "Використовуйте реальний відповідний вимір для «Вологість · Потужність». Оцінка не замінює калібрований датчик.",
-          "climate_humidity_power_windowless_confirmed": "Використовуйте реальний відповідний вимір для «Вологість · Потужність». Оцінка не замінює калібрований датчик.",
-          "climate_humidity_power_min_on_s": "Цей інтервал визначає «Вологість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_humidity_power_min_off_s": "Цей інтервал визначає «Вологість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_humidity_power_max_on_s": "Цей інтервал визначає «Вологість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_secondary_climate_setpoint_auto": "Це налаштування керує «Автоматичне». Фізичні команди потребують окремого дозволу й захисту."
+          "climate_humidity_power_hardware_confirmed": "Використовуйте реальний відповідний вимір для «RH POWER · Вологість · Пристрої · Потужність · Обов'язково · HW ✓». Оцінка не замінює калібрований датчик.",
+          "climate_humidity_power_windowless_confirmed": "Використовуйте реальний відповідний вимір для «RH POWER · Вологість · Пристрої · Потужність · Зовнішні · Обов'язково · NO WINDOW». Оцінка не замінює калібрований датчик.",
+          "climate_humidity_power_min_on_s": "Цей інтервал визначає «RH POWER · Вологість · Пристрої · Потужність · Автоматичне (s) · MIN ON». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_humidity_power_min_off_s": "Цей інтервал визначає «RH POWER · Вологість · Пристрої · Потужність · Вимкнути (s) · MIN OFF». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_humidity_power_max_on_s": "Цей інтервал визначає «RH POWER · Вологість · Пристрої · Потужність · Автоматичне (s) · MAX ON». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_secondary_climate_setpoint_auto": "Це налаштування керує «Пристрої · Автоматичне · TARGET AUTO». Фізичні команди потребують окремого дозволу й захисту."
         }
       },
       "climate_air_strategy": {
@@ -744,54 +748,54 @@
         "data": {
           "climate_fan_speed_auto": "Швидкість · Автоматичне",
           "climate_fan_power_auto": "Швидкість · Потужність · Автоматичне",
-          "climate_fan_power_hardware_confirmed": "Швидкість · Потужність",
-          "climate_fan_power_min_on_s": "Швидкість · Потужність",
-          "climate_fan_power_min_off_s": "Швидкість · Потужність",
-          "climate_fan_power_max_on_s": "Швидкість · Потужність",
-          "climate_pm25_sensor_verified": "датчик",
-          "climate_co2_entity": "джерело",
-          "climate_pm25_entity": "джерело",
+          "climate_fan_power_hardware_confirmed": "FAN · Швидкість · Пристрої · Потужність · Обов'язково · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Швидкість · Пристрої · Потужність · Автоматичне (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Швидкість · Пристрої · Потужність · Вимкнути (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Швидкість · Пристрої · Потужність · Автоматичне (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Пристрої · датчик · Обов'язково · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Пристрої · джерело",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Пристрої · джерело",
           "climate_pm25_action_ug_m3": "PM2.5 · Пристрої (µg/m³)",
-          "climate_extraction_speed_percent": "Пристрої · Швидкість (%)",
-          "climate_purifier_speed_percent": "Пристрої · Швидкість (%)"
+          "climate_extraction_speed_percent": "EXTRACT · Пристрої · Швидкість (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Пристрої · Швидкість (%) · SPEED %"
         },
         "data_description": {
           "climate_fan_speed_auto": "Це налаштування керує «Швидкість · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
           "climate_fan_power_auto": "Це налаштування керує «Швидкість · Потужність · Автоматичне». Фізичні команди потребують окремого дозволу й захисту.",
-          "climate_fan_power_hardware_confirmed": "Використовуйте реальний відповідний вимір для «Швидкість · Потужність». Оцінка не замінює калібрований датчик.",
-          "climate_fan_power_min_on_s": "Цей інтервал визначає «Швидкість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_fan_power_min_off_s": "Цей інтервал визначає «Швидкість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_fan_power_max_on_s": "Цей інтервал визначає «Швидкість · Потужність». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "climate_pm25_sensor_verified": "Використовуйте реальний відповідний вимір для «датчик». Оцінка не замінює калібрований датчик.",
-          "climate_co2_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
-          "climate_pm25_entity": "Оберіть справжнє джерело Home Assistant для «джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_fan_power_hardware_confirmed": "Використовуйте реальний відповідний вимір для «FAN · Швидкість · Пристрої · Потужність · Обов'язково · HW ✓». Оцінка не замінює калібрований датчик.",
+          "climate_fan_power_min_on_s": "Цей інтервал визначає «FAN · Швидкість · Пристрої · Потужність · Автоматичне (s) · MIN ON». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_fan_power_min_off_s": "Цей інтервал визначає «FAN · Швидкість · Пристрої · Потужність · Вимкнути (s) · MIN OFF». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_fan_power_max_on_s": "Цей інтервал визначає «FAN · Швидкість · Пристрої · Потужність · Автоматичне (s) · MAX ON». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "climate_pm25_sensor_verified": "Використовуйте реальний відповідний вимір для «PM2.5 · PM2.5 · Пристрої · датчик · Обов'язково · SENSOR ✓ · VERIFIED». Оцінка не замінює калібрований PM2.5 · PM2.5 · Пристрої · датчик · Обов'язково · SENSOR ✓ · VERIFIED.",
+          "climate_co2_entity": "Оберіть справжнє CO₂ · CO₂ · Пристрої · джерело Home Assistant для «CO₂ · CO₂ · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
+          "climate_pm25_entity": "Оберіть справжнє PM2.5 · PM2.5 · Пристрої · джерело Home Assistant для «PM2.5 · PM2.5 · Пристрої · джерело». Відсутні чи застарілі дані блокують дію.",
           "climate_pm25_action_ug_m3": "Поріг рішення для «PM2.5 · Пристрої (µg/m³)». Впливає на поради, але не є медичною нормою.",
-          "climate_extraction_speed_percent": "Поріг рішення для «Пристрої · Швидкість (%)». Впливає на поради, але не є медичною нормою.",
-          "climate_purifier_speed_percent": "Поріг рішення для «Пристрої · Швидкість (%)». Впливає на поради, але не є медичною нормою."
+          "climate_extraction_speed_percent": "Поріг рішення для «EXTRACT · Пристрої · Швидкість (%) · SPEED %». Впливає на поради, але не є медичною нормою.",
+          "climate_purifier_speed_percent": "Поріг рішення для «PURIFIER · Пристрої · Швидкість (%) · SPEED %». Впливає на поради, але не є медичною нормою."
         }
       },
       "climate_profiles": {
         "title": "налаштування · Пристрої",
         "description": "Зона · налаштування · Пристрої · керування. Присутність · датчик · Обов'язково.",
         "data": {
-          "home_heat": "Дім (°C)",
-          "home_cool": "Дім (°C)",
-          "unoccupied_heat": "Температура + (°C)",
-          "unoccupied_cool": "Температура − (°C)",
-          "away_heat": "Дім (°C)",
-          "away_cool": "Дім (°C)",
-          "sleep_heat": "Сон (°C)",
-          "sleep_cool": "Сон (°C)"
+          "home_heat": "Опалення · Вдома (°C)",
+          "home_cool": "Охолодження · Вдома (°C)",
+          "unoccupied_heat": "Опалення · Порожня кімната (°C)",
+          "unoccupied_cool": "Охолодження · Порожня кімната (°C)",
+          "away_heat": "Опалення · Відсутність (°C)",
+          "away_cool": "Охолодження · Відсутність (°C)",
+          "sleep_heat": "Опалення · Сон (°C)",
+          "sleep_cool": "Охолодження · Сон (°C)"
         },
         "data_description": {
-          "home_heat": "Ціль «Дім (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "home_cool": "Ціль «Дім (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "unoccupied_heat": "Ціль «Температура + (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "unoccupied_cool": "Ціль «Температура − (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "away_heat": "Ціль «Дім (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "away_cool": "Ціль «Дім (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "sleep_heat": "Ціль «Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "sleep_cool": "Ціль «Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату."
+          "home_heat": "Ціль «Опалення · Вдома (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "home_cool": "Ціль «Охолодження · Вдома (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "unoccupied_heat": "Ціль «Опалення · Порожня кімната (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "unoccupied_cool": "Ціль «Охолодження · Порожня кімната (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "away_heat": "Ціль «Опалення · Відсутність (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "away_cool": "Ціль «Охолодження · Відсутність (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "sleep_heat": "Ціль «Опалення · Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "sleep_cool": "Ціль «Охолодження · Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату."
         }
       },
       "climate_actuators": {
@@ -799,35 +803,35 @@
         "description": "Зона · налаштування · Пристрої · керування. Присутність · датчик · Обов'язково.",
         "data": {
           "direct_hardware_confirmed": "Обов'язково",
-          "heat_actuator": "Пристрої",
-          "cool_actuator": "Пристрої",
-          "min_on_s": "Потужність · Автоматичне (s)",
+          "heat_actuator": "Опалення · Пристрої",
+          "cool_actuator": "Охолодження · Пристрої",
+          "min_on_s": "Потужність · Автоматичне (s) · MIN ON",
           "min_off_s": "Потужність · Вимкнути (s)",
-          "max_on_s": "Потужність · Автоматичне (s)",
-          "mode_dwell_s": "налаштування · джерело (s)",
-          "kp": "налаштування · джерело (°C)",
-          "ki": "налаштування · джерело (°C)",
-          "kd": "налаштування · джерело (°C)",
-          "sample_seconds": "налаштування · джерело (s)",
-          "pwm_period_s": "налаштування · джерело (s)",
-          "max_demand_change": "налаштування · джерело",
-          "min_demand_change": "налаштування · джерело"
+          "max_on_s": "Потужність · Автоматичне (s) · MAX ON",
+          "mode_dwell_s": "налаштування · джерело (s) · MODE DWELL",
+          "kp": "PID Kp · керування (percentage points/°C)",
+          "ki": "PID Ki · керування (percentage points/(°C·minute))",
+          "kd": "PID Kd · керування (percentage points·minute/°C)",
+          "sample_seconds": "налаштування · джерело (s) · SAMPLE",
+          "pwm_period_s": "налаштування · джерело (s) · PWM PERIOD",
+          "max_demand_change": "налаштування · джерело · MAX Δ",
+          "min_demand_change": "налаштування · джерело · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "Використовуйте реальний відповідний вимір для «Обов'язково». Оцінка не замінює калібрований датчик.",
-          "heat_actuator": "Налаштовуйте «Пристрої» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "cool_actuator": "Налаштовуйте «Пристрої» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "min_on_s": "Цей інтервал визначає «Потужність · Автоматичне (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "heat_actuator": "Налаштовуйте «Опалення · Пристрої» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "cool_actuator": "Налаштовуйте «Охолодження · Пристрої» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "min_on_s": "Цей інтервал визначає «Потужність · Автоматичне (s) · MIN ON». Обмежує часті перемикання, але не замінює захист обладнання.",
           "min_off_s": "Цей інтервал визначає «Потужність · Вимкнути (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "max_on_s": "Цей інтервал визначає «Потужність · Автоматичне (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "mode_dwell_s": "Цей інтервал визначає «налаштування · джерело (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "kp": "Налаштовуйте «налаштування · джерело (°C)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "ki": "Налаштовуйте «налаштування · джерело (°C)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "kd": "Налаштовуйте «налаштування · джерело (°C)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "sample_seconds": "Цей інтервал визначає «налаштування · джерело (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "pwm_period_s": "Цей інтервал визначає «налаштування · джерело (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "max_demand_change": "Налаштовуйте «налаштування · джерело» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "min_demand_change": "Налаштовуйте «налаштування · джерело» лише для вибраної кімнати. Недійсні дані блокують дію."
+          "max_on_s": "Цей інтервал визначає «Потужність · Автоматичне (s) · MAX ON». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "mode_dwell_s": "Цей інтервал визначає «налаштування · джерело (s) · MODE DWELL». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "kp": "Налаштовуйте «PID Kp · керування (percentage points/°C)» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "ki": "Налаштовуйте «PID Ki · керування (percentage points/(°C·minute))» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "kd": "Налаштовуйте «PID Kd · керування (percentage points·minute/°C)» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "sample_seconds": "Цей інтервал визначає «налаштування · джерело (s) · SAMPLE». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "pwm_period_s": "Цей інтервал визначає «налаштування · джерело (s) · PWM PERIOD». Обмежує часті перемикання, але не замінює захист обладнання.",
+          "max_demand_change": "Налаштовуйте «налаштування · джерело · MAX Δ» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "min_demand_change": "Налаштовуйте «налаштування · джерело · MIN Δ» лише для вибраної кімнати. Недійсні дані блокують дію."
         }
       },
       "outside_data": {
@@ -897,15 +901,15 @@
         "description": "Пилок: Обрати джерело, датчик / Пристрої · керування.",
         "data": {
           "pollen_entity": "Пилок · джерело",
-          "pollen_high_from": "Пилок",
-          "pollen_max_scale": "Пилок",
-          "pollen_avoid_ventilation": "Пилок"
+          "pollen_high_from": "POLLEN · Пилок · HIGH",
+          "pollen_max_scale": "POLLEN · Пилок · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Пилок · NO VENT"
         },
         "data_description": {
           "pollen_entity": "Оберіть справжнє джерело Home Assistant для «Пилок · джерело». Відсутні чи застарілі дані блокують дію.",
-          "pollen_high_from": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_max_scale": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_avoid_ventilation": "Налаштовуйте «Пилок» лише для вибраної кімнати. Недійсні дані блокують дію."
+          "pollen_high_from": "Налаштовуйте «POLLEN · Пилок · HIGH» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "pollen_max_scale": "Налаштовуйте «POLLEN · Пилок · SCALE» лише для вибраної кімнати. Недійсні дані блокують дію.",
+          "pollen_avoid_ventilation": "Налаштовуйте «POLLEN · Пилок · NO VENT» лише для вибраної кімнати. Недійсні дані блокують дію."
         }
       },
       "outside_aqi": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "Потужність · min ON (s)",
           "device_min_off_s": "Потужність · min OFF (s)",
           "device_max_on_s": "Потужність · max ON (s)",
-          "device_home_heat_c": "Дім · Температура + · ціль (°C)",
-          "device_home_cool_c": "Дім · Температура − · ціль (°C)",
-          "device_unoccupied_heat_c": "Кімната · Вимкнути · Температура + · ціль (°C)",
-          "device_unoccupied_cool_c": "Кімната · Вимкнути · Температура − · ціль (°C)",
-          "device_away_heat_c": "Дім · Вимкнути · Температура + · ціль (°C)",
-          "device_away_cool_c": "Дім · Вимкнути · Температура − · ціль (°C)",
-          "device_sleep_heat_c": "Сон · Температура + · ціль (°C)",
-          "device_sleep_cool_c": "Сон · Температура − · ціль (°C)"
+          "device_home_heat_c": "Опалення · Вдома (°C)",
+          "device_home_cool_c": "Охолодження · Вдома (°C)",
+          "device_unoccupied_heat_c": "Опалення · Порожня кімната (°C)",
+          "device_unoccupied_cool_c": "Охолодження · Порожня кімната (°C)",
+          "device_away_heat_c": "Опалення · Відсутність (°C)",
+          "device_away_cool_c": "Охолодження · Відсутність (°C)",
+          "device_sleep_heat_c": "Опалення · Сон (°C)",
+          "device_sleep_cool_c": "Охолодження · Сон (°C)"
         },
         "data_description": {
           "device_auto_control": "Це налаштування керує «Автоматичне керування». Фізичні команди потребують окремого дозволу й захисту.",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "Цей інтервал визначає «Потужність · min ON (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
           "device_min_off_s": "Цей інтервал визначає «Потужність · min OFF (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
           "device_max_on_s": "Цей інтервал визначає «Потужність · max ON (s)». Обмежує часті перемикання, але не замінює захист обладнання.",
-          "device_home_heat_c": "Ціль «Дім · Температура + · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_home_cool_c": "Ціль «Дім · Температура − · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_unoccupied_heat_c": "Ціль «Кімната · Вимкнути · Температура + · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_unoccupied_cool_c": "Ціль «Кімната · Вимкнути · Температура − · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_away_heat_c": "Ціль «Дім · Вимкнути · Температура + · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_away_cool_c": "Ціль «Дім · Вимкнути · Температура − · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_sleep_heat_c": "Ціль «Сон · Температура + · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
-          "device_sleep_cool_c": "Ціль «Сон · Температура − · ціль (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату."
+          "device_home_heat_c": "Ціль «Опалення · Вдома (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_home_cool_c": "Ціль «Охолодження · Вдома (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_unoccupied_heat_c": "Ціль «Опалення · Порожня кімната (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_unoccupied_cool_c": "Ціль «Охолодження · Порожня кімната (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_away_heat_c": "Ціль «Опалення · Відсутність (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_away_cool_c": "Ціль «Охолодження · Відсутність (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_sleep_heat_c": "Ціль «Опалення · Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату.",
+          "device_sleep_cool_c": "Ціль «Охолодження · Сон (°C)» діє лише за підтвердженої присутності чи сну. Невідомий стан не означає порожню кімнату."
         }
       }
     },
@@ -1174,69 +1178,168 @@
         "name": "ціль (°C)"
       },
       "area_pid_kp": {
-        "name": "PID (%, °C)"
+        "name": "PID Kp · керування (% per °C)"
       },
       "area_pid_ki": {
-        "name": "PID (%, °C)"
+        "name": "PID Ki · керування (% per °C-minute)"
       },
       "area_pid_kd": {
-        "name": "PID (%, °C)"
+        "name": "PID Kd · керування (%·minute per °C)"
       },
       "area_pid_offset_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · PID_OFFSET_C"
       },
       "area_pid_min_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN TARGET"
       },
       "area_pid_max_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX TARGET"
       },
       "area_pid_sample_seconds": {
         "name": "PID (s)"
       },
       "area_pid_max_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX Δ"
       },
       "area_pid_min_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN Δ"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · Дім (°C)"
+        "name": "Опалення · Вдома (°C)"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · Дім (°C)"
+        "name": "Охолодження · Вдома (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · Температура + (°C)"
+        "name": "Опалення · Порожня кімната (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · Температура − (°C)"
+        "name": "Охолодження · Порожня кімната (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · Дім (°C)"
+        "name": "Опалення · Відсутність (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · Дім (°C)"
+        "name": "Охолодження · Відсутність (°C)"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · Сон (°C)"
+        "name": "Опалення · Сон (°C)"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · Сон (°C)"
+        "name": "Охолодження · Сон (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Пилок · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Пилок · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "джерело · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "налаштування · джерело (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · ціль (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Швидкість · Зовнішні (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "налаштування · джерело (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "налаштування · джерело (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Пристрої · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Присутність · Пристрої · датчик · Обов'язково"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Пристрої (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Вологість · Пристрої (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Вологість · Пристрої (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Вологість · Пристрої · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Пристрої · Температура −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Пристрої (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Пристрої · Швидкість (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Пристрої · Швидкість (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · керування (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · керування (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · керування (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "налаштування · джерело (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "налаштування · джерело · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "налаштування · джерело · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Індикатор цвілі · 🧊 °C"
       }
     },
     "switch": {
       "home_automatic_notifications": {
-        "name": "Автоматичні сповіщення"
+        "name": "Автоматичне · AUTOMATIC_NOTIFICATIONS"
       },
       "home_automatic_tts": {
-        "name": "Автоматичні голосові оголошення"
+        "name": "Автоматичне"
       },
       "home_use_announcement_hub": {
         "name": "Announcement Hub"
       },
       "home_ai_rewrite_announcements": {
         "name": "AI · Оголошення (необов’язково)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Пилок · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Сон"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Автоматичне"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Сон · Пристрої"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Сон · Автоматичне"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Пристрої · Зовнішні"
       }
     },
     "select": {
@@ -1244,7 +1347,7 @@
         "name": "Мова"
       },
       "area_manual_profile": {
-        "name": "Пристрої"
+        "name": "Пристрої · CLIMATE_MANUAL_PROFILE"
       },
       "area_pid_gain_source": {
         "name": "Gain source",
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Дім · Присутність · керування"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Присутність · Пристрої"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Дім · Пристрої · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Пристрої · джерело · ціль"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Сон · Пристрої · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Сон · Пристрої · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Індикатор цвілі · ↻ 🌡️"
       }
     }
   },

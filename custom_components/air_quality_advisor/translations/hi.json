@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें",
           "mold_indoor_temperature": "कमरे · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "फफूंद संकेतक · 🧊 °C",
-          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️"
+          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "“कमरे · 🌡️ (°C/°F)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
           "mold_critical_temperature_c": "🧊 फफूंद संकेतक · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“फफूंद संकेतक · ↻ 🌡️” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।"
+          "mold_recalibrate": "“फफूंद संकेतक · ↻ 🌡️” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -67,25 +69,25 @@
         "description": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
         "data": {
           "language": "भाषा",
-          "automatic_tts": "स्वचालित ध्वनि घोषणाएँ",
-          "automatic_notifications": "स्वचालित सूचनाएँ",
+          "automatic_tts": "स्वचालित",
+          "automatic_notifications": "स्वचालित · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "घोषणाएँ (वैकल्पिक) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "स्वचालित सूचनाएँ",
-          "tts_engine": "स्वचालित ध्वनि घोषणाएँ",
-          "media_players": "स्वचालित ध्वनि घोषणाएँ",
+          "notify_entities": "सेटिंग · स्रोत",
+          "tts_engine": "सेटिंग · स्रोत · TTS_ENGINE",
+          "media_players": "सेटिंग · स्रोत · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक)",
           "ai_conversation_agent": "AI · भाषा"
         },
         "data_description": {
           "language": "“भाषा” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित ध्वनि घोषणाएँ · 🪟 90 s.",
-          "automatic_notifications": "यह विकल्प “स्वचालित सूचनाएँ” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित · 🪟 90 s. यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "automatic_notifications": "यह विकल्प “स्वचालित · AUTOMATIC_NOTIFICATIONS” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "announcement_repeat_minutes": "डिफ़ॉल्ट: 10 min · 0 = कभी नहीं · जब तक वही कारण बना रहे · कमरे.",
           "use_announcement_hub": "Announcement Hub · उपलब्ध नहीं → Home Assistant.",
-          "notify_entities": "चुनें: notify.* · स्वचालित सूचनाएँ.",
-          "tts_engine": "चुनें: tts.* · स्वचालित ध्वनि घोषणाएँ.",
-          "media_players": "चुनें: media_player.* · स्वचालित ध्वनि घोषणाएँ.",
+          "notify_entities": "चुनें: notify.* · सेटिंग · स्रोत. “सेटिंग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "tts_engine": "चुनें: tts.* · सेटिंग · स्रोत · TTS_ENGINE.",
+          "media_players": "चुनें: media_player.* · सेटिंग · स्रोत · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट)."
         }
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "इनडोर वायु सेंसर बाहर रखें",
           "mold_indoor_temperature": "कमरे · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "फफूंद संकेतक · 🧊 °C",
-          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️"
+          "mold_recalibrate": "फफूंद संकेतक · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "चुनें: इनडोर वायु सेंसर बाहर रखें · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "“कमरे · 🌡️ (°C/°F)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
           "mold_critical_temperature_c": "🧊 फफूंद संकेतक · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“फफूंद संकेतक · ↻ 🌡️” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।"
+          "mold_recalibrate": "“फफूंद संकेतक · ↻ 🌡️” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -251,25 +255,25 @@
         "description": "घोषणाएँ (वैकल्पिक). स्वचालित सूचनाएँ · स्वचालित ध्वनि घोषणाएँ. Announcement Hub.",
         "data": {
           "language": "भाषा",
-          "automatic_tts": "स्वचालित ध्वनि घोषणाएँ",
-          "automatic_notifications": "स्वचालित सूचनाएँ",
+          "automatic_tts": "स्वचालित",
+          "automatic_notifications": "स्वचालित · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "घोषणाएँ (वैकल्पिक) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "स्वचालित सूचनाएँ",
-          "tts_engine": "स्वचालित ध्वनि घोषणाएँ",
-          "media_players": "स्वचालित ध्वनि घोषणाएँ",
+          "notify_entities": "सेटिंग · स्रोत",
+          "tts_engine": "सेटिंग · स्रोत · TTS_ENGINE",
+          "media_players": "सेटिंग · स्रोत · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक)",
           "ai_conversation_agent": "AI · भाषा"
         },
         "data_description": {
           "language": "“भाषा” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित ध्वनि घोषणाएँ · 🪟 90 s.",
-          "automatic_notifications": "यह विकल्प “स्वचालित सूचनाएँ” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "automatic_tts": "डिफ़ॉल्ट: ⛔ · स्वचालित · 🪟 90 s. यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "automatic_notifications": "यह विकल्प “स्वचालित · AUTOMATIC_NOTIFICATIONS” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "announcement_repeat_minutes": "डिफ़ॉल्ट: 10 min · 0 = कभी नहीं · जब तक वही कारण बना रहे · कमरे.",
           "use_announcement_hub": "Announcement Hub · उपलब्ध नहीं → Home Assistant.",
-          "notify_entities": "चुनें: notify.* · स्वचालित सूचनाएँ.",
-          "tts_engine": "चुनें: tts.* · स्वचालित ध्वनि घोषणाएँ.",
-          "media_players": "चुनें: media_player.* · स्वचालित ध्वनि घोषणाएँ.",
+          "notify_entities": "चुनें: notify.* · सेटिंग · स्रोत. “सेटिंग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "tts_engine": "चुनें: tts.* · सेटिंग · स्रोत · TTS_ENGINE.",
+          "media_players": "चुनें: media_player.* · सेटिंग · स्रोत · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · घोषणाएँ (वैकल्पिक) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट)."
         }
@@ -331,9 +335,9 @@
         "description": "“सेटिंग · सेटिंग · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
         "data": {
           "pollen_entity": "पराग · स्रोत",
-          "pollen_high_from": "पराग",
-          "pollen_max_scale": "पराग",
-          "pollen_avoid_ventilation": "पराग",
+          "pollen_high_from": "POLLEN · पराग · HIGH",
+          "pollen_max_scale": "POLLEN · पराग · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · पराग · NO VENT",
           "aqi_scale_0": "AQI #1 · स्रोत",
           "aqi_custom_limit_0": "AQI #1 · लक्ष्य",
           "aqi_scale_1": "AQI #2 · स्रोत",
@@ -401,9 +405,9 @@
         },
         "data_description": {
           "pollen_entity": "“पराग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "pollen_high_from": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "pollen_max_scale": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "pollen_avoid_ventilation": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_high_from": "“POLLEN · पराग · HIGH” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_max_scale": "“POLLEN · पराग · SCALE” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_avoid_ventilation": "“POLLEN · पराग · NO VENT” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
           "aqi_scale_0": "“AQI #1 · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
           "aqi_custom_limit_0": "“AQI #1 · लक्ष्य” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "aqi_scale_1": "“AQI #2 · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
@@ -487,20 +491,20 @@
           "temperature_entity": "तापमान · स्रोत",
           "room_volume_m3": "सेटिंग · स्रोत (m³)",
           "particle_cadr_m3h": "CADR (m³/h)",
-          "purifier_entity": "स्रोत",
-          "extractor_entity": "स्रोत",
+          "purifier_entity": "वायु शोधक · स्रोत",
+          "extractor_entity": "निकास पंखा · स्रोत",
           "co2_ndir_verified": "CO₂ · आवश्यक",
-          "co2_target_ppm": "लक्ष्य",
+          "co2_target_ppm": "CO₂ · CO₂ · लक्ष्य (ppm)",
           "sleep_room": "नींद"
         },
         "data_description": {
           "temperature_entity": "“तापमान · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "room_volume_m3": "“सेटिंग · स्रोत (m³)” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
           "particle_cadr_m3h": "“CADR (m³/h)” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "purifier_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "extractor_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "purifier_entity": "“वायु शोधक · स्रोत” के लिए वास्तविक Home Assistant वायु शोधक · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "extractor_entity": "“निकास पंखा · स्रोत” के लिए वास्तविक Home Assistant निकास पंखा · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "co2_ndir_verified": "“CO₂ · आवश्यक” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "co2_target_ppm": "“लक्ष्य” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "co2_target_ppm": "“CO₂ · CO₂ · लक्ष्य (ppm)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "sleep_room": "“नींद” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।"
         }
       },
@@ -508,27 +512,27 @@
         "title": "सेटिंग · सेटिंग · स्रोत",
         "description": "“सेटिंग · सेटिंग · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
         "data": {
-          "radon_entity": "स्रोत",
-          "radon_sensor_verified": "सेंसर",
+          "radon_entity": "RADON · Rn · स्रोत",
+          "radon_sensor_verified": "RADON · Rn · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED",
           "radon_reference_bq_m3": "Rn (Bq/m³)",
-          "formaldehyde_entity": "स्रोत",
-          "formaldehyde_sensor_verified": "सेंसर",
-          "noise_entity": "स्रोत",
-          "noise_sensor_calibrated": "सेंसर",
-          "illuminance_entity": "स्रोत",
-          "melanopic_edi_entity": "स्रोत",
+          "formaldehyde_entity": "HCHO · स्रोत",
+          "formaldehyde_sensor_verified": "HCHO · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · स्रोत · सेंसर (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · सेंसर · आवश्यक",
+          "illuminance_entity": "LUX · स्रोत (lux)",
+          "melanopic_edi_entity": "EDI · EDI · स्रोत (lx)",
           "melanopic_spectral_verified": "EDI · आवश्यक"
         },
         "data_description": {
-          "radon_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "radon_sensor_verified": "“सेंसर” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "radon_entity": "“RADON · Rn · स्रोत” के लिए वास्तविक Home Assistant RADON · Rn · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "radon_sensor_verified": "“RADON · Rn · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड RADON · Rn · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED का विकल्प नहीं है।",
           "radon_reference_bq_m3": "“Rn (Bq/m³)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "formaldehyde_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "formaldehyde_sensor_verified": "“सेंसर” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "noise_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "noise_sensor_calibrated": "“सेंसर” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "illuminance_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "melanopic_edi_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "formaldehyde_entity": "“HCHO · स्रोत” के लिए वास्तविक Home Assistant HCHO · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "formaldehyde_sensor_verified": "“HCHO · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड HCHO · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED का विकल्प नहीं है।",
+          "noise_entity": "“dB(A) · स्रोत · सेंसर (dB(A))” के लिए वास्तविक Home Assistant dB(A) · स्रोत · सेंसर (dB(A)) चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "noise_sensor_calibrated": "“dB(A) · सेंसर · आवश्यक” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड dB(A) · सेंसर · आवश्यक का विकल्प नहीं है।",
+          "illuminance_entity": "“LUX · स्रोत (lux)” के लिए वास्तविक Home Assistant LUX · स्रोत (lux) चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "melanopic_edi_entity": "“EDI · EDI · स्रोत (lx)” के लिए वास्तविक Home Assistant EDI · EDI · स्रोत (lx) चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "melanopic_spectral_verified": "“EDI · आवश्यक” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।"
         }
       },
@@ -538,7 +542,7 @@
         "data": {
           "enable_pmv": "PMV / PPD · स्वचालित",
           "radiant_temperature_entity": "तापमान · स्रोत",
-          "air_speed_entity": "स्रोत",
+          "air_speed_entity": "स्रोत · गति · बाहरी (m/s)",
           "air_speed_m_s": "गति · बाहरी (m/s)",
           "met": "सेटिंग · स्रोत (met)",
           "clo": "सेटिंग · स्रोत (clo)"
@@ -546,7 +550,7 @@
         "data_description": {
           "enable_pmv": "“PMV / PPD · स्वचालित” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
           "radiant_temperature_entity": "“तापमान · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "air_speed_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "air_speed_entity": "“स्रोत · गति · बाहरी (m/s)” के लिए वास्तविक Home Assistant स्रोत · गति · बाहरी (m/s) चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "air_speed_m_s": "“गति · बाहरी (m/s)” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
           "met": "“सेटिंग · स्रोत (met)” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
           "clo": "“सेटिंग · स्रोत (clo)” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।"
@@ -566,7 +570,7 @@
         "title": "सेटिंग · PID",
         "description": "“सेटिंग · PID” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
         "data": {
-          "pid_enabled": "स्वचालित",
+          "pid_enabled": "PID · स्वचालित · AUTO",
           "pid_climate_entities": "PID · उपकरण",
           "pid_temperature_entity": "तापमान · स्रोत",
           "pid_mode": "PID",
@@ -574,7 +578,7 @@
           "pid_pause_on_window_open": "PID · बाहरी"
         },
         "data_description": {
-          "pid_enabled": "यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "pid_enabled": "यह विकल्प “PID · स्वचालित · AUTO” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "pid_climate_entities": "“PID · उपकरण” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "pid_temperature_entity": "“तापमान · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "pid_mode": "यह विकल्प “PID” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
@@ -586,26 +590,26 @@
         "title": "सेटिंग · PID",
         "description": "“सेटिंग · PID” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
         "data": {
-          "pid_kp": "PID (%, °C)",
-          "pid_ki": "PID (%, °C)",
-          "pid_kd": "PID (%, °C)",
-          "pid_offset_c": "PID (°C)",
-          "pid_min_setpoint_c": "PID (°C)",
-          "pid_max_setpoint_c": "PID (°C)",
+          "pid_kp": "PID Kp · नियंत्रण (% per °C)",
+          "pid_ki": "PID Ki · नियंत्रण (% per °C-minute)",
+          "pid_kd": "PID Kd · नियंत्रण (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
           "pid_sample_seconds": "PID (s)",
-          "pid_max_change_c": "PID (°C)",
-          "pid_min_change_c": "PID (°C)"
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
         },
         "data_description": {
-          "pid_kp": "यह विकल्प “PID (%, °C)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "pid_ki": "यह विकल्प “PID (%, °C)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "pid_kd": "यह विकल्प “PID (%, °C)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "pid_offset_c": "“PID (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "pid_min_setpoint_c": "“PID (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "pid_max_setpoint_c": "“PID (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "pid_kp": "यह विकल्प “PID Kp · नियंत्रण (% per °C)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "pid_ki": "यह विकल्प “PID Ki · नियंत्रण (% per °C-minute)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "pid_kd": "यह विकल्प “PID Kd · नियंत्रण (%·minute per °C)” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "pid_offset_c": "“PID (°C) · PID_OFFSET_C” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "pid_min_setpoint_c": "“PID (°C) · MIN TARGET” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "pid_max_setpoint_c": "“PID (°C) · MAX TARGET” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "pid_sample_seconds": "यह समय “PID (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "pid_max_change_c": "“PID (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "pid_min_change_c": "“PID (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
+          "pid_max_change_c": "“PID (°C) · MAX Δ” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "pid_min_change_c": "“PID (°C) · MIN Δ” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
         }
       },
       "climate": {
@@ -622,24 +626,24 @@
         "title": "सेटिंग · उपकरण",
         "description": "क्षेत्र · सेटिंग · उपकरण · नियंत्रण. उपस्थिति · सेंसर · आवश्यक.",
         "data": {
-          "climate_enabled": "स्वचालित",
-          "climate_allow_actuation": "उपकरण",
-          "climate_auto_switch_hvac": "स्वचालित",
-          "climate_prefer_native_auto": "स्वचालित",
-          "climate_controller": "नियंत्रण",
-          "climate_mode": "उपकरण",
-          "climate_entity": "स्रोत",
+          "climate_enabled": "उपकरण · स्वचालित · AUTO",
+          "climate_allow_actuation": "उपकरण · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "उपकरण · स्वचालित · MODE SWITCH",
+          "climate_prefer_native_auto": "उपकरण · स्वचालित · NATIVE",
+          "climate_controller": "उपकरण · नियंत्रण",
+          "climate_mode": "उपकरण · MODE",
+          "climate_entity": "उपकरण · स्रोत",
           "climate_temperature_entity": "तापमान · स्रोत",
           "climate_hysteresis_c": "उपकरण (°C)"
         },
         "data_description": {
-          "climate_enabled": "यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_allow_actuation": "यह विकल्प “उपकरण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_auto_switch_hvac": "यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_prefer_native_auto": "यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_controller": "यह विकल्प “नियंत्रण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_mode": "यह विकल्प “उपकरण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_enabled": "यह विकल्प “उपकरण · स्वचालित · AUTO” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_allow_actuation": "यह विकल्प “उपकरण · CLIMATE_ALLOW_ACTUATION” नियंत्रित करता है। उपकरण · CLIMATE_ALLOW_ACTUATION आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_auto_switch_hvac": "यह विकल्प “उपकरण · स्वचालित · MODE SWITCH” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_prefer_native_auto": "यह विकल्प “उपकरण · स्वचालित · NATIVE” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_controller": "यह विकल्प “उपकरण · नियंत्रण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_mode": "यह विकल्प “उपकरण · MODE” नियंत्रित करता है। उपकरण · MODE आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_entity": "“उपकरण · स्रोत” के लिए वास्तविक Home Assistant उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "climate_temperature_entity": "“तापमान · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "climate_hysteresis_c": "“उपकरण (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
         }
@@ -649,32 +653,32 @@
         "description": "क्षेत्र · सेटिंग · उपकरण · नियंत्रण. उपस्थिति · सेंसर · आवश्यक.",
         "data": {
           "climate_occupancy_sensors": "उपस्थिति · सेंसर",
-          "climate_away_entities": "घर",
-          "climate_unknown_occupancy": "उपस्थिति",
-          "climate_unoccupied_delay_minutes": "उपकरण",
-          "climate_occupancy_stale_minutes": "उपस्थिति",
-          "climate_away_policy": "घर",
-          "climate_manual_profile": "उपकरण",
-          "climate_sleep_active": "नींद",
+          "climate_away_entities": "घर · उपकरण",
+          "climate_unknown_occupancy": "उपस्थिति · उपकरण",
+          "climate_unoccupied_delay_minutes": "उपकरण · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "उपस्थिति · उपकरण · सेंसर · आवश्यक",
+          "climate_away_policy": "घर · उपकरण · POLICY",
+          "climate_manual_profile": "उपकरण · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "नींद · उपकरण",
           "climate_sleep_schedule_enabled": "नींद · स्वचालित",
-          "climate_sleep_start": "नींद",
-          "climate_sleep_end": "नींद",
-          "climate_target_source": "लक्ष्य",
+          "climate_sleep_start": "नींद · उपकरण · START",
+          "climate_sleep_end": "नींद · उपकरण · END",
+          "climate_target_source": "उपकरण · स्रोत · लक्ष्य",
           "climate_comfort_adjustment_max_c": "उपकरण (°C)"
         },
         "data_description": {
           "climate_occupancy_sensors": "“उपस्थिति · सेंसर” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_away_entities": "“घर” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_unknown_occupancy": "यह विकल्प “उपस्थिति” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_unoccupied_delay_minutes": "यह समय “उपकरण” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_occupancy_stale_minutes": "यह समय “उपस्थिति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_away_policy": "यह विकल्प “घर” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_manual_profile": "यह विकल्प “उपकरण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_sleep_active": "यह विकल्प “नींद” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_away_entities": "“घर · उपकरण” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_unknown_occupancy": "यह विकल्प “उपस्थिति · उपकरण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_unoccupied_delay_minutes": "यह समय “उपकरण · CLIMATE_UNOCCUPIED_DELAY_MINUTES” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण · CLIMATE_UNOCCUPIED_DELAY_MINUTES सुरक्षा का विकल्प नहीं है।",
+          "climate_occupancy_stale_minutes": "यह समय “उपस्थिति · उपकरण · सेंसर · आवश्यक” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_away_policy": "यह विकल्प “घर · उपकरण · POLICY” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_manual_profile": "यह विकल्प “उपकरण · CLIMATE_MANUAL_PROFILE” नियंत्रित करता है। उपकरण · CLIMATE_MANUAL_PROFILE आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
+          "climate_sleep_active": "यह विकल्प “नींद · उपकरण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "climate_sleep_schedule_enabled": "यह विकल्प “नींद · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_sleep_start": "यह समय “नींद” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_sleep_end": "यह समय “नींद” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_target_source": "“लक्ष्य” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "climate_sleep_start": "यह समय “नींद · उपकरण · START” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_sleep_end": "यह समय “नींद · उपकरण · END” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_target_source": "“उपकरण · स्रोत · लक्ष्य” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "climate_comfort_adjustment_max_c": "“उपकरण (°C)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
         }
       },
@@ -682,60 +686,60 @@
         "title": "सेटिंग · उपकरण",
         "description": "क्षेत्र · सेटिंग · उपकरण · नियंत्रण. उपस्थिति · सेंसर · आवश्यक.",
         "data": {
-          "climate_heat_climate_entity": "स्रोत",
-          "climate_cool_climate_entity": "स्रोत",
-          "climate_dry_climate_entity": "स्रोत",
-          "climate_fan_climate_entity": "स्रोत · गति",
-          "climate_humidifier_entity": "स्रोत",
-          "climate_dehumidifier_entity": "स्रोत",
-          "climate_extraction_fan_entity": "स्रोत · गति",
-          "climate_purifier_fan_entity": "स्रोत · गति",
+          "climate_heat_climate_entity": "HEAT · उपकरण · स्रोत · तापमान +",
+          "climate_cool_climate_entity": "COOL · उपकरण · स्रोत · तापमान −",
+          "climate_dry_climate_entity": "DRY · उपकरण · स्रोत",
+          "climate_fan_climate_entity": "FAN_ONLY · गति · उपकरण · स्रोत",
+          "climate_humidifier_entity": "HUMIDIFIER · उपकरण · स्रोत",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · उपकरण · स्रोत",
+          "climate_extraction_fan_entity": "EXTRACT · गति · उपकरण · स्रोत",
+          "climate_purifier_fan_entity": "वायु शोधक · स्रोत",
           "climate_humidity_entity": "आर्द्रता · स्रोत",
-          "climate_humidity_low_rh": "आर्द्रता",
-          "climate_humidity_high_rh": "आर्द्रता",
-          "climate_humidity_hysteresis_rh": "आर्द्रता",
+          "climate_humidity_low_rh": "RH · आर्द्रता · उपकरण (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · आर्द्रता · उपकरण (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · आर्द्रता · उपकरण · ± RH",
           "climate_cooling_dry_deferral_rh_points": "उपकरण · तापमान −",
           "climate_humidity_setpoint_auto": "आर्द्रता · स्वचालित",
           "climate_window_efficiency_notify": "उपकरण · बाहरी",
           "climate_dry_fan_mode_auto": "गति · स्वचालित",
-          "climate_dry_fan_hardware_confirmed": "गति",
-          "climate_dry_fan_windowless_confirmed": "गति",
-          "climate_dry_fan_mode_dwell_s": "गति",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · गति · उपकरण · आवश्यक · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · गति · उपकरण · बाहरी · आवश्यक · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · गति · उपकरण (s) · MODE DWELL",
           "climate_humidity_power_auto": "आर्द्रता · शक्ति · स्वचालित",
-          "climate_humidity_power_hardware_confirmed": "आर्द्रता · शक्ति",
-          "climate_humidity_power_windowless_confirmed": "आर्द्रता · शक्ति",
-          "climate_humidity_power_min_on_s": "आर्द्रता · शक्ति",
-          "climate_humidity_power_min_off_s": "आर्द्रता · शक्ति",
-          "climate_humidity_power_max_on_s": "आर्द्रता · शक्ति",
-          "climate_secondary_climate_setpoint_auto": "स्वचालित"
+          "climate_humidity_power_hardware_confirmed": "RH POWER · आर्द्रता · उपकरण · शक्ति · आवश्यक · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · आर्द्रता · उपकरण · शक्ति · बाहरी · आवश्यक · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · आर्द्रता · उपकरण · शक्ति · स्वचालित (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · आर्द्रता · उपकरण · शक्ति · बंद करें (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · आर्द्रता · उपकरण · शक्ति · स्वचालित (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "उपकरण · स्वचालित · TARGET AUTO"
         },
         "data_description": {
-          "climate_heat_climate_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_cool_climate_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_dry_climate_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_fan_climate_entity": "“स्रोत · गति” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_humidifier_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_dehumidifier_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_extraction_fan_entity": "“स्रोत · गति” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_purifier_fan_entity": "“स्रोत · गति” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_heat_climate_entity": "“HEAT · उपकरण · स्रोत · तापमान +” के लिए वास्तविक Home Assistant HEAT · उपकरण · स्रोत · तापमान + चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_cool_climate_entity": "“COOL · उपकरण · स्रोत · तापमान −” के लिए वास्तविक Home Assistant COOL · उपकरण · स्रोत · तापमान − चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_dry_climate_entity": "“DRY · उपकरण · स्रोत” के लिए वास्तविक Home Assistant DRY · उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_fan_climate_entity": "“FAN_ONLY · गति · उपकरण · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_humidifier_entity": "“HUMIDIFIER · उपकरण · स्रोत” के लिए वास्तविक Home Assistant HUMIDIFIER · उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_dehumidifier_entity": "“DEHUMIDIFIER · उपकरण · स्रोत” के लिए वास्तविक Home Assistant DEHUMIDIFIER · उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_extraction_fan_entity": "“EXTRACT · गति · उपकरण · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_purifier_fan_entity": "“वायु शोधक · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "climate_humidity_entity": "“आर्द्रता · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_humidity_low_rh": "“आर्द्रता” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "climate_humidity_high_rh": "“आर्द्रता” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "climate_humidity_hysteresis_rh": "“आर्द्रता” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "climate_humidity_low_rh": "“RH · आर्द्रता · उपकरण (%) · RH MIN” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "climate_humidity_high_rh": "“RH · आर्द्रता · उपकरण (%) · RH MAX” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "climate_humidity_hysteresis_rh": "“RH · आर्द्रता · उपकरण · ± RH” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "climate_cooling_dry_deferral_rh_points": "यह विकल्प “उपकरण · तापमान −” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "climate_humidity_setpoint_auto": "यह विकल्प “आर्द्रता · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "climate_window_efficiency_notify": "यह विकल्प “उपकरण · बाहरी” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "climate_dry_fan_mode_auto": "यह विकल्प “गति · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_dry_fan_hardware_confirmed": "“गति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_dry_fan_windowless_confirmed": "“गति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_dry_fan_mode_dwell_s": "यह समय “गति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_dry_fan_hardware_confirmed": "“DRY/FAN_ONLY · गति · उपकरण · आवश्यक · HW ✓” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "climate_dry_fan_windowless_confirmed": "“DRY/FAN_ONLY · गति · उपकरण · बाहरी · आवश्यक · NO WINDOW” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "climate_dry_fan_mode_dwell_s": "यह समय “DRY/FAN_ONLY · गति · उपकरण (s) · MODE DWELL” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
           "climate_humidity_power_auto": "यह विकल्प “आर्द्रता · शक्ति · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_humidity_power_hardware_confirmed": "“आर्द्रता · शक्ति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_humidity_power_windowless_confirmed": "“आर्द्रता · शक्ति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_humidity_power_min_on_s": "यह समय “आर्द्रता · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_humidity_power_min_off_s": "यह समय “आर्द्रता · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_humidity_power_max_on_s": "यह समय “आर्द्रता · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_secondary_climate_setpoint_auto": "यह विकल्प “स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।"
+          "climate_humidity_power_hardware_confirmed": "“RH POWER · आर्द्रता · उपकरण · शक्ति · आवश्यक · HW ✓” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "climate_humidity_power_windowless_confirmed": "“RH POWER · आर्द्रता · उपकरण · शक्ति · बाहरी · आवश्यक · NO WINDOW” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "climate_humidity_power_min_on_s": "यह समय “RH POWER · आर्द्रता · उपकरण · शक्ति · स्वचालित (s) · MIN ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_humidity_power_min_off_s": "यह समय “RH POWER · आर्द्रता · उपकरण · शक्ति · बंद करें (s) · MIN OFF” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_humidity_power_max_on_s": "यह समय “RH POWER · आर्द्रता · उपकरण · शक्ति · स्वचालित (s) · MAX ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_secondary_climate_setpoint_auto": "यह विकल्प “उपकरण · स्वचालित · TARGET AUTO” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।"
         }
       },
       "climate_air_strategy": {
@@ -744,54 +748,54 @@
         "data": {
           "climate_fan_speed_auto": "गति · स्वचालित",
           "climate_fan_power_auto": "गति · शक्ति · स्वचालित",
-          "climate_fan_power_hardware_confirmed": "गति · शक्ति",
-          "climate_fan_power_min_on_s": "गति · शक्ति",
-          "climate_fan_power_min_off_s": "गति · शक्ति",
-          "climate_fan_power_max_on_s": "गति · शक्ति",
-          "climate_pm25_sensor_verified": "सेंसर",
-          "climate_co2_entity": "स्रोत",
-          "climate_pm25_entity": "स्रोत",
+          "climate_fan_power_hardware_confirmed": "FAN · गति · उपकरण · शक्ति · आवश्यक · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · गति · उपकरण · शक्ति · स्वचालित (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · गति · उपकरण · शक्ति · बंद करें (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · गति · उपकरण · शक्ति · स्वचालित (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · उपकरण · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · उपकरण · स्रोत",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · उपकरण · स्रोत",
           "climate_pm25_action_ug_m3": "PM2.5 · उपकरण (µg/m³)",
-          "climate_extraction_speed_percent": "उपकरण · गति (%)",
-          "climate_purifier_speed_percent": "उपकरण · गति (%)"
+          "climate_extraction_speed_percent": "EXTRACT · उपकरण · गति (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · उपकरण · गति (%) · SPEED %"
         },
         "data_description": {
           "climate_fan_speed_auto": "यह विकल्प “गति · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
           "climate_fan_power_auto": "यह विकल्प “गति · शक्ति · स्वचालित” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
-          "climate_fan_power_hardware_confirmed": "“गति · शक्ति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_fan_power_min_on_s": "यह समय “गति · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_fan_power_min_off_s": "यह समय “गति · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_fan_power_max_on_s": "यह समय “गति · शक्ति” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "climate_pm25_sensor_verified": "“सेंसर” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "climate_co2_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "climate_pm25_entity": "“स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_fan_power_hardware_confirmed": "“FAN · गति · उपकरण · शक्ति · आवश्यक · HW ✓” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
+          "climate_fan_power_min_on_s": "यह समय “FAN · गति · उपकरण · शक्ति · स्वचालित (s) · MIN ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_fan_power_min_off_s": "यह समय “FAN · गति · उपकरण · शक्ति · बंद करें (s) · MIN OFF” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_fan_power_max_on_s": "यह समय “FAN · गति · उपकरण · शक्ति · स्वचालित (s) · MAX ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "climate_pm25_sensor_verified": "“PM2.5 · PM2.5 · उपकरण · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड PM2.5 · PM2.5 · उपकरण · सेंसर · आवश्यक · SENSOR ✓ · VERIFIED का विकल्प नहीं है।",
+          "climate_co2_entity": "“CO₂ · CO₂ · उपकरण · स्रोत” के लिए वास्तविक Home Assistant CO₂ · CO₂ · उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "climate_pm25_entity": "“PM2.5 · PM2.5 · उपकरण · स्रोत” के लिए वास्तविक Home Assistant PM2.5 · PM2.5 · उपकरण · स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
           "climate_pm25_action_ug_m3": "“PM2.5 · उपकरण (µg/m³)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "climate_extraction_speed_percent": "“उपकरण · गति (%)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
-          "climate_purifier_speed_percent": "“उपकरण · गति (%)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
+          "climate_extraction_speed_percent": "“EXTRACT · उपकरण · गति (%) · SPEED %” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
+          "climate_purifier_speed_percent": "“PURIFIER · उपकरण · गति (%) · SPEED %” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
         }
       },
       "climate_profiles": {
         "title": "सेटिंग · उपकरण",
         "description": "क्षेत्र · सेटिंग · उपकरण · नियंत्रण. उपस्थिति · सेंसर · आवश्यक.",
         "data": {
-          "home_heat": "घर (°C)",
-          "home_cool": "घर (°C)",
-          "unoccupied_heat": "तापमान + (°C)",
-          "unoccupied_cool": "तापमान − (°C)",
-          "away_heat": "घर (°C)",
-          "away_cool": "घर (°C)",
-          "sleep_heat": "नींद (°C)",
-          "sleep_cool": "नींद (°C)"
+          "home_heat": "हीटिंग · घर पर (°C)",
+          "home_cool": "कूलिंग · घर पर (°C)",
+          "unoccupied_heat": "हीटिंग · खाली कमरा (°C)",
+          "unoccupied_cool": "कूलिंग · खाली कमरा (°C)",
+          "away_heat": "हीटिंग · घर से दूर (°C)",
+          "away_cool": "कूलिंग · घर से दूर (°C)",
+          "sleep_heat": "हीटिंग · नींद (°C)",
+          "sleep_cool": "कूलिंग · नींद (°C)"
         },
         "data_description": {
-          "home_heat": "“घर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "home_cool": "“घर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "unoccupied_heat": "“तापमान + (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "unoccupied_cool": "“तापमान − (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "away_heat": "“घर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "away_cool": "“घर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "sleep_heat": "“नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "sleep_cool": "“नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।"
+          "home_heat": "“हीटिंग · घर पर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "home_cool": "“कूलिंग · घर पर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "unoccupied_heat": "“हीटिंग · खाली कमरा (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "unoccupied_cool": "“कूलिंग · खाली कमरा (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "away_heat": "“हीटिंग · घर से दूर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "away_cool": "“कूलिंग · घर से दूर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "sleep_heat": "“हीटिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "sleep_cool": "“कूलिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।"
         }
       },
       "climate_actuators": {
@@ -799,35 +803,35 @@
         "description": "क्षेत्र · सेटिंग · उपकरण · नियंत्रण. उपस्थिति · सेंसर · आवश्यक.",
         "data": {
           "direct_hardware_confirmed": "आवश्यक",
-          "heat_actuator": "उपकरण",
-          "cool_actuator": "उपकरण",
-          "min_on_s": "शक्ति · स्वचालित (s)",
+          "heat_actuator": "हीटिंग · उपकरण",
+          "cool_actuator": "कूलिंग · उपकरण",
+          "min_on_s": "शक्ति · स्वचालित (s) · MIN ON",
           "min_off_s": "शक्ति · बंद करें (s)",
-          "max_on_s": "शक्ति · स्वचालित (s)",
-          "mode_dwell_s": "सेटिंग · स्रोत (s)",
-          "kp": "सेटिंग · स्रोत (°C)",
-          "ki": "सेटिंग · स्रोत (°C)",
-          "kd": "सेटिंग · स्रोत (°C)",
-          "sample_seconds": "सेटिंग · स्रोत (s)",
-          "pwm_period_s": "सेटिंग · स्रोत (s)",
-          "max_demand_change": "सेटिंग · स्रोत",
-          "min_demand_change": "सेटिंग · स्रोत"
+          "max_on_s": "शक्ति · स्वचालित (s) · MAX ON",
+          "mode_dwell_s": "सेटिंग · स्रोत (s) · MODE DWELL",
+          "kp": "PID Kp · नियंत्रण (percentage points/°C)",
+          "ki": "PID Ki · नियंत्रण (percentage points/(°C·minute))",
+          "kd": "PID Kd · नियंत्रण (percentage points·minute/°C)",
+          "sample_seconds": "सेटिंग · स्रोत (s) · SAMPLE",
+          "pwm_period_s": "सेटिंग · स्रोत (s) · PWM PERIOD",
+          "max_demand_change": "सेटिंग · स्रोत · MAX Δ",
+          "min_demand_change": "सेटिंग · स्रोत · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "“आवश्यक” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है।",
-          "heat_actuator": "“उपकरण” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "cool_actuator": "“उपकरण” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "min_on_s": "यह समय “शक्ति · स्वचालित (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "heat_actuator": "“हीटिंग · उपकरण” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "cool_actuator": "“कूलिंग · उपकरण” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "min_on_s": "यह समय “शक्ति · स्वचालित (s) · MIN ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
           "min_off_s": "यह समय “शक्ति · बंद करें (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "max_on_s": "यह समय “शक्ति · स्वचालित (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "mode_dwell_s": "यह समय “सेटिंग · स्रोत (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "kp": "“सेटिंग · स्रोत (°C)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "ki": "“सेटिंग · स्रोत (°C)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "kd": "“सेटिंग · स्रोत (°C)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "sample_seconds": "यह समय “सेटिंग · स्रोत (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "pwm_period_s": "यह समय “सेटिंग · स्रोत (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "max_demand_change": "“सेटिंग · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "min_demand_change": "“सेटिंग · स्रोत” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।"
+          "max_on_s": "यह समय “शक्ति · स्वचालित (s) · MAX ON” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "mode_dwell_s": "यह समय “सेटिंग · स्रोत (s) · MODE DWELL” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "kp": "“PID Kp · नियंत्रण (percentage points/°C)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "ki": "“PID Ki · नियंत्रण (percentage points/(°C·minute))” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "kd": "“PID Kd · नियंत्रण (percentage points·minute/°C)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "sample_seconds": "यह समय “सेटिंग · स्रोत (s) · SAMPLE” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "pwm_period_s": "यह समय “सेटिंग · स्रोत (s) · PWM PERIOD” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
+          "max_demand_change": "“सेटिंग · स्रोत · MAX Δ” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "min_demand_change": "“सेटिंग · स्रोत · MIN Δ” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।"
         }
       },
       "outside_data": {
@@ -897,15 +901,15 @@
         "description": "पराग: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
         "data": {
           "pollen_entity": "पराग · स्रोत",
-          "pollen_high_from": "पराग",
-          "pollen_max_scale": "पराग",
-          "pollen_avoid_ventilation": "पराग"
+          "pollen_high_from": "POLLEN · पराग · HIGH",
+          "pollen_max_scale": "POLLEN · पराग · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · पराग · NO VENT"
         },
         "data_description": {
           "pollen_entity": "“पराग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
-          "pollen_high_from": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "pollen_max_scale": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
-          "pollen_avoid_ventilation": "“पराग” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।"
+          "pollen_high_from": "“POLLEN · पराग · HIGH” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_max_scale": "“POLLEN · पराग · SCALE” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_avoid_ventilation": "“POLLEN · पराग · NO VENT” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।"
         }
       },
       "outside_aqi": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "शक्ति · min ON (s)",
           "device_min_off_s": "शक्ति · min OFF (s)",
           "device_max_on_s": "शक्ति · max ON (s)",
-          "device_home_heat_c": "घर · तापमान + · लक्ष्य (°C)",
-          "device_home_cool_c": "घर · तापमान − · लक्ष्य (°C)",
-          "device_unoccupied_heat_c": "कमरा · बंद करें · तापमान + · लक्ष्य (°C)",
-          "device_unoccupied_cool_c": "कमरा · बंद करें · तापमान − · लक्ष्य (°C)",
-          "device_away_heat_c": "घर · बंद करें · तापमान + · लक्ष्य (°C)",
-          "device_away_cool_c": "घर · बंद करें · तापमान − · लक्ष्य (°C)",
-          "device_sleep_heat_c": "नींद · तापमान + · लक्ष्य (°C)",
-          "device_sleep_cool_c": "नींद · तापमान − · लक्ष्य (°C)"
+          "device_home_heat_c": "हीटिंग · घर पर (°C)",
+          "device_home_cool_c": "कूलिंग · घर पर (°C)",
+          "device_unoccupied_heat_c": "हीटिंग · खाली कमरा (°C)",
+          "device_unoccupied_cool_c": "कूलिंग · खाली कमरा (°C)",
+          "device_away_heat_c": "हीटिंग · घर से दूर (°C)",
+          "device_away_cool_c": "कूलिंग · घर से दूर (°C)",
+          "device_sleep_heat_c": "हीटिंग · नींद (°C)",
+          "device_sleep_cool_c": "कूलिंग · नींद (°C)"
         },
         "data_description": {
           "device_auto_control": "यह विकल्प “स्वचालित नियंत्रण” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है।",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "यह समय “शक्ति · min ON (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
           "device_min_off_s": "यह समय “शक्ति · min OFF (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
           "device_max_on_s": "यह समय “शक्ति · max ON (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है।",
-          "device_home_heat_c": "“घर · तापमान + · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_home_cool_c": "“घर · तापमान − · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_unoccupied_heat_c": "“कमरा · बंद करें · तापमान + · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_unoccupied_cool_c": "“कमरा · बंद करें · तापमान − · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_away_heat_c": "“घर · बंद करें · तापमान + · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_away_cool_c": "“घर · बंद करें · तापमान − · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_sleep_heat_c": "“नींद · तापमान + · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
-          "device_sleep_cool_c": "“नींद · तापमान − · लक्ष्य (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।"
+          "device_home_heat_c": "“हीटिंग · घर पर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_home_cool_c": "“कूलिंग · घर पर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_unoccupied_heat_c": "“हीटिंग · खाली कमरा (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_unoccupied_cool_c": "“कूलिंग · खाली कमरा (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_away_heat_c": "“हीटिंग · घर से दूर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_away_cool_c": "“कूलिंग · घर से दूर (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_sleep_heat_c": "“हीटिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
+          "device_sleep_cool_c": "“कूलिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।"
         }
       }
     },
@@ -1174,69 +1178,168 @@
         "name": "लक्ष्य (°C)"
       },
       "area_pid_kp": {
-        "name": "PID (%, °C)"
+        "name": "PID Kp · नियंत्रण (% per °C)"
       },
       "area_pid_ki": {
-        "name": "PID (%, °C)"
+        "name": "PID Ki · नियंत्रण (% per °C-minute)"
       },
       "area_pid_kd": {
-        "name": "PID (%, °C)"
+        "name": "PID Kd · नियंत्रण (%·minute per °C)"
       },
       "area_pid_offset_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · PID_OFFSET_C"
       },
       "area_pid_min_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN TARGET"
       },
       "area_pid_max_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX TARGET"
       },
       "area_pid_sample_seconds": {
         "name": "PID (s)"
       },
       "area_pid_max_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX Δ"
       },
       "area_pid_min_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN Δ"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · घर (°C)"
+        "name": "हीटिंग · घर पर (°C)"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · घर (°C)"
+        "name": "कूलिंग · घर पर (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · तापमान + (°C)"
+        "name": "हीटिंग · खाली कमरा (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · तापमान − (°C)"
+        "name": "कूलिंग · खाली कमरा (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · घर (°C)"
+        "name": "हीटिंग · घर से दूर (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · घर (°C)"
+        "name": "कूलिंग · घर से दूर (°C)"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · नींद (°C)"
+        "name": "हीटिंग · नींद (°C)"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · नींद (°C)"
+        "name": "कूलिंग · नींद (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · पराग · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · पराग · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "स्रोत · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "सेटिंग · स्रोत (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · लक्ष्य (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "गति · बाहरी (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "सेटिंग · स्रोत (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "सेटिंग · स्रोत (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "उपकरण · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "उपस्थिति · उपकरण · सेंसर · आवश्यक"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "उपकरण (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · आर्द्रता · उपकरण (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · आर्द्रता · उपकरण (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · आर्द्रता · उपकरण · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "उपकरण · तापमान −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · उपकरण (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · उपकरण · गति (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · उपकरण · गति (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · नियंत्रण (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · नियंत्रण (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · नियंत्रण (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "सेटिंग · स्रोत (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "सेटिंग · स्रोत · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "सेटिंग · स्रोत · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "फफूंद संकेतक · 🧊 °C"
       }
     },
     "switch": {
       "home_automatic_notifications": {
-        "name": "स्वचालित सूचनाएँ"
+        "name": "स्वचालित · AUTOMATIC_NOTIFICATIONS"
       },
       "home_automatic_tts": {
-        "name": "स्वचालित ध्वनि घोषणाएँ"
+        "name": "स्वचालित"
       },
       "home_use_announcement_hub": {
         "name": "Announcement Hub"
       },
       "home_ai_rewrite_announcements": {
         "name": "AI · घोषणाएँ (वैकल्पिक)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · पराग · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "नींद"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · स्वचालित"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "नींद · उपकरण"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "नींद · स्वचालित"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "उपकरण · बाहरी"
       }
     },
     "select": {
@@ -1244,7 +1347,7 @@
         "name": "भाषा"
       },
       "area_manual_profile": {
-        "name": "उपकरण"
+        "name": "उपकरण · CLIMATE_MANUAL_PROFILE"
       },
       "area_pid_gain_source": {
         "name": "Gain source",
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "घर · उपस्थिति · नियंत्रण"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "उपस्थिति · उपकरण"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "घर · उपकरण · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "उपकरण · स्रोत · लक्ष्य"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "नींद · उपकरण · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "नींद · उपकरण · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "फफूंद संकेतक · ↻ 🌡️"
       }
     }
   },

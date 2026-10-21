@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு",
           "mold_indoor_temperature": "அறைகள் · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "பூஞ்சை குறியீடு · 🧊 °C",
-          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️"
+          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "அறைகள்: 🌡️ °C/°F · பூஞ்சை குறியீடு.",
           "mold_critical_temperature_c": "🧊 பூஞ்சை குறியீடு · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“பூஞ்சை குறியீடு · ↻ 🌡️” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது."
+          "mold_recalibrate": "“பூஞ்சை குறியீடு · ↻ 🌡️” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -67,25 +69,25 @@
         "description": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
         "data": {
           "language": "மொழி",
-          "automatic_tts": "தானியங்கி குரல் அறிவிப்புகள்",
-          "automatic_notifications": "தானியங்கி அறிவிப்புகள்",
+          "automatic_tts": "தானியங்கி",
+          "automatic_notifications": "தானியங்கி · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "அறிவிப்புகள் (விருப்பம்) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "தானியங்கி அறிவிப்புகள்",
-          "tts_engine": "தானியங்கி குரல் அறிவிப்புகள்",
-          "media_players": "தானியங்கி குரல் அறிவிப்புகள்",
+          "notify_entities": "அமைப்புகள் · மூலம்",
+          "tts_engine": "அமைப்புகள் · மூலம் · TTS_ENGINE",
+          "media_players": "அமைப்புகள் · மூலம் · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்)",
           "ai_conversation_agent": "AI · மொழி"
         },
         "data_description": {
           "language": "“மொழி” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி குரல் அறிவிப்புகள் · 🪟 90 s.",
-          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி அறிவிப்புகள்.",
+          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி · 🪟 90 s.",
+          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "இயல்புநிலை: 10 min · 0 = ஒருபோதும் இல்லை · அதே காரணம் தொடரும் வரை · அறைகள்.",
           "use_announcement_hub": "Announcement Hub · கிடைக்கவில்லை → Home Assistant.",
-          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · தானியங்கி அறிவிப்புகள்.",
-          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · தானியங்கி குரல் அறிவிப்புகள்.",
-          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · அமைப்புகள் · மூலம்.",
+          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · அமைப்புகள் · மூலம் · TTS_ENGINE.",
+          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · அமைப்புகள் · மூலம் · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "தேர்ந்தெடுக்கவும்: conversation.* (Home Assistant · இயல்புநிலை)."
         }
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "உட்புற காற்று உணரிகளை விலக்கு",
           "mold_indoor_temperature": "அறைகள் · 🌡️ (°C/°F)",
           "mold_critical_temperature_c": "பூஞ்சை குறியீடு · 🧊 °C",
-          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️"
+          "mold_recalibrate": "பூஞ்சை குறியீடு · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         },
         "data_description": {
           "excluded_indoor_entities": "தேர்ந்தெடுக்கவும்: உட்புற காற்று உணரிகளை விலக்கு · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
           "mold_indoor_temperature": "அறைகள்: 🌡️ °C/°F · பூஞ்சை குறியீடு.",
           "mold_critical_temperature_c": "🧊 பூஞ்சை குறியீடு · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
-          "mold_recalibrate": "“பூஞ்சை குறியீடு · ↻ 🌡️” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது."
+          "mold_recalibrate": "“பூஞ்சை குறியீடு · ↻ 🌡️” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
         }
       },
       "outdoor": {
@@ -251,25 +255,25 @@
         "description": "அறிவிப்புகள் (விருப்பம்). தானியங்கி அறிவிப்புகள் · தானியங்கி குரல் அறிவிப்புகள். Announcement Hub.",
         "data": {
           "language": "மொழி",
-          "automatic_tts": "தானியங்கி குரல் அறிவிப்புகள்",
-          "automatic_notifications": "தானியங்கி அறிவிப்புகள்",
+          "automatic_tts": "தானியங்கி",
+          "automatic_notifications": "தானியங்கி · AUTOMATIC_NOTIFICATIONS",
           "announcement_repeat_minutes": "அறிவிப்புகள் (விருப்பம்) · 0–1440 min",
           "use_announcement_hub": "Announcement Hub",
-          "notify_entities": "தானியங்கி அறிவிப்புகள்",
-          "tts_engine": "தானியங்கி குரல் அறிவிப்புகள்",
-          "media_players": "தானியங்கி குரல் அறிவிப்புகள்",
+          "notify_entities": "அமைப்புகள் · மூலம்",
+          "tts_engine": "அமைப்புகள் · மூலம் · TTS_ENGINE",
+          "media_players": "அமைப்புகள் · மூலம் · MEDIA_PLAYERS",
           "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்)",
           "ai_conversation_agent": "AI · மொழி"
         },
         "data_description": {
           "language": "“மொழி” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி குரல் அறிவிப்புகள் · 🪟 90 s.",
-          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி அறிவிப்புகள்.",
+          "automatic_tts": "இயல்புநிலை: ⛔ · தானியங்கி · 🪟 90 s.",
+          "automatic_notifications": "இயல்புநிலை: ⛔ · தானியங்கி · AUTOMATIC_NOTIFICATIONS.",
           "announcement_repeat_minutes": "இயல்புநிலை: 10 min · 0 = ஒருபோதும் இல்லை · அதே காரணம் தொடரும் வரை · அறைகள்.",
           "use_announcement_hub": "Announcement Hub · கிடைக்கவில்லை → Home Assistant.",
-          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · தானியங்கி அறிவிப்புகள்.",
-          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · தானியங்கி குரல் அறிவிப்புகள்.",
-          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · தானியங்கி குரல் அறிவிப்புகள்.",
+          "notify_entities": "தேர்ந்தெடுக்கவும்: notify.* · அமைப்புகள் · மூலம்.",
+          "tts_engine": "தேர்ந்தெடுக்கவும்: tts.* · அமைப்புகள் · மூலம் · TTS_ENGINE.",
+          "media_players": "தேர்ந்தெடுக்கவும்: media_player.* · அமைப்புகள் · மூலம் · MEDIA_PLAYERS.",
           "ai_rewrite_announcements": "AI · அறிவிப்புகள் (விருப்பம்) → Announcement Hub (use_ai) / Home Assistant.",
           "ai_conversation_agent": "தேர்ந்தெடுக்கவும்: conversation.* (Home Assistant · இயல்புநிலை)."
         }
@@ -331,9 +335,9 @@
         "description": "“அமைப்புகள் · அமைப்புகள் · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
         "data": {
           "pollen_entity": "மகரந்தம் · மூலம்",
-          "pollen_high_from": "மகரந்தம்",
-          "pollen_max_scale": "மகரந்தம்",
-          "pollen_avoid_ventilation": "மகரந்தம்",
+          "pollen_high_from": "POLLEN · மகரந்தம் · HIGH",
+          "pollen_max_scale": "POLLEN · மகரந்தம் · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · மகரந்தம் · NO VENT",
           "aqi_scale_0": "AQI #1 · மூலம்",
           "aqi_custom_limit_0": "AQI #1 · இலக்கு",
           "aqi_scale_1": "AQI #2 · மூலம்",
@@ -401,9 +405,9 @@
         },
         "data_description": {
           "pollen_entity": "“மகரந்தம் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "pollen_high_from": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "pollen_max_scale": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "pollen_avoid_ventilation": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "pollen_high_from": "“POLLEN · மகரந்தம் · HIGH” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "pollen_max_scale": "“POLLEN · மகரந்தம் · SCALE” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "pollen_avoid_ventilation": "“POLLEN · மகரந்தம் · NO VENT” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
           "aqi_scale_0": "“AQI #1 · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
           "aqi_custom_limit_0": "“AQI #1 · இலக்கு” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
           "aqi_scale_1": "“AQI #2 · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
@@ -487,20 +491,20 @@
           "temperature_entity": "வெப்பநிலை · மூலம்",
           "room_volume_m3": "அமைப்புகள் · மூலம் (m³)",
           "particle_cadr_m3h": "CADR (m³/h)",
-          "purifier_entity": "மூலம்",
-          "extractor_entity": "மூலம்",
+          "purifier_entity": "காற்று சுத்திகரிப்பான் · மூலம்",
+          "extractor_entity": "வெளியேற்ற விசிறி · மூலம்",
           "co2_ndir_verified": "CO₂ · தேவை",
-          "co2_target_ppm": "இலக்கு",
+          "co2_target_ppm": "CO₂ · CO₂ · இலக்கு (ppm)",
           "sleep_room": "தூக்கம்"
         },
         "data_description": {
           "temperature_entity": "“வெப்பநிலை · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "room_volume_m3": "“அமைப்புகள் · மூலம் (m³)” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
           "particle_cadr_m3h": "“CADR (m³/h)” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "purifier_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "extractor_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "purifier_entity": "“காற்று சுத்திகரிப்பான் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "extractor_entity": "“வெளியேற்ற விசிறி · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "co2_ndir_verified": "“CO₂ · தேவை” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "co2_target_ppm": "“இலக்கு” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "co2_target_ppm": "“CO₂ · CO₂ · இலக்கு (ppm)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
           "sleep_room": "“தூக்கம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்."
         }
       },
@@ -508,27 +512,27 @@
         "title": "அமைப்புகள் · அமைப்புகள் · மூலம்",
         "description": "“அமைப்புகள் · அமைப்புகள் · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
         "data": {
-          "radon_entity": "மூலம்",
-          "radon_sensor_verified": "உணரி",
+          "radon_entity": "RADON · Rn · மூலம்",
+          "radon_sensor_verified": "RADON · Rn · உணரி · தேவை · SENSOR ✓ · VERIFIED",
           "radon_reference_bq_m3": "Rn (Bq/m³)",
-          "formaldehyde_entity": "மூலம்",
-          "formaldehyde_sensor_verified": "உணரி",
-          "noise_entity": "மூலம்",
-          "noise_sensor_calibrated": "உணரி",
-          "illuminance_entity": "மூலம்",
-          "melanopic_edi_entity": "மூலம்",
+          "formaldehyde_entity": "HCHO · மூலம்",
+          "formaldehyde_sensor_verified": "HCHO · உணரி · தேவை · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · மூலம் · உணரி (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · உணரி · தேவை",
+          "illuminance_entity": "LUX · மூலம் (lux)",
+          "melanopic_edi_entity": "EDI · EDI · மூலம் (lx)",
           "melanopic_spectral_verified": "EDI · தேவை"
         },
         "data_description": {
-          "radon_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "radon_sensor_verified": "“உணரி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "radon_entity": "“RADON · Rn · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "radon_sensor_verified": "“RADON · Rn · உணரி · தேவை · SENSOR ✓ · VERIFIED” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த RADON · Rn · உணரி · தேவை · SENSOR ✓ · VERIFIEDயை மாற்றாது.",
           "radon_reference_bq_m3": "“Rn (Bq/m³)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "formaldehyde_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "formaldehyde_sensor_verified": "“உணரி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "noise_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "noise_sensor_calibrated": "“உணரி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "illuminance_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "melanopic_edi_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "formaldehyde_entity": "“HCHO · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "formaldehyde_sensor_verified": "“HCHO · உணரி · தேவை · SENSOR ✓ · VERIFIED” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த HCHO · உணரி · தேவை · SENSOR ✓ · VERIFIEDயை மாற்றாது.",
+          "noise_entity": "“dB(A) · மூலம் · உணரி (dB(A))” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "noise_sensor_calibrated": "“dB(A) · உணரி · தேவை” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த dB(A) · உணரி · தேவையை மாற்றாது.",
+          "illuminance_entity": "“LUX · மூலம் (lux)” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "melanopic_edi_entity": "“EDI · EDI · மூலம் (lx)” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "melanopic_spectral_verified": "“EDI · தேவை” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது."
         }
       },
@@ -538,7 +542,7 @@
         "data": {
           "enable_pmv": "PMV / PPD · தானியங்கி",
           "radiant_temperature_entity": "வெப்பநிலை · மூலம்",
-          "air_speed_entity": "மூலம்",
+          "air_speed_entity": "மூலம் · வேகம் · வெளிப்புற (m/s)",
           "air_speed_m_s": "வேகம் · வெளிப்புற (m/s)",
           "met": "அமைப்புகள் · மூலம் (met)",
           "clo": "அமைப்புகள் · மூலம் (clo)"
@@ -546,7 +550,7 @@
         "data_description": {
           "enable_pmv": "“PMV / PPD · தானியங்கி” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
           "radiant_temperature_entity": "“வெப்பநிலை · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "air_speed_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "air_speed_entity": "“மூலம் · வேகம் · வெளிப்புற (m/s)” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "air_speed_m_s": "“வேகம் · வெளிப்புற (m/s)” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
           "met": "“அமைப்புகள் · மூலம் (met)” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
           "clo": "“அமைப்புகள் · மூலம் (clo)” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது."
@@ -566,7 +570,7 @@
         "title": "அமைப்புகள் · PID",
         "description": "“அமைப்புகள் · PID” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
         "data": {
-          "pid_enabled": "தானியங்கி",
+          "pid_enabled": "PID · தானியங்கி · AUTO",
           "pid_climate_entities": "PID · சாதனங்கள்",
           "pid_temperature_entity": "வெப்பநிலை · மூலம்",
           "pid_mode": "PID",
@@ -574,7 +578,7 @@
           "pid_pause_on_window_open": "PID · வெளிப்புற"
         },
         "data_description": {
-          "pid_enabled": "இந்த விருப்பம் “தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "pid_enabled": "இந்த விருப்பம் “PID · தானியங்கி · AUTO” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "pid_climate_entities": "“PID · சாதனங்கள்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "pid_temperature_entity": "“வெப்பநிலை · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "pid_mode": "இந்த விருப்பம் “PID” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
@@ -586,26 +590,26 @@
         "title": "அமைப்புகள் · PID",
         "description": "“அமைப்புகள் · PID” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
         "data": {
-          "pid_kp": "PID (%, °C)",
-          "pid_ki": "PID (%, °C)",
-          "pid_kd": "PID (%, °C)",
-          "pid_offset_c": "PID (°C)",
-          "pid_min_setpoint_c": "PID (°C)",
-          "pid_max_setpoint_c": "PID (°C)",
+          "pid_kp": "PID Kp · கட்டுப்பாடு (% per °C)",
+          "pid_ki": "PID Ki · கட்டுப்பாடு (% per °C-minute)",
+          "pid_kd": "PID Kd · கட்டுப்பாடு (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
           "pid_sample_seconds": "PID (s)",
-          "pid_max_change_c": "PID (°C)",
-          "pid_min_change_c": "PID (°C)"
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
         },
         "data_description": {
-          "pid_kp": "இந்த விருப்பம் “PID (%, °C)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "pid_ki": "இந்த விருப்பம் “PID (%, °C)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "pid_kd": "இந்த விருப்பம் “PID (%, °C)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "pid_offset_c": "“PID (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "pid_min_setpoint_c": "“PID (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "pid_max_setpoint_c": "“PID (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "pid_kp": "இந்த விருப்பம் “PID Kp · கட்டுப்பாடு (% per °C)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "pid_ki": "இந்த விருப்பம் “PID Ki · கட்டுப்பாடு (% per °C-minute)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "pid_kd": "இந்த விருப்பம் “PID Kd · கட்டுப்பாடு (%·minute per °C)” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "pid_offset_c": "“PID (°C) · PID_OFFSET_C” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "pid_min_setpoint_c": "“PID (°C) · MIN TARGET” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "pid_max_setpoint_c": "“PID (°C) · MAX TARGET” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
           "pid_sample_seconds": "இந்த நேரம் “PID (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "pid_max_change_c": "“PID (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "pid_min_change_c": "“PID (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
+          "pid_max_change_c": "“PID (°C) · MAX Δ” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "pid_min_change_c": "“PID (°C) · MIN Δ” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
         }
       },
       "climate": {
@@ -622,24 +626,24 @@
         "title": "அமைப்புகள் · சாதனங்கள்",
         "description": "பகுதி · அமைப்புகள் · சாதனங்கள் · கட்டுப்பாடு. இருப்பு · உணரி · தேவை.",
         "data": {
-          "climate_enabled": "தானியங்கி",
-          "climate_allow_actuation": "சாதனங்கள்",
-          "climate_auto_switch_hvac": "தானியங்கி",
-          "climate_prefer_native_auto": "தானியங்கி",
-          "climate_controller": "கட்டுப்பாடு",
-          "climate_mode": "சாதனங்கள்",
-          "climate_entity": "மூலம்",
+          "climate_enabled": "சாதனங்கள் · தானியங்கி · AUTO",
+          "climate_allow_actuation": "சாதனங்கள் · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "சாதனங்கள் · தானியங்கி · MODE SWITCH",
+          "climate_prefer_native_auto": "சாதனங்கள் · தானியங்கி · NATIVE",
+          "climate_controller": "சாதனங்கள் · கட்டுப்பாடு",
+          "climate_mode": "சாதனங்கள் · MODE",
+          "climate_entity": "சாதனங்கள் · மூலம்",
           "climate_temperature_entity": "வெப்பநிலை · மூலம்",
           "climate_hysteresis_c": "சாதனங்கள் (°C)"
         },
         "data_description": {
-          "climate_enabled": "இந்த விருப்பம் “தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_allow_actuation": "இந்த விருப்பம் “சாதனங்கள்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_auto_switch_hvac": "இந்த விருப்பம் “தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_prefer_native_auto": "இந்த விருப்பம் “தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_controller": "இந்த விருப்பம் “கட்டுப்பாடு” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_mode": "இந்த விருப்பம் “சாதனங்கள்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_enabled": "இந்த விருப்பம் “சாதனங்கள் · தானியங்கி · AUTO” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_allow_actuation": "இந்த விருப்பம் “சாதனங்கள் · CLIMATE_ALLOW_ACTUATION” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_auto_switch_hvac": "இந்த விருப்பம் “சாதனங்கள் · தானியங்கி · MODE SWITCH” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_prefer_native_auto": "இந்த விருப்பம் “சாதனங்கள் · தானியங்கி · NATIVE” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_controller": "இந்த விருப்பம் “சாதனங்கள் · கட்டுப்பாடு” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_mode": "இந்த விருப்பம் “சாதனங்கள் · MODE” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_entity": "“சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "climate_temperature_entity": "“வெப்பநிலை · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "climate_hysteresis_c": "“சாதனங்கள் (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
         }
@@ -649,32 +653,32 @@
         "description": "பகுதி · அமைப்புகள் · சாதனங்கள் · கட்டுப்பாடு. இருப்பு · உணரி · தேவை.",
         "data": {
           "climate_occupancy_sensors": "இருப்பு · உணரி",
-          "climate_away_entities": "வீடு",
-          "climate_unknown_occupancy": "இருப்பு",
-          "climate_unoccupied_delay_minutes": "சாதனங்கள்",
-          "climate_occupancy_stale_minutes": "இருப்பு",
-          "climate_away_policy": "வீடு",
-          "climate_manual_profile": "சாதனங்கள்",
-          "climate_sleep_active": "தூக்கம்",
+          "climate_away_entities": "வீடு · சாதனங்கள்",
+          "climate_unknown_occupancy": "இருப்பு · சாதனங்கள்",
+          "climate_unoccupied_delay_minutes": "சாதனங்கள் · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "இருப்பு · சாதனங்கள் · உணரி · தேவை",
+          "climate_away_policy": "வீடு · சாதனங்கள் · POLICY",
+          "climate_manual_profile": "சாதனங்கள் · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "தூக்கம் · சாதனங்கள்",
           "climate_sleep_schedule_enabled": "தூக்கம் · தானியங்கி",
-          "climate_sleep_start": "தூக்கம்",
-          "climate_sleep_end": "தூக்கம்",
-          "climate_target_source": "இலக்கு",
+          "climate_sleep_start": "தூக்கம் · சாதனங்கள் · START",
+          "climate_sleep_end": "தூக்கம் · சாதனங்கள் · END",
+          "climate_target_source": "சாதனங்கள் · மூலம் · இலக்கு",
           "climate_comfort_adjustment_max_c": "சாதனங்கள் (°C)"
         },
         "data_description": {
           "climate_occupancy_sensors": "“இருப்பு · உணரி” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_away_entities": "“வீடு” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_unknown_occupancy": "இந்த விருப்பம் “இருப்பு” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_unoccupied_delay_minutes": "இந்த நேரம் “சாதனங்கள்” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_occupancy_stale_minutes": "இந்த நேரம் “இருப்பு” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_away_policy": "இந்த விருப்பம் “வீடு” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_manual_profile": "இந்த விருப்பம் “சாதனங்கள்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_sleep_active": "இந்த விருப்பம் “தூக்கம்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_away_entities": "“வீடு · சாதனங்கள்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_unknown_occupancy": "இந்த விருப்பம் “இருப்பு · சாதனங்கள்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_unoccupied_delay_minutes": "இந்த நேரம் “சாதனங்கள் · CLIMATE_UNOCCUPIED_DELAY_MINUTES” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_occupancy_stale_minutes": "இந்த நேரம் “இருப்பு · சாதனங்கள் · உணரி · தேவை” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_away_policy": "இந்த விருப்பம் “வீடு · சாதனங்கள் · POLICY” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_manual_profile": "இந்த விருப்பம் “சாதனங்கள் · CLIMATE_MANUAL_PROFILE” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
+          "climate_sleep_active": "இந்த விருப்பம் “தூக்கம் · சாதனங்கள்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "climate_sleep_schedule_enabled": "இந்த விருப்பம் “தூக்கம் · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_sleep_start": "இந்த நேரம் “தூக்கம்” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_sleep_end": "இந்த நேரம் “தூக்கம்” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_target_source": "“இலக்கு” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "climate_sleep_start": "இந்த நேரம் “தூக்கம் · சாதனங்கள் · START” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_sleep_end": "இந்த நேரம் “தூக்கம் · சாதனங்கள் · END” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_target_source": "“சாதனங்கள் · மூலம் · இலக்கு” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
           "climate_comfort_adjustment_max_c": "“சாதனங்கள் (°C)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
         }
       },
@@ -682,60 +686,60 @@
         "title": "அமைப்புகள் · சாதனங்கள்",
         "description": "பகுதி · அமைப்புகள் · சாதனங்கள் · கட்டுப்பாடு. இருப்பு · உணரி · தேவை.",
         "data": {
-          "climate_heat_climate_entity": "மூலம்",
-          "climate_cool_climate_entity": "மூலம்",
-          "climate_dry_climate_entity": "மூலம்",
-          "climate_fan_climate_entity": "மூலம் · வேகம்",
-          "climate_humidifier_entity": "மூலம்",
-          "climate_dehumidifier_entity": "மூலம்",
-          "climate_extraction_fan_entity": "மூலம் · வேகம்",
-          "climate_purifier_fan_entity": "மூலம் · வேகம்",
+          "climate_heat_climate_entity": "HEAT · சாதனங்கள் · மூலம் · வெப்பநிலை +",
+          "climate_cool_climate_entity": "COOL · சாதனங்கள் · மூலம் · வெப்பநிலை −",
+          "climate_dry_climate_entity": "DRY · சாதனங்கள் · மூலம்",
+          "climate_fan_climate_entity": "FAN_ONLY · வேகம் · சாதனங்கள் · மூலம்",
+          "climate_humidifier_entity": "HUMIDIFIER · சாதனங்கள் · மூலம்",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · சாதனங்கள் · மூலம்",
+          "climate_extraction_fan_entity": "EXTRACT · வேகம் · சாதனங்கள் · மூலம்",
+          "climate_purifier_fan_entity": "காற்று சுத்திகரிப்பான் · மூலம்",
           "climate_humidity_entity": "ஈரப்பதம் · மூலம்",
-          "climate_humidity_low_rh": "ஈரப்பதம்",
-          "climate_humidity_high_rh": "ஈரப்பதம்",
-          "climate_humidity_hysteresis_rh": "ஈரப்பதம்",
+          "climate_humidity_low_rh": "RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · ஈரப்பதம் · சாதனங்கள் · ± RH",
           "climate_cooling_dry_deferral_rh_points": "சாதனங்கள் · வெப்பநிலை −",
           "climate_humidity_setpoint_auto": "ஈரப்பதம் · தானியங்கி",
           "climate_window_efficiency_notify": "சாதனங்கள் · வெளிப்புற",
           "climate_dry_fan_mode_auto": "வேகம் · தானியங்கி",
-          "climate_dry_fan_hardware_confirmed": "வேகம்",
-          "climate_dry_fan_windowless_confirmed": "வேகம்",
-          "climate_dry_fan_mode_dwell_s": "வேகம்",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · வேகம் · சாதனங்கள் · தேவை · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · வேகம் · சாதனங்கள் · வெளிப்புற · தேவை · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · வேகம் · சாதனங்கள் (s) · MODE DWELL",
           "climate_humidity_power_auto": "ஈரப்பதம் · சக்தி · தானியங்கி",
-          "climate_humidity_power_hardware_confirmed": "ஈரப்பதம் · சக்தி",
-          "climate_humidity_power_windowless_confirmed": "ஈரப்பதம் · சக்தி",
-          "climate_humidity_power_min_on_s": "ஈரப்பதம் · சக்தி",
-          "climate_humidity_power_min_off_s": "ஈரப்பதம் · சக்தி",
-          "climate_humidity_power_max_on_s": "ஈரப்பதம் · சக்தி",
-          "climate_secondary_climate_setpoint_auto": "தானியங்கி"
+          "climate_humidity_power_hardware_confirmed": "RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தேவை · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · வெளிப்புற · தேவை · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · அணை (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "சாதனங்கள் · தானியங்கி · TARGET AUTO"
         },
         "data_description": {
-          "climate_heat_climate_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_cool_climate_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_dry_climate_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_fan_climate_entity": "“மூலம் · வேகம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_humidifier_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_dehumidifier_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_extraction_fan_entity": "“மூலம் · வேகம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_purifier_fan_entity": "“மூலம் · வேகம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_heat_climate_entity": "“HEAT · சாதனங்கள் · மூலம் · வெப்பநிலை +” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_cool_climate_entity": "“COOL · சாதனங்கள் · மூலம் · வெப்பநிலை −” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_dry_climate_entity": "“DRY · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_fan_climate_entity": "“FAN_ONLY · வேகம் · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_humidifier_entity": "“HUMIDIFIER · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_dehumidifier_entity": "“DEHUMIDIFIER · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_extraction_fan_entity": "“EXTRACT · வேகம் · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_purifier_fan_entity": "“காற்று சுத்திகரிப்பான் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "climate_humidity_entity": "“ஈரப்பதம் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_humidity_low_rh": "“ஈரப்பதம்” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "climate_humidity_high_rh": "“ஈரப்பதம்” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "climate_humidity_hysteresis_rh": "“ஈரப்பதம்” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "climate_humidity_low_rh": "“RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MIN” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "climate_humidity_high_rh": "“RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MAX” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "climate_humidity_hysteresis_rh": "“RH · ஈரப்பதம் · சாதனங்கள் · ± RH” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
           "climate_cooling_dry_deferral_rh_points": "இந்த விருப்பம் “சாதனங்கள் · வெப்பநிலை −” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "climate_humidity_setpoint_auto": "இந்த விருப்பம் “ஈரப்பதம் · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "climate_window_efficiency_notify": "இந்த விருப்பம் “சாதனங்கள் · வெளிப்புற” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "climate_dry_fan_mode_auto": "இந்த விருப்பம் “வேகம் · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_dry_fan_hardware_confirmed": "“வேகம்” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_dry_fan_windowless_confirmed": "“வேகம்” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_dry_fan_mode_dwell_s": "இந்த நேரம் “வேகம்” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_dry_fan_hardware_confirmed": "“DRY/FAN_ONLY · வேகம் · சாதனங்கள் · தேவை · HW ✓” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "climate_dry_fan_windowless_confirmed": "“DRY/FAN_ONLY · வேகம் · சாதனங்கள் · வெளிப்புற · தேவை · NO WINDOW” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "climate_dry_fan_mode_dwell_s": "இந்த நேரம் “DRY/FAN_ONLY · வேகம் · சாதனங்கள் (s) · MODE DWELL” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
           "climate_humidity_power_auto": "இந்த விருப்பம் “ஈரப்பதம் · சக்தி · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_humidity_power_hardware_confirmed": "“ஈரப்பதம் · சக்தி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_humidity_power_windowless_confirmed": "“ஈரப்பதம் · சக்தி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_humidity_power_min_on_s": "இந்த நேரம் “ஈரப்பதம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_humidity_power_min_off_s": "இந்த நேரம் “ஈரப்பதம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_humidity_power_max_on_s": "இந்த நேரம் “ஈரப்பதம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_secondary_climate_setpoint_auto": "இந்த விருப்பம் “தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை."
+          "climate_humidity_power_hardware_confirmed": "“RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தேவை · HW ✓” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "climate_humidity_power_windowless_confirmed": "“RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · வெளிப்புற · தேவை · NO WINDOW” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "climate_humidity_power_min_on_s": "இந்த நேரம் “RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MIN ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_humidity_power_min_off_s": "இந்த நேரம் “RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · அணை (s) · MIN OFF” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_humidity_power_max_on_s": "இந்த நேரம் “RH POWER · ஈரப்பதம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MAX ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_secondary_climate_setpoint_auto": "இந்த விருப்பம் “சாதனங்கள் · தானியங்கி · TARGET AUTO” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை."
         }
       },
       "climate_air_strategy": {
@@ -744,54 +748,54 @@
         "data": {
           "climate_fan_speed_auto": "வேகம் · தானியங்கி",
           "climate_fan_power_auto": "வேகம் · சக்தி · தானியங்கி",
-          "climate_fan_power_hardware_confirmed": "வேகம் · சக்தி",
-          "climate_fan_power_min_on_s": "வேகம் · சக்தி",
-          "climate_fan_power_min_off_s": "வேகம் · சக்தி",
-          "climate_fan_power_max_on_s": "வேகம் · சக்தி",
-          "climate_pm25_sensor_verified": "உணரி",
-          "climate_co2_entity": "மூலம்",
-          "climate_pm25_entity": "மூலம்",
+          "climate_fan_power_hardware_confirmed": "FAN · வேகம் · சாதனங்கள் · சக்தி · தேவை · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · வேகம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · வேகம் · சாதனங்கள் · சக்தி · அணை (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · வேகம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · சாதனங்கள் · உணரி · தேவை · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · சாதனங்கள் · மூலம்",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · சாதனங்கள் · மூலம்",
           "climate_pm25_action_ug_m3": "PM2.5 · சாதனங்கள் (µg/m³)",
-          "climate_extraction_speed_percent": "சாதனங்கள் · வேகம் (%)",
-          "climate_purifier_speed_percent": "சாதனங்கள் · வேகம் (%)"
+          "climate_extraction_speed_percent": "EXTRACT · சாதனங்கள் · வேகம் (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · சாதனங்கள் · வேகம் (%) · SPEED %"
         },
         "data_description": {
           "climate_fan_speed_auto": "இந்த விருப்பம் “வேகம் · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
           "climate_fan_power_auto": "இந்த விருப்பம் “வேகம் · சக்தி · தானியங்கி” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
-          "climate_fan_power_hardware_confirmed": "“வேகம் · சக்தி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_fan_power_min_on_s": "இந்த நேரம் “வேகம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_fan_power_min_off_s": "இந்த நேரம் “வேகம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_fan_power_max_on_s": "இந்த நேரம் “வேகம் · சக்தி” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "climate_pm25_sensor_verified": "“உணரி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "climate_co2_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "climate_pm25_entity": "“மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_fan_power_hardware_confirmed": "“FAN · வேகம் · சாதனங்கள் · சக்தி · தேவை · HW ✓” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
+          "climate_fan_power_min_on_s": "இந்த நேரம் “FAN · வேகம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MIN ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_fan_power_min_off_s": "இந்த நேரம் “FAN · வேகம் · சாதனங்கள் · சக்தி · அணை (s) · MIN OFF” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_fan_power_max_on_s": "இந்த நேரம் “FAN · வேகம் · சாதனங்கள் · சக்தி · தானியங்கி (s) · MAX ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "climate_pm25_sensor_verified": "“PM2.5 · PM2.5 · சாதனங்கள் · உணரி · தேவை · SENSOR ✓ · VERIFIED” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த PM2.5 · PM2.5 · சாதனங்கள் · உணரி · தேவை · SENSOR ✓ · VERIFIEDயை மாற்றாது.",
+          "climate_co2_entity": "“CO₂ · CO₂ · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
+          "climate_pm25_entity": "“PM2.5 · PM2.5 · சாதனங்கள் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
           "climate_pm25_action_ug_m3": "“PM2.5 · சாதனங்கள் (µg/m³)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "climate_extraction_speed_percent": "“சாதனங்கள் · வேகம் (%)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
-          "climate_purifier_speed_percent": "“சாதனங்கள் · வேகம் (%)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
+          "climate_extraction_speed_percent": "“EXTRACT · சாதனங்கள் · வேகம் (%) · SPEED %” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.",
+          "climate_purifier_speed_percent": "“PURIFIER · சாதனங்கள் · வேகம் (%) · SPEED %” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல."
         }
       },
       "climate_profiles": {
         "title": "அமைப்புகள் · சாதனங்கள்",
         "description": "பகுதி · அமைப்புகள் · சாதனங்கள் · கட்டுப்பாடு. இருப்பு · உணரி · தேவை.",
         "data": {
-          "home_heat": "வீடு (°C)",
-          "home_cool": "வீடு (°C)",
-          "unoccupied_heat": "வெப்பநிலை + (°C)",
-          "unoccupied_cool": "வெப்பநிலை − (°C)",
-          "away_heat": "வீடு (°C)",
-          "away_cool": "வீடு (°C)",
-          "sleep_heat": "தூக்கம் (°C)",
-          "sleep_cool": "தூக்கம் (°C)"
+          "home_heat": "வெப்பமூட்டல் · வீட்டில் (°C)",
+          "home_cool": "குளிரூட்டல் · வீட்டில் (°C)",
+          "unoccupied_heat": "வெப்பமூட்டல் · காலி அறை (°C)",
+          "unoccupied_cool": "குளிரூட்டல் · காலி அறை (°C)",
+          "away_heat": "வெப்பமூட்டல் · வெளியே (°C)",
+          "away_cool": "குளிரூட்டல் · வெளியே (°C)",
+          "sleep_heat": "வெப்பமூட்டல் · தூக்கம் (°C)",
+          "sleep_cool": "குளிரூட்டல் · தூக்கம் (°C)"
         },
         "data_description": {
-          "home_heat": "“வீடு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "home_cool": "“வீடு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "unoccupied_heat": "“வெப்பநிலை + (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "unoccupied_cool": "“வெப்பநிலை − (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "away_heat": "“வீடு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "away_cool": "“வீடு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "sleep_heat": "“தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "sleep_cool": "“தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல."
+          "home_heat": "“வெப்பமூட்டல் · வீட்டில் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "home_cool": "“குளிரூட்டல் · வீட்டில் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "unoccupied_heat": "“வெப்பமூட்டல் · காலி அறை (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "unoccupied_cool": "“குளிரூட்டல் · காலி அறை (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "away_heat": "“வெப்பமூட்டல் · வெளியே (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "away_cool": "“குளிரூட்டல் · வெளியே (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "sleep_heat": "“வெப்பமூட்டல் · தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "sleep_cool": "“குளிரூட்டல் · தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல."
         }
       },
       "climate_actuators": {
@@ -799,35 +803,35 @@
         "description": "பகுதி · அமைப்புகள் · சாதனங்கள் · கட்டுப்பாடு. இருப்பு · உணரி · தேவை.",
         "data": {
           "direct_hardware_confirmed": "தேவை",
-          "heat_actuator": "சாதனங்கள்",
-          "cool_actuator": "சாதனங்கள்",
-          "min_on_s": "சக்தி · தானியங்கி (s)",
+          "heat_actuator": "வெப்பமூட்டல் · சாதனங்கள்",
+          "cool_actuator": "குளிரூட்டல் · சாதனங்கள்",
+          "min_on_s": "சக்தி · தானியங்கி (s) · MIN ON",
           "min_off_s": "சக்தி · அணை (s)",
-          "max_on_s": "சக்தி · தானியங்கி (s)",
-          "mode_dwell_s": "அமைப்புகள் · மூலம் (s)",
-          "kp": "அமைப்புகள் · மூலம் (°C)",
-          "ki": "அமைப்புகள் · மூலம் (°C)",
-          "kd": "அமைப்புகள் · மூலம் (°C)",
-          "sample_seconds": "அமைப்புகள் · மூலம் (s)",
-          "pwm_period_s": "அமைப்புகள் · மூலம் (s)",
-          "max_demand_change": "அமைப்புகள் · மூலம்",
-          "min_demand_change": "அமைப்புகள் · மூலம்"
+          "max_on_s": "சக்தி · தானியங்கி (s) · MAX ON",
+          "mode_dwell_s": "அமைப்புகள் · மூலம் (s) · MODE DWELL",
+          "kp": "PID Kp · கட்டுப்பாடு (percentage points/°C)",
+          "ki": "PID Ki · கட்டுப்பாடு (percentage points/(°C·minute))",
+          "kd": "PID Kd · கட்டுப்பாடு (percentage points·minute/°C)",
+          "sample_seconds": "அமைப்புகள் · மூலம் (s) · SAMPLE",
+          "pwm_period_s": "அமைப்புகள் · மூலம் (s) · PWM PERIOD",
+          "max_demand_change": "அமைப்புகள் · மூலம் · MAX Δ",
+          "min_demand_change": "அமைப்புகள் · மூலம் · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "“தேவை” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது.",
-          "heat_actuator": "“சாதனங்கள்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "cool_actuator": "“சாதனங்கள்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "min_on_s": "இந்த நேரம் “சக்தி · தானியங்கி (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "heat_actuator": "“வெப்பமூட்டல் · சாதனங்கள்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "cool_actuator": "“குளிரூட்டல் · சாதனங்கள்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "min_on_s": "இந்த நேரம் “சக்தி · தானியங்கி (s) · MIN ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
           "min_off_s": "இந்த நேரம் “சக்தி · அணை (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "max_on_s": "இந்த நேரம் “சக்தி · தானியங்கி (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "mode_dwell_s": "இந்த நேரம் “அமைப்புகள் · மூலம் (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "kp": "“அமைப்புகள் · மூலம் (°C)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "ki": "“அமைப்புகள் · மூலம் (°C)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "kd": "“அமைப்புகள் · மூலம் (°C)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "sample_seconds": "இந்த நேரம் “அமைப்புகள் · மூலம் (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "pwm_period_s": "இந்த நேரம் “அமைப்புகள் · மூலம் (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "max_demand_change": "“அமைப்புகள் · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "min_demand_change": "“அமைப்புகள் · மூலம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்."
+          "max_on_s": "இந்த நேரம் “சக்தி · தானியங்கி (s) · MAX ON” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "mode_dwell_s": "இந்த நேரம் “அமைப்புகள் · மூலம் (s) · MODE DWELL” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "kp": "“PID Kp · கட்டுப்பாடு (percentage points/°C)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "ki": "“PID Ki · கட்டுப்பாடு (percentage points/(°C·minute))” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "kd": "“PID Kd · கட்டுப்பாடு (percentage points·minute/°C)” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "sample_seconds": "இந்த நேரம் “அமைப்புகள் · மூலம் (s) · SAMPLE” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "pwm_period_s": "இந்த நேரம் “அமைப்புகள் · மூலம் (s) · PWM PERIOD” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
+          "max_demand_change": "“அமைப்புகள் · மூலம் · MAX Δ” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "min_demand_change": "“அமைப்புகள் · மூலம் · MIN Δ” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்."
         }
       },
       "outside_data": {
@@ -897,15 +901,15 @@
         "description": "மகரந்தம்: தேர்வு மூலம், உணரி / சாதனங்கள் · கட்டுப்பாடு.",
         "data": {
           "pollen_entity": "மகரந்தம் · மூலம்",
-          "pollen_high_from": "மகரந்தம்",
-          "pollen_max_scale": "மகரந்தம்",
-          "pollen_avoid_ventilation": "மகரந்தம்"
+          "pollen_high_from": "POLLEN · மகரந்தம் · HIGH",
+          "pollen_max_scale": "POLLEN · மகரந்தம் · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · மகரந்தம் · NO VENT"
         },
         "data_description": {
           "pollen_entity": "“மகரந்தம் · மூலம்” க்கு உண்மையான Home Assistant தரவு மூலத்தைத் தேர்வு செய்யவும். பழைய அல்லது இல்லாத தரவு செயல்பாட்டை நிறுத்தும்.",
-          "pollen_high_from": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "pollen_max_scale": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
-          "pollen_avoid_ventilation": "“மகரந்தம்” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்."
+          "pollen_high_from": "“POLLEN · மகரந்தம் · HIGH” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "pollen_max_scale": "“POLLEN · மகரந்தம் · SCALE” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்.",
+          "pollen_avoid_ventilation": "“POLLEN · மகரந்தம் · NO VENT” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும்."
         }
       },
       "outside_aqi": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "சக்தி · min ON (s)",
           "device_min_off_s": "சக்தி · min OFF (s)",
           "device_max_on_s": "சக்தி · max ON (s)",
-          "device_home_heat_c": "வீடு · வெப்பநிலை + · இலக்கு (°C)",
-          "device_home_cool_c": "வீடு · வெப்பநிலை − · இலக்கு (°C)",
-          "device_unoccupied_heat_c": "அறை · அணை · வெப்பநிலை + · இலக்கு (°C)",
-          "device_unoccupied_cool_c": "அறை · அணை · வெப்பநிலை − · இலக்கு (°C)",
-          "device_away_heat_c": "வீடு · அணை · வெப்பநிலை + · இலக்கு (°C)",
-          "device_away_cool_c": "வீடு · அணை · வெப்பநிலை − · இலக்கு (°C)",
-          "device_sleep_heat_c": "தூக்கம் · வெப்பநிலை + · இலக்கு (°C)",
-          "device_sleep_cool_c": "தூக்கம் · வெப்பநிலை − · இலக்கு (°C)"
+          "device_home_heat_c": "வெப்பமூட்டல் · வீட்டில் (°C)",
+          "device_home_cool_c": "குளிரூட்டல் · வீட்டில் (°C)",
+          "device_unoccupied_heat_c": "வெப்பமூட்டல் · காலி அறை (°C)",
+          "device_unoccupied_cool_c": "குளிரூட்டல் · காலி அறை (°C)",
+          "device_away_heat_c": "வெப்பமூட்டல் · வெளியே (°C)",
+          "device_away_cool_c": "குளிரூட்டல் · வெளியே (°C)",
+          "device_sleep_heat_c": "வெப்பமூட்டல் · தூக்கம் (°C)",
+          "device_sleep_cool_c": "குளிரூட்டல் · தூக்கம் (°C)"
         },
         "data_description": {
           "device_auto_control": "இந்த விருப்பம் “தானியங்கி கட்டுப்பாடு” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை.",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "இந்த நேரம் “சக்தி · min ON (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
           "device_min_off_s": "இந்த நேரம் “சக்தி · min OFF (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
           "device_max_on_s": "இந்த நேரம் “சக்தி · max ON (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது.",
-          "device_home_heat_c": "“வீடு · வெப்பநிலை + · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_home_cool_c": "“வீடு · வெப்பநிலை − · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_unoccupied_heat_c": "“அறை · அணை · வெப்பநிலை + · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_unoccupied_cool_c": "“அறை · அணை · வெப்பநிலை − · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_away_heat_c": "“வீடு · அணை · வெப்பநிலை + · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_away_cool_c": "“வீடு · அணை · வெப்பநிலை − · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_sleep_heat_c": "“தூக்கம் · வெப்பநிலை + · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
-          "device_sleep_cool_c": "“தூக்கம் · வெப்பநிலை − · இலக்கு (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல."
+          "device_home_heat_c": "“வெப்பமூட்டல் · வீட்டில் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_home_cool_c": "“குளிரூட்டல் · வீட்டில் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_unoccupied_heat_c": "“வெப்பமூட்டல் · காலி அறை (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_unoccupied_cool_c": "“குளிரூட்டல் · காலி அறை (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_away_heat_c": "“வெப்பமூட்டல் · வெளியே (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_away_cool_c": "“குளிரூட்டல் · வெளியே (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_sleep_heat_c": "“வெப்பமூட்டல் · தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல.",
+          "device_sleep_cool_c": "“குளிரூட்டல் · தூக்கம் (°C)” இலக்கு இருப்பு அல்லது தூக்கம் உறுதியானபோது மட்டுமே பொருந்தும். தெரியாத நிலை காலி அறை அல்ல."
         }
       }
     },
@@ -1174,69 +1178,168 @@
         "name": "இலக்கு (°C)"
       },
       "area_pid_kp": {
-        "name": "PID (%, °C)"
+        "name": "PID Kp · கட்டுப்பாடு (% per °C)"
       },
       "area_pid_ki": {
-        "name": "PID (%, °C)"
+        "name": "PID Ki · கட்டுப்பாடு (% per °C-minute)"
       },
       "area_pid_kd": {
-        "name": "PID (%, °C)"
+        "name": "PID Kd · கட்டுப்பாடு (%·minute per °C)"
       },
       "area_pid_offset_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · PID_OFFSET_C"
       },
       "area_pid_min_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN TARGET"
       },
       "area_pid_max_setpoint_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX TARGET"
       },
       "area_pid_sample_seconds": {
         "name": "PID (s)"
       },
       "area_pid_max_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MAX Δ"
       },
       "area_pid_min_change_c": {
-        "name": "PID (°C)"
+        "name": "PID (°C) · MIN Δ"
       },
       "area_climate_profile_home_heat": {
-        "name": "Heating · வீடு (°C)"
+        "name": "வெப்பமூட்டல் · வீட்டில் (°C)"
       },
       "area_climate_profile_home_cool": {
-        "name": "Cooling · வீடு (°C)"
+        "name": "குளிரூட்டல் · வீட்டில் (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heating · வெப்பநிலை + (°C)"
+        "name": "வெப்பமூட்டல் · காலி அறை (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Cooling · வெப்பநிலை − (°C)"
+        "name": "குளிரூட்டல் · காலி அறை (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heating · வீடு (°C)"
+        "name": "வெப்பமூட்டல் · வெளியே (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Cooling · வீடு (°C)"
+        "name": "குளிரூட்டல் · வெளியே (°C)"
       },
       "area_climate_profile_sleep_heat": {
-        "name": "Heating · தூக்கம் (°C)"
+        "name": "வெப்பமூட்டல் · தூக்கம் (°C)"
       },
       "area_climate_profile_sleep_cool": {
-        "name": "Cooling · தூக்கம் (°C)"
+        "name": "குளிரூட்டல் · தூக்கம் (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · மகரந்தம் · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · மகரந்தம் · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "மூலம் · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "அமைப்புகள் · மூலம் (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · இலக்கு (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "வேகம் · வெளிப்புற (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "அமைப்புகள் · மூலம் (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "அமைப்புகள் · மூலம் (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "சாதனங்கள் · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "இருப்பு · சாதனங்கள் · உணரி · தேவை"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "சாதனங்கள் (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · ஈரப்பதம் · சாதனங்கள் (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · ஈரப்பதம் · சாதனங்கள் · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "சாதனங்கள் · வெப்பநிலை −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · சாதனங்கள் (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · சாதனங்கள் · வேகம் (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · சாதனங்கள் · வேகம் (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · கட்டுப்பாடு (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · கட்டுப்பாடு (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · கட்டுப்பாடு (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "அமைப்புகள் · மூலம் (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "அமைப்புகள் · மூலம் · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "அமைப்புகள் · மூலம் · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "பூஞ்சை குறியீடு · 🧊 °C"
       }
     },
     "switch": {
       "home_automatic_notifications": {
-        "name": "தானியங்கி அறிவிப்புகள்"
+        "name": "தானியங்கி · AUTOMATIC_NOTIFICATIONS"
       },
       "home_automatic_tts": {
-        "name": "தானியங்கி குரல் அறிவிப்புகள்"
+        "name": "தானியங்கி"
       },
       "home_use_announcement_hub": {
         "name": "Announcement Hub"
       },
       "home_ai_rewrite_announcements": {
         "name": "AI · அறிவிப்புகள் (விருப்பம்)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · மகரந்தம் · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "தூக்கம்"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · தானியங்கி"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "தூக்கம் · சாதனங்கள்"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "தூக்கம் · தானியங்கி"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "சாதனங்கள் · வெளிப்புற"
       }
     },
     "select": {
@@ -1244,7 +1347,7 @@
         "name": "மொழி"
       },
       "area_manual_profile": {
-        "name": "சாதனங்கள்"
+        "name": "சாதனங்கள் · CLIMATE_MANUAL_PROFILE"
       },
       "area_pid_gain_source": {
         "name": "Gain source",
@@ -1252,6 +1355,31 @@
           "defaults": "Defaults",
           "manual": "Manual"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "வீடு · இருப்பு · கட்டுப்பாடு"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "இருப்பு · சாதனங்கள்"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "வீடு · சாதனங்கள் · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "சாதனங்கள் · மூலம் · இலக்கு"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "தூக்கம் · சாதனங்கள் · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "தூக்கம் · சாதனங்கள் · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "பூஞ்சை குறியீடு · ↻ 🌡️"
       }
     }
   },

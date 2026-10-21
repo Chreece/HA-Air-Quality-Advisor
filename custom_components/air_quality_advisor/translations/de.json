@@ -31,13 +31,15 @@
           "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
           "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
           "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
-          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren"
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
         },
         "data_description": {
           "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
           "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
           "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
-          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben."
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben.",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
         }
       },
       "outdoor": {
@@ -215,13 +217,15 @@
           "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
           "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
           "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
-          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren"
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
         },
         "data_description": {
           "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
           "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
           "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
-          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben."
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben.",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
         }
       },
       "outdoor": {
@@ -626,9 +630,9 @@
           "climate_allow_actuation": "Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)",
           "climate_auto_switch_hvac": "Automatischen Heiz-/Kühlmoduswechsel erlauben",
           "climate_prefer_native_auto": "Geräteeigenen Heiz-/Kühlbereich verwenden",
-          "climate_controller": "Steuerung",
-          "climate_mode": "Geräte",
-          "climate_entity": "Quelle",
+          "climate_controller": "Geräte · Steuerung",
+          "climate_mode": "Geräte · MODE",
+          "climate_entity": "Geräte · Quelle",
           "climate_temperature_entity": "Temperatur · Quelle",
           "climate_hysteresis_c": "Geräte (°C)"
         },
@@ -637,9 +641,9 @@
           "climate_allow_actuation": "Diese Option steuert „Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_auto_switch_hvac": "Diese Option steuert „Automatischen Heiz-/Kühlmoduswechsel erlauben“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_prefer_native_auto": "Diese Option steuert „Geräteeigenen Heiz-/Kühlbereich verwenden“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
-          "climate_controller": "Diese Option steuert „Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
-          "climate_mode": "Diese Option steuert „Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
-          "climate_entity": "Eine passende Home-Assistant-Quelle für „Quelle“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_controller": "Diese Option steuert „Geräte · Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_mode": "Diese Option steuert „Geräte · MODE“. Geräte · MODEbefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_entity": "Eine passende Home-Assistant-Geräte · Quelle für „Geräte · Quelle“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
           "climate_temperature_entity": "Eine passende Home-Assistant-Quelle für „Temperatur · Quelle“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
           "climate_hysteresis_c": "Dies ist ein Entscheidungswert für „Geräte (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
         }
@@ -650,12 +654,12 @@
         "data": {
           "climate_occupancy_sensors": "Präsenzsensoren in diesem Raum",
           "climate_away_entities": "Personen und Tracker für Zuhause/Abwesend",
-          "climate_unknown_occupancy": "Belegung",
+          "climate_unknown_occupancy": "Belegung · Geräte",
           "climate_unoccupied_delay_minutes": "Verzögerung bis Raum als unbelegt gilt (Minuten)",
           "climate_occupancy_stale_minutes": "Maximales Alter der Präsenzmessung (Minuten)",
-          "climate_away_policy": "Zuhause",
+          "climate_away_policy": "Zuhause · Geräte · POLICY",
           "climate_manual_profile": "Geräte",
-          "climate_sleep_active": "Schlaf",
+          "climate_sleep_active": "Schlaf · Geräte",
           "climate_sleep_schedule_enabled": "Schlafprofil nach Uhrzeit",
           "climate_sleep_start": "Schlafbeginn (lokale Zeit)",
           "climate_sleep_end": "Schlafende (lokale Zeit)",
@@ -665,12 +669,12 @@
         "data_description": {
           "climate_occupancy_sensors": "Eine passende Home-Assistant-Quelle für „Präsenzsensoren in diesem Raum“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
           "climate_away_entities": "Eine passende Home-Assistant-Quelle für „Personen und Tracker für Zuhause/Abwesend“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
-          "climate_unknown_occupancy": "Diese Option steuert „Belegung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_unknown_occupancy": "Diese Option steuert „Belegung · Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_unoccupied_delay_minutes": "Dieser Zeitwert regelt „Verzögerung bis Raum als unbelegt gilt (Minuten)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
           "climate_occupancy_stale_minutes": "Dieser Zeitwert regelt „Maximales Alter der Präsenzmessung (Minuten)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "climate_away_policy": "Diese Option steuert „Zuhause“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_away_policy": "Diese Option steuert „Zuhause · Geräte · POLICY“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_manual_profile": "Diese Option steuert „Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
-          "climate_sleep_active": "Diese Option steuert „Schlaf“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_sleep_active": "Diese Option steuert „Schlaf · Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_sleep_schedule_enabled": "Diese Option steuert „Schlafprofil nach Uhrzeit“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
           "climate_sleep_start": "Dieser Zeitwert regelt „Schlafbeginn (lokale Zeit)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
           "climate_sleep_end": "Dieser Zeitwert regelt „Schlafende (lokale Zeit)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
@@ -774,24 +778,24 @@
         "title": "Klima — Temperaturbereiche je Betriebsart",
         "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
         "data": {
-          "home_heat": "Zuhause (°C)",
-          "home_cool": "Zuhause (°C)",
-          "unoccupied_heat": "Temperatur + (°C)",
-          "unoccupied_cool": "Temperatur − (°C)",
-          "away_heat": "Zuhause (°C)",
-          "away_cool": "Zuhause (°C)",
-          "sleep_heat": "Schlaf (°C)",
-          "sleep_cool": "Schlaf (°C)"
+          "home_heat": "Heizen · Zuhause (°C)",
+          "home_cool": "Kühlen · Zuhause (°C)",
+          "unoccupied_heat": "Heizen · Unbelegter Raum (°C)",
+          "unoccupied_cool": "Kühlen · Unbelegter Raum (°C)",
+          "away_heat": "Heizen · Abwesend (°C)",
+          "away_cool": "Kühlen · Abwesend (°C)",
+          "sleep_heat": "Heizen · Schlaf (°C)",
+          "sleep_cool": "Kühlen · Schlaf (°C)"
         },
         "data_description": {
-          "home_heat": "Sollwert für „Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "home_cool": "Sollwert für „Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "unoccupied_heat": "Sollwert für „Temperatur + (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "unoccupied_cool": "Sollwert für „Temperatur − (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "away_heat": "Sollwert für „Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "away_cool": "Sollwert für „Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "sleep_heat": "Sollwert für „Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "sleep_cool": "Sollwert für „Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
+          "home_heat": "Sollwert für „Heizen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "home_cool": "Sollwert für „Kühlen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "unoccupied_heat": "Sollwert für „Heizen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "unoccupied_cool": "Sollwert für „Kühlen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "away_heat": "Sollwert für „Heizen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "away_cool": "Sollwert für „Kühlen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "sleep_heat": "Sollwert für „Heizen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "sleep_cool": "Sollwert für „Kühlen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
         }
       },
       "climate_actuators": {
@@ -801,33 +805,33 @@
           "direct_hardware_confirmed": "Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt",
           "heat_actuator": "Heizaktor (Schalter oder Prozentwert)",
           "cool_actuator": "Kühlaktor (Schalter oder Prozentwert)",
-          "min_on_s": "Leistung · Automatische (s)",
+          "min_on_s": "Leistung · Automatische (s) · MIN ON",
           "min_off_s": "Leistung · Ausschalten (s)",
-          "max_on_s": "Leistung · Automatische (s)",
-          "mode_dwell_s": "Einstellungen · Quelle (s)",
-          "kp": "Einstellungen · Quelle (°C)",
-          "ki": "Einstellungen · Quelle (°C)",
-          "kd": "Einstellungen · Quelle (°C)",
-          "sample_seconds": "Einstellungen · Quelle (s)",
-          "pwm_period_s": "Einstellungen · Quelle (s)",
-          "max_demand_change": "Einstellungen · Quelle",
-          "min_demand_change": "Einstellungen · Quelle"
+          "max_on_s": "Leistung · Automatische (s) · MAX ON",
+          "mode_dwell_s": "Einstellungen · Quelle (s) · MODE DWELL",
+          "kp": "PID Kp · Steuerung (percentage points/°C)",
+          "ki": "PID Ki · Steuerung (percentage points/(°C·minute))",
+          "kd": "PID Kd · Steuerung (percentage points·minute/°C)",
+          "sample_seconds": "Einstellungen · Quelle (s) · SAMPLE",
+          "pwm_period_s": "Einstellungen · Quelle (s) · PWM PERIOD",
+          "max_demand_change": "Einstellungen · Quelle · MAX Δ",
+          "min_demand_change": "Einstellungen · Quelle · MIN Δ"
         },
         "data_description": {
           "direct_hardware_confirmed": "Für „Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
           "heat_actuator": "„Heizaktor (Schalter oder Prozentwert)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
           "cool_actuator": "„Kühlaktor (Schalter oder Prozentwert)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
-          "min_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "min_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s) · MIN ON“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
           "min_off_s": "Dieser Zeitwert regelt „Leistung · Ausschalten (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "max_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "mode_dwell_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "kp": "„Einstellungen · Quelle (°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
-          "ki": "„Einstellungen · Quelle (°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
-          "kd": "„Einstellungen · Quelle (°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
-          "sample_seconds": "Dieser Zeitwert regelt „Einstellungen · Quelle (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "pwm_period_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "max_demand_change": "„Einstellungen · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
-          "min_demand_change": "„Einstellungen · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
+          "max_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s) · MAX ON“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "mode_dwell_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · MODE DWELL“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "kp": "„PID Kp · Steuerung (percentage points/°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "ki": "„PID Ki · Steuerung (percentage points/(°C·minute))“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "kd": "„PID Kd · Steuerung (percentage points·minute/°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "sample_seconds": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · SAMPLE“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "pwm_period_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · PWM PERIOD“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "max_demand_change": "„Einstellungen · Quelle · MAX Δ“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "min_demand_change": "„Einstellungen · Quelle · MIN Δ“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
         }
       },
       "outside_data": {
@@ -976,14 +980,14 @@
           "device_min_on_s": "Leistung · min ON (s)",
           "device_min_off_s": "Leistung · min OFF (s)",
           "device_max_on_s": "Leistung · max ON (s)",
-          "device_home_heat_c": "Zuhause · Temperatur + · Sollwert (°C)",
-          "device_home_cool_c": "Zuhause · Temperatur − · Sollwert (°C)",
-          "device_unoccupied_heat_c": "Raum · Ausschalten · Temperatur + · Sollwert (°C)",
-          "device_unoccupied_cool_c": "Raum · Ausschalten · Temperatur − · Sollwert (°C)",
-          "device_away_heat_c": "Zuhause · Ausschalten · Temperatur + · Sollwert (°C)",
-          "device_away_cool_c": "Zuhause · Ausschalten · Temperatur − · Sollwert (°C)",
-          "device_sleep_heat_c": "Schlaf · Temperatur + · Sollwert (°C)",
-          "device_sleep_cool_c": "Schlaf · Temperatur − · Sollwert (°C)"
+          "device_home_heat_c": "Heizen · Zuhause (°C)",
+          "device_home_cool_c": "Kühlen · Zuhause (°C)",
+          "device_unoccupied_heat_c": "Heizen · Unbelegter Raum (°C)",
+          "device_unoccupied_cool_c": "Kühlen · Unbelegter Raum (°C)",
+          "device_away_heat_c": "Heizen · Abwesend (°C)",
+          "device_away_cool_c": "Kühlen · Abwesend (°C)",
+          "device_sleep_heat_c": "Heizen · Schlaf (°C)",
+          "device_sleep_cool_c": "Kühlen · Schlaf (°C)"
         },
         "data_description": {
           "device_auto_control": "Diese Option steuert „Automatische Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
@@ -1004,14 +1008,14 @@
           "device_min_on_s": "Dieser Zeitwert regelt „Leistung · min ON (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
           "device_min_off_s": "Dieser Zeitwert regelt „Leistung · min OFF (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
           "device_max_on_s": "Dieser Zeitwert regelt „Leistung · max ON (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
-          "device_home_heat_c": "Sollwert für „Zuhause · Temperatur + · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_home_cool_c": "Sollwert für „Zuhause · Temperatur − · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_unoccupied_heat_c": "Sollwert für „Raum · Ausschalten · Temperatur + · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_unoccupied_cool_c": "Sollwert für „Raum · Ausschalten · Temperatur − · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_away_heat_c": "Sollwert für „Zuhause · Ausschalten · Temperatur + · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_away_cool_c": "Sollwert für „Zuhause · Ausschalten · Temperatur − · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_sleep_heat_c": "Sollwert für „Schlaf · Temperatur + · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
-          "device_sleep_cool_c": "Sollwert für „Schlaf · Temperatur − · Sollwert (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
+          "device_home_heat_c": "Sollwert für „Heizen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_home_cool_c": "Sollwert für „Kühlen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_unoccupied_heat_c": "Sollwert für „Heizen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_unoccupied_cool_c": "Sollwert für „Kühlen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_away_heat_c": "Sollwert für „Heizen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_away_cool_c": "Sollwert für „Kühlen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_sleep_heat_c": "Sollwert für „Heizen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_sleep_cool_c": "Sollwert für „Kühlen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
         }
       }
     },
@@ -1207,22 +1211,103 @@
         "name": "Kühlen · Zuhause (°C)"
       },
       "area_climate_profile_unoccupied_heat": {
-        "name": "Heizen · Temperatur + (°C)"
+        "name": "Heizen · Unbelegter Raum (°C)"
       },
       "area_climate_profile_unoccupied_cool": {
-        "name": "Kühlen · Temperatur − (°C)"
+        "name": "Kühlen · Unbelegter Raum (°C)"
       },
       "area_climate_profile_away_heat": {
-        "name": "Heizen · Zuhause (°C)"
+        "name": "Heizen · Abwesend (°C)"
       },
       "area_climate_profile_away_cool": {
-        "name": "Kühlen · Zuhause (°C)"
+        "name": "Kühlen · Abwesend (°C)"
       },
       "area_climate_profile_sleep_heat": {
         "name": "Heizen · Schlaf (°C)"
       },
       "area_climate_profile_sleep_cool": {
         "name": "Kühlen · Schlaf (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "Pollenindex ab diesem Wert hoch"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "Maximalwert der Pollen-Skala"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "Maximales Datenalter für Raumbelegung/Schlaf (Minuten)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "Raumluftvolumen (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "Reinigungsleistung für Partikel, CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂-Zielwert beim Lüften (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Radon-Jahresreferenzwert (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Angenommene Luftgeschwindigkeit (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "Aktivität des Bewohners (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "Bekleidungsisolierung des Bewohners (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Verzögerung bis Raum als unbelegt gilt (Minuten)"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Maximales Alter der Präsenzmessung (Minuten)"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Maximale Komfortkorrektur (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "Untergrenze der relativen Luftfeuchte (%)"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "Obergrenze der relativen Luftfeuchte (%)"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "Hysterese für Luftfeuchte (Prozentpunkte)"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Entfeuchter beim aktiven Kühlen zurückstellen, bis relative Feuchte die Obergrenze um diesen Wert übersteigt (0 deaktiviert)"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "Zieldrehzahl laufender Abluftanlage (%)"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "Zieldrehzahl laufender Luftreinigung (%)"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · Steuerung (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · Steuerung (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · Steuerung (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "Einstellungen · Quelle (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "Einstellungen · Quelle · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "Einstellungen · Quelle · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Gemessene Temperatur der kältesten Oberfläche (°C)"
       }
     },
     "switch": {
@@ -1237,6 +1322,24 @@
       },
       "home_ai_rewrite_announcements": {
         "name": "KI für Ansagen verwenden"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "Bei hoher Pollenbelastung Lüften vermeiden"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Schlafzimmer"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "ISO-7730-Komfort PMV/PPD aktivieren"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Schlaf · Geräte"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Schlafprofil nach Uhrzeit"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt"
       }
     },
     "select": {
@@ -1252,6 +1355,31 @@
           "defaults": "Standardwerte",
           "manual": "Manuell"
         }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Zuhause · Belegung · Steuerung"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Belegung · Geräte"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Zuhause · Geräte · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Temperatursollwert oder ISO-7730-Komfort"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Schlafbeginn (lokale Zeit)"
+      },
+      "area_climate_sleep_end": {
+        "name": "Schlafende (lokale Zeit)"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Mit aktuellen Temperaturwerten neu kalibrieren"
       }
     }
   },
