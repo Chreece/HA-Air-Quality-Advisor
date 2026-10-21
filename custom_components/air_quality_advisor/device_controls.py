@@ -48,7 +48,8 @@ PROFILE_NUMBERS = {
 }
 THRESHOLD_NUMBERS = {
     key: (
-        -40.0 if key in ("min_outdoor_temp", "max_outdoor_temp") else 0.0,
+        -40.0 if key in ("min_outdoor_temp", "max_outdoor_temp") else
+        1.0 if key == "max_age_minutes" else 0.0,
         100000.0 if key == "max_age_minutes" else
         100.0 if key in ("indoor_mold", "indoor_humidity", "max_outdoor_humidity") else
         10000.0,
