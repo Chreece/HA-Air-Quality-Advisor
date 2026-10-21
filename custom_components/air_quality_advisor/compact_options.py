@@ -752,10 +752,24 @@ class CompactOptionsMixin:
                         if (other.get("method")!=data["method"]):
                             errors["base"]="device_conflicting_control"
             if not errors and data["auto_control"] and data["method"] == "power":
-                minimum = _valid_temperature(data["min_on_s"],60,7200)
-                off = _valid_temperature(data["min_off_s"],60,7200)
-                maximum = _valid_temperature(data["max_on_s"],300,86400)
-                if minimum is None or off is None or maximum is None or maximum < minimum:
+                # Match the exact selected driver's compressor/fan dwell and
+                # watchdog constraints. The old form accepted combinations
+                # that were guaranteed to be rejected at runtime.
+                if domain == "humidifier":
+                    from .climate_humidity_power import timings
+                    checked = timings({
+                        "humidity_power_min_on_s": data["min_on_s"],
+                        "humidity_power_min_off_s": data["min_off_s"],
+                        "humidity_power_max_on_s": data["max_on_s"],
+                    })
+                else:
+                    from .climate_fan_power import dwell_settings
+                    checked = dwell_settings({
+                        "fan_power_min_on_s": data["min_on_s"],
+                        "fan_power_min_off_s": data["min_off_s"],
+                        "fan_power_max_on_s": data["max_on_s"],
+                    })
+                if checked is None:
                     errors["base"] = "device_runtime_invalid"
             if not errors and data["auto_control"] and domain in ("fan","humidifier"):
                 # One controller method per room/device domain. The current
@@ -893,10 +907,19 @@ class CompactOptionsMixin:
             fields[_field("device_sensor_verified",old.get("sensor_verified",False))]=selector.BooleanSelector()
             fields[_field("device_fan_speed_percent",old.get("fan_speed_percent",60))]=_number(10,100)
         if domain in ("fan","humidifier"):
-            for k,d in (("min_on_s",600),("min_off_s",600),("max_on_s",7200)):
-                fields[_field("device_"+k,old.get(k,d))]=_number(
-                    60 if k!="max_on_s" else 300,
-                    7200 if k!="max_on_s" else 86400)
+            permitted = ({
+                "min_on_s": (300, 7200, 600),
+                "min_off_s": (600, 14400, 600),
+                "max_on_s": (900, 28800, 7200),
+            } if domain == "humidifier" else {
+                "min_on_s": (120, 3600, 300),
+                "min_off_s": (120, 7200, 300),
+                "max_on_s": (900, 86400, 14400),
+            })
+            for name, (minimum, maximum, default) in permitted.items():
+                fields[_field("device_"+name, old.get(name, default))] = _number(
+                    minimum, maximum,
+                )
         return self.async_show_form(
             step_id="device_settings", errors=errors, data_schema=probatio.Schema(fields),
             description_placeholders={"device_name":state.name or entity,
