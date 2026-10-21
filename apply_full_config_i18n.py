@@ -139,7 +139,8 @@ def _translated_help(lang: str, step_id: str, field: str,
     manual = specials.get(f"{step_id}.{field}", {})
     if lang in manual:
         return manual[lang]
-    if (current and not _is_generic_help(current)
+    if (current and isinstance(current, str) and len(current.strip()) >= 35
+        and not _is_generic_help(current)
         and ((lang == "en") or (current != english))):
         return current
     category = _kind(step_id, field)
