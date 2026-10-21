@@ -1398,12 +1398,8 @@ class _FlowMixin(CompactOptionsMixin):
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )))
         fields.update({
-            _marker("climate_pm25_action_ug_m3",draft.get(
-                "pm25_action_ug_m3",35)):_real_number(5,250,"µg/m³"),
-            _marker("climate_extraction_speed_percent",draft.get(
-                "extraction_speed_percent",65)):_real_number(30,100,"%"),
-            _marker("climate_purifier_speed_percent",draft.get(
-                "purifier_speed_percent",65)):_real_number(30,100,"%"),
+            # Speed and PM2.5 policy thresholds are now on the area device.
+            # Physical fan-power dwell limits remain commissioning inputs.
             _marker("climate_fan_power_min_on_s",draft.get(
                 "fan_power_min_on_s",300)):_real_number(120,3600,"s"),
             _marker("climate_fan_power_min_off_s",draft.get(
@@ -1448,23 +1444,10 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("mode_dwell_s",draft.get("mode_dwell_s",900)):
                 _real_number(300,7200,"s"),
         }
-        if strategy in ("pwm","proportional"):
-            fields.update({
-                _marker("kp",draft.get("kp",18.0)):_real_number(0.01,100),
-                _marker("ki",draft.get("ki",0.12)):_real_number(0,10),
-                _marker("kd",draft.get("kd",0.0)):_real_number(0,50),
-                _marker("sample_seconds",draft.get("sample_seconds",300)):
-                    _real_number(120,3600,"s"),
-            })
+        # Direct PID gains and sampling are area-device Number settings.
         if strategy=="pwm":
             fields[_marker("pwm_period_s",draft.get("pwm_period_s",900))]=_real_number(300,7200,"s")
-        if strategy=="proportional":
-            fields.update({
-                _marker("max_demand_change",draft.get("max_demand_change",10)):
-                    _real_number(1,50,"%/cycle"),
-                _marker("min_demand_change",draft.get("min_demand_change",2)):
-                    _real_number(0.1,20,"%"),
-            })
+        # Modulation demand change limits are also edited on the area device.
         return probatio.Schema(fields)
 
     async def async_step_climate_actuators(
