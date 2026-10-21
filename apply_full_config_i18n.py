@@ -155,6 +155,11 @@ def _generated_error(lang: str, key: str, vocab: dict, templates: dict) -> str:
 
 def apply_full_config_i18n(root: Path) -> None:
     locales = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
+    mode_terms = json.loads((root / "climate_mode_locales.json").read_text(encoding="utf-8"))
+    if set(mode_terms) != set(locales) or any(
+        set(words) != {"heat","cool","dry"} for words in mode_terms.values()
+    ):
+        raise ValueError("Climate mode option terms required for all 38 languages")
     templates = json.loads((root / TEMPLATES_FILE).read_text(encoding="utf-8"))
     manuals: dict[str, dict] = {}
     for filename in FILES:
@@ -252,6 +257,89 @@ def apply_full_config_i18n(root: Path) -> None:
                 ) or en_value in _LANGUAGE_NEUTRAL:
                     continue
                 dst_options[key] = _topic(key, en_value, vocab)
+
+        # HA's selector translation_key is the only reliable way to
+        # localize dropdown choices for the individual user's UI language.
+        # The saved machine values and capability checks are unchanged.
+        heat=mode_terms[lang]["heat"]
+        cool=mode_terms[lang]["cool"]
+        dry=mode_terms[lang]["dry"]
+        by_key = {
+            "environment_aqi_scale": {
+                "not_configured":vocab["source"]+" · "+vocab["invalid"],
+                "us_epa":"US EPA AQI (0–500)",
+                "eea_category":"EEA AQI (1–6)",
+                "custom":vocab["settings"]+" · "+vocab["target"],
+            },
+            "climate_controller":{
+                "device":vocab["devices"]+" · "+vocab["control"],
+                "environment":vocab["area"]+" · "+vocab["sensor"],
+                "setpoint_pid":"PID · "+vocab["target"],
+                "on_off":"ON/OFF · "+vocab["power"],
+                "pwm":"PWM · "+vocab["power"],
+                "proportional":"0–100% · "+vocab["control"],
+            },
+            "climate_mode":{
+                "auto":vocab["automatic"],
+                "heat":heat,
+                "cool":cool,
+                "dry":dry,
+                "off":vocab["off"],
+            },
+            "climate_unknown_occupancy":{
+                "occupied":vocab["room"]+" · "+vocab["presence"],
+                "hold":vocab["hold"],
+            },
+            "climate_away_policy":{
+                "any_home":vocab["house"]+" · "+vocab["presence"],
+                "all_home":vocab["house"]+" · "+vocab["devices"]+" · "+vocab["presence"],
+            },
+            "climate_manual_profile":{
+                "auto":vocab["automatic"],
+                "home":vocab["house"],
+                "unoccupied":vocab["room"]+" · "+vocab["off"],
+                "away":vocab["house"]+" · "+vocab["off"],
+                "sleep":vocab["sleep"],
+            },
+            "climate_target_source":{
+                "temperature":vocab["temperature"],
+                "pmv":"ISO 7730 · PMV/PPD",
+            },
+            "pid_mode":{
+                "heat":heat,
+                "cool":cool,
+            },
+        }
+        if lang=="el":
+            by_key["climate_controller"].update({
+                "device":"Εγγενής θερμοστάτης / εσωτερικός PID",
+                "environment":"Μόνο περιβαλλοντικές συσκευές, χωρίς θερμοστάτη",
+                "setpoint_pid":"Εξωτερικός PID στόχου θερμοκρασίας",
+                "on_off":"Ρελέ ON/OFF θερμικού φορτίου με ανεξάρτητη προστασία",
+                "pwm":"Αργό PWM θερμικού φορτίου (χωρίς συμπιεστή)",
+                "proportional":"Επαληθευμένη αναλογική έξοδος 0–100%",
+            })
+            by_key["climate_unknown_occupancy"]["occupied"]="Θεώρησε τον χώρο κατειλημμένο"
+            by_key["climate_away_policy"].update({
+                "any_home":"Σπίτι αν υπάρχει έστω ένας κάτοικος",
+                "all_home":"Σπίτι μόνο όταν όλοι είναι παρόντες",
+            })
+        elif lang=="en":
+            by_key["climate_controller"].update({
+                "device":"Native thermostat / internal PID",
+                "environment":"Environment-only devices (no thermostat)",
+                "setpoint_pid":"Outer-loop setpoint PID",
+                "on_off":"Protected slow-load ON/OFF relay",
+                "pwm":"Protected non-compressor time-proportioning PWM",
+                "proportional":"Verified 0–100% proportional output",
+            })
+            by_key["climate_unknown_occupancy"]["occupied"]="Assume occupied"
+            by_key["climate_away_policy"].update({
+                "any_home":"Home when any resident is home",
+                "all_home":"Home only when all selected trackers are home",
+            })
+        for selector_key, choices in by_key.items():
+            data.setdefault("selector", {})[selector_key] = {"options": choices}
 
         # Preserve placeholders and force complete field help, including
         # thresholds that historically had 22 labels and ZERO descriptions.
