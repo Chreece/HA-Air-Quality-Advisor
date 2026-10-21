@@ -420,6 +420,14 @@
       noActuation:'Μόνο πληροφορίες · Ο έλεγχος κλίματος PID είναι μελλοντική δυνατότητα.'}
   };
 
+  const DEVICE_EDIT_LABELS = {
+    en: {room:'Edit room',home:'Home settings'},
+    el: {room:'Ρυθμίσεις χώρου',home:'Ρυθμίσεις σπιτιού'},
+    de: {room:'Raum bearbeiten',home:'Hauseinstellungen'},
+    fr: {room:'Modifier la pièce',home:'Paramètres du logement'},
+    es: {room:'Editar habitación',home:'Ajustes de la vivienda'}
+  };
+
   const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
   const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
   const clamp = (num,min,max) => Math.max(min, Math.min(max,num));
@@ -446,7 +454,26 @@
       this._shownLanguage = null;
       this._lastState = null;
       this._lastConfigKey = null;
+      this._areaDeviceIds = new Map();
+      this._homeDeviceId = null;
+      this._deviceRegistryLoading = null;
+      this._deviceRegistryUnavailable = false;
       this.shadowRoot.addEventListener('click', (event) => {
+        const edit = event.target.closest?.('[data-edit-area],[data-edit-home]');
+        if (edit) {
+          const area = edit.getAttribute('data-edit-area');
+          const id = area === null ? this._homeDeviceId : this._areaDeviceIds.get(area);
+          if (!id) return;
+          const path = '/config/devices/device/' + encodeURIComponent(id);
+          // HA's SPA device route; never build a link from the area name.
+          if (window.history?.pushState && window.dispatchEvent) {
+            window.history.pushState(null, '', path);
+            window.dispatchEvent(new Event('location-changed'));
+          } else if (window.location) {
+            window.location.assign(path);
+          }
+          return;
+        }
         const climate = event.target.closest?.('[data-climate-action]');
         if (climate) {
           const area = climate.getAttribute('data-climate-area');
@@ -487,7 +514,59 @@
 
     set hass(hass) {
       this._hass = hass;
+      this._loadDeviceIds();
       this._render();
+    }
+
+    _loadDeviceIds() {
+      if (this._deviceRegistryLoading || this._deviceRegistryUnavailable ||
+          !this._hass?.callWS) return;
+      this._deviceRegistryLoading = Promise.resolve(
+        this._hass.callWS({type:'config/device_registry/list'})
+      ).then((entries) => {
+        if (!Array.isArray(entries)) throw new Error('Invalid device registry');
+        const belong = (d) => safeArray(d.identifiers)
+          .filter((pair) => Array.isArray(pair) && pair[0]==='air_quality_advisor')
+          .map((pair) => pair[1]);
+        const home = entries.filter((device) => belong(device).some(
+          (identifier) => typeof identifier === 'string' && !identifier.includes('_area_')
+        ));
+        const stateId = this._state()[0];
+        const currentDevice = this._hass?.entities?.[stateId]?.device_id;
+        const parent = home.find((device)=>device.id===currentDevice) ||
+                       (home.length===1 ? home[0] : null);
+        if (!parent) return; // ambiguous installations: never link another home
+        this._homeDeviceId = parent.id;
+        const ids = belong(parent);
+        const entryId = ids.find((id) => typeof id==='string' && !id.includes('_area_'));
+        if (!entryId) return;
+        this._areaDeviceIds.clear();
+        for (const device of entries) {
+          for (const identifier of belong(device)) {
+            const prefix = entryId+'_area_';
+            if (typeof identifier === 'string' && identifier.startsWith(prefix)) {
+              this._areaDeviceIds.set(identifier.slice(prefix.length),device.id);
+            }
+          }
+        }
+        this._render(true);
+      }).catch((error) => {
+        this._deviceRegistryUnavailable = true;
+        console.warn('Home Environment Manager device links unavailable', error);
+      }).finally(() => { this._deviceRegistryLoading = null; });
+    }
+
+    _deviceEditLabel(home = false) {
+      const l = DEVICE_EDIT_LABELS[this._language()] || DEVICE_EDIT_LABELS.en;
+      return home ? l.home : l.room;
+    }
+
+    _editButton(area) {
+      const device = this._areaDeviceIds.get(String(area));
+      return '<button class="edit-device" type="button" data-edit-area="'+escape(area)+
+        '" aria-label="'+escape(this._deviceEditLabel())+'" title="'+escape(
+          this._deviceEditLabel())+'" '+(device ? '' : 'disabled')+'>'+
+        this._icon('mdi:cog-outline')+'</button>';
     }
 
     getCardSize() { return 5; }
@@ -1013,6 +1092,7 @@
             <div class="room-icon">${this._icon('mdi:thermostat')}</div>
             <div class="room-main"><h3>${escape(room.name)}</h3>
               <span>${escape(labels.title)}</span></div>
+            ${this._editButton(room.area_id)}
           </div>
           ${this._climatePanel(room)}
         </article>`;
@@ -1085,6 +1165,7 @@
         <div class="room-heading">
           <div class="room-icon">${this._icon(status === 'safe' ? 'mdi:home-check-outline' : status === 'attention' ? 'mdi:home-alert-outline' : 'mdi:home-outline')}</div>
           <div class="room-main"><h3>${escape(room.name)}</h3><span>${escape(subheading)}</span></div>
+          ${this._editButton(room.area_id)}
           <span class="status-tag">${this._icon(ICON[status])}${escape(roomStatusLabel)}</span>
         </div>
         ${this._config.show_metrics === false ? '' : readings.length ? `<div class="metric-grid">${shown.map((item) => this._metric(item)).join('')}</div>`
@@ -1128,7 +1209,10 @@
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card class="shell" dir="${RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr'}">
         <header class="card-heading"><div><div class="overline">HOME ASSISTANT</div>
         <h2>${escape(this._config.title || this._t('title'))}</h2><span>${escape(this._t('subtitle'))}</span></div>
-        <div class="card-logo">${this._icon('mdi:air-filter')}</div></header>
+        <div class="header-actions"><button class="edit-device" type="button" data-edit-home
+          aria-label="${escape(this._deviceEditLabel(true))}" title="${escape(this._deviceEditLabel(true))}"
+          ${this._homeDeviceId ? '' : 'disabled'}>${this._icon('mdi:cog-outline')}</button>
+        <div class="card-logo">${this._icon('mdi:air-filter')}</div></div></header>
         <div class="content">
           ${this._outside(data.outdoor || {})}
           ${this._pollenIndicator(data.outdoor || {})}
@@ -1147,6 +1231,13 @@
         font-family:var(--paper-font-body1_-_font-family,Roboto,Arial,sans-serif);color:var(--aqa-text)}
       .shell{overflow:hidden;border-radius:22px;background:var(--aqa-surface);box-shadow:var(--ha-card-box-shadow,0 2px 16px rgba(0,0,0,.06))}
       .card-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 26px 20px}
+      .header-actions{display:flex;gap:8px;align-items:center}
+      .edit-device{display:inline-grid;place-items:center;flex:0 0 auto;min-width:32px;height:32px;
+        padding:5px;border:1px solid var(--aqa-edge);border-radius:10px;cursor:pointer;
+        background:var(--aqa-surface);color:var(--aqa-blue)}
+      .edit-device ha-icon{--mdc-icon-size:19px}
+      .edit-device:disabled{opacity:.35;cursor:not-allowed}
+      .edit-device:focus-visible{outline:2px solid var(--aqa-blue);outline-offset:2px}
       .overline{color:var(--aqa-blue);font-size:10px;letter-spacing:2.2px;font-weight:800;margin-bottom:5px}
       h2{font-size:25px;line-height:1.15;margin:0 0 5px;font-weight:780;letter-spacing:-.8px}
       .card-heading span{color:var(--aqa-muted);font-size:12px}
