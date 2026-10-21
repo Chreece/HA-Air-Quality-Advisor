@@ -67,6 +67,68 @@ THRESHOLD_NUMBERS = {
 }
 
 
+# A small, finite set of actual scientific/policy inputs. Selectors for
+# sources and hardware authorizations remain in the config flow.
+GLOBAL_ENV_NUMBERS = {
+    "pollen_high_from": (0.0, 100.0, 0.1, None, 3.0),
+    "pollen_max_scale": (1.0, 100.0, 0.1, None, 5.0),
+}
+GLOBAL_OCCUPANCY_NUMBERS = {
+    "source_stale_minutes": (10.0, 1440.0, 1.0, "min", 240.0),
+}
+AREA_ENV_NUMBERS = {
+    "room_volume_m3": (1.0, 30000.0, 1.0, "m³", None),
+    "particle_cadr_m3h": (0.1, 100000.0, 0.1, "m³/h", None),
+    "co2_target_ppm": (400.0, 3000.0, 1.0, "ppm", 1000.0),
+    "radon_reference_bq_m3": (25.0, 1000.0, 1.0, "Bq/m³", 100.0),
+    "air_speed_m_s": (0.01, 0.99, 0.01, "m/s", None),
+    "met": (0.81, 3.99, 0.01, "met", None),
+    "clo": (0.01, 1.99, 0.01, "clo", None),
+}
+CLIMATE_OPERATING_NUMBERS = {
+    "unoccupied_delay_minutes": (0.0, 240.0, 1.0, "min", 10.0),
+    "occupancy_stale_minutes": (10.0, 1440.0, 1.0, "min", 240.0),
+    "comfort_adjustment_max_c": (0.0, 2.5, 0.1, "°C", 1.5),
+    "humidity_low_rh": (20.0, 70.0, 0.5, "%", 40.0),
+    "humidity_high_rh": (30.0, 80.0, 0.5, "%", 60.0),
+    "humidity_hysteresis_rh": (0.5, 10.0, 0.5, "%", 3.0),
+    "cooling_dry_deferral_rh_points": (0.0, 20.0, 0.5, "%", 10.0),
+    "pm25_action_ug_m3": (5.0, 250.0, 1.0, "µg/m³", 35.0),
+    "extraction_speed_percent": (10.0, 100.0, 1.0, "%", 60.0),
+    "purifier_speed_percent": (10.0, 100.0, 1.0, "%", 60.0),
+}
+DEVICE_TARGET_NUMBERS = {
+    **{
+        f"{profile}_{mode}_c": (
+            5.0 if mode == "heat" else 6.0,
+            35.0 if mode == "heat" else 40.0, 0.5, "°C",
+            {"home": (20, 26), "unoccupied": (18, 28),
+             "away": (16, 30), "sleep": (18, 26)}[profile][
+                0 if mode == "heat" else 1]
+        )
+        for profile in ("home", "unoccupied", "away", "sleep")
+        for mode in ("heat", "cool")
+    },
+    "humidity_target": (20.0, 80.0, 1.0, "%", 50.0),
+    "sleep_humidity_target": (20.0, 80.0, 1.0, "%", 50.0),
+    "fan_speed_percent": (10.0, 100.0, 1.0, "%", 60.0),
+}
+CLIMATE_POLICY_OPTIONS = {
+    "unknown_occupancy": ("occupied", "hold"),
+    "away_policy": ("any_home", "all_home"),
+    "target_source": ("temperature", "pmv"),
+}
+DEVICE_POLICY_OPTIONS = {
+    "presence_requirement": ("always", "room", "home"),
+    "sleep_behavior": ("normal", "pause", "sleep_targets"),
+}
+GLOBAL_POLICY_OPTIONS = {"home_policy": ("any_home", "all_home")}
+CLIMATE_OPERATING_FLAGS = ("sleep_active", "sleep_schedule_enabled",
+                           "window_efficiency_notify")
+AREA_ENV_FLAGS = ("sleep_room", "enable_pmv")
+GLOBAL_ENV_FLAGS = ("pollen_avoid_ventilation",)
+
+
 def _finite(value: Any, bounds: tuple) -> float:
     if isinstance(value, bool):
         raise HomeAssistantError("Boolean values are not numeric controller settings")
@@ -101,12 +163,21 @@ def climate_settings(settings: dict, area: str) -> dict | None:
 
 
 async def update_device_setting(manager: Any, kind: str, key: str,
-                                value: Any, *, area: str | None = None) -> None:
+                                value: Any, *, area: str | None = None,
+                                entity_id: str | None = None) -> None:
     """One atomic, validated options update; never broaden device ownership."""
-    if kind not in ("pid", "profile", "climate_profile", "global_threshold",
-                    "global_setting", "pid_gain_source"):
+    if kind not in (
+        "pid", "profile", "climate_profile", "global_threshold", "global_setting",
+        "pid_gain_source", "global_environment", "global_occupancy",
+        "area_environment", "climate_operating", "global_policy", "climate_policy",
+        "device_target", "device_policy",
+    ):
         raise HomeAssistantError("Unsupported settings editor")
-    if kind in ("pid", "profile", "climate_profile", "pid_gain_source") and not area:
+    if kind in (
+        "pid", "profile", "climate_profile", "pid_gain_source",
+        "area_environment", "climate_operating", "climate_policy",
+        "device_target", "device_policy",
+    ) and not area:
         raise HomeAssistantError("A configured Home Assistant area is required")
 
     lock = getattr(manager, "_device_settings_write_lock", None)
@@ -187,6 +258,130 @@ async def update_device_setting(manager: Any, kind: str, key: str,
             if updated["min_outdoor_temp"] >= updated["max_outdoor_temp"]:
                 raise HomeAssistantError("Minimum outdoor temperature must be below maximum")
             options[CONF_THRESHOLDS] = draft
+        elif kind in ("global_environment", "global_occupancy",
+                          "area_environment", "climate_operating"):
+            from .const import CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_OCCUPANCY_GLOBAL
+            section, fields = {
+                "global_environment": (CONF_ENVIRONMENT_GLOBAL, GLOBAL_ENV_NUMBERS),
+                "global_occupancy": (CONF_OCCUPANCY_GLOBAL, GLOBAL_OCCUPANCY_NUMBERS),
+                "area_environment": (CONF_ENVIRONMENT_ROOMS, AREA_ENV_NUMBERS),
+                "climate_operating": (CONF_CLIMATE_ROOMS, CLIMATE_OPERATING_NUMBERS),
+            }[kind]
+            if key not in fields:
+                raise HomeAssistantError("Unsupported environmental/policy setting")
+            if kind.startswith("global") and area is not None:
+                raise HomeAssistantError("Global preferences do not target one area")
+            data = current.get(section, {})
+            data = deepcopy(data) if isinstance(data, dict) else {}
+            if area is None:
+                room = data
+            else:
+                if kind == "area_environment" and area not in current.get(CONF_AREAS, []):
+                    raise HomeAssistantError("Select the room for environmental monitoring first")
+                if kind == "climate_operating" and not (
+                    isinstance(data.get(area), dict) and data[area].get("enabled") is True
+                ):
+                    raise HomeAssistantError("This room's climate manager is not enabled")
+                room = deepcopy(data.get(area, {}))
+            room[key] = _finite(value, fields[key])
+            if kind == "global_environment":
+                if not room.get("pollen_high_from", 3) <= room.get("pollen_max_scale", 5):
+                    raise HomeAssistantError("Pollen high threshold exceeds its declared scale")
+            if kind == "climate_operating":
+                low = float(room.get("humidity_low_rh", 40))
+                high = float(room.get("humidity_high_rh", 60))
+                hysteresis = float(room.get("humidity_hysteresis_rh", 3))
+                if high-low < 2*hysteresis:
+                    raise HomeAssistantError("Humidity deadband must exceed twice hysteresis")
+            if area is not None:
+                data[area] = room
+            options[section] = data
+
+        elif kind in ("global_policy", "climate_policy", "device_policy"):
+            from .const import CONF_OCCUPANCY_GLOBAL
+            if kind == "global_policy":
+                if area is not None or key not in GLOBAL_POLICY_OPTIONS or value not in GLOBAL_POLICY_OPTIONS[key]:
+                    raise HomeAssistantError("Invalid home-wide occupancy policy")
+                saved = deepcopy(current.get(CONF_OCCUPANCY_GLOBAL, {}))
+                saved = saved if isinstance(saved, dict) else {}
+                saved[key] = value
+                options[CONF_OCCUPANCY_GLOBAL] = saved
+            else:
+                rooms = deepcopy(current.get(CONF_CLIMATE_ROOMS, {}))
+                original = rooms.get(area) if isinstance(rooms, dict) else None
+                if not isinstance(original, dict) or original.get("enabled") is not True:
+                    raise HomeAssistantError("Room climate manager is not enabled")
+                if kind == "climate_policy":
+                    if key not in CLIMATE_POLICY_OPTIONS or value not in CLIMATE_POLICY_OPTIONS[key]:
+                        raise HomeAssistantError("Unsupported room policy")
+                    new_room = dict(original)
+                    new_room[key] = value
+                else:
+                    if key not in DEVICE_POLICY_OPTIONS or value not in DEVICE_POLICY_OPTIONS[key]:
+                        raise HomeAssistantError("Invalid device policy")
+                    if not isinstance(entity_id, str) or entity_id not in original.get("selected_devices", []):
+                        raise HomeAssistantError("The device must remain selected in this room")
+                    device_profiles = deepcopy(original.get("device_settings", {}))
+                    existing = device_profiles.get(entity_id)
+                    if not isinstance(existing, dict):
+                        raise HomeAssistantError("This device has not been configured")
+                    if (key == "presence_requirement" and value == "always" and
+                            existing.get("absence_action") == "off"):
+                        raise HomeAssistantError("Absence-off requires actual home or room presence")
+                    device_profiles[entity_id] = {**existing, key: value}
+                    new_room = {**original, "device_settings": device_profiles}
+                rooms[area] = new_room
+                options[CONF_CLIMATE_ROOMS] = rooms
+
+        elif kind == "device_target":
+            if key not in DEVICE_TARGET_NUMBERS or not isinstance(entity_id, str):
+                raise HomeAssistantError("Invalid device target")
+            rooms = deepcopy(current.get(CONF_CLIMATE_ROOMS, {}))
+            cfg = rooms.get(area) if isinstance(rooms, dict) else None
+            if not isinstance(cfg, dict) or cfg.get("enabled") is not True:
+                raise HomeAssistantError("Room must first be configured")
+            if entity_id not in cfg.get("selected_devices", []):
+                raise HomeAssistantError("This device has been deselected")
+            profiles = deepcopy(cfg.get("device_settings", {}))
+            device_cfg = profiles.get(entity_id)
+            if not isinstance(device_cfg, dict) or device_cfg.get("auto_control") is not True:
+                raise HomeAssistantError("Device auto-control must first be explicitly commissioned")
+            domain = entity_id.partition(".")[0]
+            if ((domain == "climate" and not key.endswith(("_heat_c", "_cool_c"))) or
+                    (domain == "humidifier" and key not in ("humidity_target", "sleep_humidity_target")) or
+                    (domain == "fan" and key != "fan_speed_percent") or
+                    domain not in ("climate", "humidifier", "fan")):
+                raise HomeAssistantError("Device does not support this policy target")
+            n = _finite(value, DEVICE_TARGET_NUMBERS[key])
+            device_cfg[key] = n
+            if domain == "climate":
+                for profile in ("home", "unoccupied", "away", "sleep"):
+                    heat = float(device_cfg.get(f"{profile}_heat_c", DEVICE_TARGET_NUMBERS[f"{profile}_heat_c"][4]))
+                    cool = float(device_cfg.get(f"{profile}_cool_c", DEVICE_TARGET_NUMBERS[f"{profile}_cool_c"][4]))
+                    if cool-heat < 1:
+                        raise HomeAssistantError("Heat/cool policy targets require at least a 1°C deadband")
+            elif domain == "fan":
+                purpose = device_cfg.get("fan_purpose")
+                role = ("extraction_fan_entity" if purpose == "extraction" else "purifier_fan_entity")
+                if cfg.get(role) != entity_id:
+                    raise HomeAssistantError("Fan no longer occupies this commissioned role")
+                cfg["extraction_speed_percent" if purpose == "extraction"
+                    else "purifier_speed_percent"] = n
+            elif domain == "humidifier":
+                state = manager.hass.states.get(entity_id)
+                attrs = state.attributes if state is not None else {}
+                if device_cfg.get("method") == "setpoint":
+                    low = attrs.get("min_humidity")
+                    high = attrs.get("max_humidity")
+                    if low is None or high is None:
+                        raise HomeAssistantError("Native humidity limits are unknown")
+                    if not float(low) <= n <= float(high):
+                        raise HomeAssistantError("Outside native humidifier setpoint limits")
+            profiles[entity_id] = device_cfg
+            cfg["device_settings"] = profiles
+            rooms[area] = cfg
+            options[CONF_CLIMATE_ROOMS] = rooms
+
         elif kind == "global_setting":
             if area is not None:
                 raise HomeAssistantError("Home-wide settings cannot target one room")
