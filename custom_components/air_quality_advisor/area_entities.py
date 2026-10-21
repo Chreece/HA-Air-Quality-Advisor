@@ -90,6 +90,10 @@ def input_snapshot(hass: Any, reading: dict[str, Any]) -> dict[str, Any]:
 
 def _pid_overview(settings: dict, area_id: str) -> dict[str, Any] | None:
     """Expose the actual PID gain source and supervisor parameters on the room."""
+    configured = settings.get(CONF_PID_ROOMS, {})
+    active = configured.get(area_id) if isinstance(configured, dict) else None
+    if not isinstance(active, dict) or active.get("enabled") is not True:
+        return None
     from .device_controls import pid_settings, tuning_source
 
     config = pid_settings(settings, area_id)
