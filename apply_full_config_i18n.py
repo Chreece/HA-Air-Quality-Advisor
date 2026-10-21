@@ -369,6 +369,19 @@ def apply_full_config_i18n(root: Path) -> None:
                          or display == field.replace("_", " ").capitalize())):
                         display = _topic(field, source_label, vocab)
                         translated[field] = display
+                    # The original translators collapsed Home/Away and
+                    # HEAT/COOL into indistinguishable labels in several
+                    # languages. Unlike other descriptive names, profile
+                    # heat/cool pairs must ALWAYS carry their exact context.
+                    if (lang != "en" and step in ("climate_profiles", "device_settings")
+                        and re.fullmatch(
+                            r"(?:device_)?(?:home|unoccupied|away|sleep)_(?:heat|cool)(?:_c)?",
+                            field
+                        )):
+                        display = _semantic_label(
+                            lang, step, field, source_label, vocab, label_terms[lang]
+                        )
+                        translated[field] = display
                     existing_help = descriptions.get(field)
                     # Older compact and climate generators wrote vague
                     # localized placeholder text. Being non-English does
