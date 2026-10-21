@@ -1,15 +1,16 @@
 {
-  "version": "0.6.0b4",
+  "version": "0.6.0b5",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Public beta 4: first-install setup flow retry recovery without duplicate entries. Stable 0.5.1 remains latest. No changes to physical actuator controls.",
+  "note": "Opt-in beta5: complete localized config-flow help, all 22 thresholds explained, fully regenerated 38 locales, meaningful English and Greek safety-science details. Stable v0.5.1 unaffected.",
   "validation_attempt": 0,
   "changes": [
-    "Show first-time room-selection form without reserving a global config-flow unique ID that blocks subsequent attempts after a lost frontend dialog",
-    "Defer unique ID assignment to final save and recheck configured entries, preserving one Home Environment Manager instance",
-    "Cover abandoned initial setup, retry and race with an already configured instance in regression tests",
-    "Document restart-only recovery from old in-memory flows and clarify Configure vs Add integration after HACS updates",
-    "Keep existing domain, automations, climate safety policies, translations and v0.5.1 stable channel unchanged"
+    "Provide explanations for every initial setup and options field across all 38 supported languages",
+    "Replace inherited English and generic guidance throughout PID, climate, occupancy, humidity, fan and environmental forms",
+    "Add individual guidance for all 22 operational advanced thresholds including units, indoor/outdoor effects and health-standard caveats",
+    "Use detailed English/Greek descriptions for exact device safety, protected power and compressor controls, sleep profiles and scientific measurements",
+    "Run the final localization layer after all earlier generators and test for no untranslated field labels/help across every language",
+    "Preserve existing Home Assistant domain, entry IDs, configuration options and opt-in commissioning safeguards"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b4"
+  "release_branch": "beta/v0.6.0b5"
 }

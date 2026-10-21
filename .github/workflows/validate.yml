@@ -14,6 +14,7 @@ on:
       - 'beta/v0.6.0b2'
       - 'beta/v0.6.0b3'
       - 'beta/v0.6.0b4'
+      - 'beta/v0.6.0b5'
       - 'feat/compact-environment-settings-*'
       - 'feat/metric-help-valid-selectors-*'
       - 'fix/initial-flow-retry-*'
@@ -182,8 +183,8 @@ jobs:
             --latest
 
   publish_beta:
-    name: Publish opt-in v0.6.0b4 prerelease only after all checks
-    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b4'
+    name: Publish opt-in v0.6.0b5 prerelease only after all checks
+    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b5'
     needs: [test, hassfest, hacs]
     runs-on: ubuntu-latest
     permissions:
@@ -204,14 +205,14 @@ jobs:
           hacs = json.loads(Path("hacs.json").read_text(encoding="utf-8"))
           assert manifest["domain"] == "air_quality_advisor"
           assert manifest["name"] == "Home Environment Manager"
-          assert manifest["version"] == "0.6.0b4"
+          assert manifest["version"] == "0.6.0b5"
           assert request["version"] == manifest["version"]
           assert request["channel"] == "beta"
-          assert request["release_branch"] == "beta/v0.6.0b4"
+          assert request["release_branch"] == "beta/v0.6.0b5"
           # HACS reads release tag tree directly. Never change the default
           # channel's installation contract for old stable releases.
           assert hacs.get("zip_release") is not True
-          assert Path(".github/releases/v0.6.0b4.md").stat().st_size > 1500
+          assert Path(".github/releases/v0.6.0b5.md").stat().st_size > 1500
           for item in ("icon.png", "icon@2x.png", "logo.png", "logo@2x.png"):
               assert (p.parent / "brand" / item).is_file(), item
           print("Exact prerelease identity, HACS source-tree mode, brand and notes: PASS")
@@ -229,13 +230,13 @@ jobs:
             echo "publish=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if gh release view v0.6.0b4 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+          if gh release view v0.6.0b5 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "::notice::This beta was already published; never replace its tag"
             echo "publish=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b4" >/dev/null 2>&1; then
-            echo "::error::Existing orphan tag v0.6.0b4; refusing to move tag"
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b5" >/dev/null 2>&1; then
+            echo "::error::Existing orphan tag v0.6.0b5; refusing to move tag"
             exit 1
           fi
           echo "publish=true" >> "$GITHUB_OUTPUT"
@@ -245,13 +246,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b4.zip custom_components/air_quality_advisor \
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b5.zip custom_components/air_quality_advisor \
             -x '*__pycache__*' '*.pyc' '*.pyo' '.DS_Store'
           python - <<'PY'
           import json
           import zipfile
           from pathlib import Path
-          archive = Path("dist/HA-Home-Environment-Manager-v0.6.0b4.zip")
+          archive = Path("dist/HA-Home-Environment-Manager-v0.6.0b5.zip")
           prefix = "custom_components/air_quality_advisor/"
           with zipfile.ZipFile(archive) as z:
               assert z.testzip() is None
@@ -259,7 +260,7 @@ jobs:
               assert names and all(name.startswith(prefix) for name in names)
               assert not any("__pycache__" in n or n.endswith((".pyc",".pyo")) for n in names)
               version = json.loads(z.read(prefix+"manifest.json"))["version"]
-              assert version == "0.6.0b4"
+              assert version == "0.6.0b5"
               for path in ("__init__.py","sensor.py","icons.json",
                            "frontend/air-quality-advisor-card.js",
                            "brand/icon.png","brand/icon@2x.png",
@@ -268,7 +269,7 @@ jobs:
                   assert prefix+path in names,path
               print("Manual installation archive: verified",len(names),"files")
           PY
-          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b4.zip > dist/HA-Home-Environment-Manager-v0.6.0b4.zip.sha256
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b5.zip > dist/HA-Home-Environment-Manager-v0.6.0b5.zip.sha256
       - name: Publish GitHub prerelease without changing stable latest
         if: steps.eligibility_beta.outputs.publish == 'true'
         shell: bash
@@ -281,19 +282,19 @@ jobs:
             echo "::notice::Superseded while packaging; skip"
             exit 0
           fi
-          if gh release view v0.6.0b4 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+          if gh release view v0.6.0b5 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "::notice::Already published; never overwrite"
             exit 0
           fi
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b4" >/dev/null 2>&1; then
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b5" >/dev/null 2>&1; then
             echo "::error::Orphan tag, refuse to repoint"
             exit 1
           fi
-          gh release create v0.6.0b4 \
-            'dist/HA-Home-Environment-Manager-v0.6.0b4.zip#Manual installation ZIP' \
-            'dist/HA-Home-Environment-Manager-v0.6.0b4.zip.sha256#SHA-256 checksum' \
+          gh release create v0.6.0b5 \
+            'dist/HA-Home-Environment-Manager-v0.6.0b5.zip#Manual installation ZIP' \
+            'dist/HA-Home-Environment-Manager-v0.6.0b5.zip.sha256#SHA-256 checksum' \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title 'Home Environment Manager v0.6.0 beta 1' \
-            --notes-file .github/releases/v0.6.0b4.md \
+            --notes-file .github/releases/v0.6.0b5.md \
             --prerelease --latest=false

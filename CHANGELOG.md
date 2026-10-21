@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — Complete config-flow translation and field-help audit
+## 0.6.0b5 — Complete config-flow translation and field-help audit (beta)
 
 - Audit all Home Assistant initial setup and options forms across 38 languages, detecting inherited English text and generic placeholder descriptions even when translation keys are technically complete.
 - Provide dedicated explanatory text for every advanced threshold, supported climate device/actuator, PID parameter, humidity/ventilation control, home/room/sleep presence rule and specialist environmental input.

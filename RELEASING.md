@@ -1,5 +1,9 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b5 — Complete initial/options help across 38 locales
+
+The opt-in `beta/v0.6.0b5` HACS/GitHub prerelease is locked to its fully validated HEAD. All 38 locales have required data_description text for every visible initial-config or options field, including 22 advanced thresholds previously missing help. Reviewed English and Greek explanation texts cover exact controls and scientific caveats; the other 36 locale texts are localized with safety-aware templates. CI checks no untranslated labels, no missing help, reproducible translation generation, Python 3.13/3.14, frontend, Hassfest, HACS and the manual package. The integration's original `air_quality_advisor` domain, stored options, stable v0.5.1 and physical-control safety gates are unchanged.
+
 ## v0.6.0b4 — First-install retry recovery beta
 
 This HACS-selectable prerelease is built from `beta/v0.6.0b4` and published **only after** the full Python 3.13/3.14, frontend, translation, Hassfest, HACS and installation ZIP checks pass. It removes the early unique-ID reservation that made a first-time dialog lost by the browser block retries as `already_in_progress`. The fixed `home` unique ID and existing-entry checks are enforced at final save, not removed. Stable `v0.5.1`, earlier betas, the internal domain and all hardware-safety permissions remain unchanged. A previous pending HA config flow can be cleared by restarting only Home Assistant after the HACS update.
