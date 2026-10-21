@@ -735,13 +735,9 @@ class _FlowMixin(CompactOptionsMixin):
     def _environment_room_air_schema(self, current: dict) -> probatio.Schema:
         return probatio.Schema({
             _marker("temperature_entity", current.get("temperature_entity")): _optional_sensor(),
-            _marker("room_volume_m3", current.get("room_volume_m3")): _real_number(1,30000,"m³"),
-            _marker("particle_cadr_m3h", current.get("particle_cadr_m3h")): _real_number(0.1,100000,"m³/h"),
             _marker("purifier_entity", current.get("purifier_entity")): _entity_any(),
             _marker("extractor_entity", current.get("extractor_entity")): _entity_any(),
             _marker("co2_ndir_verified", current.get("co2_ndir_verified", False)): selector.BooleanSelector(),
-            _marker("co2_target_ppm", current.get("co2_target_ppm", 1000)): _real_number(400,3000,"ppm"),
-            _marker("sleep_room", current.get("sleep_room", False)): selector.BooleanSelector(),
         })
 
     async def async_step_environment_room_exposure(
@@ -774,7 +770,6 @@ class _FlowMixin(CompactOptionsMixin):
         fields = {
             _marker("radon_entity",current.get("radon_entity")): _optional_sensor(),
             _marker("radon_sensor_verified",current.get("radon_sensor_verified",False)):selector.BooleanSelector(),
-            _marker("radon_reference_bq_m3",current.get("radon_reference_bq_m3",100)): _real_number(25,1000,"Bq/m³"),
             _marker("formaldehyde_entity",current.get("formaldehyde_entity")): _optional_sensor(),
             _marker("formaldehyde_sensor_verified",current.get("formaldehyde_sensor_verified",False)):selector.BooleanSelector(),
             _marker("noise_entity",current.get("noise_entity")): _optional_sensor(),
@@ -791,12 +786,8 @@ class _FlowMixin(CompactOptionsMixin):
         """ISO 7730 requests explicit MRT, air velocity, MET and CLO assumptions."""
         current = self._environment_room_data
         fields = {
-            _marker("enable_pmv",current.get("enable_pmv",False)): selector.BooleanSelector(),
             _marker("radiant_temperature_entity",current.get("radiant_temperature_entity")): _optional_sensor(),
             _marker("air_speed_entity",current.get("air_speed_entity")): _optional_sensor(),
-            _marker("air_speed_m_s",current.get("air_speed_m_s")): _real_number(0.01,0.99,"m/s"),
-            _marker("met",current.get("met")): _real_number(0.81,3.99,"met"),
-            _marker("clo",current.get("clo")): _real_number(0.01,1.99,"clo"),
         }
         if user_input is not None:
             selected = {**current, **user_input}
@@ -1059,34 +1050,7 @@ class _FlowMixin(CompactOptionsMixin):
                 _multi(sensor_options),
             _marker("climate_away_entities",draft.get("away_entities",[])):
                 _multi(away_options),
-            _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["occupied","hold"],multiple=False,custom_value=False,
-                    mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_unoccupied_delay_minutes",draft.get("unoccupied_delay_minutes",10)):
-                _real_number(0,240,"min"),
-            _marker("climate_occupancy_stale_minutes",draft.get("occupancy_stale_minutes",240)):
-                _real_number(10,1440,"min"),
-            _marker("climate_away_policy",draft.get("away_policy","any_home")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["any_home","all_home"],multiple=False,custom_value=False,
-                    mode=selector.SelectSelectorMode.DROPDOWN)),
             # Manual/automatic occupancy profile is on the Area Select entity.
-            _marker("climate_sleep_active",draft.get("sleep_active",False)):
-                selector.BooleanSelector(),
-            _marker("climate_sleep_schedule_enabled",draft.get("sleep_schedule_enabled",False)):
-                selector.BooleanSelector(),
-            _marker("climate_sleep_start",draft.get("sleep_start","22:00")):
-                selector.TimeSelector(),
-            _marker("climate_sleep_end",draft.get("sleep_end","07:00")):
-                selector.TimeSelector(),
-            _marker("climate_target_source",draft.get("target_source","temperature")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["temperature","pmv"],multiple=False,custom_value=False,
-                    mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_comfort_adjustment_max_c",
-                    draft.get("comfort_adjustment_max_c",1.5)):
-                _real_number(0,2.5,"°C"),
         }
         return self.async_show_form(step_id="climate_presence",
             errors=errors,data_schema=probatio.Schema(fields),
@@ -1286,10 +1250,6 @@ class _FlowMixin(CompactOptionsMixin):
                        draft.get("humidity_setpoint_auto",False))]=(
             selector.BooleanSelector()
         )
-        fields[_marker("climate_window_efficiency_notify",
-                       draft.get("window_efficiency_notify",False))]=(
-            selector.BooleanSelector()
-        )
         fields[_marker("climate_dry_fan_mode_auto",
                        draft.get("dry_fan_mode_auto",False))]=(
             selector.BooleanSelector()
@@ -1325,15 +1285,6 @@ class _FlowMixin(CompactOptionsMixin):
                 mode=selector.SelectSelectorMode.DROPDOWN,
             ))
         )
-        for key,default,lower,upper in (
-            ("humidity_low_rh",40,20,70),
-            ("humidity_high_rh",60,30,80),
-            ("humidity_hysteresis_rh",3,0.5,10),
-            ("cooling_dry_deferral_rh_points",10,0,20),
-        ):
-            fields[_marker("climate_"+key,draft.get(key,default))]=(
-                _real_number(lower,upper,"%")
-            )
         return self.async_show_form(
             step_id="climate_equipment",errors=errors,
             data_schema=probatio.Schema(fields),
