@@ -177,7 +177,7 @@ class CompactOptionsMixin:
     async def async_step_outside_data(self, user_input=None):
         return self.async_show_menu(
             step_id="outside_data",
-            menu_options=["weather", "outdoor", "outside_aqi", "pollen"],
+            menu_options=["weather", "outdoor", "pollen"],
         )
 
     async def async_step_area_settings(self, user_input=None):
@@ -361,8 +361,6 @@ class CompactOptionsMixin:
                 _select(self._room_attribute_options(self.hass,old.get("occupied_rooms_entity"))),
             _field("general_home_trackers", old.get("home_trackers", [])):
                 _select(trackers, multi=True),
-            _field("general_home_policy", old.get("home_policy", "any_home")):
-                _select(["any_home", "all_home"], translation_key="general_home_policy"),
             _field("general_sleep_rooms_entity", old.get("sleep_rooms_entity") or "none"):
                 _select(source_options),
             _field("general_sleep_rooms_attribute", (
@@ -372,8 +370,6 @@ class CompactOptionsMixin:
                 self._room_attribute_options(self.hass,old.get("sleep_rooms_entity"))[0]["value"]
             )):
                 _select(self._room_attribute_options(self.hass,old.get("sleep_rooms_entity"))),
-            _field("general_source_stale_minutes", old.get("source_stale_minutes", 240)):
-                _number(10, 1440),
         }
         return self.async_show_form(
             step_id="general_settings", data_schema=probatio.Schema(fields), errors=errors
@@ -414,10 +410,6 @@ class CompactOptionsMixin:
         fields = {
             _field("pollen_entity", current.get("pollen_entity")):
                 selector.EntitySelector(selector.EntitySelectorConfig(domain="sensor")),
-            _field("pollen_high_from", current.get("pollen_high_from", 3)): _number(0, 100, .1),
-            _field("pollen_max_scale", current.get("pollen_max_scale", 5)): _number(1, 100, .1),
-            _field("pollen_avoid_ventilation", current.get("pollen_avoid_ventilation", False)):
-                selector.BooleanSelector(),
         }
         return self.async_show_form(
             step_id="pollen", errors=errors, data_schema=probatio.Schema(fields)
@@ -893,12 +885,8 @@ class CompactOptionsMixin:
                 _select(["setpoint", "native"] if domain=="climate" else
                         ["setpoint", "power"] if domain=="humidifier" else
                         ["speed","power"],translation_key="device_method"),
-            _field("device_presence_requirement", old.get("presence_requirement","always")):
-                _select(["always","room","home"],translation_key="device_presence_requirement"),
             _field("device_absence_action", old.get("absence_action","hold")):
                 _select(["hold","off"],translation_key="device_absence_action"),
-            _field("device_sleep_behavior", old.get("sleep_behavior","normal")):
-                _select(["normal","pause","sleep_targets"],translation_key="device_sleep_behavior"),
             _field("device_hardware_confirmed", old.get("hardware_confirmed",False)):
                 selector.BooleanSelector(),
         }
@@ -906,19 +894,12 @@ class CompactOptionsMixin:
             temp = eligible_sensor("temperature")
             fields[_field("device_temperature_entity",
                           old.get("temperature_entity") or draft.get("temperature_entity"))] = _select(temp)
-            for profile in ("home","unoccupied","away","sleep"):
-                for mode,initial in (("heat",{"home":20,"unoccupied":18,
-                                             "away":16,"sleep":18}[profile]),
-                                     ("cool",{"home":26,"unoccupied":28,
-                                             "away":30,"sleep":26}[profile])):
-                    k=f"{profile}_{mode}_c"
-                    fields[_field("device_"+k,old.get(k,initial))]=_number(5,40,.5)
+            # Per-device home/away/sleep policy targets are now editable
+            # on the room's Config Number entities.
         elif domain == "humidifier":
             fields[_field("device_humidity_entity",
                           old.get("humidity_entity") or draft.get("humidity_entity"))] = _select(
                               eligible_sensor("humidity"))
-            fields[_field("device_humidity_target",old.get("humidity_target",50))]=_number(20,80)
-            fields[_field("device_sleep_humidity_target",old.get("sleep_humidity_target",50))]=_number(20,80)
         else:
             fields[_field("device_fan_purpose",old.get("fan_purpose","extraction"))]=_select(
                 ["extraction","filtration"],translation_key="device_fan_purpose")
@@ -927,7 +908,6 @@ class CompactOptionsMixin:
             fields[_field("device_pm25_entity",old.get("pm25_entity"))]=_select(
                 [{"value":"none","label":"—"}]+eligible_sensor("pm25"))
             fields[_field("device_sensor_verified",old.get("sensor_verified",False))]=selector.BooleanSelector()
-            fields[_field("device_fan_speed_percent",old.get("fan_speed_percent",60))]=_number(10,100)
         if domain in ("fan","humidifier"):
             permitted = ({
                 "min_on_s": (300, 7200, 600),
