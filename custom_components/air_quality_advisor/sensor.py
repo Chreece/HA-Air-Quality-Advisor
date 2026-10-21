@@ -97,6 +97,19 @@ class AirQualityRecommendation(SensorEntity):
             ],
             "language": language,
             "announcement_hub_available": self._manager.hub_available,
+            # This existing recommendation belongs to the new parent Home
+            # device and remains the one complete aggregated dashboard source.
+            "home_settings": {
+                "thresholds": dict(self._manager.thresholds),
+                "automatic_notifications": self._manager.settings.get("automatic_notifications", False),
+                "automatic_tts": self._manager.settings.get("automatic_tts", False),
+                "announcement_repeat_minutes": self._manager.repeat_minutes,
+                "language": self._manager.settings.get("language", "auto"),
+                "global_occupancy": dict(self._manager.settings.get("occupancy_global") or {}),
+                "outdoor_sources": list(self._manager.settings.get("outdoor_sensors", [])),
+                "weather_sources": list(self._manager.settings.get("weather_entities", [])),
+                "warning_sources": list(self._manager.settings.get("weather_warnings", [])),
+            },
             "dashboard": dashboard_snapshot(plan, self._manager.thresholds),
         }
 
