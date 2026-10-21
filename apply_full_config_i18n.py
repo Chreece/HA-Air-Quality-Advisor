@@ -93,6 +93,162 @@ def _topic(field: str, en_label: str, vocab: dict[str, str]) -> str:
     )
 
 
+
+# Explicitly reviewed, visible labels for important Greek climate options.
+# Generated synonyms should never obscure the difference between monitoring
+# and permission to issue a physical device command.
+_GREEK_LABELS = {
+    "climate.climate_area": "Χώρος για ρύθμιση κλίματος",
+    "climate_room.climate_enabled": "Ενεργοποίηση σχεδιασμού κλίματος",
+    "climate_room.climate_allow_actuation": "Άδεια εντολών στις επιλεγμένες συσκευές",
+    "climate_room.climate_auto_switch_hvac": "Αυτόματη εναλλαγή θέρμανσης / ψύξης",
+    "climate_room.climate_prefer_native_auto": "Προτίμηση εγγενούς HEAT_COOL",
+    "climate_room.climate_controller": "Μέθοδος κλιματικού ελέγχου",
+    "climate_room.climate_mode": "Λειτουργία θέρμανσης / ψύξης",
+    "climate_room.climate_entity": "Βασικός θερμοστάτης χώρου",
+    "climate_room.climate_temperature_entity": "Αισθητήρας θερμοκρασίας χώρου",
+    "climate_presence.climate_unknown_occupancy": "Χειρισμός άγνωστης παρουσίας",
+    "climate_presence.climate_away_policy": "Κανόνας απουσίας από το σπίτι",
+    "climate_presence.climate_manual_profile": "Χειροκίνητη επιλογή προφίλ",
+    "climate_presence.climate_sleep_active": "Ενεργό προφίλ ύπνου",
+    "climate_presence.climate_sleep_start": "Ώρα έναρξης ύπνου",
+    "climate_presence.climate_sleep_end": "Ώρα λήξης ύπνου",
+    "device_settings.device_method": "Μέθοδος ελέγχου συσκευής",
+    "device_settings.device_presence_requirement": "Απαίτηση παρουσίας για έλεγχο",
+    "device_settings.device_absence_action": "Ενέργεια όταν δεν υπάρχει παρουσία",
+    "device_settings.device_sleep_behavior": "Συμπεριφορά κατά τον ύπνο",
+    "device_settings.device_hardware_confirmed": "Επιβεβαιωμένες ανεξάρτητες προστασίες",
+    "device_settings.device_auto_control": "Αυτόματος έλεγχος αυτής της συσκευής",
+    "general_settings.general_room_occupancy_sensors": "Αισθητήρες παρουσίας ανά χώρο",
+    "general_settings.general_home_trackers": "Συσκευές εντοπισμού κατοίκων",
+    "general_settings.general_home_policy": "Κανόνας παρουσίας στο σπίτι",
+}
+_KEY_TAGS = (
+    ("dry_fan", "DRY/FAN_ONLY"), ("humidity_power", "RH POWER"),
+    ("humidifier", "HUMIDIFIER"), ("dehumidifier", "DEHUMIDIFIER"),
+    ("heat_climate", "HEAT"), ("cool_climate", "COOL"),
+    ("dry_climate", "DRY"), ("fan_climate", "FAN_ONLY"),
+    ("pm25", "PM2.5"), ("co2", "CO₂"),
+    ("radon", "RADON"), ("formaldehyde", "HCHO"),
+    ("melanopic", "EDI"), ("illuminance", "LUX"),
+    ("noise", "dB(A)"), ("purifier", "PURIFIER"),
+    ("extractor", "EXTRACT"), ("extraction", "EXTRACT"),
+    ("pollen", "POLLEN"), ("humidity", "RH"), ("fan", "FAN"),
+    ("heat", "HEAT"), ("cool", "COOL"),
+)
+
+
+def _semantic_label(lang: str, step: str, field: str, english: str,
+                    vocab: dict[str, str], terms: dict[str, str]) -> str:
+    """Give controls distinct native labels; preserve units and HA code tokens."""
+    if lang == "el" and (name := _GREEK_LABELS.get(f"{step}.{field}")):
+        return name
+    profile = re.fullmatch(
+        r"(?:device_)?(home|unoccupied|away|sleep)_(heat|cool)(?:_c)?",
+        field
+    )
+    if profile:
+        context, mode = profile.groups()
+        return f"{terms[mode]} · {terms[context]} (°C)"
+    if field in ("kp", "ki", "kd", "pid_kp", "pid_ki", "pid_kd"):
+        code = field.removeprefix("pid_")
+        return f"PID K{code[-1]} · {vocab['control']} ({_unit_for(english, code)})"
+    if field in ("heat_actuator", "cool_actuator"):
+        mode = "heat" if field.startswith("heat") else "cool"
+        return f"{terms[mode]} · {vocab['devices']}"
+    if field.endswith("_entity") and ("purifier" in field or "extractor" in field):
+        role = "purifier" if "purifier" in field else "extractor"
+        return f"{terms[role]} · {vocab['source']}"
+    tags = [label for part, label in _KEY_TAGS if part in field]
+    topic = tags[0] if tags else ""
+    tail = _topic(field, english, vocab)
+    details = []
+    if re.search(r"(?:^|_)min_on(?:_|$)", field): details.append("MIN ON")
+    if re.search(r"(?:^|_)min_off(?:_|$)", field): details.append("MIN OFF")
+    if re.search(r"(?:^|_)max_on(?:_|$)", field): details.append("MAX ON")
+    if "max_demand" in field: details.append("MAX Δ")
+    if "min_demand" in field: details.append("MIN Δ")
+    if "max_change" in field: details.append("MAX Δ")
+    if "min_change" in field: details.append("MIN Δ")
+    if "max_setpoint" in field: details.append("MAX TARGET")
+    if "min_setpoint" in field: details.append("MIN TARGET")
+    if "mode_dwell" in field: details.append("MODE DWELL")
+    if "hysteresis" in field: details.append("± RH" if "humidity" in field else "±")
+    if "sample" in field: details.append("SAMPLE")
+    if "pwm_period" in field: details.append("PWM PERIOD")
+    if "low_rh" in field: details.append("RH MIN")
+    if "high_rh" in field: details.append("RH MAX")
+    if "scale" in field: details.append("SCALE")
+    if "high_from" in field: details.append("HIGH")
+    if "avoid_ventilation" in field: details.append("NO VENT")
+    if field.endswith("_start"): details.append("START")
+    if field.endswith("_end"): details.append("END")
+    if "windowless" in field: details.append("NO WINDOW")
+    if "hardware_confirmed" in field: details.append("HW ✓")
+    if "sensor_verified" in field: details.append("SENSOR ✓")
+    if "speed_percent" in field: details.append("SPEED %")
+    if "fan_speed_auto" in field: details.append("SPEED AUTO")
+    if "power_auto" in field: details.append("POWER AUTO")
+    if "setpoint_auto" in field: details.append("TARGET AUTO")
+    if "mode_auto" in field: details.append("MODE AUTO")
+    if "auto_switch" in field: details.append("MODE SWITCH")
+    if "prefer_native" in field: details.append("NATIVE")
+    if field.endswith("_enabled"): details.append("AUTO")
+    if field.endswith("_mode"): details.append("MODE")
+    if field.endswith("_policy"): details.append("POLICY")
+    if field.endswith("_verified"): details.append("VERIFIED")
+    if not topic:
+        return tail + (" · " + " · ".join(details) if details else "")
+    return f"{topic} · {tail}" + (
+        " · " + " · ".join(details) if details else ""
+    )
+
+
+def _unit_for(english: str, code: str) -> str:
+    # Kp/Ki/Kd each have distinct physical dimensions; use the exact
+    # English source unit verbatim rather than inventing a conversion.
+    match = re.search(r"\(([^)]+(?:\)[^)]*)?)\)", english)
+    return match.group(1) if match else {"kp":"P","ki":"I","kd":"D"}[code]
+
+
+def _needs_clearer_label(value: str, vocab: dict[str, str]) -> bool:
+    common = {
+        vocab[key] for key in ("source","sensor","devices","control",
+                               "settings","automatic","house","sleep",
+                               "presence","target","pollen","room")
+    }
+    return value.strip() in common
+
+
+def _unique_field_labels(lang: str, step: str, data: dict,
+                         english: dict, vocab: dict, terms: dict,
+                         descriptions: dict) -> None:
+    """No two different fields in one form should have identical labels."""
+    from collections import Counter
+    if lang == "en":
+        return
+    counts = Counter(data.values())
+    for field, original in list(data.items()):
+        if counts[original] <= 1 and not _needs_clearer_label(original, vocab):
+            continue
+        candidate = _semantic_label(lang, step, field, english[field],
+                                    vocab, terms)
+        # A technical suffix is clearer than two indistinguishable controls.
+        if candidate in data.values() and candidate != original:
+            candidate += " · " + field.upper()
+        if candidate == original and counts[original] > 1:
+            candidate += " · " + field.upper()
+        data[field] = candidate
+        help_text = descriptions.get(field)
+        if isinstance(help_text, str) and original in help_text:
+            descriptions[field] = help_text.replace(original, candidate)
+    # A localized flow with duplicate controls can lead to the wrong
+    # hardware consent. Fail generation loudly if disambiguation regresses.
+    if len(data) != len(set(data.values())):
+        repeated = sorted(x for x in data.values() if list(data.values()).count(x)>1)
+        raise ValueError(f"Ambiguous {lang}/{step} labels: {repeated[:12]}")
+
+
 def _kind(step: str, field: str) -> str:
     s = field.lower()
     if step == "thresholds":
@@ -156,6 +312,11 @@ def _generated_error(lang: str, key: str, vocab: dict, templates: dict) -> str:
 def apply_full_config_i18n(root: Path) -> None:
     locales = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
     templates = json.loads((root / TEMPLATES_FILE).read_text(encoding="utf-8"))
+    label_terms = json.loads((root / "config_label_terms.json").read_text(encoding="utf-8"))
+    if set(label_terms) != set(locales) or any(set(v) != {
+        "home","unoccupied","away","sleep","heat","cool","purifier","extractor"
+    } for v in label_terms.values()):
+        raise ValueError("Every one of the 38 languages needs distinct device/profile labels")
     manuals: dict[str, dict] = {}
     for filename in FILES:
         mapping = json.loads((root / filename).read_text(encoding="utf-8"))
@@ -225,6 +386,8 @@ def apply_full_config_i18n(root: Path) -> None:
                         None if inherited_generic else existing_help,
                         original_help.get(field)
                     )
+                _unique_field_labels(lang, step, translated, source_labels,
+                                     vocab, label_terms[lang], descriptions)
                 for key, label in original.get("menu_options", {}).items():
                     menus = record.setdefault("menu_options", {})
                     if lang != "en" and (not menus.get(key) or menus[key] == label):
