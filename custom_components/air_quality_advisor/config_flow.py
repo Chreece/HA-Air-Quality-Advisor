@@ -670,7 +670,9 @@ class _FlowMixin(CompactOptionsMixin):
                 details = {}
             fields[_marker(f"aqi_scale_{i}", details.get("scale","not_configured"))] = (
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=ENV_AQI_SCALES, multiple=False, custom_value=False,
+                    options=[row["value"] for row in ENV_AQI_SCALES],
+                    multiple=False, custom_value=False,
+                    translation_key="environment_aqi_scale",
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 ))
             )
@@ -951,16 +953,15 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("climate_prefer_native_auto",draft.get("prefer_native_auto",True)):selector.BooleanSelector(),
             _marker("climate_controller",draft.get("controller","device")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=[{"value":"device","label":"Device native thermostat / internal PID"},
-                             {"value":"environment","label":"Environmental devices only — no thermostat required"},
-                             {"value":"setpoint_pid","label":"Outer-loop PID setpoint (separate v0.5 controller)"},
-                             {"value":"on_off","label":"On/off slow-load relay (requires independent safety)"},
-                             {"value":"pwm","label":"Time-proportioning slow-load relay (non-compressor only)"},
-                             {"value":"proportional","label":"Verified 0–100% modulation output (number entity)"}],
-                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+                    options=["device","environment","setpoint_pid",
+                             "on_off","pwm","proportional"],
+                    multiple=False,custom_value=False,
+                    translation_key="climate_controller",
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_mode",draft.get("mode","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["auto","heat","cool","dry","off"],multiple=False,custom_value=False,
+                    translation_key="climate_mode",
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_entity",draft.get("climate_entity")):selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
@@ -1073,6 +1074,7 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("climate_unknown_occupancy",draft.get("unknown_occupancy","occupied")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["occupied","hold"],multiple=False,custom_value=False,
+                    translation_key="climate_unknown_occupancy",
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_unoccupied_delay_minutes",draft.get("unoccupied_delay_minutes",10)):
                 _real_number(0,240,"min"),
@@ -1081,11 +1083,14 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("climate_away_policy",draft.get("away_policy","any_home")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["any_home","all_home"],multiple=False,custom_value=False,
+                    translation_key="climate_away_policy",
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_manual_profile",draft.get("manual_profile","auto")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["auto","home","unoccupied","away","sleep"],
-                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+                    multiple=False,custom_value=False,
+                    translation_key="climate_manual_profile",
+                    mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_sleep_active",draft.get("sleep_active",False)):
                 selector.BooleanSelector(),
             _marker("climate_sleep_schedule_enabled",draft.get("sleep_schedule_enabled",False)):
@@ -1097,6 +1102,7 @@ class _FlowMixin(CompactOptionsMixin):
             _marker("climate_target_source",draft.get("target_source","temperature")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["temperature","pmv"],multiple=False,custom_value=False,
+                    translation_key="climate_target_source",
                     mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_comfort_adjustment_max_c",
                     draft.get("comfort_adjustment_max_c",1.5)):
@@ -1697,9 +1703,9 @@ class _FlowMixin(CompactOptionsMixin):
                 )),
             _marker("pid_mode", config.get("mode", "heat")):
                 selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=[{"value":"heat","label":"Heat"},
-                             {"value":"cool","label":"Cool"}],
+                    options=["heat","cool"],
                     multiple=False, custom_value=False,
+                    translation_key="pid_mode",
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )),
             _marker("pid_target_c", config.get("target_c", 21.0)):
