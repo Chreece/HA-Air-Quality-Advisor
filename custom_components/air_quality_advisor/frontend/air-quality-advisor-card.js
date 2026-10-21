@@ -458,6 +458,7 @@
       this._homeDeviceId = null;
       this._deviceRegistryLoading = null;
       this._deviceRegistryUnavailable = false;
+      this._deviceRegistryLoaded = false;
       this.shadowRoot.addEventListener('click', (event) => {
         const edit = event.target.closest?.('[data-edit-area],[data-edit-home]');
         if (edit) {
@@ -520,7 +521,7 @@
 
     _loadDeviceIds() {
       if (this._deviceRegistryLoading || this._deviceRegistryUnavailable ||
-          !this._hass?.callWS) return;
+          this._deviceRegistryLoaded || !this._hass?.callWS) return;
       this._deviceRegistryLoading = Promise.resolve(
         this._hass.callWS({type:'config/device_registry/list'})
       ).then((entries) => {
@@ -535,11 +536,17 @@
         const currentDevice = this._hass?.entities?.[stateId]?.device_id;
         const parent = home.find((device)=>device.id===currentDevice) ||
                        (home.length===1 ? home[0] : null);
-        if (!parent) return; // ambiguous installations: never link another home
+        if (!parent) {
+          this._deviceRegistryUnavailable = true;
+          return; // Ambiguous installation: never open somebody else's device.
+        }
         this._homeDeviceId = parent.id;
         const ids = belong(parent);
         const entryId = ids.find((id) => typeof id==='string' && !id.includes('_area_'));
-        if (!entryId) return;
+        if (!entryId) {
+          this._deviceRegistryUnavailable = true;
+          return;
+        }
         this._areaDeviceIds.clear();
         for (const device of entries) {
           for (const identifier of belong(device)) {
@@ -549,6 +556,7 @@
             }
           }
         }
+        this._deviceRegistryLoaded = true;
         this._render(true);
       }).catch((error) => {
         this._deviceRegistryUnavailable = true;
