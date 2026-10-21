@@ -88,6 +88,22 @@ def input_snapshot(hass: Any, reading: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _pid_overview(settings: dict, area_id: str) -> dict[str, Any] | None:
+    """Expose the actual PID gain source and supervisor parameters on the room."""
+    from .device_controls import pid_settings, tuning_source
+
+    config = pid_settings(settings, area_id)
+    if config is None:
+        return None
+    return {
+        "gain_source": tuning_source(config),
+        "kp": config["kp"], "ki": config["ki"], "kd": config["kd"],
+        "sample_seconds": config["sample_seconds"],
+        "outer_loop_target_c": config["target_c"],
+        "physical_thermostat_keeps_hvac_safety": True,
+    }
+
+
 def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
     room = room_snapshot(manager, area_id)
     if room is None:
@@ -180,6 +196,7 @@ def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
         "calculated": calculated,
         "controller": controller,
         "pid": pid if isinstance(pid, dict) else None,
+        "pid_tuning": _pid_overview(manager.settings, area_id),
     }
 
 
@@ -188,6 +205,15 @@ async def async_area_entities(hass: Any, entry: Any) -> list[SensorEntity]:
     manager = entry.runtime_data
     areas = ar.async_get(hass)
     devices = dr.async_get(hass)
+    # The pre-existing whole-home recommendation entity already uses this
+    # identifier. Adopt it as the parent home device instead of duplicating it.
+    devices.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, entry.entry_id)},
+        name="Home Environment Manager",
+        manufacturer="Home Environment Manager",
+        model="Home Environment Controller",
+    )
     result: list[SensorEntity] = []
     for area_id in configured_area_ids(manager.settings):
         area = areas.async_get_area(area_id)
@@ -199,6 +225,7 @@ async def async_area_entities(hass: Any, entry: Any) -> list[SensorEntity]:
             name=f"{area.name} Environment",
             manufacturer="Home Environment Manager",
             model="Area Environment",
+            via_device=(DOMAIN, entry.entry_id),
         )
         if device.area_id is None:
             devices.async_update_device(device.id, area_id=area_id)
