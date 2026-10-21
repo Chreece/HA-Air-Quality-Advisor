@@ -433,3 +433,38 @@ def test_native_absence_off_requires_persistent_intent(native):
         except OSError:
             pass
     asyncio.run(scenario())
+
+
+def test_deselected_thermostat_cannot_receive_native_absence_off(native):
+    """The OFF pathway must enforce selection independently of setpoint gate."""
+    async def scenario():
+        hass, _ = fake_home(hvac="heat")
+        thermostat = hass.states.get("climate.room_thermostat")
+        thermostat.attributes["hvac_modes"] = ["heat", "off"]
+        clock = [1000.0]
+        controller = native.NativeClimateControl(hass, "deselected", clock=lambda: clock[0])
+        await controller.async_start()
+        clock[0] = 5000.0
+        cfg = settings(
+            selected_devices=["fan.room_filter"],
+            device_settings={
+                "climate.room_thermostat": {
+                    "auto_control": True,
+                    "presence_requirement": "room",
+                    "absence_action": "off",
+                    "hardware_confirmed": True,
+                }
+            },
+        )
+        held = await controller._absence_off(
+            "living", cfg,
+            {"occupancy": "unoccupied", "away": "away", "sleeping": False},
+            clock[0],
+        )
+        assert held is True
+        assert controller.statuses["living"]["status"] == "device_not_selected"
+        assert not hass.services.calls
+        assert "living" not in controller.off_intent
+        await controller.async_stop()
+
+    asyncio.run(scenario())
