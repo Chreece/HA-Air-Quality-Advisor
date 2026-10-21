@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from apply_mold_i18n import MOLD_NAMES, MOLD_WEATHER_HELP
+
 PID_FIELDS = (
     "target_c", "kp", "ki", "kd", "offset_c", "min_setpoint_c",
     "max_setpoint_c", "sample_seconds", "max_change_c", "min_change_c",
@@ -28,6 +30,9 @@ FALLBACK = WORDS["en"]
 
 
 def apply_device_controls_i18n(root: Path) -> None:
+    vocabularies = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
+    if set(vocabularies) != set(MOLD_NAMES):
+        raise ValueError("All 38 mold source selectors need native locale vocabulary")
     for path in (root / "strings.json", *sorted((root / "translations").glob("*.json"))):
         locale = "en" if path.name == "strings.json" else path.stem
         doc = json.loads(path.read_text(encoding="utf-8"))
@@ -91,6 +96,10 @@ def apply_device_controls_i18n(root: Path) -> None:
                 "climate_equipment", "climate_air_strategy", "climate_actuators",
             )
         }
+        # The final entity pass must not undo localization from the earlier
+        # flow translators. Build the physical calibration selector from the
+        # locale's real temperature/source vocabulary and mold terminology.
+        # Technical 'temperature' and 'weather.*' remain literal HA API keys.
         mold_labels = {
             "el": "Εξωτερική πηγή θερμοκρασίας για μούχλα",
             "de": "Außentemperaturquelle für Schimmelindikator",
@@ -100,15 +109,22 @@ def apply_device_controls_i18n(root: Path) -> None:
         }
         for scope in ("config", "options"):
             step = doc.get(scope, {}).get("step", {}).get("indoor_sensors", {})
-            if isinstance(step, dict):
-                fields = step.setdefault("data", {})
-                fields["mold_outdoor_weather_entity"] = mold_labels.get(
-                    locale, mold_labels["en"]
-                )
-                hints = step.setdefault("data_description", {})
-                hints["mold_outdoor_weather_entity"] = fields[
-                    "mold_outdoor_weather_entity"
-                ]
+            if not isinstance(step, dict):
+                continue
+            vocab = vocabularies[locale]
+            localized_label = mold_labels.get(locale) or (
+                f"{vocab['outside']} · {vocab['temperature']} · "
+                f"{vocab['source']} · {MOLD_NAMES[locale]}"
+            )
+            localized_help = MOLD_WEATHER_HELP.get(locale) or (
+                f"{vocab['select']} weather.* · {vocab['outside']} "
+                f"{vocab['temperature']} (temperature, °C/°F) → "
+                f"{MOLD_NAMES[locale]}. {vocab['required']}: temperature."
+            )
+            step.setdefault("data", {})["mold_outdoor_weather_entity"] = localized_label
+            step.setdefault("data_description", {})[
+                "mold_outdoor_weather_entity"
+            ] = localized_help
 
         env_air = sections["environment_room_air"]
         env_exposure = sections["environment_room_exposure"]

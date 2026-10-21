@@ -226,3 +226,20 @@ def test_home_assistant_area_profile_entities_use_localized_unique_profile_names
                 key=f"{profile}_{mode}"
                 actual=numbers[f"area_climate_profile_{key}"]["name"]
                 assert actual==options[key],(lang,key,actual,options[key])
+
+
+def test_mold_outdoor_weather_source_is_localized_and_has_explanation():
+    """A native weather source must not regress to English during entity i18n."""
+    docs = _docs()
+    english = docs["en"]
+    for lang, doc in docs.items():
+        for scope in ("config", "options"):
+            step = doc[scope]["step"]["indoor_sensors"]
+            label = step["data"]["mold_outdoor_weather_entity"]
+            help_text = step["data_description"]["mold_outdoor_weather_entity"]
+            assert label and help_text and label != help_text, (lang, scope)
+            assert "temperature" in help_text, (lang, scope)
+            assert "°C/°F" in help_text, (lang, scope)
+            if lang != "en":
+                assert label != english[scope]["step"]["indoor_sensors"]["data"]["mold_outdoor_weather_entity"], (lang, scope)
+                assert help_text != english[scope]["step"]["indoor_sensors"]["data_description"]["mold_outdoor_weather_entity"], (lang, scope)
