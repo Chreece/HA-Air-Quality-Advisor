@@ -137,3 +137,38 @@ def test_shipped_english_catalog_equals_home_assistant_strings():
     strings=json.loads((COMP/"strings.json").read_text(encoding="utf-8"))
     english=json.loads((LOCALES/"en.json").read_text(encoding="utf-8"))
     assert strings==english
+
+
+def test_all_22_advanced_limits_explain_direction_units_and_operational_purpose():
+    docs=_docs()
+    english=docs["en"]
+    greek=docs["el"]
+    for scope in ("config","options"):
+        en=english[scope]["step"]["thresholds"]
+        el=greek[scope]["step"]["thresholds"]
+        assert len(en["data"])==22
+        assert set(en["data_description"])==set(en["data"])
+        assert set(el["data_description"])==set(el["data"])
+        for key,help_text in en["data_description"].items():
+            assert len(help_text)>=75,key
+            greek_text=el["data_description"][key]
+            assert len(greek_text)>=70,key
+            assert re.search(r"[α-ωά-ώ]",greek_text,re.IGNORECASE),key
+    # The freshness limit is a data-age bound, not a sleep duration or
+    # proof of safe outdoor air.
+    assert "λεπτά" in greek["options"]["step"]["thresholds"]["data_description"]["max_age_minutes"]
+
+
+def test_climate_safety_descriptions_do_not_look_like_translation_placeholders():
+    el=_docs()["el"]["options"]["step"]
+    for section,field,word in (
+        ("climate_equipment","climate_dry_fan_hardware_confirmed","συμπιεστή"),
+        ("climate_equipment","climate_window_efficiency_notify","παραθύρων"),
+        ("climate_air_strategy","climate_fan_power_auto","ON/OFF"),
+        ("climate_actuators","direct_hardware_confirmed","συμπιεστή"),
+        ("climate_presence","climate_sleep_schedule_enabled","ύπνου"),
+        ("device_settings","device_absence_action","ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ"),
+    ):
+        desc=el[section]["data_description"][field]
+        assert word.lower() in desc.lower(),(section,field,desc)
+
