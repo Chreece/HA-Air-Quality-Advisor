@@ -94,8 +94,16 @@ CLIMATE_OPERATING_NUMBERS = {
     "humidity_hysteresis_rh": (0.5, 10.0, 0.5, "%", 3.0),
     "cooling_dry_deferral_rh_points": (0.0, 20.0, 0.5, "%", 10.0),
     "pm25_action_ug_m3": (5.0, 250.0, 1.0, "µg/m³", 35.0),
-    "extraction_speed_percent": (10.0, 100.0, 1.0, "%", 60.0),
-    "purifier_speed_percent": (10.0, 100.0, 1.0, "%", 60.0),
+    "extraction_speed_percent": (30.0, 100.0, 1.0, "%", 65.0),
+    "purifier_speed_percent": (30.0, 100.0, 1.0, "%", 65.0),
+}
+DIRECT_CONTROLLER_NUMBERS = {
+    "kp": (0.01, 100.0, 0.1, None, 18.0),
+    "ki": (0.0, 10.0, 0.01, None, 0.12),
+    "kd": (0.0, 50.0, 0.1, None, 0.0),
+    "sample_seconds": (120.0, 3600.0, 60.0, "s", 300.0),
+    "max_demand_change": (1.0, 50.0, 1.0, "%", 10.0),
+    "min_demand_change": (0.1, 20.0, 0.1, "%", 2.0),
 }
 DEVICE_TARGET_NUMBERS = {
     **{
@@ -190,13 +198,13 @@ async def update_device_setting(manager: Any, kind: str, key: str,
         "pid_gain_source", "global_environment", "global_occupancy",
         "area_environment", "climate_operating", "global_policy", "climate_policy",
         "device_target", "device_policy", "aqi_scale", "aqi_limit",
-        "climate_schedule",
+        "climate_schedule", "direct_tuning",
     ):
         raise HomeAssistantError("Unsupported settings editor")
     if kind in (
         "pid", "profile", "climate_profile", "pid_gain_source",
         "area_environment", "climate_operating", "climate_policy",
-        "device_target", "device_policy", "climate_schedule",
+        "device_target", "device_policy", "climate_schedule", "direct_tuning",
     ) and not area:
         raise HomeAssistantError("A configured Home Assistant area is required")
 
@@ -424,6 +432,30 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                     new_room = {**original, "device_settings": device_profiles}
                 rooms[area] = new_room
                 options[CONF_CLIMATE_ROOMS] = rooms
+
+        elif kind == "direct_tuning":
+            if key not in DIRECT_CONTROLLER_NUMBERS:
+                raise HomeAssistantError("Invalid direct control tuning")
+            all_rooms = deepcopy(current.get(CONF_CLIMATE_ROOMS, {}))
+            room = all_rooms.get(area) if isinstance(all_rooms, dict) else None
+            if (not isinstance(room, dict) or room.get("enabled") is not True
+                    or room.get("controller") not in ("pwm", "proportional")):
+                raise HomeAssistantError("The room has no commissioned modulating controller")
+            if (key in ("max_demand_change", "min_demand_change")
+                    and room.get("controller") != "proportional"):
+                raise HomeAssistantError("Output change limits require proportional control")
+            task = getattr(manager.direct_climate, "_tasks", {}).get(area)
+            if task is not None and not task.done():
+                raise HomeAssistantError("A direct controller write is in progress")
+            draft = dict(room)
+            draft[key] = _finite(value, DIRECT_CONTROLLER_NUMBERS[key])
+            if draft.get("controller") == "proportional":
+                if float(draft.get("min_demand_change", 2)) > float(
+                    draft.get("max_demand_change", 10)
+                ):
+                    raise HomeAssistantError("Minimum output change exceeds maximum")
+            all_rooms[area] = draft
+            options[CONF_CLIMATE_ROOMS] = all_rooms
 
         elif kind == "device_target":
             if key not in DEVICE_TARGET_NUMBERS or not isinstance(entity_id, str):
