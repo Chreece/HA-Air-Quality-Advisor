@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b8/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,20 +21,70 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 8 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b8) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 9 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+
+## Native Home and Area device settings (beta 9)
+
+Every configured monitoring area has a **<Room> Environment** device. The
+**Home Environment Manager** parent device uses the original recommendation
+sensor (with its complete `dashboard` snapshot and global source/settings
+attributes); all existing entity unique IDs and Lovelace cards remain intact.
+
+**Home device (shared settings):** edit all 22 air/weather monitoring thresholds
+through Home Assistant Number entities, plus the announcement repeat interval,
+automatic text/TTS notification switches, AI rewrite and Announcement Hub
+switches and the output-language selector. Updating a global threshold applies
+to **every room** and preserves source availability/validity checks. The options
+wizard now keeps only settings requiring specialized source/entity pickers,
+calibration, device assignment and safety commissioning.
+
+**Area device (unique manager-derived controls):** keep original climate/fan/
+humidifier entity controls as native Home Assistant equipment. When an advanced
+PID is explicitly commissioned for a room, the area device exposes its
+**supervisory target**, Kp, Ki, Kd, sample interval, bounded setpoint offset,
+minimum/maximum allowed setpoint and movement thresholds as editable Number
+entities. A selector chooses **Defaults** or **Manual** for the PID *gains*;
+editing a gain selects Manual, and switching to Defaults restores
+Kp **22 %/°C**, Ki **0.25 %/(°C·minute)** and Kd **0 %·minute/°C**.
+The default interval is **300 seconds**. **This is not an auto-tuner.** PID
+auto-identification requires enough verified device response measurements and
+must never infer gains from a cold start without reliable evidence. The
+existing supervisor sends bounded thermostat *setpoint corrections*, never
+direct compressor/relay cycles. Gains are validated, the previous PID
+integrator is reset safely between command cycles, and any running command
+blocks concurrent tuning edits.
+
+For rooms with a climate management profile, the area device also exposes
+explicit home, unoccupied, away and sleep heating/cooling **policy targets**
+and the manual/automatic occupancy profile selector. Those separate policies
+are not duplicates of a real thermostat's active setpoint. Home Assistant
+validates temperature-band deadbands before applying changes.
+
+The Lovelace dashboard displays a **gear icon on every room** that resolves
+the actual Home Assistant registry device ID and opens
+`/config/devices/device/<device_id>`. The card header offers the equivalent
+shortcut to the home device. Missing or ambiguous device registry entries are
+never converted into guessed URLs. The original environment overview sensors
+remain read-only snapshots of all raw inputs and computed decisions.
+
+**Hardware/safety controls remain under Configure:** select or reassign
+thermostats, raw sensors, room occupancy providers, direct outputs and
+commissioning permissions through the validated setup flow. A device-number
+editor must never implicitly enable any actuator or override its safety
+interlocks.
 
 ## Install or upgrade to the v0.6 beta with HACS
 
 1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required; the integration preserves the existing `air_quality_advisor` domain, entry IDs, entities and settings.
 2. Open [Home Environment Manager in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), or add `Chreece/HA-Home-Environment-Manager` as a **custom Integration repository** if not already installed.
-3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b8**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
+3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b9**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
 5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `home_environment_manager.climate_diagnostics` (or legacy alias `air_quality_advisor.climate_diagnostics`). Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b8). Extract it into the Home Assistant configuration directory, preserving `custom_components/air_quality_advisor/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9). Extract it into the Home Assistant configuration directory, preserving `custom_components/air_quality_advisor/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
-### Complete configuration translations and explanations — beta 8
+### Complete configuration translations and explanations — beta 9
 
 A field-by-field localization audit found that an old generator supplied
 the correct JSON keys while leaving many option descriptions in English or
@@ -102,7 +152,7 @@ The Home Assistant integration domain, existing entity unique IDs and all
 saved configuration remain `air_quality_advisor` for upgrade compatibility.
 
 
-**New in beta 8 — controller/menu audit:** The room-aware entities from beta 6 remain minimal; this beta fixes stale device selections retaining control roles, checks real equipment features/timing limits, protects absence-OFF from deselected targets, corrects purifier-speed setpoints, moves fan purpose assignments safely, promotes replacement thermostats properly, excludes rejected sensors, and improves occupancy/AQI source editors.\n\n**Area devices introduced in beta 6:** Each selected monitoring room, and each active climate/PID-only room, gets its own Home Environment Manager device in the actual Home Assistant area. It contains one `Environment overview` sensor (assessment state with raw input/source values, window contacts, derived calculations and climate diagnostics as attributes). If calibrated mold indication is enabled for a monitored room, the device additionally exposes one genuine calculated `Surface humidity` percentage sensor; unknown inputs remain unavailable. The integration does **not** duplicate native thermostat setpoints, humidity, temperature, CO₂, PM or fan controls. Those remain on their original Home Assistant equipment entities. No new hardware control is authorized by the area devices.\n\n**One compatibility-preserving Home Assistant recommendation entity and one expandable dashboard card for all selected rooms.** It compares indoor CO₂, AQI, particles, VOCs and either room RH or an optional calibrated mold indicator against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
+**New in beta 9 — controller/menu audit:** The room-aware entities from beta 6 remain minimal; this beta fixes stale device selections retaining control roles, checks real equipment features/timing limits, protects absence-OFF from deselected targets, corrects purifier-speed setpoints, moves fan purpose assignments safely, promotes replacement thermostats properly, excludes rejected sensors, and improves occupancy/AQI source editors.\n\n**Area devices introduced in beta 6:** Each selected monitoring room, and each active climate/PID-only room, gets its own Home Environment Manager device in the actual Home Assistant area. It contains one `Environment overview` sensor (assessment state with raw input/source values, window contacts, derived calculations and climate diagnostics as attributes). If calibrated mold indication is enabled for a monitored room, the device additionally exposes one genuine calculated `Surface humidity` percentage sensor; unknown inputs remain unavailable. The integration does **not** duplicate native thermostat setpoints, humidity, temperature, CO₂, PM or fan controls. Those remain on their original Home Assistant equipment entities. No new hardware control is authorized by the area devices.\n\n**One compatibility-preserving Home Assistant recommendation entity and one expandable dashboard card for all selected rooms.** It compares indoor CO₂, AQI, particles, VOCs and either room RH or an optional calibrated mold indicator against outdoor air quality, current weather and selected weather-warning entities, then recommends **which windows to open or close and why**. Announcements are entirely optional.
 
 > This project is an advisor, **not an automatic window actuator**, medical device, emergency warning system, or authoritative weather alert. It never controls covers. Outdoor warnings and uncertain conditions are intentionally treated as blockers.
 
@@ -257,7 +307,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**Latest stable release: v0.5.1; opt-in beta: v0.6.0b8.** See [GitHub Releases](https://github.com/Chreece/HA-Home-Environment-Manager/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
+**Latest stable release: v0.5.1; opt-in beta: v0.6.0b9.** See [GitHub Releases](https://github.com/Chreece/HA-Home-Environment-Manager/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
 
 Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), then restart Home Assistant. Existing config entries and the single recommendation sensor retain their IDs. The bundled Lovelace card is refreshed automatically.
 
@@ -941,13 +991,13 @@ They demonstrate a humidity-only room, a cooling room, central room priorities
 and independently guarded fan/dehumidifier status.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b8/.github/assets/screenshots/dashboard-climate-coordination.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/screenshots/dashboard-climate-coordination.png"
        alt="Actual Home Environment Manager card with simulated bedroom cooling and dehumidifier controls, coordinated priorities and safety holds"
        width="850">
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b8/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
        alt="Actual Greek dark-theme climate room card, simulated dehumidification status and room priority"
        width="360">
 </p>
@@ -1072,7 +1122,7 @@ of one controller's persistence no longer prevents the remaining
 controllers, announcements, listeners or background tasks from being
 cleaned up.
 
-These features are included in the opt-in [v0.6.0b8 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b8).
+These features are included in the opt-in [v0.6.0b9 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9).
 The [development PR #2](https://github.com/Chreece/HA-Home-Environment-Manager/pull/2) remains unmerged and production v0.5.1 stays unchanged pending representative hardware testing.
 
 
@@ -1098,7 +1148,7 @@ registry, interleaved state changes, Python unit tests and HACS/Hassfest.
 Hardware commissioning remains mandatory for device-changing functions.
 
 
-### Compact options and per-device occupancy (v0.6.0b8 beta)
+### Compact options and per-device occupancy (v0.6.0b9 beta)
 
 The grouped options menu is reorganized as **Outside data** (weather, warnings,
 outdoor-air sensors, AQI scales and international pollen), **General settings**
@@ -1126,6 +1176,6 @@ OFF until the user restarts it manually; no controller restarts an OFF
 compressor. Humidifier/fan power OFF follows their existing owned-output
 minimum-on, runtime and acknowledgement rules.
 
-This refinement is included in the opt-in **v0.6.0b8 beta**. Existing
+This refinement is included in the opt-in **v0.6.0b9 beta**. Existing
 automation stays off until explicitly enabled, and all experimental power/
 compressor-control paths still require separate real-device commissioning.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b9 — Home and Area device-first configuration (beta)
+
+- Attach all room devices under the existing Home Environment Manager device, reusing the unchanged whole-home recommendations/dashboard sensor.
+- Add editable home-wide thresholds, language, announcement/AI switches and repeat interval, while keeping safety-related selectors in options.
+- Expose per-area manual PID gains and supervised setpoint limits, with safe gain-source defaults/manual selection and integrator reset between writes; no blind auto-tuning.
+- Expose distinct per-room comfort policy bands and occupancy profile controls without copying original thermostat/fan controls.
+- Add registry-resolved home and room edit buttons on the dashboard, with Greek/German/French/Spanish labels and no guessed device IDs.
+- Regenerate all 38 language catalogs and protect writes, device identity and navigation in regression tests.
+
 ## 0.6.0b8 — Controller and menu regression audit (beta)
 
 - Revoke stale per-device actuator grants; block deselected thermostat absence OFF, verify actual native equipment target capabilities and power timing.
