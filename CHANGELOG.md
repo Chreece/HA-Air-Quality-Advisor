@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0b8 — Controller and menu regression audit (beta)
+
+- Revoke stale per-device actuator grants; block deselected thermostat absence OFF, verify actual native equipment target capabilities and power timing.
+- Make fan purpose switches exclusive and promote replacement thermostats to primary without bypassing ownership safeguards.
+- Fix filtration speed target field, excluded control sources, occupancy source clearing and AQI scale editor persistence.
+- Test per-device revocation, room identity, HVAC mode support, hardware confirmation, sensor quality, safe dwell times and versioned beta distribution.
+
 ## 0.6.0b5 — Complete config-flow translation and field-help audit (beta)
 
 - Audit all Home Assistant initial setup and options forms across 38 languages, detecting inherited English text and generic placeholder descriptions even when translation keys are technically complete.

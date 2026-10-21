@@ -274,7 +274,7 @@ class CompactOptionsMixin:
                  in ("occupancy", "presence"))],
             key=lambda x: x["label"].casefold(),
         )
-        source_options=[{"value":"none","label":"— (no room-list source)"},
+        source_options=[{"value":"none","label":"—"},
                         *self._room_source_options(self.hass)]
         source_ids={v["value"] for v in source_options if v["value"]!="none"}
         errors = {}

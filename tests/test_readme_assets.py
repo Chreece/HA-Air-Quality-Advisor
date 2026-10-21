@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/"
-VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7")
+VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7", "v0.6.0b8")
 LOCAL_ASSET_ROOT = ".github/assets/"
 
 

@@ -1,7 +1,7 @@
 {
-  "version": "0.6.0b7",
+  "version": "0.6.0b8",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Beta7 controller and configuration bug fixes: revoke device grants on deselection, exact feature checks, reliable occupancy clear and AQI source refresh, correct purifier target, protect native HVAC absence-off. No stable changes.",
+  "note": "Finalized controller/menu audit through fan purpose and climate primary replacement fixes. Opt-in prerelease; stable version unchanged.",
   "validation_attempt": 0,
   "changes": [
     "Revoke previously authorized device roles when deselected or auto control switched off",
@@ -12,8 +12,11 @@
     "Use supported single-purpose HVAC modes rather than fabricated auto for heat-only/cool-only devices",
     "Allow clearing global room-list occupancy and sleep sources explicitly",
     "Refresh AQI limit/scale controls when switching outdoor AQI sensors",
-    "Add targeted regression coverage to protect menu controller safety behavior"
+    "Add targeted regression coverage to protect menu controller safety behavior",
+    "Ensure purpose switches remove old fan role and replacement thermostats become primary",
+    "Reconcile native actuator dwell limits, selected-device permissions and usable sensors",
+    "Validate regressions on both supported Python runtimes, HACS and Hassfest before release"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b7"
+  "release_branch": "beta/v0.6.0b8"
 }
