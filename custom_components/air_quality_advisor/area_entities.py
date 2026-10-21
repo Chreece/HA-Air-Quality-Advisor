@@ -1,32 +1,21 @@
-"""Per-area Home Assistant devices and safe environment observations.
+"""One compact environment overview entity per configured Home Assistant area.
 
-These entities mirror the existing decision engine; they never independently
-command equipment or manufacture measurements from missing sensors.
+Measurements remain owned by their original source integrations. Native climate
+entities own their supported targets and controls. This device reports only the
+manager's room assessment, with a dashboard-friendly raw-input snapshot.
 """
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import callback
 from homeassistant.helpers import area_registry as ar, device_registry as dr
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import (DOMAIN, CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS,
-                    SIGNAL_UPDATED)
+from .const import (
+    CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, DOMAIN, SIGNAL_UPDATED,
+)
 from .dashboard import dashboard_snapshot
 
-# A stable unit and name for each actual measurement or requested target.
-FIELDS = {
-    "temperature": ("Temperature", "°C", "mdi:thermometer"),
-    "humidity": ("Relative humidity", "%", "mdi:water-percent"),
-    "co2": ("CO2", "ppm", "mdi:molecule-co2"),
-    "pm25": ("PM2.5", "µg/m³", "mdi:blur"),
-    "target_temperature": ("Temperature target", "°C", "mdi:thermometer-check"),
-    "target_low": ("Minimum target", "°C", "mdi:thermometer-low"),
-    "target_high": ("Maximum target", "°C", "mdi:thermometer-high"),
-    "control_status": ("Climate control status", None, "mdi:thermostat"),
-    "control_profile": ("Climate profile", None, "mdi:home-thermometer"),
-    "requested_mode": ("Requested HVAC mode", None, "mdi:hvac"),
-}
 
 def _configured_areas(manager):
     settings = manager.settings
@@ -37,35 +26,15 @@ def _configured_areas(manager):
             areas.extend(extra)
     return tuple(dict.fromkeys(a for a in areas if isinstance(a, str) and a))
 
-def _values(manager, area_id):
+
+def _room_snapshot(manager, area_id):
     snapshot = dashboard_snapshot(manager.plan, manager.thresholds)
-    room = next((r for r in snapshot["rooms"] if r["area_id"] == area_id), None)
-    if room is None:
-        return {}
-    readings = {r["metric"]: r["value"] for r in room["readings"]
-                if r.get("available") and r.get("value") is not None}
-    climate = room.get("environment", {}).get("climate_plan", {})
-    if not isinstance(climate, dict):
-        climate = {}
-    pid_config = manager.settings.get(CONF_PID_ROOMS, {})
-    pid_config = pid_config.get(area_id, {}) if isinstance(pid_config, dict) else {}
-    pid_status = getattr(getattr(manager, "pid", None), "statuses", {}).get(area_id, {})
-    result = {
-        "humidity": readings.get("humidity"),
-        "co2": readings.get("co2"),
-        "pm25": readings.get("pm25"),
-        "temperature": climate.get("temperature_c", readings.get("temperature")),
-        "target_temperature": climate.get("temperature_target_c", pid_config.get("target_c")),
-        "target_low": climate.get("low_target_c"),
-        "target_high": climate.get("high_target_c"),
-        "control_status": climate.get("status", pid_status.get("status")),
-        "control_profile": climate.get("profile"),
-        "requested_mode": climate.get("mode"),
-    }
-    return result
+    return next((room for room in snapshot["rooms"]
+                 if room["area_id"] == area_id), None)
+
 
 async def async_area_entities(hass, entry):
-    """Register one device per selected area; attach only meaningful entities."""
+    """Create one device and one overview sensor for every selected area."""
     manager = entry.runtime_data
     areas = ar.async_get(hass)
     devices = dr.async_get(hass)
@@ -83,53 +52,92 @@ async def async_area_entities(hass, entry):
         )
         if device.area_id is None:
             devices.async_update_device(device.id, area_id=area_id)
-        # Only offer metrics that have relevant configured sources. A missing
-        # reading is then unavailable, not zero or falsely healthy.
-        configured_climate = manager.settings.get(CONF_CLIMATE_ROOMS, {})
-        configured_pid = manager.settings.get(CONF_PID_ROOMS, {})
-        climate_enabled = isinstance(configured_climate, dict) and area_id in configured_climate
-        pid_enabled = isinstance(configured_pid, dict) and area_id in configured_pid
-        snapshot = dashboard_snapshot(manager.plan, manager.thresholds)
-        room = next((item for item in snapshot["rooms"]
-                     if item["area_id"] == area_id), None)
-        present_metrics = {item["metric"] for item in room["readings"]} if room else set()
-        candidates = [field for field in ("humidity", "co2", "pm25")
-                      if field in present_metrics]
-        climate = (room or {}).get("environment", {}).get("climate_plan", {})
-        if climate_enabled and isinstance(climate, dict) and climate:
-            candidates += ["temperature", "target_temperature", "target_low",
-                           "target_high", "control_status", "control_profile",
-                           "requested_mode"]
-        elif pid_enabled:
-            # Legacy PID exposes its status via the coordinator, not the
-            # separate climate-plan payload. Do not create empty placeholders.
-            candidates += ["temperature", "target_temperature", "control_status"]
-        for field in candidates:
-            result.append(AreaEnvironmentSensor(manager, entry.entry_id, area_id, field))
+        result.append(AreaOverview(manager, entry.entry_id, area_id))
     return result
 
-class AreaEnvironmentSensor(SensorEntity):
+
+class AreaOverview(SensorEntity):
+    """Calculated room assessment; raw inputs are attributes, never duplicates."""
+
     _attr_has_entity_name = True
+    _attr_name = "Environment overview"
+    _attr_icon = "mdi:home-analytics"
     _attr_should_poll = False
 
-    def __init__(self, manager, entry_id, area_id, field):
+    def __init__(self, manager, entry_id, area_id):
         self._manager = manager
         self._area_id = area_id
-        self._field = field
-        name, unit, icon = FIELDS[field]
-        self._attr_name = name
-        self._attr_icon = icon
-        self._attr_unique_id = f"{entry_id}_area_{area_id}_{field}"
+        self._attr_unique_id = f"{entry_id}_area_{area_id}_overview"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, f"{entry_id}_area_{area_id}")},
         }
-        self._attr_native_unit_of_measurement = unit
-        if unit is not None:
-            self._attr_state_class = SensorStateClass.MEASUREMENT
 
     @property
     def native_value(self):
-        return _values(self._manager, self._area_id).get(self._field)
+        room = _room_snapshot(self._manager, self._area_id)
+        if room is None:
+            return "unknown"
+        # A configured climate-only room has no air-quality assessment;
+        # expose the manager's climate decision instead.
+        if room.get("climate_only"):
+            plan = room.get("environment", {}).get("climate_plan", {})
+            return plan.get("status", "unknown") if isinstance(plan, dict) else "unknown"
+        return room.get("status", "unknown")
+
+    @property
+    def extra_state_attributes(self):
+        room = _room_snapshot(self._manager, self._area_id)
+        if room is None:
+            return {"area_id": self._area_id, "data_available": False}
+        environment = room.get("environment", {})
+        if not isinstance(environment, dict):
+            environment = {}
+        climate = environment.get("climate_plan", {})
+        if not isinstance(climate, dict):
+            climate = {}
+        # Keep attributes finite and dashboard-friendly: no full history,
+        # arbitrary nested equipment payloads, or duplicated climate controls.
+        inputs = [
+            {
+                "entity_id": item.get("entity_id"),
+                "metric": item.get("metric"),
+                "value": item.get("value"),
+                "unit": item.get("unit"),
+                "available": item.get("available", False),
+            }
+            for item in room.get("readings", [])
+        ]
+        pid = getattr(getattr(self._manager, "pid", None), "statuses", {})
+        pid_status = pid.get(self._area_id) if isinstance(pid, dict) else None
+        assessment = {
+            "status": room.get("status"),
+            "status_detail": room.get("status_detail"),
+            "action": room.get("action"),
+            "reasons": room.get("reasons", []),
+            "high_count": room.get("high_count", 0),
+            "available_count": room.get("available_count", 0),
+            "ventilating": room.get("ventilating", False),
+        }
+        controller = {
+            "status": climate.get("status"),
+            "profile": climate.get("profile"),
+            "mode": climate.get("mode"),
+            "occupancy": climate.get("occupancy"),
+            "sleeping": climate.get("sleeping"),
+            "away": climate.get("away"),
+            "reason": climate.get("reason"),
+            "actuation": climate.get("actuation"),
+            "pid": pid_status,
+        }
+        return {
+            "area_id": self._area_id,
+            "data_available": True,
+            "assessment": assessment,
+            "inputs": inputs,
+            "window_contacts": room.get("windows", []),
+            "controller": {key: value for key, value in controller.items()
+                           if value is not None},
+        }
 
     async def async_added_to_hass(self):
         await super().async_added_to_hass()
