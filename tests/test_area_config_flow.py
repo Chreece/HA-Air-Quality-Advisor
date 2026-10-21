@@ -351,7 +351,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
         "delivery",
     ]
     assert asyncio.run(options.async_step_outside_data())["menu_options"] == [
-        "weather", "outdoor", "outside_aqi", "pollen",
+        "weather", "outdoor", "pollen",
     ]
     assert asyncio.run(options.async_step_area_settings())["menu_options"] == [
         "areas", "indoor_sensors", "window_sensors", "environment_room",
@@ -654,50 +654,63 @@ def _calibratable_options(monkeypatch, adapter):
     return options
 
 
-def test_calibration_saves_live_temperatures_and_is_stable_on_room_edits(monkeypatch, adapter):
+def test_mold_setup_only_selects_sensors_and_preserves_old_calibration(monkeypatch, adapter):
     options = _calibratable_options(monkeypatch, adapter)
     first = asyncio.run(options.async_step_indoor_sensors())
     assert first["step_id"] == "indoor_sensors"
-    assert "mold_critical_temperature_c" in first["data_schema"]
     assert "mold_indoor_temperature" in first["data_schema"]
-    saved = asyncio.run(options.async_step_indoor_sensors({
+    assert "mold_outdoor_weather_entity" in first["data_schema"]
+    assert "mold_critical_temperature_c" not in first["data_schema"]
+    assert "mold_recalibrate" not in first["data_schema"]
+    initial = asyncio.run(options.async_step_indoor_sensors({
         "excluded_indoor_entities": [],
         "mold_indoor_temperature": "sensor.living_temperature",
-        "mold_critical_temperature_c": 13.5,
+        "mold_outdoor_weather_entity": "weather.home",
     }))
-    calib = saved["completed"]["data"]["mold_rooms"]["living"]
-    assert calib["calibration_factor"] == 2.0
-    assert calib["outdoor_weather_entity"] == "weather.home"
-    # Changing weather later must NOT reinterpret the old measurement.
-    options.hass._values["weather.home"].attributes["temperature"] = 10
-    options.config_entry.options = saved["completed"]["data"]
+    saved = initial["completed"]["data"]["mold_rooms"]["living"]
+    assert saved["indoor_temperature_entity"] == "sensor.living_temperature"
+    assert saved["outdoor_weather_entity"] == "weather.home"
+    assert "critical_temperature_c" not in saved
+    # Device controls, not the source selection page, perform calibration.
+    saved.update({
+        "critical_temperature_c": 13.5,
+        "calibration_factor": 2.0,
+        "calibrated_indoor_c": 21,
+        "calibrated_outdoor_c": 6,
+    })
+    options.config_entry.options = initial["completed"]["data"]
     asyncio.run(options.async_step_init())
-    options._values["use_mold_indicator"] = True
     edited = asyncio.run(options.async_step_indoor_sensors({
         "excluded_indoor_entities": ["sensor.living_co2"],
         "mold_indoor_temperature": "sensor.living_temperature",
-        "mold_critical_temperature_c": 13.5,
+        "mold_outdoor_weather_entity": "weather.home",
     }))
-    assert edited["completed"]["data"]["mold_rooms"]["living"] == calib
+    assert edited["completed"]["data"]["mold_rooms"]["living"] == saved
 
 
-def test_calibration_rejects_unavailable_outdoor_and_unstable_readings(monkeypatch, adapter):
+def test_mold_temperature_source_change_invalidates_old_factor_only(monkeypatch, adapter):
     options = _calibratable_options(monkeypatch, adapter)
-    options.hass._values["weather.home"].attributes.pop("temperature")
-    invalid = asyncio.run(options.async_step_indoor_sensors({
+    alt = MockState("sensor.living_temp_alt", 23,
+                    device_class="temperature", unit="°C")
+    options.hass._values[alt.entity_id] = alt
+    options.hass._entity_areas[alt.entity_id] = "living"
+    options._values["mold_rooms"] = {
+        "living": {
+            "indoor_temperature_entity": "sensor.living_temperature",
+            "outdoor_weather_entity": "weather.home",
+            "critical_temperature_c": 13.5,
+            "calibration_factor": 2.0,
+        }
+    }
+    changed = asyncio.run(options.async_step_indoor_sensors({
         "excluded_indoor_entities": [],
-        "mold_indoor_temperature": "sensor.living_temperature",
-        "mold_critical_temperature_c": 13.5,
+        "mold_indoor_temperature": alt.entity_id,
+        "mold_outdoor_weather_entity": "weather.home",
     }))
-    assert invalid["errors"] == {"base": "missing_mold_outdoor_temperature"}
-    assert "mold_rooms" not in options._values
-    options.hass._values["weather.home"].attributes["temperature"] = 20
-    unstable = asyncio.run(options.async_step_indoor_sensors({
-        "excluded_indoor_entities": [],
-        "mold_indoor_temperature": "sensor.living_temperature",
-        "mold_critical_temperature_c": 13.5,
-    }))
-    assert unstable["errors"] == {"base": "invalid_mold_calibration"}
+    info = changed["completed"]["data"]["mold_rooms"]["living"]
+    assert info["indoor_temperature_entity"] == alt.entity_id
+    assert info["critical_temperature_c"] == 13.5
+    assert "calibration_factor" not in info
 
 
 def test_initial_wizard_mold_weather_precedes_room_calibration(monkeypatch, adapter):
@@ -819,8 +832,9 @@ def test_climate_room_profiles_are_optional_and_keep_existing_settings(monkeypat
     assert choose["step_id"] == "climate_room"
     setup = asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
     assert setup["step_id"] == "climate_presence"
-    assert "climate_sleep_start" in setup["data_schema"]
-    assert asyncio.run(options.async_step_climate_presence({}))["step_id"]=="climate_profiles"
+    assert "climate_sleep_start" not in setup["data_schema"]
+    assert "climate_occupancy_sensors" in setup["data_schema"]
+    assert asyncio.run(options.async_step_climate_presence({}))["completed"] is not None
     saved = asyncio.run(options.async_step_climate_profiles({}))
     data = saved["completed"]["data"]
     assert data["climate_rooms"]["living"]["enabled"] is False
@@ -855,7 +869,7 @@ def test_climate_schedule_and_comfort_settings_preserve_other_config(monkeypatch
         "climate_target_source":"pmv",
         "climate_comfort_adjustment_max_c":1.5,
     }))
-    assert nxt["step_id"]=="climate_profiles"
+    assert nxt["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     room=saved["completed"]["data"]["climate_rooms"]["living"]
     assert room["sleep_schedule_enabled"] is True
@@ -877,7 +891,7 @@ def test_direct_actuator_settings_are_separate_and_off_by_default(monkeypatch,ad
     nxt=asyncio.run(options.async_step_climate_actuators({
         "direct_hardware_confirmed":False,
     }))
-    assert nxt["step_id"]=="climate_profiles"
+    assert nxt["completed"] is not None
 
 
 def test_climate_extra_equipment_is_room_scoped_and_removable(monkeypatch,adapter):
@@ -927,7 +941,7 @@ def test_climate_extra_equipment_is_room_scoped_and_removable(monkeypatch,adapte
         "climate_humidity_hysteresis_rh":3,
     }))
     assert devices["step_id"]=="climate_air_strategy"
-    assert asyncio.run(options.async_step_climate_air_strategy({}))["step_id"]=="climate_profiles"
+    assert asyncio.run(options.async_step_climate_air_strategy({}))["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     room=saved["completed"]["data"]["climate_rooms"]["living"]
     assert room["dehumidifier_entity"]=="humidifier.dryer"
@@ -970,7 +984,7 @@ def test_native_humidity_target_needs_separate_permission_and_known_sensor(monke
         "climate_dehumidifier_entity":"humidifier.dryer",
         "climate_humidity_entity":"sensor.living_humidity",
     }))
-    assert next_form["step_id"]=="climate_profiles"
+    assert next_form["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     climate=saved["completed"]["data"]["climate_rooms"]["living"]
     assert climate["humidity_setpoint_auto"] is True
@@ -1021,7 +1035,7 @@ def test_climate_fan_air_wizard_requires_verified_room_sensor(monkeypatch,adapte
         "climate_extraction_speed_percent":70,
         "climate_purifier_speed_percent":75,
     }))
-    assert save["step_id"]=="climate_profiles"
+    assert save["completed"] is not None
     room=asyncio.run(options.async_step_climate_profiles({}))["completed"]["data"]["climate_rooms"]["living"]
     assert room["fan_speed_auto"] is True
     assert room["co2_entity"]=="sensor.living_co2"
@@ -1066,7 +1080,7 @@ def test_environment_only_room_can_enable_verified_dehumidifier_without_thermost
         "climate_dehumidifier_entity":"humidifier.living_dehumidifier",
         "climate_humidity_entity":"sensor.living_humidity",
     }))
-    assert step["step_id"]=="climate_profiles"
+    assert step["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     cfg=saved["completed"]["data"]["climate_rooms"]["living"]
     assert cfg["controller"]=="environment"
@@ -1127,7 +1141,7 @@ def test_dry_only_climate_mode_without_fictitious_temperature_sensor(monkeypatch
     result=asyncio.run(options.async_step_climate_equipment({
         "climate_window_efficiency_notify":True,
     }))
-    assert result["step_id"]=="climate_profiles"
+    assert result["completed"] is not None
     result=asyncio.run(options.async_step_climate_profiles({}))
     room=result["completed"]["data"]["climate_rooms"]["living"]
     assert room["mode"]=="dry"
@@ -1186,7 +1200,7 @@ def test_environment_only_native_fan_power_consent_and_mutual_exclusion(monkeypa
         "climate_fan_power_max_on_s":3600,
         "climate_co2_entity":"sensor.living_co2",
     }))
-    assert enabled["step_id"]=="climate_profiles"
+    assert enabled["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     cfg=saved["completed"]["data"]["climate_rooms"]["living"]
     assert cfg["controller"]=="environment"
@@ -1234,7 +1248,7 @@ def test_commissioned_dry_fan_setup_requires_exact_modes_sensor_and_extra_consen
         "climate_dry_fan_mode_dwell_s":1800,
         "climate_dry_fan_windowless_confirmed":True,
     }))
-    assert result["step_id"]=="climate_profiles"
+    assert result["completed"] is not None
     saved=asyncio.run(options.async_step_climate_profiles({}))
     final=saved["completed"]["data"]["climate_rooms"]["living"]
     assert final["controller"]=="environment"
@@ -1379,8 +1393,9 @@ def test_area_device_list_preselects_every_supported_room_entity_without_actuati
     assert asyncio.run(opt.async_step_device_choice({"device_choice":st.entity_id}))["step_id"]=="device_menu"
     form=asyncio.run(opt.async_step_device_settings())
     assert form["step_id"]=="device_settings"
-    assert "device_sleep_heat_c" in form["data_schema"]
-    assert "device_presence_requirement" in form["data_schema"]
+    assert "device_sleep_heat_c" not in form["data_schema"]
+    assert "device_presence_requirement" not in form["data_schema"]
+    assert "device_hardware_confirmed" in form["data_schema"]
     saved=asyncio.run(opt.async_step_device_settings({"device_auto_control":False}))
     data=saved["completed"]["data"]["climate_rooms"]["living"]
     assert set(data["selected_devices"])==set(choice)
