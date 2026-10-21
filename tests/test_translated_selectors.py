@@ -13,6 +13,7 @@ from pathlib import Path
 
 from custom_components.air_quality_advisor.languages import SUPPORTED_LANGUAGE_TAGS
 from test_area_config_flow import _make_options
+from test_discovery import adapter
 
 ROOT=Path(__file__).resolve().parents[1]
 LOCALES=ROOT/"custom_components"/"air_quality_advisor"/"translations"
