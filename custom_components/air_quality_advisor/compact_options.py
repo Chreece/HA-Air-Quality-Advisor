@@ -686,7 +686,7 @@ class CompactOptionsMixin:
                     measured = _target(attrs)
                     if measured is None or _bounded_setpoint(
                         attrs, measured, measured
-                    )[0] == "device_limits_or_resolution_unknown":
+                    )[0] not in ("at_setpoint", "command"):
                         errors["base"] = "device_method_invalid"
                 elif domain == "fan" and data["method"] == "speed":
                     # Home Assistant FanEntityFeature.SET_SPEED == 1.
@@ -836,7 +836,9 @@ class CompactOptionsMixin:
                         draft["co2_entity"] = data["co2_entity"]
                         draft["pm25_entity"] = data["pm25_entity"]
                         draft["pm25_sensor_verified"] = data["sensor_verified"]
-                        draft[data["fan_purpose"]+"_speed_percent"] = data["fan_speed_percent"]
+                        draft[("extraction_speed_percent" if
+                               data["fan_purpose"]=="extraction" else
+                               "purifier_speed_percent")] = data["fan_speed_percent"]
                         for dest in ("min_on_s", "min_off_s", "max_on_s"):
                             draft["fan_power_"+dest] = data[dest]
                         if data["fan_purpose"]=="extraction":
