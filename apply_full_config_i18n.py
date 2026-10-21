@@ -157,7 +157,8 @@ def apply_full_config_i18n(root: Path) -> None:
     locales = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
     mode_terms = json.loads((root / "climate_mode_locales.json").read_text(encoding="utf-8"))
     if set(mode_terms) != set(locales) or any(
-        set(words) != {"heat","cool","dry"} for words in mode_terms.values()
+        set(words) != {"heat","cool","dry","unoccupied","away"}
+        for words in mode_terms.values()
     ):
         raise ValueError("Climate mode option terms required for all 38 languages")
     templates = json.loads((root / TEMPLATES_FILE).read_text(encoding="utf-8"))
@@ -297,8 +298,8 @@ def apply_full_config_i18n(root: Path) -> None:
             "climate_manual_profile":{
                 "auto":vocab["automatic"],
                 "home":vocab["house"],
-                "unoccupied":vocab["room"]+" · "+vocab["off"],
-                "away":vocab["house"]+" · "+vocab["off"],
+                "unoccupied":mode_terms[lang]["unoccupied"],
+                "away":mode_terms[lang]["away"],
                 "sleep":vocab["sleep"],
             },
             "climate_target_source":{
@@ -318,6 +319,10 @@ def apply_full_config_i18n(root: Path) -> None:
                 "on_off":"Ρελέ ON/OFF θερμικού φορτίου με ανεξάρτητη προστασία",
                 "pwm":"Αργό PWM θερμικού φορτίου (χωρίς συμπιεστή)",
                 "proportional":"Επαληθευμένη αναλογική έξοδος 0–100%",
+            })
+            by_key["environment_aqi_scale"].update({
+                "not_configured":"Δεν έχει οριστεί κλίμακα",
+                "custom":"Προσαρμοσμένη κλίμακα AQI",
             })
             by_key["climate_unknown_occupancy"]["occupied"]="Θεώρησε τον χώρο κατειλημμένο"
             by_key["climate_away_policy"].update({
