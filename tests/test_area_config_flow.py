@@ -585,8 +585,8 @@ def test_repeat_interval_defaults_to_ten_minutes_and_uses_number_selector(monkey
     form = asyncio.run(options.async_step_delivery())
     assert "announcement_repeat_minutes" not in form["data_schema"]
     # The home device now owns the writable announcement interval entity.
-    from custom_components.air_quality_advisor.device_controls import THRESHOLD_NUMBERS
-    assert len(THRESHOLD_NUMBERS) == 22
+    from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
+    assert len(DEFAULT_THRESHOLDS) == 22
 
 
 def test_repeat_interval_can_be_disabled_or_set_in_minutes(monkeypatch, adapter):
