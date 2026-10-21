@@ -1,17 +1,19 @@
 {
-  "version": "0.6.0b6",
+  "version": "0.6.0b7",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Opt-in beta6: minimal area devices, raw inputs in overview attributes, calculated mold surface humidity with source provenance; all previous beta5 features and safety safeguards retained; stable v0.5.1 unchanged.",
+  "note": "Beta7 controller and configuration bug fixes: revoke device grants on deselection, exact feature checks, reliable occupancy clear and AQI source refresh, correct purifier target, protect native HVAC absence-off. No stable changes.",
   "validation_attempt": 0,
   "changes": [
-    "Create a Home Environment Manager device for each configured monitoring/climate/PID area",
-    "One per-room environment overview entity with original sensor states and normalized values as attributes",
-    "Display window input evidence, real controller sources, derived environment metrics and guarded actuation status",
-    "Create an extra numeric sensor only for calculated mold surface humidity when enabled",
-    "Do not duplicate device climate setpoints, temperature/humidity/CO2 or HVAC controls",
-    "Keep existing whole-home recommendation sensor, config entry IDs, safety interlocks and stable channel unchanged",
-    "Translate new entities across all 38 HA-supported locales and validate before tagged opt-in prerelease"
+    "Revoke previously authorized device roles when deselected or auto control switched off",
+    "Prevent absent-room OFF commands against deselected climate entities",
+    "Do not implicitly arm an old advisory thermostat when enabling fans or humidifiers",
+    "Validate real climate setpoint and fan speed capabilities prior to enabling automation",
+    "Fix filtration fan speed options to use actual purifier_speed_percent controller key",
+    "Use supported single-purpose HVAC modes rather than fabricated auto for heat-only/cool-only devices",
+    "Allow clearing global room-list occupancy and sleep sources explicitly",
+    "Refresh AQI limit/scale controls when switching outdoor AQI sensors",
+    "Add targeted regression coverage to protect menu controller safety behavior"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b6"
+  "release_branch": "beta/v0.6.0b7"
 }
