@@ -348,7 +348,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "outside_data", "general_settings", "area_settings",
-        "delivery", "thresholds",
+        "delivery",
     ]
     assert asyncio.run(options.async_step_outside_data())["menu_options"] == [
         "weather", "outdoor", "outside_aqi", "pollen",
@@ -416,9 +416,10 @@ def test_announcement_editor_has_no_advanced_threshold_toggle(monkeypatch, adapt
     asyncio.run(options.async_step_init())
     form = asyncio.run(options.async_step_delivery())
     assert "edit_thresholds" not in form["data_schema"]
-    assert next(k.default for k in form["data_schema"] if k == "language") == "el"
-    saved = asyncio.run(options.async_step_delivery({"language":"de"}))
-    assert saved["completed"]["data"]["language"] == "de"
+    assert "language" not in form["data_schema"]  # now on home device
+    assert "automatic_tts" not in form["data_schema"]
+    saved = asyncio.run(options.async_step_delivery({}))
+    assert saved["completed"]["data"]["language"] == "el"
     assert saved["completed"]["data"]["thresholds"] == {"indoor_co2":1200}
     assert "edit_thresholds" not in saved["completed"]["data"]
 
@@ -582,13 +583,10 @@ def test_repeat_interval_defaults_to_ten_minutes_and_uses_number_selector(monkey
     options = _make_options(monkeypatch, adapter)
     asyncio.run(options.async_step_init())
     form = asyncio.run(options.async_step_delivery())
-    field = next(k for k in form["data_schema"] if k == "announcement_repeat_minutes")
-    assert field.default == 10
-    selector = form["data_schema"][field]
-    assert selector.config.min == 0
-    assert selector.config.max == 1440
-    assert selector.config.step == 1
-    assert selector.config.unit_of_measurement == "min"
+    assert "announcement_repeat_minutes" not in form["data_schema"]
+    # The home device now owns the writable announcement interval entity.
+    from custom_components.air_quality_advisor.device_controls import THRESHOLD_NUMBERS
+    assert len(THRESHOLD_NUMBERS) == 22
 
 
 def test_repeat_interval_can_be_disabled_or_set_in_minutes(monkeypatch, adapter):
@@ -618,8 +616,7 @@ def test_existing_repeat_value_is_preserved_on_reconfigure(monkeypatch, adapter)
     options.config_entry.data["announcement_repeat_minutes"] = 0
     asyncio.run(options.async_step_init())
     form = asyncio.run(options.async_step_delivery())
-    field = next(k for k in form["data_schema"] if k == "announcement_repeat_minutes")
-    assert field.default == 0
+    assert "announcement_repeat_minutes" not in form["data_schema"]
     saved = asyncio.run(options.async_step_delivery({"language": "el"}))
     assert saved["completed"]["data"]["announcement_repeat_minutes"] == 0
 
