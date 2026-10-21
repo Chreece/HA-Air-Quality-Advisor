@@ -71,7 +71,6 @@ def manager():
             prepared.append(area)
 
     class FakeManager:
-        entry = entry  # overridden after class creation
         _active = True
         hub_available = False
         pid = FakePid()
