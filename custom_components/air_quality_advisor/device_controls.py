@@ -163,7 +163,11 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 default_profiles, err = profiles(draft)
                 if err:
                     raise HomeAssistantError(f"Invalid existing profile configuration: {err}")
-                band = dict(old.get(group, {}))
+                band = {
+                    "heat_c": default_profiles[group].heat_c,
+                    "cool_c": default_profiles[group].cool_c,
+                    **(old.get(group, {}) if isinstance(old.get(group), dict) else {}),
+                }
                 band[f"{mode}_c"] = _finite(value, PROFILE_NUMBERS[key])
                 old[group] = band
                 draft["profiles"] = old
