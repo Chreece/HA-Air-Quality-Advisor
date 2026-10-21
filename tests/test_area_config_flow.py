@@ -530,7 +530,7 @@ def test_only_configured_announcement_hub_is_offered_on_settings_page(monkeypatc
     asyncio.run(options.async_step_init())
     without_entry = asyncio.run(options.async_step_delivery())
     assert "use_announcement_hub" not in without_entry["data_schema"]
-    assert "ai_rewrite_announcements" in without_entry["data_schema"]
+    assert "ai_rewrite_announcements" not in without_entry["data_schema"]
     assert "ai_conversation_agent" in without_entry["data_schema"]
 
     options.hass.config_entries = SimpleNamespace(
@@ -538,7 +538,7 @@ def test_only_configured_announcement_hub_is_offered_on_settings_page(monkeypatc
         if domain == "announcement_hub" else []
     )
     with_entry = asyncio.run(options.async_step_delivery())
-    assert "use_announcement_hub" in with_entry["data_schema"]
+    assert "use_announcement_hub" not in with_entry["data_schema"]  # Home device switch
     assert next(iter(with_entry["data_schema"][
         "ai_conversation_agent"].config.options))["value"] == "default"
 
