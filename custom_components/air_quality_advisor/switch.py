@@ -16,9 +16,25 @@ CONTROLS = (CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     manager = entry.runtime_data
-    async_add_entities([
-        HomeSettingSwitch(manager, entry.entry_id, key) for key in CONTROLS
-    ])
+    from .area_entities import configured_area_ids
+    from .device_controls import AREA_ENV_FLAGS, CLIMATE_OPERATING_FLAGS, GLOBAL_ENV_FLAGS
+    from .const import CONF_AREAS
+    from .device_controls import climate_settings
+    entities = [HomeSettingSwitch(manager, entry.entry_id, key) for key in CONTROLS]
+    entities.extend(
+        HomeSettingSwitch(manager, entry.entry_id, key, kind="global_environment")
+        for key in GLOBAL_ENV_FLAGS
+    )
+    for area in configured_area_ids(manager.settings):
+        if area in manager.settings.get(CONF_AREAS, []):
+            entities.extend(HomeSettingSwitch(
+                manager, entry.entry_id, key, kind="area_environment", area=area,
+            ) for key in AREA_ENV_FLAGS)
+        if climate_settings(manager.settings, area) is not None:
+            entities.extend(HomeSettingSwitch(
+                manager, entry.entry_id, key, kind="climate_operating", area=area,
+            ) for key in CLIMATE_OPERATING_FLAGS)
+    async_add_entities(entities)
 
 
 class HomeSettingSwitch(SwitchEntity):
@@ -26,29 +42,55 @@ class HomeSettingSwitch(SwitchEntity):
     _attr_should_poll = False
     _attr_entity_category = EntityCategory.CONFIG
 
-    def __init__(self, manager, entry_id, key):
+    def __init__(self, manager, entry_id, key, *, kind="global_setting", area=None):
         self._manager = manager
         self._key = key
-        self._attr_unique_id = f"{entry_id}_home_{key}"
-        self._attr_translation_key = f"home_{key}"
-        self._attr_device_info = {"identifiers": {(DOMAIN, entry_id)}}
+        self._kind = kind
+        self._area = area
+        self._attr_unique_id = (
+            f"{entry_id}_area_{area}_{kind}_{key}" if area else
+            f"{entry_id}_home_{kind}_{key}" if kind != "global_setting" else
+            f"{entry_id}_home_{key}"
+        )
+        self._attr_translation_key = (
+            f"area_{kind}_{key}" if area else
+            f"home_{kind}_{key}" if kind != "global_setting" else f"home_{key}"
+        )
+        self._attr_device_info = {
+            "identifiers": {(DOMAIN, f"{entry_id}_area_{area}" if area else entry_id)}
+        }
         self._attr_icon = {
             CONF_AUTO_NOTIFY: "mdi:message-badge-outline",
             CONF_AUTO_TTS: "mdi:account-voice",
             CONF_HUB: "mdi:home-assistant",
             CONF_AI_REWRITE: "mdi:robot-outline",
-        }[key]
+            "pollen_avoid_ventilation": "mdi:flower-pollen",
+            "sleep_room": "mdi:bed",
+            "enable_pmv": "mdi:human-male-board-poll",
+            "sleep_active": "mdi:sleep",
+            "sleep_schedule_enabled": "mdi:clock-check-outline",
+            "window_efficiency_notify": "mdi:window-open-variant",
+        }.get(key, "mdi:cog")
 
     @property
     def is_on(self):
-        return self._manager.settings.get(self._key, False) is True
+        settings = self._manager.settings
+        if self._kind == "global_setting":
+            return settings.get(self._key, False) is True
+        section = "environment_global" if self._kind == "global_environment" else (
+            "environment_rooms" if self._kind == "area_environment" else "climate_rooms"
+        )
+        cfg = settings.get(section, {})
+        if self._area:
+            cfg = cfg.get(self._area, {}) if isinstance(cfg, dict) else {}
+        return isinstance(cfg, dict) and cfg.get(self._key, False) is True
 
     async def async_turn_on(self, **kwargs):
-        await update_device_setting(self._manager, "global_setting", self._key, True)
+        await update_device_setting(self._manager, self._kind, self._key, True, area=self._area)
         self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs):
-        await update_device_setting(self._manager, "global_setting", self._key, False)
+        await update_device_setting(self._manager, self._kind, self._key, False, area=self._area)
         self.async_write_ha_state()
 
     async def async_added_to_hass(self):
