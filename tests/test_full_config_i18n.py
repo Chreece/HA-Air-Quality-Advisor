@@ -110,3 +110,30 @@ def test_generator_runs_full_audit_after_all_legacy_generators():
     layer=(ROOT/"apply_full_config_i18n.py").read_text(encoding="utf-8")
     assert 'original_help = original.get("data_description", {})' in layer
     assert '"full_config_help_climate.json"' in layer
+
+
+
+def test_no_english_field_copy_in_localized_configuration_forms():
+    """Catch translations that have all the right keys but show English UI."""
+    docs=_docs()
+    english=docs["en"]
+    for lang, doc in docs.items():
+        if lang=="en":
+            continue
+        for scope in ("config","options"):
+            for step,en_step in english[scope]["step"].items():
+                localized=doc[scope]["step"][step]
+                for key,english_name in en_step.get("data",{}).items():
+                    if english_name in NEUTRAL:
+                        continue
+                    assert localized["data"][key]!=english_name,(
+                        lang,scope,step,key,"untranslated label")
+                    assert localized["data_description"][key]!=(
+                        english[scope]["step"][step]["data_description"][key]
+                    ),(lang,scope,step,key,"untranslated help")
+
+
+def test_shipped_english_catalog_equals_home_assistant_strings():
+    strings=json.loads((COMP/"strings.json").read_text(encoding="utf-8"))
+    english=json.loads((LOCALES/"en.json").read_text(encoding="utf-8"))
+    assert strings==english

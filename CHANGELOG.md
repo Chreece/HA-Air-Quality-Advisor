@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — Complete config-flow translation and field-help audit
+
+- Audit all Home Assistant initial setup and options forms across 38 languages, detecting inherited English text and generic placeholder descriptions even when translation keys are technically complete.
+- Provide dedicated explanatory text for every advanced threshold, supported climate device/actuator, PID parameter, humidity/ventilation control, home/room/sleep presence rule and specialist environmental input.
+- Add a final generator pass so future releases cannot undo these translations, with locale-specific explanations, preserved units and original Home Assistant keys.
+- Ensure every visible field has a nonempty help description, including the 22 advanced limits that previously had none; add regression tests preventing English fallback and stale generated JSON.
+- Do not change actuator authorization, safety interlocks, hardware commissioning status, existing entity IDs or stable release behavior.
+
 ## 0.6.0b4 — Initial setup retry and existing-entry protection (beta)
 
 - Avoid reserving the static `home` config-flow unique ID before the first setup form, so a frontend-abandoned initial flow cannot block every fresh attempt with `already_in_progress`.
