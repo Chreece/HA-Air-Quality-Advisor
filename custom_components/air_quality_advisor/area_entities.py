@@ -47,15 +47,18 @@ def _values(manager, area_id):
     climate = room.get("environment", {}).get("climate_plan", {})
     if not isinstance(climate, dict):
         climate = {}
+    pid_config = manager.settings.get(CONF_PID_ROOMS, {})
+    pid_config = pid_config.get(area_id, {}) if isinstance(pid_config, dict) else {}
+    pid_status = getattr(getattr(manager, "pid", None), "statuses", {}).get(area_id, {})
     result = {
         "humidity": readings.get("humidity"),
         "co2": readings.get("co2"),
         "pm25": readings.get("pm25"),
         "temperature": climate.get("temperature_c", readings.get("temperature")),
-        "target_temperature": climate.get("temperature_target_c"),
+        "target_temperature": climate.get("temperature_target_c", pid_config.get("target_c")),
         "target_low": climate.get("low_target_c"),
         "target_high": climate.get("high_target_c"),
-        "control_status": climate.get("status"),
+        "control_status": climate.get("status", pid_status.get("status")),
         "control_profile": climate.get("profile"),
         "requested_mode": climate.get("mode"),
     }
@@ -86,11 +89,21 @@ async def async_area_entities(hass, entry):
         configured_pid = manager.settings.get(CONF_PID_ROOMS, {})
         climate_enabled = isinstance(configured_climate, dict) and area_id in configured_climate
         pid_enabled = isinstance(configured_pid, dict) and area_id in configured_pid
-        candidates = ["humidity", "co2", "pm25"]
-        if climate_enabled or pid_enabled:
+        snapshot = dashboard_snapshot(manager.plan, manager.thresholds)
+        room = next((item for item in snapshot["rooms"]
+                     if item["area_id"] == area_id), None)
+        present_metrics = {item["metric"] for item in room["readings"]} if room else set()
+        candidates = [field for field in ("humidity", "co2", "pm25")
+                      if field in present_metrics]
+        climate = (room or {}).get("environment", {}).get("climate_plan", {})
+        if climate_enabled and isinstance(climate, dict) and climate:
             candidates += ["temperature", "target_temperature", "target_low",
                            "target_high", "control_status", "control_profile",
                            "requested_mode"]
+        elif pid_enabled:
+            # Legacy PID exposes its status via the coordinator, not the
+            # separate climate-plan payload. Do not create empty placeholders.
+            candidates += ["temperature", "target_temperature", "control_status"]
         for field in candidates:
             result.append(AreaEnvironmentSensor(manager, entry.entry_id, area_id, field))
     return result
