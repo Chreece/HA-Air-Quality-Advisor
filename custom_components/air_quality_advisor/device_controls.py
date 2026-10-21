@@ -267,7 +267,12 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 "area_environment": (CONF_ENVIRONMENT_ROOMS, AREA_ENV_NUMBERS),
                 "climate_operating": (CONF_CLIMATE_ROOMS, CLIMATE_OPERATING_NUMBERS),
             }[kind]
-            if key not in fields:
+            flags = (
+                GLOBAL_ENV_FLAGS if kind == "global_environment" else
+                AREA_ENV_FLAGS if kind == "area_environment" else
+                CLIMATE_OPERATING_FLAGS if kind == "climate_operating" else ()
+            )
+            if key not in fields and key not in flags:
                 raise HomeAssistantError("Unsupported environmental/policy setting")
             if kind.startswith("global") and area is not None:
                 raise HomeAssistantError("Global preferences do not target one area")
@@ -283,7 +288,19 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 ):
                     raise HomeAssistantError("This room's climate manager is not enabled")
                 room = deepcopy(data.get(area, {}))
-            room[key] = _finite(value, fields[key])
+            if key in flags:
+                if type(value) is not bool:
+                    raise HomeAssistantError("Environmental toggle must be boolean")
+                room[key] = value
+            else:
+                room[key] = _finite(value, fields[key])
+            if kind == "area_environment" and room.get("enable_pmv") is True:
+                if not (room.get("radiant_temperature_entity") and
+                        (room.get("air_speed_entity") or room.get("air_speed_m_s") is not None)
+                        and room.get("met") is not None and room.get("clo") is not None):
+                    raise HomeAssistantError(
+                        "PMV requires verified radiant temperature, air speed, MET and CLO inputs"
+                    )
             if kind == "global_environment":
                 if not room.get("pollen_high_from", 3) <= room.get("pollen_max_scale", 5):
                     raise HomeAssistantError("Pollen high threshold exceeds its declared scale")
