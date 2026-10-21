@@ -212,3 +212,17 @@ def test_every_locale_distinguishes_room_and_device_operating_profiles():
                     assert fields[name] == (
                         f"{terms[lang][mode]} · {terms[lang][profile]} (°C)"
                     ), (lang,config_step,name,fields[name])
+
+
+
+def test_home_assistant_area_profile_entities_use_localized_unique_profile_names():
+    """Native room device values must match translated config-flow names."""
+    docs=_docs()
+    for lang,doc in docs.items():
+        options=doc["options"]["step"]["climate_profiles"]["data"]
+        numbers=doc["entity"]["number"]
+        for profile in ("home","unoccupied","away","sleep"):
+            for mode in ("heat","cool"):
+                key=f"{profile}_{mode}"
+                actual=numbers[f"area_climate_profile_{key}"]["name"]
+                assert actual==options[key],(lang,key,actual,options[key])
