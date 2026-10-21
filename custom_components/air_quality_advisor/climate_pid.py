@@ -215,6 +215,20 @@ class ClimatePidCoordinator:
                         self._set_status(key, "controller_exception")
             task.add_done_callback(cleanup)
 
+    async def async_prepare_reconfigure(self, area: str) -> None:
+        """Reset integral/derivative memory only between safe PID cycles.
+
+        A control task might have sent a thermostat setpoint but not yet
+        persisted acknowledgement. Never cancel that task during a write:
+        reject the editor request and let the user retry when it completes.
+        Durable manual pause and expected-ack state remain unchanged.
+        """
+        task = self._tasks.get(area)
+        if task is not None and not task.done():
+            raise RuntimeError("PID command still in progress; retry this setting")
+        self._rooms.pop(area, None)
+        self._set_status(area, "startup_warmup", reason="tuning_changed")
+
     async def async_action(self, area: str, action: str,
                            configurations: dict[str, Any]) -> dict:
         """Explicit user actions. A paused PID NEVER resumes just because time passed."""
