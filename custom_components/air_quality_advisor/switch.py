@@ -7,11 +7,11 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
 
 from .const import (
-    CONF_AUTO_NOTIFY, CONF_AUTO_TTS, DOMAIN, SIGNAL_UPDATED,
+    CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE, DOMAIN, SIGNAL_UPDATED,
 )
 from .device_controls import update_device_setting
 
-CONTROLS = (CONF_AUTO_NOTIFY, CONF_AUTO_TTS)
+CONTROLS = (CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE)
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -32,10 +32,12 @@ class HomeSettingSwitch(SwitchEntity):
         self._attr_unique_id = f"{entry_id}_home_{key}"
         self._attr_translation_key = f"home_{key}"
         self._attr_device_info = {"identifiers": {(DOMAIN, entry_id)}}
-        self._attr_icon = (
-            "mdi:message-badge-outline" if key == CONF_AUTO_NOTIFY
-            else "mdi:account-voice"
-        )
+        self._attr_icon = {
+            CONF_AUTO_NOTIFY: "mdi:message-badge-outline",
+            CONF_AUTO_TTS: "mdi:account-voice",
+            CONF_HUB: "mdi:home-assistant",
+            CONF_AI_REWRITE: "mdi:robot-outline",
+        }[key]
 
     @property
     def is_on(self):
