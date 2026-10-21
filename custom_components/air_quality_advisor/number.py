@@ -13,7 +13,7 @@ from .device_controls import (
     PID_NUMBERS, PROFILE_NUMBERS, THRESHOLD_NUMBERS,
     GLOBAL_ENV_NUMBERS, GLOBAL_OCCUPANCY_NUMBERS,
     AREA_ENV_NUMBERS, CLIMATE_OPERATING_NUMBERS, DEVICE_TARGET_NUMBERS,
-    pid_settings, climate_settings, update_device_setting,
+    pid_settings, climate_settings, update_device_setting, configured_aqi_entities,
 )
 from .climate_strategy import profiles
 
@@ -38,6 +38,12 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             ConfigNumber(manager, entry.entry_id, None, kind, key, bounds[:4])
             for key, bounds in fields.items()
         )
+    for entity_id in configured_aqi_entities(manager):
+        numbers.append(ConfigNumber(
+            manager, entry.entry_id, None, "aqi_limit",
+            "custom_limit", (0.0, 10000.0, 1.0, None),
+            entity_id=entity_id,
+        ))
     for area_id in configured_area_ids(manager.settings):
         if pid_settings(manager.settings, area_id) is not None:
             numbers.extend(
@@ -116,7 +122,9 @@ class ConfigNumber(NumberEntity):
         # Unique per source device, even when two physical thermostats share
         # the same room and expose corresponding profile settings.
         self._attr_unique_id = (
-            f"{entry_id}_home_{kind}_{key}" if area_id is None else
+            f"{entry_id}_home_{kind}_"
+            f"{entity_id.replace('.', '_') + '_' if entity_id else ''}{key}"
+            if area_id is None else
             f"{entry_id}_area_{area_id}_{kind}_"
             f"{entity_id.replace('.', '_') + '_' if entity_id else ''}{key}"
         )
@@ -131,6 +139,11 @@ class ConfigNumber(NumberEntity):
     @property
     def native_value(self):
         settings = self._manager.settings
+        if self._kind == "aqi_limit":
+            env = settings.get("environment_global", {})
+            scales = env.get("aqi_scales", {}) if isinstance(env, dict) else {}
+            cfg = scales.get(self._entity_id, {}) if isinstance(scales, dict) else {}
+            return float(cfg.get("custom_limit", 100)) if isinstance(cfg, dict) else 100.0
         if self._kind in ("global_environment", "global_occupancy"):
             section, bounds = (
                 ("environment_global", GLOBAL_ENV_NUMBERS) if self._kind == "global_environment"
