@@ -31,6 +31,8 @@ CONF_THRESHOLDS = "thresholds"
 CONF_ENVIRONMENT_GLOBAL = "environment_global"
 CONF_ENVIRONMENT_ROOMS = "environment_rooms"
 CONF_PID_ROOMS = "pid_rooms"
+# Available on the climate-capable beta; keep the identifier stable on main.
+CONF_CLIMATE_ROOMS = "climate_rooms"
 
 from .languages import SUPPORTED_LANGUAGE_TAGS
 
