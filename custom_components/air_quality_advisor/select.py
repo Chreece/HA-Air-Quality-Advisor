@@ -10,6 +10,7 @@ from .const import DOMAIN, SIGNAL_UPDATED, LANGUAGES
 from .device_controls import (
     climate_settings, pid_settings, tuning_source, update_device_setting,
     CLIMATE_POLICY_OPTIONS, DEVICE_POLICY_OPTIONS, GLOBAL_POLICY_OPTIONS,
+    configured_aqi_entities, AQI_SCALES,
 )
 from .area_entities import configured_area_ids
 
@@ -28,6 +29,11 @@ async def async_setup_entry(hass, entry, async_add_entities):
         if pid_settings(manager.settings, area) is not None:
             entities.append(ConfigSelect(manager, entry.entry_id, area, "pid_gain_source",
                                          GAIN_SOURCE_OPTIONS))
+    entities.extend(
+        ConfigSelect(manager, entry.entry_id, None, "aqi_scale", AQI_SCALES,
+                     setting_key="scale", entity_id=source)
+        for source in configured_aqi_entities(manager)
+    )
     entities.extend(
         ConfigSelect(manager, entry.entry_id, None, "global_policy",
                      GLOBAL_POLICY_OPTIONS["home_policy"], setting_key="home_policy")
@@ -104,6 +110,11 @@ class ConfigSelect(SelectEntity):
         if self._kind == "pid_gain_source":
             config = pid_settings(settings, self._area_id)
             return tuning_source(config) if config else "defaults"
+        if self._kind == "aqi_scale":
+            env = settings.get("environment_global", {})
+            scales = env.get("aqi_scales", {}) if isinstance(env, dict) else {}
+            cfg = scales.get(self._entity_id, {}) if isinstance(scales, dict) else {}
+            return cfg.get("scale", "not_configured") if isinstance(cfg, dict) else "not_configured"
         if self._kind == "global_policy":
             cfg = settings.get("occupancy_global", {})
             return cfg.get(self._setting_key, "any_home") if isinstance(cfg, dict) else "any_home"
