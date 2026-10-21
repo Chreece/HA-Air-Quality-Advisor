@@ -2,6 +2,8 @@
 
 ## Unreleased — Complete config-flow translation and field-help audit
 
+- Give every HVAC device and profile a distinct name in each language: heating versus cooling, occupied versus away, sleep and unoccupied targets; never show duplicate PID gains or indistinguishable controls.
+- Add deterministic, translated profile and equipment-role terms for all 38 languages and fail generation if two different settings still receive an identical visible label.
 - Audit all Home Assistant initial setup and options forms across 38 languages, detecting inherited English text and generic placeholder descriptions even when translation keys are technically complete.
 - Provide dedicated explanatory text for every advanced threshold, supported climate device/actuator, PID parameter, humidity/ventilation control, home/room/sleep presence rule and specialist environmental input.
 - Add a final generator pass so future releases cannot undo these translations, with locale-specific explanations, preserved units and original Home Assistant keys.

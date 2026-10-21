@@ -192,3 +192,23 @@ def test_device_and_climate_fields_are_unambiguous_in_all_38_locales():
         assert room["sleep_heat"]!=room["sleep_cool"],lang
         pid=doc["options"]["step"]["pid_tuning"]["data"]
         assert len({pid["pid_kp"],pid["pid_ki"],pid["pid_kd"]})==3,lang
+
+
+def test_every_locale_distinguishes_room_and_device_operating_profiles():
+    terms=json.loads((COMP/"config_label_terms.json").read_text(encoding="utf-8"))
+    assert set(terms)==set(SUPPORTED_LANGUAGE_TAGS)
+    docs=_docs()
+    for lang,doc in docs.items():
+        if lang=="en":
+            continue
+        for config_step, prefix, suffix in (
+            ("climate_profiles", "", ""),
+            ("device_settings", "device_", "_c"),
+        ):
+            fields=doc["options"]["step"][config_step]["data"]
+            for profile in ("home", "unoccupied", "away", "sleep"):
+                for mode in ("heat","cool"):
+                    name=f"{prefix}{profile}_{mode}{suffix}"
+                    assert fields[name] == (
+                        f"{terms[lang][mode]} · {terms[lang][profile]} (°C)"
+                    ), (lang,config_step,name,fields[name])

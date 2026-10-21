@@ -78,6 +78,20 @@ an interrupted setup.
 - **What does “240 min” mean?** It is the maximum permitted age of occupancy/sleep source data. Old or unknown data hold new control commands; it is **not a minimum sleep period**.
 - **Improved per-room translations:** localized headings and help for climate, occupancy, PID, sensors and equipment in all 38 languages, with additional Greek descriptions.
 
+### Configuration translation and help audit (upcoming beta)
+
+Every supported language now supplies explanations for every field in the
+initial setup and options menus, including all 22 Advanced thresholds,
+climate devices and hardware consent, room/home/sleep presence, PID tuning
+and specialist measurements. Threshold descriptions distinguish *operational
+recommendation values* from official health standards.
+
+Room and device temperature targets explicitly distinguish heating/cooling
+for the Home, Unoccupied room, Away and Sleep profiles. Distinct labels also
+identify PID Kp, Ki and Kd and prevent accidental selection of an adjacent
+control. Existing Home Assistant entity IDs, saved configuration and
+automation permissions are unchanged.
+
 ## What's new in v0.6 beta
 
 | Capability | Beta behavior |
