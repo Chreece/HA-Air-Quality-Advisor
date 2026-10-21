@@ -7,6 +7,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
 
 from .const import (CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES,
+                    CONF_USE_MOLD, CONF_AREAS, CONF_MOLD_ROOMS,
                     DOMAIN, SIGNAL_UPDATED)
 from .device_controls import (
     PID_NUMBERS, PROFILE_NUMBERS, THRESHOLD_NUMBERS,
@@ -38,6 +39,12 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 ConfigNumber(manager, entry.entry_id, area_id, "climate_profile", key, bounds)
                 for key, bounds in PROFILE_NUMBERS.items()
             )
+    if manager.settings.get(CONF_USE_MOLD) is True:
+        for area_id in manager.settings.get(CONF_AREAS, []):
+            numbers.append(ConfigNumber(
+                manager, entry.entry_id, area_id, "mold_surface",
+                "critical_temperature_c", (-60.0, 85.0, 0.1, "°C"),
+            ))
     async_add_entities(numbers)
 
 
@@ -77,6 +84,11 @@ class ConfigNumber(NumberEntity):
             return float(self._manager.thresholds[self._key])
         if self._kind == "global_setting":
             return float(settings.get(CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES))
+        if self._kind == "mold_surface":
+            rooms = settings.get(CONF_MOLD_ROOMS, {})
+            config = rooms.get(self._area_id, {}) if isinstance(rooms, dict) else {}
+            raw = config.get(self._key) if isinstance(config, dict) else None
+            return float(raw) if raw is not None else None
         if self._kind == "pid":
             config = pid_settings(settings, self._area_id)
             return float(config[self._key]) if config is not None else None
@@ -92,9 +104,13 @@ class ConfigNumber(NumberEntity):
         return None
 
     async def async_set_native_value(self, value: float) -> None:
-        await update_device_setting(
-            self._manager, self._kind, self._key, value, area=self._area_id
-        )
+        if self._kind == "mold_surface":
+            from .mold_controls import async_set_surface_temperature
+            await async_set_surface_temperature(self._manager, self._area_id, value)
+        else:
+            await update_device_setting(
+                self._manager, self._kind, self._key, value, area=self._area_id
+            )
         self.async_write_ha_state()
 
     async def async_added_to_hass(self) -> None:
