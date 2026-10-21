@@ -313,66 +313,39 @@ class _FlowMixin(CompactOptionsMixin):
 
             updated_calibration: dict[str, Any] | None = None
             if mold_on and not errors:
+                # Only select physical sources in the options/config flow.
+                # The measured cold-surface °C value and recalibration
+                # command now live on this area's device, and changing an
+                # unrelated exclusion must never erase a stored factor.
                 indoor_entity = user_input.get(
-                    CONF_MOLD_ROOM_SENSOR, current.get("indoor_temperature_entity"),
+                    CONF_MOLD_ROOM_SENSOR,
+                    current.get("indoor_temperature_entity") or
+                    (room_sensors[0]["value"] if room_sensors else None),
                 )
-                raw_surface = user_input.get(
-                    CONF_MOLD_CRITICAL_TEMP, current.get("critical_temperature_c"),
+                outdoor_entity = user_input.get(
+                    "mold_outdoor_weather_entity",
+                    current.get("outdoor_weather_entity"),
                 )
-                if raw_surface is None or raw_surface == "":
-                    updated_calibration = {}
-                elif indoor_entity not in sensor_ids:
+                weather_sources = self._values.get(CONF_WEATHER, [])
+                weather_sources = weather_sources if isinstance(weather_sources, list) else []
+                if indoor_entity is not None and indoor_entity not in sensor_ids:
                     errors["base"] = "invalid_mold_temperature_sensor"
+                elif outdoor_entity is not None and outdoor_entity not in weather_sources:
+                    errors["base"] = "missing_mold_outdoor_temperature"
                 else:
-                    try:
-                        surface = float(raw_surface)
-                    except (TypeError, ValueError, OverflowError):
-                        surface = float("nan")
-                    if not math.isfinite(surface) or not -60 <= surface <= 85:
-                        errors["base"] = "invalid_mold_surface_temperature"
-                    elif (
-                        current.get("indoor_temperature_entity") == indoor_entity
-                        and current.get("critical_temperature_c") == surface
-                        and current.get("calibration_factor") is not None
-                        and not user_input.get(CONF_MOLD_RECALIBRATE, False)
-                    ):
-                        # Editing exclusions must never re-calibrate an old
-                        # measurement under different weather conditions.
-                        updated_calibration = dict(current)
-                    else:
-                        max_age = {
-                            **DEFAULT_THRESHOLDS,
-                            **self._values.get(CONF_THRESHOLDS, {}),
-                        }["max_age_minutes"]
-                        indoor_c = temperature_sensor_c(self.hass, indoor_entity, max_age)
-                        if indoor_c is None:
-                            errors["base"] = "missing_mold_indoor_temperature"
-                        else:
-                            outdoor = next(
-                                (
-                                    wx for entity_id in self._values.get(CONF_WEATHER, [])
-                                    if (wx := current_weather(self.hass, entity_id, max_age)).temperature_c
-                                    is not None
-                                ),
-                                None,
-                            )
-                            if outdoor is None:
-                                errors["base"] = "missing_mold_outdoor_temperature"
-                            else:
-                                factor = calibration_factor(
-                                    indoor_c, outdoor.temperature_c, surface
-                                )
-                                if factor is None:
-                                    errors["base"] = "invalid_mold_calibration"
-                                else:
-                                    updated_calibration = {
-                                        "indoor_temperature_entity": indoor_entity,
-                                        "outdoor_weather_entity": outdoor.entity_id,
-                                        "critical_temperature_c": surface,
-                                        "calibration_factor": factor,
-                                        "calibrated_indoor_c": indoor_c,
-                                        "calibrated_outdoor_c": outdoor.temperature_c,
-                                    }
+                    updated_calibration = dict(current)
+                    if indoor_entity is not None:
+                        updated_calibration["indoor_temperature_entity"] = indoor_entity
+                    if outdoor_entity is not None:
+                        updated_calibration["outdoor_weather_entity"] = outdoor_entity
+                    if (indoor_entity != current.get("indoor_temperature_entity") or
+                            outdoor_entity != current.get("outdoor_weather_entity")):
+                        # A factor derived from other sources is not valid
+                        # for this updated source selection. Keep the
+                        # manually measured wall temperature for the user.
+                        for field in ("calibration_factor", "calibrated_indoor_c",
+                                      "calibrated_outdoor_c", "calibrated_at"):
+                            updated_calibration.pop(field, None)
 
             if not errors:
                 per_area = dict(previous)
@@ -403,22 +376,27 @@ class _FlowMixin(CompactOptionsMixin):
             if room_sensors:
                 fields[_marker(
                     CONF_MOLD_ROOM_SENSOR,
-                    user_input.get(CONF_MOLD_ROOM_SENSOR, selected_sensor or room_sensors[0]["value"])
-                    if user_input is not None else selected_sensor or room_sensors[0]["value"],
+                    (user_input.get(CONF_MOLD_ROOM_SENSOR, selected_sensor or room_sensors[0]["value"])
+                     if user_input is not None else selected_sensor or room_sensors[0]["value"]),
                 )] = selector.SelectSelector(selector.SelectSelectorConfig(
                     options=room_sensors, multiple=False, custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 ))
-            fields[_marker(
-                CONF_MOLD_CRITICAL_TEMP,
-                user_input.get(CONF_MOLD_CRITICAL_TEMP, current.get("critical_temperature_c"))
-                if user_input is not None else current.get("critical_temperature_c"),
-            )] = selector.NumberSelector(selector.NumberSelectorConfig(
-                min=-60, max=85, step=0.1, unit_of_measurement="°C",
-                mode=selector.NumberSelectorMode.BOX,
-            ))
-            if current:
-                fields[_marker(CONF_MOLD_RECALIBRATE, False)] = selector.BooleanSelector()
+            weather_ids = self._values.get(CONF_WEATHER, [])
+            if isinstance(weather_ids, list) and weather_ids:
+                choices_weather = [
+                    {"value": entity_id,
+                     "label": (self.hass.states.get(entity_id).name
+                               if self.hass.states.get(entity_id) else entity_id)}
+                    for entity_id in weather_ids
+                ]
+                fields[_marker(
+                    "mold_outdoor_weather_entity",
+                    current.get("outdoor_weather_entity") or weather_ids[0],
+                )] = selector.SelectSelector(selector.SelectSelectorConfig(
+                    options=choices_weather, multiple=False, custom_value=False,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                ))
 
         return self.async_show_form(
             step_id="indoor_sensors",
