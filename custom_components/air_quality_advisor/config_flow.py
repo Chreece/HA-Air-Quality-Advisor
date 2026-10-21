@@ -602,6 +602,17 @@ class _FlowMixin(CompactOptionsMixin):
             fields[_marker(CONF_MEDIA_PLAYERS, self._values.get(CONF_MEDIA_PLAYERS, []))] = _multi(
                 player_options
             )
+        if getattr(self, "_menu_mode", False):
+            # Settings now have interactive entities on the Home device.
+            # The delivery page is solely for provider/target selection.
+            on_device = {
+                CONF_LANGUAGE, CONF_AUTO_NOTIFY, CONF_AUTO_TTS,
+                CONF_REPEAT_MINUTES, CONF_AI_REWRITE, CONF_HUB,
+            }
+            fields = {
+                marker: field for marker, field in fields.items()
+                if getattr(marker, "schema", marker) not in on_device
+            }
         return self.async_show_form(step_id="delivery", data_schema=probatio.Schema(fields), errors=errors)
 
 
@@ -1602,9 +1613,19 @@ class _FlowMixin(CompactOptionsMixin):
             data_schema=self._direct_actuator_schema(draft),
             description_placeholders={"area_name":self._climate_area})
     async def async_step_climate_profiles(self,user_input:dict[str,Any]|None=None)->ConfigFlowResult:
-        """Heating and cooling bands for home, unoccupied, away and sleep."""
+        """Initial policy bands only; existing room targets live on its device."""
         from .climate_strategy import profiles
         draft=self._climate_draft
+        existing = self._values.get(CONF_CLIMATE_ROOMS, {})
+        current_room = existing.get(self._climate_area) if isinstance(existing, dict) else None
+        if (user_input is None and getattr(self, "_menu_mode", False)
+                and isinstance(current_room, dict) and current_room.get("enabled")):
+            # Reconfiguration edits the device's Home Assistant Number
+            # entities, not a second set of controls in the options wizard.
+            saved = dict(existing)
+            saved[self._climate_area] = draft
+            self._values[CONF_CLIMATE_ROOMS] = saved
+            return await self._finish()
         current,problem=profiles(draft)
         if problem:
             current,_=profiles({})
@@ -1754,8 +1775,9 @@ class _FlowMixin(CompactOptionsMixin):
                                 break
             if not errors:
                 self._pid_draft = draft
-                if enabled:
-                    return await self.async_step_pid_tuning()
+                # Device configuration entities now own all editable gains,
+                # output clamps and sample/rate limits. Keep this setup page
+                # solely for validated hardware/sensor association.
                 return await self._save_pid_configuration()
         return self.async_show_form(
             step_id="pid_room", errors=errors,
@@ -1892,7 +1914,7 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
             step_id="init",
             menu_options=[
                 "outside_data", "general_settings", "area_settings",
-                "delivery", "thresholds",
+                "delivery",
             ],
         )
 
