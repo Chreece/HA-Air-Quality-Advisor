@@ -380,3 +380,7 @@ apply_compact_i18n(root)
 # all 38 languages after legacy/compact generators have completed.
 from apply_full_config_i18n import apply_full_config_i18n
 apply_full_config_i18n(root)
+
+# Minimal per-area entities, translated only after every other generator pass.
+from apply_area_entities_i18n import apply_area_entities_i18n
+apply_area_entities_i18n(root)
