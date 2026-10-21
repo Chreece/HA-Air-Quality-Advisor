@@ -2,7 +2,7 @@
 
 DOMAIN = "air_quality_advisor"
 NAME = "Home Environment Manager"
-PLATFORMS = ["sensor", "number", "switch", "select", "button"]
+PLATFORMS = ["sensor", "number", "switch", "select", "button", "time"]
 
 CONF_AREAS = "areas"
 CONF_EXCLUDED_WINDOWS = "excluded_window_entities"
