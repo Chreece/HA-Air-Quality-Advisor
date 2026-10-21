@@ -84,6 +84,93 @@ def _valid_temperature(value: Any, low=5, high=40) -> float | None:
     return f if math.isfinite(f) and low <= f <= high else None
 
 
+# A device unselected in the area menu must not remain in the room's
+# actuator roles. These names are also the ones used by the live drivers.
+_MANAGED_DEVICE_ROLES = (
+    "climate_entity", "heat_climate_entity", "cool_climate_entity",
+    "dry_climate_entity", "fan_climate_entity",
+    "humidifier_entity", "dehumidifier_entity",
+    "extraction_fan_entity", "purifier_fan_entity",
+)
+
+
+def _reconcile_device_selection(previous: dict, updated: dict) -> dict:
+    """Revoke abandoned per-device grants without changing unrelated options.
+
+    Retain a device's saved preferences for later re-selection, but never keep
+    its live auto_control flag or room-wide actuator assignment after it has
+    been explicitly removed or disabled. Existing advanced-only settings stay
+    untouched when the selection has not changed.
+    """
+    old = previous if isinstance(previous, dict) else {}
+    result = dict(updated)
+    raw = result.get("selected_devices", [])
+    selected = set(raw) if isinstance(raw, list) else set()
+    prior = old.get("device_settings", {})
+    prior = prior if isinstance(prior, dict) else {}
+    saved = result.get("device_settings", {})
+    saved = saved if isinstance(saved, dict) else {}
+    devices = {name: dict(cfg) for name, cfg in saved.items()
+               if isinstance(name, str) and isinstance(cfg, dict)}
+
+    previously_selected = old.get("selected_devices")
+    if isinstance(previously_selected, list):
+        revoked = set(previously_selected) - selected
+    elif "selected_devices" in result:
+        # First use of the picker: omitting an existing room actuator is an
+        # explicit de-selection even for advanced configurations.
+        revoked = {old.get(key) for key in _MANAGED_DEVICE_ROLES
+                   if isinstance(old.get(key), str) and old[key] not in selected}
+    else:
+        revoked = set()
+
+    for entity, cfg in prior.items():
+        if not isinstance(cfg, dict) or cfg.get("auto_control") is not True:
+            continue
+        current = devices.get(entity, {})
+        if entity not in selected or current.get("auto_control") is not True:
+            revoked.add(entity)
+    for entity, cfg in devices.items():
+        if entity not in selected:
+            cfg["auto_control"] = False
+    result["device_settings"] = devices
+
+    if not revoked:
+        return result
+    for role in _MANAGED_DEVICE_ROLES:
+        if result.get(role) in revoked:
+            result.pop(role, None)
+    if result.get("controller") == "device" and not result.get("climate_entity"):
+        result["controller"] = "environment"
+        result["auto_switch_hvac"] = False
+    if not any(result.get(role) for role in
+               ("heat_climate_entity", "cool_climate_entity")):
+        result["secondary_climate_setpoint_auto"] = False
+    if not any(result.get(role) for role in
+               ("humidifier_entity", "dehumidifier_entity")):
+        result["humidity_setpoint_auto"] = False
+        result["humidity_power_auto"] = False
+    if not any(result.get(role) for role in
+               ("extraction_fan_entity", "purifier_fan_entity")):
+        result["fan_speed_auto"] = False
+        result["fan_power_auto"] = False
+
+    native_primary = (result.get("controller") == "device" and
+                      isinstance(result.get("climate_entity"), str))
+    direct_primary = (result.get("controller") in ("on_off", "pwm", "proportional")
+                      and result.get("direct_hardware_confirmed") is True
+                      and any(result.get(k) for k in
+                              ("heat_actuator", "cool_actuator")))
+    secondary = any(result.get(k) is True for k in (
+        "humidity_setpoint_auto", "humidity_power_auto",
+        "secondary_climate_setpoint_auto", "fan_speed_auto",
+        "fan_power_auto", "dry_fan_mode_auto",
+    ))
+    if not (native_primary or direct_primary or secondary):
+        result["allow_actuation"] = False
+    return result
+
+
 class CompactOptionsMixin:
     """Used by the existing config/options flow; no migrations or broadcasts."""
 
@@ -485,8 +572,11 @@ class CompactOptionsMixin:
     async def _save_devices(self):
         rooms = self._values.get(CONF_CLIMATE_ROOMS, {})
         result = dict(rooms) if isinstance(rooms, dict) else {}
-        result[self._climate_area] = dict(self._climate_draft)
+        before = result.get(self._climate_area, {})
+        reconciled = _reconcile_device_selection(before, self._climate_draft)
+        result[self._climate_area] = reconciled
         self._values[CONF_CLIMATE_ROOMS] = result
+        self._climate_draft = reconciled
         return await self._finish()
 
     async def async_step_device_settings(self, user_input=None):
