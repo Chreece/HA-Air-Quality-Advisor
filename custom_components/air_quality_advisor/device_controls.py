@@ -240,7 +240,10 @@ async def update_device_setting(manager: Any, kind: str, key: str,
         if kind in ("pid", "pid_gain_source"):
             prepare = getattr(manager.pid, "async_prepare_reconfigure", None)
             if prepare is not None:
-                await prepare(area)
+                try:
+                    await prepare(area)
+                except RuntimeError as error:
+                    raise HomeAssistantError(str(error)) from error
 
         manager.hass.config_entries.async_update_entry(manager.entry, options=options)
         # HA may replace the manager during a reload. Refresh only the current
