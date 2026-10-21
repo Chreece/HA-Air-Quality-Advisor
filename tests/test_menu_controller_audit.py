@@ -287,3 +287,55 @@ def test_device_power_timing_enforces_real_humidifier_dwell(monkeypatch, adapter
         "device_min_on_s": 600, "device_min_off_s": 120, "device_max_on_s": 7200,
     }))
     assert form["errors"]["base"] == "device_runtime_invalid"
+
+
+def test_switching_fan_purpose_removes_its_old_conflicting_role(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    fan = MockState("fan.living_unit", "on")
+    fan.attributes["supported_features"] = 1
+    pm = MockState("sensor.living_pm25", 38, device_class="pm25", unit="µg/m³")
+    _add(opt, fan, pm)
+    opt.config_entry.options["climate_rooms"] = {"living": {
+        "enabled": True, "allow_actuation": True, "controller": "environment",
+        "selected_devices": [fan.entity_id],
+        "extraction_fan_entity": fan.entity_id, "fan_speed_auto": True,
+        "device_settings": {fan.entity_id: {
+            "auto_control": True, "method": "speed", "fan_purpose": "extraction",
+        }},
+    }}
+    _start_device(opt, [fan.entity_id], fan.entity_id)
+    done = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "speed",
+        "device_fan_purpose": "filtration",
+        "device_pm25_entity": pm.entity_id,
+        "device_sensor_verified": True,
+    }))
+    settings = done["completed"]["data"]["climate_rooms"]["living"]
+    assert settings["purifier_fan_entity"] == fan.entity_id
+    assert "extraction_fan_entity" not in settings
+    assert settings["fan_speed_auto"] is True
+
+
+def test_replacing_primary_climate_does_not_leave_stale_secondary_role(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    old = MockState("climate.old_heat", "heat")
+    new = MockState("climate.new_heat", "heat")
+    temp = MockState("sensor.living_temperature", 20, device_class="temperature", unit="°C")
+    for st in (old, new):
+        st.attributes.update({"hvac_modes": ["off", "heat"], "supported_features": 1})
+    _add(opt, old, new, temp)
+    opt.config_entry.options["climate_rooms"] = {"living": {
+        "enabled": True, "allow_actuation": True, "controller": "device",
+        "climate_entity": old.entity_id, "selected_devices": [old.entity_id],
+        "device_settings": {old.entity_id: {"auto_control": True}},
+    }}
+    _start_device(opt, [new.entity_id], new.entity_id)
+    done = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "setpoint",
+        "device_temperature_entity": temp.entity_id,
+    }))
+    settings = done["completed"]["data"]["climate_rooms"]["living"]
+    assert settings["climate_entity"] == new.entity_id
+    assert "heat_climate_entity" not in settings
+    assert settings["controller"] == "device"
+    assert settings["device_settings"][old.entity_id]["auto_control"] is False
