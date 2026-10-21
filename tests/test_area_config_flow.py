@@ -1557,3 +1557,21 @@ def test_initial_setup_rechecks_entry_created_while_first_form_open(monkeypatch,
         "aborted":{"reason":"already_configured"}
     }
 
+
+
+def test_existing_pid_target_and_manual_room_profile_are_only_on_devices(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_pid({"pid_area": "living"}))
+    pid_schema = asyncio.run(options.async_step_pid_room())["data_schema"]
+    assert "pid_target_c" not in pid_schema
+    assert "pid_climate_entities" in pid_schema
+    assert "pid_temperature_entity" in pid_schema
+    options._climate_area = "living"
+    options._climate_draft = {
+        "enabled": True,
+        "controller": "environment",
+    }
+    form = asyncio.run(options.async_step_climate_presence())
+    assert "climate_manual_profile" not in form["data_schema"]
+    assert "climate_occupancy_sensors" in form["data_schema"]
