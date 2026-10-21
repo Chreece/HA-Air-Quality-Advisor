@@ -1093,10 +1093,7 @@ class _FlowMixin(CompactOptionsMixin):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["any_home","all_home"],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_manual_profile",draft.get("manual_profile","auto")):
-                selector.SelectSelector(selector.SelectSelectorConfig(
-                    options=["auto","home","unoccupied","away","sleep"],
-                    multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
+            # Manual/automatic occupancy profile is on the Area Select entity.
             _marker("climate_sleep_active",draft.get("sleep_active",False)):
                 selector.BooleanSelector(),
             _marker("climate_sleep_schedule_enabled",draft.get("sleep_schedule_enabled",False)):
@@ -1723,8 +1720,8 @@ class _FlowMixin(CompactOptionsMixin):
                     multiple=False, custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN,
                 )),
-            _marker("pid_target_c", config.get("target_c", 21.0)):
-                _real_number(5,36,"°C"),
+            # Supervisory target is now edited on the area's PID Number entity.
+            # Setup owns only hardware/sensor/mode/window safety association.
             _marker("pid_pause_on_window_open", config.get("pause_on_window_open",True)):
                 selector.BooleanSelector(),
         })
