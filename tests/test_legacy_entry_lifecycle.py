@@ -200,7 +200,8 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     assert entry.title=="Home Environment Manager"
     assert json.dumps(entry.data,sort_keys=True)==before
     assert entry.options=={}
-    assert h.config_entries.forwarded==[("legacy-1",["sensor"])]
+    from custom_components.air_quality_advisor.const import PLATFORMS
+    assert h.config_entries.forwarded==[("legacy-1", PLATFORMS)]
     assert set(h.services.callbacks)=={
         ("air_quality_advisor","announce"),
         ("home_environment_manager","announce"),
