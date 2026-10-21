@@ -1,22 +1,18 @@
 {
-  "version": "0.6.0b8",
+  "version": "0.6.0b9",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Finalized controller/menu audit through fan purpose and climate primary replacement fixes. Opt-in prerelease; stable version unchanged.",
+  "note": "Opt-in beta 9: Home parent device, per-area editable PID and climate-policy controls, localized device entities and registry-resolved dashboard edit links. No automated PID self-tuning or new equipment authorizations. Stable v0.5.1 unchanged.",
   "validation_attempt": 0,
   "changes": [
-    "Revoke previously authorized device roles when deselected or auto control switched off",
-    "Prevent absent-room OFF commands against deselected climate entities",
-    "Do not implicitly arm an old advisory thermostat when enabling fans or humidifiers",
-    "Validate real climate setpoint and fan speed capabilities prior to enabling automation",
-    "Fix filtration fan speed options to use actual purifier_speed_percent controller key",
-    "Use supported single-purpose HVAC modes rather than fabricated auto for heat-only/cool-only devices",
-    "Allow clearing global room-list occupancy and sleep sources explicitly",
-    "Refresh AQI limit/scale controls when switching outdoor AQI sensors",
-    "Add targeted regression coverage to protect menu controller safety behavior",
-    "Ensure purpose switches remove old fan role and replacement thermostats become primary",
-    "Reconcile native actuator dwell limits, selected-device permissions and usable sensors",
-    "Validate regressions on both supported Python runtimes, HACS and Hassfest before release"
+    "Register a Home Environment Manager home parent device and link per-area environment devices with the original whole-home dashboard sensor",
+    "Put 22 home-wide thresholds, output language, notification/TTS/AI/Hub flags and announcement-repeat interval on Home Assistant configuration entities",
+    "Support validated per-area PID manual Kp/Ki/Kd and numeric supervisor settings; Defaults restore fixed baseline, no automatic self-tuning",
+    "Put per-area occupied/unoccupied/home/away/sleep climate-policy bands and manual/automatic profile selector on room devices without duplicating native thermostat controls",
+    "Remove duplicated home/room PID and profile controls from options menus, preserving provider selection and commissioning pages",
+    "Add registry-resolved gear/edit navigation on every room and the home card header; no guessed device IDs",
+    "Localize new entity labels across all 38 existing supported languages and pass Py3.13/3.14, frontend, HACS and Hassfest gates",
+    "Preserve original air_quality_advisor integration domain, saved configuration, PID pause latches and all hardware safety checks"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b8"
+  "release_branch": "beta/v0.6.0b9"
 }
