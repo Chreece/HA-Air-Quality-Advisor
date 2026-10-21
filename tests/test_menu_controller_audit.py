@@ -81,6 +81,9 @@ def test_fan_enable_does_not_arm_previous_advisory_thermostat(monkeypatch, adapt
     fan = MockState("fan.living_extract", "off")
     fan.attributes["supported_features"] = 1
     _add(opt, heat, fan)
+    # A deliberately excluded CO2 source must not be used to drive equipment.
+    # This particular scenario explicitly restores the verified NDIR input.
+    opt.config_entry.options["excluded_indoor_entities"] = {"living": []}
     opt.config_entry.options["climate_rooms"] = {"living": {
         "enabled": True, "controller": "device", "allow_actuation": False,
         "climate_entity": heat.entity_id,
@@ -233,3 +236,54 @@ def test_aqi_source_change_refreshes_its_saved_scale_first(monkeypatch, adapter)
     saved = finished["completed"]["data"]["environment_global"]["aqi_scales"]
     assert saved[a.entity_id]["scale"] == "us_epa"
     assert saved[b.entity_id]["scale"] == "eea_category"
+
+
+def test_excluded_air_sensor_is_not_offered_or_accepted_for_actuation(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    fan = MockState("fan.living_extract", "off")
+    fan.attributes["supported_features"] = 1
+    _add(opt, fan)
+    _start_device(opt, [fan.entity_id], fan.entity_id)
+    form = asyncio.run(opt.async_step_device_settings())
+    co2_selector = next(value for key, value in form["data_schema"].items()
+                        if key == "device_co2_entity")
+    assert "sensor.living_co2" not in [
+        item["value"] for item in co2_selector.config.options
+    ]
+    outcome = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True,
+        "device_method": "speed",
+        "device_fan_purpose": "extraction",
+        "device_co2_entity": "sensor.living_co2",
+        "device_sensor_verified": True,
+    }))
+    assert outcome["errors"]["base"] == "device_air_sensor_required"
+
+
+def test_device_power_timing_enforces_actual_fan_driver_limits(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    fan = MockState("fan.living_filter", "off")
+    pm = MockState("sensor.living_pm25", 18, device_class="pm25", unit="µg/m³")
+    _add(opt, fan, pm)
+    _start_device(opt, [fan.entity_id], fan.entity_id)
+    form = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "power",
+        "device_hardware_confirmed": True, "device_fan_purpose": "filtration",
+        "device_pm25_entity": pm.entity_id, "device_sensor_verified": True,
+        "device_min_on_s": 60, "device_min_off_s": 120, "device_max_on_s": 7200,
+    }))
+    assert form["errors"]["base"] == "device_runtime_invalid"
+
+
+def test_device_power_timing_enforces_real_humidifier_dwell(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    device = MockState("humidifier.living_unit", "off", device_class="humidifier")
+    rh = MockState("sensor.living_humidity", 46, device_class="humidity", unit="%")
+    _add(opt, device, rh)
+    _start_device(opt, [device.entity_id], device.entity_id)
+    form = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "power",
+        "device_hardware_confirmed": True, "device_humidity_entity": rh.entity_id,
+        "device_min_on_s": 600, "device_min_off_s": 120, "device_max_on_s": 7200,
+    }))
+    assert form["errors"]["base"] == "device_runtime_invalid"
