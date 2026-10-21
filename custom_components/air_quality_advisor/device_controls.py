@@ -17,7 +17,7 @@ from homeassistant.exceptions import HomeAssistantError
 from .const import (
     CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, CONF_THRESHOLDS,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_TTS_ENGINE,
-    CONF_MEDIA_PLAYERS, CONF_HUB, CONF_REPEAT_MINUTES,
+    CONF_MEDIA_PLAYERS, CONF_HUB, CONF_AI_REWRITE, CONF_REPEAT_MINUTES,
     DEFAULT_THRESHOLDS, MAX_REPEAT_MINUTES,
 )
 from .pid_math import DEFAULT_PID, validate_settings
@@ -194,15 +194,33 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 if not number.is_integer():
                     raise HomeAssistantError("Announcement interval must be whole minutes")
                 options[key] = int(number)
-            elif key in (CONF_AUTO_NOTIFY, CONF_AUTO_TTS):
+            elif key in (CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE):
                 if type(value) is not bool:
-                    raise HomeAssistantError("Notification settings require a boolean")
+                    raise HomeAssistantError("Global on/off settings require a boolean")
+                if value and key == CONF_HUB and not manager.hub_available:
+                    raise HomeAssistantError("Announcement Hub must be configured and running")
+                proposed_hub = (value if key == CONF_HUB else current.get(CONF_HUB))
+                hub_ready = bool(proposed_hub and manager.hub_available)
+                direct_speech = bool(
+                    current.get(CONF_TTS_ENGINE) and current.get(CONF_MEDIA_PLAYERS)
+                )
                 if value and key == CONF_AUTO_TTS and not (
-                    (current.get(CONF_HUB) and manager.hub_available) or
-                    (current.get(CONF_TTS_ENGINE) and current.get(CONF_MEDIA_PLAYERS))
+                    hub_ready or direct_speech
                 ):
                     raise HomeAssistantError(
                         "Configure a TTS engine/player or Announcement Hub before enabling speech"
+                    )
+                if key == CONF_HUB and not value and (
+                    current.get(CONF_AUTO_TTS) and not direct_speech
+                ):
+                    raise HomeAssistantError(
+                        "Configure direct speech before disconnecting the only TTS route"
+                    )
+                if value and key == CONF_AI_REWRITE and not hub_ready and not (
+                    manager.hass.services.has_service("conversation", "process")
+                ):
+                    raise HomeAssistantError(
+                        "An available conversation agent or Announcement Hub is required"
                     )
                 options[key] = value
             elif key == "language":
