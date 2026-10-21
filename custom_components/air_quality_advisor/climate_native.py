@@ -201,6 +201,13 @@ class NativeClimateControl:
         OFF request, so interruption cannot cause an unsafe automatic retry.
         """
         entity=settings.get("climate_entity")
+        # Absence OFF deliberately bypasses the normal setpoint command gate.
+        # Therefore it must independently enforce the *current* selection:
+        # an old commissioned device may never be switched OFF after removal.
+        selected=settings.get("selected_devices")
+        if isinstance(selected,list) and entity not in selected:
+            self.statuses[area]={"status":"device_not_selected"}
+            return True
         devices=settings.get("device_settings",{})
         device=devices.get(entity,{}) if isinstance(devices,dict) else {}
         if not isinstance(device,dict) or device.get("auto_control") is not True:
