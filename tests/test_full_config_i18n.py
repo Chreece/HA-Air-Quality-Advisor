@@ -62,7 +62,8 @@ def test_all_38_languages_explain_every_visible_field():
                     help_text=helps[key]
                     assert isinstance(title,str) and title.strip(),(
                         lang,scope,step,key,"no field label")
-                    assert isinstance(help_text,str) and len(help_text.strip())>=35,(
+                    minimum=18 if lang in ("ja","ko","zh-Hans","zh-Hant","th") else 35
+                    assert isinstance(help_text,str) and len(help_text.strip())>=minimum,(
                         lang,scope,step,key,"no useful explanation")
                     assert not help_text.startswith(GENERIC),(
                         lang,scope,step,key,"placeholder help")

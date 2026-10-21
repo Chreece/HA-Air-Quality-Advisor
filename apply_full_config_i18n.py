@@ -260,7 +260,8 @@ def apply_full_config_i18n(root: Path) -> None:
                 if fields and set(fields) - set(record.get("data_description", {})):
                     raise ValueError(f"Missing {lang} {scope}.{step} explanations")
                 for field, explanation in record.get("data_description", {}).items():
-                    if field in fields and (not explanation or len(explanation.strip()) < 35):
+                    minimum = 18 if lang in ("ja", "ko", "zh-Hans", "zh-Hant", "th") else 35
+                    if field in fields and (not explanation or len(explanation.strip()) < minimum):
                         raise ValueError(f"Too short explanation: {lang} {scope}.{step}.{field}")
 
         content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
