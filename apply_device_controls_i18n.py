@@ -58,8 +58,13 @@ def apply_device_controls_i18n(root: Path) -> None:
             for mode in ("heat", "cool"):
                 key = kind + "_" + mode
                 prefix = words[0] if mode == "heat" else words[1]
+                # Climate profile labels are now completely localized in
+                # all 38 languages. Avoid prepending an English "Heating"/
+                # "Cooling" label a second time (or duplicating it in Greek).
                 number["area_climate_profile_" + key] = {
-                    "name": prefix + " · " + profiles.get(key, kind.capitalize())
+                    "name": profiles.get(key) or (
+                        prefix + " · " + kind.capitalize()
+                    )
                 }
         for key in ("automatic_notifications", "automatic_tts",
                     "use_announcement_hub", "ai_rewrite_announcements"):

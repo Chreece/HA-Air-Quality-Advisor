@@ -172,3 +172,43 @@ def test_climate_safety_descriptions_do_not_look_like_translation_placeholders()
         desc=el[section]["data_description"][field]
         assert word.lower() in desc.lower(),(section,field,desc)
 
+
+def test_device_and_climate_fields_are_unambiguous_in_all_38_locales():
+    """Distinct HVAC targets, source and PID buttons must never share a label."""
+    docs=_docs()
+    for lang,doc in docs.items():
+        for scope in ("config","options"):
+            for step,values in doc[scope]["step"].items():
+                fields=values.get("data",{})
+                shown=list(fields.values())
+                assert len(shown)==len(set(shown)),(
+                    lang,scope,step,"ambiguous labels",
+                    {caption:[k for k,v in fields.items() if v==caption]
+                     for caption in shown if shown.count(caption)>1}
+                )
+        room=doc["options"]["step"]["climate_profiles"]["data"]
+        assert room["home_heat"]!=room["home_cool"],lang
+        assert room["away_heat"]!=room["home_heat"],lang
+        assert room["sleep_heat"]!=room["sleep_cool"],lang
+        pid=doc["options"]["step"]["pid_tuning"]["data"]
+        assert len({pid["pid_kp"],pid["pid_ki"],pid["pid_kd"]})==3,lang
+
+
+def test_every_locale_distinguishes_room_and_device_operating_profiles():
+    terms=json.loads((COMP/"config_label_terms.json").read_text(encoding="utf-8"))
+    assert set(terms)==set(SUPPORTED_LANGUAGE_TAGS)
+    docs=_docs()
+    for lang,doc in docs.items():
+        if lang=="en":
+            continue
+        for config_step, prefix, suffix in (
+            ("climate_profiles", "", ""),
+            ("device_settings", "device_", "_c"),
+        ):
+            fields=doc["options"]["step"][config_step]["data"]
+            for profile in ("home", "unoccupied", "away", "sleep"):
+                for mode in ("heat","cool"):
+                    name=f"{prefix}{profile}_{mode}{suffix}"
+                    assert fields[name] == (
+                        f"{terms[lang][mode]} · {terms[lang][profile]} (°C)"
+                    ), (lang,config_step,name,fields[name])
