@@ -172,3 +172,23 @@ def test_climate_safety_descriptions_do_not_look_like_translation_placeholders()
         desc=el[section]["data_description"][field]
         assert word.lower() in desc.lower(),(section,field,desc)
 
+
+def test_device_and_climate_fields_are_unambiguous_in_all_38_locales():
+    """Distinct HVAC targets, source and PID buttons must never share a label."""
+    docs=_docs()
+    for lang,doc in docs.items():
+        for scope in ("config","options"):
+            for step,values in doc[scope]["step"].items():
+                fields=values.get("data",{})
+                shown=list(fields.values())
+                assert len(shown)==len(set(shown)),(
+                    lang,scope,step,"ambiguous labels",
+                    {caption:[k for k,v in fields.items() if v==caption]
+                     for caption in shown if shown.count(caption)>1}
+                )
+        room=doc["options"]["step"]["climate_profiles"]["data"]
+        assert room["home_heat"]!=room["home_cool"],lang
+        assert room["away_heat"]!=room["home_heat"],lang
+        assert room["sleep_heat"]!=room["sleep_cool"],lang
+        pid=doc["options"]["step"]["pid_tuning"]["data"]
+        assert len({pid["pid_kp"],pid["pid_ki"],pid["pid_kd"]})==3,lang
