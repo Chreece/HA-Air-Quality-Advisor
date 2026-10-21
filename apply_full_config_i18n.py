@@ -425,7 +425,24 @@ def apply_full_config_i18n(root: Path) -> None:
                     raise ValueError(f"Missing {lang} {scope}.{step} explanations")
                 for field, explanation in record.get("data_description", {}).items():
                     minimum = 18 if lang in ("ja", "ko", "zh-Hans", "zh-Hant", "th") else 35
-                    if field in fields and (not explanation or len(explanation.strip()) < minimum):
+                    if field not in fields:
+                        continue
+                    if not explanation or len(explanation.strip()) < minimum:
+                        # Some reviewed, concise legacy translations are
+                        # perfectly understandable, but too short to explain
+                        # the setting to a first-time user. Append an actual
+                        # localized operational explanation, never pad with
+                        # punctuation or silently discard the original.
+                        category = _kind(step, field)
+                        addition = templates[lang][category].format(
+                            label=fields[field]
+                        )
+                        original = (explanation or "").strip()
+                        record["data_description"][field] = (
+                            (original.rstrip(". ") + ". " if original else "") +
+                            addition
+                        )
+                    if len(record["data_description"][field].strip()) < minimum:
                         raise ValueError(f"Too short explanation: {lang} {scope}.{step}.{field}")
 
         content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
