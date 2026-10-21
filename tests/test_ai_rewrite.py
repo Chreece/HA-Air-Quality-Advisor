@@ -174,7 +174,7 @@ def test_delivery_form_agent_dropdown_and_independent_saving(monkeypatch, adapte
     )
     asyncio.run(options.async_step_init())
     form = asyncio.run(options.async_step_delivery())
-    assert "ai_rewrite_announcements" in form["data_schema"]
+    assert "ai_rewrite_announcements" not in form["data_schema"]  # Home device switch
     assert "ai_conversation_agent" in form["data_schema"]
     selector = form["data_schema"]["ai_conversation_agent"]
     assert selector.config.options[0]["value"] == "default"
