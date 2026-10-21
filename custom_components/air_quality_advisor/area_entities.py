@@ -108,6 +108,27 @@ def _pid_overview(settings: dict, area_id: str) -> dict[str, Any] | None:
     }
 
 
+def _mold_calibration_overview(settings: dict, area_id: str) -> dict | None:
+    """Source choice and calibration evidence, not duplicated raw sensors."""
+    if settings.get(CONF_USE_MOLD) is not True:
+        return None
+    rooms = settings.get(CONF_MOLD_ROOMS, {})
+    raw = rooms.get(area_id, {}) if isinstance(rooms, dict) else {}
+    if not isinstance(raw, dict):
+        return None
+    return {
+        "indoor_temperature_entity": raw.get("indoor_temperature_entity"),
+        "outdoor_weather_entity": raw.get("outdoor_weather_entity"),
+        "measured_cold_surface_c": raw.get("critical_temperature_c"),
+        "factor": raw.get("calibration_factor"),
+        "calibrated_at": raw.get("calibrated_at"),
+        "calibration_status": (
+            "calibrated" if raw.get("calibration_factor") is not None
+            else "needs_calibration"
+        ),
+    }
+
+
 def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
     room = room_snapshot(manager, area_id)
     if room is None:
@@ -201,6 +222,7 @@ def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
         "controller": controller,
         "pid": pid if isinstance(pid, dict) else None,
         "pid_tuning": _pid_overview(manager.settings, area_id),
+        "mold_calibration": _mold_calibration_overview(manager.settings, area_id),
     }
 
 
@@ -318,4 +340,11 @@ class AreaMoldSurfaceHumidity(_AreaEntity):
             "dew_point_c": details.get("dewpoint_c"),
             "estimated_surface_temperature_c": details.get("estimated_surface_c"),
             "missing_inputs": details.get("missing_inputs", []),
+            "calibration_factor": details.get("calibration_factor"),
+            "calibrated_at": _mold_calibration_overview(
+                self._manager.settings, self._area_id
+            ).get("calibrated_at"),
+            "measured_cold_surface_c": _mold_calibration_overview(
+                self._manager.settings, self._area_id
+            ).get("measured_cold_surface_c"),
         }
