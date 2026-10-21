@@ -710,8 +710,8 @@ class CompactOptionsMixin:
                 elif domain == "fan" and (
                     data["fan_purpose"] not in ("extraction", "filtration") or
                     data["co2_entity" if data["fan_purpose"]=="extraction" else "pm25_entity"]
-                    not in {s["value"] for s in _sensor_choices(
-                        self.hass,area,"co2" if data["fan_purpose"]=="extraction" else "pm25"
+                    not in {s["value"] for s in eligible_sensor(
+                        "co2" if data["fan_purpose"]=="extraction" else "pm25"
                     )} or not data["sensor_verified"]
                 ):
                     errors["base"] = "device_air_sensor_required"
