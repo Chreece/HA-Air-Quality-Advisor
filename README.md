@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b10/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,9 +21,40 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 9 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 10 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b10) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
 
-## Native Home and Area device settings (beta 9)
+## Beta 10 — Sources in Configure, controls on devices
+
+The **Configure** flow concentrates on areas, Home Assistant entities, outdoor
+data providers, measurement sensors, controlled equipment and hardware-specific
+commissioning. It no longer asks for ordinary room/environment operating
+settings that belong on the Home and Area devices.
+
+Open the **Home Environment Manager** device for shared air/weather limits,
+notification channels and language, occupancy policies, AQI provider scales and
+custom thresholds, and pollen preferences. Each **Area Environment** device
+provides adjustable computed/managing settings: temperature and humidity policy,
+thermal comfort science, occupied/unoccupied/away/sleep profiles, local Time
+entities for sleep start/end and safely bounded PID/direct control where actual
+equipment has been commissioned. Native climate, humidifier and fan entities
+remain authoritative for their own power, HVAC modes and active setpoints.
+
+For mold indication, select a **same-room indoor temperature sensor** and a
+weather source with a valid outdoor temperature in Configure. On the Area
+device, enter the **measured temperature of its coldest surface** and press
+**Recalculate mold factor**. This is not an inferred surface temperature.
+Recalculation checks that room's current indoor and outdoor temperature,
+source freshness, physical geometry and plausible factor. Changing the
+measurement invalidates the old factor; a failed button calculation does not
+silently replace otherwise valid calibration.
+
+The 38-language Home Assistant catalogs include translated device controls
+and explanations (including Greek). Device preference edits do **not**
+authorize physical relays, fans or compressor commands. Independent
+commissioning and every existing safety interlock remain required for
+any experimental opt-in physical actuator.
+
+## Native Home and Area device settings (beta 10)
 
 Every configured monitoring area has a **<Room> Environment** device. The
 **Home Environment Manager** parent device uses the original recommendation
@@ -77,11 +108,11 @@ interlocks.
 
 1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required; the integration preserves the existing `air_quality_advisor` domain, entry IDs, entities and settings.
 2. Open [Home Environment Manager in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), or add `Chreece/HA-Home-Environment-Manager` as a **custom Integration repository** if not already installed.
-3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b9**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
+3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b10**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
 5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `home_environment_manager.climate_diagnostics` (or legacy alias `air_quality_advisor.climate_diagnostics`). Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9). Extract it into the Home Assistant configuration directory, preserving `custom_components/air_quality_advisor/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b10). Extract it into the Home Assistant configuration directory, preserving `custom_components/air_quality_advisor/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
 ### Complete configuration translations and explanations — beta 9
@@ -307,7 +338,7 @@ The installer writes **only** the integration directory, makes a rollback backup
 
 ## HACS releases
 
-**Latest stable release: v0.5.1; opt-in beta: v0.6.0b9.** See [GitHub Releases](https://github.com/Chreece/HA-Home-Environment-Manager/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
+**Latest stable release: v0.5.1; opt-in beta: v0.6.0b10.** See [GitHub Releases](https://github.com/Chreece/HA-Home-Environment-Manager/releases). Each push to `main` runs Python and frontend tests, translations, Hassfest and HACS validation; a new version is automatically published only when all gates pass.
 
 Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), then restart Home Assistant. Existing config entries and the single recommendation sensor retain their IDs. The bundled Lovelace card is refreshed automatically.
 
@@ -991,13 +1022,13 @@ They demonstrate a humidity-only room, a cooling room, central room priorities
 and independently guarded fan/dehumidifier status.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/screenshots/dashboard-climate-coordination.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b10/.github/assets/screenshots/dashboard-climate-coordination.png"
        alt="Actual Home Environment Manager card with simulated bedroom cooling and dehumidifier controls, coordinated priorities and safety holds"
        width="850">
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b9/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b10/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
        alt="Actual Greek dark-theme climate room card, simulated dehumidification status and room priority"
        width="360">
 </p>
@@ -1122,7 +1153,7 @@ of one controller's persistence no longer prevents the remaining
 controllers, announcements, listeners or background tasks from being
 cleaned up.
 
-These features are included in the opt-in [v0.6.0b9 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b9).
+These features are included in the opt-in [v0.6.0b10 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b10).
 The [development PR #2](https://github.com/Chreece/HA-Home-Environment-Manager/pull/2) remains unmerged and production v0.5.1 stays unchanged pending representative hardware testing.
 
 
@@ -1148,7 +1179,7 @@ registry, interleaved state changes, Python unit tests and HACS/Hassfest.
 Hardware commissioning remains mandatory for device-changing functions.
 
 
-### Compact options and per-device occupancy (v0.6.0b9 beta)
+### Compact options and per-device occupancy (v0.6.0b10 beta)
 
 The grouped options menu is reorganized as **Outside data** (weather, warnings,
 outdoor-air sensors, AQI scales and international pollen), **General settings**
@@ -1176,6 +1207,6 @@ OFF until the user restarts it manually; no controller restarts an OFF
 compressor. Humidifier/fan power OFF follows their existing owned-output
 minimum-on, runtime and acknowledgement rules.
 
-This refinement is included in the opt-in **v0.6.0b9 beta**. Existing
+This refinement is included in the opt-in **v0.6.0b10 beta**. Existing
 automation stays off until explicitly enabled, and all experimental power/
 compressor-control paths still require separate real-device commissioning.

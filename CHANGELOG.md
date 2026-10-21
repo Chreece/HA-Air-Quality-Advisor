@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b10 — Source-only setup and Area/Home device operating controls (beta)
+
+- Limit configuration menus to monitored areas, sensor/provider/equipment entity selection, and hardware-specific commissioning. Move global and room operating preferences to the Home and Area devices.
+- Add editable Area sleep start/end Time entities, pollen and AQI settings, room comfort, policy and calibrated science values without duplicating native climate/humidity/fan controls.
+- Add measured coldest-surface room Number and explicit **Recalculate mold factor** Button with fresh same-room temperature, outdoor weather and physically plausible calibration guards; invalidate prior factor after changing input.
+- Offer guarded commissioned direct PID gains and demand/rate settings while retaining supervisor PID manual/defaults and existing physical interlocks.
+- Correct a generator that forced English mold outdoor-source labels/help back into 33 locales; regenerate all 38 translations and add regression checks.
+- Keep the `air_quality_advisor` domain and earlier entities stable. Stable v0.5.1 and earlier beta tags remain untouched; no new actuator permission is granted.
+
+
 ## 0.6.0b9 — Home and Area device-first configuration (beta)
 
 - Attach all room devices under the existing Home Environment Manager device, reusing the unchanged whole-home recommendations/dashboard sensor.

@@ -1,18 +1,18 @@
 {
-  "version": "0.6.0b9",
+  "version": "0.6.0b10",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Opt-in beta 9: Home parent device, per-area editable PID and climate-policy controls, localized device entities and registry-resolved dashboard edit links. No automated PID self-tuning or new equipment authorizations. Stable v0.5.1 unchanged.",
+  "note": "Opt-in beta 10: source-only configuration flow and device-owned operating controls; measured mold cold-surface recalibration; 38 language catalogs. Stable v0.5.1 and previous betas unchanged.",
   "validation_attempt": 0,
   "changes": [
-    "Register a Home Environment Manager home parent device and link per-area environment devices with the original whole-home dashboard sensor",
-    "Put 22 home-wide thresholds, output language, notification/TTS/AI/Hub flags and announcement-repeat interval on Home Assistant configuration entities",
-    "Support validated per-area PID manual Kp/Ki/Kd and numeric supervisor settings; Defaults restore fixed baseline, no automatic self-tuning",
-    "Put per-area occupied/unoccupied/home/away/sleep climate-policy bands and manual/automatic profile selector on room devices without duplicating native thermostat controls",
-    "Remove duplicated home/room PID and profile controls from options menus, preserving provider selection and commissioning pages",
-    "Add registry-resolved gear/edit navigation on every room and the home card header; no guessed device IDs",
-    "Localize new entity labels across all 38 existing supported languages and pass Py3.13/3.14, frontend, HACS and Hassfest gates",
-    "Preserve original air_quality_advisor integration domain, saved configuration, PID pause latches and all hardware safety checks"
+    "Restrict Configure to areas, providers, HA source/device selection, and physical hardware commissioning",
+    "Move adjustable global comfort/science/occupancy/weather/notification policies onto Home device and room operating controls onto Area devices",
+    "Add measured room cold-surface Number and explicit recalculate mold factor Button that validates current same-room and outside weather readings",
+    "Offer validated room sleep start/end Time entities and AQI/pollen source policy controls",
+    "Expose safely bounded supervised and commissioned direct PID tuning and device policy settings without duplicating native physical controls",
+    "Regenerate 38 languages, including Greek; restore native localized mold weather source labels and explanations",
+    "Preserve integration domain, preexisting entity identity, v0.5.1 latest stable, actuator commissioning and fail-closed interlocks",
+    "Publish only after Python 3.13/3.14, translations, frontend, Hassfest and HACS validations"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b9"
+  "release_branch": "beta/v0.6.0b10"
 }

@@ -1,5 +1,16 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b10 — Source selection in setup and per-device tuning
+
+Opt-in beta 10 is released only from `beta/v0.6.0b10` at the validated
+commit. Area and Home configuration entities, manual measured mold calibration,
+room sleep Time controls, native PID controls and 38-language generated labels
+ship without changing stable v0.5.1 or earlier immutable beta tags. CI must
+validate Python 3.13/3.14, generated translations, frontend, Hassfest, HACS and
+the installation archive before publishing. Real hardware commissioning is
+still required for experimental physical power or compressor controls.
+
+
 ## v0.6.0b5 — Complete initial/options help across 38 locales
 
 The opt-in `beta/v0.6.0b5` HACS/GitHub prerelease is locked to its fully validated HEAD. All 38 locales have required data_description text for every visible initial-config or options field, including 22 advanced thresholds previously missing help. Reviewed English and Greek explanation texts cover exact controls and scientific caveats; the other 36 locale texts are localized with safety-aware templates. CI checks no untranslated labels, no missing help, reproducible translation generation, Python 3.13/3.14, frontend, Hassfest, HACS and the manual package. The integration's original `air_quality_advisor` domain, stored options, stable v0.5.1 and physical-control safety gates are unchanged.
