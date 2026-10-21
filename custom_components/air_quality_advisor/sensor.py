@@ -19,7 +19,9 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddConfigEntryEntitiesCallback
 ) -> None:
     """Create exactly one entity per config entry."""
-    async_add_entities([AirQualityRecommendation(entry.runtime_data, entry.entry_id)])
+    from .area_entities import async_area_entities
+    area_entities = await async_area_entities(hass, entry)
+    async_add_entities([AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities])
 
 
 class AirQualityRecommendation(SensorEntity):
