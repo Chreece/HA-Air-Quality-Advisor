@@ -148,7 +148,7 @@ def configured_aqi_entities(manager: Any) -> tuple[str, ...]:
     result = []
     for entity in configured:
         state = manager.hass.states.get(entity) if isinstance(entity, str) else None
-        if not entity.startswith("sensor.") or state is None:
+        if not isinstance(entity, str) or not entity.startswith("sensor.") or state is None:
             continue
         if (str(state.attributes.get("device_class", "")).casefold() == "aqi"
                 or entity.endswith(("_aqi", "_air_quality_index"))):
@@ -466,8 +466,8 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 raise HomeAssistantError("Room must first be configured")
             if entity_id not in cfg.get("selected_devices", []):
                 raise HomeAssistantError("This device has been deselected")
-            profiles = deepcopy(cfg.get("device_settings", {}))
-            device_cfg = profiles.get(entity_id)
+            device_profiles = deepcopy(cfg.get("device_settings", {}))
+            device_cfg = device_profiles.get(entity_id)
             if not isinstance(device_cfg, dict) or device_cfg.get("auto_control") is not True:
                 raise HomeAssistantError("Device auto-control must first be explicitly commissioned")
             domain = entity_id.partition(".")[0]
@@ -501,8 +501,8 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                         raise HomeAssistantError("Native humidity limits are unknown")
                     if not float(low) <= n <= float(high):
                         raise HomeAssistantError("Outside native humidifier setpoint limits")
-            profiles[entity_id] = device_cfg
-            cfg["device_settings"] = profiles
+            device_profiles[entity_id] = device_cfg
+            cfg["device_settings"] = device_profiles
             rooms[area] = cfg
             options[CONF_CLIMATE_ROOMS] = rooms
 
