@@ -222,3 +222,57 @@ def test_rh_fallback_custom_humidity_threshold_is_respected():
     result = evaluate(GOOD,FAIR,(),(room,),{"indoor_humidity":60})
     assert result.status == "open"
     assert result.recommendations[0].reasons[0].code == "inside_humidity"
+
+
+def test_verified_running_cooling_can_add_one_room_window_reason():
+    original=Room("living_room","Living room",ROOM.windows,(
+        Reading("sensor.low_co2","CO₂","co2",600),
+    ))
+    substitution={
+        "status":"opportunity","notify_enabled":True,
+        "effect":"cool","active_device":"climate.room_ac",
+        "evidence":{"temperature_difference_c":6},
+    }
+    report={"living_room":{"climate_plan":{"window_efficiency":substitution}}}
+    result=evaluate(GOOD,FAIR,(),(original,),environment=report)
+    assert result.status=="open"
+    assert len(result.recommendations)==1
+    rec=result.recommendations[0]
+    assert rec.reasons[0].code=="climate_window_cool"
+    assert "6 °C" in announcement(rec,"en")[1]
+    assert "Fensterlüftung" in announcement(rec,"de")[0]
+    assert "παραθύρου" in announcement(rec,"el")[0]
+
+    substitution["notify_enabled"]=False
+    result=evaluate(GOOD,FAIR,(),(original,),environment=report)
+    assert result.recommendations==()
+
+
+def test_existing_high_co2_preserves_priority_over_energy_hint():
+    substitution={"status":"opportunity","notify_enabled":True,
+                  "effect":"dry","active_device":"humidifier.dry",
+                  "evidence":{"humidity_ratio_advantage_g_kg":3.7}}
+    result=evaluate(GOOD,FAIR,(),(ROOM,),environment={
+        "living_room":{"climate_plan":{"window_efficiency":substitution}}
+    })
+    assert [reason.code for reason in result.recommendations[0].reasons[:2]] == [
+        "inside_co2","climate_window_dry",
+    ]
+
+
+def test_climate_only_recommendations_do_not_change_air_quality_counts():
+    from dataclasses import replace
+    rec=__import__("custom_components.air_quality_advisor.logic",
+                   fromlist=["Recommendation"]).Recommendation(
+        "open","bedroom","Bedroom",
+        (Window("binary_sensor.bedroom_window","Bedroom window",False),),
+        (__import__("custom_components.air_quality_advisor.logic",
+                    fromlist=["Reason"]).Reason("climate_window_cool",
+                    "climate.bedroom_ac","4 °C"),),
+    )
+    original=plan()
+    patched=replace(original,climate_recommendations=(rec,))
+    assert patched.status==original.status
+    assert patched.rooms==original.rooms
+    assert rec in patched.climate_recommendations
+    assert "bedroom" in patched.signature

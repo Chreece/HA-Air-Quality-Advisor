@@ -23,7 +23,11 @@ def test_static_registration_and_cache_version_are_declared():
     assert {"frontend", "http"}.issubset(manifest["dependencies"])
     assert "async_register_static_paths" in source
     assert "add_extra_js_url" in source
-    assert f"?v={manifest['version']}" in source
+    # The resource version comes from the same manifest that HACS installs,
+    # so upcoming releases cannot accidentally reuse an older cache key.
+    assert "manifest.json" in source
+    assert "manifest['version']" in source
+    assert 'f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest[\'version\']}"' in source
 
 
 def test_single_sensor_still_exposes_dashboard_without_new_entities():

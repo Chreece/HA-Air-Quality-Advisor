@@ -255,3 +255,176 @@ def test_live_hub_uses_current_ha_area_name_from_recommendation(
     assert payload["text"]
     assert "occupied_only" not in payload
     assert "service" not in payload
+
+
+def test_climate_only_window_advice_routes_exact_selected_room_through_hub(delivery_module):
+    from dataclasses import replace
+    rec=Recommendation(
+        "open","bedroom","Bedroom",
+        (Window("binary_sensor.bedroom_window","Bedroom window",False),),
+        (Reason("climate_window_cool","climate.bedroom_ac","4 °C"),),
+    )
+    m, calls=advisor(delivery_module,{
+        "ai_rewrite_announcements":False,
+        "notify_entities":[],
+        "media_players":[],
+    })
+    # Climate-only messages never become air-quality monitored-room totals.
+    m.plan=replace(m.plan,recommendations=(),climate_recommendations=(rec,))
+    assert asyncio.run(m.async_announce(channels="notification",areas=["bedroom"]))["submitted"]==1
+    assert len(calls.calls)==1
+    domain,action,payload,_=calls.calls[0]
+    assert (domain,action)==("notify","announcement_hub")
+    assert payload["area"]==["Bedroom"]
+    assert "text_notify" in payload and "text_tts" not in payload
+    assert "Window airing" in payload["title"]
+    assert "cooling" in payload["text_notify"]
+    assert not any(k in payload for k in ("output","occupied_only","device"))
+    assert asyncio.run(m.async_announce(channels="notification",areas=["kitchen"]))["submitted"]==0
+
+
+def test_climate_only_hub_rejection_never_falls_back_to_broadcast(delivery_module):
+    from dataclasses import replace
+    services=Services(hub_response={"accepted":False},direct=True,tts=True)
+    m,calls=advisor(delivery_module,{
+        "ai_rewrite_announcements":False,
+    },services=services)
+    rec=Recommendation(
+        "open","bedroom","Bedroom",
+        (Window("binary_sensor.bedroom_window","Bedroom window",False),),
+        (Reason("climate_window_dry","humidifier.dehum","3.2 g/kg"),),
+    )
+    m.plan=replace(m.plan,recommendations=(),climate_recommendations=(rec,))
+    res=asyncio.run(m.async_announce(channels="both",areas=["bedroom"]))
+    assert res["submitted"]==0
+    assert len(calls.calls)==1
+    assert calls.calls[0][:2]==("notify","announcement_hub")
+    assert calls.calls[0][2]["area"]==["Bedroom"]
+
+
+def test_fast_air_supervision_refreshes_stale_evidence_before_fan_commands(
+    delivery_module,
+):
+    from dataclasses import replace
+    from time import time
+
+    manager,_=advisor(delivery_module,config={
+        "climate_rooms":{"bedroom":{"enabled":True,"fan_power_auto":True}},
+    })
+    manager._active=True
+    refreshed=[]
+    manager._recalculate=lambda **kwargs: refreshed.append("fresh_air_policy")
+    drivers=(manager.direct_climate,manager.native_humidity,
+             manager.humidity_power,manager.secondary_climate,
+             manager.running_fans,manager.fan_power)
+    schedules=[]
+    for driver in drivers:
+        driver.schedule=lambda *args,**kwargs: schedules.append("schedule")
+
+    manager.plan=replace(manager.plan,environment={
+        "bedroom":{"climate_plan":{"air_evidence_at":time()-95}},
+    })
+    manager._on_fast_climate_interval(None)
+    assert refreshed==["fresh_air_policy"]
+    assert schedules==[]
+
+    refreshed.clear()
+    manager.plan=replace(manager.plan,environment={
+        "bedroom":{"climate_plan":{"air_evidence_at":time()-20}},
+    })
+    manager._on_fast_climate_interval(None)
+    assert refreshed==[]
+    assert len(schedules)==len(drivers)
+    # An HA area removed from the registry cannot cause a 30-second
+    # recalculation loop while waiting for a registry restoration event.
+    manager.plan=replace(manager.plan,environment={})
+    manager._on_fast_climate_interval(None)
+    assert refreshed==[]
+    assert len(schedules)==2*len(drivers)
+
+
+
+def test_commissioned_dry_fan_room_control_routes_pause_resume_to_native_mode(
+    delivery_module,
+):
+    configured={
+        "climate_rooms":{"bedroom":{
+            "enabled":True,
+            "allow_actuation":True,
+            "controller":"environment",
+            "dry_fan_mode_auto":True,
+            "dry_fan_hardware_confirmed":True,
+            "dry_climate_entity":"climate.bedroom_ac",
+        }},
+    }
+    manager,service=advisor(delivery_module,configured)
+    invoked=[]
+    async def control(area,action):
+        invoked.append((area,action))
+        return {"accepted":True,"area":area,"action":action}
+    manager.native_air_mode.command=control
+    for action in ("pause","resume"):
+        answer=asyncio.run(manager.async_climate_control("bedroom",action))
+        assert answer["accepted"] is True
+        assert answer["native_air_mode"]["action"]==action
+        assert answer["primary"]["reason"]=="environment_only_no_primary_hvac"
+    assert invoked==[("bedroom","pause"),("bedroom","resume")]
+    assert service.calls==[]  # no HVAC command is sent by pause/resume
+    denied=asyncio.run(manager.async_climate_control("nonexistent","pause"))
+    assert denied["accepted"] is False
+
+
+
+def test_climate_stop_releases_every_controller_and_timer_when_one_store_fails(
+    delivery_module,
+):
+    async def scenario():
+        manager,_=advisor(delivery_module)
+        manager._active=True
+        stopped=[]
+        names=(
+            "pid","native_climate","direct_climate","native_humidity",
+            "humidity_power","secondary_climate","running_fans",
+            "fan_power","native_air_mode",
+        )
+        for name in names:
+            async def stop(item=name):
+                stopped.append(item)
+                if item=="native_air_mode":
+                    raise OSError("simulated native controller Store flush error")
+            getattr(manager,name).async_stop=stop
+        released=[]
+        def fail_cancel():
+            released.append("broken")
+            raise RuntimeError("unsubscriber unavailable")
+        manager._pending_unsubs={
+            "bedroom":fail_cancel,"living":lambda:released.append("pending"),
+        }
+        manager._repeat_unsubs={
+            "bedroom":lambda:released.append("repeat"),
+        }
+        manager._unsubs=[fail_cancel,lambda:released.append("listener")]
+        manager._active_actions={"bedroom":("open","high_co2")}
+        cancelled=[]
+        async def long_background_task():
+            try:
+                await asyncio.sleep(100)
+            finally:
+                cancelled.append("cancelled")
+        task=asyncio.create_task(long_background_task())
+        await asyncio.sleep(0)
+        manager._tasks.add(task)
+        await manager.async_stop()
+        assert set(stopped)==set(names)
+        assert len(stopped)==len(names)
+        assert cancelled==["cancelled"]
+        assert task.done()
+        assert "pending" in released and "repeat" in released
+        assert "listener" in released
+        assert manager._active is False
+        assert manager._pending_unsubs=={}
+        assert manager._repeat_unsubs=={}
+        assert manager._unsubs==[]
+        assert manager._tasks==set()
+        assert manager._active_actions=={}
+    asyncio.run(scenario())

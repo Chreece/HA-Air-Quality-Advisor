@@ -15,6 +15,7 @@ import time
 from typing import Any, Callable
 
 from .discovery import entity_area, temperature_sensor_c
+from .climate_entry_ownership import foreign_owner_hold
 from .pid_math import (
     DEFAULT_PID, Memory, bounded_command, finite, setpoint_c, step,
     target_from_unit, validate_settings,
@@ -371,6 +372,13 @@ class ClimatePidCoordinator:
             return
         for entity, native in planned:
             if not self._active or area in self._paused:
+                return
+            other_entry=foreign_owner_hold(self.hass,self.entry_id,entity)
+            if other_entry is not None:
+                self._set_status(
+                    area,"cross_entry_control_hold",
+                    entity=entity,reason=other_entry,
+                )
                 return
             try:
                 # No hvac_mode field: never power on/off or switch compressor modes.

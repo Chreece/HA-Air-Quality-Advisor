@@ -9,6 +9,7 @@ import math
 from typing import Any
 
 from .building_physics import DAY_S, weighted_window
+from .comfort_targets import solve_pmv_air_temperature
 from .environment_science import (
     aqi_category, daylight_exposure, eea_hourly_category, hcho_30min,
     laeq_db_a, moisture_event, overheating_degree_hours, particle_filtration,
@@ -145,26 +146,33 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
     else:
         radon = {"status": "sensor_verification_required" if radon_id else "not_configured"}
     pmv = {"status": "not_configured"}
+    comfort_target = {"status":"not_configured"}
     if profile.get("enable_pmv"):
         radiant = None
         if profile.get("radiant_temperature_entity") and entity_area(
             hass, profile["radiant_temperature_entity"]
         ) in (None, area_id):
             radiant = temperature_sensor_c(
-                hass, profile["radiant_temperature_entity"], 90,
+                hass, profile["radiant_temperature_entity"], 10,
             )
         air_speed = profile.get("air_speed_m_s")
         if profile.get("air_speed_entity"):
-            air_speed, _ = measurement(hass, profile["air_speed_entity"], 90, "air_speed", area_id=area_id)
-        indoor_temperature = existing.get("thermal_comfort", {}).get("temperature_proxy_c")
-        if indoor_temperature is None:
-            indoor_temperature = next((s.get("temperature_c") for s in reversed(samples)
-                                       if s.get("temperature_c") is not None), None)
-        humidity = next((s.get("humidity") for s in reversed(samples)
-                         if s.get("humidity") is not None), None)
+            air_speed, _ = measurement(hass, profile["air_speed_entity"], 10, "air_speed", area_id=area_id)
+        # No reuse of old PMV inputs from the persisted room history.
+        # Newest sample must itself be recent and carry all required fields.
+        sample=samples[-1] if samples and now-samples[-1].get("t",-1)>-1 and (
+            now-samples[-1].get("t",-1)<=600) else {}
+        indoor_temperature=sample.get("temperature_c")
+        humidity=sample.get("humidity")
         pmv = pmv_iso7730(indoor_temperature, radiant, humidity, air_speed,
                            profile.get("met"), profile.get("clo"))
         pmv["radiant_sensor_status"] = "measured" if radiant is not None else "unavailable"
+        if pmv.get("status")=="estimate":
+            comfort_target=solve_pmv_air_temperature(
+                radiant,humidity,air_speed,profile.get("met"),profile.get("clo"),
+            )
+        else:
+            comfort_target={"status":"insufficient_fresh_pmv_inputs"}
     overheating = overheating_degree_hours(samples,now,reference_c=float(
         profile.get("overheating_reference_c",26)))
     recommendation = {"status": "no_additional_action"}
@@ -182,6 +190,7 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
         "ventilation_learning": ventilation, "formaldehyde_30min": hcho,
         "radon": radon, "sound_24h": sound, "sound_last_night": night_sound,
         "daylight": light, "pmv_ppd": pmv,
+        "pmv_air_target": comfort_target,
         "overheating_degree_hours": overheating,
         "additional_advice": recommendation,
         "method": "deterministic_opt_in_environmental_observations",

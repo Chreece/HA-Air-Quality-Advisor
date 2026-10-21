@@ -367,3 +367,7 @@ apply_environment_i18n(root)
 # Explicitly opt-in supervisory PID climate control, after all legacy overrides.
 from apply_pid_i18n import apply_pid_i18n
 apply_pid_i18n(root)
+
+# Opt-in climate profiles and international occupancy/away configuration.
+from apply_climate_i18n import apply_climate_i18n
+apply_climate_i18n(root)

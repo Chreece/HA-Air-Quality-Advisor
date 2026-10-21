@@ -67,7 +67,8 @@ def _warning(item: Warning) -> dict[str, Any]:
     return {"entity_id": item.entity_id, "name": item.name, "active": item.active}
 
 
-def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
+def _room(room: Room, plan: Plan, limits: dict[str, float], *,
+          climate_only: bool = False) -> dict[str, Any]:
     readings = [
         _reading(item, limits.get(f"indoor_{item.metric}"), indoor=True)
         for item in room.readings
@@ -87,7 +88,10 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     radon = extended.get("radon", {})
     evidence_high = ((hcho.get("status") == "ready" and hcho.get("above_who_100ug_m3"))
                      or (radon.get("status") == "annual_screening" and radon.get("above_reference")))
-    if high or evidence_high or (recommended and recommended.action == "close"):
+    if climate_only:
+        # A room enabled only for HVAC must never appear as air-quality safe.
+        status = "unknown"
+    elif high or evidence_high or (recommended and recommended.action == "close"):
         status = "attention"
     elif not known or incomplete_air or incomplete_windows:
         status = "unknown"
@@ -132,6 +136,7 @@ def _room(room: Room, plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     return {
         "area_id": room.area_id,
         "name": room.name,
+        "climate_only": climate_only,
         "status": status,
         "status_detail": status_detail,
         "mold_warnings": mold_warnings,
@@ -166,6 +171,11 @@ def dashboard_snapshot(plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     closing a window, but the UI must not imply complete verification either.
     """
     room_data = [_room(room, plan, limits) for room in plan.rooms]
+    # Distinct from monitored rooms: show explicitly configured climate-only
+    # rooms without making up window advice or inflating AQ summary totals.
+    already={room.area_id for room in plan.rooms}
+    extra=[_room(room,plan,limits,climate_only=True)
+           for room in plan.climate_rooms if room.area_id not in already]
     summary = {
         "total": len(room_data),
         "safe": sum(room["status"] == "safe" for room in room_data),
@@ -187,7 +197,8 @@ def dashboard_snapshot(plan: Plan, limits: dict[str, float]) -> dict[str, Any]:
     return {
         "version": 1,
         "summary": summary,
-        "rooms": room_data,
+        "rooms": room_data+extra,
+        "climate_only_count":len(extra),
         "outdoor": {
             "status": outside_status,
             "pollen": plan.environment.get("__outside__", {}).get("pollen", {"status":"not_configured"}),

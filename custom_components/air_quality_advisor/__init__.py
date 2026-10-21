@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -29,9 +30,25 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
-    add_extra_js_url(hass, f"/{DOMAIN}/air-quality-advisor-card.js?v=0.5.1")
+    manifest = json.loads(
+        (Path(__file__).parent / "manifest.json").read_text(encoding="utf-8")
+    )
+    # Bundled asset and HACS release version share ONE authoritative source.
+    # Rebranding must not change the original integration domain/path.
+    add_extra_js_url(
+        hass, f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest['version']}"
+    )
     return True
 
+
+NATIVE_CLIMATE_SCHEMA = probatio.Schema({
+    probatio.Required("area"): cv.string,
+    probatio.Required("action"): probatio.In(["pause", "resume"]),
+})
+
+CLIMATE_DIAGNOSTICS_SCHEMA = probatio.Schema({
+    probatio.Optional("area"): cv.string,
+})
 
 PID_CONTROL_SCHEMA = probatio.Schema({
     probatio.Required("area"): cv.string,
@@ -46,6 +63,36 @@ SERVICE_SCHEMA = probatio.Schema({
 })
 
 
+def _exact_room_manager(hass: HomeAssistant, area: str,
+                        section: str) -> tuple[Any | None, str | None]:
+    """Select exactly one active owner for room-scoped control actions.
+
+    Multiple historical config entries may coexist. Never silently route
+    a room to the first one or broadcast a control action to multiple
+    managers; ambiguous area ownership must fail closed.
+    """
+    candidates=[]
+    for manager in hass.data.get(DOMAIN, {}).values():
+        entry=getattr(manager,"entry",None)
+        if entry is None:
+            continue
+        data=getattr(entry,"data",{})
+        options=getattr(entry,"options",{})
+        if not isinstance(data,dict) or not isinstance(options,dict):
+            continue
+        room_settings={**data,**options}.get(section,{})
+        if not isinstance(room_settings,dict):
+            continue
+        config=room_settings.get(area)
+        if isinstance(config,dict) and config.get("enabled") is True:
+            candidates.append(manager)
+    if len(candidates)>1:
+        return None,"ambiguous_room_across_config_entries"
+    if not candidates:
+        return None,"room_not_configured_or_disabled"
+    return candidates[0],None
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Existing installations retain entry IDs and selected devices. Only the
     # uncustomized legacy display title is migrated to the new product name.
@@ -53,8 +100,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.config_entries.async_update_entry(entry, title="Home Environment Manager")
     manager = AirQualityManager(hass, entry)
     entry.runtime_data = manager
-    await manager.async_start()
+    # Even if an experimental device controller fails during its startup,
+    # attempt to stop any earlier-started controllers. Leave the original
+    # installation error visible and never register partial service routes.
     try:
+        await manager.async_start()
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     except BaseException:
         await manager.async_stop()
@@ -66,12 +116,55 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             managers = list(hass.data.get(DOMAIN, {}).values())
             if not managers:
                 return {"submitted": 0, "reason": "Integration is not loaded"}
-            manager = managers[0]
-            result = await manager.async_announce(
-                language=call.data.get("language"),
-                channels=call.data.get("channels", "both"),
-                areas=call.data.get("areas"),
-            )
+            requested=call.data.get("areas")
+            if requested is not None and not isinstance(requested,(list,tuple)):
+                return {"submitted":0,"reason":"invalid_room_filter"}
+            # An announcement belongs to an actual pending recommendation,
+            # not an arbitrary config entry. The Hub alone routes speakers,
+            # visual outputs, occupancy and fallback after submission.
+            claims={}
+            for manager in managers:
+                plan=getattr(manager,"plan",None)
+                for recommendation in (
+                    *getattr(plan,"recommendations",()),
+                    *getattr(plan,"climate_recommendations",()),
+                ):
+                    area=getattr(recommendation,"area_id",None)
+                    if not isinstance(area,str):
+                        continue
+                    claims.setdefault(area,[]).append(manager)
+            if requested is None:
+                selected=sorted(claims)
+            else:
+                selected=list(dict.fromkeys(requested))
+            conflicts=[area for area in selected
+                       if len(set(claims.get(area,())))>1]
+            if conflicts:
+                # Fail the WHOLE request before any output is routed, rather
+                # than partly announcing and then discovering ambiguity.
+                return {"submitted":0,"reason":"ambiguous_room_across_config_entries",
+                        "areas":conflicts}
+            grouped={}
+            for area in selected:
+                owners=claims.get(area,())
+                if len(owners)==1:
+                    grouped.setdefault(owners[0],[]).append(area)
+            if not grouped:
+                return {"submitted":0,"reason":"No actionable window recommendations"}
+            total=0
+            errors=[]
+            for manager,area_ids in grouped.items():
+                outcome=await manager.async_announce(
+                    language=call.data.get("language"),
+                    channels=call.data.get("channels","both"),
+                    areas=area_ids,
+                )
+                if isinstance(outcome,dict):
+                    total+=int(outcome.get("submitted",0))
+                    errors.extend(outcome.get("errors",[]) or [])
+            result={"submitted":total}
+            if errors:
+                result["errors"]=errors
             return result if call.return_response else None
 
         hass.services.async_register(
@@ -87,12 +180,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
     if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "pid_control"):
         async def async_pid_action(call: ServiceCall) -> ServiceResponse:
-            managers = list(hass.data.get(DOMAIN, {}).values())
-            if not managers:
-                return {"accepted": False, "reason": "Integration is not loaded"}
-            # Accept only the selected registry area ID, no implicit whole-house
-            # or fanout targeting; the PID service never changes HVAC modes.
-            result = await managers[0].async_pid_control(
+            manager,why=_exact_room_manager(
+                hass,call.data["area"],"pid_rooms",
+            )
+            if manager is None:
+                return {"accepted":False,"reason":why}
+            # Exact area owner: never choose the first manager implicitly.
+            result = await manager.async_pid_control(
                 area=call.data["area"], action=call.data["action"],
             )
             return result if call.return_response else None
@@ -102,6 +196,55 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 hass.services.async_register(
                     service_domain, "pid_control", async_pid_action,
                     schema=PID_CONTROL_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
+                )
+    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_control"):
+        async def async_native_action(call: ServiceCall) -> ServiceResponse:
+            manager,why=_exact_room_manager(
+                hass,call.data["area"],"climate_rooms",
+            )
+            if manager is None:
+                return {"accepted":False,"reason":why}
+            result=await manager.async_climate_control(
+                call.data["area"],call.data["action"]
+            )
+            return result if call.return_response else None
+        for domain in (DOMAIN,PUBLIC_ACTION_DOMAIN):
+            if not hass.services.has_service(domain,"climate_control"):
+                hass.services.async_register(
+                    domain,"climate_control",async_native_action,
+                    schema=NATIVE_CLIMATE_SCHEMA,
+                    supports_response=SupportsResponse.OPTIONAL,
+                )
+    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_diagnostics"):
+        async def async_diagnostics(call: ServiceCall) -> ServiceResponse:
+            # This is an explicit read-only request. Only configured rooms
+            # are reported; no raw registry secrets, device identifiers, or
+            # HA service commands are collected or executed.
+            managers = list(hass.data.get(DOMAIN, {}).values())
+            if not managers:
+                return {"schema_version": 1, "status": "not_loaded",
+                        "read_only": True, "no_commands_sent": True, "rooms": []}
+            area = call.data.get("area")
+            responses = [manager.climate_diagnostics(area=area)
+                         for manager in managers]
+            rooms = [room for response in responses
+                     for room in response.get("rooms", [])]
+            response = {
+                "schema_version": 1,
+                "status": "ok" if rooms or area is None else "area_not_configured",
+                "read_only": True,
+                "no_commands_sent": True,
+                "physical_hardware_safety_verified": False,
+                "rooms": rooms,
+            }
+            return response if call.return_response else None
+
+        for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN):
+            if not hass.services.has_service(domain, "climate_diagnostics"):
+                hass.services.async_register(
+                    domain, "climate_diagnostics", async_diagnostics,
+                    schema=CLIMATE_DIAGNOSTICS_SCHEMA,
+                    supports_response=SupportsResponse.OPTIONAL,
                 )
     return True
 
@@ -118,4 +261,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN):
             if hass.services.has_service(service_domain, "pid_control"):
                 hass.services.async_remove(service_domain, "pid_control")
+            if hass.services.has_service(service_domain, "climate_control"):
+                hass.services.async_remove(service_domain, "climate_control")
+            if hass.services.has_service(service_domain, "climate_diagnostics"):
+                hass.services.async_remove(service_domain, "climate_diagnostics")
     return True

@@ -6,7 +6,7 @@ import asyncio
 import logging
 from dataclasses import replace
 from datetime import timedelta
-from time import monotonic
+from time import monotonic, time
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -24,7 +24,7 @@ from .const import (
     CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
     DEFAULT_THRESHOLDS, DOMAIN, SIGNAL_UPDATED, CONF_USE_MOLD, CONF_MOLD_ROOMS,
-    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS,
+    CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
 from .ai_rewrite import DEFAULT_AGENT, ai_effectively_enabled, async_rewrite_announcement
 from .hub_delivery import hub_available, make_hub_payload, async_submit_hub, async_system_notification
@@ -33,8 +33,25 @@ from .mold import estimate_mold_for_room, rh_fallback_for_room
 from .environment import build_environment
 from .environment_history import EnvironmentHistory
 from .climate_pid import ClimatePidCoordinator
+from .climate_rooms import gather as climate_room_plan
+from .climate_coordination import duplicate_owners, native_plan_hold_reason
+from .climate_entry_ownership import cross_entry_collisions
+from .climate_arbitration import room_coordination
+from .climate_native import NativeClimateControl
+from .climate_direct import DirectClimateControl
+from .climate_humidity_native import HumiditySetpointControl
+from .climate_humidity_power import HumidityPowerControl
+from .climate_secondary_native import SecondaryClimateSetpoint
+from .climate_air_actions import air_treatment_plan
+from .climate_hvac_modes import native_air_mode_advice
+from .climate_air_mode_native import NativeAirModeControl
+from .climate_commissioning import report as climate_commissioning_report
+from .climate_window import window_substitution, window_reason
+from .climate_fan_native import RunningFanSpeedControl
+from .climate_fan_power import FanPowerControl
+from .building_physics import moisture_potential
 from .environment_extended import global_pollen, global_aqi
-from .logic import Reading, Reason
+from .logic import Reading, Reason, Recommendation
 from .logic import Plan, evaluate
 from .messages import announcement, language_code
 
@@ -61,6 +78,28 @@ class AirQualityManager:
         self._environment_history = EnvironmentHistory()
         self._environment_store: Any | None = None
         self.pid = ClimatePidCoordinator(self.hass, self.entry.entry_id, report_changed=self._pid_updated)
+        self.native_climate = NativeClimateControl(self.hass, self.entry.entry_id)
+        self.direct_climate = DirectClimateControl(
+            self.hass, self.entry.entry_id, changed=self._direct_climate_updated,
+        )
+        self.native_humidity = HumiditySetpointControl(
+            self.hass,self.entry.entry_id,changed=self._humidity_updated,
+        )
+        self.humidity_power = HumidityPowerControl(
+            self.hass,self.entry.entry_id,changed=self._humidity_power_updated,
+        )
+        self.secondary_climate = SecondaryClimateSetpoint(
+            self.hass,self.entry.entry_id,changed=self._secondary_updated,
+        )
+        self.running_fans = RunningFanSpeedControl(
+            self.hass,self.entry.entry_id,changed=self._fan_updated,
+        )
+        self.fan_power = FanPowerControl(
+            self.hass,self.entry.entry_id,changed=self._fan_power_updated,
+        )
+        self.native_air_mode = NativeAirModeControl(
+            self.hass,self.entry.entry_id,changed=self._air_mode_updated,
+        )
 
     @property
     def settings(self) -> dict[str, Any]:
@@ -192,6 +231,159 @@ class AirQualityManager:
             outside_safe=base_plan.outdoor_safe,
         )
         environment["__outside__"] = {"pollen": pollen}
+        room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
+        climate_only=()
+        if isinstance(room_climate_configs,dict):
+            # Climate may be configured in any real HA area; window monitoring
+            # remains scoped to CONF_AREAS so notification routes never widen.
+            extra_areas=[area for area in room_climate_configs
+                         if isinstance(area,str) and area not in monitored_areas]
+            climate_only=rooms(
+                self.hass,extra_areas,max_age,
+                excluded_entities=(selected_outdoor |
+                                   set(config.get(CONF_EXCLUDED_WINDOWS,[]))),
+            ) if extra_areas else ()
+            raw_for_climate={r.area_id:r for r in raw_rooms}
+            raw_for_climate.update({r.area_id:r for r in climate_only})
+            duplicate_devices=duplicate_owners(room_climate_configs)
+            # An old installation can contain multiple config entries
+            # selecting the same physical actuator. Do not let separate
+            # managers issue competing native/switch power commands.
+            duplicate_devices.update(
+                cross_entry_collisions(
+                    self.hass,self.entry.entry_id,room_climate_configs
+                )
+            )
+            for monitored in (*selected_rooms,*climate_only):
+                settings=room_climate_configs.get(monitored.area_id,{})
+                prior = (
+                    self.direct_climate._rooms.get(monitored.area_id).mode
+                    if monitored.area_id in self.direct_climate._rooms else
+                    self.native_climate.expected_hvac.get(monitored.area_id)
+                )
+                pmv_air=environment.get(monitored.area_id,{}).get(
+                    "international",{}).get("pmv_air_target",{}
+                )
+                comfort=pmv_air.get("air_temperature_target_c") if (
+                    pmv_air.get("status")=="estimate") else None
+                state,tracked=climate_room_plan(
+                    self.hass,raw_for_climate[monitored.area_id],settings,
+                    prior_mode=prior,comfort_target_c=comfort,
+                    outdoor_safe=base_plan.outdoor_safe,
+                    duplicate_equipment=duplicate_devices,
+                    require_window_contact=monitored.area_id in monitored_areas,
+                )
+                state["target_source"]=settings.get("target_source","temperature")
+                state["comfort_target_evidence"]=pmv_air.get("status","not_configured")
+                # Independent air-quality responses never command hardware.
+                # Use physical moisture-ratio evidence, not outdoor RH alone.
+                profile=environment_rooms.get(monitored.area_id,{})
+                if not isinstance(profile,dict):
+                    profile={}
+                moist=environment.get(monitored.area_id,{}).get("moisture")
+                if not isinstance(moist,dict) or moist.get("status")=="unavailable":
+                    station=current_weather[0] if len(current_weather)==1 else None
+                    moist=moisture_potential(
+                        state.get("temperature_c"),
+                        state.get("humidity_management",{}).get("measured_rh"),
+                        getattr(station,"temperature_c",None),
+                        getattr(station,"humidity",None),
+                    )
+                state["air_actions"]=air_treatment_plan(
+                    raw_for_climate[monitored.area_id].readings,
+                    state,state.get("equipment_plan",{}),moist,
+                    outside_safe=base_plan.outdoor_safe,
+                    science_profile=profile,settings=settings,
+                )
+                # Fast fan polling may reuse this plan; record when its
+                # outdoor-air and sensor evidence was actually evaluated.
+                state["air_evidence_at"]=time()
+                valid_outside=[r for r in outdoor_readings
+                               if r.metric in ("pm25","pm10","no2","o3","so2","aqi")]
+                state["air_actions"]["outdoor_air_verified"]=(
+                    base_plan.outdoor_safe is True and bool(valid_outside)
+                    and all(r.value is not None for r in valid_outside)
+                    and all(
+                        (r.details or {}).get("aqi",{}).get("status")=="ready"
+                        if r.metric=="aqi" else True for r in valid_outside
+                    )
+                )
+                substitute=window_substitution(
+                    self.hass, raw_for_climate[monitored.area_id],
+                    settings, state,
+                    environment.get(monitored.area_id,{}),
+                    current_weather, outdoor_readings,
+                    outside_safe=base_plan.outdoor_safe,
+                )
+                substitute["notify_enabled"]=(
+                    settings.get("window_efficiency_notify") is True
+                    if isinstance(settings,dict) else False
+                )
+                state["window_efficiency"]=substitute
+                # Previously the DRY/FAN_ONLY advisor existed only in tests:
+                # attach its real live plan to the dashboard for heat-pump,
+                # AC, and native DRY-only equipment, even without actuation.
+                state["native_air_mode_advice"]=native_air_mode_advice(
+                    self.hass,monitored.area_id,settings,
+                    state.get("equipment_plan",{}),time(),
+                )
+                if isinstance(settings,dict) and settings.get("enabled"):
+                    equipment=state.get("equipment_plan",{})
+                    thermal=equipment.get("thermal",{})
+                    # Never issue commands for an unowned, shared or competing
+                    # appliance. Secondary equipment needs a dedicated driver.
+                    if settings.get("controller")=="device":
+                        hold=native_plan_hold_reason(
+                            settings.get("climate_entity"),equipment,state.get("mode"))
+                        if hold is not None:
+                            state["status"]="hold"
+                            state["reason"]=hold
+                    elif equipment.get("status")=="duplicate_equipment_owner":
+                        state["status"]="hold"
+                        state["reason"]="duplicate_equipment_owner"
+                    state["automatic_actuation_enabled"] = (
+                        settings.get("allow_actuation") is True and
+                        (settings.get("controller") == "device" or
+                         settings.get("humidity_setpoint_auto") is True or
+                         settings.get("humidity_power_auto") is True or
+                         settings.get("fan_speed_auto") is True or
+                         settings.get("fan_power_auto") is True or
+                         settings.get("dry_fan_mode_auto") is True)
+                    )
+                    driver = (self.direct_climate if settings.get("controller") in
+                              ("on_off","pwm","proportional") else self.native_climate)
+                    state["actuation"] = driver.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["humidity_actuation"] = self.native_humidity.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["humidity_power_actuation"] = self.humidity_power.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["secondary_actuation"] = self.secondary_climate.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["fan_actuation"] = self.running_fans.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["fan_power_actuation"] = self.fan_power.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    state["native_air_mode_actuation"] = self.native_air_mode.statuses.get(
+                        monitored.area_id,{"status":"advisory_only"}
+                    )
+                    # All independent device drivers consume ONE per-room
+                    # priority/exclusivity decision. They still recheck the
+                    # physical state immediately before a device write.
+                    state["coordination"]=room_coordination(
+                        self.hass,monitored.area_id,settings,state,now=time(),
+                    )
+                    environment.setdefault(monitored.area_id,{})["climate_plan"]=state
+                    self._tracked.update(tracked)
+                    self._tracked.update(w.entity_id for w in monitored.windows)
+                    self._tracked.update(r.entity_id for r in raw_for_climate[
+                        monitored.area_id].readings)
         pid_configs = config.get(CONF_PID_ROOMS, {})
         if not isinstance(pid_configs, dict):
             pid_configs = {}
@@ -227,10 +419,33 @@ class AirQualityManager:
             self._environment_store.async_delay_save(
                 self._environment_history.snapshot, 300,
             )
-        return evaluate(
+        air_plan=evaluate(
             outdoor_readings, current_weather, warnings, selected_rooms,
             self.thresholds, environment=environment,
             extra_outside=extra_outside,
+        )
+        extra=tuple(room for room in climate_only if
+                    isinstance(room_climate_configs.get(room.area_id),dict) and
+                    room_climate_configs[room.area_id].get("enabled") is True)
+        extra_notices=[]
+        if base_plan.outdoor_safe is True:
+            for room in extra:
+                report=environment.get(room.area_id,{}).get("climate_plan",{})
+                option=report.get("window_efficiency",{})
+                if (option.get("status") != "opportunity" or
+                        option.get("notify_enabled") is not True):
+                    continue
+                # No synthetic window; this includes only true HA window
+                # contacts in the explicitly selected climate room.
+                closed=tuple(w for w in room.windows if w.opened is False)
+                if not closed or len(closed)!=len(room.windows):
+                    continue
+                extra_notices.append(Recommendation(
+                    "open",room.area_id,room.name,closed,(window_reason(option),),
+                ))
+        return replace(
+            air_plan,climate_rooms=extra,
+            climate_recommendations=tuple(extra_notices),
         )
 
     async def async_start(self) -> None:
@@ -251,6 +466,14 @@ class AirQualityManager:
         # Load latching PID manual overrides and expected targets first.
         # If its storage fails, the PID controller remains fail-closed.
         await self.pid.async_start()
+        await self.native_climate.async_start()
+        await self.direct_climate.async_start()
+        await self.native_humidity.async_start()
+        await self.humidity_power.async_start()
+        await self.secondary_climate.async_start()
+        await self.running_fans.async_start()
+        await self.fan_power.async_start()
+        await self.native_air_mode.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -258,6 +481,7 @@ class AirQualityManager:
             self.hass.bus.async_listen("device_registry_updated", self._on_registry_changed),
             self.hass.bus.async_listen("area_registry_updated", self._on_registry_changed),
             async_track_time_interval(self.hass, self._on_interval, timedelta(minutes=5)),
+            async_track_time_interval(self.hass, self._on_fast_climate_interval, timedelta(seconds=30)),
         ))
         self._recalculate(initial=True)
 
@@ -275,6 +499,140 @@ class AirQualityManager:
         self.plan = replace(self.plan, environment=environment)
         async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
+    def climate_diagnostics(self, area:str|None=None) -> dict[str,Any]:
+        """Read-only commissioning evidence for the explicitly configured rooms."""
+        configured=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        plans={key:value.get("climate_plan",{})
+               for key,value in self.plan.environment.items()
+               if isinstance(value,dict)}
+        return climate_commissioning_report(
+            self.hass,configured,plans,area=area,
+            entry_id=self.entry.entry_id,
+        )
+
+    async def async_climate_control(self, area:str, action:str) -> dict[str, Any]:
+        configured=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if not isinstance(configured,dict) or not isinstance(configured.get(area),dict):
+            return {"accepted":False,"reason":"room_not_configured"}
+        profile=configured[area]
+        if profile.get("enabled") is not True or profile.get("allow_actuation") is not True:
+            return {"accepted":False,"reason":"climate_control_not_enabled"}
+        if profile.get("controller") in ("on_off","pwm","proportional"):
+            primary=await self.direct_climate.command(area,action,configured)
+        elif profile.get("controller")=="environment":
+            primary={"accepted":True,"reason":"environment_only_no_primary_hvac"}
+        elif profile.get("controller")=="device" and profile.get("mode")=="dry":
+            primary={"accepted":True,"reason":"dry_only_no_temperature_controller"}
+        else:
+            primary=await self.native_climate.command(area,action)
+        results={"primary":primary}
+        if profile.get("humidity_setpoint_auto") is True:
+            results["humidity_setpoint"]=await self.native_humidity.command(area,action)
+        if profile.get("humidity_power_auto") is True:
+            results["humidity_power"]=await self.humidity_power.command(area,action)
+        if profile.get("secondary_climate_setpoint_auto") is True:
+            results["secondary_climate"]=await self.secondary_climate.command(area,action)
+        if profile.get("fan_speed_auto") is True:
+            results["fan_speed"]=await self.running_fans.command(area,action)
+        if profile.get("fan_power_auto") is True:
+            results["fan_power"]=await self.fan_power.command(area,action)
+        if profile.get("dry_fan_mode_auto") is True:
+            results["native_air_mode"]=await self.native_air_mode.command(area,action)
+        if len(results)==1:
+            return primary
+        return {**primary,**results,
+                "accepted":all(r.get("accepted") is True for r in results.values())}
+
+    @callback
+    def _air_mode_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.native_air_mode.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "native_air_mode_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _fan_power_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.fan_power.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "fan_power_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _fan_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.running_fans.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "fan_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _secondary_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.secondary_climate.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "secondary_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _humidity_power_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.humidity_power.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "humidity_power_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _humidity_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(value) for key,value in self.plan.environment.items()}
+        for area,status in self.native_humidity.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],
+                      "humidity_actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
+    @callback
+    def _direct_climate_updated(self) -> None:
+        if not self._active:
+            return
+        environment={key:dict(val) for key,val in self.plan.environment.items()}
+        for area,status in self.direct_climate.statuses.items():
+            if area in environment and "climate_plan" in environment[area]:
+                plan={**environment[area]["climate_plan"],"actuation":status}
+                environment[area]["climate_plan"]=plan
+        self.plan=replace(self.plan,environment=environment)
+        async_dispatcher_send(self.hass,f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+
     async def async_pid_control(self, area: str, action: str) -> dict[str, Any]:
         configs = self.settings.get(CONF_PID_ROOMS, {})
         return await self.pid.async_action(area, action, configs)
@@ -286,6 +644,48 @@ class AirQualityManager:
     @callback
     def _on_interval(self, _now: Any) -> None:
         self._recalculate()
+
+    @callback
+    def _on_fast_climate_interval(self, _now: Any) -> None:
+        # PWM edges require faster scheduling than the 5-minute air-quality
+        # refresh. Use the last validated plan; _tick rechecks sensor freshness.
+        if not self._active:
+            return
+        settings=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if not isinstance(settings,dict) or not settings:
+            return
+        plans={area:item.get("climate_plan",{})
+               for area,item in self.plan.environment.items()
+               if isinstance(item,dict) and "climate_plan" in item}
+        # Fan power/speed checks use a strict 120-second outdoor-air evidence
+        # lifetime. Refresh the *whole* scientific/environmental plan before
+        # it expires, not only every five minutes. This recalculation also
+        # recomputes unified arbitration and dispatches all controllers once.
+        now=time()
+        active_air_rooms=[
+            area for area,conf in settings.items()
+            if isinstance(conf,dict) and conf.get("enabled") is True
+            and (conf.get("fan_speed_auto") is True or
+                 conf.get("fan_power_auto") is True)
+        ]
+        if active_air_rooms and any(
+            isinstance(plans.get(area),dict) and bool(plans[area])
+            and (
+                not isinstance(plans[area].get("air_evidence_at"),(int,float))
+                or not 0 <= now-plans[area]["air_evidence_at"] < 90
+            )
+            for area in active_air_rooms
+        ):
+            self._recalculate()
+            return
+        pid_settings=self.settings.get(CONF_PID_ROOMS,{})
+        self.direct_climate.schedule(settings,plans,pid_rooms=pid_settings,native_rooms=settings)
+        self.native_humidity.schedule(settings,plans)
+        self.humidity_power.schedule(settings,plans)
+        self.secondary_climate.schedule(settings,plans,pid_rooms=pid_settings)
+        self.running_fans.schedule(settings,plans)
+        self.fan_power.schedule(settings,plans)
+        self.native_air_mode.schedule(settings,plans)
 
     @callback
     def _on_state_changed(self, event: Event) -> None:
@@ -318,11 +718,30 @@ class AirQualityManager:
 
         configured_pid = self.settings.get(CONF_PID_ROOMS, {})
         self.pid.schedule(new_plan.rooms, configured_pid, initial=initial)
+        native_configs=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        plans={area:data.get("climate_plan",{})
+               for area,data in new_plan.environment.items()
+               if isinstance(data,dict)}
+        self.native_climate.schedule(
+            native_configs, plans, pid_rooms=configured_pid,
+        )
+        self.direct_climate.schedule(
+            native_configs, plans, pid_rooms=configured_pid,
+            native_rooms=native_configs,
+        )
+        self.native_humidity.schedule(native_configs, plans)
+        self.humidity_power.schedule(native_configs, plans)
+        self.secondary_climate.schedule(native_configs, plans,
+                                        pid_rooms=configured_pid)
+        self.running_fans.schedule(native_configs,plans)
+        self.fan_power.schedule(native_configs,plans)
+        self.native_air_mode.schedule(native_configs,plans)
 
         previous = self._active_actions
+        notices=(*new_plan.recommendations,*new_plan.climate_recommendations)
         current = {
             rec.area_id: (rec.action_signature, rec.reason_signature)
-            for rec in new_plan.recommendations
+            for rec in notices
         }
         for area_id in previous.keys() - current.keys():
             self._cancel_pending(area_id)
@@ -330,7 +749,7 @@ class AirQualityManager:
         # Install the current keys before arming timers, so callbacks always
         # recheck the latest action and cause.
         self._active_actions = current
-        for rec in new_plan.recommendations:
+        for rec in notices:
             area_id = rec.area_id
             new_keys = current[area_id]
             old_keys = previous.get(area_id)
@@ -401,7 +820,9 @@ class AirQualityManager:
         ):
             return
         rec = next(
-            (rec for rec in self.plan.recommendations if rec.area_id == area_id),
+            (rec for rec in
+             (*self.plan.recommendations,*self.plan.climate_recommendations)
+             if rec.area_id == area_id),
             None,
         )
         if rec is None:
@@ -449,7 +870,10 @@ class AirQualityManager:
         for key in selected:
             unsubscribe = self._pending_unsubs.pop(key, None)
             if unsubscribe is not None:
-                unsubscribe()
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not cancel pending announcement for %s",key)
 
     @callback
     def _cancel_repeat(self, area_id: str | None = None) -> None:
@@ -460,29 +884,67 @@ class AirQualityManager:
         for key in selected:
             unsubscribe = self._repeat_unsubs.pop(key, None)
             if unsubscribe is not None:
-                unsubscribe()
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not cancel repeating announcement for %s",key)
 
     async def async_stop(self) -> None:
+        """Unload every controller and HA listener, even after one failure.
+
+        A failed Store flush in one native HVAC controller must not prevent
+        unrelated fan, humidity, PID or sensor listeners from stopping. Never
+        convert a teardown failure into permission to re-energize equipment.
+        """
         self._active = False
-        await self.pid.async_stop()
-        self._cancel_pending()
-        self._cancel_repeat()
-        self._active_actions.clear()
-        for unsubscribe in self._unsubs:
-            unsubscribe()
-        self._unsubs.clear()
-        # Do not leave work running across an options reload or HA shutdown.
-        pending = tuple(self._tasks)
-        for task in pending:
-            task.cancel()
-        if pending:
-            await asyncio.gather(*pending, return_exceptions=True)
-        self._tasks.clear()
-        if self._environment_store is not None:
-            try:
-                await self._environment_store.async_save(self._environment_history.snapshot())
-            except Exception:
-                _LOGGER.exception("Could not flush bounded environment history")
+        controllers = (
+            ("pid",self.pid),("native_climate",self.native_climate),
+            ("direct_climate",self.direct_climate),
+            ("native_humidity",self.native_humidity),
+            ("humidity_power",self.humidity_power),
+            ("secondary_climate",self.secondary_climate),
+            ("running_fans",self.running_fans),
+            ("fan_power",self.fan_power),
+            ("native_air_mode",self.native_air_mode),
+        )
+        try:
+            outcomes = await asyncio.gather(
+                *(controller.async_stop() for _,controller in controllers),
+                return_exceptions=True,
+            )
+            for (name,_),outcome in zip(controllers,outcomes):
+                if isinstance(outcome,BaseException):
+                    _LOGGER.error(
+                        "Controller %s failed while unloading: %r",
+                        name,outcome,
+                    )
+        finally:
+            # Always release timers/listeners and cancel outstanding manager
+            # tasks, including if HA cancelled an in-progress unload.
+            self._cancel_pending()
+            self._cancel_repeat()
+            self._active_actions.clear()
+            for unsubscribe in tuple(self._unsubs):
+                try:
+                    unsubscribe()
+                except Exception:
+                    _LOGGER.exception("Could not release Home Assistant listener")
+            self._unsubs.clear()
+            pending=tuple(self._tasks)
+            for task in pending:
+                task.cancel()
+            if pending:
+                await asyncio.gather(*pending,return_exceptions=True)
+            self._tasks.clear()
+            if self._environment_store is not None:
+                try:
+                    await self._environment_store.async_save(
+                        self._environment_history.snapshot()
+                    )
+                except Exception:
+                    _LOGGER.exception(
+                        "Could not flush bounded environment history"
+                    )
 
     def _targets_in_room(self, configured: list[str], area_id: str) -> list[str]:
         """Only configured room outputs or explicitly unassigned/general ones."""
@@ -501,14 +963,15 @@ class AirQualityManager:
         visual = (channels in ("notification", "both")) if channels != "auto" else bool(config.get(CONF_AUTO_NOTIFY))
         if not speech and not visual:
             return {"submitted": 0, "reason": "Both automatic channels are disabled"}
-        if not self.plan.recommendations:
+        all_notices=(*self.plan.recommendations,*self.plan.climate_recommendations)
+        if not all_notices:
             return {"submitted": 0, "reason": "No actionable window recommendations"}
 
         localized = self.get_language(language)
         requested_language = language or config.get(CONF_LANGUAGE, "auto")
         sent = 0
         errors: list[str] = []
-        for rec in self.plan.recommendations:
+        for rec in all_notices:
             if areas is not None and rec.area_id not in areas:
                 continue
             title, message = announcement(rec, localized)

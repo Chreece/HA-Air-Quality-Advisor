@@ -2,9 +2,19 @@
 
 ## 0.5.1 — Python 3.14 / Alpine dependency compatibility
 
-- Remove mandatory `pythermalcomfort` and its Numba/LLVM transitive dependencies; retain self-contained ISO 7730 PMV/PPD with published reference-vector tests.
-- Fix Home Assistant startup installation failure on Alpine Python 3.14 without CMake/LLVM workarounds.
-- Preserve PID, monitoring, announcements, configuration, entities, and versioned HACS release behavior.
+- Remove the mandatory `pythermalcomfort` runtime package and its Numba/LLVM transitive dependencies.
+- Keep self-contained ISO 7730 PMV/PPD scientific estimates tested against published reference values.
+- Fix Home Assistant installation on Alpine Python 3.14 while retaining the climate controller, monitoring and compatibility safeguards.
+
+
+## Unreleased — Per-room automatic climate control (draft)
+
+- Add room-specific comfort and away profiles, occupancy debounce, local-time sleeping schedules and explicit device/control configuration.
+- Implement guarded native heat/cool selection, native low/high temperature range support, and direct non-compressor relay, PWM and percentage-based output drivers, each with independent equipment constraints.
+- Implement optional ISO 7730 PMV-target inversion using measured radiant temperature, humidity, air speed and configured clothing/activity inputs; never invent missing data.
+- Enforce room-level ownership, temperature sensor freshness, mode-change dwell, manual-override pause, output acknowledgement, maximum-on watchdog, interlocks and restart handling.
+- Persist direct actuator ON intentions *before* Home Assistant service dispatch; block interrupted writes until verified physical OFF and full minimum-OFF dwell, preserve unknown future safety history, revalidate grants after storage I/O, and retire formerly owned outputs when a room or actuator assignment changes.
+- Expand Home Assistant configuration, tests, translations, documentation and rendered Lovelace-card examples. Remains unreleased pending end-to-end device validation.
 
 ## 0.5.0 — Opt-in bounded climate PID control
 

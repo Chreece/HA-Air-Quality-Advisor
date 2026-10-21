@@ -103,13 +103,19 @@ class Plan:
     warnings: tuple[Warning, ...] = ()
     # Informational derived physics; not an additional measured air pollutant.
     environment: dict[str, dict[str, Any]] = field(default_factory=dict)
+    # Extra climate-only areas are displayed on the dashboard, never passed
+    # into the window/announcement evaluator as monitored air-quality rooms.
+    climate_rooms: tuple[Room, ...] = ()
+    # Explicitly opted-in recommendations for climate-only rooms never
+    # modify monitored-room air-quality totals or status.
+    climate_recommendations: tuple[Recommendation, ...] = ()
 
     @property
     def signature(self) -> str:
         """Only actionable changes cause announcements, not numeric oscillations."""
         items = sorted(
             f"{rec.action}:{rec.area_id}:{','.join(sorted(w.entity_id for w in rec.windows))}"
-            for rec in self.recommendations
+            for rec in (*self.recommendations, *self.climate_recommendations)
         )
         return "|".join(items)
 
@@ -247,6 +253,16 @@ def evaluate(
         if cooling.get("status") == "cooling_opportunity" and not indoor_reasons:
             indoor_reasons.append(Reason("inside_passive_cooling", "Cooling opportunity",
                                          f'{cooling["cooling_delta_c"]:g} °C'))
+        climate_plan = environmental.get(room.area_id, {}).get("climate_plan", {})
+        option = climate_plan.get("window_efficiency", {}) if isinstance(climate_plan,dict) else {}
+        if (option.get("status") == "opportunity"
+                and option.get("notify_enabled") is True
+                and closed and not opened):
+            from .climate_window import window_reason
+            # Existing pollutant or mold warnings keep first priority; the
+            # mechanical alternative is still visible within the TTS limit.
+            position = 1 if indoor_reasons else 0
+            indoor_reasons.insert(position, window_reason(option))
         if not any(reading.value is not None for reading in room.readings) and not indoor_reasons:
             diagnostics.append((room.name, "no_indoor_data"))
         elif indoor_reasons and closed and not opened:

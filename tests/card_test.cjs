@@ -360,3 +360,338 @@ assert.ok(pidCard.shadowRoot.innerHTML.includes('data-pid-action="resume"'));
 pidData.rooms[0].environment.climate_pid={status:'disabled'};
 pidCard.hass={language:'en',states:{'sensor.pid_test':{state:'idle',attributes:{dashboard:pidData}}}};
 assert.ok(!pidCard.shadowRoot.innerHTML.includes('data-pid-action="pause"'));
+
+const nativeRange=JSON.parse(JSON.stringify(input));
+nativeRange.rooms[0].environment={climate_plan:{
+  status:'ready',profile:'home',mode:'heat_cool',
+  low_target_c:20,high_target_c:26,
+  actuation:{status:'native_range_commanded'},
+  reason:'device_internal_heat_cool',
+}};
+const rangeCard=new Card();
+rangeCard.setConfig({entity:'sensor.range_demo'});
+for(const [lang,title] of [['en','Climate'],['de','Klima'],['el','Κλίμα']]){
+  rangeCard.hass={language:lang,states:{
+    'sensor.range_demo':{state:'idle',attributes:{dashboard:nativeRange}},
+  }};
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes(title));
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes('20–26 °C'));
+  assert.ok(rangeCard.shadowRoot.innerHTML.includes('data-climate-area="kitchen"'));
+}
+
+
+// Show separate, explicitly opted-in HVAC and humidity status without
+// conflating active secondary setpoints with the primary controller hold.
+const multiDevice=JSON.parse(JSON.stringify(input));
+multiDevice.rooms[0].environment={climate_plan:{
+  status:'hold',reason:'secondary_thermal_driver_pending',mode:'cool',
+  temperature_target_c:26,profile:'home',
+  actuation:{status:'hold'},
+  secondary_actuation:{status:'setpoint_commanded'},
+  humidity_actuation:{status:'paused'},
+  equipment_plan:{
+    thermal:{status:'selected',entity_id:'climate.kitchen_ac',mode:'cool'},
+    moisture:{status:'selected',entity_id:'humidifier.dryer',action:'dry'},
+    humidity:{status:'advisory',action:'dry',measured_rh:67},
+    humidity_evidence:'selected_sensor',
+  },
+}};
+const multiCard=new Card();
+multiCard.setConfig({entity:'sensor.multi_device'});
+for (const [language, labels] of [
+  ['en',['Secondary HVAC','Humidity control','Selected equipment']],
+  ['de',['Zweites Klimagerät','Luftfeuchteregelung','Ausgewähltes Gerät']],
+  ['el',['Δεύτερη συσκευή κλίματος','Ρύθμιση υγρασίας','Επιλεγμένη συσκευή']],
+]) {
+  multiCard.hass={language,states:{
+    'sensor.multi_device':{state:'idle',attributes:{dashboard:multiDevice}},
+  }};
+  for(const label of labels)
+    assert.ok(multiCard.shadowRoot.innerHTML.includes(label), language+': '+label);
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('climate.kitchen_ac'));
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('humidifier.dryer'));
+  assert.ok(multiCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+multiDevice.rooms[0].environment.climate_plan.actuation={status:'paused'};
+multiDevice.rooms[0].environment.climate_plan.secondary_actuation={status:'paused'};
+multiCard.hass={language:'en',states:{
+  'sensor.multi_device':{state:'idle',attributes:{dashboard:multiDevice}},
+}};
+assert.ok(multiCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Fan speed regulation is a distinct service with independently qualified
+// extraction/filtration evidence; the dashboard never claims it turns fans on.
+const airPanel=JSON.parse(JSON.stringify(input));
+airPanel.rooms[0].environment={climate_plan:{
+  status:'hold',mode:'heat',profile:'home',temperature_target_c:20,
+  actuation:{status:'hold'},
+  secondary_actuation:{status:'advisory_only'},
+  humidity_actuation:{status:'advisory_only'},
+  fan_actuation:{status:'fan_speed_increased',entity_id:'fan.kitchen_filter',
+                 new_percent:50},
+  air_actions:{status:'advisory',filtration:{
+    status:'recommended',entity_id:'fan.kitchen_filter',
+  },extraction:{status:'blocked_outdoor_evidence'}},
+}};
+const airCard=new Card();
+airCard.setConfig({entity:'sensor.air_panel'});
+for(const [lang,label] of [
+  ['en','Particle filtration'],
+  ['de','Partikelfiltration'],
+  ['el','Φιλτράρισμα σωματιδίων'],
+]) {
+  airCard.hass={language:lang,states:{
+    'sensor.air_panel':{state:'idle',attributes:{dashboard:airPanel}},
+  }};
+  assert.ok(airCard.shadowRoot.innerHTML.includes(label));
+  assert.ok(airCard.shadowRoot.innerHTML.includes('fan.kitchen_filter'));
+  assert.ok(airCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+
+
+// Windowless HVAC-only rooms appear without a fake missing air or window warning.
+const onlyClimate=JSON.parse(JSON.stringify(input));
+onlyClimate.rooms=[{
+  area_id:'bedroom',name:'Bedroom',status:'unknown',climate_only:true,
+  environment:{climate_plan:{
+    status:'ready',mode:'heat',temperature_target_c:21,profile:'home',
+    actuation:{status:'setpoint_commanded'},
+  }},
+  readings:[],windows:[],high_count:0,available_count:0,
+}];
+const onlyCard=new Card();
+onlyCard.setConfig({entity:'sensor.climate_only'});
+onlyCard.hass={language:'en',states:{
+  'sensor.climate_only':{state:'idle',attributes:{dashboard:onlyClimate}},
+}};
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('room-climate-only'));
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('Bedroom'));
+assert.ok(onlyCard.shadowRoot.innerHTML.includes('21 °C'));
+const onlyRoomMarkup=onlyCard.shadowRoot.innerHTML.slice(
+  onlyCard.shadowRoot.innerHTML.indexOf('<article class="room room-climate-only">')
+);
+assert.ok(!onlyRoomMarkup.includes('class="empty-measurements"'));
+assert.ok(!onlyRoomMarkup.includes('class="window-section"'));
+
+
+// Native AC DRY/FAN_ONLY is manual advice only; never a mode-control button.
+const dryManual=JSON.parse(JSON.stringify(input));
+dryManual.rooms[0].environment={climate_plan:{
+  status:'ready',profile:'home',mode:'off',
+  actuation:{status:'advisory_only'},secondary_actuation:{status:'advisory_only'},
+  humidity_actuation:{status:'advisory_only'},fan_actuation:{status:'advisory_only'},
+  native_air_mode_advice:{
+    status:'manual_mode_transition_suggested',
+    recommended_mode:'dry',climate_entity:'climate.kitchen_ac',
+    automatic_control:false,
+  },
+}};
+const dryCard=new Card();
+dryCard.setConfig({entity:'sensor.manual_dry'});
+for(const [lang,word] of [
+  ['en','Manual AC mode suggestion'],
+  ['de','Empfohlener Klimamodus'],
+  ['el','Πρόταση χειροκίνητης λειτουργίας'],
+]){
+  dryCard.hass={language:lang,states:{
+    'sensor.manual_dry':{state:'idle',attributes:{dashboard:dryManual}},
+  }};
+  assert.ok(dryCard.shadowRoot.innerHTML.includes(word));
+  assert.ok(dryCard.shadowRoot.innerHTML.includes('climate.kitchen_ac'));
+  assert.ok(!dryCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+
+
+// Environmental-only climate rooms show actual humidity power status without
+// invented thermostat targets, preserve localized names and pause/resume.
+const humidityOnly=JSON.parse(JSON.stringify(input));
+humidityOnly.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,
+  status:'unknown',readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    mode:null,actuation:{status:'advisory_only'},
+    secondary_actuation:{status:'advisory_only'},
+    humidity_actuation:{status:'advisory_only'},
+    humidity_power_actuation:{status:'owned_running',
+                               entity_id:'humidifier.bathroom_dryer'},
+    fan_actuation:{status:'advisory_only'},
+    equipment_plan:{moisture:{status:'selected',
+                              entity_id:'humidifier.bathroom_dryer',
+                              action:'dry'},
+                    humidity:{status:'advisory',action:'dry',
+                              measured_rh:68}},
+  }},
+}];
+const humidityCard=new Card();
+humidityCard.setConfig({entity:'sensor.humidity_only'});
+for(const [language,label] of [
+  ['en','Humidity power'],
+  ['de','Be-/Entfeuchter schalten'],
+  ['el','Έλεγχος ισχύος υγρασίας'],
+]){
+  humidityCard.hass={language,states:{
+    'sensor.humidity_only':{state:'idle',attributes:{dashboard:humidityOnly}},
+  }};
+  const html=humidityCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(label),language+': '+label);
+  assert.ok(html.includes('humidifier.bathroom_dryer'));
+  assert.ok(html.includes('data-climate-action="pause"'));
+  assert.ok(!html.includes('NaN °C'));
+}
+humidityOnly.rooms[0].environment.climate_plan.humidity_power_actuation={
+  status:'paused',reason:'restart_requires_manual_output_reconciliation',
+};
+humidityCard.hass={language:'en',states:{
+  'sensor.humidity_only':{state:'idle',attributes:{dashboard:humidityOnly}},
+}};
+assert.ok(humidityCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// Window-based savings advice is visible but NEVER presented as a command.
+// Climates exposing only DRY are rendered without a fabricated FAN_ONLY mode.
+const windowAid=JSON.parse(JSON.stringify(input));
+windowAid.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'device',mode:'dry',profile:'home',
+    actuation:{status:'advisory_only'},
+    window_efficiency:{status:'opportunity',effect:'dry',
+      active_device:'climate.dry_only',notify_enabled:true,
+      automatic_control:false,
+      evidence:{humidity_ratio_advantage_g_kg:3.4}},
+    native_air_mode_advice:{status:'manual_stop_dry_suggested',
+      recommended_mode:'off',automatic_control:false},
+  }},
+}];
+const windowAidCard=new Card();
+windowAidCard.setConfig({entity:'sensor.window_aid'});
+for(const [language,word] of [
+  ['en','Open-window opportunity'],
+  ['de','Fensterlüften als Alternative'],
+  ['el','Πιθανή εξοικονόμηση'],
+]){
+  windowAidCard.hass={language,states:{
+    'sensor.window_aid':{state:'idle',attributes:{dashboard:windowAid}},
+  }};
+  const html=windowAidCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(word), language + ': missing window alternative');
+  assert.ok(html.includes('climate.dry_only'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
+
+
+// Automatic native fan power belongs to a separately authorized driver,
+// including single-room IDs and runtime pause/resume.
+const poweredFan=JSON.parse(JSON.stringify(input));
+poweredFan.rooms=[{
+  area_id:'kitchen',name:'Kitchen',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    actuation:{status:'advisory_only'},fan_actuation:{status:'advisory_only'},
+    fan_power_actuation:{status:'owned_fan_running',
+                         entity_id:'fan.kitchen_extraction'},
+    air_actions:{status:'advisory',extraction:{
+      status:'recommended',entity_id:'fan.kitchen_extraction'}},
+  }},
+}];
+const fanPowerCard=new Card();
+fanPowerCard.setConfig({entity:'sensor.powered_fan'});
+for(const [language,label] of [
+  ['en','Fan power'],['de','Lüfter Ein/Aus'],
+  ['el','Ισχύς ανεμιστήρων'],
+]){
+  fanPowerCard.hass={language,states:{
+    'sensor.powered_fan':{state:'idle',attributes:{dashboard:poweredFan}},
+  }};
+  assert.ok(fanPowerCard.shadowRoot.innerHTML.includes(label),language+': '+label);
+  assert.ok(fanPowerCard.shadowRoot.innerHTML.includes('data-climate-action="pause"'));
+}
+poweredFan.rooms[0].environment.climate_plan.fan_power_actuation={
+  status:'paused',reason:'restart_requires_manual_fan_off_reconciliation'};
+fanPowerCard.hass={language:'en',states:{
+  'sensor.powered_fan':{state:'idle',attributes:{dashboard:poweredFan}},
+}};
+assert.ok(fanPowerCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));
+
+
+// One centralized room arbiter explains priorities and inhibits unsupported
+// simultaneous effects without inventing extra HVAC service controls.
+const coordinated=JSON.parse(JSON.stringify(input));
+coordinated.rooms=[{
+  area_id:'bedroom',name:'Bedroom',climate_only:true,
+  status:'unknown',readings:[],windows:[],
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    coordination:{
+      status:'ready',priority:'measured_co2_ventilation',
+      channels:{
+        thermal:{status:'held',reason:'opposing_native_mode_armed'},
+        humidity:{status:'eligible',entity_id:'humidifier.bedroom'},
+        extraction:{status:'eligible',entity_id:'fan.bedroom'},
+        filtration:{status:'idle'},
+      },
+    },
+    actuation:{status:'advisory_only'},
+  }},
+}];
+const arbCard=new Card();
+arbCard.setConfig({entity:'sensor.room_priority'});
+for(const [language,rank,hold] of [
+  ['en','CO₂ ventilation','Held'],
+  ['de','CO₂-Lüftung','Gesperrt'],
+  ['el','Εξαερισμός CO₂','Σε αναμονή'],
+]){
+  arbCard.hass={language,states:{
+    'sensor.room_priority':{state:'idle',attributes:{dashboard:coordinated}},
+  }};
+  const html=arbCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(rank),language+': priority');
+  assert.ok(html.includes(hold),language+': blocked purpose');
+  assert.ok(html.includes('opposing native mode armed'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
+
+
+// Native DRY/FAN_ONLY controller status is visible independently of
+// the existing manual mode advice and can be paused without HVAC broadcasts.
+const nativeDry=JSON.parse(JSON.stringify(input));
+nativeDry.rooms=[{
+  area_id:'bathroom',name:'Bathroom',climate_only:true,status:'unknown',
+  readings:[],windows:[],high_count:0,available_count:0,
+  environment:{climate_plan:{
+    status:'advisory',controller:'environment',profile:'home',
+    actuation:{status:'advisory_only'},
+    native_air_mode_advice:{status:'manual_mode_transition_suggested',
+      recommended_mode:'dry',current_mode:'fan_only',
+      climate_entity:'climate.bathroom_ac',automatic_control:false},
+    native_air_mode_actuation:{
+      status:'native_mode_commanded',entity_id:'climate.bathroom_ac',mode:'dry'},
+  }},
+}];
+const nativeDryCard=new Card();
+nativeDryCard.setConfig({entity:'sensor.native_dry'});
+for(const [language,label] of [
+  ['en','Commissioned DRY/FAN modes'],
+  ['de','Freigegebene DRY/FAN-Modi'],
+  ['el','Εγκεκριμένες λειτουργίες DRY/FAN'],
+]){
+  nativeDryCard.hass={language,states:{
+    'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
+  }};
+  const html=nativeDryCard.shadowRoot.innerHTML;
+  assert.ok(html.includes(label),language+': no mode controller');
+  assert.ok(html.includes('native mode commanded'),language+': no mode status');
+  assert.ok(html.includes('data-climate-action="pause"'));
+  assert.ok(!html.includes('data-hvac-mode='));
+}
+nativeDry.rooms[0].environment.climate_plan.native_air_mode_actuation={
+  status:'paused',reason:'manual_mode_or_unacknowledged_write',
+};
+nativeDryCard.hass={language:'en',states:{
+  'sensor.native_dry':{state:'idle',attributes:{dashboard:nativeDry}},
+}};
+assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resume"'));

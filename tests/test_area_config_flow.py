@@ -53,6 +53,7 @@ def _wizard(monkeypatch, adapter):
     selector.EntitySelectorConfig = SelectSelectorConfig
     selector.EntitySelector = SelectSelector
     selector.BooleanSelector = lambda: SelectSelector(SelectSelectorConfig(type="boolean"))
+    selector.TimeSelector = lambda: SelectSelector(SelectSelectorConfig(type="time"))
     selector.NumberSelectorConfig = SelectSelectorConfig
     selector.NumberSelector = SelectSelector
     selector.NumberSelectorMode = SimpleNamespace(BOX="box")
@@ -346,7 +347,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     assert menu["step_id"] == "init"
     assert menu["menu_options"] == [
         "areas", "weather", "indoor_sensors", "window_sensors",
-        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid",
+        "outdoor", "delivery", "thresholds", "environment", "environment_room", "pid", "climate",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -789,3 +790,469 @@ def test_pid_controller_rejects_enabled_room_without_climate_or_temperature(monk
         "pid_temperature_entity":None,"pid_mode":"heat","pid_target_c":21,
     }))
     assert invalid["errors"]["base"]=="pid_climate_required"
+
+def test_climate_room_profiles_are_optional_and_keep_existing_settings(monkeypatch, adapter):
+    options = _make_options(monkeypatch, adapter)
+    asyncio.run(options.async_step_init())
+    choose = asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    assert choose["step_id"] == "climate_room"
+    setup = asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    assert setup["step_id"] == "climate_presence"
+    assert "climate_sleep_start" in setup["data_schema"]
+    assert asyncio.run(options.async_step_climate_presence({}))["step_id"]=="climate_profiles"
+    saved = asyncio.run(options.async_step_climate_profiles({}))
+    data = saved["completed"]["data"]
+    assert data["climate_rooms"]["living"]["enabled"] is False
+    assert data["climate_rooms"]["living"]["profiles"]["home"] == {"heat_c":20.0,"cool_c":26.0}
+    assert data["thresholds"]["indoor_co2"] == 1200
+
+
+def test_climate_room_rejects_new_actuation_without_real_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":None,"climate_temperature_entity":None,
+        "climate_controller":"device","climate_mode":"auto",
+    }))
+    assert result["errors"]["base"] == "climate_temperature_required"
+
+def test_climate_schedule_and_comfort_settings_preserve_other_config(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    bad=asyncio.run(options.async_step_climate_presence({
+        "climate_sleep_schedule_enabled":True,
+        "climate_sleep_start":"22:00","climate_sleep_end":"22:00",
+    }))
+    assert bad["errors"]["base"]=="climate_invalid_sleep_schedule"
+    nxt=asyncio.run(options.async_step_climate_presence({
+        "climate_sleep_schedule_enabled":True,
+        "climate_sleep_start":"22:00","climate_sleep_end":"07:00",
+        "climate_target_source":"pmv",
+        "climate_comfort_adjustment_max_c":1.5,
+    }))
+    assert nxt["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    room=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert room["sleep_schedule_enabled"] is True
+    assert room["target_source"]=="pmv"
+    assert room["sleep_end"]=="07:00"
+    assert saved["completed"]["data"]["thresholds"]["indoor_co2"]==1200
+
+
+def test_direct_actuator_settings_are_separate_and_off_by_default(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    nxt=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":False,"climate_controller":"pwm",
+        "climate_allow_actuation":False,
+    }))
+    assert nxt["step_id"]=="climate_presence"
+    assert asyncio.run(options.async_step_climate_presence({}))["step_id"]=="climate_actuators"
+    nxt=asyncio.run(options.async_step_climate_actuators({
+        "direct_hardware_confirmed":False,
+    }))
+    assert nxt["step_id"]=="climate_profiles"
+
+
+def test_climate_extra_equipment_is_room_scoped_and_removable(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    additional=[
+        MockState("sensor.living_temperature",20,device_class="temperature",unit="°C"),
+        MockState("sensor.living_humidity",58,device_class="humidity",unit="%"),
+        MockState("climate.living", "heat"),
+        MockState("climate.ac", "cool"),
+        MockState("humidifier.dryer","off",device_class="dehumidifier"),
+        MockState("fan.extractor","off"),
+        MockState("humidifier.kitchen","off",device_class="humidifier"),
+    ]
+    for st in additional:
+        h._values[st.entity_id]=st
+        h._entity_areas[st.entity_id]=(
+            "kitchen" if st.entity_id=="humidifier.kitchen" else "living")
+    for entity in ("climate.living","climate.ac"):
+        h._values[entity].attributes.update({
+            "hvac_modes":["off","heat","cool","dry"],
+            "supported_features":1,
+        })
+    asyncio.run(options.async_step_init())
+    assert asyncio.run(options.async_step_climate({"climate_area":"living"}))["step_id"]=="climate_room"
+    selection=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,
+        "climate_entity":"climate.living",
+        "climate_temperature_entity":"sensor.living_temperature",
+        "climate_controller":"device","climate_mode":"auto",
+    }))
+    assert selection["step_id"]=="climate_presence"
+    devices=asyncio.run(options.async_step_climate_presence({}))
+    assert devices["step_id"]=="climate_equipment"
+    assert "climate_dehumidifier_entity" in devices["data_schema"]
+    invalid=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidifier_entity":"humidifier.kitchen",
+    }))
+    assert invalid["errors"]["base"]=="climate_target_required"
+    devices=asyncio.run(options.async_step_climate_equipment({
+        "climate_cool_climate_entity":"climate.ac",
+        "climate_dehumidifier_entity":"humidifier.dryer",
+        "climate_extraction_fan_entity":"fan.extractor",
+        "climate_humidity_entity":"sensor.living_humidity",
+        "climate_humidity_low_rh":40,
+        "climate_humidity_high_rh":60,
+        "climate_humidity_hysteresis_rh":3,
+    }))
+    assert devices["step_id"]=="climate_air_strategy"
+    assert asyncio.run(options.async_step_climate_air_strategy({}))["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    room=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert room["dehumidifier_entity"]=="humidifier.dryer"
+    assert room["cool_climate_entity"]=="climate.ac"
+    assert room["humidity_entity"]=="sensor.living_humidity"
+    assert room["extraction_fan_entity"]=="fan.extractor"
+
+
+def test_native_humidity_target_needs_separate_permission_and_known_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    states=[
+        MockState("sensor.living_temperature",20,device_class="temperature",unit="°C"),
+        MockState("sensor.living_humidity",67,device_class="humidity",unit="%"),
+        MockState("climate.living","heat"),
+        MockState("humidifier.dryer","on",device_class="dehumidifier"),
+    ]
+    for state in states:
+        h._values[state.entity_id]=state
+        h._entity_areas[state.entity_id]="living"
+    h._values["climate.living"].attributes.update({
+        "hvac_modes":["off","heat"],"supported_features":1,
+    })
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":"climate.living",
+        "climate_temperature_entity":"sensor.living_temperature",
+        "climate_controller":"device","climate_mode":"heat",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    invalid=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_setpoint_auto":True,
+        "climate_dehumidifier_entity":"humidifier.dryer",
+    }))
+    assert invalid["errors"]["base"]=="climate_humidity_control_inputs_missing"
+    next_form=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_setpoint_auto":True,
+        "climate_dehumidifier_entity":"humidifier.dryer",
+        "climate_humidity_entity":"sensor.living_humidity",
+    }))
+    assert next_form["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    climate=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert climate["humidity_setpoint_auto"] is True
+    assert climate["dehumidifier_entity"]=="humidifier.dryer"
+    assert climate["humidity_entity"]=="sensor.living_humidity"
+
+
+def test_climate_fan_air_wizard_requires_verified_room_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    extra=[
+        MockState("sensor.living_temperature",21,device_class="temperature",unit="°C"),
+        MockState("sensor.living_co2",1580,device_class="co2",unit="ppm"),
+        MockState("sensor.living_pm25",48,device_class="pm25",unit="µg/m³"),
+        MockState("climate.living","heat"),
+        MockState("fan.purifier","on"),
+        MockState("fan.extractor","on"),
+    ]
+    for state in extra:
+        h._values[state.entity_id]=state
+        h._entity_areas[state.entity_id]="living"
+    h._values["climate.living"].attributes.update({
+        "hvac_modes":["off","heat"],"supported_features":1})
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_entity":"climate.living",
+        "climate_temperature_entity":"sensor.living_temperature",
+        "climate_controller":"device","climate_mode":"heat",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    form=asyncio.run(options.async_step_climate_equipment({
+        "climate_purifier_fan_entity":"fan.purifier",
+        "climate_extraction_fan_entity":"fan.extractor",
+    }))
+    assert form["step_id"]=="climate_air_strategy"
+    bad=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_speed_auto":True,
+        "climate_pm25_sensor_verified":False,
+    }))
+    assert bad["errors"]["base"]=="climate_fan_control_inputs_missing"
+    save=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_speed_auto":True,
+        "climate_pm25_sensor_verified":True,
+        "climate_pm25_entity":"sensor.living_pm25",
+        "climate_co2_entity":"sensor.living_co2",
+        "climate_extraction_speed_percent":70,
+        "climate_purifier_speed_percent":75,
+    }))
+    assert save["step_id"]=="climate_profiles"
+    room=asyncio.run(options.async_step_climate_profiles({}))["completed"]["data"]["climate_rooms"]["living"]
+    assert room["fan_speed_auto"] is True
+    assert room["co2_entity"]=="sensor.living_co2"
+    assert room["pm25_entity"]=="sensor.living_pm25"
+    assert room["pm25_sensor_verified"] is True
+    assert room["purifier_speed_percent"]==75
+
+
+def test_environment_only_room_can_enable_verified_dehumidifier_without_thermostat(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    hass=options.hass
+    humid=MockState("sensor.living_humidity",72,device_class="humidity",unit="%")
+    appliance=MockState("humidifier.living_dehumidifier","off",device_class="dehumidifier")
+    appliance.attributes.update({"humidity":60,"min_humidity":35,"max_humidity":75})
+    for entity in (humid,appliance):
+        hass._values[entity.entity_id]=entity
+        hass._entity_areas[entity.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    step=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment","climate_mode":"auto",
+        "climate_temperature_entity":"none",
+        "climate_entity":None,
+    }))
+    assert step["step_id"]=="climate_presence"
+    step=asyncio.run(options.async_step_climate_presence({}))
+    assert step["step_id"]=="climate_equipment"
+    rejected=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_power_auto":True,
+        "climate_dehumidifier_entity":"humidifier.living_dehumidifier",
+        "climate_humidity_entity":"sensor.living_humidity",
+    }))
+    assert rejected["errors"]["base"]=="climate_humidity_power_inputs_missing"
+    step=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_power_auto":True,
+        "climate_humidity_power_hardware_confirmed":True,
+        "climate_humidity_power_windowless_confirmed":True,
+        "climate_humidity_power_min_on_s":600,
+        "climate_humidity_power_min_off_s":600,
+        "climate_humidity_power_max_on_s":7200,
+        "climate_dehumidifier_entity":"humidifier.living_dehumidifier",
+        "climate_humidity_entity":"sensor.living_humidity",
+    }))
+    assert step["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    cfg=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["controller"]=="environment"
+    assert cfg["climate_entity"] is None and cfg["temperature_entity"] is None
+    assert cfg["humidity_power_auto"] is True
+    assert cfg["humidity_power_hardware_confirmed"] is True
+    assert cfg["dehumidifier_entity"]=="humidifier.living_dehumidifier"
+
+
+def test_humidity_power_and_setpoint_cannot_be_enabled_together(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    values=[
+        MockState("sensor.living_humidity",72,device_class="humidity",unit="%"),
+        MockState("humidifier.living_dry","off",device_class="dehumidifier"),
+    ]
+    for item in values:
+        h._values[item.entity_id]=item
+        h._entity_areas[item.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment",
+        "climate_temperature_entity":"none",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    result=asyncio.run(options.async_step_climate_equipment({
+        "climate_humidity_power_auto":True,
+        "climate_humidity_setpoint_auto":True,
+        "climate_humidity_power_hardware_confirmed":True,
+        "climate_dehumidifier_entity":"humidifier.living_dry",
+        "climate_humidity_entity":"sensor.living_humidity",
+    }))
+    assert result["errors"]["base"]=="climate_humidity_power_inputs_missing"
+
+
+def test_dry_only_climate_mode_without_fictitious_temperature_sensor(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    dryer=MockState("climate.room_dryer","dry")
+    dryer.attributes.update({"hvac_modes":["dry"],"supported_features":0})
+    h._values[dryer.entity_id]=dryer
+    h._entity_areas[dryer.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,
+        "climate_controller":"device",
+        "climate_mode":"dry",
+        "climate_entity":"climate.room_dryer",
+        "climate_temperature_entity":"none",
+        "climate_allow_actuation":False,
+    }))
+    assert result["step_id"]=="climate_presence"
+    result=asyncio.run(options.async_step_climate_presence({}))
+    assert result["step_id"]=="climate_equipment"
+    result=asyncio.run(options.async_step_climate_equipment({
+        "climate_window_efficiency_notify":True,
+    }))
+    assert result["step_id"]=="climate_profiles"
+    result=asyncio.run(options.async_step_climate_profiles({}))
+    room=result["completed"]["data"]["climate_rooms"]["living"]
+    assert room["mode"]=="dry"
+    assert room["temperature_entity"] is None
+    assert room["window_efficiency_notify"] is True
+
+
+def test_window_substitution_notifications_default_off_for_legacy_climate_rooms(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({"climate_enabled":False}))
+    asyncio.run(options.async_step_climate_presence({}))
+    result=asyncio.run(options.async_step_climate_profiles({}))
+    cfg=result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg.get("window_efficiency_notify") is not True
+
+
+def test_environment_only_native_fan_power_consent_and_mutual_exclusion(monkeypatch,adapter):
+    options=_make_options(monkeypatch,adapter)
+    h=options.hass
+    fan=MockState("fan.living_extractor","off")
+    co2=MockState("sensor.living_co2",1600,device_class="co2",unit="ppm")
+    for device in (fan,co2):
+        h._values[device.entity_id]=device
+        h._entity_areas[device.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment",
+        "climate_temperature_entity":"none",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    next_form=asyncio.run(options.async_step_climate_equipment({
+        "climate_extraction_fan_entity":"fan.living_extractor",
+    }))
+    assert next_form["step_id"]=="climate_air_strategy"
+    invalid=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert invalid["errors"]["base"]=="climate_fan_power_inputs_missing"
+    invalid=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,"climate_fan_speed_auto":True,
+        "climate_fan_power_hardware_confirmed":True,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert invalid["errors"]["base"]=="climate_fan_power_inputs_missing"
+    enabled=asyncio.run(options.async_step_climate_air_strategy({
+        "climate_fan_power_auto":True,
+        "climate_fan_speed_auto":False,
+        "climate_fan_power_hardware_confirmed":True,
+        "climate_fan_power_min_on_s":300,
+        "climate_fan_power_min_off_s":300,
+        "climate_fan_power_max_on_s":3600,
+        "climate_co2_entity":"sensor.living_co2",
+    }))
+    assert enabled["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    cfg=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["controller"]=="environment"
+    assert cfg["fan_power_auto"] is True and cfg["fan_speed_auto"] is False
+    assert cfg["fan_power_hardware_confirmed"] is True
+
+
+
+def test_commissioned_dry_fan_setup_requires_exact_modes_sensor_and_extra_consent(
+    monkeypatch,adapter,
+):
+    options=_make_options(monkeypatch,adapter)
+    hass=options.hass
+    sensor=MockState("sensor.living_humidity",76,device_class="humidity",unit="%")
+    ac=MockState("climate.living_dry","fan_only")
+    ac.attributes.update({"hvac_modes":["off","dry","fan_only"],
+                          "supported_features":0,"hvac_action":"fan"})
+    for item in (sensor,ac):
+        hass._values[item.entity_id]=item
+        hass._entity_areas[item.entity_id]="living"
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    result=asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment","climate_temperature_entity":"none",
+    }))
+    assert result["step_id"]=="climate_presence"
+    asyncio.run(options.async_step_climate_presence({}))
+    request={
+        "climate_dry_climate_entity":ac.entity_id,
+        "climate_humidity_entity":sensor.entity_id,
+        "climate_dry_fan_mode_auto":True,
+    }
+    result=asyncio.run(options.async_step_climate_equipment(request))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
+    # A configured DRY-only model does not invent FAN_ONLY support.
+    ac.attributes["hvac_modes"]=["dry"]
+    result=asyncio.run(options.async_step_climate_equipment({
+        **request,"climate_dry_fan_hardware_confirmed":True,
+    }))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"
+    ac.attributes["hvac_modes"]=["off","dry","fan_only"]
+    result=asyncio.run(options.async_step_climate_equipment({
+        **request,"climate_dry_fan_hardware_confirmed":True,
+        "climate_dry_fan_mode_dwell_s":1800,
+        "climate_dry_fan_windowless_confirmed":True,
+    }))
+    assert result["step_id"]=="climate_profiles"
+    saved=asyncio.run(options.async_step_climate_profiles({}))
+    final=saved["completed"]["data"]["climate_rooms"]["living"]
+    assert final["controller"]=="environment"
+    assert final["climate_entity"] is None
+    assert final["dry_climate_entity"]==ac.entity_id
+    assert final["humidity_entity"]==sensor.entity_id
+    assert final["dry_fan_mode_auto"] is True
+    assert final["dry_fan_hardware_confirmed"] is True
+    assert final["dry_fan_mode_dwell_s"]==1800
+
+
+def test_dry_fan_mode_consent_does_not_override_separate_humidity_controller(
+    monkeypatch,adapter,
+):
+    options=_make_options(monkeypatch,adapter)
+    hass=options.hass
+    for item in (
+        MockState("sensor.living_humidity",76,device_class="humidity",unit="%"),
+        MockState("climate.living_dry","fan_only"),
+        MockState("humidifier.living_dry","off",device_class="dehumidifier"),
+    ):
+        hass._values[item.entity_id]=item
+        hass._entity_areas[item.entity_id]="living"
+    hass.states.get("climate.living_dry").attributes.update({
+        "hvac_modes":["off","dry","fan_only"],"hvac_action":"fan",
+    })
+    asyncio.run(options.async_step_init())
+    asyncio.run(options.async_step_climate({"climate_area":"living"}))
+    asyncio.run(options.async_step_climate_room({
+        "climate_enabled":True,"climate_allow_actuation":True,
+        "climate_controller":"environment","climate_temperature_entity":"none",
+    }))
+    asyncio.run(options.async_step_climate_presence({}))
+    result=asyncio.run(options.async_step_climate_equipment({
+        "climate_dry_fan_mode_auto":True,
+        "climate_dry_fan_hardware_confirmed":True,
+        "climate_dry_climate_entity":"climate.living_dry",
+        "climate_humidity_entity":"sensor.living_humidity",
+        "climate_dehumidifier_entity":"humidifier.living_dry",
+        "climate_humidity_setpoint_auto":True,
+    }))
+    assert result["errors"]["base"]=="climate_dry_fan_control_inputs_missing"

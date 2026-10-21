@@ -257,3 +257,23 @@ def test_dashboard_preserves_raw_mold_factor_and_current_calculation_temperature
     assert data["details"]["estimated_surface_c"] == 17.1
     assert data["details"]["humidity_sensor_count"] == 2
     assert data["metric"] == "mold"
+
+
+def test_unmonitored_climate_rooms_render_without_changing_air_monitoring():
+    from dataclasses import replace
+    monitored=(room("Kitchen"),)
+    air=evaluate((Reading("sensor.out_pm","Outside","pm25",5),),
+                 (Weather("weather.home","sunny",21,40,7),),(),monitored)
+    heating=Room("bedroom","Bedroom",(),())
+    external=replace(air,climate_rooms=(heating,),environment={
+        "bedroom":{"climate_plan":{"status":"ready","mode":"heat",
+                                   "temperature_target_c":21}}})
+    data=dashboard_snapshot(external,DEFAULT_THRESHOLDS)
+    assert data["summary"]["total"]==1
+    assert len(data["rooms"])==2
+    assert data["climate_only_count"]==1
+    assert data["rooms"][1]["climate_only"] is True
+    assert data["rooms"][1]["status"]=="unknown"
+    assert data["rooms"][1]["action"] is None
+    assert data["rooms"][1]["environment"]["climate_plan"]["mode"]=="heat"
+    assert air.signature==external.signature

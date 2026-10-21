@@ -162,7 +162,8 @@
           "thresholds": "Erweiterte Grenzwerte",
           "environment": "Internationale Luftqualitätsquellen und Pollen",
           "environment_room": "Raum für Umweltanalysen wählen",
-          "pid": "Klima-PID — Raum wählen"
+          "pid": "Klima-PID — Raum wählen",
+          "climate": "Klima — Raum auswählen"
         }
       },
       "window_sensors": {
@@ -562,6 +563,228 @@
           "pid_max_change_c": "Setpoint rate limiter. Defaults to 0.5 °C per control cycle and cannot be bypassed by a large error.",
           "pid_min_change_c": "Avoids needless chatter from small temperature differences or device quantization."
         }
+      },
+      "climate": {
+        "title": "Klima — Raum auswählen",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_area": "Room to configure"
+        },
+        "data_description": {
+          "climate_area": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_room": {
+        "title": "Klima — Regelung, Anwesenheit und Abwesenheit",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_enabled": "Klimaplaner für diesen Raum aktivieren",
+          "climate_allow_actuation": "Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)",
+          "climate_auto_switch_hvac": "Automatischen Heiz-/Kühlmoduswechsel erlauben",
+          "climate_prefer_native_auto": "Geräteeigenen Heiz-/Kühlbereich verwenden",
+          "climate_controller": "Controller method / device capability",
+          "climate_mode": "Heat, cool, off or automatic selection",
+          "climate_entity": "Explicit room climate device",
+          "climate_temperature_entity": "Fresh independent temperature sensor",
+          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_allow_actuation": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_auto_switch_hvac": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_prefer_native_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_controller": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_mode": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_temperature_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_hysteresis_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_presence": {
+        "title": "Klima — Anwesenheit, Abwesenheit, Schlaf und Komfort",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_occupancy_sensors": "Präsenzsensoren in diesem Raum",
+          "climate_away_entities": "Personen und Tracker für Zuhause/Abwesend",
+          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
+          "climate_unoccupied_delay_minutes": "Verzögerung bis Raum als unbelegt gilt (Minuten)",
+          "climate_occupancy_stale_minutes": "Maximales Alter der Präsenzmessung (Minuten)",
+          "climate_away_policy": "Whole-house away tracking policy",
+          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
+          "climate_sleep_active": "Sleep profile currently active in this room",
+          "climate_sleep_schedule_enabled": "Schlafprofil nach Uhrzeit",
+          "climate_sleep_start": "Schlafbeginn (lokale Zeit)",
+          "climate_sleep_end": "Schlafende (lokale Zeit)",
+          "climate_target_source": "Temperatursollwert oder ISO-7730-Komfort",
+          "climate_comfort_adjustment_max_c": "Maximale Komfortkorrektur (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
+          "climate_away_entities": "Choose explicit Home Assistant entities. Unknown occupancy is not assumed vacant.",
+          "climate_unknown_occupancy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_unoccupied_delay_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_occupancy_stale_minutes": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_away_policy": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_manual_profile": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_active": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_schedule_enabled": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_start": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_sleep_end": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_target_source": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_comfort_adjustment_max_c": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_equipment": {
+        "title": "Klima — zusätzliche Geräte und Luftfeuchtigkeit",
+        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "data": {
+          "climate_heat_climate_entity": "Zusätzlicher Heizthermostat / Heizkörper",
+          "climate_cool_climate_entity": "Zusätzliches Klimagerät zum Kühlen",
+          "climate_dry_climate_entity": "Klimagerät mit Entfeuchtungsmodus DRY",
+          "climate_fan_climate_entity": "Klimagerät mit Lüftermodus",
+          "climate_humidifier_entity": "Luftbefeuchter",
+          "climate_dehumidifier_entity": "Luftentfeuchter",
+          "climate_extraction_fan_entity": "Abluft- / Lüftungsventilator",
+          "climate_purifier_fan_entity": "Luftreiniger-Lüfter",
+          "climate_humidity_entity": "Luftfeuchtesensor für diesen Raum",
+          "climate_humidity_low_rh": "Untergrenze der relativen Luftfeuchte (%)",
+          "climate_humidity_high_rh": "Obergrenze der relativen Luftfeuchte (%)",
+          "climate_humidity_hysteresis_rh": "Hysterese für Luftfeuchte (Prozentpunkte)",
+          "climate_cooling_dry_deferral_rh_points": "Entfeuchter beim aktiven Kühlen zurückstellen, bis relative Feuchte die Obergrenze um diesen Wert übersteigt (0 deaktiviert)",
+          "climate_humidity_setpoint_auto": "Sollfeuchte eines bereits eingeschalteten Be-/Entfeuchters regeln (separate Freigabe)",
+          "climate_window_efficiency_notify": "Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt",
+          "climate_dry_fan_mode_auto": "DRY/FAN_ONLY am Klimagerät automatisch umschalten (separate Freigabe nach Geräteprüfung)",
+          "climate_dry_fan_hardware_confirmed": "Unabhängiger Kompressor-, Abtau- und Kurzzyklenschutz dieses Klimageräts bestätigt",
+          "climate_dry_fan_windowless_confirmed": "Umschalten DRY/FAN_ONLY ohne Fensterkontakt ausdrücklich erlauben",
+          "climate_dry_fan_mode_dwell_s": "Minimale Verweildauer im DRY/FAN_ONLY-Modus (Sekunden, mind. 1800)",
+          "climate_humidity_power_auto": "Automatische Ein-/Ausschaltung des geprüften Be-/Entfeuchters erlauben (separate Zustimmung)",
+          "climate_humidity_power_hardware_confirmed": "Unabhängige Tank-, Frost-, Überhitzungs- und Kompressorschutzfunktionen bestätigt",
+          "climate_humidity_power_windowless_confirmed": "Luftfeuchteregelung ohne Fensterkontakt ausdrücklich erlauben",
+          "climate_humidity_power_min_on_s": "Minimale Einschaltzeit (Sekunden)",
+          "climate_humidity_power_min_off_s": "Minimale Ausschaltzeit (Sekunden)",
+          "climate_humidity_power_max_on_s": "Maximale ununterbrochene Laufzeit (Sekunden)",
+          "climate_secondary_climate_setpoint_auto": "Sollwert von bereits aktiven zusätzlichen Heiz-/Kühlthermostaten regeln (separate Freigabe)"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_cool_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dry_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_climate_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dehumidifier_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_extraction_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_purifier_fan_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_low_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_high_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_hysteresis_rh": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_cooling_dry_deferral_rh_points": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_window_efficiency_notify": "Messages only when the selected climate room has actual closed window contacts, measured pollutant-safe outdoor air, single-source weather and a verifiably operating appliance. No equipment is switched off automatically. Existing Announcement Hub room routing and global delivery permissions apply.",
+          "climate_dry_fan_mode_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dry_fan_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dry_fan_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_dry_fan_mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_windowless_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_humidity_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_secondary_climate_setpoint_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "Klima — Lüftung und Luftreinigung",
+        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "data": {
+          "climate_fan_speed_auto": "Drehzahl bereits laufender Lüfter regeln (separate Freigabe)",
+          "climate_fan_power_auto": "Ein-/Ausschalten geprüfter Lüftungs- oder Luftreinigungsventilatoren erlauben (separate Freigabe)",
+          "climate_fan_power_hardware_confirmed": "Unabhängiger Elektro-, Brand-, Rückström- und Druckschutz geprüft",
+          "climate_fan_power_min_on_s": "Minimale Lüfterlaufzeit (Sekunden)",
+          "climate_fan_power_min_off_s": "Minimale bestätigte Ausschaltzeit (Sekunden)",
+          "climate_fan_power_max_on_s": "Maximale ununterbrochene Lüfterlaufzeit (Sekunden)",
+          "climate_pm25_sensor_verified": "PM2.5-Messsensor überprüft, kein geschätzter Index",
+          "climate_co2_entity": "CO₂-Sensor im Raum (NDIR-Prüfung in Umweltdaten)",
+          "climate_pm25_entity": "PM2.5-Sensor im Raum",
+          "climate_pm25_action_ug_m3": "PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)",
+          "climate_extraction_speed_percent": "Zieldrehzahl laufender Abluftanlage (%)",
+          "climate_purifier_speed_percent": "Zieldrehzahl laufender Luftreinigung (%)"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_power_auto": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_power_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_power_min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_power_min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_fan_power_max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_sensor_verified": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_co2_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_entity": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_pm25_action_ug_m3": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_extraction_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "climate_purifier_speed_percent": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_profiles": {
+        "title": "Klima — Temperaturbereiche je Betriebsart",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "home_heat": "Home heat",
+          "home_cool": "Home cool",
+          "unoccupied_heat": "Unoccupied heat",
+          "unoccupied_cool": "Unoccupied cool",
+          "away_heat": "Away heat",
+          "away_cool": "Away cool",
+          "sleep_heat": "Sleep heat",
+          "sleep_cool": "Sleep cool"
+        },
+        "data_description": {
+          "home_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "home_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "unoccupied_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "unoccupied_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "away_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "away_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "sleep_heat": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "sleep_cool": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
+      },
+      "climate_actuators": {
+        "title": "Direktaktoren — Geräte und sichere Schaltzeiten",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "direct_hardware_confirmed": "Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt",
+          "heat_actuator": "Heizaktor (Schalter oder Prozentwert)",
+          "cool_actuator": "Kühlaktor (Schalter oder Prozentwert)",
+          "min_on_s": "Minimum energized interval (seconds)",
+          "min_off_s": "Minimum de-energized interval (seconds)",
+          "max_on_s": "Maximum continuous energized runtime (seconds)",
+          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
+          "kp": "PID proportional gain (percentage points/°C)",
+          "ki": "PID integral gain (percentage points/(°C·minute))",
+          "kd": "PID derivative gain (percentage points·minute/°C)",
+          "sample_seconds": "PID sampling period (seconds)",
+          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
+          "max_demand_change": "Maximum percentage-point change per cycle",
+          "min_demand_change": "Minimum meaningful percentage-point change"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "heat_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "cool_actuator": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "min_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "min_off_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "max_on_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "mode_dwell_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "kp": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "ki": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "kd": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "sample_seconds": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "pwm_period_s": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "max_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements.",
+          "min_demand_change": "Device/source-specific configuration. No country assumptions; do not substitute estimates for sensor measurements."
+        }
       }
     },
     "error": {
@@ -594,7 +817,25 @@
       "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
       "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
       "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
-      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits."
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
+      "climate_dry_fan_control_inputs_missing": "Raumluftfeuchtesensor und Klimagerät mit DRY und FAN_ONLY auswählen, Geräteschutz bestätigen und keine konkurrierende Entfeuchtersteuerung aktivieren.",
+      "climate_humidity_power_inputs_missing": "Sensor, Be-/Entfeuchter, Schutzfreigabe und sichere Schaltzeiten prüfen; Sollwert- und Schaltregler dürfen nicht gleichzeitig aktiv sein.",
+      "climate_secondary_control_inputs_missing": "Zusätzliches Heiz-/Kühlgerät und Raumfreigabe konfigurieren.",
+      "climate_fan_power_inputs_missing": "Geprüfte Raumluftsensoren und Lüfter, Schutzfreigabe und zulässige Zeiten nötig; Drehzahl- und Leistungsregler nicht gleichzeitig aktivieren.",
+      "climate_fan_control_inputs_missing": "Raumsteuerung, Geräte und geprüfte Sensoren auswählen.",
+      "climate_fan_sensor_invalid": "Nur gültige CO₂-/PM2.5-Sensoren und Prozentwerte auswählen.",
+      "climate_humidity_control_inputs_missing": "Zuerst Klimasteuerung, Raumsensor sowie Be- oder Entfeuchter auswählen.",
+      "climate_temperature_required": "Select a room temperature sensor.",
+      "climate_target_required": "Select a supported climate entity assigned to this room.",
+      "climate_direct_actuator_not_ready": "Relay/PWM/proportional drivers are still under safety testing; they cannot be enabled.",
+      "climate_controller_invalid": "Choose a supported control method.",
+      "climate_mode_invalid": "Choose auto, heat, cool or off.",
+      "climate_occupancy_invalid": "An occupancy sensor does not belong to this room.",
+      "climate_away_invalid": "Select a valid people/tracker entity.",
+      "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
+      "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
+      "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime."
     }
   },
   "entity": {

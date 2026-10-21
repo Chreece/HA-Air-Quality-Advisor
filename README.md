@@ -121,7 +121,7 @@ Users supply and explicitly identify which scale and units each sensor uses.
 | Formaldehyde | Verified real HCHO measurement, µg/m³ or mg/m³ | 30-minute observed concentration; comparison is disabled for cheap estimated HCHO/eCO₂ proxies. |
 | Acoustic environment | Calibrated A-weighted equivalent sound readings in dB(A) | Proper logarithmic acoustic-energy averaging, optionally the preceding local nighttime period for sleeping rooms. Peak-only meters are unsuitable. |
 | Lighting | Calibrated photopic lux measurements; independently measured melanopic EDI only | Daylight-exposure history. Ordinary lux is **never** converted into a fake circadian/melanopic result. |
-| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD using bundled dependency-free Fanger PMV model (numerically checked against pythermalcomfort 4.6.2), where applicable. Missing inputs suppress the result. |
+| Thermal comfort | Actual radiant temperature, air speed, occupant activity (met) and clothing (clo), opt-in | ISO 7730:2025 PMV / PPD computed locally using an independently verified scalar Fanger model, without Numba or LLVM. Missing inputs suppress the result. |
 | Overheating | Time history of room temperature | Observed temperature degree-hours above a chosen reference, not TM52/TM59 building-certification compliance. |
 
 Existing modules from v0.3.0 remain, including humidity-ratio calculations,
@@ -542,6 +542,139 @@ recommended to put medical, industrial or freeze-sensitive loads under this
 experimental supervisory controller without independent safeguards. No climate
 commands are sent until the user enables PID for that room.
 
+## Climate room profiles and automatic control (development branch)
+
+The next Home Environment Manager climate update builds on v0.5.0's
+conservative thermostat-setpoint PID. It distinguishes **four controller
+strategies by actual Home Assistant capabilities**, rather than equating a
+thermostat with a relay:
+
+| Equipment and strategy | Commands | Hard limitations |
+| --- | --- | --- |
+| Built-in thermostat (`climate.*`) | `climate.set_temperature`; optionally `climate.set_hvac_mode` | Requires TARGET_TEMPERATURE support. Automatic heat/cool mode changes need a *second* explicit opt-in, minimum mode dwell and acknowledgement. An OFF thermostat is not restarted. |
+| Native heat/cool range thermostat (`climate.*`) | `climate.set_temperature` with both `target_temp_low` and `target_temp_high` | Requires TARGET_TEMPERATURE_RANGE feature and an *already active* `heat_cool` mode; preserves device's compressor safety, bounds both setpoints and pauses on manual range changes. |
+| Existing v0.5 setpoint PID (`climate.*`) | Rate-limited `climate.set_temperature` only | Can never run alongside another enabled room controller. |
+| Non-compressor heating/cooling relay (`switch.*`) | `switch.turn_on`/`turn_off` | Explicit non-compressor/independent-protection attestation, room ownership, hysteresis, minimum ON/OFF intervals and maximum ON watchdog. |
+| Slow thermal PWM relay (`switch.*`) | Bounded time-proportioning ON/OFF | Only loads documented as safe for repeated switching; fixed PWM period and minimum pulse durations. **Never attach a compressor or unprotected resistive heater.** |
+| True proportional actuator (`number.*`) | `number.set_value` | Sensor must expose a verified 0–100% output with unit `%`, range 0–100 and valid step; rate-limited commands. |
+
+A `climate.*` entity that only exposes heat/off control is **not** assumed
+to be safe for rapid relay PWM. Direct actuators must be assigned to the
+actual HA room, with explicit heat/cool output selectors and confirmation of
+hardware type. The integration does not discover or infer compressor safety.
+
+### Configure temperatures, occupancy and schedules
+
+Open **Home Environment Manager → Configure → Climate**. For each monitored
+room:
+
+1. Select a real temperature sensor, controller strategy and target devices.
+   Enable the room and then separately authorize actuator commands if wanted.
+   Optional automatic native heat/cool switching is another distinct setting.
+2. Select a subset of occupancy sensors or leave it empty to use **all
+   Home Assistant presence/occupancy binary sensors assigned to that room**.
+   Any occupied sensor wins. All known-off sensors must remain off for the
+   configured vacancy delay before an unoccupied setback takes effect.
+   Stale/unknown readings do not automatically prove vacancy.
+3. Choose any supported `person.*`, `device_tracker.*`, or explicitly
+   selected home-presence `binary_sensor.*` entities for whole-home
+   home/away decisions. A named zone such as work is considered away.
+4. Configure an optional **local-time sleeping schedule**, manual profile
+   override, and your desired temperature control basis.
+5. Set **separate heating/cooling bands** for *home, unoccupied, away
+   and sleep*. Heat and cool thresholds must remain separated by a deadband;
+   mode changes are filtered through hysteresis. The default example
+   setpoints (20/26°C at home, 18/28°C unoccupied, 16/30°C away and
+   18/26°C sleeping) are only starting points, not universal comfort targets.
+6. If choosing a relay, PWM or proportional driver, a separate **Direct
+   Actuators** page collects exact entities, hardware attestation,
+   minimum-on/off times, maximum runtime and applicable PID/PWM bounds.
+
+Each room is configured independently. All global and local settings work
+with any supported Home Assistant provider and local timezone; no German,
+Greek or other national integration is hardcoded.
+
+### Optional scientific comfort targeting
+
+Two target-selection modes are supported:
+
+- **Temperature:** use the explicit profile heating/cooling bands.
+- **ISO 7730 PMV:** when enabled in the room's advanced environmental
+  measurements, require a genuine mean radiant temperature, humidity,
+  measured/explicit air speed, clothing insulation (clo), and activity (met).
+  The bundled dependency-free Fanger implementation solves a bounded air
+  temperature corresponding approximately to PMV 0. The correction to the
+  owner's chosen temperature bands is capped; without valid current physical
+  inputs the fixed profile targets remain in force. No PMV-based correction
+  is applied to away/unoccupied setbacks.
+
+ISO 7730 is a *population thermal-comfort model*, not a personalized
+guarantee. A PMV-derived target assumes the other model inputs stay fixed;
+actual indoor radiant temperature and airflow can change with HVAC operation.
+See the [pythermalcomfort model documentation](https://pythermalcomfort.readthedocs.io/en/stable/documentation/models.html).
+
+### Safety and scope
+
+Direct actuator control requires real-world commissioning. The code contains
+restart-persistent manual pauses, output acknowledgement, explicit room/device
+ownership, heating/cooling interlocks, short service-call timeouts, a
+maximum-on safeguard and best-effort safe-off on controller pause or reload
+for devices it previously operated. Unowned active outputs are *not* silently
+overwritten. If a relay cannot be verified OFF or an integration becomes
+unresponsive, hardware cutouts remain indispensable.
+
+The v0.6 development controller now **durably records direct ON/positive-percent
+intent before issuing a relay, PWM or proportional actuator command**. Interrupted
+writes, missing/corrupt safety history and failed acknowledgement persistence
+fail closed; the controller does not automatically repeat uncertain ON commands.
+Resuming an interrupted ON requires the exact output to be verified OFF for
+the configured minimum-OFF dwell, followed by startup settling. Changes to the
+assigned actuator, safety timing, device permissions or room removal cause a
+bounded best-effort shutdown of the *previously confirmed owned* output. An
+output moved to another Home Assistant area or claimed by another config entry
+is not touched automatically; manual reconciliation is required. Physical
+cutouts and supervised equipment commissioning remain necessary.
+
+**This v0.6 climate expansion is currently a draft implementation, not a
+released update.** Integration and simulation tests must pass before
+publication, followed by controlled testing with representative actual
+hardware. Direct relay/PWM modes are for slow, safely protected thermal
+loads; they must not control compressor power circuits or serve as the sole
+frost/overtemperature protection.
+
+
+### Multi-device room equipment (v0.6 development branch)
+
+The **Climate** options now include an additional equipment page. You can
+assign a dedicated heating climate (such as a radiator), cooling climate
+(such as an AC or reversible heat pump), native DRY/FAN_ONLY climate entities,
+a humidifier, dehumidifier, extraction fan and purifier fan. The wizard
+restricts options to the selected Home Assistant area and can select a single
+known humidity sensor for configurable humidity bands and hysteresis.
+
+Each candidate is checked against its actual Home Assistant `hvac_modes`,
+`supported_features` or humidifier `device_class`. The planner identifies
+active opposing heating/cooling, missing measurements and ownership conflicts
+if a device is assigned to multiple rooms. Climate-only rooms need not have a
+window contact; existing monitored rooms still block control if their required
+window contact disappears.
+
+**Native humidity setpoint (extra opt-in):** With climate actuation and
+**Allow native humidity setpoint changes** enabled, the integration may
+adjust the target on an already-on selected `humidifier.*` or
+`dehumidifier.*`. It requires a fresh, explicitly chosen same-room humidity
+sensor, the verified device class and native limits. Commands are bounded,
+rate-limited and acknowledged; manual target changes suspend control until
+explicit resume. It never turns the device on or off or changes its mode.
+
+**Remaining limits:** The existing primary thermostat retains its own native
+heat/cool control. Additional devices require their own explicitly commissioned
+native or guarded controller. DRY/FAN_ONLY monitoring remains advisory
+by default; the draft has a separately authorized transition driver, but
+no unverified device mode or compressor-power commands are permitted. Actual
+hardware commissioning and restart tests are still mandatory before releasing
+v0.6.
+
 ## Known limitations
 
 - Only the named supported metric/device classes and units are interpreted. Unrecognized AQI variants, CO/ozone/NO₂/SO₂, arbitrary provider attributes and event-based weather alerts are not guessed at. Add a normalized HA template sensor where necessary.
@@ -566,21 +699,335 @@ MIT © 2026 Chreece
 If this integration helps, you can support ongoing development on [Ko-fi](https://ko-fi.com/chreece). Contributions and bug reports are welcome through the repository's [issues](https://github.com/Chreece/HA-Home-Environment-Manager/issues).
 
 
-### Python 3.14 / Alpine installation compatibility (v0.5.1)
+### Home Assistant Python 3.14 installation (v0.5.1)
 
-Thermal comfort PMV/PPD now runs on the bundled scalar Fanger ISO 7730
-implementation in `pmv_core.py`. The optional scientific comfort module
-**requires no NumPy, SciPy, Numba, llvmlite, CMake or LLVM installation**.
-The reference equations and published outputs were compared against
-pythermalcomfort 4.6.2, whose MIT notice is bundled in
-`docs/licenses/pythermalcomfort-MIT.txt`.
+The v0.5.1 production hotfix removes the required `pythermalcomfort`/
+Numba/`llvmlite` installation chain. `pmv_core.py` uses a compact,
+reference-tested ISO 7730 Fanger scalar implementation without binary
+scientific dependencies, preserving advanced thermal comfort calculations
+in Home Assistant's Alpine/musl Python 3.14 environment. The experimental
+v0.6 climate-device controls remain on the draft branch.
 
-On Home Assistant's Alpine-based Python 3.14 container, the former
-`pythermalcomfort==4.6.2` dependency could request incompatible binary
-packages and fail during an `llvmlite` source build. This hotfix removes
-that installation barrier for all supported Home Assistant architectures.
 
-PMV requires genuine radiant-temperature, relative air velocity, activity,
-clothing and humidity inputs, and still suppresses results outside ISO 7730
-applicability. It is a population comfort estimate, not a health or
-building-standard certificate. **Room climate PID operation is unchanged.**
+### Multi-device climate status in the Lovelace room panel (v0.6 draft)
+
+The room's climate panel now reports **primary thermostat**, **secondary
+heating/cooling**, and **native humidity target supervision** separately.
+Selecting a secondary AC no longer makes the primary thermostat's hold
+status appear as if all climate control has failed. The selected equipment,
+room humidity evidence and pause/resume state remain visible with English,
+German and Greek labels. Device ID and diagnostic reason are shown for audit.
+All operations remain entity-targeted and retain the existing climate-control
+pause/resume action; secondary DRY/FAN modes are still advisory.
+
+
+### Climate air-treatment and verified fan speed (v0.6 draft)
+
+The new room air-treatment wizard selects actual same-room CO₂ and PM2.5
+sensors, an explicitly chosen short-term **operational** PM2.5 action threshold
+(not a WHO exposure threshold), and desired upper fan speeds. It records the
+user's NDIR/particle-sensor verification and only provides automatic
+percentage changes after separate consent. Indoor–outdoor moisture-ratio
+evidence determines whether ventilation would remove or add moisture.
+
+The coordinator reports distinct **extraction** and **filtration** intentions.
+When CO₂ is high, extraction is recommended only if outside air was assessed
+safe; verified NDIR inputs and a specific sensor are required for actual fan
+speed control. When PM2.5 indoors exceeds the configured action threshold,
+filtration remains an option even while windows should stay closed.
+Moisture-only extraction remains **advisory** until outdoors sensors and fan
+physical behavior can be commissioned.
+
+An enabled fan speed controller uses `fan.set_percentage` on an already-on
+room fan only, increases by at most 10 percentage points per five-minute
+interval, requires a known native speed step and command acknowledgments,
+pauses on a manual speed change and never sets 0% or sends on/off/preset
+actions. Unverified devices remain advisory and the controller will not
+power any purifier or ventilation equipment on.
+
+
+### Climate-only rooms without window sensors
+
+Climate can be configured for a Home Assistant area even when there is no
+window contact in the room. These areas now appear as dedicated **climate
+cards** in the Lovelace view with their controller and equipment diagnostics.
+They are not automatically counted as air-quality safe (or unsafe), do not
+receive invented window recommendations, and do not change the number of
+monitored areas or Announcement Hub delivery targets. Existing monitored
+rooms continue to use strict window-contact interlocks.
+
+
+### Native AC dry/fan-only mode advisory (v0.6 development)
+
+For an already-operating air conditioner exposing real `dry` and `fan_only`
+HVAC modes, the room now indicates when a manually selected mode may improve
+humidity and when the drying requirement has resolved. It never changes the
+mode automatically. Advice requires usable humidity evidence, no competing
+thermostat demand, a supported native mode pair, and a confirmed 30-minute
+mode dwell. An OFF unit remains untouched. This prevents silently starting
+compressor operation without verified real-device protection and recovery.
+
+
+### Dedicated humidity power and environmental-only rooms (v0.6 draft)
+
+For a bathroom or bedroom without any thermostat, choose
+**Climate → Environmental devices only**. Assign the room's humidity sensor
+and `humidifier.*` or `dehumidifier.*` entity; heating, cooling and
+temperature measurements are optional for this method.
+
+An additional experimental, **disabled-by-default** `humidity_power_auto`
+control can turn a *dedicated Home Assistant humidifier/dehumidifier* on or
+off, only after the user confirms independent equipment protections and
+selects safe minimum on/off and maximum continuous running times. The default
+minimum ON/OFF period is 10 minutes, and a newly starting controller will
+not power a device on before it has observed a full off period. A
+windowless room requires another explicit permission. Device target humidity
+must be already programmed near the chosen room threshold and expose known
+bounds/resolution. Only the named `humidifier.turn_on` /
+`humidifier.turn_off` actions are used.
+
+The power controller **does not take ownership of an already-running
+appliance**. It pauses after out-of-band power changes, service/acknowledgement
+failures or a restart with a previously owned active output. Manually
+switch the device OFF, reconcile it, and explicitly resume before automatic
+starts can be considered again. It never controls a compressor exposed only
+as `climate.*`, and power control cannot be combined with the separate
+native humidity-setpoint driver. The v0.6 feature is still a development
+draft requiring hardware-level testing and must not be treated as a
+certified safety controller.
+
+
+### Heat-only, cool-only and DRY-only climate devices (v0.6 draft)
+
+A device can advertise **only HEAT**, **only COOL** or **only DRY** in Home
+Assistant and still be configured. The climate engine respects actual native
+capabilities. Automatic planning will not attempt to cool with a heat-only
+radiator or heat with a cooling-only AC. For DRY-only climate equipment,
+choose the \`dry\` operating intent without inventing a temperature setpoint
+or a FAN_ONLY capability. Compressor-affecting DRY mode changes remain
+**manual/advisory** until physical commissioning is complete.
+
+### Window ventilation instead of running mechanical climate equipment
+
+When **Window efficiency notifications** is enabled in a climate room, the
+integration can advise opening its existing closed window if credible measured
+outdoor conditions could help with the same goal as currently operating
+heating, cooling or dehumidification. These are conservative suggestions,
+not unconditional claims of equivalent energy savings.
+
+Examples:
+
+- Cooling: the room's air conditioner is actually cooling, outdoor air is
+  measured at least 2°C cooler, and outdoor weather/pollutants are safe.
+- Heating: a heater is operating and outdoor air is at least 2°C warmer and
+  can approach the room's requested heating temperature. A cold outdoors
+  situation never generates a fake warming opportunity.
+- Drying: a verified dehumidifier or AC DRY mode is actively removing
+  moisture, and measured indoor/outdoor temperature and relative humidity
+  show at least a 1.5 g/kg dry-air drying advantage, with reasonable
+  indoor/outdoor temperature difference and a plausible RH reduction.
+
+A high *outdoor relative humidity* alone cannot establish indoor
+dehumidification effectiveness; moisture **mass** is considered. Missing
+sensor data, pollutant warnings, ambiguous weather stations, already-open
+windows or uncertain device operating state suppress advice. For a
+humidity-only room, a measured room temperature is optional for running
+a dedicated dehumidifier but **required** to estimate how much window airing
+could reduce humidity; the advisor never fabricates it.
+
+Announcements use the existing global opt-in channels and Announcement Hub
+room-routing authority. Each climate room explicitly opts into these extra
+messages. A climate-only area can receive a notice for its actual recognized
+window without becoming a new general air-quality monitoring room. The
+integration never automatically opens a window or switches off a running
+heater, air conditioner or dehumidifier to exploit the potential savings.
+
+
+### Native extraction and air-purifier fan power (v0.6 draft)
+
+The climate room air-treatment page now has two **mutually exclusive**
+control options: adjust the speed of an *already-running* verified fan,
+or separately authorize the new guarded \`fan.*\` power controller.
+The latter is OFF by default and requires independent fire, backdraft,
+pressure and electrical-safety confirmation along with minimum ON/OFF
+and maximum continuous runtime limits.
+
+For extraction it verifies actual indoor CO₂, sensor technology,
+outdoor air quality/weather, fresh source evidence and the specific
+room's window state before any ON request. For particle filtration it
+uses measured room PM2.5 and can run even when outdoor pollution
+makes opening a window unsuitable. A running fan that the integration
+did not turn on remains user-controlled; the integration does not turn
+it off. Runtime acknowledgments, persistent ownership, user override
+and restart reconciliation are mandatory before later power commands.
+
+All calls target one actual \`fan.*\` entity through Home Assistant's
+native fan power services. There are no automatic compressor or
+\`climate.set_hvac_mode\` commands, and no claim that a powered fan
+guarantees a measured air-change rate or equivalent pollutant removal.
+This remains a draft pending field commissioning.
+
+
+### Climate dashboard: coordinated devices (illustrative data)
+
+These screenshots render the actual bundled Lovelace card with **synthetic
+Home Assistant sensor and device states**, not real equipment measurements.
+They demonstrate a humidity-only room, a cooling room, central room priorities
+and independently guarded fan/dehumidifier status.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-climate-coordination.png"
+       alt="Actual Home Environment Manager card with simulated bedroom cooling and dehumidifier controls, coordinated priorities and safety holds"
+       width="850">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Air-Quality-Advisor/main/.github/assets/screenshots/dashboard-climate-coordination-mobile.png"
+       alt="Actual Greek dark-theme climate room card, simulated dehumidification status and room priority"
+       width="360">
+</p>
+
+### Unified climate room coordination (v0.6 development)
+
+Each climate room now has one shared **thermal, humidity, outdoor
+ventilation and particle filtration** arbitration policy. Rather than
+letting six controllers independently decide whether to issue a new
+command, each driver must pass the same room grant plus a **fresh live**
+verification immediately before it sends a Home Assistant service call.
+
+The climate card displays the current control priority and why any
+physical objective is held. A heat-only radiator will not compete against
+an armed cooling-only AC. Separate dehumidifier startup can wait while an
+air conditioner is already cooling. The owner can configure the
+deferral margin between 0 and 20 RH percentage points (default 10);
+zero disables this preference. Verified severe humidity can still be
+treated with dedicated drying equipment. High CO₂ extraction has priority for air-quality guidance
+when outdoor air is verified safe, while PM2.5 filtration can remain
+eligible even if outside air is polluted.
+
+This shared coordinator is an extra *safety/efficiency gate*, **not**
+a replacement for the separate user authorizations, physical device
+protections, acknowledgment tracking, startup settling, minimum
+on/off durations or manual restart reconciliation. It never acts on a
+window-opportunity suggestion to automatically switch off running
+heating, cooling or DRY equipment.
+
+CI includes coordinated room and live-transition regressions on both
+Python 3.13 and 3.14. Representative hardware commissioning remains
+mandatory before releasing the experimental control functions.
+
+
+### Native DRY ↔ FAN_ONLY management (v0.6 development only)
+
+The climate equipment wizard now offers a **separate, disabled-by-default**
+permission for already-running native \`climate.*\` units that actually support
+both \`dry\` and \`fan_only\`. After physical commissioning, the controller
+can choose a native mode based on fresh measured indoor RH and comfort
+interlocks. For example, it may switch FAN_ONLY → DRY when verified humidity
+is too high, then DRY → FAN_ONLY **only after its compressor reports idle**
+and RH has recovered with hysteresis.
+
+This driver cannot switch equipment ON/OFF, never requests HEAT/COOL/AUTO,
+never controls a generic relay or invents FAN_ONLY for a DRY-only unit,
+and never targets an entire HA area or device. It requires exact area
+ownership, window and humidity evidence, independent manufacturer-proven
+compressor/frost/electrical protections, a minimum 30-minute mode dwell
+with persistent acknowledgement, and another explicit consent to operate
+without a window contact. Manual overrides and missing acknowledgements
+persistently pause the controller; resume never immediately sends a command.
+
+You can keep the permission disabled and still see the original native
+DRY/FAN_ONLY suggestions in the climate dashboard. **Do not enable the
+automatic mode controller in an uncommissioned home.** Tests using simulated
+Home Assistant devices do not establish hardware compressor safety. This
+work remains in draft PR #2, not the published v0.5.1 release.
+
+
+#### DRY/FAN_ONLY mode-change recovery (development)
+
+The commissioned DRY/FAN driver additionally persists each exact-target
+mode-change **intent before issuing the HA command**. If storage fails,
+Home Assistant stops during the write, or a manual override changes the
+unit, automatic commands latch a pause rather than repeat a potentially
+compressor-affecting transition. Resume requires a verified stable FAN_ONLY
+state and retains the previous native mode dwell.
+
+New commands are rechecked for live window, humidity, native operating mode
+and competing equipment immediately after the durable save. DRY → FAN_ONLY
+also requires five consecutive minutes of observed idle compressor state
+before attempting a transition, in addition to the original 30-minute
+mode-change dwell. These extra software guards do not certify any specific
+compressor, heat pump, defrost cycle or shared refrigeration circuit.
+
+The feature remains **disabled by default and unreleased** in the draft
+v0.6 branch. The physical AC must be independently commissioned first.
+
+
+### Read-only Home Assistant climate commissioning report (v0.6 draft)
+
+The integration now exposes
+\`home_environment_manager.climate_diagnostics\` (and the backward-compatible
+\`air_quality_advisor.climate_diagnostics\`) under **Developer Tools → Actions**.
+Select an optional Home Assistant \`area\` to inspect only that configured room,
+or omit it to inspect all explicitly configured climate rooms. Request the
+action response to obtain a structured report of selected entity IDs, actual
+native HEAT/COOL/DRY/FAN modes, current HVAC action, device/room ownership,
+sensor freshness, windows, safety opt-ins, room-coordinator state and existing
+native DRY/FAN mode diagnostic status.
+
+This service **never changes an entity**. It does not export serial numbers,
+network addresses, credentials, device tokens or unrelated unconfigured
+entities. The reported \`software_preflight_ready\` flag reflects the data
+visible to HA; it does **not** certify manufacturer compressor protection,
+minimum compressor OFF time, defrost logic, electrical safety, or mechanical
+ventilation safety. Physical commissioning remains an independent release
+gate.
+
+The native DRY/FAN controller now also rechecks the **full configured dwell**
+after persistent write-ahead and refuses superseded room plans or revoked
+permissions. If post-command history persistence fails, its original
+uncertain intent is retained for manual reconciliation rather than silently
+promoted to a completed command.
+
+
+### Multiple integrations, shared-device safety and reliable unload (v0.6)
+
+A configured thermostat, PID-controlled climate entity, protected heating
+relay, dehumidifier or fan must not receive commands from two independent
+Home Environment Manager configuration entries. The draft now detects
+duplicate device ownership **across entries**, not just rooms within one
+entry, and checks live ownership again before hardware writes.
+
+The \`climate_diagnostics\` service can identify shared equipment in
+configured rooms without exposing other entry IDs or device credentials.
+All controllers still require their own opt-ins and physical safety
+protections; existing owned outputs retain their bounded, acknowledged
+shutdown/reconciliation policy. On HA shutdown or options reload, failure
+of one controller's persistence no longer prevents the remaining
+controllers, announcements, listeners or background tasks from being
+cleaned up.
+
+All of this remains development code in [draft PR #2](https://github.com/Chreece/HA-Air-Quality-Advisor/pull/2).
+Production v0.5.1 is unchanged pending representative hardware testing.
+
+
+### Multiple Home Assistant entries: exact control routing (v0.6 draft)
+
+The same integration may retain historical independent config entries.
+Room-scoped \`climate_control\` and \`pid_control\` actions now resolve
+**exactly one enabled configured-room owner**, rather than forwarding every
+request to whichever entry happened to load first. A missing or ambiguous
+area returns a clean error without issuing any device command or attempting
+a broadcast. Both original and rebranded action aliases behave identically.
+
+Within each entry, explicit advisory-only room configurations can continue
+to monitor the same device without claiming actuator ownership. When a
+separate entry also has authorized control over the output, live write-time
+interlocks hold new commands in both entries until ownership is corrected.
+The \`climate_diagnostics\` action identifies the conflict without exposing
+another config entry's internal identifier. Legacy PID targets and
+non-compressor thermal actuators are included.
+
+This is validated using a simulated two-entry Home Assistant service
+registry, interleaved state changes, Python unit tests and HACS/Hassfest.
+Hardware commissioning remains mandatory for device-changing functions.
