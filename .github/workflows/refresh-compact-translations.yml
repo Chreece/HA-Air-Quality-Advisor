@@ -6,8 +6,11 @@ on:
     branches:
       - 'feat/compact-environment-settings-*'
       - 'feat/metric-help-valid-selectors-*'
+      - 'feat/full-config-i18n-help-*'
     paths:
       - apply_compact_i18n.py
+      - apply_full_config_i18n.py
+      - custom_components/air_quality_advisor/full_config_help_*.json
       - generate_translations.py
       - custom_components/air_quality_advisor/compact_locales.json
       - .github/workflows/refresh-compact-translations.yml
@@ -47,7 +50,12 @@ jobs:
               },path
               assert set(data["options"]["step"]) == set(en["options"]["step"]),path
               assert "device_presence_requirement" in data["selector"],path
-          print("All 38 translated compact option menus generated")
+          for path in files:
+              data=json.loads(path.read_text())
+              for scope in ('config','options'):
+                  for step,details in data[scope]['step'].items():
+                      assert set(details.get('data',{})) <= set(details.get('data_description',{})), (path,scope,step)
+          print("All 38 translated config/options fields and explanations generated")
           PY
       - name: Commit translations only on this development branch
         shell: bash

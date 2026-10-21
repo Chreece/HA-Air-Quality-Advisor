@@ -34,6 +34,24 @@
 If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b4). Extract it into the Home Assistant configuration directory, preserving `custom_components/air_quality_advisor/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
+### Configuration translations and explanations — next beta
+
+A field-by-field localization audit found that an old generator supplied
+the correct JSON keys while leaving many option descriptions in English or
+with generic “select a source” text. The new final translation pass documents
+every visible initial-setup and options-flow field, including **all 22 advanced
+thresholds**, per-device occupancy/sleep controls, native climate and
+humidity/fan safety settings, PID, mold/air measurements and optional
+building-science modules. It uses distinct safety-oriented English and Greek
+explanations for critical controls and locale-specific terminology for the
+other 36 supported languages.
+
+The generator runs last so re-generating the 38 catalogs cannot silently
+reintroduce missing descriptions. Runtime keys, saved config data, Home
+Assistant entity IDs and physical actuator permissions are unchanged.
+Threshold explanations distinguish operational policy from actual medical
+or legal exposure standards. Historical configuration is retained.
+
 ### Setup retry fix in beta 4
 
 If the first **Add integration** click silently closes its dialog, an unfinished

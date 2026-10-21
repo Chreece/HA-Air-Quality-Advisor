@@ -375,3 +375,8 @@ apply_climate_i18n(root)
 # Compact grouped options, per-device configuration and 38-language labels.
 from apply_compact_i18n import apply_compact_i18n
 apply_compact_i18n(root)
+
+# Final pass: translate every visible field and supply specific help in
+# all 38 languages after legacy/compact generators have completed.
+from apply_full_config_i18n import apply_full_config_i18n
+apply_full_config_i18n(root)
