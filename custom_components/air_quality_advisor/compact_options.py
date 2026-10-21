@@ -671,31 +671,6 @@ class CompactOptionsMixin:
                     ("setpoint", "power") if domain == "humidifier" else ("speed", "power")
                 ):
                     errors["base"] = "device_method_invalid"
-                elif domain == "climate" and data["method"] == "setpoint":
-                    from .climate_equipment import classify_hvac
-                    features = classify_hvac(state.attributes, state.state)
-                    if not (features.get("temperature_setpoint") is True or
-                            (features.get("native_heat_cool") is True and
-                             features.get("temperature_range") is True)):
-                        errors["base"] = "device_method_invalid"
-                elif domain == "humidifier" and data["method"] == "setpoint":
-                    # The native controller refuses guessed target, limits or
-                    # resolution. Fail early instead of accepting a dead UI.
-                    from .climate_humidity_native import _target, _bounded_setpoint
-                    attrs = state.attributes
-                    measured = _target(attrs)
-                    if measured is None or _bounded_setpoint(
-                        attrs, measured, measured
-                    )[0] not in ("at_setpoint", "command"):
-                        errors["base"] = "device_method_invalid"
-                elif domain == "fan" and data["method"] == "speed":
-                    # Home Assistant FanEntityFeature.SET_SPEED == 1.
-                    try:
-                        features = int(state.attributes.get("supported_features", 0))
-                    except (ValueError, TypeError, OverflowError):
-                        features = 0
-                    if features & 1 == 0:
-                        errors["base"] = "device_method_invalid"
                 elif data["method"] == "power" and not data["hardware_confirmed"]:
                     errors["base"] = "device_hardware_required"
                 elif (data["absence_action"] == "off" and domain == "climate"
@@ -729,6 +704,31 @@ class CompactOptionsMixin:
                     )} or not data["sensor_verified"]
                 ):
                     errors["base"] = "device_air_sensor_required"
+                # Independent capability verification must run AFTER the
+                # hardware/presence/absence policy chain. Nesting in its elif
+                # sequence would bypass the absence-OFF attestation check.
+                if not errors and domain == "climate" and data["method"] == "setpoint":
+                    from .climate_equipment import classify_hvac
+                    features = classify_hvac(state.attributes, state.state)
+                    if not (features.get("temperature_setpoint") is True or
+                            (features.get("native_heat_cool") is True and
+                             features.get("temperature_range") is True)):
+                        errors["base"] = "device_method_invalid"
+                if not errors and domain == "humidifier" and data["method"] == "setpoint":
+                    from .climate_humidity_native import _target, _bounded_setpoint
+                    attrs = state.attributes
+                    measured = _target(attrs)
+                    if measured is None or _bounded_setpoint(
+                        attrs, measured, measured
+                    )[0] not in ("at_setpoint", "command"):
+                        errors["base"] = "device_method_invalid"
+                if not errors and domain == "fan" and data["method"] == "speed":
+                    try:
+                        features = int(state.attributes.get("supported_features", 0))
+                    except (ValueError, TypeError, OverflowError):
+                        features = 0
+                    if features & 1 == 0:
+                        errors["base"] = "device_method_invalid"
                 if not errors and domain=="climate":
                     for profile in ("home", "unoccupied", "away", "sleep"):
                         heat = _valid_temperature(data[f"{profile}_heat_c"],5,35)
