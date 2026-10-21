@@ -1538,6 +1538,20 @@ class _FlowMixin(CompactOptionsMixin):
         current,problem=profiles(draft)
         if problem:
             current,_=profiles({})
+        if user_input is None:
+            # Area Number entities own all runtime comfort temperatures.
+            # New installations get validated default profile bands without
+            # an extra non-source selection page in the config wizard.
+            if not draft.get("profiles"):
+                draft = {**draft, "profiles": {
+                    key: {"heat_c": value.heat_c, "cool_c": value.cool_c}
+                    for key, value in current.items()
+                }}
+            stored = self._values.get(CONF_CLIMATE_ROOMS, {})
+            stored = dict(stored) if isinstance(stored, dict) else {}
+            stored[self._climate_area] = draft
+            self._values[CONF_CLIMATE_ROOMS] = stored
+            return await self._finish()
         errors={}
         if user_input is not None:
             candidate={k:{"heat_c":user_input.get(f"{k}_heat",v.heat_c),
