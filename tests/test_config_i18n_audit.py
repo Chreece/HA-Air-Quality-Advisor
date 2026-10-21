@@ -118,21 +118,20 @@ def test_greek_weather_and_all_advanced_limits_are_translated():
     )
 
 
-def test_language_selector_uses_home_assistant_native_translation_key(monkeypatch, adapter):
-    from test_area_config_flow import _make_options
-    options = _make_options(monkeypatch, adapter)
-    asyncio.run(options.async_step_init())
-    schema = asyncio.run(options.async_step_delivery())["data_schema"]
-    selector = schema["language"]
-    assert selector.config.translation_key == "output_language"
-    assert selector.config.options[0] == "auto"
-    assert set(selector.config.options[1:]) == {
-        tag.lower() for tag in SUPPORTED_LANGUAGE_TAGS
-    }
-    assert all(re.fullmatch(r"[a-z0-9_-]+", option) for option in selector.config.options)
+def test_home_language_selector_reuses_canonical_bcp47_codes_without_duplicates():
+    from custom_components.air_quality_advisor.const import LANGUAGES
+    assert LANGUAGES[0] == "auto"
+    assert set(LANGUAGES[1:]) == set(SUPPORTED_LANGUAGE_TAGS)
+    assert {"pt-BR", "zh-Hans", "zh-Hant", "el", "de"}.issubset(LANGUAGES)
+    code = (ROOT / "custom_components" / "air_quality_advisor" / "select.py").read_text()
+    assert 'ConfigSelect(manager, entry.entry_id, None, "language"' in code
+    for file in ("en.json", "el.json", "de.json"):
+        translations = json.loads((ROOT / "custom_components" /
+                        "air_quality_advisor" / "translations" / file).read_text())
+        assert translations["entity"]["select"]["home_language"]["name"]
 
 
-def test_regional_language_selector_preserves_existing_settings(monkeypatch, adapter):
+def test_regional_language_settings_remain_unchanged_during_provider_edits(monkeypatch, adapter):
     from test_area_config_flow import _make_options
 
     for canonical in ("pt-BR", "zh-Hans", "zh-Hant", "auto"):
@@ -140,10 +139,8 @@ def test_regional_language_selector_preserves_existing_settings(monkeypatch, ada
         options.config_entry.data["language"] = canonical
         asyncio.run(options.async_step_init())
         form = asyncio.run(options.async_step_delivery())
-        # Language is the first field in the delivery form (probatio.Field).
-        marker = next(iter(form["data_schema"]))
-        assert marker.default == canonical.lower()
-        result = asyncio.run(options.async_step_delivery({"language": canonical.lower()}))
+        assert "language" not in form["data_schema"]  # moved to Home device
+        result = asyncio.run(options.async_step_delivery({}))
         assert result["completed"]["data"]["language"] == canonical
 
 
