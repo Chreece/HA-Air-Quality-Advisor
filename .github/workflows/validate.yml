@@ -205,7 +205,7 @@ jobs:
           hacs = json.loads(Path("hacs.json").read_text(encoding="utf-8"))
           assert manifest["domain"] == "air_quality_advisor"
           assert manifest["name"] == "Home Environment Manager"
-          assert manifest["version"] == "0.6.0b5"
+          assert manifest["version"] == "0.6.0b6"
           assert request["version"] == manifest["version"]
           assert request["channel"] == "beta"
           assert request["release_branch"] == "beta/v0.6.0b6"
@@ -260,7 +260,7 @@ jobs:
               assert names and all(name.startswith(prefix) for name in names)
               assert not any("__pycache__" in n or n.endswith((".pyc",".pyo")) for n in names)
               version = json.loads(z.read(prefix+"manifest.json"))["version"]
-              assert version == "0.6.0b5"
+              assert version == "0.6.0b6"
               for path in ("__init__.py","sensor.py","icons.json",
                            "frontend/air-quality-advisor-card.js",
                            "brand/icon.png","brand/icon@2x.png",
