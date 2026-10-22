@@ -1,0 +1,113 @@
+name: Verify room hubs and in-place migration
+on:
+  push:
+    branches: ['stage/hem-room-hubs-beta12-20261022']
+permissions:
+  contents: read
+concurrency:
+  group: room-hub-candidate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Reproduce pinned candidate
+        run: python .github/prepare_room_hubs.py
+      - name: Regression and translation checks
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests
+          python generate_translations.py
+          git diff --exit-code
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend tests
+        run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python .github/prepare_room_hubs.py
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python .github/prepare_room_hubs.py
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+  room_registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python .github/prepare_room_hubs.py
+      - name: Install pinned Home Assistant
+        run: python -m pip install 'homeassistant==2026.10.0'
+      - name: Real registry migration without hardware control
+        run: python tools/verify_room_hubs_ha.py
+  save_source:
+    needs: [test, hassfest, hacs, room_registry]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Save the verified tree only on the isolated fix branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BASE='9ca2e689929b62b4f42bac3e7d83962c209de10b'
+          FIX='fix/room-hubs-20261022'
+          TREE='e39873294b1c74e12d3db43faa51454563531e98'
+          python .github/prepare_room_hubs.py
+          [[ "$(git write-tree)" == "$TREE" ]]
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$FIX" --jq '.object.sha')"
+          [[ "$current" == "$BASE" ]] || { echo 'Fix branch changed; refusing to overwrite'; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          candidate="$(printf '%s\n' 'fix(beta12): native room hubs and ordinary device groups; migrate beta11 identities in place' | git commit-tree "$TREE" -p "$BASE")"
+          git push origin "$candidate:refs/heads/$FIX"
+          echo "VERIFIED_CANDIDATE_SHA=$candidate"
+          echo "VERIFIED_CANDIDATE_TREE=$TREE"
+          echo 'Main, prior beta branches and releases were not modified.'
