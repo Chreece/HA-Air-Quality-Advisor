@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Enheter · styring",
-        "description": "Enheter · styring: Velg kilde, sensor / Enheter · styring.",
+        "description": "Dette valget styrer «styring · kilde». Fysiske kommandoer krever separat tillatelse og sikkerhet. Bruk en reell egnet måling for «Påkrevd · Enheter · Effekt». Estimat erstatter ikke kalibrert sensor. Denne tiden regulerer «Effekt · min ON (s)». Hindrer hyppig bryting uten å erstatte maskinvarevern. Denne tiden regulerer «Effekt · min OFF (s)». Hindrer hyppig bryting uten å erstatte maskinvarevern. Konfigurer «Søvn · styring» bare for valgt rom. Feil data stopper handlingen. Beslutningsterskel for «Hastighet (%)». Påvirker råd, men er ikke en medisinsk grense.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatisk styring",
           "device_method": "styring · kilde",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Muggindikator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · styring (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · styring (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · styring (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}innstillinger · kilde (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Viftegrense for stille drift (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Enheter · Utendørs"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lavere støy under søvn"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lavere støy ved tilstedeværelse"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Enheter · kilde · mål"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Styringsmetode",
+        "state": {
+          "existing": "Eksisterende romstyring",
+          "automatic": "Automatisk",
+          "manual": "Manuell",
+          "off": "Slå av",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Innebygd stille viftehastighet"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Muggindikator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kontroller og gjenoppta"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaregulator"
       }
     }
   },

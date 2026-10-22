@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "آلات · کنٹرول",
-        "description": "آلات · کنٹرول: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "description": "یہ اختیار «کنٹرول · ماخذ» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔ «ضروری · آلات · طاقت» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔ یہ وقت «طاقت · min ON (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔ یہ وقت «طاقت · min OFF (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔ «نیند · کنٹرول» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔ «رفتار (%)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "خودکار کنٹرول",
           "device_method": "کنٹرول · ماخذ",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "پھپھوندی کی نشاندہی · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · کنٹرول (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · کنٹرول (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · کنٹرول (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ترتیبات · ماخذ (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}کم شور والے پنکھے کی حد (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "آلات · باہر"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}سوتے وقت کم شور"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}موجودگی میں کم شور"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "آلات · ماخذ · ہدف"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}کنٹرول کا طریقہ",
+        "state": {
+          "existing": "موجودہ کمرے کا کنٹرولر",
+          "automatic": "خودکار",
+          "manual": "دستی",
+          "off": "بند",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}آلے کا کم شور پنکھا موڈ"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "پھپھوندی کی نشاندہی · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}تصدیق کریں اور دوبارہ شروع کریں"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}آب و ہوا کنٹرولر"
       }
     }
   },

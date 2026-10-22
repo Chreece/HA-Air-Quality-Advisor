@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Dispositivos · control",
-        "description": "Dispositivos · control: Elegir fuente, sensor / Dispositivos · control.",
+        "description": "La opción existente conserva el controlador de la estancia. Manual sigue solo las consignas y opciones nativas elegidas, no los cambios de presencia. Automático aplica perfiles; PID usa mediciones verificadas y ciclos lentos para equipos de encendido/apagado autorizados. Apagado solicita detener los equipos que controla después del tiempo mínimo de marcha. La conmutación requiere verificar ese dispositivo; un equipo activo manualmente debe apagarse antes de transferir el control automático de potencia. El modo silencioso limita una velocidad nativa, no decibelios medidos, y nunca enciende un aparato. Las pausas por reinicio o intervención manual requieren verificación explícita.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automático control",
           "device_method": "control · fuente",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Temperatura medida de la superficie más fría (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · control (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · control (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · control (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ajustes · fuente (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Límite de ventilación silenciosa (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Dispositivos · Exterior"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Menos ruido al dormir"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Menos ruido con ocupación"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Dispositivos · fuente · objetivo"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Método de control",
+        "state": {
+          "existing": "Controlador de estancia existente",
+          "automatic": "Automático",
+          "manual": "Manual",
+          "off": "Apagar",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Velocidad silenciosa nativa"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Recalibrar con las temperaturas actuales"
+      },
+      "equipment_resume": {
+        "name": "{channel}Verificar y reanudar"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Controlador climático"
       }
     }
   },

@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Geräte · Steuerung",
-        "description": "Gerätefreigabe erfolgt separat. Unbekannte Anwesenheit sperrt Befehle; Ausschalten erfordert geprüften Hardware-Schutz. HVAC startet nicht automatisch neu.",
+        "description": "Die bisherige Einstellung behält die Raumregelung bei. Manuell folgt nur ausdrücklich gesetzten Sollwerten und Geräteoptionen, nicht wechselnder Anwesenheit. Automatik nutzt Raumprofile; PID verwendet geprüfte Messwerte und langsame Taktung für freigegebene Ein/Aus-Geräte. Aus fordert für selbst eingeschaltete Geräte erst nach der Mindestlaufzeit ein Abschalten an. Leistungsschaltungen erfordern die Inbetriebnahme genau dieses Geräts; ein manuell laufendes Gerät muss vor der automatischen Leistungsübernahme ausgeschaltet werden. Leiser Betrieb begrenzt eine unterstützte Lüfterstufe, keine gemessenen Dezibel, und schaltet Geräte niemals ein. Neustart- oder Eingriffspausen benötigen einen ausdrücklichen Abgleich; ein Profilwechsel hebt sie nicht auf.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatische Steuerung",
           "device_method": "Steuerung · Quelle",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Gemessene Temperatur der kältesten Oberfläche (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}Proportionalverstärkung Kp (%/°C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}Integralverstärkung Ki (%/(°C·min))"
+      },
+      "equipment_kd": {
+        "name": "{channel}Differentialverstärkung Kd (%·min/°C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID-Abtastintervall (Sekunden)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}Einstellungen · Quelle (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Lüftergrenze für leisen Betrieb (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Leiser Betrieb beim Schlafen"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Leiser Betrieb bei Anwesenheit"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Temperatursollwert oder ISO-7730-Komfort"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Regelverfahren",
+        "state": {
+          "existing": "Bisherige Raumregelung",
+          "automatic": "Automatische",
+          "manual": "Manuell",
+          "off": "Ausschalten",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Native leise Lüfterstufe"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Mit aktuellen Temperaturwerten neu kalibrieren"
+      },
+      "equipment_resume": {
+        "name": "{channel}Abgleichen und fortsetzen"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaregler"
       }
     }
   },

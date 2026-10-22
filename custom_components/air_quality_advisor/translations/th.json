@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "อุปกรณ์ · ควบคุม",
-        "description": "อุปกรณ์ · ควบคุม: เลือก แหล่งข้อมูล, เซนเซอร์ / อุปกรณ์ · ควบคุม.",
+        "description": "ตัวเลือกนี้ควบคุม “ควบคุม · แหล่งข้อมูล” คำสั่งอุปกรณ์ต้องได้รับอนุญาตแยกและมีระบบป้องกันอิสระ ใช้ค่าที่วัดจริงและเหมาะสมสำหรับ “จำเป็น · อุปกรณ์ · กำลังไฟ” ค่าประมาณไม่แทนเซนเซอร์ที่ปรับเทียบ เวลานี้กำหนด “กำลังไฟ · min ON (s)” ช่วยลดการสลับบ่อย แต่ไม่แทนการป้องกันของอุปกรณ์ เวลานี้กำหนด “กำลังไฟ · min OFF (s)” ช่วยลดการสลับบ่อย แต่ไม่แทนการป้องกันของอุปกรณ์ ตั้งค่า “นอน · ควบคุม” เฉพาะห้องที่เลือก ข้อมูลไม่ถูกต้องจะยับยั้งการทำงาน ค่าเกณฑ์ตัดสินใจสำหรับ “ความเร็ว (%)” มีผลต่อคำแนะนำ ไม่ใช่ขีดจำกัดทางการแพทย์\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "อัตโนมัติ ควบคุม",
           "device_method": "ควบคุม · แหล่งข้อมูล",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "ตัวชี้วัดเชื้อรา · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · ควบคุม (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · ควบคุม (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · ควบคุม (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}การตั้งค่า · แหล่งข้อมูล (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}ขีดจำกัดพัดลมเสียงเบา (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "อุปกรณ์ · ภายนอก"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}เสียงเบาขณะนอนหลับ"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}เสียงเบาขณะมีคนอยู่"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "อุปกรณ์ · แหล่งข้อมูล · เป้าหมาย"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}วิธีควบคุม",
+        "state": {
+          "existing": "ตัวควบคุมห้องเดิม",
+          "automatic": "อัตโนมัติ",
+          "manual": "ด้วยตนเอง",
+          "off": "ปิด",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}โหมดพัดลมเสียงเบาของอุปกรณ์"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "ตัวชี้วัดเชื้อรา · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}ตรวจสอบและทำงานต่อ"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}ตัวควบคุมสภาพอากาศ"
       }
     }
   },

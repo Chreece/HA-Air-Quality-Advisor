@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "裝置 · 控制",
-        "description": "裝置 · 控制: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "description": "此選項控制「控制 · 來源」。實際裝置指令需個別授權並有獨立保護。 為「必填 · 裝置 · 功率」使用真實合適的測量值。估算不能取代校準感測器。 此時間參數用於「功率 · min ON (s)」。避免頻繁切換，但不能取代硬體保護。 此時間參數用於「功率 · min OFF (s)」。避免頻繁切換，但不能取代硬體保護。 僅為選定房間設定「睡眠 · 控制」。資料無效或缺失將停止操作。 「速度 (%)」的決策門檻影響建議，但不是醫療限值。\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "自動 控制",
           "device_method": "控制 · 來源",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "黴菌指標 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 控制 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 控制 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 控制 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}設定 · 來源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低噪音風扇上限 (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "裝置 · 室外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠時降低噪音"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}有人時降低噪音"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "裝置 · 來源 · 目標"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}控制方式",
+        "state": {
+          "existing": "現有房間控制器",
+          "automatic": "自動",
+          "manual": "手動",
+          "off": "關閉",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}裝置原生低噪音風扇模式"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "黴菌指標 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}核實並恢復"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室內環境控制器"
       }
     }
   },

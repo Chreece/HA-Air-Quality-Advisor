@@ -50,6 +50,8 @@ from .climate_commissioning import report as climate_commissioning_report
 from .climate_window import window_substitution, window_reason
 from .climate_fan_native import RunningFanSpeedControl
 from .climate_fan_power import FanPowerControl
+from .equipment_runtime import EquipmentRuntime
+from .equipment_model import legacy_settings as equipment_legacy_settings, claimed_sources
 from .building_physics import moisture_potential
 from .environment_extended import global_pollen, global_aqi
 from .logic import Reading, Reason, Recommendation
@@ -78,6 +80,7 @@ class AirQualityManager:
         self._tasks: set[asyncio.Task[Any]] = set()
         self._environment_history = EnvironmentHistory()
         self._environment_store: Any | None = None
+        self.equipment = EquipmentRuntime(self)
         self.pid = ClimatePidCoordinator(self.hass, self.entry.entry_id, report_changed=self._pid_updated)
         self.native_climate = NativeClimateControl(self.hass, self.entry.entry_id)
         self.direct_climate = DirectClimateControl(
@@ -488,6 +491,7 @@ class AirQualityManager:
         await self.running_fans.async_start()
         await self.fan_power.async_start()
         await self.native_air_mode.async_start()
+        await self.equipment.async_start()
         self._active = True
         self._unsubs.extend((
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
@@ -665,7 +669,12 @@ class AirQualityManager:
         # refresh. Use the last validated plan; _tick rechecks sensor freshness.
         if not self._active:
             return
-        settings=self.settings.get(CONF_CLIMATE_ROOMS,{})
+        if claimed_sources(self):
+            # Per-device control requires fresh occupancy/outdoor plans at every
+            # 30-second decision boundary, independently of notification timing.
+            self._recalculate()
+            return
+        settings, _ = equipment_legacy_settings(self)
         if not isinstance(settings,dict) or not settings:
             return
         plans={area:item.get("climate_plan",{})
@@ -730,9 +739,8 @@ class AirQualityManager:
             self.plan = new_plan
             async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
 
-        configured_pid = self.settings.get(CONF_PID_ROOMS, {})
+        native_configs, configured_pid = equipment_legacy_settings(self)
         self.pid.schedule(new_plan.rooms, configured_pid, initial=initial)
-        native_configs=self.settings.get(CONF_CLIMATE_ROOMS,{})
         plans={area:data.get("climate_plan",{})
                for area,data in new_plan.environment.items()
                if isinstance(data,dict)}
@@ -750,6 +758,7 @@ class AirQualityManager:
         self.running_fans.schedule(native_configs,plans)
         self.fan_power.schedule(native_configs,plans)
         self.native_air_mode.schedule(native_configs,plans)
+        self.equipment.schedule()
 
         previous = self._active_actions
         notices=(*new_plan.recommendations,*new_plan.climate_recommendations)
@@ -912,6 +921,7 @@ class AirQualityManager:
         """
         self._active = False
         controllers = (
+            ("equipment",self.equipment),
             ("pid",self.pid),("native_climate",self.native_climate),
             ("direct_climate",self.direct_climate),
             ("native_humidity",self.native_humidity),

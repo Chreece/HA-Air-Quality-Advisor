@@ -177,3 +177,18 @@ def test_deactivated_and_unknown_pid_cannot_be_reconfigured(controls):
     with pytest.raises(Err, match="safely configured"):
         asyncio.run(module.update_device_setting(
             controller, "pid", "kp", 15, area="kitchen"))
+
+
+@pytest.mark.parametrize("key,value", [("room_volume_m3", 45.0), ("sleep_room", True)])
+def test_area_environment_controls_require_and_update_selected_room(controls, key, value):
+    module, Err = controls
+    controller, writes, _ = manager()
+    controller.entry.data["areas"] = ["living"]
+    asyncio.run(module.update_device_setting(
+        controller, "area_environment", key, value, area="living"))
+    assert controller.settings["environment_rooms"]["living"][key] == value
+    before = len(writes)
+    with pytest.raises(Err, match="Select the room"):
+        asyncio.run(module.update_device_setting(
+            controller, "area_environment", key, value, area="unconfigured"))
+    assert len(writes) == before

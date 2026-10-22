@@ -1,5 +1,16 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b11 — Combined controller beta
+
+Publish only from `beta/v0.6.0b11` after Python 3.13/3.14, deterministic
+38-language generation (including `equipment_text.py`), frontend, Hassfest,
+HACS and ZIP checks. Tag the exact validated source SHA once, mark prerelease
+and `--latest=false`, and never move the old tags or stable/main branch.
+The release includes all pending Area-hub/per-device-climate, method selector,
+on/off-PID and quiet-mode software. Default method Existing prevents automatic
+migration of equipment control; real hardware commissioning is still required.
+
+
 ## v0.6.0b10 — Source selection in setup and per-device tuning
 
 Opt-in beta 10 is released only from `beta/v0.6.0b10` at the validated

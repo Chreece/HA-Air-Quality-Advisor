@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Eszközök · vezérlés",
-        "description": "Eszközök · vezérlés: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "description": "Ez a beállítás ezt vezérli: „vezérlés · forrás”. Fizikai parancshoz külön engedély és védelem kell. Valódi megfelelő mérést használjon ehhez: „Kötelező · Eszközök · Teljesítmény”. Becslés nem helyettesít kalibrált érzékelőt. Ez az időzítés erre vonatkozik: „Teljesítmény · min ON (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet. Ez az időzítés erre vonatkozik: „Teljesítmény · min OFF (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet. „Alvás · vezérlés” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet. „Sebesség (%)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatikus vezérlés",
           "device_method": "vezérlés · forrás",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Penészesedési mutató · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · vezérlés (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · vezérlés (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · vezérlés (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}beállítások · forrás (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Csendes ventilátorfokozat korlátja (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Eszközök · Kültéri"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Alacsonyabb zaj alváskor"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Alacsonyabb zaj jelenlétkor"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Eszközök · forrás · cél"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Szabályozási mód",
+        "state": {
+          "existing": "Meglévő helyiségszabályozó",
+          "automatic": "Automatikus",
+          "manual": "Kézi",
+          "off": "Kikapcsolás",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Natív csendes ventilátorfokozat"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Penészesedési mutató · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Ellenőrzés és folytatás"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klímaszabályozó"
       }
     }
   },

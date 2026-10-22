@@ -339,3 +339,98 @@ def test_replacing_primary_climate_does_not_leave_stale_secondary_role(monkeypat
     assert "heat_climate_entity" not in settings
     assert settings["controller"] == "device"
     assert settings["device_settings"][old.entity_id]["auto_control"] is False
+
+
+def test_native_dry_only_is_explicitly_commissioned_without_fake_temperature(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    dry = MockState("climate.living_dry", "off")
+    dry.attributes.update(hvac_modes=["off", "dry"], supported_features=0)
+    rh = MockState("sensor.living_relative", 65, device_class="humidity", unit="%")
+    _add(opt, dry, rh)
+    _start_device(opt, [dry.entity_id], dry.entity_id)
+    form = asyncio.run(opt.async_step_device_settings())
+    assert "device_humidity_entity" in form["data_schema"]
+    assert "device_temperature_entity" not in form["data_schema"]
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "native",
+        "device_hardware_confirmed": True, "device_humidity_entity": rh.entity_id,
+    }))
+    cfg = result["completed"]["data"]["climate_rooms"]["living"]
+    assert cfg["dry_climate_entity"] == dry.entity_id
+    assert cfg["controller"] == "environment"
+    assert cfg.get("auto_switch_hvac") is False
+    assert cfg.get("dry_fan_mode_auto") is not True
+    assert cfg["device_settings"][dry.entity_id]["hardware_confirmed"] is True
+
+
+def test_native_air_only_requires_off_capability_hardware_and_verified_feedback(monkeypatch, adapter):
+    for missing in ("off", "hardware", "sensor"):
+        opt = _make_options(monkeypatch, adapter)
+        fan = MockState("climate.living_native_fan", "off")
+        fan.attributes.update(hvac_modes=["fan_only"] if missing == "off" else ["off", "fan_only"], supported_features=0)
+        _add(opt, fan)
+        opt.config_entry.options["excluded_indoor_entities"] = {"living": []}
+        _start_device(opt, [fan.entity_id], fan.entity_id)
+        result = asyncio.run(opt.async_step_device_settings({
+            "device_auto_control": True, "device_method": "native",
+            "device_hardware_confirmed": missing != "hardware",
+            "device_fan_purpose": "extraction", "device_co2_entity": "sensor.living_co2",
+            "device_sensor_verified": missing != "sensor",
+        }))
+        assert result["errors"], missing
+
+
+def test_native_climate_cycle_commissioning_minimum_is_not_a_tuning_preference(monkeypatch, adapter):
+    opt = _make_options(monkeypatch, adapter)
+    heat = MockState("climate.living_binary", "off")
+    heat.attributes.update(hvac_modes=["off", "heat"], supported_features=0)
+    temp = MockState("sensor.living_t", 20, device_class="temperature", unit="°C")
+    _add(opt, heat, temp)
+    _start_device(opt, [heat.entity_id], heat.entity_id)
+    result = asyncio.run(opt.async_step_device_settings({
+        "device_auto_control": True, "device_method": "native",
+        "device_hardware_confirmed": True, "device_temperature_entity": "sensor.living_t",
+        "device_min_on_s": 5,
+    }))
+    assert result["errors"]["base"] == "device_runtime_invalid"
+
+
+def test_manager_climate_entities_are_never_offered_as_native_targets(monkeypatch, adapter):
+    from custom_components.air_quality_advisor.compact_options import _device_choices
+    from custom_components.air_quality_advisor.climate_entry_ownership import foreign_owner_hold
+    opt = _make_options(monkeypatch, adapter)
+    proxy = MockState("climate.manager_controller", "heat")
+    proxy.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
+    native = MockState("climate.native", "heat")
+    native.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
+    _add(opt, proxy, native)
+    opt.hass._entity_details[proxy.entity_id] = {"platform": "air_quality_advisor"}
+    ids = {v["value"] for v in _device_choices(opt.hass, "living")}
+    assert native.entity_id in ids and proxy.entity_id not in ids
+    opt._pid_area = "living"
+    assert proxy.entity_id not in {v["value"] for v in opt._pid_climate_choices()}
+    assert foreign_owner_hold(opt.hass, "entry", proxy.entity_id) == "managed_entity_cannot_be_physical_target"
+
+
+def test_removing_unrelated_fan_preserves_commissioned_native_dry_controller(monkeypatch, adapter):
+    _make_options(monkeypatch, adapter)
+    from custom_components.air_quality_advisor.compact_options import _reconcile_device_selection
+    previous = {
+        "enabled": True, "allow_actuation": True, "controller": "environment",
+        "selected_devices": ["climate.dry", "fan.filter"],
+        "purifier_fan_entity": "fan.filter", "fan_power_auto": True,
+        "device_settings": {
+            "climate.dry": {"auto_control": True, "method": "native", "hardware_confirmed": True},
+            "fan.filter": {"auto_control": True, "method": "power", "hardware_confirmed": True},
+        },
+    }
+    result = _reconcile_device_selection(previous, {**previous, "selected_devices": ["climate.dry"]})
+    assert result["allow_actuation"] is True
+    assert result["device_settings"]["climate.dry"]["auto_control"] is True
+    assert result["device_settings"]["fan.filter"]["auto_control"] is False
+    assert result["fan_power_auto"] is False
+    assert "purifier_fan_entity" not in result
+    # This helper may retain a grant, but it must never invent one.
+    disabled = _reconcile_device_selection(previous, {**previous, "allow_actuation": False,
+        "selected_devices": ["climate.dry"]})
+    assert disabled["allow_actuation"] is False

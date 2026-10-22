@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Zařízení · řízení",
-        "description": "Zařízení · řízení: Vybrat zdroj, senzor / Zařízení · řízení.",
+        "description": "Tato volba řídí „řízení · zdroj“. Fyzické příkazy vyžadují samostatný souhlas a ochrany. Použijte skutečné vhodné měření pro „Povinné · Zařízení · Výkon“. Odhad nenahrazuje kalibrovaný senzor. Tento čas ovlivňuje „Výkon · min ON (s)“. Omezuje časté spínání, nenahrazuje hardwarové ochrany. Tento čas ovlivňuje „Výkon · min OFF (s)“. Omezuje časté spínání, nenahrazuje hardwarové ochrany. Nastavte „Spánek · řízení“ pouze pro zvolený pokoj. Chybějící či neplatná data blokují akci. Rozhodovací práh pro „Rychlost (%)“. Ovlivňuje doporučení, není lékařským limitem.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatické řízení",
           "device_method": "řízení · zdroj",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Indikátor plísní · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · řízení (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · řízení (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · řízení (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}nastavení · zdroj (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limit tichého chodu ventilátoru (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Zařízení · Venkovní"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Nižší hluk při spánku"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Nižší hluk při přítomnosti"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Zařízení · zdroj · cíl"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Způsob řízení",
+        "state": {
+          "existing": "Stávající regulátor místnosti",
+          "automatic": "Automatické",
+          "manual": "Ručně",
+          "off": "Vypnout",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Nativní tichá rychlost ventilátoru"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Indikátor plísní · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Ověřit a pokračovat"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Regulátor klimatu"
       }
     }
   },

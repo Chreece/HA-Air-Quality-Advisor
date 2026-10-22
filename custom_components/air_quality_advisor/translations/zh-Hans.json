@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "设备 · 控制",
-        "description": "设备 · 控制: 选择 来源, 传感器 / 设备 · 控制.",
+        "description": "该选项控制“控制 · 来源”。实际设备命令必须单独授权并具有独立保护。 为“必填 · 设备 · 功率”使用真实、合适的测量值。估算值不能代替校准传感器。 该时间参数用于“功率 · min ON (s)”。避免频繁切换，但不能代替硬件保护。 该时间参数用于“功率 · min OFF (s)”。避免频繁切换，但不能代替硬件保护。 只为所选房间配置“睡眠 · 控制”。缺失或无效数据会阻止相关操作。 “速度 (%)”的决策阈值会影响建议，但不属于医学限值。\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "自动 控制",
           "device_method": "控制 · 来源",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "霉菌指标 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 控制 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 控制 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 控制 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}设置 · 来源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低噪声风扇上限 (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "设备 · 室外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠时降低噪声"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}有人时降低噪声"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "设备 · 来源 · 目标"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}控制方式",
+        "state": {
+          "existing": "现有房间控制器",
+          "automatic": "自动",
+          "manual": "手动",
+          "off": "关闭",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}设备原生低噪声风扇模式"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "霉菌指标 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}核实并恢复"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室内环境控制器"
       }
     }
   },

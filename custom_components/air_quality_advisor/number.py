@@ -108,6 +108,17 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 manager, entry.entry_id, area_id, "mold_surface",
                 "critical_temperature_c", (-60.0, 85.0, 0.1, "°C"),
             ))
+    from . import equipment_model as equipment
+    for spec in equipment.specs(manager):
+        cap = equipment.capabilities(manager, spec)
+        if cap is None:
+            continue
+        for key in equipment.NUMBER_FIELDS:
+            if key == "quiet_percentage" and not cap.fan_percentage:
+                continue
+            if key != "quiet_percentage" and "pid" not in equipment.control_modes(manager, spec):
+                continue
+            numbers.append(EquipmentNumber(manager, spec, key))
     async_add_entities(numbers)
 
 
@@ -237,3 +248,25 @@ class ConfigNumber(NumberEntity):
     @callback
     def _update(self):
         self.async_write_ha_state()
+
+
+from .equipment_entity import EquipmentEntity
+from . import equipment_model as equipment
+
+
+class EquipmentNumber(EquipmentEntity, NumberEntity):
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_mode = NumberMode.BOX
+
+    def __init__(self, manager, spec, key):
+        self._equipment_init(manager, spec, key)
+        bounds = equipment.NUMBER_FIELDS[key]
+        self._attr_native_min_value, self._attr_native_max_value = bounds[:2]
+        self._attr_native_step, self._attr_native_unit_of_measurement = bounds[2:4]
+
+    @property
+    def native_value(self):
+        return self.controller_settings[self._key]
+
+    async def async_set_native_value(self, value):
+        await self._manager.equipment.async_update(self._spec, {self._key: value})

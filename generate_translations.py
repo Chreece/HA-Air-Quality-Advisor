@@ -388,3 +388,7 @@ apply_area_entities_i18n(root)
 # Native Home and Area entity labels after all options-flow localization passes.
 from apply_device_controls_i18n import apply_device_controls_i18n
 apply_device_controls_i18n(root)
+
+# Per-physical-device controllers must be translated after all previous labels.
+from apply_equipment_i18n import apply_equipment_i18n
+apply_equipment_i18n(root)

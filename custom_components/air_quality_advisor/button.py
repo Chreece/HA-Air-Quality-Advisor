@@ -10,6 +10,9 @@ from .mold_controls import async_recalculate_mold_factor
 
 async def async_setup_entry(hass, entry, async_add_entities):
     settings = entry.runtime_data.settings
+    from . import equipment_model as equipment
+    async_add_entities([EquipmentResumeButton(entry.runtime_data, spec)
+                        for spec in equipment.specs(entry.runtime_data)])
     if settings.get(CONF_USE_MOLD) is not True:
         return
     async_add_entities([
@@ -53,3 +56,17 @@ class AreaMoldCalibrationButton(ButtonEntity):
             "status": "calibrated" if saved.get("calibration_factor") is not None
                       else "needs_calibration",
         }
+
+
+from .equipment_entity import EquipmentEntity
+
+
+class EquipmentResumeButton(EquipmentEntity, ButtonEntity):
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_icon = "mdi:play-pause"
+
+    def __init__(self, manager, spec):
+        self._equipment_init(manager, spec, "resume")
+
+    async def async_press(self):
+        await self._manager.equipment.async_resume(self._spec)

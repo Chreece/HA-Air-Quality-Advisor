@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "சாதனங்கள் · கட்டுப்பாடு",
-        "description": "சாதனங்கள் · கட்டுப்பாடு: தேர்வு மூலம், உணரி / சாதனங்கள் · கட்டுப்பாடு.",
+        "description": "இந்த விருப்பம் “கட்டுப்பாடு · மூலம்” ஐக் கட்டுப்படுத்துகிறது. சாதன ஆணைகளுக்குத் தனி அனுமதியும் பாதுகாப்பும் தேவை. “தேவை · சாதனங்கள் · சக்தி” க்கு பொருத்தமான உண்மையான அளவீட்டை பயன்படுத்தவும். மதிப்பீடு அளவுத்திருத்த உணரியை மாற்றாது. இந்த நேரம் “சக்தி · min ON (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது. இந்த நேரம் “சக்தி · min OFF (s)” ஐ நிர்ணயிக்கிறது. அடிக்கடி மாறுவதைத் தடுக்கிறது; சாதனப் பாதுகாப்பை மாற்றாது. “தூக்கம் · கட்டுப்பாடு” ஐத் தேர்ந்த அறைக்கு மட்டும் அமைக்கவும். தவறான தரவு செயல்பாட்டைத் தடுக்கும். “வேகம் (%)” க்கான தீர்மான வரம்பு பரிந்துரைகளைப் பாதிக்கும்; இது மருத்துவ வரம்பல்ல.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "தானியங்கி கட்டுப்பாடு",
           "device_method": "கட்டுப்பாடு · மூலம்",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "பூஞ்சை குறியீடு · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · கட்டுப்பாடு (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · கட்டுப்பாடு (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · கட்டுப்பாடு (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}அமைப்புகள் · மூலம் (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}குறைந்த ஒலி விசிறி வரம்பு (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "சாதனங்கள் · வெளிப்புற"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}தூங்கும்போது குறைந்த ஒலி"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}அறையில் இருக்கும்போது குறைந்த ஒலி"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "சாதனங்கள் · மூலம் · இலக்கு"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}கட்டுப்பாட்டு முறை",
+        "state": {
+          "existing": "தற்போதைய அறைக் கட்டுப்படுத்தி",
+          "automatic": "தானியங்கி",
+          "manual": "கைமுறை",
+          "off": "அணை",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}சாதனத்தின் குறைந்த ஒலி விசிறி முறை"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "பூஞ்சை குறியீடு · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}சரிபார்த்து மீண்டும் தொடங்கு"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}காலநிலைக் கட்டுப்படுத்தி"
       }
     }
   },

@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "ডিভাইস · নিয়ন্ত্রণ",
-        "description": "ডিভাইস · নিয়ন্ত্রণ: নির্বাচন উৎস, সেন্সর / ডিভাইস · নিয়ন্ত্রণ.",
+        "description": "এই বিকল্প “নিয়ন্ত্রণ · উৎস” নিয়ন্ত্রণ করে। যন্ত্রে আদেশ দিতে আলাদা অনুমতি ও স্বাধীন সুরক্ষা দরকার। “আবশ্যক · ডিভাইস · শক্তি” এর জন্য প্রকৃত উপযুক্ত পরিমাপ ব্যবহার করুন। অনুমান ক্যালিব্রেটেড সেন্সরের বিকল্প নয়। এই সময় “শক্তি · min ON (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়। এই সময় “শক্তি · min OFF (s)” নির্ধারণ করে। দ্রুত সুইচিং কমায়, হার্ডওয়্যার সুরক্ষার বিকল্প নয়। “ঘুম · নিয়ন্ত্রণ” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে। “গতি (%)” এর সিদ্ধান্তসীমা পরামর্শে প্রভাব ফেলে; এটি চিকিৎসাগত সীমা নয়।\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "স্বয়ংক্রিয় নিয়ন্ত্রণ",
           "device_method": "নিয়ন্ত্রণ · উৎস",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "ছাঁচের সূচক · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · নিয়ন্ত্রণ (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · নিয়ন্ত্রণ (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · নিয়ন্ত্রণ (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}সেটিংস · উৎস (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}কম শব্দের ফ্যানের সীমা (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "ডিভাইস · বাইরের"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}ঘুমের সময় কম শব্দ"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}উপস্থিতিতে কম শব্দ"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "ডিভাইস · উৎস · লক্ষ্য"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}নিয়ন্ত্রণ পদ্ধতি",
+        "state": {
+          "existing": "বিদ্যমান ঘরের নিয়ন্ত্রক",
+          "automatic": "স্বয়ংক্রিয়",
+          "manual": "ম্যানুয়াল",
+          "off": "বন্ধ",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}ডিভাইসের কম শব্দের ফ্যান মোড"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "ছাঁচের সূচক · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}যাচাই করে আবার চালু করুন"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}জলবায়ু নিয়ন্ত্রক"
       }
     }
   },

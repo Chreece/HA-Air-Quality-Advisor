@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Thiết bị · điều khiển",
-        "description": "Thiết bị · điều khiển: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "description": "Tùy chọn này điều khiển “điều khiển · nguồn”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập. Dùng phép đo thực phù hợp cho “Bắt buộc · Thiết bị · Công suất”. Ước tính không thay thế cảm biến hiệu chuẩn. Khoảng thời gian này áp dụng cho “Công suất · min ON (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng. Khoảng thời gian này áp dụng cho “Công suất · min OFF (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng. Chỉ thiết lập “Ngủ · điều khiển” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác. Ngưỡng quyết định cho “Tốc độ (%)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Tự động điều khiển",
           "device_method": "điều khiển · nguồn",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Chỉ số nấm mốc · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · điều khiển (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · điều khiển (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · điều khiển (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}cài đặt · nguồn (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Giới hạn quạt chạy êm (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Thiết bị · Bên ngoài"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Giảm tiếng ồn khi ngủ"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Giảm tiếng ồn khi có người"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Thiết bị · nguồn · mục tiêu"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Phương pháp điều khiển",
+        "state": {
+          "existing": "Bộ điều khiển phòng hiện có",
+          "automatic": "Tự động",
+          "manual": "Thủ công",
+          "off": "Tắt",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Chế độ quạt êm của thiết bị"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Chỉ số nấm mốc · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kiểm tra và tiếp tục"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Bộ điều khiển khí hậu"
       }
     }
   },

@@ -14,6 +14,7 @@ from typing import Any
 
 from .const import DOMAIN
 from .climate_coordination import assigned_entities
+from .device_hierarchy import native_source
 
 
 def active_output_entities(config: Mapping) -> set[str]:
@@ -24,6 +25,12 @@ def active_output_entities(config: Mapping) -> set[str]:
             value=config.get(role)
             if isinstance(value,str) and value:
                 outputs.add(value)
+    selected = config.get("selected_devices", [])
+    profiles = config.get("device_settings", {})
+    if isinstance(selected, list) and isinstance(profiles, Mapping):
+        outputs.update(e for e in selected if isinstance(e, str)
+                       and isinstance(profiles.get(e), Mapping)
+                       and profiles[e].get("auto_control") is True)
     return outputs
 
 
@@ -87,6 +94,15 @@ def other_entry_output_owners(hass:Any, current_entry_id:str) -> dict[str,set[st
             for entity,areas in profiles.items():
                 for area in areas:
                     owners[entity].add(f"{entry_id}:{area}")
+            runtime = getattr(getattr(entry, "runtime_data", None), "equipment", None)
+            for record in getattr(runtime, "records", {}).values():
+                # A removed room cannot erase an in-flight/owned physical output.
+                active = set(record.get("power", {}))
+                pending = record.get("pending")
+                if isinstance(pending, dict) and isinstance(pending.get("entity"), str):
+                    active.add(pending["entity"])
+                for entity in active:
+                    owners[entity].add(f"{entry_id}:{record.get('area', 'recovery')}")
         return dict(owners)
     except Exception:
         return None
@@ -96,6 +112,8 @@ def foreign_owner_hold(hass:Any, current_entry_id:str, entity:str) -> str | None
     """No command if the same configured device is owned in another entry."""
     if not isinstance(current_entry_id,str) or not current_entry_id:
         return "entry_identity_unavailable"
+    if not native_source(hass, entity):
+        return "managed_entity_cannot_be_physical_target"
     owners=other_entry_output_owners(hass,current_entry_id)
     if owners is None:
         return "other_config_entries_unverifiable"

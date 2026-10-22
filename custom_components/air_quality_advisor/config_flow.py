@@ -17,6 +17,7 @@ from .languages import SUPPORTED_LANGUAGE_TAGS, resolve_language
 
 from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
 from .hub_delivery import hub_installed
+from .device_hierarchy import native_source
 from .const import (
     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,
     CONF_LANGUAGE, CONF_MEDIA_PLAYERS, CONF_NOTIFY_TARGETS, CONF_OUTDOOR,
@@ -866,7 +867,7 @@ class _FlowMixin(CompactOptionsMixin):
         from .discovery import entity_area
         climate_choices=[{"value":s.entity_id,"label":s.name or s.entity_id}
                          for s in self.hass.states.async_all("climate")
-                         if entity_area(self.hass,s.entity_id)==area]
+                         if entity_area(self.hass,s.entity_id)==area and native_source(self.hass,s.entity_id)]
         temp_choices=[
             {"value":"none","label":"No temperature sensor (environmental-only)"}
         ]+indoor_temperature_choices(self.hass,area,draft.get("temperature_entity"))
@@ -942,7 +943,9 @@ class _FlowMixin(CompactOptionsMixin):
                 selector.SelectSelector(selector.SelectSelectorConfig(
                     options=["auto","heat","cool","dry","off"],multiple=False,custom_value=False,
                     mode=selector.SelectSelectorMode.DROPDOWN)),
-            _marker("climate_entity",draft.get("climate_entity")):selector.EntitySelector(selector.EntitySelectorConfig(domain="climate")),
+            _marker("climate_entity",draft.get("climate_entity")):selector.SelectSelector(selector.SelectSelectorConfig(
+                options=climate_choices, multiple=False, custom_value=False,
+                mode=selector.SelectSelectorMode.DROPDOWN)),
             _marker("climate_temperature_entity",draft.get("temperature_entity")):
                 selector.SelectSelector(selector.SelectSelectorConfig(options=temp_choices,
                     multiple=False,custom_value=False,mode=selector.SelectSelectorMode.DROPDOWN)),
@@ -1079,7 +1082,7 @@ class _FlowMixin(CompactOptionsMixin):
                 {"value":st.entity_id,
                  "label":(st.name or st.entity_id)+" · "+st.entity_id}
                 for st in self.hass.states.async_all(domain)
-                if entity_area(self.hass,st.entity_id)==area
+                if entity_area(self.hass,st.entity_id)==area and native_source(self.hass,st.entity_id)
             ]
         humidity=[
             {"value":"none","label":"No selected humidity sensor"}
@@ -1422,7 +1425,7 @@ class _FlowMixin(CompactOptionsMixin):
             {"value":state.entity_id,
              "label":(state.name or state.entity_id)+" · "+state.entity_id}
             for state in self.hass.states.async_all(domain)
-            if entity_area(self.hass,state.entity_id)==self._climate_area
+            if entity_area(self.hass,state.entity_id)==self._climate_area and native_source(self.hass,state.entity_id)
         ]
         fields={
             _marker("direct_hardware_confirmed",draft.get("direct_hardware_confirmed",False)):
@@ -1618,7 +1621,7 @@ class _FlowMixin(CompactOptionsMixin):
         allowed = []
         for state in self.hass.states.async_all("climate"):
             assigned = entity_area(self.hass, state.entity_id)
-            if assigned is None or assigned == self._pid_area:
+            if (assigned is None or assigned == self._pid_area) and native_source(self.hass, state.entity_id):
                 allowed.append({
                     "value": state.entity_id,
                     "label": f"{state.name or state.entity_id} · {state.entity_id}",

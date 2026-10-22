@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "デバイス · 制御",
-        "description": "デバイス · 制御: 選択 情報源, センサー / デバイス · 制御.",
+        "description": "この項目は「制御 · 情報源」を設定します。機器への指示には個別の許可と独立した保護が必要です。 「必須 · デバイス · 電力」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。 この時間は「電力 · min ON (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。 この時間は「電力 · min OFF (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。 「睡眠 · 制御」は選択した部屋だけに設定します。無効なデータでは操作を行いません。 「速度 (%)」の判断しきい値です。推奨に使い、医療上の基準ではありません。\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "自動 制御",
           "device_method": "制御 · 情報源",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "カビ指標 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 制御 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 制御 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 制御 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}設定 · 情報源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低騒音ファンの上限 (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "デバイス · 屋外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠中の低騒音運転"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}在室中の低騒音運転"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "デバイス · 情報源 · 目標"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}制御方式",
+        "state": {
+          "existing": "既存の部屋コントローラー",
+          "automatic": "自動",
+          "manual": "手動",
+          "off": "オフ",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}機器の低騒音ファンモード"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "カビ指標 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}確認して再開"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室内環境コントローラー"
       }
     }
   },

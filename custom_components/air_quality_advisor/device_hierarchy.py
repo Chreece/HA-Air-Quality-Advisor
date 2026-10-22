@@ -35,6 +35,16 @@ class ManagedDevice:
     source_entities: tuple[str, ...]
 
 
+def native_source(hass: Any, entity_id: str) -> bool:
+    """A logical Manager entity must never be selected as physical equipment."""
+    from homeassistant.helpers import entity_registry as er
+    try:
+        entity = er.async_get(hass).async_get(entity_id)
+        return entity is None or getattr(entity, "platform", None) != DOMAIN
+    except Exception:
+        return False
+
+
 def configured_area_ids(settings: dict[str, Any]) -> tuple[str, ...]:
     """Monitoring areas plus enabled climate/PID-only areas, not every HA area."""
     selected = settings.get(CONF_AREAS, [])

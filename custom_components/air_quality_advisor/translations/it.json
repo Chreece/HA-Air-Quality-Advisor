@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Dispositivi · controllo",
-        "description": "Dispositivi · controllo: Seleziona fonte, sensore / Dispositivi · controllo.",
+        "description": "Questa opzione regola «controllo · fonte». I comandi fisici richiedono consenso separato e protezioni indipendenti. Usa una misura reale adatta per «Richiesto · Dispositivi · Potenza». Una stima non sostituisce un sensore calibrato. Questo intervallo regola «Potenza · min ON (s)». Riduce commutazioni frequenti senza sostituire le protezioni fisiche. Questo intervallo regola «Potenza · min OFF (s)». Riduce commutazioni frequenti senza sostituire le protezioni fisiche. Configura «Sonno · controllo» solo per la stanza selezionata. Dati assenti o incompatibili bloccano l'azione. Soglia decisionale per «Velocità (%)». Influenza i suggerimenti, non è un limite sanitario.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatico controllo",
           "device_method": "controllo · fonte",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Indicatore muffa · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · controllo (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · controllo (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · controllo (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}impostazioni · fonte (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limite ventilatore silenzioso (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Dispositivi · Esterno"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Rumore ridotto durante il sonno"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Rumore ridotto in presenza"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Dispositivi · fonte · obiettivo"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metodo di controllo",
+        "state": {
+          "existing": "Regolatore ambiente esistente",
+          "automatic": "Automatico",
+          "manual": "Manuale",
+          "off": "Spegni",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Velocità silenziosa nativa"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Indicatore muffa · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Verifica e riprendi"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Regolatore climatico"
       }
     }
   },

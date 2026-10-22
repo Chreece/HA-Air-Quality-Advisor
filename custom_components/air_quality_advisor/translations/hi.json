@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "उपकरण · नियंत्रण",
-        "description": "उपकरण · नियंत्रण: चुनें स्रोत, सेंसर / उपकरण · नियंत्रण.",
+        "description": "यह विकल्प “नियंत्रण · स्रोत” नियंत्रित करता है। उपकरण आदेशों के लिए अलग अनुमति और सुरक्षा आवश्यक है। “आवश्यक · उपकरण · शक्ति” के लिए उपयुक्त वास्तविक माप लें। अनुमान कैलिब्रेटेड सेंसर का विकल्प नहीं है। यह समय “शक्ति · min ON (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है। यह समय “शक्ति · min OFF (s)” तय करता है। बार-बार स्विचिंग रोकता है, उपकरण सुरक्षा का विकल्प नहीं है। “नींद · नियंत्रण” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है। “गति (%)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "स्वचालित नियंत्रण",
           "device_method": "नियंत्रण · स्रोत",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "फफूंद संकेतक · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · नियंत्रण (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · नियंत्रण (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · नियंत्रण (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}सेटिंग · स्रोत (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}कम शोर वाले पंखे की सीमा (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "उपकरण · बाहरी"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}सोते समय कम शोर"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}उपस्थिति में कम शोर"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "उपकरण · स्रोत · लक्ष्य"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}नियंत्रण विधि",
+        "state": {
+          "existing": "मौजूदा कमरे का नियंत्रक",
+          "automatic": "स्वचालित",
+          "manual": "मैनुअल",
+          "off": "बंद करें",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}उपकरण का कम शोर पंखा मोड"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "फफूंद संकेतक · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}जाँचें और फिर शुरू करें"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}जलवायु नियंत्रक"
       }
     }
   },

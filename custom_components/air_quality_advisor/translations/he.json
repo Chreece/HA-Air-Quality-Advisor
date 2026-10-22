@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "התקנים · בקרה",
-        "description": "התקנים · בקרה: בחר מקור, חיישן / התקנים · בקרה.",
+        "description": "האפשרות שולטת ב־„בקרה · מקור”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות. השתמש במדידה אמיתית מתאימה עבור „נדרש · התקנים · הספק”. אומדן אינו תחליף לחיישן מכויל. הזמן הזה מגדיר את „הספק · min ON (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה. הזמן הזה מגדיר את „הספק · min OFF (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה. הגדר „שינה · בקרה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה. זהו סף החלטה עבור „מהירות (%)”. הוא משפיע על המלצות ואינו גבול רפואי.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "אוטומטי בקרה",
           "device_method": "בקרה · מקור",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "מדד עובש · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · בקרה (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · בקרה (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · בקרה (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}הגדרות · מקור (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}מגבלת מאוורר שקט (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "התקנים · חוץ"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}רעש מופחת בזמן שינה"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}רעש מופחת בעת נוכחות"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "התקנים · מקור · יעד"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}שיטת בקרה",
+        "state": {
+          "existing": "בקר החדר הקיים",
+          "automatic": "אוטומטי",
+          "manual": "ידני",
+          "off": "כיבוי",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}מצב מאוורר שקט מובנה"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "מדד עובש · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}אימות והמשך"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}בקר אקלים"
       }
     }
   },

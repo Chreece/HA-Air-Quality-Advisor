@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Apparaten · regeling",
-        "description": "Apparaten · regeling: Kiezen bron, sensor / Apparaten · regeling.",
+        "description": "Deze optie regelt ‘regeling · bron’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen. Gebruik echte passende meetgegevens voor ‘Vereist · Apparaten · Vermogen’. Schattingen vervangen geen gekalibreerde sensoren. Deze tijd bepaalt ‘Vermogen · min ON (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging. Deze tijd bepaalt ‘Vermogen · min OFF (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging. Stel ‘Slaap · regeling’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie. Beslisdrempel voor ‘Snelheid (%)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatische regeling",
           "device_method": "regeling · bron",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Schimmelindicator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · regeling (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · regeling (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · regeling (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}instellingen · bron (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ventilatorlimiet voor stille werking (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Apparaten · Buiten"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Minder geluid tijdens slapen"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Minder geluid bij aanwezigheid"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Apparaten · bron · doelwaarde"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Regelmethode",
+        "state": {
+          "existing": "Bestaande ruimteregeling",
+          "automatic": "Automatische",
+          "manual": "Handmatig",
+          "off": "Uitschakelen",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Stille stand van de ventilator"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Schimmelindicator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Controleren en hervatten"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaatregelaar"
       }
     }
   },

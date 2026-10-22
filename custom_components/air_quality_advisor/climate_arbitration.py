@@ -292,6 +292,9 @@ def new_command_gate(hass: Any, area: str, config: dict,
     The legacy no-arbitration test interface is preserved for direct device
     fixtures; plans produced by the room manager always include coordination.
     """
+    from .equipment_model import legacy_hold
+    if hold := legacy_hold(hass, entry_id, entity):
+        return hold
     if purpose not in CHANNELS or not isinstance(plan,dict):
         return "invalid_coordination_request"
     selected=config.get("selected_devices") if isinstance(config,dict) else None

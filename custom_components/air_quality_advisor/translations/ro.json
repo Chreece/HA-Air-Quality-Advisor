@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Dispozitive · control",
-        "description": "Dispozitive · control: Selectați sursă, senzor / Dispozitive · control.",
+        "description": "Această opțiune controlează „control · sursă”. Comenzile fizice cer acord separat și protecții independente. Utilizați măsurători reale potrivite pentru „Obligatoriu · Dispozitive · Putere”. Estimarea nu înlocuiește senzorul calibrat. Acest interval reglează „Putere · min ON (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware. Acest interval reglează „Putere · min OFF (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware. Configurați „Somn · control” numai pentru camera aleasă. Datele greșite blochează acțiunea. Prag de decizie pentru „Viteză (%)”. Influențează recomandările, nu este limită medicală.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automat control",
           "device_method": "control · sursă",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Indicator de mucegai · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · control (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · control (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · control (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}setări · sursă (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limită pentru ventilare silențioasă (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Dispozitive · Exterior"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Zgomot redus în timpul somnului"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Zgomot redus la prezență"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Dispozitive · sursă · țintă"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metodă de control",
+        "state": {
+          "existing": "Controlerul existent al camerei",
+          "automatic": "Automat",
+          "manual": "Manual",
+          "off": "Oprire",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Treaptă silențioasă nativă"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Indicator de mucegai · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Verifică și reia"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Controler climatic"
       }
     }
   },

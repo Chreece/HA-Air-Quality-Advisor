@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Perangkat · kendali",
-        "description": "Perangkat · kendali: Pilih sumber, sensor / Perangkat · kendali.",
+        "description": "Opsi ini mengatur “kendali · sumber”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri. Gunakan pengukuran nyata yang sesuai untuk “Wajib · Perangkat · Daya”. Perkiraan tidak menggantikan sensor terkalibrasi. Waktu ini mengatur “Daya · min ON (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat. Waktu ini mengatur “Daya · min OFF (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat. Atur “Tidur · kendali” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan. Ambang keputusan untuk “Kecepatan (%)”. Memengaruhi saran, bukan batas medis.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Otomatis kendali",
           "device_method": "kendali · sumber",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Indikator jamur · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · kendali (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · kendali (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · kendali (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}pengaturan · sumber (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Batas kipas senyap (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Perangkat · Luar"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lebih senyap saat tidur"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lebih senyap saat ruangan terisi"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Perangkat · sumber · target"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metode kendali",
+        "state": {
+          "existing": "Pengendali ruangan yang ada",
+          "automatic": "Otomatis",
+          "manual": "Manual",
+          "off": "Matikan",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Mode kipas senyap bawaan"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Indikator jamur · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Periksa dan lanjutkan"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Pengendali iklim"
       }
     }
   },

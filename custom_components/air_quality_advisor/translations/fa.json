@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "دستگاه‌ها · کنترل",
-        "description": "دستگاه‌ها · کنترل: انتخاب منبع, حسگر / دستگاه‌ها · کنترل.",
+        "description": "این گزینه «کنترل · منبع» را کنترل می‌کند. فرمان دستگاه نیازمند مجوز جداگانه و حفاظت مستقل است. برای «الزامی · دستگاه‌ها · توان» اندازه‌گیری واقعی مناسب به کار برید. تخمین جایگزین حسگر کالیبره نیست. این زمان «توان · min ON (s)» را تنظیم می‌کند. از قطع‌و‌وصل مکرر جلوگیری می‌کند اما جایگزین حفاظت سخت‌افزاری نیست. این زمان «توان · min OFF (s)» را تنظیم می‌کند. از قطع‌و‌وصل مکرر جلوگیری می‌کند اما جایگزین حفاظت سخت‌افزاری نیست. «خواب · کنترل» را فقط برای اتاق انتخاب‌شده تنظیم کنید. دادهٔ نامعتبر مانع اقدام می‌شود. این آستانهٔ تصمیم برای «سرعت (%)» است؛ بر پیشنهادها اثر دارد و حد پزشکی نیست.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "خودکار کنترل",
           "device_method": "کنترل · منبع",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "شاخص کپک · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · کنترل (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · کنترل (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · کنترل (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}تنظیمات · منبع (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}محدودیت فن کم‌صدا (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "دستگاه‌ها · بیرون"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}صدای کمتر هنگام خواب"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}صدای کمتر هنگام حضور"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "دستگاه‌ها · منبع · هدف"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}روش کنترل",
+        "state": {
+          "existing": "کنترل‌کنندهٔ فعلی اتاق",
+          "automatic": "خودکار",
+          "manual": "دستی",
+          "off": "خاموش",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}حالت کم‌صدای اصلی فن"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "شاخص کپک · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}بررسی و ادامه"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}کنترل‌کنندهٔ اقلیم"
       }
     }
   },

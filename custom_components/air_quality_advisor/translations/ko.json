@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "장치 · 제어",
-        "description": "장치 · 제어: 선택 정보원, 센서 / 장치 · 제어.",
+        "description": "이 옵션은 “제어 · 정보원”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다. “필수 · 장치 · 전력”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다. 이 시간은 “전력 · min ON (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다. 이 시간은 “전력 · min OFF (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다. “수면 · 제어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다. “속도 (%)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "자동 제어",
           "device_method": "제어 · 정보원",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "곰팡이 지표 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 제어 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 제어 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 제어 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}설정 · 정보원 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}저소음 팬 속도 제한 (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "장치 · 외부"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}수면 중 저소음"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}재실 중 저소음"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "장치 · 정보원 · 목표"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}제어 방식",
+        "state": {
+          "existing": "기존 방 제어기",
+          "automatic": "자동",
+          "manual": "수동",
+          "off": "끄기",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}기기 기본 저소음 팬 모드"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "곰팡이 지표 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}확인 후 재개"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}실내 환경 제어기"
       }
     }
   },

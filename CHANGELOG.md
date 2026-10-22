@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0b11 — Area hubs, per-device climates, on/off PID and quiet control (beta)
+
+- Complete Home → Area hub → managed-controller hierarchy, retaining physical source devices and original Home/Area entity IDs.
+- Add per-endpoint climate entities with real room data, actual HVAC/fan/swing capabilities and None/Home/Comfort/Away/Sleep/Eco presets; support independent channels on one physical device.
+- Add Existing/Automatic/Manual/Off/PID control selection, editable gains/cycle settings and deterministic ownership transfer from old controllers.
+- Support slow time-proportioned PID for qualified binary fans, humidity devices, native climate modes and direct actuators, with original dwell and maximum-runtime safeguards.
+- Add capability-aware quiet-on-sleep and quiet-while-occupied controls with real native speed reduction/restoration and no implicit power-on.
+- Persist exact command intent before dispatch; recheck identity, feedback, permissions and interlocks after awaits; latch manual/uncertain/restart pauses and safely retire removed equipment.
+- Reject Manager climate entities as physical inputs; keep manual targets independent of occupancy and preserve surviving DRY/FAN-only commissioning when unrelated devices are removed.
+- Localize new controls in all 38 languages and extend regression, generator, frontend and distribution checks. New per-device ownership remains opt-in; stable v0.5.1 and previous beta tags are unchanged.
+
+
 ## 0.6.0b10 — Source-only setup and Area/Home device operating controls (beta)
 
 - Limit configuration menus to monitored areas, sensor/provider/equipment entity selection, and hardware-specific commissioning. Move global and room operating preferences to the Home and Area devices.

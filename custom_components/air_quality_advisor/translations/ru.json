@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Устройства · управление",
-        "description": "Устройства · управление: Выбрать источник, датчик / Устройства · управление.",
+        "description": "Эта опция управляет «управление · источник». Команды устройству требуют отдельного разрешения и защиты. Используйте реальные подходящие измерения для «Обязательно · Устройства · Мощность». Оценка не заменяет калиброванный датчик. Этот интервал регулирует «Мощность · min ON (s)». Он ограничивает частые переключения, но не заменяет аппаратную защиту. Этот интервал регулирует «Мощность · min OFF (s)». Он ограничивает частые переключения, но не заменяет аппаратную защиту. Настройка «Сон · управление» только для выбранной комнаты. Неверные данные блокируют действие. Порог решения для «Скорость (%)». Влияет на рекомендации, но не является медицинской нормой.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Автоматическое управление",
           "device_method": "управление · источник",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Индикатор плесени · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · управление (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · управление (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · управление (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}настройки · источник (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ограничение тихого вентилятора (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Устройства · Снаружи"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Меньше шума во время сна"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Меньше шума при присутствии"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Устройства · источник · цель"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Способ управления",
+        "state": {
+          "existing": "Существующий контроллер комнаты",
+          "automatic": "Автоматическое",
+          "manual": "Вручную",
+          "off": "Выключить",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Встроенная тихая скорость"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Индикатор плесени · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Проверить и возобновить"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Контроллер климата"
       }
     }
   },

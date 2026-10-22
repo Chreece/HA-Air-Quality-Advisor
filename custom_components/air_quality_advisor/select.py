@@ -61,6 +61,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     manager, entry.entry_id, area, "device_policy", choices,
                     setting_key=key, entity_id=entity_id
                 ))
+    from . import equipment_model as equipment
+    entities.extend(EquipmentSelect(manager, spec, "control_mode")
+                    for spec in equipment.specs(manager))
+    entities.extend(EquipmentSelect(manager, spec, "quiet_fan_mode")
+                    for spec in equipment.specs(manager)
+                    if (cap := equipment.capabilities(manager, spec)) is not None
+                    and cap.fan_modes and not cap.fan_percentage)
     async_add_entities(entities)
 
 
@@ -167,3 +174,31 @@ class ConfigSelect(SelectEntity):
     @callback
     def _update(self):
         self.async_write_ha_state()
+
+
+from .equipment_entity import EquipmentEntity
+from . import equipment_model as equipment
+
+
+class EquipmentSelect(EquipmentEntity, SelectEntity):
+    _attr_entity_category = EntityCategory.CONFIG
+
+    def __init__(self, manager, spec, key):
+        self._equipment_init(manager, spec, key)
+
+    @property
+    def options(self):
+        if self._key == "control_mode":
+            return list(equipment.control_modes(self._manager, self._spec))
+        cap = equipment.capabilities(self._manager, self._spec)
+        return list(cap.fan_modes) if cap else []
+
+    @property
+    def current_option(self):
+        value = self.controller_settings.get(self._key)
+        if self._key == "quiet_fan_mode" and value is None and "low" in self.options:
+            return "low"
+        return value if value in self.options else None
+
+    async def async_select_option(self, option):
+        await self._manager.equipment.async_update(self._spec, {self._key: option})

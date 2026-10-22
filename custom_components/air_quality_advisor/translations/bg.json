@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Устройства · управление",
-        "description": "Устройства · управление: Избор източник, сензор / Устройства · управление.",
+        "description": "Тази опция управлява „управление · източник“. Физическите команди изискват отделно съгласие и защити. Използвайте реално подходящо измерване за „Задължително · Устройства · Мощност“. Оценката не заменя калибриран сензор. Този период определя „Мощност · min ON (s)“. Ограничава честото превключване, но не заменя хардуерна защита. Този период определя „Мощност · min OFF (s)“. Ограничава честото превключване, но не заменя хардуерна защита. Задайте „Сън · управление“ само за избраната стая. Невалидните данни блокират действието. Праг за решение за „Скорост (%)“. Влияе на препоръките, но не е медицинска граница.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Автоматично управление",
           "device_method": "управление · източник",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Индикатор за мухъл · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · управление (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · управление (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · управление (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}настройки · източник (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ограничение за тих вентилатор (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Устройства · Външни"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Нисък шум по време на сън"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Нисък шум при присъствие"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Устройства · източник · цел"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Метод на управление",
+        "state": {
+          "existing": "Съществуващ контролер на стаята",
+          "automatic": "Автоматично",
+          "manual": "Ръчно",
+          "off": "Изключване",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Вградена тиха скорост"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Индикатор за мухъл · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Проверка и продължаване"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Климатичен контролер"
       }
     }
   },

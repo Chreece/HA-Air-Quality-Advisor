@@ -387,6 +387,10 @@ class ClimatePidCoordinator:
         for entity, native in planned:
             if not self._active or area in self._paused:
                 return
+            from .equipment_model import legacy_hold
+            if hold := legacy_hold(self.hass, self.entry_id, entity):
+                self._set_status(area, hold, entity=entity)
+                return
             other_entry=foreign_owner_hold(self.hass,self.entry_id,entity)
             if other_entry is not None:
                 self._set_status(

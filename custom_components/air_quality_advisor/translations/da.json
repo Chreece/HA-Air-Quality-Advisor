@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Enheder · styring",
-        "description": "Enheder · styring: Vælg kilde, sensor / Enheder · styring.",
+        "description": "Denne indstilling styrer »styring · kilde«. Fysiske kommandoer kræver særskilt samtykke og sikring. Brug en reel passende måling til »Påkrævet · Enheder · Effekt«. Skøn erstatter ikke kalibreret sensor. Denne tid regulerer »Effekt · min ON (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring. Denne tid regulerer »Effekt · min OFF (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring. Indstil »Søvn · styring« kun for valgt rum. Ugyldige data blokerer handlingen. Beslutningsgrænse for »Hastighed (%)«. Den påvirker råd, men er ikke en medicinsk grænse.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatisk styring",
           "device_method": "styring · kilde",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Skimmelindikator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · styring (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · styring (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · styring (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}indstillinger · kilde (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ventilatorgrænse for støjsvag drift (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Enheder · Udendørs"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lavere støj under søvn"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lavere støj ved tilstedeværelse"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Enheder · kilde · mål"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Reguleringsmetode",
+        "state": {
+          "existing": "Eksisterende rumregulering",
+          "automatic": "Automatisk",
+          "manual": "Manuel",
+          "off": "Sluk",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Indbygget støjsvagt ventilatortrin"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Skimmelindikator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kontrollér og genoptag"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaregulator"
       }
     }
   },

@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Devices · control",
-        "description": "Separate per-device consent. Unknown occupancy only HOLDS control; OFF needs explicit protection confirmation. Native climate OFF is never automatically restarted.",
+        "description": "Existing keeps the previous room controller. Manual follows only your explicit targets and native choices, not occupancy changes. Automatic follows room/preset policy; PID uses verified feedback and slow duty cycles for commissioned on/off equipment. Off stops this controller and requests owned equipment OFF after its minimum run time. Power changes require the exact device's hardware commissioning; a running manual device must first be turned off before automatic power ownership. Low-noise switches limit a supported native fan, not measured sound pressure, and never start an appliance. Restart or manual-override pauses require explicit reconciliation; changing a preset cannot clear them.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatic control",
           "device_method": "control · source",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Measured coldest surface temperature (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}Proportional gain Kp (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}Integral gain Ki (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}Derivative gain Kd (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID measurement cycle (seconds)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}PWM cycle duration for slow thermal loads (seconds)"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Low-noise fan limit (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Low noise while sleeping"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Low noise while occupied"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Fixed temperatures or optional ISO 7730 comfort"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Control method",
+        "state": {
+          "existing": "Existing room controller",
+          "automatic": "Automatic",
+          "manual": "Manual",
+          "off": "Off",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Native low-noise fan mode"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Recalibrate with current room and outdoor readings"
+      },
+      "equipment_resume": {
+        "name": "{channel}Reconcile and resume"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Climate controller"
       }
     }
   },

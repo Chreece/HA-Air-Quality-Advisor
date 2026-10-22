@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Urządzenia · sterowanie",
-        "description": "Urządzenia · sterowanie: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "description": "Ta opcja steruje „sterowanie · źródło”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń. Użyj rzeczywistego odpowiedniego pomiaru dla „Wymagane · Urządzenia · Moc”. Oszacowanie nie zastępuje kalibracji. Ten czas określa „Moc · min ON (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń. Ten czas określa „Moc · min OFF (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń. Ustaw „Sen · sterowanie” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie. Próg decyzji dla „Prędkość (%)”. Wpływa na zalecenia, lecz nie jest normą medyczną.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatyczne sterowanie",
           "device_method": "sterowanie · źródło",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Wskaźnik pleśni · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · sterowanie (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · sterowanie (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · sterowanie (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ustawienia · źródło (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limit cichej pracy wentylatora (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Urządzenia · Zewnętrzne"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Mniejszy hałas podczas snu"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Mniejszy hałas podczas obecności"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Urządzenia · źródło · cel"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metoda sterowania",
+        "state": {
+          "existing": "Dotychczasowy regulator pomieszczenia",
+          "automatic": "Automatyczne",
+          "manual": "Ręczne",
+          "off": "Wyłącz",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Natywny cichy bieg wentylatora"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Wskaźnik pleśni · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Sprawdź i wznów"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Regulator klimatu"
       }
     }
   },

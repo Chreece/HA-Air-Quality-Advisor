@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Пристрої · керування",
-        "description": "Пристрої · керування: Обрати джерело, датчик / Пристрої · керування.",
+        "description": "Це налаштування керує «керування · джерело». Фізичні команди потребують окремого дозволу й захисту. Використовуйте реальний відповідний вимір для «Обов'язково · Пристрої · Потужність». Оцінка не замінює калібрований датчик. Цей інтервал визначає «Потужність · min ON (s)». Обмежує часті перемикання, але не замінює захист обладнання. Цей інтервал визначає «Потужність · min OFF (s)». Обмежує часті перемикання, але не замінює захист обладнання. Налаштовуйте «Сон · керування» лише для вибраної кімнати. Недійсні дані блокують дію. Поріг рішення для «Швидкість (%)». Впливає на поради, але не є медичною нормою.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Автоматичне керування",
           "device_method": "керування · джерело",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Індикатор цвілі · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · керування (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · керування (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · керування (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}налаштування · джерело (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Обмеження тихого вентилятора (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Пристрої · Зовнішні"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Менше шуму під час сну"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Менше шуму за присутності"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Пристрої · джерело · ціль"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Спосіб керування",
+        "state": {
+          "existing": "Наявний контролер кімнати",
+          "automatic": "Автоматичне",
+          "manual": "Вручну",
+          "off": "Вимкнути",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Вбудована тиха швидкість"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Індикатор цвілі · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Перевірити та продовжити"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Контролер клімату"
       }
     }
   },

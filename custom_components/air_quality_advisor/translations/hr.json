@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Uređaji · upravljanje",
-        "description": "Uređaji · upravljanje: Odaberi izvor, senzor / Uređaji · upravljanje.",
+        "description": "Ova opcija upravlja „upravljanje · izvor”. Fizičke naredbe traže zasebno odobrenje i zaštitu. Koristite stvarno prikladno mjerenje za „Obavezno · Uređaji · Snaga”. Procjena ne zamjenjuje kalibrirani senzor. Ovo vrijeme određuje „Snaga · min ON (s)”. Ograničava često prebacivanje, ne zamjenjuje zaštitu uređaja. Ovo vrijeme određuje „Snaga · min OFF (s)”. Ograničava često prebacivanje, ne zamjenjuje zaštitu uređaja. Postavite „Spavanje · upravljanje” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju. Prag odluke za „Brzina (%)”. Utječe na preporuke, nije medicinska granica.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatsko upravljanje",
           "device_method": "upravljanje · izvor",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Pokazatelj plijesni · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · upravljanje (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · upravljanje (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · upravljanje (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}postavke · izvor (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ograničenje tihog rada ventilatora (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Uređaji · Vanjski"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Manja buka tijekom spavanja"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Manja buka pri prisutnosti"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Uređaji · izvor · cilj"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Način upravljanja",
+        "state": {
+          "existing": "Postojeći sobni regulator",
+          "automatic": "Automatsko",
+          "manual": "Ručno",
+          "off": "Isključi",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Izvorna tiha brzina ventilatora"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Pokazatelj plijesni · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Provjeri i nastavi"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Regulator klime"
       }
     }
   },

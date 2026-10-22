@@ -46,6 +46,9 @@ def adapter(monkeypatch):
     core = types.ModuleType("homeassistant.core")
     core.HomeAssistant = object
     core.State = object
+    errors = types.ModuleType("homeassistant.exceptions")
+    errors.HomeAssistantError = type("HomeAssistantError", (Exception,), {})
+    monkeypatch.setitem(sys.modules, "homeassistant.exceptions", errors)
     helpers = types.ModuleType("homeassistant.helpers")
     util = types.ModuleType("homeassistant.util")
     dt = types.ModuleType("homeassistant.util.dt")

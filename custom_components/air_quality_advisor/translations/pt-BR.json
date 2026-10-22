@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Dispositivos · controle",
-        "description": "Dispositivos · controle: Selecionar fonte, sensor / Dispositivos · controle.",
+        "description": "Esta opção controla «controle · fonte». Comandos físicos exigem autorização específica e proteções independentes. Use medições reais adequadas para «Obrigatório · Dispositivos · Potência». Estimativas não substituem sensores calibrados. Este intervalo rege «Potência · min ON (s)». Evita ciclos rápidos, mas não substitui proteções físicas. Este intervalo rege «Potência · min OFF (s)». Evita ciclos rápidos, mas não substitui proteções físicas. Configure «Sono · controle» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação. Limite de decisão para «Velocidade (%)». Afeta orientações, não é um limite médico.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automático controle",
           "device_method": "controle · fonte",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Indicador de mofo · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · controle (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · controle (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · controle (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}configurações · fonte (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limite de ventilação silenciosa (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Dispositivos · Externo"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Menos ruído durante o sono"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Menos ruído com presença"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Dispositivos · fonte · meta"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Método de controle",
+        "state": {
+          "existing": "Controlador do ambiente existente",
+          "automatic": "Automático",
+          "manual": "Manual",
+          "off": "Desligar",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Velocidade silenciosa nativa"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Indicador de mofo · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Verificar e retomar"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Controlador climático"
       }
     }
   },

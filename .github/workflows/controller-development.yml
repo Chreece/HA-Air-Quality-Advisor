@@ -26,7 +26,7 @@ jobs:
           python -m pip install pytest
           python -m pytest -q tests
           python generate_translations.py
-          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations
+          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
           python -m compileall -q custom_components
       - uses: actions/setup-node@v4
         with:

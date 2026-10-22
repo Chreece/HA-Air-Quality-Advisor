@@ -34,6 +34,11 @@ async def async_setup_entry(hass, entry, async_add_entities):
             entities.extend(HomeSettingSwitch(
                 manager, entry.entry_id, key, kind="climate_operating", area=area,
             ) for key in CLIMATE_OPERATING_FLAGS)
+    from . import equipment_model as equipment
+    entities.extend(EquipmentQuietSwitch(manager, spec, key)
+                    for spec in equipment.specs(manager)
+                    if (cap := equipment.capabilities(manager, spec)) is not None and cap.fan_modes
+                    for key in equipment.QUIET_FLAGS)
     async_add_entities(entities)
 
 
@@ -103,3 +108,24 @@ class HomeSettingSwitch(SwitchEntity):
     @callback
     def _update(self):
         self.async_write_ha_state()
+
+
+from .equipment_entity import EquipmentEntity
+
+
+class EquipmentQuietSwitch(EquipmentEntity, SwitchEntity):
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_icon = "mdi:fan-speed-1"
+
+    def __init__(self, manager, spec, key):
+        self._equipment_init(manager, spec, key)
+
+    @property
+    def is_on(self):
+        return self.controller_settings[self._key] is True
+
+    async def async_turn_on(self, **kwargs):
+        await self._manager.equipment.async_update(self._spec, {self._key: True})
+
+    async def async_turn_off(self, **kwargs):
+        await self._manager.equipment.async_update(self._spec, {self._key: False})

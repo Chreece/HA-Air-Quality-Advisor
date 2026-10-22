@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Cihazlar · kontrol",
-        "description": "Cihazlar · kontrol: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "description": "Bu ayar «kontrol · kaynak» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir. «Gerekli · Cihazlar · Güç» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz. Bu süre «Güç · min ON (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz. Bu süre «Güç · min OFF (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz. «Uyku · kontrol» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller. «Hız (%)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Otomatik kontrol",
           "device_method": "kontrol · kaynak",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Küf göstergesi · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · kontrol (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · kontrol (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · kontrol (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ayarlar · kaynak (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Sessiz fan sınırı (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Cihazlar · Dış"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Uykuda düşük gürültü"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Odada biri varken düşük gürültü"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Cihazlar · kaynak · hedef"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Kontrol yöntemi",
+        "state": {
+          "existing": "Mevcut oda denetleyicisi",
+          "automatic": "Otomatik",
+          "manual": "Manuel",
+          "off": "Kapat",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Cihazın sessiz fan kademesi"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Küf göstergesi · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Doğrula ve sürdür"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}İklim denetleyicisi"
       }
     }
   },

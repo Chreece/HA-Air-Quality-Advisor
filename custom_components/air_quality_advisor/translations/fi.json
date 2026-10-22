@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Laitteet · ohjaus",
-        "description": "Laitteet · ohjaus: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "description": "Tämä asetus ohjaa kohtaa ”ohjaus · lähde”. Fyysiset komennot vaativat erillisen luvan ja suojaukset. Käytä todellista sopivaa mittausta kohtaan ”Vaaditaan · Laitteet · Teho”. Arvio ei korvaa kalibroitua anturia. Tämä aikaraja koskee kohtaa ”Teho · min ON (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta. Tämä aikaraja koskee kohtaa ”Teho · min OFF (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta. Määritä ”Uni · ohjaus” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon. Päätösraja kohdalle ”Nopeus (%)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automaattinen ohjaus",
           "device_method": "ohjaus · lähde",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Homeindikaattori · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · ohjaus (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · ohjaus (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · ohjaus (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}asetukset · lähde (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Hiljaisen puhalluksen raja (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Laitteet · Ulko"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Hiljaisempi toiminta nukuttaessa"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Hiljaisempi toiminta läsnä ollessa"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Laitteet · lähde · tavoite"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Ohjaustapa",
+        "state": {
+          "existing": "Nykyinen huonesäädin",
+          "automatic": "Automaattinen",
+          "manual": "Manuaalinen",
+          "off": "Sammuta",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Laitteen hiljainen puhallustila"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Homeindikaattori · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Tarkista ja jatka"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Ilmastonsäädin"
       }
     }
   },

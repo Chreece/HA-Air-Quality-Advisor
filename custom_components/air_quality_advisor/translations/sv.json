@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Enheter · styrning",
-        "description": "Enheter · styrning: Välj källa, sensor / Enheter · styrning.",
+        "description": "Detta alternativ styr ”styrning · källa”. Fysiska kommandon kräver separat godkännande och skydd. Använd en riktig lämplig mätning för ”Krävs · Enheter · Effekt”. En uppskattning ersätter inte kalibrerad sensor. Denna tid styr ”Effekt · min ON (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd. Denna tid styr ”Effekt · min OFF (s)”. Den minskar täta växlingar men ersätter inte hårdvaruskydd. Ställ in ”Sömn · styrning” endast för valt rum. Ogiltiga värden stoppar åtgärden. Beslutströskel för ”Hastighet (%)”. Den styr råd, men är ingen medicinsk gräns.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatisk styrning",
           "device_method": "styrning · källa",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Mögelindikator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · styrning (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · styrning (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · styrning (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}inställningar · källa (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Fläktgräns för tyst drift (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Enheter · Utomhus"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lägre ljud under sömn"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lägre ljud vid närvaro"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Enheter · källa · mål"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Styrmetod",
+        "state": {
+          "existing": "Befintlig rumsreglering",
+          "automatic": "Automatisk",
+          "manual": "Manuell",
+          "off": "Stäng av",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Inbyggt tyst fläktläge"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Mögelindikator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kontrollera och återuppta"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimatregulator"
       }
     }
   },

@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "الأجهزة · التحكم",
-        "description": "الأجهزة · التحكم: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "description": "يتحكم هذا الخيار في «التحكم · المصدر». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية. استخدم قياسًا حقيقيًا مناسبًا لـ «مطلوب · الأجهزة · الطاقة». التقدير لا يحل محل حساس معاير. تضبط هذه المدة «الطاقة · min ON (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية. تضبط هذه المدة «الطاقة · min OFF (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية. اضبط «النوم · التحكم» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء. هذه عتبة القرار لـ «السرعة (%)». تؤثر في التوصيات وليست حدًا طبيًا.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "تلقائي التحكم",
           "device_method": "التحكم · المصدر",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "مؤشر العفن · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · التحكم (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · التحكم (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · التحكم (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}الإعدادات · المصدر (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}حد سرعة المروحة الهادئة (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "الأجهزة · خارجي"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}ضوضاء أقل أثناء النوم"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}ضوضاء أقل عند وجود أشخاص"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "الأجهزة · المصدر · الهدف"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}طريقة التحكم",
+        "state": {
+          "existing": "متحكم الغرفة الحالي",
+          "automatic": "تلقائي",
+          "manual": "يدوي",
+          "off": "إيقاف",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}وضع المروحة الهادئ الأصلي"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "مؤشر العفن · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}تحقق واستأنف"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}متحكم المناخ"
       }
     }
   },

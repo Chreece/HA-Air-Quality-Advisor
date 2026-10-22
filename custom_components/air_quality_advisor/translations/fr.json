@@ -960,7 +960,7 @@
       },
       "device_settings": {
         "title": "Appareils · contrôle",
-        "description": "Appareils · contrôle: Choisir source, capteur / Appareils · contrôle.",
+        "description": "Le réglage existant conserve le régulateur de pièce. Le mode manuel suit uniquement vos consignes et choix natifs, sans suivre la présence. Le mode automatique applique les profils; le PID utilise des mesures vérifiées et des cycles lents pour les équipements marche/arrêt autorisés. Arrêt demande l'extinction des équipements démarrés par le contrôleur après leur durée minimale. La commutation exige la mise en service de cet appareil; un appareil déjà actif manuellement doit être arrêté avant transfert automatique. Le mode silencieux limite une vitesse native, pas des décibels mesurés, et ne démarre jamais l'appareil. Les pauses après redémarrage ou intervention manuelle exigent une vérification explicite.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatique contrôle",
           "device_method": "contrôle · source",
@@ -1308,6 +1308,24 @@
       },
       "area_mold_surface_critical_temperature_c": {
         "name": "Température mesurée de la surface la plus froide (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · contrôle (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · contrôle (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · contrôle (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}paramètres · source (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limite de ventilation silencieuse (%)"
       }
     },
     "switch": {
@@ -1340,6 +1358,12 @@
       },
       "area_climate_operating_window_efficiency_notify": {
         "name": "Appareils · Extérieur"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Bruit réduit pendant le sommeil"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Bruit réduit en présence"
       }
     },
     "select": {
@@ -1367,6 +1391,19 @@
       },
       "area_climate_policy_target_source": {
         "name": "Appareils · source · consigne"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Méthode de régulation",
+        "state": {
+          "existing": "Régulateur de pièce existant",
+          "automatic": "Automatique",
+          "manual": "Manuel",
+          "off": "Arrêt",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Vitesse silencieuse native"
       }
     },
     "time": {
@@ -1380,6 +1417,14 @@
     "button": {
       "area_recalculate_mold": {
         "name": "Recalibrer avec les températures actuelles"
+      },
+      "equipment_resume": {
+        "name": "{channel}Vérifier et reprendre"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Régulateur climatique"
       }
     }
   },
