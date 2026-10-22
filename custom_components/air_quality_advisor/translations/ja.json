@@ -854,16 +854,14 @@
           "indoor_sensors": "部屋 · カビ指標",
           "window_sensors": "窓センサーを除外",
           "environment_room": "設定 · 設定 · 情報源",
-          "climate": "設定 · デバイス",
-          "pid": "設定 · PID",
-          "area_devices": "エリア · デバイス"
+          "area_devices": "室内環境機器"
         },
         "data": {},
         "data_description": {}
       },
       "device_menu": {
         "title": "デバイス · 設定",
-        "description": "デバイス · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "description": "任意：センサーと機器固有の安全権限設定へ進みます。一覧をすぐ保存する場合はオフのままにしてください。",
         "menu_options": {
           "device_settings": "デバイス · 制御",
           "device_choice": "選択 · デバイス",
@@ -929,8 +927,8 @@
         }
       },
       "area_devices": {
-        "title": "エリア · デバイス",
-        "description": "エリア · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "title": "室内環境機器",
+        "description": "選択 · エリア",
         "data": {
           "area_devices_area": "選択 · エリア"
         },
@@ -939,13 +937,15 @@
         }
       },
       "select_devices": {
-        "title": "選択 · デバイス",
-        "description": "選択 · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "title": "室内環境機器",
+        "description": "{area_name}の機器を選択します。保存すると、部屋のハブ内に物理機器ごとに1つの制御デバイスが作成されます。目標、プリセット、自動・手動・停止・PIDや静音運転は各デバイスで設定します。選択だけでは自動制御は有効になりません。",
         "data": {
-          "selected_devices": "選択 · デバイス"
+          "selected_devices": "選択 · デバイス",
+          "configure_device_sources": "センサーと機器の権限を今すぐ設定"
         },
         "data_description": {
-          "selected_devices": "「選択 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。"
+          "selected_devices": "{area_name}の機器を選択します。保存すると、部屋のハブ内に物理機器ごとに1つの制御デバイスが作成されます。目標、プリセット、自動・手動・停止・PIDや静音運転は各デバイスで設定します。選択だけでは自動制御は有効になりません。",
+          "configure_device_sources": "任意：センサーと機器固有の安全権限設定へ進みます。一覧をすぐ保存する場合はオフのままにしてください。"
         }
       },
       "device_choice": {

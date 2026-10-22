@@ -355,7 +355,7 @@ def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     ]
     assert asyncio.run(options.async_step_area_settings())["menu_options"] == [
         "areas", "indoor_sensors", "window_sensors", "environment_room",
-        "climate", "pid", "area_devices",
+        "area_devices",
     ]
     assert options._values["thresholds"] == {"indoor_co2":1200}
 
@@ -1388,7 +1388,7 @@ def test_area_device_list_preselects_every_supported_room_entity_without_actuati
     choice=next(k.default for k in listing["data_schema"] if k=="selected_devices")
     assert set(choice)=={st.entity_id,fan.entity_id,humidifier.entity_id}
     assert "fan.other_room" not in choice
-    nxt=asyncio.run(opt.async_step_select_devices({"selected_devices":choice}))
+    nxt=asyncio.run(opt.async_step_select_devices({"selected_devices":choice,"configure_device_sources":True}))
     assert nxt["step_id"]=="device_choice"
     assert asyncio.run(opt.async_step_device_choice({"device_choice":st.entity_id}))["step_id"]=="device_menu"
     form=asyncio.run(opt.async_step_device_settings())

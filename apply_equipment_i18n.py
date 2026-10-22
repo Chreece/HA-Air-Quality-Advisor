@@ -51,6 +51,8 @@ def apply_equipment_i18n(root: Path) -> None:
         add("number", "cycle_seconds", actuator.get("pwm_period_s") or
             (v["power"] + " · PID · " + pid["pid_sample_seconds"]))
         add("number", "quiet_percentage", words["quiet_percentage"] + " (%)")
+        from apply_device_picker_i18n import apply_device_picker_document
+        apply_device_picker_document(doc, lang)
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (root / "equipment_text.py").write_text(
         '"""Generated device-controller help. Edit apply_equipment_i18n.py, not this file."""\n'

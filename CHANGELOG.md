@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b13 — Single per-room climate-device picker (beta)
+
+- Replace duplicate Climate/PID/device menus with one physical-device picker.
+- Save selection directly; optional sensor and hardware commissioning stays in the same path.
+- Keep operating controls on managed devices and room-wide controls on the room hub.
+- Preserve unavailable selected equipment and revoke deselected legacy PID assignments.
+- Prevent inherited/stale automation grants for newly selected endpoints; preserve tuning and other rooms.
+- Translate the new setup guidance in all 38 languages, including Greek.
+
 ## 0.6.0b12 — Native room groups and service-classification correction (beta)
 
 - Replace service classification with ordinary Home/Area/controller devices and a hub integration. Explicitly migrate persisted beta 11 flags.

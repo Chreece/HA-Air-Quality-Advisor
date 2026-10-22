@@ -854,16 +854,14 @@
           "indoor_sensors": "Raumeinstellungen – Innenluft und Schimmel",
           "window_sensors": "Fenstersensoren ausschließen",
           "environment_room": "Raum für Umweltanalysen wählen",
-          "climate": "Klima — Raum auswählen",
-          "pid": "Klima-PID — Raum wählen",
-          "area_devices": "Bereich · Geräte"
+          "area_devices": "Klimageräte"
         },
         "data": {},
         "data_description": {}
       },
       "device_menu": {
         "title": "Geräte · Einstellungen",
-        "description": "Automatik, Sollwerte, Anwesenheit und Schlaf für dieses Gerät einstellen.",
+        "description": "Optional: Sensorauswahl und gerätespezifische Sicherheitsfreigaben öffnen. Ausgeschaltet wird nur die Geräteliste gespeichert.",
         "menu_options": {
           "device_settings": "Geräte · Steuerung",
           "device_choice": "Auswählen · Geräte",
@@ -929,8 +927,8 @@
         }
       },
       "area_devices": {
-        "title": "Bereich · Geräte",
-        "description": "Bereich · Geräte: Auswählen Quelle, Sensor / Geräte · Steuerung.",
+        "title": "Klimageräte",
+        "description": "Auswählen · Bereich",
         "data": {
           "area_devices_area": "Auswählen · Bereich"
         },
@@ -939,13 +937,15 @@
         }
       },
       "select_devices": {
-        "title": "Auswählen · Geräte",
-        "description": "Alle kompatiblen Geräte dieses HA-Raums werden zur Überwachung vorausgewählt. Die Auswahl erlaubt KEINE Gerätesteuerung.",
+        "title": "Klimageräte",
+        "description": "Geräte für {area_name} auswählen. Speichern erstellt je physischem Gerät ein Steuergerät im Raum-Hub. Sollwerte, Profile, Automatik/Manuell/Aus/PID und leisen Betrieb dort einstellen. Die Auswahl aktiviert keine automatische Steuerung.",
         "data": {
-          "selected_devices": "Auswählen · Geräte"
+          "selected_devices": "Auswählen · Geräte",
+          "configure_device_sources": "Sensoren und Gerätefreigaben jetzt einrichten"
         },
         "data_description": {
-          "selected_devices": "Eine passende Home-Assistant-Quelle für „Auswählen · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion."
+          "selected_devices": "Geräte für {area_name} auswählen. Speichern erstellt je physischem Gerät ein Steuergerät im Raum-Hub. Sollwerte, Profile, Automatik/Manuell/Aus/PID und leisen Betrieb dort einstellen. Die Auswahl aktiviert keine automatische Steuerung.",
+          "configure_device_sources": "Optional: Sensorauswahl und gerätespezifische Sicherheitsfreigaben öffnen. Ausgeschaltet wird nur die Geräteliste gespeichert."
         }
       },
       "device_choice": {

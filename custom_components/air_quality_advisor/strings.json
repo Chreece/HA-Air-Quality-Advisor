@@ -854,16 +854,14 @@
           "indoor_sensors": "Room settings — indoor air and mold",
           "window_sensors": "Window sensor exclusions",
           "environment_room": "Choose a room for environmental science",
-          "climate": "Climate — select room",
-          "pid": "Climate PID — select a room",
-          "area_devices": "Area · Devices"
+          "area_devices": "Climate devices"
         },
         "data": {},
         "data_description": {}
       },
       "device_menu": {
         "title": "Devices · settings",
-        "description": "Adjust this device's automation, targets and occupancy/sleep settings, or select a different device.",
+        "description": "Optional: continue to sensor selection and equipment-specific safety permissions. Leave off to save the device list immediately.",
         "menu_options": {
           "device_settings": "Devices · control",
           "device_choice": "Select · Devices",
@@ -929,8 +927,8 @@
         }
       },
       "area_devices": {
-        "title": "Area · Devices",
-        "description": "Area · Devices: Select source, sensor / Devices · control.",
+        "title": "Climate devices",
+        "description": "Select · Area",
         "data": {
           "area_devices_area": "Select · Area"
         },
@@ -939,13 +937,15 @@
         }
       },
       "select_devices": {
-        "title": "Select · Devices",
-        "description": "All supported native devices assigned to this HA area are preselected for monitoring. Selecting does NOT authorize any device commands.",
+        "title": "Climate devices",
+        "description": "Select the devices for {area_name}. Save to create one controller device per physical product inside this room's hub. Set targets, presets, Automatic/Manual/Off/PID and quiet operation on those devices. Selection alone does not enable automatic control.",
         "data": {
-          "selected_devices": "Select · Devices"
+          "selected_devices": "Select · Devices",
+          "configure_device_sources": "Configure sensors and hardware permissions now"
         },
         "data_description": {
-          "selected_devices": "All compatible native climate, fan and humidifier entities in this room are preselected for monitoring. Selecting does not grant permission to command them."
+          "selected_devices": "Select the devices for {area_name}. Save to create one controller device per physical product inside this room's hub. Set targets, presets, Automatic/Manual/Off/PID and quiet operation on those devices. Selection alone does not enable automatic control.",
+          "configure_device_sources": "Optional: continue to sensor selection and equipment-specific safety permissions. Leave off to save the device list immediately."
         }
       },
       "device_choice": {

@@ -6,6 +6,7 @@ The legacy advanced controllers and their persisted keys stay compatible.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 import math
 from typing import Any
 
@@ -13,11 +14,11 @@ import probatio
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_EXCLUDED_INDOOR, CONF_ENVIRONMENT_GLOBAL,
+    CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, CONF_EXCLUDED_INDOOR, CONF_ENVIRONMENT_GLOBAL,
     CONF_ENVIRONMENT_ROOMS, CONF_OCCUPANCY_GLOBAL, CONF_OUTDOOR,
 )
 from .discovery import entity_area, indoor_temperature_choices, supported_metric
-from .device_hierarchy import native_source
+from .device_hierarchy import configured_sources, native_source
 
 
 def _field(key: str, default: Any = None, *, required: bool = False):
@@ -138,6 +139,8 @@ def _reconcile_device_selection(previous: dict, updated: dict) -> dict:
 
     if not revoked:
         return result
+    for entity in revoked:
+        devices.setdefault(entity, {})["auto_control"] = False
     for role in _MANAGED_DEVICE_ROLES:
         if result.get(role) in revoked:
             result.pop(role, None)
@@ -196,7 +199,7 @@ class CompactOptionsMixin:
             step_id="area_settings",
             menu_options=[
                 "areas", "indoor_sensors", "window_sensors", "environment_room",
-                "climate", "pid", "area_devices",
+                "area_devices",
             ],
         )
 
@@ -492,9 +495,10 @@ class CompactOptionsMixin:
         from homeassistant.helpers import area_registry
         registry = area_registry.async_get(self.hass)
         areas = {a for a in self._values.get(CONF_AREAS, []) if isinstance(a, str)}
-        old = self._values.get(CONF_CLIMATE_ROOMS, {})
-        if isinstance(old, dict):
-            areas.update(old)
+        for section in (CONF_CLIMATE_ROOMS, CONF_PID_ROOMS):
+            old = self._values.get(section, {})
+            if isinstance(old, dict):
+                areas.update(old)
         for state in self.hass.states.async_all():
             if state.domain in ("climate", "humidifier", "fan"):
                 if area := entity_area(self.hass, state.entity_id):
@@ -516,7 +520,7 @@ class CompactOptionsMixin:
             if area in {r["value"] for r in rooms}:
                 self._climate_area = area
                 saved = self._values.get(CONF_CLIMATE_ROOMS, {})
-                self._climate_draft = dict(saved.get(area, {})) if isinstance(saved, dict) else {}
+                self._climate_draft = deepcopy(saved.get(area, {})) if isinstance(saved, dict) else {}
                 return await self.async_step_select_devices()
             errors["base"] = "invalid_areas"
         return self.async_show_form(step_id="area_devices", errors=errors,
@@ -525,32 +529,56 @@ class CompactOptionsMixin:
             }))
 
     async def async_step_select_devices(self, user_input=None):
-        """Auto-select ALL supported room devices the first time, without activating any."""
-        choices = _device_choices(self.hass, self._climate_area)
-        available = {c["value"] for c in choices}
+        """One room inventory picker; saving does not require a setup wizard."""
+        from .room_device_picker import physical_device_choices
+        area = self._climate_area
+        prior = configured_sources(self._values, area)
+        choices, sources = physical_device_choices(self.hass, area, prior)
         draft = self._climate_draft
         old = draft.get("selected_devices")
-        default = [v for v in old if v in available] if isinstance(old, list) else [
-            c["value"] for c in choices
-        ]
+        # Bring an existing supervisory PID selection into the same visible
+        # inventory without dropping its established permission on upgrade.
+        selected_before = set(old) | set(prior) if isinstance(old, list) else set(prior)
+        default = [item["value"] for item in choices if not isinstance(old, list)
+                   or set(sources[item["value"]]).intersection(selected_before)]
         errors = {}
         if user_input is not None:
-            devices = user_input.get("selected_devices", default)
-            if not isinstance(devices, list) or any(d not in available for d in devices):
+            selected = user_input.get("selected_devices", default)
+            configure = user_input.get("configure_device_sources", False)
+            if (not isinstance(selected, list)
+                    or any(not isinstance(key, str) or key not in sources for key in selected)
+                    or type(configure) is not bool):
                 errors["base"] = "invalid_selected_devices"
             else:
-                draft["selected_devices"] = list(dict.fromkeys(devices))
-                # Preserve old preferences, but no unselected actuator may be
-                # scheduled from a historic climate role assignment.
+                devices = list(dict.fromkeys(entity for key in selected for entity in sources[key]))
+                # The inventory is physical-device based, but grants and native
+                # commands remain exact-entity based. A new endpoint must never
+                # inherit another endpoint's room-wide automation permission.
+                before = selected_before
+                profiles = deepcopy(draft.get("device_settings", {}))
+                profiles = profiles if isinstance(profiles, dict) else {}
+                for entity in devices:
+                    if entity not in before:
+                        cfg = profiles.get(entity, {})
+                        profiles[entity] = {**(cfg if isinstance(cfg, dict) else {}),
+                                            "auto_control": False}
+                draft["selected_devices"] = devices
+                draft["device_settings"] = profiles
                 self._climate_draft = draft
-                if devices:
+                # Optional sensor/hardware commissioning is kept in this ONE
+                # path. Targets, presets, algorithms and quiet controls remain
+                # on the managed device; there is no separate PID device list.
+                if configure and devices:
                     return await self.async_step_device_choice()
                 return await self._save_devices()
+        from homeassistant.helpers import area_registry
+        room = area_registry.async_get(self.hass).async_get_area(area)
         return self.async_show_form(
             step_id="select_devices", errors=errors,
             data_schema=probatio.Schema({
-                _field("selected_devices", default): _select(choices, multi=True)
-            }), description_placeholders={"area_name":self._climate_area}
+                _field("selected_devices", default): _select(choices, multi=True),
+                _field("configure_device_sources", False): selector.BooleanSelector(),
+            }), description_placeholders={"area_name": room.name if room else area}
         )
 
     async def async_step_device_choice(self, user_input=None):
@@ -593,6 +621,22 @@ class CompactOptionsMixin:
         reconciled = _reconcile_device_selection(before, self._climate_draft)
         result[self._climate_area] = reconciled
         self._values[CONF_CLIMATE_ROOMS] = result
+        # Legacy supervisory PID uses a second persisted list. It is now
+        # constrained by this same picker, never a competing setup route.
+        pid_rooms = self._values.get(CONF_PID_ROOMS, {})
+        pid = pid_rooms.get(self._climate_area) if isinstance(pid_rooms, dict) else None
+        if isinstance(pid, dict) and isinstance(pid.get("climate_entities"), list):
+            selected = set(reconciled.get("selected_devices", []))
+            retained = [entity for entity in pid["climate_entities"] if entity in selected]
+            if retained != pid["climate_entities"]:
+                pid_rooms = deepcopy(pid_rooms)
+                pid_rooms[self._climate_area]["climate_entities"] = retained
+                if not retained:
+                    pid_rooms[self._climate_area]["enabled"] = False
+                self._values[CONF_PID_ROOMS] = pid_rooms
+                profiles = reconciled.setdefault("device_settings", {})
+                for entity in set(pid["climate_entities"]) - selected:
+                    profiles.setdefault(entity, {})["auto_control"] = False
         self._climate_draft = reconciled
         return await self._finish()
 

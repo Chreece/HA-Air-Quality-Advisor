@@ -22,7 +22,7 @@ def _start_device(opt, selected, chosen):
         "area_devices_area": "living",
     }))["step_id"] == "select_devices"
     assert asyncio.run(opt.async_step_select_devices({
-        "selected_devices": selected,
+        "selected_devices": selected, "configure_device_sources": True,
     }))["step_id"] == "device_choice"
     assert asyncio.run(opt.async_step_device_choice({
         "device_choice": chosen,

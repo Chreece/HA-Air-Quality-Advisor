@@ -1,18 +1,15 @@
 {
-  "version": "0.6.0b12",
+  "version": "0.6.0b13",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Correct beta11 service classification and provide native per-room groups containing general room settings and one managed device per physical product. Preserve identities, native hardware and existing control grants.",
+  "note": "Single per-room physical climate-device picker; device-owned operating controls; no implicit actuation",
   "validation_attempt": 0,
   "changes": [
-    "Register the integration as hub and ordinary Home/Area/controller devices with entry_type=None, explicitly clearing beta11 service flags",
-    "Create a native config subentry for each configured room so the integrations UI groups that room's general settings device and its managed physical-device controllers",
-    "Migrate existing device and entity registry associations in place, including disabled entities, without changing unique IDs, device IDs or user customizations",
-    "Register every entity platform under the same room subentry as its device to preserve grouping across reloads",
-    "Show selected physical devices independently of automatic-control consent; no new actuator permission is granted",
-    "Support room additions, custom titles, area renames and explicit removal with room-only grant revocation and retained calibration/tuning",
-    "Generate native room-group setup/help in all 38 supported locales, including Greek",
-    "Validate regression tests, translations, frontend, real Home Assistant registry migration, Hassfest, HACS and installation ZIP before prerelease publication"
+    "Remove separate Climate and Climate PID setup entry points",
+    "Group supported native endpoints by physical device in the room picker",
+    "Save inventory directly; keep optional sensor/hardware commissioning in the same path",
+    "Reconcile removed devices across legacy PID and native control with no permission inheritance",
+    "Retain room hubs, source identities, tuning and all 38 localized catalogs"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b12"
+  "release_branch": "beta/v0.6.0b13"
 }
