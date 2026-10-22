@@ -143,6 +143,76 @@
           "max_age_minutes": "Prag odluke za „⏱ · Otvorite (min, ≤)”. Utječe na preporuke, nije medicinska granica.",
           "indoor_mold": "Prag odluke za „Pokazatelj plijesni · ≥ 70%”. Utječe na preporuke, nije medicinska granica."
         }
+      },
+      "setup_rooms": {
+        "title": "Sobe za praćenje",
+        "description": "Sobe za praćenje → izvor → Opće postavke",
+        "data": {
+          "areas": "Sobe za praćenje"
+        },
+        "data_description": {
+          "areas": "Sobe za praćenje. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Soba · {area_name} · {room_index}/{room_count}",
+        "description": "Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+        "data": {
+          "windows": "Prozori",
+          "air_quality": "Senzori kvalitete zraka i okoliša",
+          "temperature": "Temperatura",
+          "humidity": "Vlažnost",
+          "pressure": "Senzori tlaka",
+          "climate_devices": "Uređaji"
+        },
+        "data_description": {
+          "windows": "Prozori. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "air_quality": "Senzori kvalitete zraka i okoliša. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "temperature": "Temperatura. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "humidity": "Vlažnost. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "pressure": "Senzori tlaka. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "climate_devices": "Uređaji. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje."
+        }
+      },
+      "setup_general": {
+        "title": "Opće postavke",
+        "description": "Odaberite zajedničke izvore i izlaze obavijesti. Spremanje završava postavljanje. Radne postavke ostaju na uređajima doma i soba.",
+        "data": {
+          "weather_entities": "Vrijeme i upozorenja",
+          "outdoor_sensors": "Kvaliteta vanjskog zraka",
+          "weather_warnings": "Vremenska upozorenja",
+          "general_room_occupancy_sensors": "Soba · Prisutnost · senzor",
+          "general_home_trackers": "Dom · Prisutnost · Uređaji",
+          "general_occupied_rooms_entity": "Prisutnost · Soba · izvor (state)",
+          "general_occupied_rooms_attribute": "Prisutnost · Soba · izvor (attribute)",
+          "general_sleep_rooms_entity": "Spavanje · Soba · izvor (state)",
+          "general_sleep_rooms_attribute": "Spavanje · Soba · izvor (attribute)",
+          "pollen_entity": "Pelud · izvor",
+          "notify_entities": "postavke · izvor",
+          "media_players": "postavke · izvor · MEDIA_PLAYERS",
+          "tts_engine": "postavke · izvor · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Jezik",
+          "language": "Jezik",
+          "use_mold_indicator": "Pokazatelj plijesni · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Odaberite: Vrijeme i upozorenja · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Odaberite: Kvaliteta vanjskog zraka · AQI, CO₂, PM2.5, PM10, VOC. Nedostupno: ⚠",
+          "weather_warnings": "Vrijeme i upozorenja · ⚠ (Nedostupno) → 🪟🔒",
+          "general_room_occupancy_sensors": "Odaberite stvarni izvor Home Assistant za „Soba · Prisutnost · senzor”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_home_trackers": "Odaberite stvarni izvor Home Assistant za „Dom · Prisutnost · Uređaji”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_occupied_rooms_entity": "Odaberite stvarni izvor Home Assistant za „Prisutnost · Soba · izvor (state)”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_occupied_rooms_attribute": "Postavite „Prisutnost · Soba · izvor (attribute)” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "general_sleep_rooms_entity": "Odaberite stvarni izvor Home Assistant za „Spavanje · Soba · izvor (state)”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_sleep_rooms_attribute": "Postavite „Spavanje · Soba · izvor (attribute)” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "pollen_entity": "Odaberite stvarni izvor Home Assistant za „Pelud · izvor”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "notify_entities": "Odaberite: notify.* · postavke · izvor.",
+          "media_players": "Odaberite: media_player.* · postavke · izvor · MEDIA_PLAYERS.",
+          "tts_engine": "Odaberite: tts.* · postavke · izvor · TTS_ENGINE.",
+          "ai_conversation_agent": "Odaberite: conversation.* (Home Assistant · Zadano).",
+          "language": "Postavite „Jezik” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "use_mold_indicator": "🧱 Pokazatelj plijesni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Prostorije · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Pokazatelj plijesni · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Pokazatelj plijesni · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Pokazatelj plijesni · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Pokazatelj plijesni · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Neispravno: Sobe za praćenje",
+      "invalid_room_source": "Neispravno: Soba · izvor"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — već postavljeno."
+      "already_configured": "Home Environment Manager — već postavljeno.",
+      "setup_area_removed": "Neispravno: Sobe za praćenje",
+      "setup_changed": "postavke ↻ Sobe za praćenje"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Cilj „Grijanje · Spavanje (°C)” vrijedi uz potvrđenu prisutnost ili spavanje. Nepoznato ne znači prazno.",
           "device_sleep_cool_c": "Cilj „Hlađenje · Spavanje (°C)” vrijedi uz potvrđenu prisutnost ili spavanje. Nepoznato ne znači prazno."
         }
+      },
+      "setup_rooms": {
+        "title": "Sobe za praćenje",
+        "description": "Sobe za praćenje → izvor → Opće postavke",
+        "data": {
+          "areas": "Sobe za praćenje"
+        },
+        "data_description": {
+          "areas": "Sobe za praćenje. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Soba · {area_name} · {room_index}/{room_count}",
+        "description": "Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+        "data": {
+          "windows": "Prozori",
+          "air_quality": "Senzori kvalitete zraka i okoliša",
+          "temperature": "Temperatura",
+          "humidity": "Vlažnost",
+          "pressure": "Senzori tlaka",
+          "climate_devices": "Uređaji"
+        },
+        "data_description": {
+          "windows": "Prozori. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "air_quality": "Senzori kvalitete zraka i okoliša. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "temperature": "Temperatura. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "humidity": "Vlažnost. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "pressure": "Senzori tlaka. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje.",
+          "climate_devices": "Uređaji. Odaberite ulaze sobe: naziv uređaja — naziv entiteta. Prazne se grupe ne koriste i ne uključuju automatsko otkrivanje ni upravljanje."
+        }
+      },
+      "setup_general": {
+        "title": "Opće postavke",
+        "description": "Odaberite zajedničke izvore i izlaze obavijesti. Spremanje završava postavljanje. Radne postavke ostaju na uređajima doma i soba.",
+        "data": {
+          "weather_entities": "Vrijeme i upozorenja",
+          "outdoor_sensors": "Kvaliteta vanjskog zraka",
+          "weather_warnings": "Vremenska upozorenja",
+          "general_room_occupancy_sensors": "Soba · Prisutnost · senzor",
+          "general_home_trackers": "Dom · Prisutnost · Uređaji",
+          "general_occupied_rooms_entity": "Prisutnost · Soba · izvor (state)",
+          "general_occupied_rooms_attribute": "Prisutnost · Soba · izvor (attribute)",
+          "general_sleep_rooms_entity": "Spavanje · Soba · izvor (state)",
+          "general_sleep_rooms_attribute": "Spavanje · Soba · izvor (attribute)",
+          "pollen_entity": "Pelud · izvor",
+          "notify_entities": "postavke · izvor",
+          "media_players": "postavke · izvor · MEDIA_PLAYERS",
+          "tts_engine": "postavke · izvor · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Jezik",
+          "language": "Jezik",
+          "use_mold_indicator": "Pokazatelj plijesni · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Odaberite: Vrijeme i upozorenja · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Odaberite: Kvaliteta vanjskog zraka · AQI, CO₂, PM2.5, PM10, VOC. Nedostupno: ⚠",
+          "weather_warnings": "Vrijeme i upozorenja · ⚠ (Nedostupno) → 🪟🔒",
+          "general_room_occupancy_sensors": "Odaberite stvarni izvor Home Assistant za „Soba · Prisutnost · senzor”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_home_trackers": "Odaberite stvarni izvor Home Assistant za „Dom · Prisutnost · Uređaji”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_occupied_rooms_entity": "Odaberite stvarni izvor Home Assistant za „Prisutnost · Soba · izvor (state)”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_occupied_rooms_attribute": "Postavite „Prisutnost · Soba · izvor (attribute)” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "general_sleep_rooms_entity": "Odaberite stvarni izvor Home Assistant za „Spavanje · Soba · izvor (state)”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "general_sleep_rooms_attribute": "Postavite „Spavanje · Soba · izvor (attribute)” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "pollen_entity": "Odaberite stvarni izvor Home Assistant za „Pelud · izvor”. Nedostajući ili zastarjeli podaci zaustavljaju radnju.",
+          "notify_entities": "Odaberite: notify.* · postavke · izvor.",
+          "media_players": "Odaberite: media_player.* · postavke · izvor · MEDIA_PLAYERS.",
+          "tts_engine": "Odaberite: tts.* · postavke · izvor · TTS_ENGINE.",
+          "ai_conversation_agent": "Odaberite: conversation.* (Home Assistant · Zadano).",
+          "language": "Postavite „Jezik” samo za odabranu prostoriju. Nedostajući podaci blokiraju radnju.",
+          "use_mold_indicator": "🧱 Pokazatelj plijesni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Neispravno · senzor · postavke",
       "device_temperature_band_invalid": "Neispravno · Temperatura · postavke",
       "device_humidity_invalid": "Neispravno · Vlažnost · postavke",
-      "device_runtime_invalid": "Neispravno · Snaga · postavke"
+      "device_runtime_invalid": "Neispravno · Snaga · postavke",
+      "invalid_setup_rooms": "Neispravno: Sobe za praćenje",
+      "invalid_room_source": "Neispravno: Soba · izvor"
+    },
+    "abort": {
+      "setup_area_removed": "Neispravno: Sobe za praćenje",
+      "setup_changed": "postavke ↻ Sobe za praćenje"
     }
   },
   "entity": {

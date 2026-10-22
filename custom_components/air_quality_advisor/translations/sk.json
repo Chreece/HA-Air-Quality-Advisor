@@ -143,6 +143,76 @@
           "max_age_minutes": "Rozhodovací prah pre „⏱ · Otvorte (min, ≤)“. Ovplyvňuje odporúčania, nie je medicínskym limitom.",
           "indoor_mold": "Rozhodovací prah pre „Indikátor plesní · ≥ 70%“. Ovplyvňuje odporúčania, nie je medicínskym limitom."
         }
+      },
+      "setup_rooms": {
+        "title": "Monitorované miestnosti",
+        "description": "Monitorované miestnosti → zdroj → Všeobecné nastavenia",
+        "data": {
+          "areas": "Monitorované miestnosti"
+        },
+        "data_description": {
+          "areas": "Monitorované miestnosti. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Miestnosť · {area_name} · {room_index}/{room_count}",
+        "description": "Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+        "data": {
+          "windows": "Okná",
+          "air_quality": "Snímače kvality vzduchu a prostredia",
+          "temperature": "Teplota",
+          "humidity": "Vlhkosť",
+          "pressure": "Snímače tlaku",
+          "climate_devices": "Zariadenia"
+        },
+        "data_description": {
+          "windows": "Okná. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "air_quality": "Snímače kvality vzduchu a prostredia. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "temperature": "Teplota. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "humidity": "Vlhkosť. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "pressure": "Snímače tlaku. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "climate_devices": "Zariadenia. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie."
+        }
+      },
+      "setup_general": {
+        "title": "Všeobecné nastavenia",
+        "description": "Vyberte spoločné zdroje a výstupy oznámení. Uloženie dokončí nastavenie. Prevádzkové nastavenia zostávajú na zariadeniach domu a miestností.",
+        "data": {
+          "weather_entities": "Počasie a výstrahy",
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu",
+          "weather_warnings": "Výstrahy počasia",
+          "general_room_occupancy_sensors": "Miestnosť · Obsadenosť · senzor",
+          "general_home_trackers": "Domov · Obsadenosť · Zariadenia",
+          "general_occupied_rooms_entity": "Obsadenosť · Miestnosť · zdroj (state)",
+          "general_occupied_rooms_attribute": "Obsadenosť · Miestnosť · zdroj (attribute)",
+          "general_sleep_rooms_entity": "Spánok · Miestnosť · zdroj (state)",
+          "general_sleep_rooms_attribute": "Spánok · Miestnosť · zdroj (attribute)",
+          "pollen_entity": "Peľ · zdroj",
+          "notify_entities": "nastavenia · zdroj",
+          "media_players": "nastavenia · zdroj · MEDIA_PLAYERS",
+          "tts_engine": "nastavenia · zdroj · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Jazyk",
+          "language": "Jazyk",
+          "use_mold_indicator": "Indikátor plesní · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Vyberte: Počasie a výstrahy · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vyberte: Kvalita vonkajšieho vzduchu · AQI, CO₂, PM2.5, PM10, VOC. Nedostupné: ⚠",
+          "weather_warnings": "Počasie a výstrahy · ⚠ (Nedostupné) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vyberte skutočný zdroj Home Assistant pre „Miestnosť · Obsadenosť · senzor“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_home_trackers": "Vyberte skutočný zdroj Home Assistant pre „Domov · Obsadenosť · Zariadenia“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_occupied_rooms_entity": "Vyberte skutočný zdroj Home Assistant pre „Obsadenosť · Miestnosť · zdroj (state)“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_occupied_rooms_attribute": "Nastavte „Obsadenosť · Miestnosť · zdroj (attribute)“ iba pre vybranú izbu. Chýbajúce dáta bránia akcii.",
+          "general_sleep_rooms_entity": "Vyberte skutočný zdroj Home Assistant pre „Spánok · Miestnosť · zdroj (state)“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_sleep_rooms_attribute": "Nastavte „Spánok · Miestnosť · zdroj (attribute)“ iba pre vybranú izbu. Chýbajúce dáta bránia akcii.",
+          "pollen_entity": "Vyberte skutočný zdroj Home Assistant pre „Peľ · zdroj“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "notify_entities": "Vyberte: notify.* · nastavenia · zdroj.",
+          "media_players": "Vyberte: media_player.* · nastavenia · zdroj · MEDIA_PLAYERS.",
+          "tts_engine": "Vyberte: tts.* · nastavenia · zdroj · TTS_ENGINE.",
+          "ai_conversation_agent": "Vyberte: conversation.* (Home Assistant · Predvolené).",
+          "language": "Jazyk: Home Assistant (Predvolené).",
+          "use_mold_indicator": "🧱 Indikátor plesní · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Miestnosti · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Indikátor plesní · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Indikátor plesní · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Indikátor plesní · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Indikátor plesní · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Neplatné: Monitorované miestnosti",
+      "invalid_room_source": "Neplatné: Miestnosť · zdroj"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — už nastavené."
+      "already_configured": "Home Environment Manager — už nastavené.",
+      "setup_area_removed": "Neplatné: Monitorované miestnosti",
+      "setup_changed": "nastavenia ↻ Monitorované miestnosti"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Cieľ pre „Vykurovanie · Spánok (°C)“ platí pri overenej prítomnosti alebo spánku. Neznáme neznamená prázdnu izbu.",
           "device_sleep_cool_c": "Cieľ pre „Chladenie · Spánok (°C)“ platí pri overenej prítomnosti alebo spánku. Neznáme neznamená prázdnu izbu."
         }
+      },
+      "setup_rooms": {
+        "title": "Monitorované miestnosti",
+        "description": "Monitorované miestnosti → zdroj → Všeobecné nastavenia",
+        "data": {
+          "areas": "Monitorované miestnosti"
+        },
+        "data_description": {
+          "areas": "Monitorované miestnosti. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Miestnosť · {area_name} · {room_index}/{room_count}",
+        "description": "Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+        "data": {
+          "windows": "Okná",
+          "air_quality": "Snímače kvality vzduchu a prostredia",
+          "temperature": "Teplota",
+          "humidity": "Vlhkosť",
+          "pressure": "Snímače tlaku",
+          "climate_devices": "Zariadenia"
+        },
+        "data_description": {
+          "windows": "Okná. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "air_quality": "Snímače kvality vzduchu a prostredia. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "temperature": "Teplota. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "humidity": "Vlhkosť. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "pressure": "Snímače tlaku. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie.",
+          "climate_devices": "Zariadenia. Vyberte vstupy miestnosti: názov zariadenia — názov entity. Prázdne skupiny sa nepoužívajú a nezapínajú automatické vyhľadávanie ani riadenie."
+        }
+      },
+      "setup_general": {
+        "title": "Všeobecné nastavenia",
+        "description": "Vyberte spoločné zdroje a výstupy oznámení. Uloženie dokončí nastavenie. Prevádzkové nastavenia zostávajú na zariadeniach domu a miestností.",
+        "data": {
+          "weather_entities": "Počasie a výstrahy",
+          "outdoor_sensors": "Kvalita vonkajšieho vzduchu",
+          "weather_warnings": "Výstrahy počasia",
+          "general_room_occupancy_sensors": "Miestnosť · Obsadenosť · senzor",
+          "general_home_trackers": "Domov · Obsadenosť · Zariadenia",
+          "general_occupied_rooms_entity": "Obsadenosť · Miestnosť · zdroj (state)",
+          "general_occupied_rooms_attribute": "Obsadenosť · Miestnosť · zdroj (attribute)",
+          "general_sleep_rooms_entity": "Spánok · Miestnosť · zdroj (state)",
+          "general_sleep_rooms_attribute": "Spánok · Miestnosť · zdroj (attribute)",
+          "pollen_entity": "Peľ · zdroj",
+          "notify_entities": "nastavenia · zdroj",
+          "media_players": "nastavenia · zdroj · MEDIA_PLAYERS",
+          "tts_engine": "nastavenia · zdroj · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Jazyk",
+          "language": "Jazyk",
+          "use_mold_indicator": "Indikátor plesní · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Vyberte: Počasie a výstrahy · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vyberte: Kvalita vonkajšieho vzduchu · AQI, CO₂, PM2.5, PM10, VOC. Nedostupné: ⚠",
+          "weather_warnings": "Počasie a výstrahy · ⚠ (Nedostupné) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vyberte skutočný zdroj Home Assistant pre „Miestnosť · Obsadenosť · senzor“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_home_trackers": "Vyberte skutočný zdroj Home Assistant pre „Domov · Obsadenosť · Zariadenia“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_occupied_rooms_entity": "Vyberte skutočný zdroj Home Assistant pre „Obsadenosť · Miestnosť · zdroj (state)“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_occupied_rooms_attribute": "Nastavte „Obsadenosť · Miestnosť · zdroj (attribute)“ iba pre vybranú izbu. Chýbajúce dáta bránia akcii.",
+          "general_sleep_rooms_entity": "Vyberte skutočný zdroj Home Assistant pre „Spánok · Miestnosť · zdroj (state)“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "general_sleep_rooms_attribute": "Nastavte „Spánok · Miestnosť · zdroj (attribute)“ iba pre vybranú izbu. Chýbajúce dáta bránia akcii.",
+          "pollen_entity": "Vyberte skutočný zdroj Home Assistant pre „Peľ · zdroj“. Chýbajúce alebo staré dáta pozastavia akciu.",
+          "notify_entities": "Vyberte: notify.* · nastavenia · zdroj.",
+          "media_players": "Vyberte: media_player.* · nastavenia · zdroj · MEDIA_PLAYERS.",
+          "tts_engine": "Vyberte: tts.* · nastavenia · zdroj · TTS_ENGINE.",
+          "ai_conversation_agent": "Vyberte: conversation.* (Home Assistant · Predvolené).",
+          "language": "Jazyk: Home Assistant (Predvolené).",
+          "use_mold_indicator": "🧱 Indikátor plesní · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Neplatné · senzor · nastavenia",
       "device_temperature_band_invalid": "Neplatné · Teplota · nastavenia",
       "device_humidity_invalid": "Neplatné · Vlhkosť · nastavenia",
-      "device_runtime_invalid": "Neplatné · Výkon · nastavenia"
+      "device_runtime_invalid": "Neplatné · Výkon · nastavenia",
+      "invalid_setup_rooms": "Neplatné: Monitorované miestnosti",
+      "invalid_room_source": "Neplatné: Miestnosť · zdroj"
+    },
+    "abort": {
+      "setup_area_removed": "Neplatné: Monitorované miestnosti",
+      "setup_changed": "nastavenia ↻ Monitorované miestnosti"
     }
   },
   "entity": {

@@ -143,6 +143,76 @@
           "max_age_minutes": "Beslisdrempel voor ‘⏱ · Open (min, ≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
           "indoor_mold": "Beslisdrempel voor ‘Schimmelindicator · ≥ 70%’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
         }
+      },
+      "setup_rooms": {
+        "title": "Te bewaken kamers",
+        "description": "Te bewaken kamers → bron → Algemene instellingen",
+        "data": {
+          "areas": "Te bewaken kamers"
+        },
+        "data_description": {
+          "areas": "Te bewaken kamers. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Kamer · {area_name} · {room_index}/{room_count}",
+        "description": "Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+        "data": {
+          "windows": "Ramen",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren",
+          "temperature": "Temperatuur",
+          "humidity": "Vochtigheid",
+          "pressure": "Druksensoren",
+          "climate_devices": "Apparaten"
+        },
+        "data_description": {
+          "windows": "Ramen. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "temperature": "Temperatuur. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "humidity": "Vochtigheid. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "pressure": "Druksensoren. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "climate_devices": "Apparaten. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_general": {
+        "title": "Algemene instellingen",
+        "description": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten.",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "outdoor_sensors": "Buitenluchtkwaliteit",
+          "weather_warnings": "Weerwaarschuwingen",
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "pollen_entity": "Pollen · bron",
+          "notify_entities": "instellingen · bron",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Taal",
+          "language": "Taal",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒",
+          "general_room_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Kamer · Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_home_trackers": "Kies een echte Home Assistant-bron voor ‘Thuis · Aanwezigheid · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_attribute": "Stel ‘Aanwezigheid · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_sleep_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Slaap · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_sleep_rooms_attribute": "Stel ‘Slaap · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_entity": "Kies een echte Home Assistant-bron voor ‘Pollen · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "ai_conversation_agent": "Kies: conversation.* (Home Assistant · Standaard).",
+          "language": "Stel ‘Taal’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Kamers · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Schimmelindicator · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Schimmelindicator · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Ongeldig: Te bewaken kamers",
+      "invalid_room_source": "Ongeldig: Kamer · bron"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — al ingesteld."
+      "already_configured": "Home Environment Manager — al ingesteld.",
+      "setup_area_removed": "Ongeldig: Te bewaken kamers",
+      "setup_changed": "instellingen ↻ Te bewaken kamers"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Doelwaarde voor ‘Verwarmen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
           "device_sleep_cool_c": "Doelwaarde voor ‘Koelen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg."
         }
+      },
+      "setup_rooms": {
+        "title": "Te bewaken kamers",
+        "description": "Te bewaken kamers → bron → Algemene instellingen",
+        "data": {
+          "areas": "Te bewaken kamers"
+        },
+        "data_description": {
+          "areas": "Te bewaken kamers. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Kamer · {area_name} · {room_index}/{room_count}",
+        "description": "Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+        "data": {
+          "windows": "Ramen",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren",
+          "temperature": "Temperatuur",
+          "humidity": "Vochtigheid",
+          "pressure": "Druksensoren",
+          "climate_devices": "Apparaten"
+        },
+        "data_description": {
+          "windows": "Ramen. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "temperature": "Temperatuur. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "humidity": "Vochtigheid. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "pressure": "Druksensoren. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "climate_devices": "Apparaten. Selecteer ingangen voor deze kamer: apparaatnaam — entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_general": {
+        "title": "Algemene instellingen",
+        "description": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten.",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "outdoor_sensors": "Buitenluchtkwaliteit",
+          "weather_warnings": "Weerwaarschuwingen",
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "pollen_entity": "Pollen · bron",
+          "notify_entities": "instellingen · bron",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Taal",
+          "language": "Taal",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒",
+          "general_room_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Kamer · Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_home_trackers": "Kies een echte Home Assistant-bron voor ‘Thuis · Aanwezigheid · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_attribute": "Stel ‘Aanwezigheid · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_sleep_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Slaap · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_sleep_rooms_attribute": "Stel ‘Slaap · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_entity": "Kies een echte Home Assistant-bron voor ‘Pollen · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "ai_conversation_agent": "Kies: conversation.* (Home Assistant · Standaard).",
+          "language": "Stel ‘Taal’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Ongeldig · sensor · instellingen",
       "device_temperature_band_invalid": "Ongeldig · Temperatuur · instellingen",
       "device_humidity_invalid": "Ongeldig · Vochtigheid · instellingen",
-      "device_runtime_invalid": "Ongeldig · Vermogen · instellingen"
+      "device_runtime_invalid": "Ongeldig · Vermogen · instellingen",
+      "invalid_setup_rooms": "Ongeldig: Te bewaken kamers",
+      "invalid_room_source": "Ongeldig: Kamer · bron"
+    },
+    "abort": {
+      "setup_area_removed": "Ongeldig: Te bewaken kamers",
+      "setup_changed": "instellingen ↻ Te bewaken kamers"
     }
   },
   "entity": {

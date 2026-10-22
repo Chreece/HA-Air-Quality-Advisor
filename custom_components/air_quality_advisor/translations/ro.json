@@ -143,6 +143,76 @@
           "max_age_minutes": "Prag de decizie pentru „⏱ · Deschideți (min, ≤)”. Influențează recomandările, nu este limită medicală.",
           "indoor_mold": "Prag de decizie pentru „Indicator de mucegai · ≥ 70%”. Influențează recomandările, nu este limită medicală."
         }
+      },
+      "setup_rooms": {
+        "title": "Camere de monitorizat",
+        "description": "Camere de monitorizat → sursă → Generale setări",
+        "data": {
+          "areas": "Camere de monitorizat"
+        },
+        "data_description": {
+          "areas": "Camere de monitorizat. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cameră · {area_name} · {room_index}/{room_count}",
+        "description": "Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+        "data": {
+          "windows": "Ferestre",
+          "air_quality": "Senzori de calitate a aerului și de mediu",
+          "temperature": "Temperatură",
+          "humidity": "Umiditate",
+          "pressure": "Senzori de presiune",
+          "climate_devices": "Dispozitive"
+        },
+        "data_description": {
+          "windows": "Ferestre. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "air_quality": "Senzori de calitate a aerului și de mediu. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "temperature": "Temperatură. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "humidity": "Umiditate. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "pressure": "Senzori de presiune. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "climate_devices": "Dispozitive. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_general": {
+        "title": "Generale setări",
+        "description": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor.",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "outdoor_sensors": "Calitatea aerului exterior",
+          "weather_warnings": "Avertizări meteo",
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "pollen_entity": "Polen · sursă",
+          "notify_entities": "setări · sursă",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Limbă",
+          "language": "Limbă",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒",
+          "general_room_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Cameră · Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_home_trackers": "Alegeți o sursă Home Assistant reală pentru „Acasă · Ocupare · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Ocupare · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_attribute": "Configurați „Ocupare · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_sleep_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Somn · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_sleep_rooms_attribute": "Configurați „Somn · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_entity": "Alegeți o sursă Home Assistant reală pentru „Polen · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "ai_conversation_agent": "Alegeți: conversation.* (Home Assistant · Implicit).",
+          "language": "Configurați „Limbă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Camere · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Indicator de mucegai · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Indicator de mucegai · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Invalid: Camere de monitorizat",
+      "invalid_room_source": "Invalid: Cameră · sursă"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — deja configurat."
+      "already_configured": "Home Environment Manager — deja configurat.",
+      "setup_area_removed": "Invalid: Camere de monitorizat",
+      "setup_changed": "setări ↻ Camere de monitorizat"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Ținta „Încălzire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
           "device_sleep_cool_c": "Ținta „Răcire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală."
         }
+      },
+      "setup_rooms": {
+        "title": "Camere de monitorizat",
+        "description": "Camere de monitorizat → sursă → Generale setări",
+        "data": {
+          "areas": "Camere de monitorizat"
+        },
+        "data_description": {
+          "areas": "Camere de monitorizat. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cameră · {area_name} · {room_index}/{room_count}",
+        "description": "Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+        "data": {
+          "windows": "Ferestre",
+          "air_quality": "Senzori de calitate a aerului și de mediu",
+          "temperature": "Temperatură",
+          "humidity": "Umiditate",
+          "pressure": "Senzori de presiune",
+          "climate_devices": "Dispozitive"
+        },
+        "data_description": {
+          "windows": "Ferestre. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "air_quality": "Senzori de calitate a aerului și de mediu. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "temperature": "Temperatură. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "humidity": "Umiditate. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "pressure": "Senzori de presiune. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "climate_devices": "Dispozitive. Selectează intrările camerei: numele dispozitivului — numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_general": {
+        "title": "Generale setări",
+        "description": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor.",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "outdoor_sensors": "Calitatea aerului exterior",
+          "weather_warnings": "Avertizări meteo",
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "pollen_entity": "Polen · sursă",
+          "notify_entities": "setări · sursă",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Limbă",
+          "language": "Limbă",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒",
+          "general_room_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Cameră · Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_home_trackers": "Alegeți o sursă Home Assistant reală pentru „Acasă · Ocupare · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Ocupare · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_attribute": "Configurați „Ocupare · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_sleep_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Somn · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_sleep_rooms_attribute": "Configurați „Somn · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_entity": "Alegeți o sursă Home Assistant reală pentru „Polen · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "ai_conversation_agent": "Alegeți: conversation.* (Home Assistant · Implicit).",
+          "language": "Configurați „Limbă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Invalid · senzor · setări",
       "device_temperature_band_invalid": "Invalid · Temperatură · setări",
       "device_humidity_invalid": "Invalid · Umiditate · setări",
-      "device_runtime_invalid": "Invalid · Putere · setări"
+      "device_runtime_invalid": "Invalid · Putere · setări",
+      "invalid_setup_rooms": "Invalid: Camere de monitorizat",
+      "invalid_room_source": "Invalid: Cameră · sursă"
+    },
+    "abort": {
+      "setup_area_removed": "Invalid: Camere de monitorizat",
+      "setup_changed": "setări ↻ Camere de monitorizat"
     }
   },
   "entity": {

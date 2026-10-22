@@ -143,6 +143,76 @@
           "max_age_minutes": "「⏱ · 開啟 (min, ≤)」的決策門檻影響建議，但不是醫療限值。",
           "indoor_mold": "「黴菌指標 · ≥ 70%」的決策門檻影響建議，但不是醫療限值。"
         }
+      },
+      "setup_rooms": {
+        "title": "要監測的房間",
+        "description": "要監測的房間 → 來源 → 一般 設定",
+        "data": {
+          "areas": "要監測的房間"
+        },
+        "data_description": {
+          "areas": "要監測的房間. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房間 · {area_name} · {room_index}/{room_count}",
+        "description": "選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+        "data": {
+          "windows": "窗戶",
+          "air_quality": "空氣品質與環境感測器",
+          "temperature": "溫度",
+          "humidity": "濕度",
+          "pressure": "壓力感測器",
+          "climate_devices": "裝置"
+        },
+        "data_description": {
+          "windows": "窗戶. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "air_quality": "空氣品質與環境感測器. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "temperature": "溫度. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "humidity": "濕度. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "pressure": "壓力感測器. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "climate_devices": "裝置. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "outdoor_sensors": "室外空氣品質",
+          "weather_warnings": "天氣警報",
+          "general_room_occupancy_sensors": "房間 · 佔用 · 感測器",
+          "general_home_trackers": "家中 · 佔用 · 裝置",
+          "general_occupied_rooms_entity": "佔用 · 房間 · 來源 (state)",
+          "general_occupied_rooms_attribute": "佔用 · 房間 · 來源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房間 · 來源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房間 · 來源 (attribute)",
+          "pollen_entity": "花粉 · 來源",
+          "notify_entities": "設定 · 來源",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 語言",
+          "language": "語言",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。",
+          "general_room_occupancy_sensors": "為「房間 · 佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_home_trackers": "為「家中 · 佔用 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_entity": "為「佔用 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_attribute": "僅為選定房間設定「佔用 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_sleep_rooms_entity": "為「睡眠 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_sleep_rooms_attribute": "僅為選定房間設定「睡眠 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "pollen_entity": "為「花粉 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "ai_conversation_agent": "請選擇: conversation.* (Home Assistant · 預設).",
+          "language": "僅為選定房間設定「語言」。資料無效或缺失將停止操作。",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "房間 · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "黴菌指標 · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "黴菌指標 · 🧊 °C ⚠",
-      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "無效: 要監測的房間",
+      "invalid_room_source": "無效: 房間 · 來源"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — 已設定."
+      "already_configured": "Home Environment Manager — 已設定.",
+      "setup_area_removed": "無效: 要監測的房間",
+      "setup_changed": "設定 ↻ 要監測的房間"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "僅在確認有人或睡眠狀態時套用「供暖 · 睡眠 (°C)」目標。未知不代表空房。",
           "device_sleep_cool_c": "僅在確認有人或睡眠狀態時套用「製冷 · 睡眠 (°C)」目標。未知不代表空房。"
         }
+      },
+      "setup_rooms": {
+        "title": "要監測的房間",
+        "description": "要監測的房間 → 來源 → 一般 設定",
+        "data": {
+          "areas": "要監測的房間"
+        },
+        "data_description": {
+          "areas": "要監測的房間. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房間 · {area_name} · {room_index}/{room_count}",
+        "description": "選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+        "data": {
+          "windows": "窗戶",
+          "air_quality": "空氣品質與環境感測器",
+          "temperature": "溫度",
+          "humidity": "濕度",
+          "pressure": "壓力感測器",
+          "climate_devices": "裝置"
+        },
+        "data_description": {
+          "windows": "窗戶. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "air_quality": "空氣品質與環境感測器. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "temperature": "溫度. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "humidity": "濕度. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "pressure": "壓力感測器. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "climate_devices": "裝置. 選擇房間的輸入，顯示為裝置名稱 — 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "outdoor_sensors": "室外空氣品質",
+          "weather_warnings": "天氣警報",
+          "general_room_occupancy_sensors": "房間 · 佔用 · 感測器",
+          "general_home_trackers": "家中 · 佔用 · 裝置",
+          "general_occupied_rooms_entity": "佔用 · 房間 · 來源 (state)",
+          "general_occupied_rooms_attribute": "佔用 · 房間 · 來源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房間 · 來源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房間 · 來源 (attribute)",
+          "pollen_entity": "花粉 · 來源",
+          "notify_entities": "設定 · 來源",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 語言",
+          "language": "語言",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。",
+          "general_room_occupancy_sensors": "為「房間 · 佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_home_trackers": "為「家中 · 佔用 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_entity": "為「佔用 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_attribute": "僅為選定房間設定「佔用 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_sleep_rooms_entity": "為「睡眠 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_sleep_rooms_attribute": "僅為選定房間設定「睡眠 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "pollen_entity": "為「花粉 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "ai_conversation_agent": "請選擇: conversation.* (Home Assistant · 預設).",
+          "language": "僅為選定房間設定「語言」。資料無效或缺失將停止操作。",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "無效 · 感測器 · 設定",
       "device_temperature_band_invalid": "無效 · 溫度 · 設定",
       "device_humidity_invalid": "無效 · 濕度 · 設定",
-      "device_runtime_invalid": "無效 · 功率 · 設定"
+      "device_runtime_invalid": "無效 · 功率 · 設定",
+      "invalid_setup_rooms": "無效: 要監測的房間",
+      "invalid_room_source": "無效: 房間 · 來源"
+    },
+    "abort": {
+      "setup_area_removed": "無效: 要監測的房間",
+      "setup_changed": "設定 ↻ 要監測的房間"
     }
   },
   "entity": {

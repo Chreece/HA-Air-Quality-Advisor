@@ -91,6 +91,10 @@ async def async_recalculate_mold_factor(manager: Any, area_id: str) -> float:
     async with _editor_lock(manager):
         cfg = _calibration(manager, area_id)
         source = cfg.get("indoor_temperature_entity")
+        from .room_sources import selected
+        allowed = selected(manager.settings, area_id, "temperature")
+        if allowed is not None and source not in allowed:
+            raise HomeAssistantError("Mold temperature source is not selected for this room")
         if not isinstance(source, str) or entity_area(manager.hass, source) != area_id:
             raise HomeAssistantError("Select a valid indoor temperature source for this area")
         surface = cfg.get("critical_temperature_c")

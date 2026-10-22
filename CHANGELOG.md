@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b14 — Rooms-first setup and explicit input lists (beta)
+
+- Replace the public initial/options menu with rooms → per-room six-category multi-selects → general settings → finish.
+- Label inputs by physical device and entity; filter by real room/type and exclude generated controllers.
+- Apply positive source selection to monitoring, temperature/humidity feedback, windows and pressure diagnostics.
+- Preserve empty selections, invalid-source visibility, device identities, calibration/tuning and unrelated concurrent settings.
+- Withdraw affected automatic grants when feedback sources or rooms are removed; never authorize new devices implicitly.
+- Supply all 38 localized setup catalogs and regression/actual-HA selector checks.
+
 ## 0.6.0b13 — Single per-room climate-device picker (beta)
 
 - Replace duplicate Climate/PID/device menus with one physical-device picker.

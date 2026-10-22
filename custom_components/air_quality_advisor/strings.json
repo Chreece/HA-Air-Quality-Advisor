@@ -143,6 +143,76 @@
           "max_age_minutes": "Maximum permitted age of an outdoor sensor report in minutes. Older data are marked stale and are not treated as proof that outdoor air is safe or unsafe.",
           "indoor_mold": "Estimated critical-surface relative humidity (%) that triggers moisture/mold-risk ventilation advice. This is a physics-based indication, not detection of mold spores."
         }
+      },
+      "setup_rooms": {
+        "title": "Rooms to monitor",
+        "description": "Rooms to monitor → source → General settings",
+        "data": {
+          "areas": "Rooms to monitor"
+        },
+        "data_description": {
+          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Room · {area_name} · {room_index}/{room_count}",
+        "description": "Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+        "data": {
+          "windows": "Windows",
+          "air_quality": "Air quality and environmental sensors",
+          "temperature": "Temperature",
+          "humidity": "Humidity",
+          "pressure": "Pressure sensors",
+          "climate_devices": "Devices"
+        },
+        "data_description": {
+          "windows": "Windows. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "temperature": "Temperature. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "humidity": "Humidity. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+        }
+      },
+      "setup_general": {
+        "title": "General settings",
+        "description": "Select shared input sources and notification outputs. Save finishes setup. Operating settings remain on the Home and room devices.",
+        "data": {
+          "weather_entities": "Weather entities",
+          "outdoor_sensors": "Outdoor air-quality sensors",
+          "weather_warnings": "Weather warning sensors (optional)",
+          "general_room_occupancy_sensors": "Room · Occupancy · sensor",
+          "general_home_trackers": "Home · Occupancy · Devices",
+          "general_occupied_rooms_entity": "Occupancy · Room · source (state)",
+          "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
+          "general_sleep_rooms_entity": "Sleep · Room · source (state)",
+          "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "notify_entities": "Direct notification entities",
+          "media_players": "Direct TTS media players",
+          "tts_engine": "Direct TTS engine",
+          "ai_conversation_agent": "Conversation agent",
+          "language": "Language",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening.",
+          "general_room_occupancy_sensors": "Select actual binary presence sensors assigned to Home Assistant rooms. An ON confirms occupancy; missing or stale OFF readings cannot prove a room empty.",
+          "general_home_trackers": "Select actual person/device tracker entities for home/away evidence. Unknown trackers do not prove everyone has left.",
+          "general_occupied_rooms_entity": "Select an entity whose state or attribute contains an explicit list of HA room IDs/names, e.g. [\"living_room\"]. Do not select ordinary on/off sensors as room lists.",
+          "general_occupied_rooms_attribute": "Choose State when the entity state itself is a valid room list, or select an actual attribute that contains that list. Choices refresh when changing entity.",
+          "general_sleep_rooms_entity": "Choose an entity listing which HA rooms currently count as sleeping rooms. Sleep presence differs from general room occupancy.",
+          "general_sleep_rooms_attribute": "Choose the State field or a verified room-list attribute from the selected sleep entity. A missing or unrecognized list makes sleep state unknown.",
+          "pollen_entity": "Select a numerical pollen-index sensor provided by Home Assistant. Country- and provider-specific indices are not automatically comparable.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected.",
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "The room temperature sensor has no valid recent Celsius/Fahrenheit reading. Try again when it is available.",
       "missing_mold_outdoor_temperature": "No selected weather entity supplies a valid recent outdoor temperature. Configure weather first or wait for a valid measurement.",
       "invalid_mold_surface_temperature": "Enter a finite measured surface temperature in °C.",
-      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings."
+      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings.",
+      "invalid_setup_rooms": "Invalid: Rooms to monitor",
+      "invalid_room_source": "Invalid: Room · source"
     },
     "abort": {
-      "already_configured": "Home Environment Manager is already configured."
+      "already_configured": "Home Environment Manager is already configured.",
+      "setup_area_removed": "Invalid: Rooms to monitor",
+      "setup_changed": "settings ↻ Rooms to monitor"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Desired heating target in °C when the room is confirmed sleeping. It is applied only if equipment supports HEAT; safety bounds and presence evidence remain mandatory.",
           "device_sleep_cool_c": "Desired cooling target in °C when the room is confirmed sleeping. It is applied only if equipment supports COOL; safety bounds and presence evidence remain mandatory."
         }
+      },
+      "setup_rooms": {
+        "title": "Rooms to monitor",
+        "description": "Rooms to monitor → source → General settings",
+        "data": {
+          "areas": "Rooms to monitor"
+        },
+        "data_description": {
+          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Room · {area_name} · {room_index}/{room_count}",
+        "description": "Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+        "data": {
+          "windows": "Windows",
+          "air_quality": "Air quality and environmental sensors",
+          "temperature": "Temperature",
+          "humidity": "Humidity",
+          "pressure": "Pressure sensors",
+          "climate_devices": "Devices"
+        },
+        "data_description": {
+          "windows": "Windows. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "temperature": "Temperature. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "humidity": "Humidity. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+        }
+      },
+      "setup_general": {
+        "title": "General settings",
+        "description": "Select shared input sources and notification outputs. Save finishes setup. Operating settings remain on the Home and room devices.",
+        "data": {
+          "weather_entities": "Weather entities",
+          "outdoor_sensors": "Outdoor air-quality sensors",
+          "weather_warnings": "Weather warning sensors (optional)",
+          "general_room_occupancy_sensors": "Room · Occupancy · sensor",
+          "general_home_trackers": "Home · Occupancy · Devices",
+          "general_occupied_rooms_entity": "Occupancy · Room · source (state)",
+          "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
+          "general_sleep_rooms_entity": "Sleep · Room · source (state)",
+          "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "notify_entities": "Direct notification entities",
+          "media_players": "Direct TTS media players",
+          "tts_engine": "Direct TTS engine",
+          "ai_conversation_agent": "Conversation agent",
+          "language": "Language",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening.",
+          "general_room_occupancy_sensors": "Select actual binary presence sensors assigned to Home Assistant rooms. An ON confirms occupancy; missing or stale OFF readings cannot prove a room empty.",
+          "general_home_trackers": "Select actual person/device tracker entities for home/away evidence. Unknown trackers do not prove everyone has left.",
+          "general_occupied_rooms_entity": "Select an entity whose state or attribute contains an explicit list of HA room IDs/names, e.g. [\"living_room\"]. Do not select ordinary on/off sensors as room lists.",
+          "general_occupied_rooms_attribute": "Choose State when the entity state itself is a valid room list, or select an actual attribute that contains that list. Choices refresh when changing entity.",
+          "general_sleep_rooms_entity": "Choose an entity listing which HA rooms currently count as sleeping rooms. Sleep presence differs from general room occupancy.",
+          "general_sleep_rooms_attribute": "Choose the State field or a verified room-list attribute from the selected sleep entity. A missing or unrecognized list makes sleep state unknown.",
+          "pollen_entity": "Select a numerical pollen-index sensor provided by Home Assistant. Country- and provider-specific indices are not automatically comparable.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected.",
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Invalid · sensor · settings",
       "device_temperature_band_invalid": "Invalid · Temperature · settings",
       "device_humidity_invalid": "Invalid · Humidity · settings",
-      "device_runtime_invalid": "Invalid · Power · settings"
+      "device_runtime_invalid": "Invalid · Power · settings",
+      "invalid_setup_rooms": "Invalid: Rooms to monitor",
+      "invalid_room_source": "Invalid: Room · source"
+    },
+    "abort": {
+      "setup_area_removed": "Invalid: Rooms to monitor",
+      "setup_changed": "settings ↻ Rooms to monitor"
     }
   },
   "entity": {

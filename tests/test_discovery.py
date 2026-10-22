@@ -82,7 +82,14 @@ def adapter(monkeypatch):
                 else None
             ))
         else:
-            reg.async_get = lambda hass: SimpleNamespace(async_get_area=lambda area: SimpleNamespace(name=area))
+            def area_registry(hass):
+                names = set(getattr(hass, "_entity_areas", {}).values()) | set(getattr(hass, "_device_areas", {}).values())
+                entries = getattr(hass, "_area_entries", None) or {
+                    a: SimpleNamespace(id=a, name=a) for a in names if a}
+                return SimpleNamespace(areas=entries,
+                    async_get_area=lambda area: (entries.get(area) if hasattr(hass, "_area_entries")
+                    else entries.get(area, SimpleNamespace(id=area, name=area))))
+            reg.async_get = area_registry
         setattr(helpers, name, reg)
         monkeypatch.setitem(sys.modules, f"homeassistant.helpers.{name}", reg)
     name = "custom_components.air_quality_advisor.discovery"

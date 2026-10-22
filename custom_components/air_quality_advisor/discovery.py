@@ -370,9 +370,12 @@ def _window_opened(state: State) -> bool | None:
 def rooms(
     hass: HomeAssistant, areas: list[str], max_age_minutes: float,
     excluded_entities: set[str] | None = None,
+    source_selections: dict | None = None,
 ) -> tuple[Room, ...]:
     area_registry = ar.async_get(hass)
     excluded_entities = excluded_entities or set()
+    from .room_sources import selected, native
+    scoped = {"room_sources": source_selections or {}}
     by_area_windows: dict[str, list[Window]] = {area: [] for area in areas}
     by_area_readings: dict[str, list[Reading]] = {area: [] for area in areas}
     for state in hass.states.async_all():
@@ -382,9 +385,26 @@ def rooms(
         if state.entity_id in excluded_entities:
             continue
         if is_window(hass, state):
-            by_area_windows[area].append(Window(state.entity_id, state.name or state.entity_id, _window_opened(state)))
-        elif supported_metric(hass, state, outdoor=False):
-            by_area_readings[area].append(reading(hass, state.entity_id, max_age_minutes, outdoor=False))
+            allowed = selected(scoped, area, "windows")
+            if allowed is None or state.entity_id in allowed and native(hass, state.entity_id):
+                by_area_windows[area].append(Window(state.entity_id, state.name or state.entity_id, _window_opened(state)))
+        elif (metric := supported_metric(hass, state, outdoor=False)):
+            allowed = selected(scoped, area, "humidity" if metric == "humidity" else "air_quality")
+            if allowed is None or state.entity_id in allowed and native(hass, state.entity_id):
+                by_area_readings[area].append(reading(hass, state.entity_id, max_age_minutes, outdoor=False))
+
+    # A missing/retyped/moved selected contact is unknown, never silently closed.
+    for area in areas:
+        seen = {item.entity_id for item in by_area_windows[area]}
+        for entity in selected(scoped, area, "windows") or ():
+            if entity not in seen:
+                by_area_windows[area].append(Window(entity, entity, None))
+        seen = {item.entity_id for item in by_area_readings[area]}
+        for group in ("air_quality", "humidity"):
+            for entity in selected(scoped, area, group) or ():
+                if entity not in seen:
+                    by_area_readings[area].append(Reading(entity, entity,
+                        "humidity" if group == "humidity" else "unknown", None))
 
     return tuple(
         Room(

@@ -143,6 +143,76 @@
           "max_age_minutes": "«⏱ · Açın (min, ≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
           "indoor_mold": "«Küf göstergesi · ≥ 70%» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
         }
+      },
+      "setup_rooms": {
+        "title": "İzlenecek odalar",
+        "description": "İzlenecek odalar → kaynak → Genel ayarlar",
+        "data": {
+          "areas": "İzlenecek odalar"
+        },
+        "data_description": {
+          "areas": "İzlenecek odalar. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Oda · {area_name} · {room_index}/{room_count}",
+        "description": "Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+        "data": {
+          "windows": "Pencereler",
+          "air_quality": "Hava kalitesi ve çevre sensörleri",
+          "temperature": "Sıcaklık",
+          "humidity": "Nem",
+          "pressure": "Basınç sensörleri",
+          "climate_devices": "Cihazlar"
+        },
+        "data_description": {
+          "windows": "Pencereler. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "air_quality": "Hava kalitesi ve çevre sensörleri. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "temperature": "Sıcaklık. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "humidity": "Nem. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "pressure": "Basınç sensörleri. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "climate_devices": "Cihazlar. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_general": {
+        "title": "Genel ayarlar",
+        "description": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır.",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "outdoor_sensors": "Dış hava kalitesi",
+          "weather_warnings": "Hava durumu uyarıları",
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "pollen_entity": "Polen · kaynak",
+          "notify_entities": "ayarlar · kaynak",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Dil",
+          "language": "Dil",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒",
+          "general_room_occupancy_sensors": "«Oda · Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_home_trackers": "«Ev · Doluluk · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_entity": "«Doluluk · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_attribute": "«Doluluk · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_sleep_rooms_entity": "«Uyku · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_sleep_rooms_attribute": "«Uyku · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_entity": "«Polen · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "ai_conversation_agent": "Seçin: conversation.* (Home Assistant · Varsayılan).",
+          "language": "«Dil» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Odalar · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Küf göstergesi · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Küf göstergesi · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Geçersiz: İzlenecek odalar",
+      "invalid_room_source": "Geçersiz: Oda · kaynak"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — zaten yapılandırılmış."
+      "already_configured": "Home Environment Manager — zaten yapılandırılmış.",
+      "setup_area_removed": "Geçersiz: İzlenecek odalar",
+      "setup_changed": "ayarlar ↻ İzlenecek odalar"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "«Isıtma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
           "device_sleep_cool_c": "«Soğutma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir."
         }
+      },
+      "setup_rooms": {
+        "title": "İzlenecek odalar",
+        "description": "İzlenecek odalar → kaynak → Genel ayarlar",
+        "data": {
+          "areas": "İzlenecek odalar"
+        },
+        "data_description": {
+          "areas": "İzlenecek odalar. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Oda · {area_name} · {room_index}/{room_count}",
+        "description": "Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+        "data": {
+          "windows": "Pencereler",
+          "air_quality": "Hava kalitesi ve çevre sensörleri",
+          "temperature": "Sıcaklık",
+          "humidity": "Nem",
+          "pressure": "Basınç sensörleri",
+          "climate_devices": "Cihazlar"
+        },
+        "data_description": {
+          "windows": "Pencereler. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "air_quality": "Hava kalitesi ve çevre sensörleri. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "temperature": "Sıcaklık. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "humidity": "Nem. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "pressure": "Basınç sensörleri. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "climate_devices": "Cihazlar. Odanın girişlerini seçin: cihaz adı — varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_general": {
+        "title": "Genel ayarlar",
+        "description": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır.",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "outdoor_sensors": "Dış hava kalitesi",
+          "weather_warnings": "Hava durumu uyarıları",
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "pollen_entity": "Polen · kaynak",
+          "notify_entities": "ayarlar · kaynak",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Dil",
+          "language": "Dil",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒",
+          "general_room_occupancy_sensors": "«Oda · Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_home_trackers": "«Ev · Doluluk · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_entity": "«Doluluk · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_attribute": "«Doluluk · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_sleep_rooms_entity": "«Uyku · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_sleep_rooms_attribute": "«Uyku · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_entity": "«Polen · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "ai_conversation_agent": "Seçin: conversation.* (Home Assistant · Varsayılan).",
+          "language": "«Dil» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Geçersiz · sensör · ayarlar",
       "device_temperature_band_invalid": "Geçersiz · Sıcaklık · ayarlar",
       "device_humidity_invalid": "Geçersiz · Nem · ayarlar",
-      "device_runtime_invalid": "Geçersiz · Güç · ayarlar"
+      "device_runtime_invalid": "Geçersiz · Güç · ayarlar",
+      "invalid_setup_rooms": "Geçersiz: İzlenecek odalar",
+      "invalid_room_source": "Geçersiz: Oda · kaynak"
+    },
+    "abort": {
+      "setup_area_removed": "Geçersiz: İzlenecek odalar",
+      "setup_changed": "ayarlar ↻ İzlenecek odalar"
     }
   },
   "entity": {

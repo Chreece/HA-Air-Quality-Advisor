@@ -275,13 +275,20 @@ def plan_for(manager: Any, spec: ManagedDevice) -> dict:
     contacts = [state for state in manager.hass.states.async_all("binary_sensor")
                 if entity_area(manager.hass, state.entity_id) == spec.area_id
                 and state.attributes.get("device_class") == "window"]
+    from .room_sources import selected
+    chosen_contacts = selected(manager.settings, spec.area_id, "windows")
+    if chosen_contacts is not None:
+        contacts = [hass_state for e in chosen_contacts
+                    if (hass_state := manager.hass.states.get(e)) is not None
+                    and entity_area(manager.hass, e) == spec.area_id
+                    and hass_state.attributes.get("device_class") == "window"]
     shared = manager.settings.get("occupancy_global", {})
     room = room_config(manager, spec)
     known = {item.area_id for item in specs(manager)}
     occupancy, evidence, sensors = room_presence(manager.hass, spec.area_id, room, shared, known_areas=known)
     home, home_evidence, trackers = home_presence(manager.hass, shared)
     sleeping, sleep_evidence = sleep_presence(manager.hass, spec.area_id, shared, known)
-    return {"window_safe": bool(contacts) and all(s.state == "off" for s in contacts),
+    return {"window_safe": bool(contacts) and (chosen_contacts is None or len(contacts) == len(chosen_contacts)) and all(s.state == "off" for s in contacts),
             "window_contacts": [s.entity_id for s in contacts],
             "occupancy": occupancy, "occupancy_evidence": evidence,
             "away": home, "away_evidence": home_evidence, "sleeping": sleeping,

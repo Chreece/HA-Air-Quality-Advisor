@@ -143,6 +143,76 @@
           "max_age_minutes": "“⏱ · 打开 (min, ≤)”的决策阈值会影响建议，但不属于医学限值。",
           "indoor_mold": "“霉菌指标 · ≥ 70%”的决策阈值会影响建议，但不属于医学限值。"
         }
+      },
+      "setup_rooms": {
+        "title": "要监测的房间",
+        "description": "要监测的房间 → 来源 → 常规 设置",
+        "data": {
+          "areas": "要监测的房间"
+        },
+        "data_description": {
+          "areas": "要监测的房间. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房间 · {area_name} · {room_index}/{room_count}",
+        "description": "选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+        "data": {
+          "windows": "窗户",
+          "air_quality": "空气质量与环境传感器",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "压力传感器",
+          "climate_devices": "设备"
+        },
+        "data_description": {
+          "windows": "窗户. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "air_quality": "空气质量与环境传感器. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "temperature": "温度. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "humidity": "湿度. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "pressure": "压力传感器. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "climate_devices": "设备. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "常规 设置",
+        "description": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。",
+        "data": {
+          "weather_entities": "天气与预警",
+          "outdoor_sensors": "室外空气质量",
+          "weather_warnings": "天气预警",
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "pollen_entity": "花粉 · 来源",
+          "notify_entities": "设置 · 来源",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 语言",
+          "language": "语言",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。",
+          "general_room_occupancy_sensors": "为“房间 · 占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_home_trackers": "为“家中 · 占用 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_entity": "为“占用 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认).",
+          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "房间 · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "霉菌指标 · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "霉菌指标 · 🧊 °C ⚠",
-      "invalid_mold_calibration": "霉菌指标 · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "霉菌指标 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "无效: 要监测的房间",
+      "invalid_room_source": "无效: 房间 · 来源"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — 已配置."
+      "already_configured": "Home Environment Manager — 已配置.",
+      "setup_area_removed": "无效: 要监测的房间",
+      "setup_changed": "设置 ↻ 要监测的房间"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "仅在确认房间有人或睡眠状态时应用“供暖 · 睡眠 (°C)”目标。未知不等于无人。",
           "device_sleep_cool_c": "仅在确认房间有人或睡眠状态时应用“制冷 · 睡眠 (°C)”目标。未知不等于无人。"
         }
+      },
+      "setup_rooms": {
+        "title": "要监测的房间",
+        "description": "要监测的房间 → 来源 → 常规 设置",
+        "data": {
+          "areas": "要监测的房间"
+        },
+        "data_description": {
+          "areas": "要监测的房间. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房间 · {area_name} · {room_index}/{room_count}",
+        "description": "选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+        "data": {
+          "windows": "窗户",
+          "air_quality": "空气质量与环境传感器",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "压力传感器",
+          "climate_devices": "设备"
+        },
+        "data_description": {
+          "windows": "窗户. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "air_quality": "空气质量与环境传感器. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "temperature": "温度. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "humidity": "湿度. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "pressure": "压力传感器. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "climate_devices": "设备. 选择房间的输入，显示为设备名称 — 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "常规 设置",
+        "description": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。",
+        "data": {
+          "weather_entities": "天气与预警",
+          "outdoor_sensors": "室外空气质量",
+          "weather_warnings": "天气预警",
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "pollen_entity": "花粉 · 来源",
+          "notify_entities": "设置 · 来源",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 语言",
+          "language": "语言",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。",
+          "general_room_occupancy_sensors": "为“房间 · 占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_home_trackers": "为“家中 · 占用 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_entity": "为“占用 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认).",
+          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "无效 · 传感器 · 设置",
       "device_temperature_band_invalid": "无效 · 温度 · 设置",
       "device_humidity_invalid": "无效 · 湿度 · 设置",
-      "device_runtime_invalid": "无效 · 功率 · 设置"
+      "device_runtime_invalid": "无效 · 功率 · 设置",
+      "invalid_setup_rooms": "无效: 要监测的房间",
+      "invalid_room_source": "无效: 房间 · 来源"
+    },
+    "abort": {
+      "setup_area_removed": "无效: 要监测的房间",
+      "setup_changed": "设置 ↻ 要监测的房间"
     }
   },
   "entity": {

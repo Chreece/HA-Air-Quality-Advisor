@@ -143,6 +143,76 @@
           "max_age_minutes": "Limite de decisão para «⏱ · Abra (min, ≤)». Afeta orientações, não é um limite médico.",
           "indoor_mold": "Limite de decisão para «Indicador de mofo · ≥ 70%». Afeta orientações, não é um limite médico."
         }
+      },
+      "setup_rooms": {
+        "title": "Ambientes para monitorar",
+        "description": "Ambientes para monitorar → fonte → Gerais configurações",
+        "data": {
+          "areas": "Ambientes para monitorar"
+        },
+        "data_description": {
+          "areas": "Ambientes para monitorar. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cômodo · {area_name} · {room_index}/{room_count}",
+        "description": "Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+        "data": {
+          "windows": "Janelas",
+          "air_quality": "Sensores de qualidade do ar e do ambiente",
+          "temperature": "Temperatura",
+          "humidity": "Umidade",
+          "pressure": "Sensores de pressão",
+          "climate_devices": "Dispositivos"
+        },
+        "data_description": {
+          "windows": "Janelas. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "air_quality": "Sensores de qualidade do ar e do ambiente. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "temperature": "Temperatura. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "humidity": "Umidade. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "pressure": "Sensores de pressão. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "climate_devices": "Dispositivos. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático."
+        }
+      },
+      "setup_general": {
+        "title": "Gerais configurações",
+        "description": "Selecione fontes compartilhadas e saídas de notificação. Salvar conclui a configuração. Os parâmetros de operação ficam nos dispositivos da casa e dos ambientes.",
+        "data": {
+          "weather_entities": "Clima e alertas",
+          "outdoor_sensors": "Qualidade do ar externo",
+          "weather_warnings": "Alertas meteorológicos",
+          "general_room_occupancy_sensors": "Cômodo · Ocupação · sensor",
+          "general_home_trackers": "Casa · Ocupação · Dispositivos",
+          "general_occupied_rooms_entity": "Ocupação · Cômodo · fonte (state)",
+          "general_occupied_rooms_attribute": "Ocupação · Cômodo · fonte (attribute)",
+          "general_sleep_rooms_entity": "Sono · Cômodo · fonte (state)",
+          "general_sleep_rooms_attribute": "Sono · Cômodo · fonte (attribute)",
+          "pollen_entity": "Pólen · fonte",
+          "notify_entities": "configurações · fonte",
+          "media_players": "configurações · fonte · MEDIA_PLAYERS",
+          "tts_engine": "configurações · fonte · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Idioma",
+          "language": "Idioma",
+          "use_mold_indicator": "Indicador de mofo · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Selecione: Clima e alertas · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Selecione: Qualidade do ar externo · AQI, CO₂, PM2.5, PM10, VOC. Indisponível: ⚠",
+          "weather_warnings": "Clima e alertas · ⚠ (Indisponível) → 🪟🔒",
+          "general_room_occupancy_sensors": "Escolha uma fonte real do Home Assistant para «Cômodo · Ocupação · sensor». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_home_trackers": "Escolha uma fonte real do Home Assistant para «Casa · Ocupação · Dispositivos». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_occupied_rooms_entity": "Escolha uma fonte real do Home Assistant para «Ocupação · Cômodo · fonte (state)». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_occupied_rooms_attribute": "Configure «Ocupação · Cômodo · fonte (attribute)» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "general_sleep_rooms_entity": "Escolha uma fonte real do Home Assistant para «Sono · Cômodo · fonte (state)». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_sleep_rooms_attribute": "Configure «Sono · Cômodo · fonte (attribute)» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "pollen_entity": "Escolha uma fonte real do Home Assistant para «Pólen · fonte». Dados ausentes ou desatualizados suspendem a ação.",
+          "notify_entities": "Selecione: notify.* · configurações · fonte.",
+          "media_players": "Selecione: media_player.* · configurações · fonte · MEDIA_PLAYERS.",
+          "tts_engine": "Selecione: tts.* · configurações · fonte · TTS_ENGINE.",
+          "ai_conversation_agent": "Selecione: conversation.* (Home Assistant · Padrão).",
+          "language": "Configure «Idioma» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "use_mold_indicator": "🧱 Indicador de mofo · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Cômodos · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Indicador de mofo · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Indicador de mofo · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Indicador de mofo · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Indicador de mofo · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Inválido: Ambientes para monitorar",
+      "invalid_room_source": "Inválido: Cômodo · fonte"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — já configurado."
+      "already_configured": "Home Environment Manager — já configurado.",
+      "setup_area_removed": "Inválido: Ambientes para monitorar",
+      "setup_changed": "configurações ↻ Ambientes para monitorar"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Meta para «Aquecimento · Sono (°C)» com presença ou sono confirmados. Desconhecido não significa cômodo vazio.",
           "device_sleep_cool_c": "Meta para «Resfriamento · Sono (°C)» com presença ou sono confirmados. Desconhecido não significa cômodo vazio."
         }
+      },
+      "setup_rooms": {
+        "title": "Ambientes para monitorar",
+        "description": "Ambientes para monitorar → fonte → Gerais configurações",
+        "data": {
+          "areas": "Ambientes para monitorar"
+        },
+        "data_description": {
+          "areas": "Ambientes para monitorar. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cômodo · {area_name} · {room_index}/{room_count}",
+        "description": "Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+        "data": {
+          "windows": "Janelas",
+          "air_quality": "Sensores de qualidade do ar e do ambiente",
+          "temperature": "Temperatura",
+          "humidity": "Umidade",
+          "pressure": "Sensores de pressão",
+          "climate_devices": "Dispositivos"
+        },
+        "data_description": {
+          "windows": "Janelas. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "air_quality": "Sensores de qualidade do ar e do ambiente. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "temperature": "Temperatura. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "humidity": "Umidade. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "pressure": "Sensores de pressão. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático.",
+          "climate_devices": "Dispositivos. Selecione entradas do ambiente: nome do dispositivo — nome da entidade. Grupos vazios não são usados e não ativam descoberta nem controle automático."
+        }
+      },
+      "setup_general": {
+        "title": "Gerais configurações",
+        "description": "Selecione fontes compartilhadas e saídas de notificação. Salvar conclui a configuração. Os parâmetros de operação ficam nos dispositivos da casa e dos ambientes.",
+        "data": {
+          "weather_entities": "Clima e alertas",
+          "outdoor_sensors": "Qualidade do ar externo",
+          "weather_warnings": "Alertas meteorológicos",
+          "general_room_occupancy_sensors": "Cômodo · Ocupação · sensor",
+          "general_home_trackers": "Casa · Ocupação · Dispositivos",
+          "general_occupied_rooms_entity": "Ocupação · Cômodo · fonte (state)",
+          "general_occupied_rooms_attribute": "Ocupação · Cômodo · fonte (attribute)",
+          "general_sleep_rooms_entity": "Sono · Cômodo · fonte (state)",
+          "general_sleep_rooms_attribute": "Sono · Cômodo · fonte (attribute)",
+          "pollen_entity": "Pólen · fonte",
+          "notify_entities": "configurações · fonte",
+          "media_players": "configurações · fonte · MEDIA_PLAYERS",
+          "tts_engine": "configurações · fonte · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Idioma",
+          "language": "Idioma",
+          "use_mold_indicator": "Indicador de mofo · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Selecione: Clima e alertas · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Selecione: Qualidade do ar externo · AQI, CO₂, PM2.5, PM10, VOC. Indisponível: ⚠",
+          "weather_warnings": "Clima e alertas · ⚠ (Indisponível) → 🪟🔒",
+          "general_room_occupancy_sensors": "Escolha uma fonte real do Home Assistant para «Cômodo · Ocupação · sensor». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_home_trackers": "Escolha uma fonte real do Home Assistant para «Casa · Ocupação · Dispositivos». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_occupied_rooms_entity": "Escolha uma fonte real do Home Assistant para «Ocupação · Cômodo · fonte (state)». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_occupied_rooms_attribute": "Configure «Ocupação · Cômodo · fonte (attribute)» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "general_sleep_rooms_entity": "Escolha uma fonte real do Home Assistant para «Sono · Cômodo · fonte (state)». Dados ausentes ou desatualizados suspendem a ação.",
+          "general_sleep_rooms_attribute": "Configure «Sono · Cômodo · fonte (attribute)» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "pollen_entity": "Escolha uma fonte real do Home Assistant para «Pólen · fonte». Dados ausentes ou desatualizados suspendem a ação.",
+          "notify_entities": "Selecione: notify.* · configurações · fonte.",
+          "media_players": "Selecione: media_player.* · configurações · fonte · MEDIA_PLAYERS.",
+          "tts_engine": "Selecione: tts.* · configurações · fonte · TTS_ENGINE.",
+          "ai_conversation_agent": "Selecione: conversation.* (Home Assistant · Padrão).",
+          "language": "Configure «Idioma» apenas no cômodo selecionado. Dados inválidos bloqueiam a ação.",
+          "use_mold_indicator": "🧱 Indicador de mofo · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Inválido · sensor · configurações",
       "device_temperature_band_invalid": "Inválido · Temperatura · configurações",
       "device_humidity_invalid": "Inválido · Umidade · configurações",
-      "device_runtime_invalid": "Inválido · Potência · configurações"
+      "device_runtime_invalid": "Inválido · Potência · configurações",
+      "invalid_setup_rooms": "Inválido: Ambientes para monitorar",
+      "invalid_room_source": "Inválido: Cômodo · fonte"
+    },
+    "abort": {
+      "setup_area_removed": "Inválido: Ambientes para monitorar",
+      "setup_changed": "configurações ↻ Ambientes para monitorar"
     }
   },
   "entity": {

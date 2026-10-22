@@ -143,6 +143,76 @@
           "max_age_minutes": "Umbral de decisión para «Antigüedad máxima de una medición exterior (minutos)». Afecta las recomendaciones, no es un límite médico.",
           "indoor_mold": "Umbral de decisión para «Umbral de moho para ventilar (humedad superficial estimada, %)». Afecta las recomendaciones, no es un límite médico."
         }
+      },
+      "setup_rooms": {
+        "title": "Estancias que supervisar",
+        "description": "Estancias que supervisar → fuente → General ajustes",
+        "data": {
+          "areas": "Estancias que supervisar"
+        },
+        "data_description": {
+          "areas": "Estancias que supervisar. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Habitación · {area_name} · {room_index}/{room_count}",
+        "description": "Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+        "data": {
+          "windows": "Ventanas",
+          "air_quality": "Sensores de calidad del aire y del entorno",
+          "temperature": "Temperatura",
+          "humidity": "Humedad",
+          "pressure": "Sensores de presión",
+          "climate_devices": "Dispositivos"
+        },
+        "data_description": {
+          "windows": "Ventanas. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "air_quality": "Sensores de calidad del aire y del entorno. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "temperature": "Temperatura. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "humidity": "Humedad. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "pressure": "Sensores de presión. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "climate_devices": "Dispositivos. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático."
+        }
+      },
+      "setup_general": {
+        "title": "General ajustes",
+        "description": "Selecciona fuentes compartidas y salidas de notificación. Guardar termina la configuración. Los ajustes de funcionamiento quedan en los dispositivos de la casa y las estancias.",
+        "data": {
+          "weather_entities": "Entidades meteorológicas",
+          "outdoor_sensors": "Sensores de aire exterior",
+          "weather_warnings": "Sensores de alerta meteorológica (opcional)",
+          "general_room_occupancy_sensors": "Habitación · Ocupación · sensor",
+          "general_home_trackers": "Casa · Ocupación · Dispositivos",
+          "general_occupied_rooms_entity": "Ocupación · Habitación · fuente (state)",
+          "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
+          "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
+          "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
+          "pollen_entity": "Polen · fuente",
+          "notify_entities": "Destinos directos de notificación",
+          "media_players": "Reproductores TTS directos",
+          "tts_engine": "Motor TTS directo",
+          "ai_conversation_agent": "Agente de conversación",
+          "language": "Idioma",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
+        },
+        "data_description": {
+          "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir. El indicador de moho obtiene la temperatura exterior del atributo temperature (°C/°F) de una entidad meteorológica seleccionada. Elige una fuente que proporcione la temperatura.",
+          "outdoor_sensors": "Elige sensores realmente situados fuera. Las lecturas superiores a los límites impiden abrir; las desconocidas, no disponibles o antiguas se muestran como datos incompletos.",
+          "weather_warnings": "Opcional. Las alertas seleccionadas activas o no disponibles impiden abrir las ventanas.",
+          "general_room_occupancy_sensors": "Elige una fuente real de Home Assistant para «Habitación · Ocupación · sensor». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_home_trackers": "Elige una fuente real de Home Assistant para «Casa · Ocupación · Dispositivos». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_occupied_rooms_entity": "Elige una fuente real de Home Assistant para «Ocupación · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_occupied_rooms_attribute": "Configura «Ocupación · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
+          "general_sleep_rooms_entity": "Elige una fuente real de Home Assistant para «Sueño · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_sleep_rooms_attribute": "Configura «Sueño · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
+          "pollen_entity": "Elige una fuente real de Home Assistant para «Polen · fuente». Los datos ausentes o antiguos detienen la acción asociada.",
+          "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
+          "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
+          "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub.",
+          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "El sensor interior no tiene una medida reciente válida.",
       "missing_mold_outdoor_temperature": "Ninguna entidad meteorológica elegida dispone de temperatura exterior reciente.",
       "invalid_mold_surface_temperature": "Introduce una temperatura superficial medida válida en °C.",
-      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera."
+      "invalid_mold_calibration": "Mide simultáneamente interior, exterior y superficie fría, con al menos 3°C de diferencia entre dentro y fuera.",
+      "invalid_setup_rooms": "No válido: Estancias que supervisar",
+      "invalid_room_source": "No válido: Habitación · fuente"
     },
     "abort": {
-      "already_configured": "Home Environment Manager ya está configurado."
+      "already_configured": "Home Environment Manager ya está configurado.",
+      "setup_area_removed": "No válido: Estancias que supervisar",
+      "setup_changed": "ajustes ↻ Estancias que supervisar"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Objetivo para «Calefacción · Sueño (°C)» cuando se confirma el perfil de presencia o sueño. Desconocido no significa vacío.",
           "device_sleep_cool_c": "Objetivo para «Refrigeración · Sueño (°C)» cuando se confirma el perfil de presencia o sueño. Desconocido no significa vacío."
         }
+      },
+      "setup_rooms": {
+        "title": "Estancias que supervisar",
+        "description": "Estancias que supervisar → fuente → General ajustes",
+        "data": {
+          "areas": "Estancias que supervisar"
+        },
+        "data_description": {
+          "areas": "Estancias que supervisar. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Habitación · {area_name} · {room_index}/{room_count}",
+        "description": "Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+        "data": {
+          "windows": "Ventanas",
+          "air_quality": "Sensores de calidad del aire y del entorno",
+          "temperature": "Temperatura",
+          "humidity": "Humedad",
+          "pressure": "Sensores de presión",
+          "climate_devices": "Dispositivos"
+        },
+        "data_description": {
+          "windows": "Ventanas. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "air_quality": "Sensores de calidad del aire y del entorno. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "temperature": "Temperatura. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "humidity": "Humedad. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "pressure": "Sensores de presión. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático.",
+          "climate_devices": "Dispositivos. Selecciona las entradas de esta estancia: nombre del dispositivo — nombre de la entidad. Los grupos vacíos no se usan ni activan descubrimiento o control automático."
+        }
+      },
+      "setup_general": {
+        "title": "General ajustes",
+        "description": "Selecciona fuentes compartidas y salidas de notificación. Guardar termina la configuración. Los ajustes de funcionamiento quedan en los dispositivos de la casa y las estancias.",
+        "data": {
+          "weather_entities": "Entidades meteorológicas",
+          "outdoor_sensors": "Sensores de aire exterior",
+          "weather_warnings": "Sensores de alerta meteorológica (opcional)",
+          "general_room_occupancy_sensors": "Habitación · Ocupación · sensor",
+          "general_home_trackers": "Casa · Ocupación · Dispositivos",
+          "general_occupied_rooms_entity": "Ocupación · Habitación · fuente (state)",
+          "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
+          "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
+          "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
+          "pollen_entity": "Polen · fuente",
+          "notify_entities": "Destinos directos de notificación",
+          "media_players": "Reproductores TTS directos",
+          "tts_engine": "Motor TTS directo",
+          "ai_conversation_agent": "Agente de conversación",
+          "language": "Idioma",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
+        },
+        "data_description": {
+          "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir. El indicador de moho obtiene la temperatura exterior del atributo temperature (°C/°F) de una entidad meteorológica seleccionada. Elige una fuente que proporcione la temperatura.",
+          "outdoor_sensors": "Elige sensores realmente situados fuera. Las lecturas superiores a los límites impiden abrir; las desconocidas, no disponibles o antiguas se muestran como datos incompletos.",
+          "weather_warnings": "Opcional. Las alertas seleccionadas activas o no disponibles impiden abrir las ventanas.",
+          "general_room_occupancy_sensors": "Elige una fuente real de Home Assistant para «Habitación · Ocupación · sensor». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_home_trackers": "Elige una fuente real de Home Assistant para «Casa · Ocupación · Dispositivos». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_occupied_rooms_entity": "Elige una fuente real de Home Assistant para «Ocupación · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_occupied_rooms_attribute": "Configura «Ocupación · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
+          "general_sleep_rooms_entity": "Elige una fuente real de Home Assistant para «Sueño · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
+          "general_sleep_rooms_attribute": "Configura «Sueño · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
+          "pollen_entity": "Elige una fuente real de Home Assistant para «Polen · fuente». Los datos ausentes o antiguos detienen la acción asociada.",
+          "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
+          "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
+          "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub.",
+          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "No válido · sensor · ajustes",
       "device_temperature_band_invalid": "No válido · Temperatura · ajustes",
       "device_humidity_invalid": "No válido · Humedad · ajustes",
-      "device_runtime_invalid": "No válido · Potencia · ajustes"
+      "device_runtime_invalid": "No válido · Potencia · ajustes",
+      "invalid_setup_rooms": "No válido: Estancias que supervisar",
+      "invalid_room_source": "No válido: Habitación · fuente"
+    },
+    "abort": {
+      "setup_area_removed": "No válido: Estancias que supervisar",
+      "setup_changed": "ajustes ↻ Estancias que supervisar"
     }
   },
   "entity": {

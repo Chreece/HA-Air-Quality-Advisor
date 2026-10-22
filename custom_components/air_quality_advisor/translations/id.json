@@ -143,6 +143,76 @@
           "max_age_minutes": "Ambang keputusan untuk “⏱ · Buka (min, ≤)”. Memengaruhi saran, bukan batas medis.",
           "indoor_mold": "Ambang keputusan untuk “Indikator jamur · ≥ 70%”. Memengaruhi saran, bukan batas medis."
         }
+      },
+      "setup_rooms": {
+        "title": "Ruangan untuk dipantau",
+        "description": "Ruangan untuk dipantau → sumber → Umum pengaturan",
+        "data": {
+          "areas": "Ruangan untuk dipantau"
+        },
+        "data_description": {
+          "areas": "Ruangan untuk dipantau. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Ruangan · {area_name} · {room_index}/{room_count}",
+        "description": "Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+        "data": {
+          "windows": "Jendela",
+          "air_quality": "Sensor kualitas udara dan lingkungan",
+          "temperature": "Suhu",
+          "humidity": "Kelembapan",
+          "pressure": "Sensor tekanan",
+          "climate_devices": "Perangkat"
+        },
+        "data_description": {
+          "windows": "Jendela. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "air_quality": "Sensor kualitas udara dan lingkungan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "temperature": "Suhu. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "humidity": "Kelembapan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "pressure": "Sensor tekanan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "climate_devices": "Perangkat. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_general": {
+        "title": "Umum pengaturan",
+        "description": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan.",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "outdoor_sensors": "Kualitas udara luar",
+          "weather_warnings": "Peringatan cuaca",
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "pollen_entity": "Serbuk sari · sumber",
+          "notify_entities": "pengaturan · sumber",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Bahasa",
+          "language": "Bahasa",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒",
+          "general_room_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Ruangan · Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_home_trackers": "Pilih sumber Home Assistant nyata untuk “Rumah · Kehadiran · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Kehadiran · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_attribute": "Atur “Kehadiran · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_sleep_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Tidur · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_sleep_rooms_attribute": "Atur “Tidur · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_entity": "Pilih sumber Home Assistant nyata untuk “Serbuk sari · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "ai_conversation_agent": "Pilih: conversation.* (Home Assistant · Bawaan).",
+          "language": "Atur “Bahasa” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Ruangan · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Indikator jamur · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Indikator jamur · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Tidak valid: Ruangan untuk dipantau",
+      "invalid_room_source": "Tidak valid: Ruangan · sumber"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — sudah dikonfigurasi."
+      "already_configured": "Home Environment Manager — sudah dikonfigurasi.",
+      "setup_area_removed": "Tidak valid: Ruangan untuk dipantau",
+      "setup_changed": "pengaturan ↻ Ruangan untuk dipantau"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Target “Pemanasan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
           "device_sleep_cool_c": "Target “Pendinginan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong."
         }
+      },
+      "setup_rooms": {
+        "title": "Ruangan untuk dipantau",
+        "description": "Ruangan untuk dipantau → sumber → Umum pengaturan",
+        "data": {
+          "areas": "Ruangan untuk dipantau"
+        },
+        "data_description": {
+          "areas": "Ruangan untuk dipantau. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Ruangan · {area_name} · {room_index}/{room_count}",
+        "description": "Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+        "data": {
+          "windows": "Jendela",
+          "air_quality": "Sensor kualitas udara dan lingkungan",
+          "temperature": "Suhu",
+          "humidity": "Kelembapan",
+          "pressure": "Sensor tekanan",
+          "climate_devices": "Perangkat"
+        },
+        "data_description": {
+          "windows": "Jendela. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "air_quality": "Sensor kualitas udara dan lingkungan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "temperature": "Suhu. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "humidity": "Kelembapan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "pressure": "Sensor tekanan. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "climate_devices": "Perangkat. Pilih masukan ruangan: nama perangkat — nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_general": {
+        "title": "Umum pengaturan",
+        "description": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan.",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "outdoor_sensors": "Kualitas udara luar",
+          "weather_warnings": "Peringatan cuaca",
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "pollen_entity": "Serbuk sari · sumber",
+          "notify_entities": "pengaturan · sumber",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Bahasa",
+          "language": "Bahasa",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒",
+          "general_room_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Ruangan · Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_home_trackers": "Pilih sumber Home Assistant nyata untuk “Rumah · Kehadiran · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Kehadiran · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_attribute": "Atur “Kehadiran · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_sleep_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Tidur · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_sleep_rooms_attribute": "Atur “Tidur · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_entity": "Pilih sumber Home Assistant nyata untuk “Serbuk sari · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "ai_conversation_agent": "Pilih: conversation.* (Home Assistant · Bawaan).",
+          "language": "Atur “Bahasa” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Tidak valid · sensor · pengaturan",
       "device_temperature_band_invalid": "Tidak valid · Suhu · pengaturan",
       "device_humidity_invalid": "Tidak valid · Kelembapan · pengaturan",
-      "device_runtime_invalid": "Tidak valid · Daya · pengaturan"
+      "device_runtime_invalid": "Tidak valid · Daya · pengaturan",
+      "invalid_setup_rooms": "Tidak valid: Ruangan untuk dipantau",
+      "invalid_room_source": "Tidak valid: Ruangan · sumber"
+    },
+    "abort": {
+      "setup_area_removed": "Tidak valid: Ruangan untuk dipantau",
+      "setup_changed": "pengaturan ↻ Ruangan untuk dipantau"
     }
   },
   "entity": {

@@ -143,6 +143,76 @@
           "max_age_minutes": "זהו סף החלטה עבור „⏱ · פתחו (min, ≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
           "indoor_mold": "זהו סף החלטה עבור „מדד עובש · ≥ 70%”. הוא משפיע על המלצות ואינו גבול רפואי."
         }
+      },
+      "setup_rooms": {
+        "title": "חדרים למעקב",
+        "description": "חדרים למעקב → מקור → כלליות הגדרות",
+        "data": {
+          "areas": "חדרים למעקב"
+        },
+        "data_description": {
+          "areas": "חדרים למעקב. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_room_sources": {
+        "title": "חדר · {area_name} · {room_index}/{room_count}",
+        "description": "בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+        "data": {
+          "windows": "חלונות",
+          "air_quality": "חיישני איכות אוויר וסביבה",
+          "temperature": "טמפרטורה",
+          "humidity": "לחות",
+          "pressure": "חיישני לחץ",
+          "climate_devices": "התקנים"
+        },
+        "data_description": {
+          "windows": "חלונות. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "air_quality": "חיישני איכות אוויר וסביבה. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "temperature": "טמפרטורה. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "humidity": "לחות. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "pressure": "חיישני לחץ. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "climate_devices": "התקנים. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_general": {
+        "title": "כלליות הגדרות",
+        "description": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים.",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "outdoor_sensors": "איכות האוויר בחוץ",
+          "weather_warnings": "אזהרות מזג אוויר",
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "pollen_entity": "אבקנים · מקור",
+          "notify_entities": "הגדרות · מקור",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "ai_conversation_agent": "AI · שפה",
+          "language": "שפה",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒",
+          "general_room_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „חדר · נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_home_trackers": "בחר מקור Home Assistant אמיתי עבור „בית · נוכחות · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_attribute": "הגדר „נוכחות · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_sleep_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „שינה · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_sleep_rooms_attribute": "הגדר „שינה · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_entity": "בחר מקור Home Assistant אמיתי עבור „אבקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל).",
+          "language": "הגדר „שפה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "חדרים · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "מדד עובש · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "מדד עובש · 🧊 °C ⚠",
-      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "לא תקין: חדרים למעקב",
+      "invalid_room_source": "לא תקין: חדר · מקור"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — כבר הוגדר."
+      "already_configured": "Home Environment Manager — כבר הוגדר.",
+      "setup_area_removed": "לא תקין: חדרים למעקב",
+      "setup_changed": "הגדרות ↻ חדרים למעקב"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "יעד „חימום · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
           "device_sleep_cool_c": "יעד „קירור · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק."
         }
+      },
+      "setup_rooms": {
+        "title": "חדרים למעקב",
+        "description": "חדרים למעקב → מקור → כלליות הגדרות",
+        "data": {
+          "areas": "חדרים למעקב"
+        },
+        "data_description": {
+          "areas": "חדרים למעקב. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_room_sources": {
+        "title": "חדר · {area_name} · {room_index}/{room_count}",
+        "description": "בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+        "data": {
+          "windows": "חלונות",
+          "air_quality": "חיישני איכות אוויר וסביבה",
+          "temperature": "טמפרטורה",
+          "humidity": "לחות",
+          "pressure": "חיישני לחץ",
+          "climate_devices": "התקנים"
+        },
+        "data_description": {
+          "windows": "חלונות. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "air_quality": "חיישני איכות אוויר וסביבה. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "temperature": "טמפרטורה. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "humidity": "לחות. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "pressure": "חיישני לחץ. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "climate_devices": "התקנים. בחר את קלטי החדר: שם המכשיר — שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_general": {
+        "title": "כלליות הגדרות",
+        "description": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים.",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "outdoor_sensors": "איכות האוויר בחוץ",
+          "weather_warnings": "אזהרות מזג אוויר",
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "pollen_entity": "אבקנים · מקור",
+          "notify_entities": "הגדרות · מקור",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "ai_conversation_agent": "AI · שפה",
+          "language": "שפה",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒",
+          "general_room_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „חדר · נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_home_trackers": "בחר מקור Home Assistant אמיתי עבור „בית · נוכחות · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_attribute": "הגדר „נוכחות · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_sleep_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „שינה · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_sleep_rooms_attribute": "הגדר „שינה · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_entity": "בחר מקור Home Assistant אמיתי עבור „אבקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל).",
+          "language": "הגדר „שפה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "לא תקין · חיישן · הגדרות",
       "device_temperature_band_invalid": "לא תקין · טמפרטורה · הגדרות",
       "device_humidity_invalid": "לא תקין · לחות · הגדרות",
-      "device_runtime_invalid": "לא תקין · הספק · הגדרות"
+      "device_runtime_invalid": "לא תקין · הספק · הגדרות",
+      "invalid_setup_rooms": "לא תקין: חדרים למעקב",
+      "invalid_room_source": "לא תקין: חדר · מקור"
+    },
+    "abort": {
+      "setup_area_removed": "לא תקין: חדרים למעקב",
+      "setup_changed": "הגדרות ↻ חדרים למעקב"
     }
   },
   "entity": {

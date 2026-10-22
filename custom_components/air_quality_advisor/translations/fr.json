@@ -143,6 +143,76 @@
           "max_age_minutes": "Seuil de décision pour « Âge maximal d'une mesure extérieure (minutes) ». Il influence les conseils, mais ne constitue pas une limite médicale.",
           "indoor_mold": "Seuil de décision pour « Seuil de moisissure pour aérer (humidité de surface estimée, %) ». Il influence les conseils, mais ne constitue pas une limite médicale."
         }
+      },
+      "setup_rooms": {
+        "title": "Pièces à surveiller",
+        "description": "Pièces à surveiller → source → Général paramètres",
+        "data": {
+          "areas": "Pièces à surveiller"
+        },
+        "data_description": {
+          "areas": "Pièces à surveiller. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pièce · {area_name} · {room_index}/{room_count}",
+        "description": "Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+        "data": {
+          "windows": "Fenêtres",
+          "air_quality": "Capteurs de qualité de l’air et d’environnement",
+          "temperature": "Température",
+          "humidity": "Humidité",
+          "pressure": "Capteurs de pression",
+          "climate_devices": "Appareils"
+        },
+        "data_description": {
+          "windows": "Fenêtres. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "air_quality": "Capteurs de qualité de l’air et d’environnement. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "temperature": "Température. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "humidity": "Humidité. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "pressure": "Capteurs de pression. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "climate_devices": "Appareils. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande."
+        }
+      },
+      "setup_general": {
+        "title": "Général paramètres",
+        "description": "Sélectionnez les sources communes et les sorties de notification. Enregistrer termine la configuration. Les réglages de fonctionnement restent sur les appareils de la maison et des pièces.",
+        "data": {
+          "weather_entities": "Entités météo",
+          "outdoor_sensors": "Capteurs extérieurs",
+          "weather_warnings": "Capteurs d’alerte météo (facultatif)",
+          "general_room_occupancy_sensors": "Pièce · Présence · capteur",
+          "general_home_trackers": "Maison · Présence · Appareils",
+          "general_occupied_rooms_entity": "Présence · Pièce · source (state)",
+          "general_occupied_rooms_attribute": "Présence · Pièce · source (attribute)",
+          "general_sleep_rooms_entity": "Sommeil · Pièce · source (state)",
+          "general_sleep_rooms_attribute": "Sommeil · Pièce · source (attribute)",
+          "pollen_entity": "Pollen · source",
+          "notify_entities": "Destinations de notification directes",
+          "media_players": "Lecteurs média TTS directs",
+          "tts_engine": "Moteur TTS direct",
+          "ai_conversation_agent": "Agent conversationnel",
+          "language": "Langue",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
+        },
+        "data_description": {
+          "weather_entities": "Au moins une entité météo est nécessaire. Pluie, orages, vent fort et températures extrêmes empêchent d'ouvrir les fenêtres. L'indicateur de moisissure utilise l'attribut temperature (°C/°F) d'une entité météo sélectionnée comme température extérieure. Sélectionnez une source qui fournit une température.",
+          "outdoor_sensors": "Choisissez des capteurs réellement situés à l'extérieur. Les valeurs dépassant les seuils empêchent d'ouvrir; les mesures inconnues, indisponibles ou anciennes sont signalées comme données manquantes.",
+          "weather_warnings": "Facultatif. Les alertes sélectionnées actives ou indisponibles empêchent d'ouvrir les fenêtres.",
+          "general_room_occupancy_sensors": "Choisissez une source Home Assistant réelle pour « Pièce · Présence · capteur ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_home_trackers": "Choisissez une source Home Assistant réelle pour « Maison · Présence · Appareils ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_occupied_rooms_entity": "Choisissez une source Home Assistant réelle pour « Présence · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_occupied_rooms_attribute": "Configurez « Présence · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
+          "general_sleep_rooms_entity": "Choisissez une source Home Assistant réelle pour « Sommeil · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_sleep_rooms_attribute": "Configurez « Sommeil · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
+          "pollen_entity": "Choisissez une source Home Assistant réelle pour « Pollen · source ». Une valeur absente ou périmée suspend l'action concernée.",
+          "notify_entities": "Destinations de notification directe lorsqu'Announcement Hub n'est pas utilisé.",
+          "media_players": "Lecteurs pour les annonces vocales directes. L'affectation aux pièces détermine les destinataires.",
+          "tts_engine": "Moteur de synthèse vocale pour les annonces directes sans Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent.",
+          "language": "Le mode automatique utilise la langue de Home Assistant. L'action manuelle peut choisir une autre langue.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "La sonde intérieure ne fournit aucune température récente et valide.",
       "missing_mold_outdoor_temperature": "Aucune entité météo sélectionnée ne fournit de température extérieure récente.",
       "invalid_mold_surface_temperature": "Saisissez une température de surface mesurée valide en °C.",
-      "invalid_mold_calibration": "Mesurez simultanément les températures intérieure, extérieure et de surface, avec au moins 3°C d’écart intérieur/extérieur."
+      "invalid_mold_calibration": "Mesurez simultanément les températures intérieure, extérieure et de surface, avec au moins 3°C d’écart intérieur/extérieur.",
+      "invalid_setup_rooms": "Invalide: Pièces à surveiller",
+      "invalid_room_source": "Invalide: Pièce · source"
     },
     "abort": {
-      "already_configured": "Home Environment Manager est déjà configuré."
+      "already_configured": "Home Environment Manager est déjà configuré.",
+      "setup_area_removed": "Invalide: Pièces à surveiller",
+      "setup_changed": "paramètres ↻ Pièces à surveiller"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Consigne pour « Chauffage · Sommeil (°C) » lorsque le profil de présence ou de sommeil est confirmé. Inconnu ne signifie pas absent.",
           "device_sleep_cool_c": "Consigne pour « Refroidissement · Sommeil (°C) » lorsque le profil de présence ou de sommeil est confirmé. Inconnu ne signifie pas absent."
         }
+      },
+      "setup_rooms": {
+        "title": "Pièces à surveiller",
+        "description": "Pièces à surveiller → source → Général paramètres",
+        "data": {
+          "areas": "Pièces à surveiller"
+        },
+        "data_description": {
+          "areas": "Pièces à surveiller. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pièce · {area_name} · {room_index}/{room_count}",
+        "description": "Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+        "data": {
+          "windows": "Fenêtres",
+          "air_quality": "Capteurs de qualité de l’air et d’environnement",
+          "temperature": "Température",
+          "humidity": "Humidité",
+          "pressure": "Capteurs de pression",
+          "climate_devices": "Appareils"
+        },
+        "data_description": {
+          "windows": "Fenêtres. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "air_quality": "Capteurs de qualité de l’air et d’environnement. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "temperature": "Température. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "humidity": "Humidité. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "pressure": "Capteurs de pression. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande.",
+          "climate_devices": "Appareils. Sélectionnez les entrées de cette pièce : nom de l’appareil — nom de l’entité. Les groupes vides restent inutilisés et n’activent ni découverte automatique ni commande."
+        }
+      },
+      "setup_general": {
+        "title": "Général paramètres",
+        "description": "Sélectionnez les sources communes et les sorties de notification. Enregistrer termine la configuration. Les réglages de fonctionnement restent sur les appareils de la maison et des pièces.",
+        "data": {
+          "weather_entities": "Entités météo",
+          "outdoor_sensors": "Capteurs extérieurs",
+          "weather_warnings": "Capteurs d’alerte météo (facultatif)",
+          "general_room_occupancy_sensors": "Pièce · Présence · capteur",
+          "general_home_trackers": "Maison · Présence · Appareils",
+          "general_occupied_rooms_entity": "Présence · Pièce · source (state)",
+          "general_occupied_rooms_attribute": "Présence · Pièce · source (attribute)",
+          "general_sleep_rooms_entity": "Sommeil · Pièce · source (state)",
+          "general_sleep_rooms_attribute": "Sommeil · Pièce · source (attribute)",
+          "pollen_entity": "Pollen · source",
+          "notify_entities": "Destinations de notification directes",
+          "media_players": "Lecteurs média TTS directs",
+          "tts_engine": "Moteur TTS direct",
+          "ai_conversation_agent": "Agent conversationnel",
+          "language": "Langue",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
+        },
+        "data_description": {
+          "weather_entities": "Au moins une entité météo est nécessaire. Pluie, orages, vent fort et températures extrêmes empêchent d'ouvrir les fenêtres. L'indicateur de moisissure utilise l'attribut temperature (°C/°F) d'une entité météo sélectionnée comme température extérieure. Sélectionnez une source qui fournit une température.",
+          "outdoor_sensors": "Choisissez des capteurs réellement situés à l'extérieur. Les valeurs dépassant les seuils empêchent d'ouvrir; les mesures inconnues, indisponibles ou anciennes sont signalées comme données manquantes.",
+          "weather_warnings": "Facultatif. Les alertes sélectionnées actives ou indisponibles empêchent d'ouvrir les fenêtres.",
+          "general_room_occupancy_sensors": "Choisissez une source Home Assistant réelle pour « Pièce · Présence · capteur ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_home_trackers": "Choisissez une source Home Assistant réelle pour « Maison · Présence · Appareils ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_occupied_rooms_entity": "Choisissez une source Home Assistant réelle pour « Présence · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_occupied_rooms_attribute": "Configurez « Présence · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
+          "general_sleep_rooms_entity": "Choisissez une source Home Assistant réelle pour « Sommeil · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
+          "general_sleep_rooms_attribute": "Configurez « Sommeil · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
+          "pollen_entity": "Choisissez une source Home Assistant réelle pour « Pollen · source ». Une valeur absente ou périmée suspend l'action concernée.",
+          "notify_entities": "Destinations de notification directe lorsqu'Announcement Hub n'est pas utilisé.",
+          "media_players": "Lecteurs pour les annonces vocales directes. L'affectation aux pièces détermine les destinataires.",
+          "tts_engine": "Moteur de synthèse vocale pour les annonces directes sans Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent.",
+          "language": "Le mode automatique utilise la langue de Home Assistant. L'action manuelle peut choisir une autre langue.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Invalide · capteur · paramètres",
       "device_temperature_band_invalid": "Invalide · Température · paramètres",
       "device_humidity_invalid": "Invalide · Humidité · paramètres",
-      "device_runtime_invalid": "Invalide · Puissance · paramètres"
+      "device_runtime_invalid": "Invalide · Puissance · paramètres",
+      "invalid_setup_rooms": "Invalide: Pièces à surveiller",
+      "invalid_room_source": "Invalide: Pièce · source"
+    },
+    "abort": {
+      "setup_area_removed": "Invalide: Pièces à surveiller",
+      "setup_changed": "paramètres ↻ Pièces à surveiller"
     }
   },
   "entity": {

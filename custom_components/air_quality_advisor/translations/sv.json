@@ -143,6 +143,76 @@
           "max_age_minutes": "Beslutströskel för ”⏱ · Öppna (min, ≤)”. Den styr råd, men är ingen medicinsk gräns.",
           "indoor_mold": "Beslutströskel för ”Mögelindikator · ≥ 70%”. Den styr råd, men är ingen medicinsk gräns."
         }
+      },
+      "setup_rooms": {
+        "title": "Rum att övervaka",
+        "description": "Rum att övervaka → källa → Allmänna inställningar",
+        "data": {
+          "areas": "Rum att övervaka"
+        },
+        "data_description": {
+          "areas": "Rum att övervaka. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+        "data": {
+          "windows": "Fönster",
+          "air_quality": "Luftkvalitets- och miljösensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfuktighet",
+          "pressure": "Trycksensorer",
+          "climate_devices": "Enheter"
+        },
+        "data_description": {
+          "windows": "Fönster. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "air_quality": "Luftkvalitets- och miljösensorer. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "temperature": "Temperatur. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "humidity": "Luftfuktighet. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "pressure": "Trycksensorer. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "climate_devices": "Enheter. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning."
+        }
+      },
+      "setup_general": {
+        "title": "Allmänna inställningar",
+        "description": "Välj gemensamma källor och aviseringsutgångar. Spara slutför inställningen. Driftinställningarna finns kvar på husets och rummens enheter.",
+        "data": {
+          "weather_entities": "Väder och varningar",
+          "outdoor_sensors": "Utomhusluftens kvalitet",
+          "weather_warnings": "Vädervarningar",
+          "general_room_occupancy_sensors": "Rum · Närvaro · sensor",
+          "general_home_trackers": "Hem · Närvaro · Enheter",
+          "general_occupied_rooms_entity": "Närvaro · Rum · källa (state)",
+          "general_occupied_rooms_attribute": "Närvaro · Rum · källa (attribute)",
+          "general_sleep_rooms_entity": "Sömn · Rum · källa (state)",
+          "general_sleep_rooms_attribute": "Sömn · Rum · källa (attribute)",
+          "pollen_entity": "Pollen · källa",
+          "notify_entities": "inställningar · källa",
+          "media_players": "inställningar · källa · MEDIA_PLAYERS",
+          "tts_engine": "inställningar · källa · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Språk",
+          "language": "Språk",
+          "use_mold_indicator": "Mögelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Välj: Väder och varningar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Välj: Utomhusluftens kvalitet · AQI, CO₂, PM2.5, PM10, VOC. Inte tillgänglig: ⚠",
+          "weather_warnings": "Väder och varningar · ⚠ (Inte tillgänglig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Välj en riktig Home Assistant-källa för ”Rum · Närvaro · sensor”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_home_trackers": "Välj en riktig Home Assistant-källa för ”Hem · Närvaro · Enheter”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_occupied_rooms_entity": "Välj en riktig Home Assistant-källa för ”Närvaro · Rum · källa (state)”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_occupied_rooms_attribute": "Ställ in ”Närvaro · Rum · källa (attribute)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "general_sleep_rooms_entity": "Välj en riktig Home Assistant-källa för ”Sömn · Rum · källa (state)”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_sleep_rooms_attribute": "Ställ in ”Sömn · Rum · källa (attribute)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_entity": "Välj en riktig Home Assistant-källa för ”Pollen · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "notify_entities": "Välj: notify.* · inställningar · källa.",
+          "media_players": "Välj: media_player.* · inställningar · källa · MEDIA_PLAYERS.",
+          "tts_engine": "Välj: tts.* · inställningar · källa · TTS_ENGINE.",
+          "ai_conversation_agent": "Välj: conversation.* (Home Assistant · Standard).",
+          "language": "Ställ in ”Språk” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "use_mold_indicator": "🧱 Mögelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Mögelindikator · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Mögelindikator · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Mögelindikator · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Mögelindikator · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Ogiltig: Rum att övervaka",
+      "invalid_room_source": "Ogiltig: Rum · källa"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — redan konfigurerad."
+      "already_configured": "Home Environment Manager — redan konfigurerad.",
+      "setup_area_removed": "Ogiltig: Rum att övervaka",
+      "setup_changed": "inställningar ↻ Rum att övervaka"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Mål för ”Uppvärmning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum.",
           "device_sleep_cool_c": "Mål för ”Kylning · Sömn (°C)” gäller vid bekräftad närvaro eller sömn. Okänt betyder inte tomt rum."
         }
+      },
+      "setup_rooms": {
+        "title": "Rum att övervaka",
+        "description": "Rum att övervaka → källa → Allmänna inställningar",
+        "data": {
+          "areas": "Rum att övervaka"
+        },
+        "data_description": {
+          "areas": "Rum att övervaka. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+        "data": {
+          "windows": "Fönster",
+          "air_quality": "Luftkvalitets- och miljösensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfuktighet",
+          "pressure": "Trycksensorer",
+          "climate_devices": "Enheter"
+        },
+        "data_description": {
+          "windows": "Fönster. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "air_quality": "Luftkvalitets- och miljösensorer. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "temperature": "Temperatur. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "humidity": "Luftfuktighet. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "pressure": "Trycksensorer. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning.",
+          "climate_devices": "Enheter. Välj rummets ingångar: enhetsnamn — entitetsnamn. Tomma grupper används inte och aktiverar varken automatisk upptäckt eller styrning."
+        }
+      },
+      "setup_general": {
+        "title": "Allmänna inställningar",
+        "description": "Välj gemensamma källor och aviseringsutgångar. Spara slutför inställningen. Driftinställningarna finns kvar på husets och rummens enheter.",
+        "data": {
+          "weather_entities": "Väder och varningar",
+          "outdoor_sensors": "Utomhusluftens kvalitet",
+          "weather_warnings": "Vädervarningar",
+          "general_room_occupancy_sensors": "Rum · Närvaro · sensor",
+          "general_home_trackers": "Hem · Närvaro · Enheter",
+          "general_occupied_rooms_entity": "Närvaro · Rum · källa (state)",
+          "general_occupied_rooms_attribute": "Närvaro · Rum · källa (attribute)",
+          "general_sleep_rooms_entity": "Sömn · Rum · källa (state)",
+          "general_sleep_rooms_attribute": "Sömn · Rum · källa (attribute)",
+          "pollen_entity": "Pollen · källa",
+          "notify_entities": "inställningar · källa",
+          "media_players": "inställningar · källa · MEDIA_PLAYERS",
+          "tts_engine": "inställningar · källa · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Språk",
+          "language": "Språk",
+          "use_mold_indicator": "Mögelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Välj: Väder och varningar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Välj: Utomhusluftens kvalitet · AQI, CO₂, PM2.5, PM10, VOC. Inte tillgänglig: ⚠",
+          "weather_warnings": "Väder och varningar · ⚠ (Inte tillgänglig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Välj en riktig Home Assistant-källa för ”Rum · Närvaro · sensor”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_home_trackers": "Välj en riktig Home Assistant-källa för ”Hem · Närvaro · Enheter”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_occupied_rooms_entity": "Välj en riktig Home Assistant-källa för ”Närvaro · Rum · källa (state)”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_occupied_rooms_attribute": "Ställ in ”Närvaro · Rum · källa (attribute)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "general_sleep_rooms_entity": "Välj en riktig Home Assistant-källa för ”Sömn · Rum · källa (state)”. Saknade eller gamla värden stoppar åtgärden.",
+          "general_sleep_rooms_attribute": "Ställ in ”Sömn · Rum · källa (attribute)” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "pollen_entity": "Välj en riktig Home Assistant-källa för ”Pollen · källa”. Saknade eller gamla värden stoppar åtgärden.",
+          "notify_entities": "Välj: notify.* · inställningar · källa.",
+          "media_players": "Välj: media_player.* · inställningar · källa · MEDIA_PLAYERS.",
+          "tts_engine": "Välj: tts.* · inställningar · källa · TTS_ENGINE.",
+          "ai_conversation_agent": "Välj: conversation.* (Home Assistant · Standard).",
+          "language": "Ställ in ”Språk” endast för valt rum. Ogiltiga värden stoppar åtgärden.",
+          "use_mold_indicator": "🧱 Mögelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Ogiltig · sensor · inställningar",
       "device_temperature_band_invalid": "Ogiltig · Temperatur · inställningar",
       "device_humidity_invalid": "Ogiltig · Luftfuktighet · inställningar",
-      "device_runtime_invalid": "Ogiltig · Effekt · inställningar"
+      "device_runtime_invalid": "Ogiltig · Effekt · inställningar",
+      "invalid_setup_rooms": "Ogiltig: Rum att övervaka",
+      "invalid_room_source": "Ogiltig: Rum · källa"
+    },
+    "abort": {
+      "setup_area_removed": "Ogiltig: Rum att övervaka",
+      "setup_changed": "inställningar ↻ Rum att övervaka"
     }
   },
   "entity": {

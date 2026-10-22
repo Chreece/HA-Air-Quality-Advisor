@@ -345,11 +345,8 @@ def _make_options(monkeypatch, adapter, *, two_rooms=False):
 def test_reconfigure_opens_menu_with_every_section(monkeypatch, adapter):
     options = _make_options(monkeypatch, adapter)
     menu = asyncio.run(options.async_step_init())
-    assert menu["step_id"] == "init"
-    assert menu["menu_options"] == [
-        "outside_data", "general_settings", "area_settings",
-        "delivery",
-    ]
+    assert menu["step_id"] == "setup_rooms"
+    assert "areas" in menu["data_schema"]
     assert asyncio.run(options.async_step_outside_data())["menu_options"] == [
         "weather", "outdoor", "pollen",
     ]
@@ -469,7 +466,7 @@ def test_initial_config_entry_starts_with_rooms(monkeypatch, adapter):
     initial.async_show_form = lambda **kwargs: kwargs
     initial.async_create_entry = lambda **kwargs: kwargs
     form = asyncio.run(initial.async_step_user())
-    assert form["step_id"] == "areas"
+    assert form["step_id"] == "setup_rooms"
     assert next(iter(form["data_schema"])).default == ["living"]
     assert unique_id_calls == []  # the first form is never locked out
     saved = asyncio.run(initial._finish())
@@ -498,7 +495,7 @@ def test_initial_no_exclusions_still_moves_to_indoor_then_outdoor(monkeypatch, a
 def test_reconfigure_keeps_rooms_first_without_replaying_setup(monkeypatch, adapter):
     options = _make_options(monkeypatch, adapter)
     menu = asyncio.run(options.async_step_init())
-    assert menu["menu_options"][0] == "outside_data"
+    assert menu["step_id"] == "setup_rooms"
     assert "areas" in asyncio.run(options.async_step_area_settings())["menu_options"]
     result = asyncio.run(options.async_step_areas({"areas": ["living"]}))
     assert "completed" in result
@@ -734,9 +731,7 @@ def test_weather_options_second_and_source_status_before_room_measurements(
     # values of the previous edit.
     options.config_entry.options["use_mold_indicator"] = True
     menu = asyncio.run(options.async_step_init())
-    assert menu["menu_options"][:3] == [
-        "outside_data", "general_settings", "area_settings"
-    ]
+    assert menu["step_id"] == "setup_rooms"
     assert "weather" in asyncio.run(options.async_step_outside_data())["menu_options"]
     assert "indoor_sensors" in asyncio.run(options.async_step_area_settings())["menu_options"]
     weather = asyncio.run(options.async_step_weather())
@@ -1524,11 +1519,11 @@ def test_abandoned_initial_flow_does_not_block_retry_before_first_form(monkeypat
         flow.async_set_unique_id=claim
         return flow
     abandoned=make()
-    assert asyncio.run(abandoned.async_step_user())["step_id"]=="areas"
+    assert asyncio.run(abandoned.async_step_user())["step_id"]=="setup_rooms"
     assert reserved==[]
     # The first UI no longer exists, but its backend flow is still pending.
     retry=make()
-    assert asyncio.run(retry.async_step_user())["step_id"]=="areas"
+    assert asyncio.run(retry.async_step_user())["step_id"]=="setup_rooms"
     assert reserved==[]
     result=asyncio.run(retry._finish())
     assert result["title"]=="Home Environment Manager"
@@ -1566,7 +1561,7 @@ def test_initial_setup_rechecks_entry_created_while_first_form_open(monkeypatch,
     async def claim(uid,*,raise_on_progress=True):
         assert (uid,raise_on_progress)==("home",False)
     flow.async_set_unique_id=claim
-    assert asyncio.run(flow.async_step_user())["step_id"]=="areas"
+    assert asyncio.run(flow.async_step_user())["step_id"]=="setup_rooms"
     registered.append(SimpleNamespace(unique_id="home"))
     assert asyncio.run(flow._finish())=={
         "aborted":{"reason":"already_configured"}

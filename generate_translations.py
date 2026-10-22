@@ -396,3 +396,7 @@ apply_equipment_i18n(root)
 # Integration-page room groups; no device/control identities are changed.
 from apply_room_hub_i18n import apply_room_hub_i18n
 apply_room_hub_i18n(root)
+
+# Ordered rooms, explicit inputs and final general-source setup.
+from apply_room_setup_i18n import apply_room_setup_i18n
+apply_room_setup_i18n(root)

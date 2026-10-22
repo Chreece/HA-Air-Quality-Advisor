@@ -143,6 +143,76 @@
           "max_age_minutes": "Próg decyzji dla „⏱ · Otwórz (min, ≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
           "indoor_mold": "Próg decyzji dla „Wskaźnik pleśni · ≥ 70%”. Wpływa na zalecenia, lecz nie jest normą medyczną."
         }
+      },
+      "setup_rooms": {
+        "title": "Pomieszczenia do monitorowania",
+        "description": "Pomieszczenia do monitorowania → źródło → Ogólne ustawienia",
+        "data": {
+          "areas": "Pomieszczenia do monitorowania"
+        },
+        "data_description": {
+          "areas": "Pomieszczenia do monitorowania. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pokój · {area_name} · {room_index}/{room_count}",
+        "description": "Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+        "data": {
+          "windows": "Okna",
+          "air_quality": "Czujniki jakości powietrza i otoczenia",
+          "temperature": "Temperatura",
+          "humidity": "Wilgotność",
+          "pressure": "Czujniki ciśnienia",
+          "climate_devices": "Urządzenia"
+        },
+        "data_description": {
+          "windows": "Okna. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "air_quality": "Czujniki jakości powietrza i otoczenia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "temperature": "Temperatura. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "humidity": "Wilgotność. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "pressure": "Czujniki ciśnienia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "climate_devices": "Urządzenia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_general": {
+        "title": "Ogólne ustawienia",
+        "description": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń.",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "outdoor_sensors": "Jakość powietrza na zewnątrz",
+          "weather_warnings": "Ostrzeżenia pogodowe",
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "pollen_entity": "Pyłki · źródło",
+          "notify_entities": "ustawienia · źródło",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Język",
+          "language": "Język",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒",
+          "general_room_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Pokój · Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "general_home_trackers": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Obecność · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_attribute": "Ustaw „Obecność · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_sleep_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Sen · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_sleep_rooms_attribute": "Ustaw „Sen · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Pyłki · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "ai_conversation_agent": "Wybierz: conversation.* (Home Assistant · Domyślne).",
+          "language": "Ustaw „Język” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Pomieszczenia · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Wskaźnik pleśni · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Wskaźnik pleśni · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "invalid_room_source": "Nieprawidłowe: Pokój · źródło"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — już skonfigurowano."
+      "already_configured": "Home Environment Manager — już skonfigurowano.",
+      "setup_area_removed": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "setup_changed": "ustawienia ↻ Pomieszczenia do monitorowania"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Wartość docelowa „Ogrzewanie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
           "device_sleep_cool_c": "Wartość docelowa „Chłodzenie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju."
         }
+      },
+      "setup_rooms": {
+        "title": "Pomieszczenia do monitorowania",
+        "description": "Pomieszczenia do monitorowania → źródło → Ogólne ustawienia",
+        "data": {
+          "areas": "Pomieszczenia do monitorowania"
+        },
+        "data_description": {
+          "areas": "Pomieszczenia do monitorowania. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pokój · {area_name} · {room_index}/{room_count}",
+        "description": "Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+        "data": {
+          "windows": "Okna",
+          "air_quality": "Czujniki jakości powietrza i otoczenia",
+          "temperature": "Temperatura",
+          "humidity": "Wilgotność",
+          "pressure": "Czujniki ciśnienia",
+          "climate_devices": "Urządzenia"
+        },
+        "data_description": {
+          "windows": "Okna. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "air_quality": "Czujniki jakości powietrza i otoczenia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "temperature": "Temperatura. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "humidity": "Wilgotność. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "pressure": "Czujniki ciśnienia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "climate_devices": "Urządzenia. Wybierz wejścia pomieszczenia: nazwa urządzenia — nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_general": {
+        "title": "Ogólne ustawienia",
+        "description": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń.",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "outdoor_sensors": "Jakość powietrza na zewnątrz",
+          "weather_warnings": "Ostrzeżenia pogodowe",
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "pollen_entity": "Pyłki · źródło",
+          "notify_entities": "ustawienia · źródło",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Język",
+          "language": "Język",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒",
+          "general_room_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Pokój · Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "general_home_trackers": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Obecność · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_attribute": "Ustaw „Obecność · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_sleep_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Sen · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_sleep_rooms_attribute": "Ustaw „Sen · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Pyłki · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "ai_conversation_agent": "Wybierz: conversation.* (Home Assistant · Domyślne).",
+          "language": "Ustaw „Język” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Nieprawidłowe · czujnik · ustawienia",
       "device_temperature_band_invalid": "Nieprawidłowe · Temperatura · ustawienia",
       "device_humidity_invalid": "Nieprawidłowe · Wilgotność · ustawienia",
-      "device_runtime_invalid": "Nieprawidłowe · Moc · ustawienia"
+      "device_runtime_invalid": "Nieprawidłowe · Moc · ustawienia",
+      "invalid_setup_rooms": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "invalid_room_source": "Nieprawidłowe: Pokój · źródło"
+    },
+    "abort": {
+      "setup_area_removed": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "setup_changed": "ustawienia ↻ Pomieszczenia do monitorowania"
     }
   },
   "entity": {

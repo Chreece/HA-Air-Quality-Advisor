@@ -143,6 +143,76 @@
           "max_age_minutes": "„⏱ · Nyisd ki (min, ≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
           "indoor_mold": "„Penészesedési mutató · ≥ 70%” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
         }
+      },
+      "setup_rooms": {
+        "title": "Figyelendő helyiségek",
+        "description": "Figyelendő helyiségek → forrás → Általános beállítások",
+        "data": {
+          "areas": "Figyelendő helyiségek"
+        },
+        "data_description": {
+          "areas": "Figyelendő helyiségek. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Szoba · {area_name} · {room_index}/{room_count}",
+        "description": "Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+        "data": {
+          "windows": "Ablakok",
+          "air_quality": "Levegőminőség- és környezeti érzékelők",
+          "temperature": "Hőmérséklet",
+          "humidity": "Páratartalom",
+          "pressure": "Nyomásérzékelők",
+          "climate_devices": "Eszközök"
+        },
+        "data_description": {
+          "windows": "Ablakok. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "air_quality": "Levegőminőség- és környezeti érzékelők. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "temperature": "Hőmérséklet. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "humidity": "Páratartalom. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "pressure": "Nyomásérzékelők. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "climate_devices": "Eszközök. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_general": {
+        "title": "Általános beállítások",
+        "description": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak.",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "outdoor_sensors": "Kültéri levegőminőség",
+          "weather_warnings": "Időjárási figyelmeztetések",
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "pollen_entity": "Pollen · forrás",
+          "notify_entities": "beállítások · forrás",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Nyelv",
+          "language": "Nyelv",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒",
+          "general_room_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Szoba · Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_home_trackers": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Jelenlét · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_attribute": "„Jelenlét · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_sleep_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Alvás · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_sleep_rooms_attribute": "„Alvás · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Pollen · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "ai_conversation_agent": "Válassz: conversation.* (Home Assistant · Alapértelmezett).",
+          "language": "Nyelv: Home Assistant (Alapértelmezett).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Helyiségek · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Penészesedési mutató · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Penészesedési mutató · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Érvénytelen: Figyelendő helyiségek",
+      "invalid_room_source": "Érvénytelen: Szoba · forrás"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — már be van állítva."
+      "already_configured": "Home Environment Manager — már be van állítva.",
+      "setup_area_removed": "Érvénytelen: Figyelendő helyiségek",
+      "setup_changed": "beállítások ↻ Figyelendő helyiségek"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "„Fűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
           "device_sleep_cool_c": "„Hűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent."
         }
+      },
+      "setup_rooms": {
+        "title": "Figyelendő helyiségek",
+        "description": "Figyelendő helyiségek → forrás → Általános beállítások",
+        "data": {
+          "areas": "Figyelendő helyiségek"
+        },
+        "data_description": {
+          "areas": "Figyelendő helyiségek. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Szoba · {area_name} · {room_index}/{room_count}",
+        "description": "Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+        "data": {
+          "windows": "Ablakok",
+          "air_quality": "Levegőminőség- és környezeti érzékelők",
+          "temperature": "Hőmérséklet",
+          "humidity": "Páratartalom",
+          "pressure": "Nyomásérzékelők",
+          "climate_devices": "Eszközök"
+        },
+        "data_description": {
+          "windows": "Ablakok. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "air_quality": "Levegőminőség- és környezeti érzékelők. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "temperature": "Hőmérséklet. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "humidity": "Páratartalom. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "pressure": "Nyomásérzékelők. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "climate_devices": "Eszközök. Válaszd ki a helyiség bemeneteit: eszköznév — entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_general": {
+        "title": "Általános beállítások",
+        "description": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak.",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "outdoor_sensors": "Kültéri levegőminőség",
+          "weather_warnings": "Időjárási figyelmeztetések",
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "pollen_entity": "Pollen · forrás",
+          "notify_entities": "beállítások · forrás",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Nyelv",
+          "language": "Nyelv",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒",
+          "general_room_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Szoba · Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_home_trackers": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Jelenlét · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_attribute": "„Jelenlét · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_sleep_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Alvás · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_sleep_rooms_attribute": "„Alvás · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Pollen · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "ai_conversation_agent": "Válassz: conversation.* (Home Assistant · Alapértelmezett).",
+          "language": "Nyelv: Home Assistant (Alapértelmezett).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Érvénytelen · érzékelő · beállítások",
       "device_temperature_band_invalid": "Érvénytelen · Hőmérséklet · beállítások",
       "device_humidity_invalid": "Érvénytelen · Páratartalom · beállítások",
-      "device_runtime_invalid": "Érvénytelen · Teljesítmény · beállítások"
+      "device_runtime_invalid": "Érvénytelen · Teljesítmény · beállítások",
+      "invalid_setup_rooms": "Érvénytelen: Figyelendő helyiségek",
+      "invalid_room_source": "Érvénytelen: Szoba · forrás"
+    },
+    "abort": {
+      "setup_area_removed": "Érvénytelen: Figyelendő helyiségek",
+      "setup_changed": "beállítások ↻ Figyelendő helyiségek"
     }
   },
   "entity": {

@@ -38,7 +38,11 @@ def _single_value(readings: Any, metric: str) -> float | None:
 
 
 def _room_temperature(hass: Any, area_id: str, calibration: dict, max_age: float,
-                      explicit: str | None = None) -> tuple[float | None, str | None, str]:
+                      explicit: str | None = None, selected_entities=None) -> tuple[float | None, str | None, str]:
+    if selected_entities is not None:
+        from .room_sources import aggregate
+        value, status = aggregate(hass, selected_entities, area_id, "temperature", max_age)
+        return value, selected_entities[0] if len(selected_entities) == 1 else None, status
     configured = explicit or calibration.get("indoor_temperature_entity")
     if isinstance(configured, str) and configured:
         assigned = entity_area(hass, configured)
@@ -80,6 +84,7 @@ def build_environment(
     history: EnvironmentHistory, max_age_minutes: float,
     mold_calibrations: dict[str, Any] | None = None,
     room_profiles: dict[str, Any] | None = None,
+    source_selections: dict[str, Any] | None = None,
     outside_safe: bool = False, now: float | None = None,
 ) -> tuple[dict[str, dict], bool]:
     """Return scientific diagnostics for dashboard and whether history changed."""
@@ -113,8 +118,11 @@ def build_environment(
         profile = profiles.get(room.area_id, {})
         if not isinstance(profile, dict):
             profile = {}
+        from .room_sources import selected
+        temperature_inputs = selected({"room_sources": source_selections or {}}, room.area_id, "temperature")
         indoor_t, temp_source, temp_source_status = _room_temperature(
-            hass, room.area_id, calibrated, max_age_minutes, profile.get("temperature_entity")
+            hass, room.area_id, calibrated, max_age_minutes, profile.get("temperature_entity"),
+            selected_entities=temperature_inputs,
         )
         optional_data, optional_sources, _optional_tracked = extend_room_inputs(
             hass, room.area_id, profile, max_age=max_age_minutes,
@@ -166,6 +174,7 @@ def build_environment(
             "heat_per_full_air_exchange_wh_m3": heat_per_air_exchange_wh_m3(indoor_t, outdoor_t),
             "sources": {
                 "indoor_temperature_entity": temp_source,
+                "selected_temperature_entities": list(temperature_inputs) if temperature_inputs is not None else None,
                 "indoor_temperature_status": temp_source_status,
                 "outdoor_weather_entity": wx.entity_id if wx else None,
                 "outdoor_weather_status": "one_source" if wx else

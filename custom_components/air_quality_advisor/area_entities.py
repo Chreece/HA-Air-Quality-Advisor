@@ -121,9 +121,11 @@ def _mold_calibration_overview(settings: dict, area_id: str) -> dict | None:
 
 
 def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
+    from .room_sources import source_overview
+    selected_inputs = source_overview(manager, area_id)
     room = room_snapshot(manager, area_id)
     if room is None:
-        return {"area_id": area_id, "data_available": False,
+        return {"area_id": area_id, "data_available": False, "selected_inputs": selected_inputs,
                 **hierarchy_attributes(manager, area_id)}
 
     climate = room.get("environment", {}).get("climate_plan", {})
@@ -209,6 +211,7 @@ def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
         "monitoring_enabled": not room.get("climate_only", False),
         "assessment": assessment,
         "raw_inputs": raw_inputs,
+        "selected_inputs": selected_inputs,
         "window_inputs": window_inputs,
         "configured_controller_sources": sources,
         "calculated": calculated,

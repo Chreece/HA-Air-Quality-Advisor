@@ -143,6 +143,76 @@
           "max_age_minutes": "“⏱ · 열기 (min, ≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
           "indoor_mold": "“곰팡이 지표 · ≥ 70%”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
         }
+      },
+      "setup_rooms": {
+        "title": "모니터링할 방",
+        "description": "모니터링할 방 → 정보원 → 일반 설정",
+        "data": {
+          "areas": "모니터링할 방"
+        },
+        "data_description": {
+          "areas": "모니터링할 방. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_room_sources": {
+        "title": "방 · {area_name} · {room_index}/{room_count}",
+        "description": "방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+        "data": {
+          "windows": "창문",
+          "air_quality": "공기질 및 환경 센서",
+          "temperature": "온도",
+          "humidity": "습도",
+          "pressure": "압력 센서",
+          "climate_devices": "장치"
+        },
+        "data_description": {
+          "windows": "창문. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "air_quality": "공기질 및 환경 센서. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "temperature": "온도. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "humidity": "습도. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "pressure": "압력 센서. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "climate_devices": "장치. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_general": {
+        "title": "일반 설정",
+        "description": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다.",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "outdoor_sensors": "실외 공기질",
+          "weather_warnings": "기상 경보",
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "pollen_entity": "꽃가루 · 정보원",
+          "notify_entities": "설정 · 정보원",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 언어",
+          "language": "언어",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_room_occupancy_sensors": "“방 · 재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_home_trackers": "“집 · 재실 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_entity": "“재실 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값).",
+          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "방 · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "곰팡이 지표 · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "곰팡이 지표 · 🧊 °C ⚠",
-      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "잘못됨: 모니터링할 방",
+      "invalid_room_source": "잘못됨: 방 · 정보원"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — 이미 설정됨."
+      "already_configured": "Home Environment Manager — 이미 설정됨.",
+      "setup_area_removed": "잘못됨: 모니터링할 방",
+      "setup_changed": "설정 ↻ 모니터링할 방"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "“난방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
           "device_sleep_cool_c": "“냉방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다."
         }
+      },
+      "setup_rooms": {
+        "title": "모니터링할 방",
+        "description": "모니터링할 방 → 정보원 → 일반 설정",
+        "data": {
+          "areas": "모니터링할 방"
+        },
+        "data_description": {
+          "areas": "모니터링할 방. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_room_sources": {
+        "title": "방 · {area_name} · {room_index}/{room_count}",
+        "description": "방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+        "data": {
+          "windows": "창문",
+          "air_quality": "공기질 및 환경 센서",
+          "temperature": "온도",
+          "humidity": "습도",
+          "pressure": "압력 센서",
+          "climate_devices": "장치"
+        },
+        "data_description": {
+          "windows": "창문. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "air_quality": "공기질 및 환경 센서. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "temperature": "온도. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "humidity": "습도. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "pressure": "압력 센서. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "climate_devices": "장치. 방의 입력을 선택하세요. 기기 이름 — 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_general": {
+        "title": "일반 설정",
+        "description": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다.",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "outdoor_sensors": "실외 공기질",
+          "weather_warnings": "기상 경보",
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "pollen_entity": "꽃가루 · 정보원",
+          "notify_entities": "설정 · 정보원",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 언어",
+          "language": "언어",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_room_occupancy_sensors": "“방 · 재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_home_trackers": "“집 · 재실 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_entity": "“재실 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값).",
+          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "잘못됨 · 센서 · 설정",
       "device_temperature_band_invalid": "잘못됨 · 온도 · 설정",
       "device_humidity_invalid": "잘못됨 · 습도 · 설정",
-      "device_runtime_invalid": "잘못됨 · 전력 · 설정"
+      "device_runtime_invalid": "잘못됨 · 전력 · 설정",
+      "invalid_setup_rooms": "잘못됨: 모니터링할 방",
+      "invalid_room_source": "잘못됨: 방 · 정보원"
+    },
+    "abort": {
+      "setup_area_removed": "잘못됨: 모니터링할 방",
+      "setup_changed": "설정 ↻ 모니터링할 방"
     }
   },
   "entity": {

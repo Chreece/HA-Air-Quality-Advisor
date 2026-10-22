@@ -1,15 +1,15 @@
 {
-  "version": "0.6.0b13",
+  "version": "0.6.0b14",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Single per-room physical climate-device picker; device-owned operating controls; no implicit actuation",
+  "note": "Rooms first, six explicit per-room multi-selects, general settings last; stable and physical hardware unchanged",
   "validation_attempt": 0,
   "changes": [
-    "Remove separate Climate and Climate PID setup entry points",
-    "Group supported native endpoints by physical device in the room picker",
-    "Save inventory directly; keep optional sensor/hardware commissioning in the same path",
-    "Reconcile removed devices across legacy PID and native control with no permission inheritance",
-    "Retain room hubs, source identities, tuning and all 38 localized catalogs"
+    "One ordered initial/options flow ending with General settings",
+    "Per-room windows, air/environment, temperature, humidity, pressure and device selections with device/entity labels",
+    "Positive source filters govern monitoring and control feedback; explicit empty lists never rediscover inputs",
+    "Preserve Home/room/controller identities and operating entities; no implicit actuation permission",
+    "Final-submit-only persistence with concurrent change protection and all 38 language catalogs"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b13"
+  "release_branch": "beta/v0.6.0b14"
 }

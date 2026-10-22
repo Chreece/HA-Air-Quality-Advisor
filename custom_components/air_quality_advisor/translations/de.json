@@ -143,6 +143,76 @@
           "max_age_minutes": "Dies ist ein Entscheidungswert für „Höchstalter einer Außenmessung (Minuten)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
           "indoor_mold": "Dies ist ein Entscheidungswert für „Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
         }
+      },
+      "setup_rooms": {
+        "title": "Zu überwachende Räume",
+        "description": "Zu überwachende Räume → Quelle → Allgemeine Einstellungen",
+        "data": {
+          "areas": "Zu überwachende Räume"
+        },
+        "data_description": {
+          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Raum · {area_name} · {room_index}/{room_count}",
+        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+        "data": {
+          "windows": "Fenster",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren",
+          "temperature": "Temperatur",
+          "humidity": "Luftfeuchtigkeit",
+          "pressure": "Drucksensoren",
+          "climate_devices": "Geräte"
+        },
+        "data_description": {
+          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+        }
+      },
+      "setup_general": {
+        "title": "Allgemeine Einstellungen",
+        "description": "Gemeinsame Datenquellen und Benachrichtigungsausgänge auswählen. Speichern beendet die Einrichtung. Betriebsparameter bleiben auf den Haus- und Raumgeräten.",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "outdoor_sensors": "Außenluftsensoren",
+          "weather_warnings": "Wetterwarnsensoren (optional)",
+          "general_room_occupancy_sensors": "Raum · Belegung · Sensor",
+          "general_home_trackers": "Zuhause · Belegung · Geräte",
+          "general_occupied_rooms_entity": "Belegung · Raum · Quelle (state)",
+          "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
+          "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
+          "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "media_players": "Direkte TTS-Mediaplayer",
+          "tts_engine": "Direkte TTS-Engine",
+          "ai_conversation_agent": "Konversationsagent",
+          "language": "Sprache",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+        },
+        "data_description": {
+          "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
+          "outdoor_sensors": "Wähle echte Außensensoren. Messwerte über den Grenzwerten verhindern das Öffnen; unbekannte, nicht verfügbare oder veraltete Werte werden als fehlende Daten angezeigt.",
+          "weather_warnings": "Optional. Aktive oder nicht verfügbare ausgewählte Warnungen verhindern das Öffnen der Fenster.",
+          "general_room_occupancy_sensors": "Eine passende Home-Assistant-Quelle für „Raum · Belegung · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_home_trackers": "Eine passende Home-Assistant-Quelle für „Zuhause · Belegung · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_entity": "Eine passende Home-Assistant-Quelle für „Belegung · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_attribute": "„Belegung · Raum · Quelle (attribute)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "general_sleep_rooms_entity": "Eine passende Home-Assistant-Quelle für „Schlaf · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_sleep_rooms_attribute": "Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen.",
+          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
+          "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
+          "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
+          "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten.",
+          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Der Raumtemperatursensor liefert keinen gültigen aktuellen Messwert.",
       "missing_mold_outdoor_temperature": "Keine gewählte Wetterentität liefert eine aktuelle Außentemperatur.",
       "invalid_mold_surface_temperature": "Gib eine gültige gemessene Oberflächentemperatur in °C ein.",
-      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied."
+      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied.",
+      "invalid_setup_rooms": "Ungültig: Zu überwachende Räume",
+      "invalid_room_source": "Ungültig: Raum · Quelle"
     },
     "abort": {
-      "already_configured": "Home Environment Manager ist bereits eingerichtet."
+      "already_configured": "Home Environment Manager ist bereits eingerichtet.",
+      "setup_area_removed": "Ungültig: Zu überwachende Räume",
+      "setup_changed": "Einstellungen ↻ Zu überwachende Räume"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Sollwert für „Heizen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
           "device_sleep_cool_c": "Sollwert für „Kühlen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
         }
+      },
+      "setup_rooms": {
+        "title": "Zu überwachende Räume",
+        "description": "Zu überwachende Räume → Quelle → Allgemeine Einstellungen",
+        "data": {
+          "areas": "Zu überwachende Räume"
+        },
+        "data_description": {
+          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Raum · {area_name} · {room_index}/{room_count}",
+        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+        "data": {
+          "windows": "Fenster",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren",
+          "temperature": "Temperatur",
+          "humidity": "Luftfeuchtigkeit",
+          "pressure": "Drucksensoren",
+          "climate_devices": "Geräte"
+        },
+        "data_description": {
+          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+        }
+      },
+      "setup_general": {
+        "title": "Allgemeine Einstellungen",
+        "description": "Gemeinsame Datenquellen und Benachrichtigungsausgänge auswählen. Speichern beendet die Einrichtung. Betriebsparameter bleiben auf den Haus- und Raumgeräten.",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "outdoor_sensors": "Außenluftsensoren",
+          "weather_warnings": "Wetterwarnsensoren (optional)",
+          "general_room_occupancy_sensors": "Raum · Belegung · Sensor",
+          "general_home_trackers": "Zuhause · Belegung · Geräte",
+          "general_occupied_rooms_entity": "Belegung · Raum · Quelle (state)",
+          "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
+          "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
+          "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "media_players": "Direkte TTS-Mediaplayer",
+          "tts_engine": "Direkte TTS-Engine",
+          "ai_conversation_agent": "Konversationsagent",
+          "language": "Sprache",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+        },
+        "data_description": {
+          "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
+          "outdoor_sensors": "Wähle echte Außensensoren. Messwerte über den Grenzwerten verhindern das Öffnen; unbekannte, nicht verfügbare oder veraltete Werte werden als fehlende Daten angezeigt.",
+          "weather_warnings": "Optional. Aktive oder nicht verfügbare ausgewählte Warnungen verhindern das Öffnen der Fenster.",
+          "general_room_occupancy_sensors": "Eine passende Home-Assistant-Quelle für „Raum · Belegung · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_home_trackers": "Eine passende Home-Assistant-Quelle für „Zuhause · Belegung · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_entity": "Eine passende Home-Assistant-Quelle für „Belegung · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_attribute": "„Belegung · Raum · Quelle (attribute)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "general_sleep_rooms_entity": "Eine passende Home-Assistant-Quelle für „Schlaf · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_sleep_rooms_attribute": "Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen.",
+          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
+          "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
+          "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
+          "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten.",
+          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Ungültig · Sensor · Einstellungen",
       "device_temperature_band_invalid": "Ungültig · Temperatur · Einstellungen",
       "device_humidity_invalid": "Ungültig · Luftfeuchtigkeit · Einstellungen",
-      "device_runtime_invalid": "Ungültig · Leistung · Einstellungen"
+      "device_runtime_invalid": "Ungültig · Leistung · Einstellungen",
+      "invalid_setup_rooms": "Ungültig: Zu überwachende Räume",
+      "invalid_room_source": "Ungültig: Raum · Quelle"
+    },
+    "abort": {
+      "setup_area_removed": "Ungültig: Zu überwachende Räume",
+      "setup_changed": "Einstellungen ↻ Zu überwachende Räume"
     }
   },
   "entity": {

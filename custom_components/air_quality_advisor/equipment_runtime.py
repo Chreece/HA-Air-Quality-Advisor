@@ -411,11 +411,20 @@ class EquipmentRuntime:
         values = {}
         for metric, key in (("temperature", "temperature_entity"), ("humidity", "humidity_entity"),
                             ("co2", "co2_entity"), ("pm25", "pm25_entity")):
+            from .room_sources import selected, aggregate
+            group = metric if metric in ("temperature", "humidity") else "air_quality"
+            chosen = selected(self.manager.settings, spec.area_id, group)
+            if chosen is not None and group == "air_quality":
+                from .discovery import supported_metric
+                chosen = tuple(e for e in chosen if (s := self.hass.states.get(e)) is not None
+                               and supported_metric(self.hass, s, outdoor=False) == metric)
             source = dev.get(key) or room.get(key)
-            if metric == "temperature" and not source:
+            if chosen is not None and source not in chosen:
+                source = None
+            if metric == "temperature" and not source and chosen is None:
                 source = self.manager.settings.get("pid_rooms", {}).get(spec.area_id, {}).get("temperature_entity")
             excluded = self.manager.settings.get(CONF_EXCLUDED_INDOOR, {}).get(spec.area_id, [])
-            if not source and metric in ("temperature", "humidity"):
+            if not source and metric in ("temperature", "humidity") and chosen is None:
                 candidates = []
                 for observed in self.hass.states.async_all("sensor"):
                     if observed.entity_id in excluded or entity_area(self.hass, observed.entity_id) != spec.area_id:
@@ -437,8 +446,12 @@ class EquipmentRuntime:
                 else:
                     observed = reading(self.hass, source, 10, outdoor=False)
                     value = observed.value if observed.metric == metric else None
+            if source is None and chosen is not None:
+                value, _ = aggregate(self.hass, chosen, spec.area_id, group, 10)
             values[metric] = value
             values[key] = source
+            if chosen is not None:
+                values[metric + "_selected_entities"] = list(chosen)
         return values
 
     def _quiet_context(self, spec: model.ManagedDevice, cfg: dict, plan: dict) -> bool:

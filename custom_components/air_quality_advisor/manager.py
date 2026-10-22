@@ -141,6 +141,7 @@ class AirQualityManager:
         }
         selected_rooms = rooms(
             self.hass, monitored_areas, max_age,
+            source_selections=config.get("room_sources"),
             excluded_entities=(
                 selected_outdoor
                 | set(config.get(CONF_EXCLUDED_WINDOWS, []))
@@ -203,6 +204,10 @@ class AirQualityManager:
                if item.metric != "mold"
                and not (item.details or {}).get("fallback_for_mold")}
         )
+        from .room_sources import selected, GROUPS
+        for area in monitored_areas:
+            for group in GROUPS:
+                self._tracked.update(selected(config, area, group) or ())
         environment_global = config.get(CONF_ENVIRONMENT_GLOBAL, {})
         if not isinstance(environment_global, dict):
             environment_global = {}
@@ -232,6 +237,7 @@ class AirQualityManager:
             history=self._environment_history, max_age_minutes=max_age,
             mold_calibrations=config.get(CONF_MOLD_ROOMS, {}),
             room_profiles=environment_rooms,
+            source_selections=config.get("room_sources"),
             outside_safe=base_plan.outdoor_safe,
         )
         environment["__outside__"] = {"pollen": pollen}
@@ -255,6 +261,7 @@ class AirQualityManager:
                          if isinstance(area,str) and area not in monitored_areas]
             climate_only=rooms(
                 self.hass,extra_areas,max_age,
+                source_selections=config.get("room_sources"),
                 excluded_entities=(selected_outdoor |
                                    set(config.get(CONF_EXCLUDED_WINDOWS,[]))),
             ) if extra_areas else ()

@@ -28,6 +28,7 @@ from .const import (
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
     CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
+from .room_setup import RoomSetupMixin
 from .compact_options import CompactOptionsMixin
 from .mold import calibration_factor, estimate_mold_for_room
 from .climate_pid import DEFAULT_PID, ClimatePidCoordinator
@@ -87,7 +88,7 @@ def _real_number(low: float, high: float, unit: str | None = None) -> selector.N
     ))
 
 
-class _FlowMixin(CompactOptionsMixin):
+class _FlowMixin(RoomSetupMixin, CompactOptionsMixin):
     """Use the same pages in initial setup and reconfiguration."""
 
     _values: dict[str, Any]
@@ -1816,7 +1817,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
             return self.async_abort(reason="already_configured")
         self._editing = False
         self._values = {}
-        return await self.async_step_areas()
+        return await self.async_step_setup_rooms()
 
     async def _finish(self) -> ConfigFlowResult:
         # A stale, unfinished setup flow must not prevent a fresh attempt
@@ -1842,13 +1843,8 @@ class AirQualityOptionsFlow(_FlowMixin, OptionsFlowWithReload):
         self._menu_mode = True
         self._values = {**self.config_entry.data, **self.config_entry.options}
         self._indoor_index = 0
-        return self.async_show_menu(
-            step_id="init",
-            menu_options=[
-                "outside_data", "general_settings", "area_settings",
-                "delivery",
-            ],
-        )
+        self._start_room_setup()
+        return await self.async_step_setup_rooms()
 
     async def _finish(self) -> ConfigFlowResult:
         return self.async_create_entry(data=self._values)

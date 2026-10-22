@@ -143,6 +143,76 @@
           "max_age_minutes": "“⏱ · खोलें (min, ≤)” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।",
           "indoor_mold": "“फफूंद संकेतक · ≥ 70%” के लिए निर्णय सीमा। यह सुझाव बदलती है, चिकित्सा सीमा नहीं है।"
         }
+      },
+      "setup_rooms": {
+        "title": "निगरानी के कमरे",
+        "description": "निगरानी के कमरे → स्रोत → सामान्य सेटिंग",
+        "data": {
+          "areas": "निगरानी के कमरे"
+        },
+        "data_description": {
+          "areas": "निगरानी के कमरे. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।"
+        }
+      },
+      "setup_room_sources": {
+        "title": "कमरा · {area_name} · {room_index}/{room_count}",
+        "description": "कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+        "data": {
+          "windows": "खिड़कियाँ",
+          "air_quality": "वायु गुणवत्ता और पर्यावरण सेंसर",
+          "temperature": "तापमान",
+          "humidity": "आर्द्रता",
+          "pressure": "दबाव सेंसर",
+          "climate_devices": "उपकरण"
+        },
+        "data_description": {
+          "windows": "खिड़कियाँ. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "air_quality": "वायु गुणवत्ता और पर्यावरण सेंसर. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "temperature": "तापमान. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "humidity": "आर्द्रता. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "pressure": "दबाव सेंसर. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "climate_devices": "उपकरण. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।"
+        }
+      },
+      "setup_general": {
+        "title": "सामान्य सेटिंग",
+        "description": "साझा स्रोत और सूचना आउटपुट चुनें। सहेजना सेटअप पूरा करता है। संचालन सेटिंग घर और कमरे के उपकरणों पर रहती हैं।",
+        "data": {
+          "weather_entities": "मौसम और चेतावनियाँ",
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता",
+          "weather_warnings": "मौसम चेतावनियाँ",
+          "general_room_occupancy_sensors": "कमरा · उपस्थिति · सेंसर",
+          "general_home_trackers": "घर · उपस्थिति · उपकरण",
+          "general_occupied_rooms_entity": "उपस्थिति · कमरा · स्रोत (state)",
+          "general_occupied_rooms_attribute": "उपस्थिति · कमरा · स्रोत (attribute)",
+          "general_sleep_rooms_entity": "नींद · कमरा · स्रोत (state)",
+          "general_sleep_rooms_attribute": "नींद · कमरा · स्रोत (attribute)",
+          "pollen_entity": "पराग · स्रोत",
+          "notify_entities": "सेटिंग · स्रोत",
+          "media_players": "सेटिंग · स्रोत · MEDIA_PLAYERS",
+          "tts_engine": "सेटिंग · स्रोत · TTS_ENGINE",
+          "ai_conversation_agent": "AI · भाषा",
+          "language": "भाषा",
+          "use_mold_indicator": "फफूंद संकेतक · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "चुनें: मौसम और चेतावनियाँ · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "चुनें: बाहरी वायु गुणवत्ता · AQI, CO₂, PM2.5, PM10, VOC. उपलब्ध नहीं: ⚠",
+          "weather_warnings": "मौसम और चेतावनियाँ · ⚠ (उपलब्ध नहीं) → 🪟🔒",
+          "general_room_occupancy_sensors": "“कमरा · उपस्थिति · सेंसर” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_home_trackers": "“घर · उपस्थिति · उपकरण” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_occupied_rooms_entity": "“उपस्थिति · कमरा · स्रोत (state)” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_occupied_rooms_attribute": "“उपस्थिति · कमरा · स्रोत (attribute)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "general_sleep_rooms_entity": "“नींद · कमरा · स्रोत (state)” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_sleep_rooms_attribute": "“नींद · कमरा · स्रोत (attribute)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_entity": "“पराग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "notify_entities": "चुनें: notify.* · सेटिंग · स्रोत. “सेटिंग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "media_players": "चुनें: media_player.* · सेटिंग · स्रोत · MEDIA_PLAYERS.",
+          "tts_engine": "चुनें: tts.* · सेटिंग · स्रोत · TTS_ENGINE.",
+          "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट).",
+          "language": "“भाषा” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "use_mold_indicator": "🧱 फफूंद संकेतक · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "कमरे · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "फफूंद संकेतक · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "फफूंद संकेतक · 🧊 °C ⚠",
-      "invalid_mold_calibration": "फफूंद संकेतक · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "फफूंद संकेतक · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "अमान्य: निगरानी के कमरे",
+      "invalid_room_source": "अमान्य: कमरा · स्रोत"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — पहले से कॉन्फ़िगर है."
+      "already_configured": "Home Environment Manager — पहले से कॉन्फ़िगर है.",
+      "setup_area_removed": "अमान्य: निगरानी के कमरे",
+      "setup_changed": "सेटिंग ↻ निगरानी के कमरे"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "“हीटिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।",
           "device_sleep_cool_c": "“कूलिंग · नींद (°C)” लक्ष्य केवल उपस्थिति या नींद की पुष्टि पर लागू है। अज्ञात का अर्थ खाली कमरा नहीं है।"
         }
+      },
+      "setup_rooms": {
+        "title": "निगरानी के कमरे",
+        "description": "निगरानी के कमरे → स्रोत → सामान्य सेटिंग",
+        "data": {
+          "areas": "निगरानी के कमरे"
+        },
+        "data_description": {
+          "areas": "निगरानी के कमरे. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।"
+        }
+      },
+      "setup_room_sources": {
+        "title": "कमरा · {area_name} · {room_index}/{room_count}",
+        "description": "कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+        "data": {
+          "windows": "खिड़कियाँ",
+          "air_quality": "वायु गुणवत्ता और पर्यावरण सेंसर",
+          "temperature": "तापमान",
+          "humidity": "आर्द्रता",
+          "pressure": "दबाव सेंसर",
+          "climate_devices": "उपकरण"
+        },
+        "data_description": {
+          "windows": "खिड़कियाँ. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "air_quality": "वायु गुणवत्ता और पर्यावरण सेंसर. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "temperature": "तापमान. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "humidity": "आर्द्रता. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "pressure": "दबाव सेंसर. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।",
+          "climate_devices": "उपकरण. कमरे के इनपुट चुनें: उपकरण का नाम — एंटिटी का नाम। खाली समूह उपयोग नहीं होते और स्वचालित खोज या नियंत्रण चालू नहीं करते।"
+        }
+      },
+      "setup_general": {
+        "title": "सामान्य सेटिंग",
+        "description": "साझा स्रोत और सूचना आउटपुट चुनें। सहेजना सेटअप पूरा करता है। संचालन सेटिंग घर और कमरे के उपकरणों पर रहती हैं।",
+        "data": {
+          "weather_entities": "मौसम और चेतावनियाँ",
+          "outdoor_sensors": "बाहरी वायु गुणवत्ता",
+          "weather_warnings": "मौसम चेतावनियाँ",
+          "general_room_occupancy_sensors": "कमरा · उपस्थिति · सेंसर",
+          "general_home_trackers": "घर · उपस्थिति · उपकरण",
+          "general_occupied_rooms_entity": "उपस्थिति · कमरा · स्रोत (state)",
+          "general_occupied_rooms_attribute": "उपस्थिति · कमरा · स्रोत (attribute)",
+          "general_sleep_rooms_entity": "नींद · कमरा · स्रोत (state)",
+          "general_sleep_rooms_attribute": "नींद · कमरा · स्रोत (attribute)",
+          "pollen_entity": "पराग · स्रोत",
+          "notify_entities": "सेटिंग · स्रोत",
+          "media_players": "सेटिंग · स्रोत · MEDIA_PLAYERS",
+          "tts_engine": "सेटिंग · स्रोत · TTS_ENGINE",
+          "ai_conversation_agent": "AI · भाषा",
+          "language": "भाषा",
+          "use_mold_indicator": "फफूंद संकेतक · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "चुनें: मौसम और चेतावनियाँ · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "चुनें: बाहरी वायु गुणवत्ता · AQI, CO₂, PM2.5, PM10, VOC. उपलब्ध नहीं: ⚠",
+          "weather_warnings": "मौसम और चेतावनियाँ · ⚠ (उपलब्ध नहीं) → 🪟🔒",
+          "general_room_occupancy_sensors": "“कमरा · उपस्थिति · सेंसर” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_home_trackers": "“घर · उपस्थिति · उपकरण” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_occupied_rooms_entity": "“उपस्थिति · कमरा · स्रोत (state)” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_occupied_rooms_attribute": "“उपस्थिति · कमरा · स्रोत (attribute)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "general_sleep_rooms_entity": "“नींद · कमरा · स्रोत (state)” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "general_sleep_rooms_attribute": "“नींद · कमरा · स्रोत (attribute)” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "pollen_entity": "“पराग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "notify_entities": "चुनें: notify.* · सेटिंग · स्रोत. “सेटिंग · स्रोत” के लिए वास्तविक Home Assistant स्रोत चुनें। गायब या पुराना डेटा संबंधित कार्रवाई रोकता है।",
+          "media_players": "चुनें: media_player.* · सेटिंग · स्रोत · MEDIA_PLAYERS.",
+          "tts_engine": "चुनें: tts.* · सेटिंग · स्रोत · TTS_ENGINE.",
+          "ai_conversation_agent": "चुनें: conversation.* (Home Assistant · डिफ़ॉल्ट).",
+          "language": "“भाषा” केवल चुने कमरे के लिए सेट करें। अमान्य डेटा कार्रवाई रोकता है।",
+          "use_mold_indicator": "🧱 फफूंद संकेतक · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "अमान्य · सेंसर · सेटिंग",
       "device_temperature_band_invalid": "अमान्य · तापमान · सेटिंग",
       "device_humidity_invalid": "अमान्य · आर्द्रता · सेटिंग",
-      "device_runtime_invalid": "अमान्य · शक्ति · सेटिंग"
+      "device_runtime_invalid": "अमान्य · शक्ति · सेटिंग",
+      "invalid_setup_rooms": "अमान्य: निगरानी के कमरे",
+      "invalid_room_source": "अमान्य: कमरा · स्रोत"
+    },
+    "abort": {
+      "setup_area_removed": "अमान्य: निगरानी के कमरे",
+      "setup_changed": "सेटिंग ↻ निगरानी के कमरे"
     }
   },
   "entity": {

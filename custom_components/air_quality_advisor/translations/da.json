@@ -143,6 +143,76 @@
           "max_age_minutes": "Beslutningsgrænse for »⏱ · Åbn (min, ≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
           "indoor_mold": "Beslutningsgrænse for »Skimmelindikator · ≥ 70%«. Den påvirker råd, men er ikke en medicinsk grænse."
         }
+      },
+      "setup_rooms": {
+        "title": "Rum der skal overvåges",
+        "description": "Rum der skal overvåges → kilde → Generelle indstillinger",
+        "data": {
+          "areas": "Rum der skal overvåges"
+        },
+        "data_description": {
+          "areas": "Rum der skal overvåges. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+        "data": {
+          "windows": "Vinduer",
+          "air_quality": "Luftkvalitets- og miljøsensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfugtighed",
+          "pressure": "Tryksensorer",
+          "climate_devices": "Enheder"
+        },
+        "data_description": {
+          "windows": "Vinduer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "air_quality": "Luftkvalitets- og miljøsensorer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "temperature": "Temperatur. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "humidity": "Luftfugtighed. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "pressure": "Tryksensorer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "climate_devices": "Enheder. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_general": {
+        "title": "Generelle indstillinger",
+        "description": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder.",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "outdoor_sensors": "Udendørs luftkvalitet",
+          "weather_warnings": "Vejradvarsler",
+          "general_room_occupancy_sensors": "Rum · Tilstedeværelse · sensor",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheder",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rum · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rum · kilde (attribute)",
+          "general_sleep_rooms_entity": "Søvn · Rum · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rum · kilde (attribute)",
+          "pollen_entity": "Pollen · kilde",
+          "notify_entities": "indstillinger · kilde",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Sprog",
+          "language": "Sprog",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Rum · Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "general_home_trackers": "Vælg en reel Home Assistant-kilde til »Hjem · Tilstedeværelse · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_entity": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_attribute": "Indstil »Tilstedeværelse · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_sleep_rooms_entity": "Vælg en reel Home Assistant-kilde til »Søvn · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_sleep_rooms_attribute": "Indstil »Søvn · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_entity": "Vælg en reel Home Assistant-kilde til »Pollen · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "ai_conversation_agent": "Vælg: conversation.* (Home Assistant · Standard).",
+          "language": "Indstil »Sprog« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "Skimmelindikator · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "Skimmelindikator · 🧊 °C ⚠",
-      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Ugyldig: Rum der skal overvåges",
+      "invalid_room_source": "Ugyldig: Rum · kilde"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — allerede konfigureret."
+      "already_configured": "Home Environment Manager — allerede konfigureret.",
+      "setup_area_removed": "Ugyldig: Rum der skal overvåges",
+      "setup_changed": "indstillinger ↻ Rum der skal overvåges"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "Mål for »Opvarmning · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
           "device_sleep_cool_c": "Mål for »Køling · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum."
         }
+      },
+      "setup_rooms": {
+        "title": "Rum der skal overvåges",
+        "description": "Rum der skal overvåges → kilde → Generelle indstillinger",
+        "data": {
+          "areas": "Rum der skal overvåges"
+        },
+        "data_description": {
+          "areas": "Rum der skal overvåges. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+        "data": {
+          "windows": "Vinduer",
+          "air_quality": "Luftkvalitets- og miljøsensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfugtighed",
+          "pressure": "Tryksensorer",
+          "climate_devices": "Enheder"
+        },
+        "data_description": {
+          "windows": "Vinduer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "air_quality": "Luftkvalitets- og miljøsensorer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "temperature": "Temperatur. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "humidity": "Luftfugtighed. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "pressure": "Tryksensorer. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "climate_devices": "Enheder. Vælg rummets indgange: enhedsnavn — entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_general": {
+        "title": "Generelle indstillinger",
+        "description": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder.",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "outdoor_sensors": "Udendørs luftkvalitet",
+          "weather_warnings": "Vejradvarsler",
+          "general_room_occupancy_sensors": "Rum · Tilstedeværelse · sensor",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheder",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rum · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rum · kilde (attribute)",
+          "general_sleep_rooms_entity": "Søvn · Rum · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rum · kilde (attribute)",
+          "pollen_entity": "Pollen · kilde",
+          "notify_entities": "indstillinger · kilde",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Sprog",
+          "language": "Sprog",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Rum · Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "general_home_trackers": "Vælg en reel Home Assistant-kilde til »Hjem · Tilstedeværelse · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_entity": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_attribute": "Indstil »Tilstedeværelse · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_sleep_rooms_entity": "Vælg en reel Home Assistant-kilde til »Søvn · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_sleep_rooms_attribute": "Indstil »Søvn · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_entity": "Vælg en reel Home Assistant-kilde til »Pollen · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "ai_conversation_agent": "Vælg: conversation.* (Home Assistant · Standard).",
+          "language": "Indstil »Sprog« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "Ugyldig · sensor · indstillinger",
       "device_temperature_band_invalid": "Ugyldig · Temperatur · indstillinger",
       "device_humidity_invalid": "Ugyldig · Luftfugtighed · indstillinger",
-      "device_runtime_invalid": "Ugyldig · Effekt · indstillinger"
+      "device_runtime_invalid": "Ugyldig · Effekt · indstillinger",
+      "invalid_setup_rooms": "Ugyldig: Rum der skal overvåges",
+      "invalid_room_source": "Ugyldig: Rum · kilde"
+    },
+    "abort": {
+      "setup_area_removed": "Ugyldig: Rum der skal overvåges",
+      "setup_changed": "indstillinger ↻ Rum der skal overvåges"
     }
   },
   "entity": {

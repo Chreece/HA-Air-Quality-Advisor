@@ -143,6 +143,76 @@
           "max_age_minutes": "「⏱ · 開ける (min, ≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
           "indoor_mold": "「カビ指標 · ≥ 70%」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
         }
+      },
+      "setup_rooms": {
+        "title": "監視する部屋",
+        "description": "監視する部屋 → 情報源 → 一般 設定",
+        "data": {
+          "areas": "監視する部屋"
+        },
+        "data_description": {
+          "areas": "監視する部屋. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "部屋 · {area_name} · {room_index}/{room_count}",
+        "description": "部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+        "data": {
+          "windows": "窓",
+          "air_quality": "空気質・環境センサー",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "気圧センサー",
+          "climate_devices": "デバイス"
+        },
+        "data_description": {
+          "windows": "窓. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "air_quality": "空気質・環境センサー. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "temperature": "温度. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "humidity": "湿度. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "pressure": "気圧センサー. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "climate_devices": "デバイス. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。",
+        "data": {
+          "weather_entities": "天気と警報",
+          "outdoor_sensors": "屋外の空気質",
+          "weather_warnings": "気象警報",
+          "general_room_occupancy_sensors": "部屋 · 在室 · センサー",
+          "general_home_trackers": "自宅 · 在室 · デバイス",
+          "general_occupied_rooms_entity": "在室 · 部屋 · 情報源 (state)",
+          "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
+          "pollen_entity": "花粉 · 情報源",
+          "notify_entities": "設定 · 情報源",
+          "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 情報源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 言語",
+          "language": "言語",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠",
+          "weather_warnings": "「気象警報」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_room_occupancy_sensors": "「部屋 · 在室 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_home_trackers": "「自宅 · 在室 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_entity": "「在室 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_attribute": "「在室 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_sleep_rooms_entity": "「睡眠 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_sleep_rooms_attribute": "「睡眠 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定).",
+          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
       }
     },
     "error": {
@@ -167,10 +237,14 @@
       "missing_mold_indoor_temperature": "部屋 · 🌡️ ∅",
       "missing_mold_outdoor_temperature": "カビ指標 · 🌤️ 🌡️ ∅",
       "invalid_mold_surface_temperature": "カビ指標 · 🧊 °C ⚠",
-      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠"
+      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "無効: 監視する部屋",
+      "invalid_room_source": "無効: 部屋 · 情報源"
     },
     "abort": {
-      "already_configured": "Home Environment Manager — 設定済みです."
+      "already_configured": "Home Environment Manager — 設定済みです.",
+      "setup_area_removed": "無効: 監視する部屋",
+      "setup_changed": "設定 ↻ 監視する部屋"
     }
   },
   "options": {
@@ -1017,6 +1091,76 @@
           "device_sleep_heat_c": "「暖房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
           "device_sleep_cool_c": "「冷房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。"
         }
+      },
+      "setup_rooms": {
+        "title": "監視する部屋",
+        "description": "監視する部屋 → 情報源 → 一般 設定",
+        "data": {
+          "areas": "監視する部屋"
+        },
+        "data_description": {
+          "areas": "監視する部屋. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "部屋 · {area_name} · {room_index}/{room_count}",
+        "description": "部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+        "data": {
+          "windows": "窓",
+          "air_quality": "空気質・環境センサー",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "気圧センサー",
+          "climate_devices": "デバイス"
+        },
+        "data_description": {
+          "windows": "窓. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "air_quality": "空気質・環境センサー. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "temperature": "温度. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "humidity": "湿度. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "pressure": "気圧センサー. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。",
+          "climate_devices": "デバイス. 部屋の入力を選択します。機器名 — エンティティ名で表示されます。空のグループは使用されず、自動検出や自動制御を有効にしません。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。",
+        "data": {
+          "weather_entities": "天気と警報",
+          "outdoor_sensors": "屋外の空気質",
+          "weather_warnings": "気象警報",
+          "general_room_occupancy_sensors": "部屋 · 在室 · センサー",
+          "general_home_trackers": "自宅 · 在室 · デバイス",
+          "general_occupied_rooms_entity": "在室 · 部屋 · 情報源 (state)",
+          "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
+          "pollen_entity": "花粉 · 情報源",
+          "notify_entities": "設定 · 情報源",
+          "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 情報源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 言語",
+          "language": "言語",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠",
+          "weather_warnings": "「気象警報」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_room_occupancy_sensors": "「部屋 · 在室 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_home_trackers": "「自宅 · 在室 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_entity": "「在室 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_attribute": "「在室 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_sleep_rooms_entity": "「睡眠 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_sleep_rooms_attribute": "「睡眠 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定).",
+          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
       }
     },
     "error": {
@@ -1083,7 +1227,13 @@
       "device_air_sensor_required": "無効 · センサー · 設定",
       "device_temperature_band_invalid": "無効 · 温度 · 設定",
       "device_humidity_invalid": "無効 · 湿度 · 設定",
-      "device_runtime_invalid": "無効 · 電力 · 設定"
+      "device_runtime_invalid": "無効 · 電力 · 設定",
+      "invalid_setup_rooms": "無効: 監視する部屋",
+      "invalid_room_source": "無効: 部屋 · 情報源"
+    },
+    "abort": {
+      "setup_area_removed": "無効: 監視する部屋",
+      "setup_changed": "設定 ↻ 監視する部屋"
     }
   },
   "entity": {
