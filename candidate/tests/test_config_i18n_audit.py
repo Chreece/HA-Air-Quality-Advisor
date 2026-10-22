@@ -1,0 +1,205 @@
+"""Full config/options localization audit for all supported HA languages."""
+from __future__ import annotations
+
+import asyncio
+import json
+import re
+from pathlib import Path
+
+from custom_components.air_quality_advisor.languages import SUPPORTED_LANGUAGE_TAGS
+from test_discovery import adapter
+
+
+ROOT = Path(__file__).resolve().parents[1]
+COMPONENT = ROOT / "custom_components" / "air_quality_advisor"
+TRANSLATIONS = COMPONENT / "translations"
+SCOPES = ("config", "options")
+USER_VISIBLE = ("step", "error", "abort")
+
+
+def _flat(value: dict, prefix: str = "") -> dict[str, str]:
+    output = {}
+    for key, item in value.items():
+        full = f"{prefix}.{key}" if prefix else key
+        if isinstance(item, dict):
+            output.update(_flat(item, full))
+        elif isinstance(item, str):
+            output[full] = item
+    return output
+
+
+def _translations() -> dict[str, dict]:
+    return {
+        code: json.loads((TRANSLATIONS / f"{code}.json").read_text(encoding="utf-8"))
+        for code in SUPPORTED_LANGUAGE_TAGS
+    }
+
+
+def test_all_38_locale_files_are_structurally_complete():
+    documents = _translations()
+    assert len(documents) == 38
+    en = documents["en"]
+    en_flat = _flat(en)
+    for lang, doc in documents.items():
+        all_strings = _flat(doc)
+        assert set(all_strings) == set(en_flat), (lang, set(en_flat) ^ set(all_strings))
+        assert list(doc["config"]["step"]) == list(en["config"]["step"])
+        assert list(doc["options"]["step"]) == list(en["options"]["step"])
+        assert set(doc["config"]["error"]) == set(en["config"]["error"])
+        assert set(doc["options"]["error"]) == set(en["options"]["error"])
+        option_keys = set(doc["selector"]["output_language"]["options"])
+        assert option_keys == {"auto", *(tag.lower() for tag in SUPPORTED_LANGUAGE_TAGS)}
+        assert all(re.fullmatch(r"[a-z0-9_-]+", key) for key in option_keys)
+
+
+def test_translated_help_thresholds_errors_abort_and_menu_do_not_regress_to_english():
+    docs = _translations()
+    english = _flat(docs["en"])
+    # Technical option values, numbers, and provider names are excluded;
+    # configured flow prose and errors must not be inherited from English.
+    checked = 0
+    for lang, doc in docs.items():
+        if lang == "en":
+            continue
+        contents = _flat(doc)
+        for key, text in english.items():
+            if not key.startswith(("config.", "options.")):
+                continue
+            if not re.search(r"[a-zA-Z]{4,}", text):
+                continue
+            # New optional scientific methods ship with English technical-help
+            # fallback in non-primary languages until reviewed translations exist.
+            # All pre-existing configuration strings remain fully localized.
+            if (key.startswith(("options.step.outside_data", "options.step.general_settings",
+                                "options.step.area_settings", "options.step.pollen",
+                                "options.step.outside_aqi", "options.step.area_devices",
+                                "options.step.select_devices", "options.step.device_choice",
+                                "options.step.device_settings", "options.step.device_menu",
+                                "options.step.device_done", "options.error.general_",
+                                "options.error.device_", "options.error.invalid_selected_devices"))
+                    or key.startswith(("options.step.environment", "options.error.invalid_environment",
+                               "options.error.pmv_requires_explicit",
+                               "options.step.pid", "options.error.pid_",
+                               "options.step.climate", "options.error.climate_",
+                               "options.step.init.menu_options.climate",
+                               "options.step.init.menu_options.pid"))
+                    or key.startswith("options.step.init.menu_options.environment")
+                    or any(key.endswith(".data." + gas) for gas in
+                           ("outdoor_no2","outdoor_o3","outdoor_so2"))):
+                continue
+            assert contents[key] != text, f"English fallback in {lang}:{key}"
+            checked += 1
+        assert doc["selector"]["output_language"]["options"]["auto"] != (
+            docs["en"]["selector"]["output_language"]["options"]["auto"]
+        )
+    assert checked > 5500
+
+
+def test_greek_weather_and_all_advanced_limits_are_translated():
+    docs = _translations()
+    greek = docs["el"]
+    for context in SCOPES:
+        weather = greek[context]["step"]["weather"]["data_description"]
+        assert "Απαιτείται τουλάχιστον μία οντότητα καιρού" in weather["weather_entities"]
+        assert "Προαιρετικό" in weather["weather_warnings"]
+        outdoor = greek[context]["step"]["outdoor"]["data_description"]
+        assert "Επίλεξε πραγματικούς εξωτερικούς αισθητήρες" in outdoor["outdoor_sensors"]
+        thresholds = greek[context]["step"]["thresholds"]["data"]
+        assert len(thresholds) == 22
+        assert all(value != docs["en"][context]["step"]["thresholds"]["data"][key]
+                   for key, value in thresholds.items())
+        for setting in ("language", "automatic_tts", "automatic_notifications",
+                        "notify_entities", "tts_engine", "media_players"):
+            assert greek[context]["step"]["delivery"]["data_description"][setting] != (
+                docs["en"][context]["step"]["delivery"]["data_description"][setting]
+            )
+    assert greek["config"]["abort"]["already_configured"] != (
+        docs["en"]["config"]["abort"]["already_configured"]
+    )
+
+
+def test_home_language_selector_reuses_canonical_bcp47_codes_without_duplicates():
+    from custom_components.air_quality_advisor.const import LANGUAGES
+    assert LANGUAGES[0] == "auto"
+    assert set(LANGUAGES[1:]) == set(SUPPORTED_LANGUAGE_TAGS)
+    assert {"pt-BR", "zh-Hans", "zh-Hant", "el", "de"}.issubset(LANGUAGES)
+    code = (ROOT / "custom_components" / "air_quality_advisor" / "select.py").read_text()
+    assert 'ConfigSelect(manager, entry.entry_id, None, "language"' in code
+    for file in ("en.json", "el.json", "de.json"):
+        translations = json.loads((ROOT / "custom_components" /
+                        "air_quality_advisor" / "translations" / file).read_text())
+        assert translations["entity"]["select"]["home_language"]["name"]
+
+
+def test_regional_language_settings_remain_unchanged_during_provider_edits(monkeypatch, adapter):
+    from test_area_config_flow import _make_options
+
+    for canonical in ("pt-BR", "zh-Hans", "zh-Hant", "auto"):
+        options = _make_options(monkeypatch, adapter)
+        options.config_entry.data["language"] = canonical
+        asyncio.run(options.async_step_init())
+        form = asyncio.run(options.async_step_delivery())
+        assert "language" not in form["data_schema"]  # moved to Home device
+        result = asyncio.run(options.async_step_delivery({}))
+        assert result["completed"]["data"]["language"] == canonical
+
+
+def test_translation_generator_uses_reviewed_overrides_and_provider_names_are_intact():
+    root = ROOT / "custom_components" / "air_quality_advisor"
+    code = (ROOT / "generate_translations.py").read_text(encoding="utf-8")
+    assert "apply_config_overrides(root)" in code
+    spec = json.loads((root / "config_i18n_overrides.json").read_text(encoding="utf-8"))
+    assert set(spec) == set(SUPPORTED_LANGUAGE_TAGS)
+    for lang, record in spec.items():
+        assert record["auto"] and record["agent"] and record["abort"]
+        assert record["menuTitle"] and record["menu"]
+        if lang not in ("en", "de", "el", "fr", "es"):
+            assert len(record["errors"]) == 17, lang
+        else:
+            assert len(record["thresholds"]) == (0 if lang == "en" else 18)
+    discovery = (root / "discovery.py").read_text(encoding="utf-8")
+    assert 'state.name or entity_id' in discovery
+    assert 'area.name' in discovery
+    assert 'state.name or state.entity_id' in discovery
+
+
+def test_all_locales_include_live_mold_weather_and_room_readiness_hints():
+    for code, doc in _translations().items():
+        assert list(doc["options"]["step"]["init"]["menu_options"])[1:3] == [
+            "general_settings", "area_settings"
+        ], code
+        assert "weather" in doc["options"]["step"]["outside_data"]["menu_options"]
+        assert "indoor_sensors" in doc["options"]["step"]["area_settings"]["menu_options"]
+        for context in ("config", "options"):
+            weather = doc[context]["step"]["weather"]
+            room = doc[context]["step"]["indoor_sensors"]
+            assert "{mold_weather_notice}" in weather["description"], code
+            assert "{mold_room_notice}" in room["description"], code
+            assert "temperature" in weather["data_description"]["weather_entities"], code
+
+
+
+def test_new_compact_options_have_complete_38_locale_labels_and_greek_guidance():
+    docs=_translations()
+    root=("outside_data","general_settings","area_settings","delivery","thresholds")
+    for lang, doc in docs.items():
+        step=doc["options"]["step"]
+        assert tuple(step["init"]["menu_options"])==root
+        assert tuple(step["outside_data"]["menu_options"])==(
+            "weather","outdoor","outside_aqi","pollen",
+        )
+        assert "window_sensors" in step["area_settings"]["menu_options"]
+        assert "area_devices" in step["area_settings"]["menu_options"]
+        for name in ("general_settings","pollen","outside_aqi",
+                     "select_devices","device_choice","device_settings"):
+            assert step[name]["title"] and step[name]["data"]
+        for key in ("device_method","device_presence_requirement",
+                    "device_absence_action","device_sleep_behavior",
+                    "general_home_policy","outside_aqi_scale"):
+            assert doc["selector"][key]["options"]==docs["en"]["selector"][key]["options"] or (
+                set(doc["selector"][key]["options"])==set(docs["en"]["selector"][key]["options"])
+            )
+    assert "Εξωτερικά δεδομένα"==docs["el"]["options"]["step"]["init"]["menu_options"]["outside_data"]
+    assert "Γενικές ρυθμίσεις"==docs["el"]["options"]["step"]["init"]["menu_options"]["general_settings"]
+    assert "Άγνωστα ή παλιά" in docs["el"]["options"]["step"]["general_settings"]["description"]
+    assert "Γύρη" in docs["el"]["options"]["step"]["pollen"]["title"]

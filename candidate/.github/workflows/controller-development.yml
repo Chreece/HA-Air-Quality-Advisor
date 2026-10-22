@@ -1,0 +1,68 @@
+name: Controller development verification
+on:
+  push:
+    branches: ['feat/device-climate-controllers-*']
+permissions:
+  contents: read
+concurrency:
+  group: controller-development-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Regression tests and deterministic translations
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests
+          python generate_translations.py
+          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend validation
+        run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+  source:
+    needs: [test, hassfest, hacs]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive validated committed source only
+        run: git archive --format=tar.gz -o source.tar.gz HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: controller-source
+          path: source.tar.gz
+          retention-days: 3

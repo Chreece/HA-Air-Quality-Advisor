@@ -1,0 +1,1558 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Bereiche",
+        "description": "Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.",
+        "data": {
+          "areas": "Zu überwachende Bereiche",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+        },
+        "data_description": {
+          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+        }
+      },
+      "window_sensors": {
+        "title": "Fenstersensoren ausschließen",
+        "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
+        "data": {
+          "excluded_window_entities": "Auszuschließende Fenster-Entitäten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Raumeinstellungen – Innenluft und Schimmel",
+        "description": "Raum: {area_name} ({position}/{total}). Hier Luftsensoren ausschließen. Für die Schimmelanzeige die kälteste Oberfläche (z. B. Außenwandecke oder Fensterrahmen) jetzt mit einem Thermometer messen, während Raum- und Außentemperatur stabil sind. Temperatur unten in °C eingeben; leer lassen, um später zu kalibrieren.\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
+          "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
+          "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
+          "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
+          "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben.",
+          "mold_outdoor_weather_entity": "Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten."
+        }
+      },
+      "outdoor": {
+        "title": "Außenluftqualität",
+        "description": "Wähle unterstützte Außenluftsensoren. Erhöhte gültige Messwerte verhindern Lüftungsempfehlungen. Unbekannte, veraltete oder nicht verfügbare Werte gelten nicht als Gefahr, werden aber als fehlende Daten angezeigt.",
+        "data": {
+          "outdoor_sensors": "Außenluftsensoren"
+        },
+        "data_description": {
+          "outdoor_sensors": "Wähle echte Außensensoren. Messwerte über den Grenzwerten verhindern das Öffnen; unbekannte, nicht verfügbare oder veraltete Werte werden als fehlende Daten angezeigt."
+        }
+      },
+      "weather": {
+        "title": "Wetter und Warnungen",
+        "description": "Wähle Wetterentitäten und optional Wetterwarnsensoren. Regen, Sturm, starker Wind, extreme Temperaturen und aktive/unbekannte Warnungen verhindern Empfehlungen zum Öffnen.\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "weather_warnings": "Wetterwarnsensoren (optional)"
+        },
+        "data_description": {
+          "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
+          "weather_warnings": "Optional. Aktive oder nicht verfügbare ausgewählte Warnungen verhindern das Öffnen der Fenster."
+        }
+      },
+      "delivery": {
+        "title": "Ansagen (optional)",
+        "description": "Der Empfehlungssensor funktioniert auch ohne Ansagen. Benachrichtigungen und Sprache sind optional. Announcement Hub übernimmt gegebenenfalls die Raumzuordnung; sonst bitte direkte Ausgaben wählen.",
+        "data": {
+          "language": "Sprache",
+          "automatic_tts": "Neue Empfehlungen automatisch sprechen",
+          "automatic_notifications": "Neue Empfehlungen automatisch melden",
+          "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "tts_engine": "Direkte TTS-Engine",
+          "media_players": "Direkte TTS-Mediaplayer",
+          "announcement_repeat_minutes": "Ansagen wiederholen (Minuten)",
+          "ai_rewrite_announcements": "KI für Ansagen verwenden",
+          "ai_conversation_agent": "Konversationsagent"
+        },
+        "data_description": {
+          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
+          "automatic_tts": "Standardmäßig deaktiviert. Neue Öffnungsempfehlungen erfordern 90 Sekunden stabile Bedingungen.",
+          "automatic_notifications": "Standardmäßig deaktiviert. Nicht bei jedem neuen Sensorwert erneut benachrichtigen.",
+          "use_announcement_hub": "Nur bei eingerichteten Announcement Hub sichtbar. Falls der Hub nicht läuft oder Nachrichten ablehnt, werden direkte Home-Assistant-Ausgaben bzw. eine dauerhafte Benachrichtigung verwendet.",
+          "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
+          "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
+          "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
+          "announcement_repeat_minutes": "Standard: 10 Minuten. 0 = niemals wiederholen. Eine Erinnerung erfolgt nur, solange dieselbe Fensterempfehlung und Ursache bestehen. Jeder Raum hat einen eigenen Timer. Automatische Benachrichtigungen oder TTS müssen aktiv sein.",
+          "ai_rewrite_announcements": "Eine KI-Option für beide Wege. Mit Announcement Hub wird use_ai: true/false übergeben; andernfalls werden direkte Home-Assistant-Meldungen und TTS umformuliert. Die Fensterentscheidung bleibt unverändert.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten."
+        }
+      },
+      "thresholds": {
+        "title": "Erweiterte Grenzwerte",
+        "description": "Diese Grenzwerte beziehen sich auf Momentanmessungen und sind keine medizinischen Expositionsgrenzen. AQI verwendet standardmäßig die US-Skala 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximaler Außen-AQI",
+          "outdoor_co2": "Maximaler CO₂-Wert außen (ppm)",
+          "outdoor_pm25": "Maximaler PM2,5-Wert außen (µg/m³)",
+          "outdoor_pm10": "Maximaler PM10-Wert außen (µg/m³)",
+          "outdoor_voc": "Maximaler VOC-Wert außen (µg/m³)",
+          "outdoor_voc_parts": "Maximaler VOC-Wert außen (ppb)",
+          "outdoor_no2": "Außenluft NO₂ — Richtwert (µg/m³)",
+          "outdoor_o3": "Außenluft O₃ — Richtwert (µg/m³)",
+          "outdoor_so2": "Außenluft SO₂ — Richtwert (µg/m³)",
+          "indoor_aqi": "Innen-AQI als Lüftungsschwelle",
+          "indoor_co2": "CO₂-Grenzwert innen für Lüftung (ppm)",
+          "indoor_pm25": "PM2,5-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_pm10": "PM10-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_voc": "VOC-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_voc_parts": "VOC-Grenzwert innen für Lüftung (ppb)",
+          "indoor_humidity": "Luftfeuchte innen als Lüftungsschwelle (%)",
+          "min_outdoor_temp": "Minimale Außentemperatur (°C)",
+          "max_outdoor_temp": "Maximale Außentemperatur (°C)",
+          "max_outdoor_humidity": "Maximale Außenluftfeuchte (%)",
+          "max_wind_kmh": "Maximale Windgeschwindigkeit (km/h)",
+          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)",
+          "indoor_mold": "Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)"
+        },
+        "data_description": {
+          "outdoor_aqi": "Dies ist ein Entscheidungswert für „Maximaler Außen-AQI“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_co2": "Dies ist ein Entscheidungswert für „Maximaler CO₂-Wert außen (ppm)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_pm25": "Dies ist ein Entscheidungswert für „Maximaler PM2,5-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_pm10": "Dies ist ein Entscheidungswert für „Maximaler PM10-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_voc": "Dies ist ein Entscheidungswert für „Maximaler VOC-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_voc_parts": "Dies ist ein Entscheidungswert für „Maximaler VOC-Wert außen (ppb)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_no2": "Dies ist ein Entscheidungswert für „Außenluft NO₂ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_o3": "Dies ist ein Entscheidungswert für „Außenluft O₃ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_so2": "Dies ist ein Entscheidungswert für „Außenluft SO₂ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_aqi": "Dies ist ein Entscheidungswert für „Innen-AQI als Lüftungsschwelle“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_co2": "Dies ist ein Entscheidungswert für „CO₂-Grenzwert innen für Lüftung (ppm)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_pm25": "Dies ist ein Entscheidungswert für „PM2,5-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_pm10": "Dies ist ein Entscheidungswert für „PM10-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_voc": "Dies ist ein Entscheidungswert für „VOC-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_voc_parts": "Dies ist ein Entscheidungswert für „VOC-Grenzwert innen für Lüftung (ppb)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_humidity": "Dies ist ein Entscheidungswert für „Luftfeuchte innen als Lüftungsschwelle (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "min_outdoor_temp": "Dies ist ein Entscheidungswert für „Minimale Außentemperatur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_outdoor_temp": "Dies ist ein Entscheidungswert für „Maximale Außentemperatur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_outdoor_humidity": "Dies ist ein Entscheidungswert für „Maximale Außenluftfeuchte (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_wind_kmh": "Dies ist ein Entscheidungswert für „Maximale Windgeschwindigkeit (km/h)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_age_minutes": "Dies ist ein Entscheidungswert für „Höchstalter einer Außenmessung (Minuten)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_mold": "Dies ist ein Entscheidungswert für „Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Mindestens einen unterstützten Außenluftsensor auswählen.",
+      "no_outdoor": "Kein unterstützter Außenluftsensor erkannt. Zuerst eine passende AQI-, CO₂-, Feinstaub- oder VOC-Entität hinzufügen.",
+      "invalid_weather": "Mindestens eine Wetterentität auswählen.",
+      "invalid_warning": "Wetterwarnsensor wird nicht mehr unterstützt.",
+      "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
+      "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
+      "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
+      "no_areas": "Mindestens einen Bereich auswählen.",
+      "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.",
+      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar.",
+      "no_windows_after_exclusions": "Diese Ausschlüsse würden alle nutzbaren Fensterkontakte entfernen. Lass mindestens einen Kontakt aktiviert.",
+      "review_areas_after_exclusions": "Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl.",
+      "invalid_repeat_minutes": "Eine ganze Zahl zwischen 0 und 1440 Minuten eingeben; 0 deaktiviert die Wiederholung.",
+      "missing_ai_service": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
+      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten.",
+      "invalid_mold_temperature_sensor": "Wähle einen gültigen Temperatursensor dieses Raums.",
+      "missing_mold_indoor_temperature": "Der Raumtemperatursensor liefert keinen gültigen aktuellen Messwert.",
+      "missing_mold_outdoor_temperature": "Keine gewählte Wetterentität liefert eine aktuelle Außentemperatur.",
+      "invalid_mold_surface_temperature": "Gib eine gültige gemessene Oberflächentemperatur in °C ein.",
+      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied."
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Einstellungen auswählen",
+        "description": "Wähle eine Einstellungsgruppe. Alle anderen Einstellungen bleiben unverändert.",
+        "menu_options": {
+          "outside_data": "Außendaten",
+          "general_settings": "Allgemeine Einstellungen",
+          "area_settings": "Bereichseinstellungen",
+          "delivery": "Ansagen (optional)",
+          "thresholds": "Erweiterte Grenzwerte"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Fenstersensoren ausschließen",
+        "description": "Prüfe die Binärsensoren der Klasse Fenster. ⚠ markiert vermutlich virtuelle oder zusätzliche Signale (z. B. Fenster-offen-Erkennung eines Heizkörperthermostats), die zum Ausschließen vorausgewählt sind. Echte Fensterkontakte einfach abwählen. Deine Auswahl bleibt gespeichert.",
+        "data": {
+          "excluded_window_entities": "Auszuschließende Fenster-Entitäten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alle Fenster-Binärsensoren mit Raum und Entitäts-ID. Markierte Sensoren werden bei Bereichen, Empfehlungen und Dashboard nicht als Fenster gezählt. Ohne Auswahl werden alle berücksichtigt."
+        }
+      },
+      "areas": {
+        "title": "Bereiche",
+        "description": "Wähle zuerst die zu überwachenden Räume. Räume mit Fenstersensoren (Binärsensor, Geräteklasse Fenster) sind vorausgewählt; Cover zählen nicht. Danach prüfst du die Sensorausschlüsse. Räume ohne verbleibenden Kontakt kannst du erneut auswählen.",
+        "data": {
+          "areas": "Zu überwachende Bereiche",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+        },
+        "data_description": {
+          "areas": "Räume zuerst. Nur binäre Fenstersensoren, keine Cover. Danach folgen Sensorausschlüsse und bei Bedarf eine erneute Raumauswahl.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Raumeinstellungen – Innenluft und Schimmel",
+        "description": "Raum: {area_name} ({position}/{total}). Hier Luftsensoren ausschließen. Für die Schimmelanzeige die kälteste Oberfläche (z. B. Außenwandecke oder Fensterrahmen) jetzt mit einem Thermometer messen, während Raum- und Außentemperatur stabil sind. Temperatur unten in °C eingeben; leer lassen, um später zu kalibrieren.\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "In diesem Raum auszuschließende Sensoren",
+          "mold_indoor_temperature": "Raumtemperatursensor für die Schimmelkalibrierung",
+          "mold_critical_temperature_c": "Gemessene Temperatur der kältesten Oberfläche (°C)",
+          "mold_recalibrate": "Mit aktuellen Temperaturwerten neu kalibrieren",
+          "mold_outdoor_weather_entity": "Außentemperaturquelle für Schimmelindikator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Ausgewählte Sensoren werden nur für diesen Raum bei Empfehlungen und im Dashboard ignoriert. Unterstützt: Luftfeuchtigkeit, CO₂, AQI, PM2.5, PM10 und VOC.",
+          "mold_indoor_temperature": "Temperatursensor (°C/°F) aus diesem Raum wählen. Beim Kalibrieren werden aktuelle Raum- und Außentemperatur gleichzeitig übernommen.",
+          "mold_critical_temperature_c": "Kälteste Ecke bzw. Fensterrahmen jetzt messen; Innen- und Außentemperatur müssen gleichzeitig gemessen werden. Mindestens 3°C Unterschied zwischen innen und außen. Daraus wird ein dauerhafter Kalibrierfaktor berechnet, keine feste Oberflächentemperatur. Leeren, um die Kalibrierung zu entfernen.",
+          "mold_recalibrate": "Nur aktivieren, wenn die kälteste Oberfläche erneut gemessen wurde. Änderungen an Sensorausschlüssen dürfen die alte Kalibrierung nicht überschreiben.",
+          "mold_outdoor_weather_entity": "Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten."
+        }
+      },
+      "outdoor": {
+        "title": "Außenluftqualität",
+        "description": "Wähle unterstützte Außenluftsensoren. Erhöhte gültige Messwerte verhindern Lüftungsempfehlungen. Unbekannte, veraltete oder nicht verfügbare Werte gelten nicht als Gefahr, werden aber als fehlende Daten angezeigt.",
+        "data": {
+          "outdoor_sensors": "Außenluftsensoren"
+        },
+        "data_description": {
+          "outdoor_sensors": "Wähle echte Außensensoren. Messwerte über den Grenzwerten verhindern das Öffnen; unbekannte, nicht verfügbare oder veraltete Werte werden als fehlende Daten angezeigt."
+        }
+      },
+      "weather": {
+        "title": "Wetter und Warnungen",
+        "description": "Wähle Wetterentitäten und optional Wetterwarnsensoren. Regen, Sturm, starker Wind, extreme Temperaturen und aktive/unbekannte Warnungen verhindern Empfehlungen zum Öffnen.\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Wetterentitäten",
+          "weather_warnings": "Wetterwarnsensoren (optional)"
+        },
+        "data_description": {
+          "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
+          "weather_warnings": "Optional. Aktive oder nicht verfügbare ausgewählte Warnungen verhindern das Öffnen der Fenster."
+        }
+      },
+      "delivery": {
+        "title": "Ansagen (optional)",
+        "description": "Der Empfehlungssensor funktioniert auch ohne Ansagen. Benachrichtigungen und Sprache sind optional. Announcement Hub übernimmt gegebenenfalls die Raumzuordnung; sonst bitte direkte Ausgaben wählen.",
+        "data": {
+          "language": "Sprache",
+          "automatic_tts": "Neue Empfehlungen automatisch sprechen",
+          "automatic_notifications": "Neue Empfehlungen automatisch melden",
+          "use_announcement_hub": "Announcement Hub verwenden, falls vorhanden",
+          "notify_entities": "Direkte Benachrichtigungsentitäten",
+          "tts_engine": "Direkte TTS-Engine",
+          "media_players": "Direkte TTS-Mediaplayer",
+          "announcement_repeat_minutes": "Ansagen wiederholen (Minuten)",
+          "ai_rewrite_announcements": "KI für Ansagen verwenden",
+          "ai_conversation_agent": "Konversationsagent"
+        },
+        "data_description": {
+          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
+          "automatic_tts": "Standardmäßig deaktiviert. Neue Öffnungsempfehlungen erfordern 90 Sekunden stabile Bedingungen.",
+          "automatic_notifications": "Standardmäßig deaktiviert. Nicht bei jedem neuen Sensorwert erneut benachrichtigen.",
+          "use_announcement_hub": "Nur bei eingerichteten Announcement Hub sichtbar. Falls der Hub nicht läuft oder Nachrichten ablehnt, werden direkte Home-Assistant-Ausgaben bzw. eine dauerhafte Benachrichtigung verwendet.",
+          "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
+          "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
+          "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
+          "announcement_repeat_minutes": "Standard: 10 Minuten. 0 = niemals wiederholen. Eine Erinnerung erfolgt nur, solange dieselbe Fensterempfehlung und Ursache bestehen. Jeder Raum hat einen eigenen Timer. Automatische Benachrichtigungen oder TTS müssen aktiv sein.",
+          "ai_rewrite_announcements": "Eine KI-Option für beide Wege. Mit Announcement Hub wird use_ai: true/false übergeben; andernfalls werden direkte Home-Assistant-Meldungen und TTS umformuliert. Die Fensterentscheidung bleibt unverändert.",
+          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten."
+        }
+      },
+      "thresholds": {
+        "title": "Erweiterte Grenzwerte",
+        "description": "Diese Grenzwerte beziehen sich auf Momentanmessungen und sind keine medizinischen Expositionsgrenzen. AQI verwendet standardmäßig die US-Skala 0–500.",
+        "data": {
+          "outdoor_aqi": "Maximaler Außen-AQI",
+          "outdoor_co2": "Maximaler CO₂-Wert außen (ppm)",
+          "outdoor_pm25": "Maximaler PM2,5-Wert außen (µg/m³)",
+          "outdoor_pm10": "Maximaler PM10-Wert außen (µg/m³)",
+          "outdoor_voc": "Maximaler VOC-Wert außen (µg/m³)",
+          "outdoor_voc_parts": "Maximaler VOC-Wert außen (ppb)",
+          "outdoor_no2": "Außenluft NO₂ — Richtwert (µg/m³)",
+          "outdoor_o3": "Außenluft O₃ — Richtwert (µg/m³)",
+          "outdoor_so2": "Außenluft SO₂ — Richtwert (µg/m³)",
+          "indoor_aqi": "Innen-AQI als Lüftungsschwelle",
+          "indoor_co2": "CO₂-Grenzwert innen für Lüftung (ppm)",
+          "indoor_pm25": "PM2,5-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_pm10": "PM10-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_voc": "VOC-Grenzwert innen für Lüftung (µg/m³)",
+          "indoor_voc_parts": "VOC-Grenzwert innen für Lüftung (ppb)",
+          "indoor_humidity": "Luftfeuchte innen als Lüftungsschwelle (%)",
+          "min_outdoor_temp": "Minimale Außentemperatur (°C)",
+          "max_outdoor_temp": "Maximale Außentemperatur (°C)",
+          "max_outdoor_humidity": "Maximale Außenluftfeuchte (%)",
+          "max_wind_kmh": "Maximale Windgeschwindigkeit (km/h)",
+          "max_age_minutes": "Höchstalter einer Außenmessung (Minuten)",
+          "indoor_mold": "Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)"
+        },
+        "data_description": {
+          "outdoor_aqi": "Dies ist ein Entscheidungswert für „Maximaler Außen-AQI“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_co2": "Dies ist ein Entscheidungswert für „Maximaler CO₂-Wert außen (ppm)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_pm25": "Dies ist ein Entscheidungswert für „Maximaler PM2,5-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_pm10": "Dies ist ein Entscheidungswert für „Maximaler PM10-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_voc": "Dies ist ein Entscheidungswert für „Maximaler VOC-Wert außen (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_voc_parts": "Dies ist ein Entscheidungswert für „Maximaler VOC-Wert außen (ppb)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_no2": "Dies ist ein Entscheidungswert für „Außenluft NO₂ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_o3": "Dies ist ein Entscheidungswert für „Außenluft O₃ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outdoor_so2": "Dies ist ein Entscheidungswert für „Außenluft SO₂ — Richtwert (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_aqi": "Dies ist ein Entscheidungswert für „Innen-AQI als Lüftungsschwelle“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_co2": "Dies ist ein Entscheidungswert für „CO₂-Grenzwert innen für Lüftung (ppm)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_pm25": "Dies ist ein Entscheidungswert für „PM2,5-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_pm10": "Dies ist ein Entscheidungswert für „PM10-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_voc": "Dies ist ein Entscheidungswert für „VOC-Grenzwert innen für Lüftung (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_voc_parts": "Dies ist ein Entscheidungswert für „VOC-Grenzwert innen für Lüftung (ppb)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_humidity": "Dies ist ein Entscheidungswert für „Luftfeuchte innen als Lüftungsschwelle (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "min_outdoor_temp": "Dies ist ein Entscheidungswert für „Minimale Außentemperatur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_outdoor_temp": "Dies ist ein Entscheidungswert für „Maximale Außentemperatur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_outdoor_humidity": "Dies ist ein Entscheidungswert für „Maximale Außenluftfeuchte (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_wind_kmh": "Dies ist ein Entscheidungswert für „Maximale Windgeschwindigkeit (km/h)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "max_age_minutes": "Dies ist ein Entscheidungswert für „Höchstalter einer Außenmessung (Minuten)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "indoor_mold": "Dies ist ein Entscheidungswert für „Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "environment": {
+        "title": "Internationale Luftqualitätsquellen und Pollen",
+        "description": "Optional. Wähle je AQI-Sensor explizit US EPA (0–500), europäische Kategorien (1–6) oder einen eigenen Grenzwert. Unbekannte AQI-Skalen werden niemals automatisch als US-Skala interpretiert. Pollen stammen aus einer beliebigen Home-Assistant-Integration.",
+        "data": {
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "pollen_high_from": "Pollenindex ab diesem Wert hoch",
+          "pollen_max_scale": "Maximalwert der Pollen-Skala",
+          "pollen_avoid_ventilation": "Bei hoher Pollenbelastung Lüften vermeiden",
+          "aqi_scale_0": "AQI #1 · Quelle",
+          "aqi_custom_limit_0": "AQI #1 · Sollwert",
+          "aqi_scale_1": "AQI #2 · Quelle",
+          "aqi_custom_limit_1": "AQI #2 · Sollwert",
+          "aqi_scale_2": "AQI #3 · Quelle",
+          "aqi_custom_limit_2": "AQI #3 · Sollwert",
+          "aqi_scale_3": "AQI #4 · Quelle",
+          "aqi_custom_limit_3": "AQI #4 · Sollwert",
+          "aqi_scale_4": "AQI #5 · Quelle",
+          "aqi_custom_limit_4": "AQI #5 · Sollwert",
+          "aqi_scale_5": "AQI #6 · Quelle",
+          "aqi_custom_limit_5": "AQI #6 · Sollwert",
+          "aqi_scale_6": "AQI #7 · Quelle",
+          "aqi_custom_limit_6": "AQI #7 · Sollwert",
+          "aqi_scale_7": "AQI #8 · Quelle",
+          "aqi_custom_limit_7": "AQI #8 · Sollwert",
+          "aqi_scale_8": "AQI #9 · Quelle",
+          "aqi_custom_limit_8": "AQI #9 · Sollwert",
+          "aqi_scale_9": "AQI #10 · Quelle",
+          "aqi_custom_limit_9": "AQI #10 · Sollwert",
+          "aqi_scale_10": "AQI #11 · Quelle",
+          "aqi_custom_limit_10": "AQI #11 · Sollwert",
+          "aqi_scale_11": "AQI #12 · Quelle",
+          "aqi_custom_limit_11": "AQI #12 · Sollwert",
+          "aqi_scale_12": "AQI #13 · Quelle",
+          "aqi_custom_limit_12": "AQI #13 · Sollwert",
+          "aqi_scale_13": "AQI #14 · Quelle",
+          "aqi_custom_limit_13": "AQI #14 · Sollwert",
+          "aqi_scale_14": "AQI #15 · Quelle",
+          "aqi_custom_limit_14": "AQI #15 · Sollwert",
+          "aqi_scale_15": "AQI #16 · Quelle",
+          "aqi_custom_limit_15": "AQI #16 · Sollwert",
+          "aqi_scale_16": "AQI #17 · Quelle",
+          "aqi_custom_limit_16": "AQI #17 · Sollwert",
+          "aqi_scale_17": "AQI #18 · Quelle",
+          "aqi_custom_limit_17": "AQI #18 · Sollwert",
+          "aqi_scale_18": "AQI #19 · Quelle",
+          "aqi_custom_limit_18": "AQI #19 · Sollwert",
+          "aqi_scale_19": "AQI #20 · Quelle",
+          "aqi_custom_limit_19": "AQI #20 · Sollwert",
+          "aqi_scale_20": "AQI #21 · Quelle",
+          "aqi_custom_limit_20": "AQI #21 · Sollwert",
+          "aqi_scale_21": "AQI #22 · Quelle",
+          "aqi_custom_limit_21": "AQI #22 · Sollwert",
+          "aqi_scale_22": "AQI #23 · Quelle",
+          "aqi_custom_limit_22": "AQI #23 · Sollwert",
+          "aqi_scale_23": "AQI #24 · Quelle",
+          "aqi_custom_limit_23": "AQI #24 · Sollwert",
+          "aqi_scale_24": "AQI #25 · Quelle",
+          "aqi_custom_limit_24": "AQI #25 · Sollwert",
+          "aqi_scale_25": "AQI #26 · Quelle",
+          "aqi_custom_limit_25": "AQI #26 · Sollwert",
+          "aqi_scale_26": "AQI #27 · Quelle",
+          "aqi_custom_limit_26": "AQI #27 · Sollwert",
+          "aqi_scale_27": "AQI #28 · Quelle",
+          "aqi_custom_limit_27": "AQI #28 · Sollwert",
+          "aqi_scale_28": "AQI #29 · Quelle",
+          "aqi_custom_limit_28": "AQI #29 · Sollwert",
+          "aqi_scale_29": "AQI #30 · Quelle",
+          "aqi_custom_limit_29": "AQI #30 · Sollwert",
+          "aqi_scale_30": "AQI #31 · Quelle",
+          "aqi_custom_limit_30": "AQI #31 · Sollwert",
+          "aqi_scale_31": "AQI #32 · Quelle",
+          "aqi_custom_limit_31": "AQI #32 · Sollwert"
+        },
+        "data_description": {
+          "pollen_entity": "Eine passende Home-Assistant-Quelle für „Pollenprognose-Sensor (beliebiges Land)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "pollen_high_from": "„Pollenindex ab diesem Wert hoch“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "pollen_max_scale": "„Maximalwert der Pollen-Skala“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "pollen_avoid_ventilation": "„Bei hoher Pollenbelastung Lüften vermeiden“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_scale_0": "„AQI #1 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_0": "Dies ist ein Entscheidungswert für „AQI #1 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_1": "„AQI #2 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_1": "Dies ist ein Entscheidungswert für „AQI #2 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_2": "„AQI #3 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_2": "Dies ist ein Entscheidungswert für „AQI #3 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_3": "„AQI #4 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_3": "Dies ist ein Entscheidungswert für „AQI #4 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_4": "„AQI #5 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_4": "Dies ist ein Entscheidungswert für „AQI #5 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_5": "„AQI #6 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_5": "Dies ist ein Entscheidungswert für „AQI #6 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_6": "„AQI #7 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_6": "Dies ist ein Entscheidungswert für „AQI #7 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_7": "„AQI #8 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_7": "Dies ist ein Entscheidungswert für „AQI #8 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_8": "„AQI #9 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_8": "Dies ist ein Entscheidungswert für „AQI #9 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_9": "„AQI #10 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_9": "Dies ist ein Entscheidungswert für „AQI #10 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_10": "„AQI #11 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_10": "Dies ist ein Entscheidungswert für „AQI #11 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_11": "„AQI #12 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_11": "Dies ist ein Entscheidungswert für „AQI #12 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_12": "„AQI #13 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_12": "Dies ist ein Entscheidungswert für „AQI #13 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_13": "„AQI #14 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_13": "Dies ist ein Entscheidungswert für „AQI #14 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_14": "„AQI #15 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_14": "Dies ist ein Entscheidungswert für „AQI #15 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_15": "„AQI #16 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_15": "Dies ist ein Entscheidungswert für „AQI #16 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_16": "„AQI #17 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_16": "Dies ist ein Entscheidungswert für „AQI #17 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_17": "„AQI #18 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_17": "Dies ist ein Entscheidungswert für „AQI #18 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_18": "„AQI #19 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_18": "Dies ist ein Entscheidungswert für „AQI #19 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_19": "„AQI #20 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_19": "Dies ist ein Entscheidungswert für „AQI #20 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_20": "„AQI #21 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_20": "Dies ist ein Entscheidungswert für „AQI #21 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_21": "„AQI #22 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_21": "Dies ist ein Entscheidungswert für „AQI #22 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_22": "„AQI #23 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_22": "Dies ist ein Entscheidungswert für „AQI #23 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_23": "„AQI #24 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_23": "Dies ist ein Entscheidungswert für „AQI #24 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_24": "„AQI #25 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_24": "Dies ist ein Entscheidungswert für „AQI #25 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_25": "„AQI #26 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_25": "Dies ist ein Entscheidungswert für „AQI #26 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_26": "„AQI #27 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_26": "Dies ist ein Entscheidungswert für „AQI #27 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_27": "„AQI #28 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_27": "Dies ist ein Entscheidungswert für „AQI #28 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_28": "„AQI #29 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_28": "Dies ist ein Entscheidungswert für „AQI #29 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_29": "„AQI #30 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_29": "Dies ist ein Entscheidungswert für „AQI #30 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_30": "„AQI #31 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_30": "Dies ist ein Entscheidungswert für „AQI #31 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "aqi_scale_31": "„AQI #32 · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "aqi_custom_limit_31": "Dies ist ein Entscheidungswert für „AQI #32 · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "environment_room": {
+        "title": "Raum für Umweltanalysen wählen",
+        "description": "Zusätzliche Sensoren und Annahmen für genau einen Raum einstellen. Alles ist optional.",
+        "data": {
+          "environment_area": "Raum auswählen"
+        },
+        "data_description": {
+          "environment_area": "„Raum auswählen“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
+        }
+      },
+      "environment_room_air": {
+        "title": "Raum: {area_name} — Lüftung und Feuchtigkeit",
+        "description": "Optional. Raumtemperatursensor, Raumvolumen und veröffentlichten Partikel-CADR nur auswählen, wenn zuverlässig bekannt. Echtes NDIR-CO₂-Gerät bestätigen. Die Integration steuert keine Geräte.",
+        "data": {
+          "temperature_entity": "Temperatursensor im Raum (optional)",
+          "room_volume_m3": "Raumluftvolumen (m³)",
+          "particle_cadr_m3h": "Reinigungsleistung für Partikel, CADR (m³/h)",
+          "purifier_entity": "Luftreiniger: Betriebsstatus",
+          "extractor_entity": "Abluftventilator / Schalter",
+          "co2_ndir_verified": "Echter NDIR-CO₂-Sensor bestätigt",
+          "co2_target_ppm": "CO₂-Zielwert beim Lüften (ppm)",
+          "sleep_room": "Schlafzimmer"
+        },
+        "data_description": {
+          "temperature_entity": "Eine passende Home-Assistant-Quelle für „Temperatursensor im Raum (optional)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "room_volume_m3": "Innenfläche × Raumhöhe. Nur bei bekanntem Volumen angeben; nötig für den rechnerischen Luftwechsel des Luftreinigers.",
+          "particle_cadr_m3h": "Nur nachgewiesenen Partikel-CADR bei definierter Leistungsstufe verwenden, nicht den Lüftervolumenstrom; gilt nicht für Gase.",
+          "purifier_entity": "Eine passende Home-Assistant-Quelle für „Luftreiniger: Betriebsstatus“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "extractor_entity": "Eine passende Home-Assistant-Quelle für „Abluftventilator / Schalter“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "co2_ndir_verified": "Nur bei nachweislich echtem CO₂-Sensor markieren. eCO₂ aus VOC-Messungen reicht nicht aus.",
+          "co2_target_ppm": "Dies ist ein Entscheidungswert für „CO₂-Zielwert beim Lüften (ppm)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "sleep_room": "„Schlafzimmer“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "Raum: {area_name} — zusätzliche Spezialmessungen",
+        "description": "Optional. Nur echte Messgeräte für Radon, Formaldehyd, Schall und Beleuchtung wählen. Für Leitwerte werden geprüfte Sensoren und ausreichend lange Messreihen benötigt.",
+        "data": {
+          "radon_entity": "Echter Radonmesssensor",
+          "radon_sensor_verified": "Radon-Messtechnik bestätigt",
+          "radon_reference_bq_m3": "Radon-Jahresreferenzwert (Bq/m³)",
+          "formaldehyde_entity": "Formaldehyd-Messsensor (HCHO)",
+          "formaldehyde_sensor_verified": "HCHO-Messung unabhängig geprüft",
+          "noise_entity": "A-bewerteter Schallpegel (dB(A))",
+          "noise_sensor_calibrated": "Geeignete kalibrierte Schallmessung",
+          "illuminance_entity": "Beleuchtungsstärke (Lux)",
+          "melanopic_edi_entity": "Spektral gemessene melanopische EDI (lx)",
+          "melanopic_spectral_verified": "Spektralmessung für EDI bestätigt"
+        },
+        "data_description": {
+          "radon_entity": "Bq/m³ oder pCi/L; für Jahresmittel sind ausreichend viele gültige Messtage erforderlich.",
+          "radon_sensor_verified": "Für „Radon-Messtechnik bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "radon_reference_bq_m3": "„Radon-Jahresreferenzwert (Bq/m³)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "formaldehyde_entity": "Nur ein tatsächlicher HCHO-Messsensor mit µg/m³ oder mg/m³. Schätzwerte sind ungeeignet.",
+          "formaldehyde_sensor_verified": "Für „HCHO-Messung unabhängig geprüft“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "noise_entity": "Nur kalibrierte dB(A)-Zeitreihen; gemessene Spitzenpegel sind kein LAeq.",
+          "noise_sensor_calibrated": "Für „Geeignete kalibrierte Schallmessung“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "illuminance_entity": "Eine passende Home-Assistant-Quelle für „Beleuchtungsstärke (Lux)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "melanopic_edi_entity": "Eine passende Home-Assistant-Quelle für „Spektral gemessene melanopische EDI (lx)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "melanopic_spectral_verified": "Für „Spektralmessung für EDI bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "Raum: {area_name} — vollständiger thermischer Komfort",
+        "description": "Optionales ISO-7730-Modell. Strahlungstemperatur, Luftgeschwindigkeit, Aktivität (met) und Bekleidung (clo) explizit angeben.",
+        "data": {
+          "enable_pmv": "ISO-7730-Komfort PMV/PPD aktivieren",
+          "radiant_temperature_entity": "Mittlere Strahlungstemperatur (°C)",
+          "air_speed_entity": "Gemessene Luftgeschwindigkeit (m/s)",
+          "air_speed_m_s": "Angenommene Luftgeschwindigkeit (m/s)",
+          "met": "Aktivität des Bewohners (met)",
+          "clo": "Bekleidungsisolierung des Bewohners (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Nur mit mittlerer Strahlungstemperatur, Luftgeschwindigkeit, Metabolismus (met) und Kleidung (clo).",
+          "radiant_temperature_entity": "Eine passende Home-Assistant-Quelle für „Mittlere Strahlungstemperatur (°C)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "air_speed_entity": "Eine passende Home-Assistant-Quelle für „Gemessene Luftgeschwindigkeit (m/s)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "air_speed_m_s": "Für „Angenommene Luftgeschwindigkeit (m/s)“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "met": "Für „Aktivität des Bewohners (met)“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "clo": "Für „Bekleidungsisolierung des Bewohners (clo)“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren."
+        }
+      },
+      "pid": {
+        "title": "Klima-PID — Raum wählen",
+        "description": "Optional und standardmäßig ausgeschaltet. Wähle einen überwachten Raum; fremde Räume werden nicht angesteuert.",
+        "data": {
+          "pid_area": "Zu konfigurierender Raum"
+        },
+        "data_description": {
+          "pid_area": "Diese Option steuert „Zu konfigurierender Raum“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen."
+        }
+      },
+      "pid_room": {
+        "title": "Klima-PID in {area_name} — Geräte und Sollwert",
+        "description": "Aktiviere PID nur mit geeignetem Raumtemperatursensor und ausdrücklich gewählten Klimageräten. Der Heiz-/Kühlmodus muss bereits eingestellt sein. Geöffnete oder unbekannte Fenster halten die Regelung an. Kein Ein-/Ausschalten des Kompressors.",
+        "data": {
+          "pid_enabled": "Klima-PID für diesen Raum aktivieren",
+          "pid_climate_entities": "Ausdrücklich zugelassene Klimageräte",
+          "pid_temperature_entity": "Raumtemperatursensor (maximal 10 Minuten alt)",
+          "pid_mode": "Aktueller Heiz-/Kühlmodus",
+          "pid_target_c": "Raum-Solltemperatur (°C)",
+          "pid_pause_on_window_open": "Bei offenem oder unbekanntem Fenster pausieren"
+        },
+        "data_description": {
+          "pid_enabled": "Diese Option steuert „Klima-PID für diesen Raum aktivieren“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "pid_climate_entities": "Eine passende Home-Assistant-Quelle für „Ausdrücklich zugelassene Klimageräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "pid_temperature_entity": "Eine passende Home-Assistant-Quelle für „Raumtemperatursensor (maximal 10 Minuten alt)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "pid_mode": "Diese Option steuert „Aktueller Heiz-/Kühlmodus“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "pid_target_c": "Dies ist ein Entscheidungswert für „Raum-Solltemperatur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "pid_pause_on_window_open": "Diese Option steuert „Bei offenem oder unbekanntem Fenster pausieren“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen."
+        }
+      },
+      "pid_tuning": {
+        "title": "Klima-PID in {area_name} — Regelparameter und Sicherheit",
+        "description": "Kp: %/°C; Ki: %/(°C·min), Kd: %·min/°C. Die Regelung verändert nur den begrenzten Sollwert. Standardwerte zunächst beibehalten; manuelle Änderungen pausieren den PID bis zum ausdrücklichen Fortsetzen.",
+        "data": {
+          "pid_kp": "Proportionalverstärkung Kp (%/°C)",
+          "pid_ki": "Integralverstärkung Ki (%/(°C·min))",
+          "pid_kd": "Differentialverstärkung Kd (%·min/°C)",
+          "pid_offset_c": "Maximale Sollwertabweichung (°C)",
+          "pid_min_setpoint_c": "Niedrigster zulässiger Sollwert (°C)",
+          "pid_max_setpoint_c": "Höchster zulässiger Sollwert (°C)",
+          "pid_sample_seconds": "PID-Abtastintervall (Sekunden)",
+          "pid_max_change_c": "Maximale Sollwertänderung je Intervall (°C)",
+          "pid_min_change_c": "Minimale sinnvolle Sollwertänderung (°C)"
+        },
+        "data_description": {
+          "pid_kp": "Diese Option steuert „Proportionalverstärkung Kp (%/°C)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "pid_ki": "Diese Option steuert „Integralverstärkung Ki (%/(°C·min))“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "pid_kd": "Diese Option steuert „Differentialverstärkung Kd (%·min/°C)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "pid_offset_c": "Dies ist ein Entscheidungswert für „Maximale Sollwertabweichung (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "pid_min_setpoint_c": "Dies ist ein Entscheidungswert für „Niedrigster zulässiger Sollwert (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "pid_max_setpoint_c": "Dies ist ein Entscheidungswert für „Höchster zulässiger Sollwert (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "pid_sample_seconds": "Dieser Zeitwert regelt „PID-Abtastintervall (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "pid_max_change_c": "Dies ist ein Entscheidungswert für „Maximale Sollwertänderung je Intervall (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "pid_min_change_c": "Dies ist ein Entscheidungswert für „Minimale sinnvolle Sollwertänderung (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "climate": {
+        "title": "Klima — Raum auswählen",
+        "description": "„Klima — Raum auswählen“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+        "data": {
+          "climate_area": "Geräte"
+        },
+        "data_description": {
+          "climate_area": "Diese Option steuert „Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen."
+        }
+      },
+      "climate_room": {
+        "title": "Klima — Regelung, Anwesenheit und Abwesenheit",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "climate_enabled": "Klimaplaner für diesen Raum aktivieren",
+          "climate_allow_actuation": "Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)",
+          "climate_auto_switch_hvac": "Automatischen Heiz-/Kühlmoduswechsel erlauben",
+          "climate_prefer_native_auto": "Geräteeigenen Heiz-/Kühlbereich verwenden",
+          "climate_controller": "Geräte · Steuerung",
+          "climate_mode": "Geräte · MODE",
+          "climate_entity": "Geräte · Quelle",
+          "climate_temperature_entity": "Temperatur · Quelle",
+          "climate_hysteresis_c": "Geräte (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Diese Option steuert „Klimaplaner für diesen Raum aktivieren“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_allow_actuation": "Diese Option steuert „Befehle an ausgewählte Raumregler erlauben (separate Zustimmung)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_auto_switch_hvac": "Diese Option steuert „Automatischen Heiz-/Kühlmoduswechsel erlauben“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_prefer_native_auto": "Diese Option steuert „Geräteeigenen Heiz-/Kühlbereich verwenden“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_controller": "Diese Option steuert „Geräte · Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_mode": "Diese Option steuert „Geräte · MODE“. Geräte · MODEbefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_entity": "Eine passende Home-Assistant-Geräte · Quelle für „Geräte · Quelle“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_temperature_entity": "Eine passende Home-Assistant-Quelle für „Temperatur · Quelle“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_hysteresis_c": "Dies ist ein Entscheidungswert für „Geräte (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "climate_presence": {
+        "title": "Klima — Anwesenheit, Abwesenheit, Schlaf und Komfort",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "climate_occupancy_sensors": "Präsenzsensoren in diesem Raum",
+          "climate_away_entities": "Personen und Tracker für Zuhause/Abwesend",
+          "climate_unknown_occupancy": "Belegung · Geräte",
+          "climate_unoccupied_delay_minutes": "Verzögerung bis Raum als unbelegt gilt (Minuten)",
+          "climate_occupancy_stale_minutes": "Maximales Alter der Präsenzmessung (Minuten)",
+          "climate_away_policy": "Zuhause · Geräte · POLICY",
+          "climate_manual_profile": "Geräte",
+          "climate_sleep_active": "Schlaf · Geräte",
+          "climate_sleep_schedule_enabled": "Schlafprofil nach Uhrzeit",
+          "climate_sleep_start": "Schlafbeginn (lokale Zeit)",
+          "climate_sleep_end": "Schlafende (lokale Zeit)",
+          "climate_target_source": "Temperatursollwert oder ISO-7730-Komfort",
+          "climate_comfort_adjustment_max_c": "Maximale Komfortkorrektur (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Eine passende Home-Assistant-Quelle für „Präsenzsensoren in diesem Raum“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_away_entities": "Eine passende Home-Assistant-Quelle für „Personen und Tracker für Zuhause/Abwesend“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_unknown_occupancy": "Diese Option steuert „Belegung · Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_unoccupied_delay_minutes": "Dieser Zeitwert regelt „Verzögerung bis Raum als unbelegt gilt (Minuten)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_occupancy_stale_minutes": "Dieser Zeitwert regelt „Maximales Alter der Präsenzmessung (Minuten)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_away_policy": "Diese Option steuert „Zuhause · Geräte · POLICY“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_manual_profile": "Diese Option steuert „Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_sleep_active": "Diese Option steuert „Schlaf · Geräte“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_sleep_schedule_enabled": "Diese Option steuert „Schlafprofil nach Uhrzeit“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_sleep_start": "Dieser Zeitwert regelt „Schlafbeginn (lokale Zeit)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_sleep_end": "Dieser Zeitwert regelt „Schlafende (lokale Zeit)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_target_source": "Dies ist ein Entscheidungswert für „Temperatursollwert oder ISO-7730-Komfort“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_comfort_adjustment_max_c": "Dies ist ein Entscheidungswert für „Maximale Komfortkorrektur (°C)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "climate_equipment": {
+        "title": "Klima — zusätzliche Geräte und Luftfeuchtigkeit",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "climate_heat_climate_entity": "Zusätzlicher Heizthermostat / Heizkörper",
+          "climate_cool_climate_entity": "Zusätzliches Klimagerät zum Kühlen",
+          "climate_dry_climate_entity": "Klimagerät mit Entfeuchtungsmodus DRY",
+          "climate_fan_climate_entity": "Klimagerät mit Lüftermodus",
+          "climate_humidifier_entity": "Luftbefeuchter",
+          "climate_dehumidifier_entity": "Luftentfeuchter",
+          "climate_extraction_fan_entity": "Abluft- / Lüftungsventilator",
+          "climate_purifier_fan_entity": "Luftreiniger-Lüfter",
+          "climate_humidity_entity": "Luftfeuchtesensor für diesen Raum",
+          "climate_humidity_low_rh": "Untergrenze der relativen Luftfeuchte (%)",
+          "climate_humidity_high_rh": "Obergrenze der relativen Luftfeuchte (%)",
+          "climate_humidity_hysteresis_rh": "Hysterese für Luftfeuchte (Prozentpunkte)",
+          "climate_cooling_dry_deferral_rh_points": "Entfeuchter beim aktiven Kühlen zurückstellen, bis relative Feuchte die Obergrenze um diesen Wert übersteigt (0 deaktiviert)",
+          "climate_humidity_setpoint_auto": "Sollfeuchte eines bereits eingeschalteten Be-/Entfeuchters regeln (separate Freigabe)",
+          "climate_window_efficiency_notify": "Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt",
+          "climate_dry_fan_mode_auto": "DRY/FAN_ONLY am Klimagerät automatisch umschalten (separate Freigabe nach Geräteprüfung)",
+          "climate_dry_fan_hardware_confirmed": "Unabhängiger Kompressor-, Abtau- und Kurzzyklenschutz dieses Klimageräts bestätigt",
+          "climate_dry_fan_windowless_confirmed": "Umschalten DRY/FAN_ONLY ohne Fensterkontakt ausdrücklich erlauben",
+          "climate_dry_fan_mode_dwell_s": "Minimale Verweildauer im DRY/FAN_ONLY-Modus (Sekunden, mind. 1800)",
+          "climate_humidity_power_auto": "Automatische Ein-/Ausschaltung des geprüften Be-/Entfeuchters erlauben (separate Zustimmung)",
+          "climate_humidity_power_hardware_confirmed": "Unabhängige Tank-, Frost-, Überhitzungs- und Kompressorschutzfunktionen bestätigt",
+          "climate_humidity_power_windowless_confirmed": "Luftfeuchteregelung ohne Fensterkontakt ausdrücklich erlauben",
+          "climate_humidity_power_min_on_s": "Minimale Einschaltzeit (Sekunden)",
+          "climate_humidity_power_min_off_s": "Minimale Ausschaltzeit (Sekunden)",
+          "climate_humidity_power_max_on_s": "Maximale ununterbrochene Laufzeit (Sekunden)",
+          "climate_secondary_climate_setpoint_auto": "Sollwert von bereits aktiven zusätzlichen Heiz-/Kühlthermostaten regeln (separate Freigabe)"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Eine passende Home-Assistant-Quelle für „Zusätzlicher Heizthermostat / Heizkörper“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_cool_climate_entity": "Eine passende Home-Assistant-Quelle für „Zusätzliches Klimagerät zum Kühlen“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_dry_climate_entity": "Eine passende Home-Assistant-Quelle für „Klimagerät mit Entfeuchtungsmodus DRY“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_fan_climate_entity": "Eine passende Home-Assistant-Quelle für „Klimagerät mit Lüftermodus“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_humidifier_entity": "Eine passende Home-Assistant-Quelle für „Luftbefeuchter“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_dehumidifier_entity": "Eine passende Home-Assistant-Quelle für „Luftentfeuchter“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_extraction_fan_entity": "Eine passende Home-Assistant-Quelle für „Abluft- / Lüftungsventilator“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_purifier_fan_entity": "Eine passende Home-Assistant-Quelle für „Luftreiniger-Lüfter“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_humidity_entity": "Eine passende Home-Assistant-Quelle für „Luftfeuchtesensor für diesen Raum“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_humidity_low_rh": "Dies ist ein Entscheidungswert für „Untergrenze der relativen Luftfeuchte (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_humidity_high_rh": "Dies ist ein Entscheidungswert für „Obergrenze der relativen Luftfeuchte (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_humidity_hysteresis_rh": "Dies ist ein Entscheidungswert für „Hysterese für Luftfeuchte (Prozentpunkte)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_cooling_dry_deferral_rh_points": "Diese Option steuert „Entfeuchter beim aktiven Kühlen zurückstellen, bis relative Feuchte die Obergrenze um diesen Wert übersteigt (0 deaktiviert)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_humidity_setpoint_auto": "Diese Option steuert „Sollfeuchte eines bereits eingeschalteten Be-/Entfeuchters regeln (separate Freigabe)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_window_efficiency_notify": "Diese Option steuert „Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_dry_fan_mode_auto": "Diese Option steuert „DRY/FAN_ONLY am Klimagerät automatisch umschalten (separate Freigabe nach Geräteprüfung)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_dry_fan_hardware_confirmed": "Für „Unabhängiger Kompressor-, Abtau- und Kurzzyklenschutz dieses Klimageräts bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_dry_fan_windowless_confirmed": "Für „Umschalten DRY/FAN_ONLY ohne Fensterkontakt ausdrücklich erlauben“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_dry_fan_mode_dwell_s": "Dieser Zeitwert regelt „Minimale Verweildauer im DRY/FAN_ONLY-Modus (Sekunden, mind. 1800)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_humidity_power_auto": "Diese Option steuert „Automatische Ein-/Ausschaltung des geprüften Be-/Entfeuchters erlauben (separate Zustimmung)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_humidity_power_hardware_confirmed": "Für „Unabhängige Tank-, Frost-, Überhitzungs- und Kompressorschutzfunktionen bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_humidity_power_windowless_confirmed": "Für „Luftfeuchteregelung ohne Fensterkontakt ausdrücklich erlauben“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_humidity_power_min_on_s": "Dieser Zeitwert regelt „Minimale Einschaltzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_humidity_power_min_off_s": "Dieser Zeitwert regelt „Minimale Ausschaltzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_humidity_power_max_on_s": "Dieser Zeitwert regelt „Maximale ununterbrochene Laufzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_secondary_climate_setpoint_auto": "Diese Option steuert „Sollwert von bereits aktiven zusätzlichen Heiz-/Kühlthermostaten regeln (separate Freigabe)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "Klima — Lüftung und Luftreinigung",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "climate_fan_speed_auto": "Drehzahl bereits laufender Lüfter regeln (separate Freigabe)",
+          "climate_fan_power_auto": "Ein-/Ausschalten geprüfter Lüftungs- oder Luftreinigungsventilatoren erlauben (separate Freigabe)",
+          "climate_fan_power_hardware_confirmed": "Unabhängiger Elektro-, Brand-, Rückström- und Druckschutz geprüft",
+          "climate_fan_power_min_on_s": "Minimale Lüfterlaufzeit (Sekunden)",
+          "climate_fan_power_min_off_s": "Minimale bestätigte Ausschaltzeit (Sekunden)",
+          "climate_fan_power_max_on_s": "Maximale ununterbrochene Lüfterlaufzeit (Sekunden)",
+          "climate_pm25_sensor_verified": "PM2.5-Messsensor überprüft, kein geschätzter Index",
+          "climate_co2_entity": "CO₂-Sensor im Raum (NDIR-Prüfung in Umweltdaten)",
+          "climate_pm25_entity": "PM2.5-Sensor im Raum",
+          "climate_pm25_action_ug_m3": "PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)",
+          "climate_extraction_speed_percent": "Zieldrehzahl laufender Abluftanlage (%)",
+          "climate_purifier_speed_percent": "Zieldrehzahl laufender Luftreinigung (%)"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Diese Option steuert „Drehzahl bereits laufender Lüfter regeln (separate Freigabe)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_fan_power_auto": "Diese Option steuert „Ein-/Ausschalten geprüfter Lüftungs- oder Luftreinigungsventilatoren erlauben (separate Freigabe)“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "climate_fan_power_hardware_confirmed": "Für „Unabhängiger Elektro-, Brand-, Rückström- und Druckschutz geprüft“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_fan_power_min_on_s": "Dieser Zeitwert regelt „Minimale Lüfterlaufzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_fan_power_min_off_s": "Dieser Zeitwert regelt „Minimale bestätigte Ausschaltzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_fan_power_max_on_s": "Dieser Zeitwert regelt „Maximale ununterbrochene Lüfterlaufzeit (Sekunden)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "climate_pm25_sensor_verified": "Für „PM2.5-Messsensor überprüft, kein geschätzter Index“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "climate_co2_entity": "Eine passende Home-Assistant-Quelle für „CO₂-Sensor im Raum (NDIR-Prüfung in Umweltdaten)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_pm25_entity": "Eine passende Home-Assistant-Quelle für „PM2.5-Sensor im Raum“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "climate_pm25_action_ug_m3": "Dies ist ein Entscheidungswert für „PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_extraction_speed_percent": "Dies ist ein Entscheidungswert für „Zieldrehzahl laufender Abluftanlage (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "climate_purifier_speed_percent": "Dies ist ein Entscheidungswert für „Zieldrehzahl laufender Luftreinigung (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert."
+        }
+      },
+      "climate_profiles": {
+        "title": "Klima — Temperaturbereiche je Betriebsart",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "home_heat": "Heizen · Zuhause (°C)",
+          "home_cool": "Kühlen · Zuhause (°C)",
+          "unoccupied_heat": "Heizen · Unbelegter Raum (°C)",
+          "unoccupied_cool": "Kühlen · Unbelegter Raum (°C)",
+          "away_heat": "Heizen · Abwesend (°C)",
+          "away_cool": "Kühlen · Abwesend (°C)",
+          "sleep_heat": "Heizen · Schlaf (°C)",
+          "sleep_cool": "Kühlen · Schlaf (°C)"
+        },
+        "data_description": {
+          "home_heat": "Sollwert für „Heizen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "home_cool": "Sollwert für „Kühlen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "unoccupied_heat": "Sollwert für „Heizen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "unoccupied_cool": "Sollwert für „Kühlen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "away_heat": "Sollwert für „Heizen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "away_cool": "Sollwert für „Kühlen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "sleep_heat": "Sollwert für „Heizen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "sleep_cool": "Sollwert für „Kühlen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
+        }
+      },
+      "climate_actuators": {
+        "title": "Direktaktoren — Geräte und sichere Schaltzeiten",
+        "description": "Bereich · Einstellungen · Geräte · Steuerung. Belegung · Sensor · Erforderlich.",
+        "data": {
+          "direct_hardware_confirmed": "Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt",
+          "heat_actuator": "Heizaktor (Schalter oder Prozentwert)",
+          "cool_actuator": "Kühlaktor (Schalter oder Prozentwert)",
+          "min_on_s": "Leistung · Automatische (s) · MIN ON",
+          "min_off_s": "Leistung · Ausschalten (s)",
+          "max_on_s": "Leistung · Automatische (s) · MAX ON",
+          "mode_dwell_s": "Einstellungen · Quelle (s) · MODE DWELL",
+          "kp": "PID Kp · Steuerung (percentage points/°C)",
+          "ki": "PID Ki · Steuerung (percentage points/(°C·minute))",
+          "kd": "PID Kd · Steuerung (percentage points·minute/°C)",
+          "sample_seconds": "Einstellungen · Quelle (s) · SAMPLE",
+          "pwm_period_s": "Einstellungen · Quelle (s) · PWM PERIOD",
+          "max_demand_change": "Einstellungen · Quelle · MAX Δ",
+          "min_demand_change": "Einstellungen · Quelle · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Für „Keine Kompressoren; unabhängiger Überhitzungsschutz bestätigt“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "heat_actuator": "„Heizaktor (Schalter oder Prozentwert)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "cool_actuator": "„Kühlaktor (Schalter oder Prozentwert)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "min_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s) · MIN ON“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "min_off_s": "Dieser Zeitwert regelt „Leistung · Ausschalten (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "max_on_s": "Dieser Zeitwert regelt „Leistung · Automatische (s) · MAX ON“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "mode_dwell_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · MODE DWELL“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "kp": "„PID Kp · Steuerung (percentage points/°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "ki": "„PID Ki · Steuerung (percentage points/(°C·minute))“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "kd": "„PID Kd · Steuerung (percentage points·minute/°C)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "sample_seconds": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · SAMPLE“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "pwm_period_s": "Dieser Zeitwert regelt „Einstellungen · Quelle (s) · PWM PERIOD“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "max_demand_change": "„Einstellungen · Quelle · MAX Δ“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "min_demand_change": "„Einstellungen · Quelle · MIN Δ“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
+        }
+      },
+      "outside_data": {
+        "title": "Außendaten",
+        "description": "Wetter, Warnungen, Außenluftqualität, AQI-Skalen und Pollen. Wähle einen Unterpunkt.",
+        "menu_options": {
+          "weather": "Wetter und Warnungen",
+          "outdoor": "Außenluftqualität",
+          "outside_aqi": "Außen · AQI",
+          "pollen": "Pollen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Bereichseinstellungen",
+        "description": "Raumüberwachung, Fensterausschlüsse, Messungen und Geräte einzeln einstellen.",
+        "menu_options": {
+          "areas": "Bereiche",
+          "indoor_sensors": "Raumeinstellungen – Innenluft und Schimmel",
+          "window_sensors": "Fenstersensoren ausschließen",
+          "environment_room": "Raum für Umweltanalysen wählen",
+          "climate": "Klima — Raum auswählen",
+          "pid": "Klima-PID — Raum wählen",
+          "area_devices": "Bereich · Geräte"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Geräte · Einstellungen",
+        "description": "Automatik, Sollwerte, Anwesenheit und Schlaf für dieses Gerät einstellen.",
+        "menu_options": {
+          "device_settings": "Geräte · Steuerung",
+          "device_choice": "Auswählen · Geräte",
+          "device_done": "Einstellungen · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Allgemeine Einstellungen",
+        "description": "Präsenzsensoren, Anwesenheitstracker und Sensoren für belegte oder schlafende Räume festlegen. Raumlisten im Zustand oder einem benannten Attribut (z. B. JSON). Fehlende oder alte Werte bedeuten NIEMALS, dass das Haus leer ist.",
+        "data": {
+          "general_room_occupancy_sensors": "Raum · Belegung · Sensor",
+          "general_occupied_rooms_entity": "Belegung · Raum · Quelle (state)",
+          "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
+          "general_home_trackers": "Zuhause · Belegung · Geräte",
+          "general_home_policy": "Zuhause · Belegung · Steuerung",
+          "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
+          "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
+          "general_source_stale_minutes": "Maximales Datenalter für Raumbelegung/Schlaf (Minuten)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Eine passende Home-Assistant-Quelle für „Raum · Belegung · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_entity": "Eine passende Home-Assistant-Quelle für „Belegung · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_occupied_rooms_attribute": "„Belegung · Raum · Quelle (attribute)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "general_home_trackers": "Eine passende Home-Assistant-Quelle für „Zuhause · Belegung · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_home_policy": "Diese Option steuert „Zuhause · Belegung · Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "general_sleep_rooms_entity": "Eine passende Home-Assistant-Quelle für „Schlaf · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "general_sleep_rooms_attribute": "Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen.",
+          "general_source_stale_minutes": "Maximales Alter der letzten Quellenaktualisierung, bevor die Raum-/Schlafliste als unbekannt gilt. Keine Mindestschlafdauer. Standard: 240 Minuten. Veraltete Daten dürfen kein automatisches Ausschalten auslösen."
+        }
+      },
+      "pollen": {
+        "title": "Einstellungen · Pollen",
+        "description": "Pollenindex aus einer beliebigen Home-Assistant-Quelle wählen. Skala und optionale Lüftungssperre bei hoher Belastung festlegen.",
+        "data": {
+          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
+          "pollen_high_from": "Pollenindex ab diesem Wert hoch",
+          "pollen_max_scale": "Maximalwert der Pollen-Skala",
+          "pollen_avoid_ventilation": "Bei hoher Pollenbelastung Lüften vermeiden"
+        },
+        "data_description": {
+          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
+          "pollen_high_from": "Die Pollen-Warnschwelle hängt von der Skala des Anbieters ab.",
+          "pollen_max_scale": "Oberster Zahlenwert der Anbieterskala, z. B. 5.",
+          "pollen_avoid_ventilation": "Hohe Pollenwerte können die Empfehlung zum Fensteröffnen optional sperren."
+        }
+      },
+      "outside_aqi": {
+        "title": "Außen · AQI",
+        "description": "Jedem AQI-Sensor seine dokumentierte Skala zuordnen. Unbekannte Skalen beweisen keine sichere Außenluft.",
+        "data": {
+          "outside_aqi_entity": "AQI · Sensor",
+          "outside_aqi_scale": "AQI · Quelle",
+          "outside_aqi_limit": "AQI · Sollwert",
+          "outside_aqi_no_sources": "AQI · Sensor · Erforderlich"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Eine passende Home-Assistant-Quelle für „AQI · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "outside_aqi_scale": "„AQI · Quelle“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "outside_aqi_limit": "Dies ist ein Entscheidungswert für „AQI · Sollwert“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "outside_aqi_no_sources": "„AQI · Sensor · Erforderlich“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion."
+        }
+      },
+      "area_devices": {
+        "title": "Bereich · Geräte",
+        "description": "Bereich · Geräte: Auswählen Quelle, Sensor / Geräte · Steuerung.",
+        "data": {
+          "area_devices_area": "Auswählen · Bereich"
+        },
+        "data_description": {
+          "area_devices_area": "Eine passende Home-Assistant-Quelle für „Auswählen · Bereich“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion."
+        }
+      },
+      "select_devices": {
+        "title": "Auswählen · Geräte",
+        "description": "Alle kompatiblen Geräte dieses HA-Raums werden zur Überwachung vorausgewählt. Die Auswahl erlaubt KEINE Gerätesteuerung.",
+        "data": {
+          "selected_devices": "Auswählen · Geräte"
+        },
+        "data_description": {
+          "selected_devices": "Eine passende Home-Assistant-Quelle für „Auswählen · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion."
+        }
+      },
+      "device_choice": {
+        "title": "Auswählen · Geräte",
+        "description": "Genau ein ausgewähltes Gerät konfigurieren.",
+        "data": {
+          "device_choice": "Auswählen · Geräte"
+        },
+        "data_description": {
+          "device_choice": "Eine passende Home-Assistant-Quelle für „Auswählen · Geräte“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion."
+        }
+      },
+      "device_settings": {
+        "title": "Geräte · Steuerung",
+        "description": "Die bisherige Einstellung behält die Raumregelung bei. Manuell folgt nur ausdrücklich gesetzten Sollwerten und Geräteoptionen, nicht wechselnder Anwesenheit. Automatik nutzt Raumprofile; PID verwendet geprüfte Messwerte und langsame Taktung für freigegebene Ein/Aus-Geräte. Aus fordert für selbst eingeschaltete Geräte erst nach der Mindestlaufzeit ein Abschalten an. Leistungsschaltungen erfordern die Inbetriebnahme genau dieses Geräts; ein manuell laufendes Gerät muss vor der automatischen Leistungsübernahme ausgeschaltet werden. Leiser Betrieb begrenzt eine unterstützte Lüfterstufe, keine gemessenen Dezibel, und schaltet Geräte niemals ein. Neustart- oder Eingriffspausen benötigen einen ausdrücklichen Abgleich; ein Profilwechsel hebt sie nicht auf.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatische Steuerung",
+          "device_method": "Steuerung · Quelle",
+          "device_presence_requirement": "Steuerung · Belegung",
+          "device_absence_action": "Ausschalten · Belegung",
+          "device_sleep_behavior": "Schlaf · Steuerung",
+          "device_hardware_confirmed": "Erforderlich · Geräte · Leistung",
+          "device_temperature_entity": "Temperatur · Sensor",
+          "device_humidity_entity": "Luftfeuchtigkeit · Sensor",
+          "device_co2_entity": "CO₂ · Sensor",
+          "device_pm25_entity": "PM2.5 · Sensor",
+          "device_fan_purpose": "Steuerung · Geräte",
+          "device_sensor_verified": "Sensor · Erforderlich",
+          "device_fan_speed_percent": "Geschwindigkeit (%)",
+          "device_humidity_target": "Luftfeuchtigkeit · Sollwert (%)",
+          "device_sleep_humidity_target": "Schlaf · Luftfeuchtigkeit · Sollwert (%)",
+          "device_min_on_s": "Leistung · min ON (s)",
+          "device_min_off_s": "Leistung · min OFF (s)",
+          "device_max_on_s": "Leistung · max ON (s)",
+          "device_home_heat_c": "Heizen · Zuhause (°C)",
+          "device_home_cool_c": "Kühlen · Zuhause (°C)",
+          "device_unoccupied_heat_c": "Heizen · Unbelegter Raum (°C)",
+          "device_unoccupied_cool_c": "Kühlen · Unbelegter Raum (°C)",
+          "device_away_heat_c": "Heizen · Abwesend (°C)",
+          "device_away_cool_c": "Kühlen · Abwesend (°C)",
+          "device_sleep_heat_c": "Heizen · Schlaf (°C)",
+          "device_sleep_cool_c": "Kühlen · Schlaf (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Diese Option steuert „Automatische Steuerung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "device_method": "Diese Option steuert „Steuerung · Quelle“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "device_presence_requirement": "„Steuerung · Belegung“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "device_absence_action": "Diese Option steuert „Ausschalten · Belegung“. Gerätebefehle erfordern eine separate Freigabe und unabhängige Schutzfunktionen.",
+          "device_sleep_behavior": "„Schlaf · Steuerung“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "device_hardware_confirmed": "Für „Erforderlich · Geräte · Leistung“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "device_temperature_entity": "Eine passende Home-Assistant-Quelle für „Temperatur · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "device_humidity_entity": "Eine passende Home-Assistant-Quelle für „Luftfeuchtigkeit · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "device_co2_entity": "Eine passende Home-Assistant-Quelle für „CO₂ · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "device_pm25_entity": "Eine passende Home-Assistant-Quelle für „PM2.5 · Sensor“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
+          "device_fan_purpose": "„Steuerung · Geräte“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
+          "device_sensor_verified": "Für „Sensor · Erforderlich“ echte passende Messdaten verwenden. Schätzungen ersetzen keine kalibrierten Sensoren.",
+          "device_fan_speed_percent": "Dies ist ein Entscheidungswert für „Geschwindigkeit (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "device_humidity_target": "Dies ist ein Entscheidungswert für „Luftfeuchtigkeit · Sollwert (%)“. Er beeinflusst Empfehlungen, ist aber kein medizinischer Grenzwert.",
+          "device_sleep_humidity_target": "Sollwert für „Schlaf · Luftfeuchtigkeit · Sollwert (%)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_min_on_s": "Dieser Zeitwert regelt „Leistung · min ON (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "device_min_off_s": "Dieser Zeitwert regelt „Leistung · min OFF (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "device_max_on_s": "Dieser Zeitwert regelt „Leistung · max ON (s)“. Er begrenzt häufiges Schalten und ersetzt keine Schutzschaltung.",
+          "device_home_heat_c": "Sollwert für „Heizen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_home_cool_c": "Sollwert für „Kühlen · Zuhause (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_unoccupied_heat_c": "Sollwert für „Heizen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_unoccupied_cool_c": "Sollwert für „Kühlen · Unbelegter Raum (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_away_heat_c": "Sollwert für „Heizen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_away_cool_c": "Sollwert für „Kühlen · Abwesend (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_sleep_heat_c": "Sollwert für „Heizen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer.",
+          "device_sleep_cool_c": "Sollwert für „Kühlen · Schlaf (°C)“, wenn das passende Anwesenheits- oder Schlafprofil bestätigt ist. Unbekannt bedeutet nicht leer."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Mindestens einen unterstützten Außenluftsensor auswählen.",
+      "no_outdoor": "Kein unterstützter Außenluftsensor erkannt. Zuerst eine passende AQI-, CO₂-, Feinstaub- oder VOC-Entität hinzufügen.",
+      "invalid_weather": "Mindestens eine Wetterentität auswählen.",
+      "invalid_warning": "Wetterwarnsensor wird nicht mehr unterstützt.",
+      "missing_notify": "Announcement Hub oder eine Benachrichtigungsentität wählen.",
+      "missing_tts": "Announcement Hub oder TTS-Engine und Mediaplayer wählen.",
+      "temperature_range": "Mindesttemperatur muss unter der Höchsttemperatur liegen.",
+      "no_areas": "Mindestens einen Bereich auswählen.",
+      "no_window_areas": "Keine Fensterkontakte erkannt. Weise einem Bereich einen Binärsensor der Geräteklasse Fenster zu; Cover zählen nicht.",
+      "invalid_areas": "Ein Bereich ist nicht mehr als Fensterbereich verfügbar.",
+      "invalid_window_exclusions": "Mindestens eine ausgeschlossene Entität ist nicht mehr auswählbar.",
+      "invalid_indoor_exclusions": "Ein ausgewählter Sensor ist für diesen Raum nicht verfügbar.",
+      "no_windows_after_exclusions": "Diese Ausschlüsse würden alle nutzbaren Fensterkontakte entfernen. Lass mindestens einen Kontakt aktiviert.",
+      "review_areas_after_exclusions": "Einige ausgewählte Räume haben nach den Ausschlüssen keinen Fensterkontakt mehr. Prüfe die Raumauswahl.",
+      "invalid_repeat_minutes": "Eine ganze Zahl zwischen 0 und 1440 Minuten eingeben; 0 deaktiviert die Wiederholung.",
+      "missing_ai_service": "Die Home-Assistant-Aktion conversation.process ist nicht verfügbar.",
+      "invalid_ai_agent": "Wähle einen unterstützten Home-Assistant-Konversationsagenten.",
+      "invalid_mold_temperature_sensor": "Wähle einen gültigen Temperatursensor dieses Raums.",
+      "missing_mold_indoor_temperature": "Der Raumtemperatursensor liefert keinen gültigen aktuellen Messwert.",
+      "missing_mold_outdoor_temperature": "Keine gewählte Wetterentität liefert eine aktuelle Außentemperatur.",
+      "invalid_mold_surface_temperature": "Gib eine gültige gemessene Oberflächentemperatur in °C ein.",
+      "invalid_mold_calibration": "Raum-, Außen- und Oberflächentemperatur müssen gleichzeitig gemessen werden; innen und außen mindestens 3°C Temperaturunterschied.",
+      "invalid_environment_scale": "Ungültige Einstellung für „Einstellungen · Quelle“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "invalid_environment_measurement": "Ungültige Einstellung für „Einstellungen · Quelle“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pmv_requires_explicit_inputs": "Ungültige Einstellung für „PMV / PPD“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pid_climate_required": "Ungültige Einstellung für „PID · Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pid_temperature_required": "Ungültige Einstellung für „PID · Temperatur“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pid_invalid_target": "Ungültige Einstellung für „PID · Sollwert“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pid_duplicate_climate": "Ungültige Einstellung für „PID · Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "pid_invalid_parameters": "Ungültige Einstellung für „PID“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_dry_fan_control_inputs_missing": "Raumluftfeuchtesensor und Klimagerät mit DRY und FAN_ONLY auswählen, Geräteschutz bestätigen und keine konkurrierende Entfeuchtersteuerung aktivieren.",
+      "climate_humidity_power_inputs_missing": "Sensor, Be-/Entfeuchter, Schutzfreigabe und sichere Schaltzeiten prüfen; Sollwert- und Schaltregler dürfen nicht gleichzeitig aktiv sein.",
+      "climate_secondary_control_inputs_missing": "Zusätzliches Heiz-/Kühlgerät und Raumfreigabe konfigurieren.",
+      "climate_fan_power_inputs_missing": "Geprüfte Raumluftsensoren und Lüfter, Schutzfreigabe und zulässige Zeiten nötig; Drehzahl- und Leistungsregler nicht gleichzeitig aktivieren.",
+      "climate_fan_control_inputs_missing": "Raumsteuerung, Geräte und geprüfte Sensoren auswählen.",
+      "climate_fan_sensor_invalid": "Nur gültige CO₂-/PM2.5-Sensoren und Prozentwerte auswählen.",
+      "climate_humidity_control_inputs_missing": "Zuerst Klimasteuerung, Raumsensor sowie Be- oder Entfeuchter auswählen.",
+      "climate_temperature_required": "Ungültige Einstellung für „Temperatur · Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_target_required": "Ungültige Einstellung für „Geräte · Sollwert“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_direct_actuator_not_ready": "Ungültige Einstellung für „Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_controller_invalid": "Ungültige Einstellung für „Geräte · Steuerung“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_mode_invalid": "Ungültige Einstellung für „Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_occupancy_invalid": "Ungültige Einstellung für „Belegung · Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_away_invalid": "Ungültige Einstellung für „Zuhause · Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_deadband_invalid": "Ungültige Einstellung für „Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_attestation_required": "Ungültige Einstellung für „Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_direct_targets_invalid": "Ungültige Einstellung für „Geräte · Sollwert“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "climate_direct_timing_invalid": "Ungültige Einstellung für „Geräte“. Quelle, Einheit und Sicherheitsvorgaben prüfen.",
+      "general_invalid_presence": "Ungültig · Belegung · Einstellungen",
+      "general_invalid_trackers": "Ungültig · Zuhause · Einstellungen",
+      "general_invalid_rooms_entity": "Ungültig · Raum · Einstellungen",
+      "general_invalid_attribute": "Ungültig · Quelle · Einstellungen",
+      "general_invalid_source_age": "Ungültig · Quelle · Einstellungen",
+      "invalid_selected_devices": "Ungültig · Geräte · Einstellungen",
+      "device_policy_invalid": "Ungültig · Belegung · Einstellungen",
+      "device_method_invalid": "Ungültig · Steuerung · Einstellungen",
+      "device_hardware_required": "Ungültig · Erforderlich · Einstellungen",
+      "device_power_required_for_off": "Ungültig · Leistung · Einstellungen",
+      "device_temperature_required": "Ungültig · Temperatur · Einstellungen",
+      "device_humidity_required": "Ungültig · Luftfeuchtigkeit · Einstellungen",
+      "device_air_sensor_required": "Ungültig · Sensor · Einstellungen",
+      "device_temperature_band_invalid": "Ungültig · Temperatur · Einstellungen",
+      "device_humidity_invalid": "Ungültig · Luftfeuchtigkeit · Einstellungen",
+      "device_runtime_invalid": "Ungültig · Leistung · Einstellungen"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Fensterempfehlungen",
+        "state": {
+          "open": "Fenster öffnen",
+          "close": "Fenster schließen",
+          "idle": "Keine Aktion",
+          "blocked": "Außenbedingungen ungeeignet"
+        }
+      },
+      "area_overview": {
+        "name": "Raumklima-Übersicht"
+      },
+      "area_surface_humidity": {
+        "name": "Oberflächenfeuchte (berechnet)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Maximaler Außen-AQI"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Maximaler CO₂-Wert außen (ppm)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Maximaler PM2,5-Wert außen (µg/m³)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Maximaler PM10-Wert außen (µg/m³)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Maximaler VOC-Wert außen (µg/m³)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Maximaler VOC-Wert außen (ppb)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "Außenluft NO₂ — Richtwert (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "Außenluft O₃ — Richtwert (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "Außenluft SO₂ — Richtwert (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Innen-AQI als Lüftungsschwelle"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "CO₂-Grenzwert innen für Lüftung (ppm)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "PM2,5-Grenzwert innen für Lüftung (µg/m³)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "PM10-Grenzwert innen für Lüftung (µg/m³)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "VOC-Grenzwert innen für Lüftung (µg/m³)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "VOC-Grenzwert innen für Lüftung (ppb)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Luftfeuchte innen als Lüftungsschwelle (%)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Schimmelindikator für Lüften (geschätzte Oberflächenfeuchte, %)"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Minimale Außentemperatur (°C)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Maximale Außentemperatur (°C)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Maximale Außenluftfeuchte (%)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Maximale Windgeschwindigkeit (km/h)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "Höchstalter einer Außenmessung (Minuten)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Ansagen wiederholen (Minuten)"
+      },
+      "area_pid_target_c": {
+        "name": "Raum-Solltemperatur (°C)"
+      },
+      "area_pid_kp": {
+        "name": "Proportionalverstärkung Kp (%/°C)"
+      },
+      "area_pid_ki": {
+        "name": "Integralverstärkung Ki (%/(°C·min))"
+      },
+      "area_pid_kd": {
+        "name": "Differentialverstärkung Kd (%·min/°C)"
+      },
+      "area_pid_offset_c": {
+        "name": "Maximale Sollwertabweichung (°C)"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "Niedrigster zulässiger Sollwert (°C)"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "Höchster zulässiger Sollwert (°C)"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID-Abtastintervall (Sekunden)"
+      },
+      "area_pid_max_change_c": {
+        "name": "Maximale Sollwertänderung je Intervall (°C)"
+      },
+      "area_pid_min_change_c": {
+        "name": "Minimale sinnvolle Sollwertänderung (°C)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Heizen · Zuhause (°C)"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Kühlen · Zuhause (°C)"
+      },
+      "area_climate_profile_unoccupied_heat": {
+        "name": "Heizen · Unbelegter Raum (°C)"
+      },
+      "area_climate_profile_unoccupied_cool": {
+        "name": "Kühlen · Unbelegter Raum (°C)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Heizen · Abwesend (°C)"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Kühlen · Abwesend (°C)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Heizen · Schlaf (°C)"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Kühlen · Schlaf (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "Pollenindex ab diesem Wert hoch"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "Maximalwert der Pollen-Skala"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "Maximales Datenalter für Raumbelegung/Schlaf (Minuten)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "Raumluftvolumen (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "Reinigungsleistung für Partikel, CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂-Zielwert beim Lüften (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Radon-Jahresreferenzwert (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Angenommene Luftgeschwindigkeit (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "Aktivität des Bewohners (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "Bekleidungsisolierung des Bewohners (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Verzögerung bis Raum als unbelegt gilt (Minuten)"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Maximales Alter der Präsenzmessung (Minuten)"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Maximale Komfortkorrektur (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "Untergrenze der relativen Luftfeuchte (%)"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "Obergrenze der relativen Luftfeuchte (%)"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "Hysterese für Luftfeuchte (Prozentpunkte)"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Entfeuchter beim aktiven Kühlen zurückstellen, bis relative Feuchte die Obergrenze um diesen Wert übersteigt (0 deaktiviert)"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5-Kurzzeit-Auslöseschwelle (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "Zieldrehzahl laufender Abluftanlage (%)"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "Zieldrehzahl laufender Luftreinigung (%)"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · Steuerung (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · Steuerung (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · Steuerung (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "Einstellungen · Quelle (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "Einstellungen · Quelle · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "Einstellungen · Quelle · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Gemessene Temperatur der kältesten Oberfläche (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}Proportionalverstärkung Kp (%/°C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}Integralverstärkung Ki (%/(°C·min))"
+      },
+      "equipment_kd": {
+        "name": "{channel}Differentialverstärkung Kd (%·min/°C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID-Abtastintervall (Sekunden)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}Einstellungen · Quelle (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Lüftergrenze für leisen Betrieb (%)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Neue Empfehlungen automatisch melden"
+      },
+      "home_automatic_tts": {
+        "name": "Neue Empfehlungen automatisch sprechen"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub verwenden, falls vorhanden"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "KI für Ansagen verwenden"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "Bei hoher Pollenbelastung Lüften vermeiden"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Schlafzimmer"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "ISO-7730-Komfort PMV/PPD aktivieren"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Schlaf · Geräte"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Schlafprofil nach Uhrzeit"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Hinweis senden, wenn sich laufende Heizung, Kühlung oder Entfeuchtung durch sicheres Fensterlüften entlasten lässt"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Leiser Betrieb beim Schlafen"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Leiser Betrieb bei Anwesenheit"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Sprache"
+      },
+      "area_manual_profile": {
+        "name": "Geräte"
+      },
+      "area_pid_gain_source": {
+        "name": "PID-Verstärkung",
+        "state": {
+          "defaults": "Standardwerte",
+          "manual": "Manuell"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Zuhause · Belegung · Steuerung"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Belegung · Geräte"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Zuhause · Geräte · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Temperatursollwert oder ISO-7730-Komfort"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Regelverfahren",
+        "state": {
+          "existing": "Bisherige Raumregelung",
+          "automatic": "Automatische",
+          "manual": "Manuell",
+          "off": "Ausschalten",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Native leise Lüfterstufe"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Schlafbeginn (lokale Zeit)"
+      },
+      "area_climate_sleep_end": {
+        "name": "Schlafende (lokale Zeit)"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Mit aktuellen Temperaturwerten neu kalibrieren"
+      },
+      "equipment_resume": {
+        "name": "{channel}Abgleichen und fortsetzen"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaregler"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Luftqualitäts-Empfehlungen ausgeben",
+      "description": "Aktuelle Fensterempfehlungen mit Begründung sprechen und/oder melden. Sprache bei jedem Aufruf wählbar.",
+      "fields": {
+        "language": {
+          "name": "Nachrichtensprache überschreiben",
+          "description": "Nachrichtensprache überschreiben"
+        },
+        "channels": {
+          "name": "Ausgabekanäle",
+          "description": "Ausgabekanäle"
+        },
+        "areas": {
+          "name": "Nur diese Bereiche (optional)",
+          "description": "Nur diese Bereiche (optional)"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant-Standard",
+        "en": "Einstellungen · Quelle",
+        "de": "Einstellungen · Quelle",
+        "el": "Einstellungen · Quelle",
+        "fr": "Einstellungen · Quelle",
+        "es": "Einstellungen · Quelle",
+        "it": "Einstellungen · Quelle",
+        "nl": "Einstellungen · Quelle",
+        "pt": "Einstellungen · Quelle",
+        "pt-br": "Einstellungen · Quelle",
+        "pl": "Einstellungen · Quelle",
+        "ru": "Einstellungen · Quelle",
+        "uk": "Einstellungen · Quelle",
+        "tr": "Einstellungen · Quelle",
+        "cs": "Einstellungen · Quelle",
+        "sk": "Einstellungen · Quelle",
+        "hu": "Einstellungen · Quelle",
+        "ro": "Einstellungen · Quelle",
+        "bg": "Einstellungen · Quelle",
+        "hr": "Einstellungen · Quelle",
+        "sr": "Einstellungen · Quelle",
+        "sv": "Einstellungen · Quelle",
+        "nb": "Einstellungen · Quelle",
+        "da": "Einstellungen · Quelle",
+        "fi": "Einstellungen · Quelle",
+        "id": "Einstellungen · Quelle",
+        "vi": "Einstellungen · Quelle",
+        "th": "Einstellungen · Quelle",
+        "hi": "Einstellungen · Quelle",
+        "zh-hans": "Einstellungen · Quelle",
+        "zh-hant": "Einstellungen · Quelle",
+        "ja": "Einstellungen · Quelle",
+        "ko": "Einstellungen · Quelle",
+        "ar": "Einstellungen · Quelle",
+        "he": "Einstellungen · Quelle",
+        "fa": "Einstellungen · Quelle",
+        "bn": "Einstellungen · Quelle",
+        "ur": "Einstellungen · Quelle",
+        "ta": "Einstellungen · Quelle"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Zuhause · Belegung",
+        "all_home": "Zuhause · Geräte · Belegung"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "Sollwert · Steuerung",
+        "native": "Geräte · Steuerung",
+        "power": "Leistung",
+        "speed": "Geschwindigkeit"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatische",
+        "room": "Raum · Belegung",
+        "home": "Zuhause · Belegung"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pausieren",
+        "off": "Ausschalten"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatische",
+        "pause": "Pausieren",
+        "sleep_targets": "Schlaf · Sollwert"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Außen · Steuerung",
+        "filtration": "PM2.5 · Steuerung"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "Quelle · Ungültig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "Sollwert · Einstellungen"
+      }
+    }
+  }
+}

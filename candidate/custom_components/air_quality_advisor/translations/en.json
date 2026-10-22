@@ -1,0 +1,1558 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Areas",
+        "description": "First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.",
+        "data": {
+          "areas": "Areas to monitor",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
+        },
+        "data_description": {
+          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+        }
+      },
+      "window_sensors": {
+        "title": "Window sensor exclusions",
+        "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
+        "data": {
+          "excluded_window_entities": "Window entities to exclude"
+        },
+        "data_description": {
+          "excluded_window_entities": "The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Room settings — indoor air and mold",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Sensors to exclude in this room",
+          "mold_indoor_temperature": "Room temperature sensor for mold calibration",
+          "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
+          "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
+          "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration.",
+          "mold_outdoor_weather_entity": "Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Outdoor air quality",
+        "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
+        "data": {
+          "outdoor_sensors": "Outdoor air-quality sensors"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+        }
+      },
+      "weather": {
+        "title": "Weather and warnings",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Weather entities",
+          "weather_warnings": "Weather warning sensors (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Announcements (optional)",
+        "description": "The recommendation sensor always works without announcements. Enable notifications and/or speech only if wanted. Announcement Hub, when enabled and available, handles room-aware routing. For standalone output, choose notification targets and a TTS engine with players.",
+        "data": {
+          "language": "Language",
+          "automatic_tts": "Speak new recommendations automatically",
+          "automatic_notifications": "Notify about new recommendations automatically",
+          "use_announcement_hub": "Use Announcement Hub if available",
+          "notify_entities": "Direct notification entities",
+          "tts_engine": "Direct TTS engine",
+          "media_players": "Direct TTS media players",
+          "announcement_repeat_minutes": "Repeat announcements (minutes)",
+          "ai_rewrite_announcements": "Use AI for announcements",
+          "ai_conversation_agent": "Conversation agent"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Only shown when Announcement Hub is configured. When stopped, unavailable or rejecting a job, the advisor falls back to Home Assistant notification/TTS and a persistent notification if needed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Default 10 minutes. Set to 0 to never repeat. The same window recommendation and reason must still apply. Each room has its own timer; sensor fluctuations above the same limit do not reset it. Requires automatic notifications or TTS.",
+          "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
+        }
+      },
+      "thresholds": {
+        "title": "Advanced thresholds",
+        "description": "These limits apply to instantaneous sensor values and are configurable guidance, not health or exposure standards. AQI assumes the US 0–500 scale by default; change the limits for any differently scaled provider.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "outdoor_no2": "Outdoor NO₂ operational screen (µg/m³)",
+          "outdoor_o3": "Outdoor O₃ operational screen (µg/m³)",
+          "outdoor_so2": "Outdoor SO₂ operational screen (µg/m³)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)",
+          "indoor_mold": "Mold indication triggering ventilation (estimated surface RH, %)"
+        },
+        "data_description": {
+          "outdoor_aqi": "If outdoor AQI exceeds this configured provider-scale threshold, window opening is blocked. The default assumes US AQI; confirm the selected provider's scale.",
+          "outdoor_co2": "Outdoor CO₂ screening ceiling in ppm. A confirmed reading above this value makes outside air unsuitable for ventilation advice; missing readings remain marked incomplete.",
+          "outdoor_pm25": "Outdoor PM2.5 screening threshold in µg/m³. Higher measured particle levels block opening. This checks instantaneous readings, not WHO 24-hour compliance.",
+          "outdoor_pm10": "Outdoor PM10 screening threshold in µg/m³. Valid elevated readings block ventilation suggestions; not a substitute for time-averaged exposure assessment.",
+          "outdoor_voc": "Screen outdoor total volatile organic compounds reported in µg/m³. A reliable reading above the limit blocks window advice; sensor calibration and VOC mixtures vary.",
+          "outdoor_voc_parts": "Screen outdoor VOC sensors reporting ppb. Do not confuse ppb with µg/m³: conversion depends on gas identity. Values above this limit block airing advice.",
+          "outdoor_no2": "Operational outdoor NO₂ screening threshold (µg/m³). High readings discourage ventilation; this instantaneous decision value is not a WHO averaging-period limit.",
+          "outdoor_o3": "Operational outdoor ground-level ozone threshold (µg/m³). Elevated ozone can irritate airways; this screen does not replace hourly or daily exposure limits.",
+          "outdoor_so2": "Operational outdoor sulfur dioxide threshold (µg/m³). Elevated readings block opening advice; this is not an official timed exposure standard.",
+          "indoor_aqi": "If indoor AQI exceeds this threshold, the integration looks for an opportunity to ventilate only when outdoor air and weather are suitable. Match the sensor's AQI scale.",
+          "indoor_co2": "Indoor CO₂ in ppm used to recommend increased fresh-air ventilation. Elevated CO₂ can indicate insufficient ventilation, but low CO₂ does not guarantee healthy air.",
+          "indoor_pm25": "Indoor PM2.5 in µg/m³ used to identify particle exposure and consider ventilation when outdoor particles are lower. This instant screen is not the WHO 24-hour mean.",
+          "indoor_pm10": "Indoor PM10 in µg/m³ used for air-quality attention and safe ventilation comparison. Higher levels can irritate the respiratory system; avoid outside air if worse.",
+          "indoor_voc": "Indoor VOC in µg/m³ used to flag possible sources such as cleaners or furnishings. Recommendations require safer outside air; individual VOC sensors are not universal health monitors.",
+          "indoor_voc_parts": "Indoor VOC measurement in ppb. Above the configured value the room may need ventilation, subject to outdoor safety. ppb cannot generally be converted to µg/m³ without a reference gas.",
+          "indoor_humidity": "Upper indoor relative humidity (%) for ventilation recommendations. Sustained high humidity may promote condensation and mold; a single reading is not a mold diagnosis.",
+          "min_outdoor_temp": "Below this outdoor temperature (°C), window-opening advice is blocked to limit cold-air discomfort and heating losses. This does not control the heating device.",
+          "max_outdoor_temp": "Above this outdoor temperature (°C), window-opening advice is blocked to avoid bringing in hot air. Climate actuators retain their independent controls.",
+          "max_outdoor_humidity": "Maximum outdoor relative humidity (%), used with other safety checks for opening suggestions. RH depends on temperature; moisture-ratio comparisons give better drying advice.",
+          "max_wind_kmh": "Window-opening advice is blocked when measured wind speed exceeds this km/h value. It prevents suggesting ventilation during potentially unsafe wind.",
+          "max_age_minutes": "Maximum permitted age of an outdoor sensor report in minutes. Older data are marked stale and are not treated as proof that outdoor air is safe or unsafe.",
+          "indoor_mold": "Estimated critical-surface relative humidity (%) that triggers moisture/mold-risk ventilation advice. This is a physics-based indication, not detection of mold spores."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
+      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent.",
+      "invalid_mold_temperature_sensor": "Choose a valid temperature sensor assigned to this room.",
+      "missing_mold_indoor_temperature": "The room temperature sensor has no valid recent Celsius/Fahrenheit reading. Try again when it is available.",
+      "missing_mold_outdoor_temperature": "No selected weather entity supplies a valid recent outdoor temperature. Configure weather first or wait for a valid measurement.",
+      "invalid_mold_surface_temperature": "Enter a finite measured surface temperature in °C.",
+      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings."
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Choose settings to edit",
+        "description": "Choose one section. All other settings stay unchanged.",
+        "menu_options": {
+          "outside_data": "Outside data",
+          "general_settings": "General settings",
+          "area_settings": "Area settings",
+          "delivery": "Announcements (optional)",
+          "thresholds": "Advanced thresholds"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Window sensor exclusions",
+        "description": "Review window-class binary sensors. ⚠ marks likely virtual or auxiliary signals (for example window-open detection on a radiator thermostat); those are preselected for exclusion. Uncheck any real window contact. Your choices are saved and take priority over future suggestions.",
+        "data": {
+          "excluded_window_entities": "Window entities to exclude"
+        },
+        "data_description": {
+          "excluded_window_entities": "The menu lists every Window-class binary sensor with its room and entity ID. Selected entities will not count as windows for room selection, recommendations or the dashboard. An empty selection includes them all."
+        }
+      },
+      "areas": {
+        "title": "Areas",
+        "description": "First select the rooms to monitor. Rooms with Window-class binary sensors are preselected; covers do not count. Next, review window-sensor exclusions. If these remove all usable contacts from a selected room, you can review your rooms again.",
+        "data": {
+          "areas": "Areas to monitor",
+          "use_mold_indicator": "Use mold indication instead of raw room RH"
+        },
+        "data_description": {
+          "areas": "Rooms first. Window-class binary sensors only; covers do not count. Exclusions are reviewed next, with a room review if needed.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Room settings — indoor air and mold",
+        "description": "Room: {area_name} ({position}/{total}). Exclude indoor air sensors here. For mold indication, measure the temperature of the coldest surface (for example an exterior corner or window frame) with a thermometer while room and outdoor temperatures are stable. Enter the surface temperature in °C below. Leave it empty to calibrate later.\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Sensors to exclude in this room",
+          "mold_indoor_temperature": "Room temperature sensor for mold calibration",
+          "mold_critical_temperature_c": "Measured coldest surface temperature (°C)",
+          "mold_recalibrate": "Recalibrate with current room and outdoor readings",
+          "mold_outdoor_weather_entity": "Outdoor temperature source for mold calibration"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Selected sensors are ignored in recommendations and the dashboard for this room only. Humidity, CO₂, AQI, PM2.5, PM10 and VOC sensors are supported. An empty selection keeps them all.",
+          "mold_indoor_temperature": "Choose the ambient room temperature sensor (°C/°F). Only supported temperature sensors assigned to this room are offered. The reading is captured together with the outdoor weather temperature when you save a new calibration.",
+          "mold_critical_temperature_c": "Measure the coldest wall/corner/window-frame surface now, simultaneously with room and outdoor temperature. A difference of at least 3°C between indoors and outdoors is needed. This measurement sets a persistent calibration factor; it is not treated as a fixed surface temperature. Clear to disable mold estimation for this room. See the Home Assistant Mold Indicator documentation.",
+          "mold_recalibrate": "Check only after measuring the coldest surface again now. Otherwise changing sensor exclusions must not silently overwrite the original calibration.",
+          "mold_outdoor_weather_entity": "Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Outdoor air quality",
+        "description": "Choose one or more supported outdoor air-quality sensors. Valid high readings block ventilation. Unknown, stale or unavailable readings are ignored as blockers and shown separately as incomplete data.",
+        "data": {
+          "outdoor_sensors": "Outdoor air-quality sensors"
+        },
+        "data_description": {
+          "outdoor_sensors": "Choose genuine outdoor sensors. Available readings above limits block opening; unknown, unavailable or stale readings are reported, not classified as unsafe."
+        }
+      },
+      "weather": {
+        "title": "Weather and warnings",
+        "description": "Select weather providers and, optionally, weather-warning sensors. Rain, storms, excessive wind, extreme temperatures and active or unavailable warnings block opening. An unavailable selected provider is treated cautiously.\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Weather entities",
+          "weather_warnings": "Weather warning sensors (optional)"
+        },
+        "data_description": {
+          "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
+          "weather_warnings": "Optional. Active and unavailable selected warnings block window opening."
+        }
+      },
+      "delivery": {
+        "title": "Announcements (optional)",
+        "description": "The recommendation sensor always works without announcements. Enable notifications and/or speech only if wanted. Announcement Hub, when enabled and available, handles room-aware routing. For standalone output, choose notification targets and a TTS engine with players.",
+        "data": {
+          "language": "Language",
+          "automatic_tts": "Speak new recommendations automatically",
+          "automatic_notifications": "Notify about new recommendations automatically",
+          "use_announcement_hub": "Use Announcement Hub if available",
+          "notify_entities": "Direct notification entities",
+          "tts_engine": "Direct TTS engine",
+          "media_players": "Direct TTS media players",
+          "announcement_repeat_minutes": "Repeat announcements (minutes)",
+          "ai_rewrite_announcements": "Use AI for announcements",
+          "ai_conversation_agent": "Conversation agent"
+        },
+        "data_description": {
+          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
+          "automatic_tts": "Disabled by default. New open recommendations need 90 seconds of stable conditions.",
+          "automatic_notifications": "Disabled by default. No repeated alerts on every sensor reading.",
+          "use_announcement_hub": "Only shown when Announcement Hub is configured. When stopped, unavailable or rejecting a job, the advisor falls back to Home Assistant notification/TTS and a persistent notification if needed.",
+          "notify_entities": "Direct outputs when Announcement Hub is not used.",
+          "tts_engine": "Direct speech provider when Announcement Hub is not used.",
+          "media_players": "Direct audio destinations; room assignment controls targeting.",
+          "announcement_repeat_minutes": "Default 10 minutes. Set to 0 to never repeat. The same window recommendation and reason must still apply. Each room has its own timer; sensor fluctuations above the same limit do not reset it. Requires automatic notifications or TTS.",
+          "ai_rewrite_announcements": "One option for both paths. When Announcement Hub is selected, send use_ai: true/false to its action; otherwise rewrite direct Home Assistant notifications/TTS. The recommendation itself stays deterministic.",
+          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected."
+        }
+      },
+      "thresholds": {
+        "title": "Advanced thresholds",
+        "description": "These limits apply to instantaneous sensor values and are configurable guidance, not health or exposure standards. AQI assumes the US 0–500 scale by default; change the limits for any differently scaled provider.",
+        "data": {
+          "outdoor_aqi": "Maximum outdoor AQI",
+          "outdoor_co2": "Maximum outdoor CO₂ (ppm)",
+          "outdoor_pm25": "Maximum outdoor PM2.5 (µg/m³)",
+          "outdoor_pm10": "Maximum outdoor PM10 (µg/m³)",
+          "outdoor_voc": "Maximum outdoor VOC (µg/m³)",
+          "outdoor_voc_parts": "Maximum outdoor VOC (ppb)",
+          "outdoor_no2": "Outdoor NO₂ operational screen (µg/m³)",
+          "outdoor_o3": "Outdoor O₃ operational screen (µg/m³)",
+          "outdoor_so2": "Outdoor SO₂ operational screen (µg/m³)",
+          "indoor_aqi": "Indoor AQI triggering ventilation",
+          "indoor_co2": "Indoor CO₂ triggering ventilation (ppm)",
+          "indoor_pm25": "Indoor PM2.5 triggering ventilation (µg/m³)",
+          "indoor_pm10": "Indoor PM10 triggering ventilation (µg/m³)",
+          "indoor_voc": "Indoor VOC triggering ventilation (µg/m³)",
+          "indoor_voc_parts": "Indoor VOC triggering ventilation (ppb)",
+          "indoor_humidity": "Indoor humidity triggering ventilation (%)",
+          "min_outdoor_temp": "Minimum outdoor temperature (°C)",
+          "max_outdoor_temp": "Maximum outdoor temperature (°C)",
+          "max_outdoor_humidity": "Maximum outdoor humidity (%)",
+          "max_wind_kmh": "Maximum wind speed (km/h)",
+          "max_age_minutes": "Maximum age of any outdoor reading (minutes)",
+          "indoor_mold": "Mold indication triggering ventilation (estimated surface RH, %)"
+        },
+        "data_description": {
+          "outdoor_aqi": "If outdoor AQI exceeds this configured provider-scale threshold, window opening is blocked. The default assumes US AQI; confirm the selected provider's scale.",
+          "outdoor_co2": "Outdoor CO₂ screening ceiling in ppm. A confirmed reading above this value makes outside air unsuitable for ventilation advice; missing readings remain marked incomplete.",
+          "outdoor_pm25": "Outdoor PM2.5 screening threshold in µg/m³. Higher measured particle levels block opening. This checks instantaneous readings, not WHO 24-hour compliance.",
+          "outdoor_pm10": "Outdoor PM10 screening threshold in µg/m³. Valid elevated readings block ventilation suggestions; not a substitute for time-averaged exposure assessment.",
+          "outdoor_voc": "Screen outdoor total volatile organic compounds reported in µg/m³. A reliable reading above the limit blocks window advice; sensor calibration and VOC mixtures vary.",
+          "outdoor_voc_parts": "Screen outdoor VOC sensors reporting ppb. Do not confuse ppb with µg/m³: conversion depends on gas identity. Values above this limit block airing advice.",
+          "outdoor_no2": "Operational outdoor NO₂ screening threshold (µg/m³). High readings discourage ventilation; this instantaneous decision value is not a WHO averaging-period limit.",
+          "outdoor_o3": "Operational outdoor ground-level ozone threshold (µg/m³). Elevated ozone can irritate airways; this screen does not replace hourly or daily exposure limits.",
+          "outdoor_so2": "Operational outdoor sulfur dioxide threshold (µg/m³). Elevated readings block opening advice; this is not an official timed exposure standard.",
+          "indoor_aqi": "If indoor AQI exceeds this threshold, the integration looks for an opportunity to ventilate only when outdoor air and weather are suitable. Match the sensor's AQI scale.",
+          "indoor_co2": "Indoor CO₂ in ppm used to recommend increased fresh-air ventilation. Elevated CO₂ can indicate insufficient ventilation, but low CO₂ does not guarantee healthy air.",
+          "indoor_pm25": "Indoor PM2.5 in µg/m³ used to identify particle exposure and consider ventilation when outdoor particles are lower. This instant screen is not the WHO 24-hour mean.",
+          "indoor_pm10": "Indoor PM10 in µg/m³ used for air-quality attention and safe ventilation comparison. Higher levels can irritate the respiratory system; avoid outside air if worse.",
+          "indoor_voc": "Indoor VOC in µg/m³ used to flag possible sources such as cleaners or furnishings. Recommendations require safer outside air; individual VOC sensors are not universal health monitors.",
+          "indoor_voc_parts": "Indoor VOC measurement in ppb. Above the configured value the room may need ventilation, subject to outdoor safety. ppb cannot generally be converted to µg/m³ without a reference gas.",
+          "indoor_humidity": "Upper indoor relative humidity (%) for ventilation recommendations. Sustained high humidity may promote condensation and mold; a single reading is not a mold diagnosis.",
+          "min_outdoor_temp": "Below this outdoor temperature (°C), window-opening advice is blocked to limit cold-air discomfort and heating losses. This does not control the heating device.",
+          "max_outdoor_temp": "Above this outdoor temperature (°C), window-opening advice is blocked to avoid bringing in hot air. Climate actuators retain their independent controls.",
+          "max_outdoor_humidity": "Maximum outdoor relative humidity (%), used with other safety checks for opening suggestions. RH depends on temperature; moisture-ratio comparisons give better drying advice.",
+          "max_wind_kmh": "Window-opening advice is blocked when measured wind speed exceeds this km/h value. It prevents suggesting ventilation during potentially unsafe wind.",
+          "max_age_minutes": "Maximum permitted age of an outdoor sensor report in minutes. Older data are marked stale and are not treated as proof that outdoor air is safe or unsafe.",
+          "indoor_mold": "Estimated critical-surface relative humidity (%) that triggers moisture/mold-risk ventilation advice. This is a physics-based indication, not detection of mold spores."
+        }
+      },
+      "environment": {
+        "title": "International air-quality sources and pollen",
+        "description": "Optional. Declare each AQI provider's scale explicitly: EPA 0–500, European six-category index, or your provider's custom limit. An unknown AQI scale is NEVER treated as the US scale. A pollen forecast can come from any Home Assistant integration and is advisory unless you deliberately enable blocking.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)",
+          "aqi_scale_0": "AQI sensor #1: source scale",
+          "aqi_custom_limit_0": "AQI sensor #1: custom unsafe threshold",
+          "aqi_scale_1": "AQI sensor #2: source scale",
+          "aqi_custom_limit_1": "AQI sensor #2: custom unsafe threshold",
+          "aqi_scale_2": "AQI sensor #3: source scale",
+          "aqi_custom_limit_2": "AQI sensor #3: custom unsafe threshold",
+          "aqi_scale_3": "AQI sensor #4: source scale",
+          "aqi_custom_limit_3": "AQI sensor #4: custom unsafe threshold",
+          "aqi_scale_4": "AQI sensor #5: source scale",
+          "aqi_custom_limit_4": "AQI sensor #5: custom unsafe threshold",
+          "aqi_scale_5": "AQI sensor #6: source scale",
+          "aqi_custom_limit_5": "AQI sensor #6: custom unsafe threshold",
+          "aqi_scale_6": "AQI sensor #7: source scale",
+          "aqi_custom_limit_6": "AQI sensor #7: custom unsafe threshold",
+          "aqi_scale_7": "AQI sensor #8: source scale",
+          "aqi_custom_limit_7": "AQI sensor #8: custom unsafe threshold",
+          "aqi_scale_8": "AQI sensor #9: source scale",
+          "aqi_custom_limit_8": "AQI sensor #9: custom unsafe threshold",
+          "aqi_scale_9": "AQI sensor #10: source scale",
+          "aqi_custom_limit_9": "AQI sensor #10: custom unsafe threshold",
+          "aqi_scale_10": "AQI sensor #11: source scale",
+          "aqi_custom_limit_10": "AQI sensor #11: custom unsafe threshold",
+          "aqi_scale_11": "AQI sensor #12: source scale",
+          "aqi_custom_limit_11": "AQI sensor #12: custom unsafe threshold",
+          "aqi_scale_12": "AQI sensor #13: source scale",
+          "aqi_custom_limit_12": "AQI sensor #13: custom unsafe threshold",
+          "aqi_scale_13": "AQI sensor #14: source scale",
+          "aqi_custom_limit_13": "AQI sensor #14: custom unsafe threshold",
+          "aqi_scale_14": "AQI sensor #15: source scale",
+          "aqi_custom_limit_14": "AQI sensor #15: custom unsafe threshold",
+          "aqi_scale_15": "AQI sensor #16: source scale",
+          "aqi_custom_limit_15": "AQI sensor #16: custom unsafe threshold",
+          "aqi_scale_16": "AQI sensor #17: source scale",
+          "aqi_custom_limit_16": "AQI sensor #17: custom unsafe threshold",
+          "aqi_scale_17": "AQI sensor #18: source scale",
+          "aqi_custom_limit_17": "AQI sensor #18: custom unsafe threshold",
+          "aqi_scale_18": "AQI sensor #19: source scale",
+          "aqi_custom_limit_18": "AQI sensor #19: custom unsafe threshold",
+          "aqi_scale_19": "AQI sensor #20: source scale",
+          "aqi_custom_limit_19": "AQI sensor #20: custom unsafe threshold",
+          "aqi_scale_20": "AQI sensor #21: source scale",
+          "aqi_custom_limit_20": "AQI sensor #21: custom unsafe threshold",
+          "aqi_scale_21": "AQI sensor #22: source scale",
+          "aqi_custom_limit_21": "AQI sensor #22: custom unsafe threshold",
+          "aqi_scale_22": "AQI sensor #23: source scale",
+          "aqi_custom_limit_22": "AQI sensor #23: custom unsafe threshold",
+          "aqi_scale_23": "AQI sensor #24: source scale",
+          "aqi_custom_limit_23": "AQI sensor #24: custom unsafe threshold",
+          "aqi_scale_24": "AQI sensor #25: source scale",
+          "aqi_custom_limit_24": "AQI sensor #25: custom unsafe threshold",
+          "aqi_scale_25": "AQI sensor #26: source scale",
+          "aqi_custom_limit_25": "AQI sensor #26: custom unsafe threshold",
+          "aqi_scale_26": "AQI sensor #27: source scale",
+          "aqi_custom_limit_26": "AQI sensor #27: custom unsafe threshold",
+          "aqi_scale_27": "AQI sensor #28: source scale",
+          "aqi_custom_limit_27": "AQI sensor #28: custom unsafe threshold",
+          "aqi_scale_28": "AQI sensor #29: source scale",
+          "aqi_custom_limit_28": "AQI sensor #29: custom unsafe threshold",
+          "aqi_scale_29": "AQI sensor #30: source scale",
+          "aqi_custom_limit_29": "AQI sensor #30: custom unsafe threshold",
+          "aqi_scale_30": "AQI sensor #31: source scale",
+          "aqi_custom_limit_30": "AQI sensor #31: custom unsafe threshold",
+          "aqi_scale_31": "AQI sensor #32: source scale",
+          "aqi_custom_limit_31": "AQI sensor #32: custom unsafe threshold"
+        },
+        "data_description": {
+          "pollen_entity": "Select a current numeric pollen-index entity produced by any local HA integration; nothing is fetched from a fixed national service.",
+          "pollen_high_from": "Provider-defined pollen indices are not internationally interchangeable. Check the selected provider's threshold definitions.",
+          "pollen_max_scale": "For example 5 for a 0–5 scale. The numerical maximum is specific to your provider.",
+          "pollen_avoid_ventilation": "If enabled, a high trusted pollen reading becomes an outside blocker. Leave off unless this is appropriate for your household.",
+          "aqi_scale_0": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_0": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_1": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_1": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_2": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_2": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_3": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_3": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_4": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_4": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_5": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_5": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_6": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_6": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_7": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_7": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_8": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_8": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_9": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_9": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_10": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_10": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_11": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_11": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_12": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_12": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_13": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_13": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_14": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_14": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_15": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_15": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_16": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_16": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_17": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_17": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_18": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_18": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_19": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_19": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_20": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_20": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_21": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_21": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_22": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_22": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_23": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_23": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_24": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_24": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_25": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_25": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_26": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_26": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_27": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_27": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_28": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_28": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_29": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_29": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_30": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_30": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold.",
+          "aqi_scale_31": "Choose only the scale documented by the sensor's data provider; source entity IDs are shown above.",
+          "aqi_custom_limit_31": "Used only when the custom provider scale is selected. This is an operational policy, not a health threshold."
+        }
+      },
+      "environment_room": {
+        "title": "Choose a room for environmental science",
+        "description": "Configure extra sensors and assumptions for one selected room. All are optional. The basic Home Environment Manager features work without any of them.",
+        "data": {
+          "environment_area": "Room to configure"
+        },
+        "data_description": {
+          "environment_area": "Only the selected room is edited. Return here to configure another room."
+        }
+      },
+      "environment_room_air": {
+        "title": "Room: {area_name} — ventilation and moisture",
+        "description": "Optional. Choose the room-temperature sensor if multiple are present. Enter measured room volume and your air cleaner's published particle CADR only if known. Confirm real NDIR CO₂ hardware before allowing predictions. Room occupancy and open-window evidence still determine whether air-change estimates are possible.",
+        "data": {
+          "temperature_entity": "Room air temperature sensor (optional override)",
+          "room_volume_m3": "Measured room air volume (m³)",
+          "particle_cadr_m3h": "Air purifier rated particle CADR (m³/h)",
+          "purifier_entity": "Air purifier power/fan entity",
+          "extractor_entity": "Mechanical extraction fan/switch entity",
+          "co2_ndir_verified": "CO₂ sensor has verified real NDIR hardware",
+          "co2_target_ppm": "CO₂ ventilation target (ppm)",
+          "sleep_room": "This is a sleeping room"
+        },
+        "data_description": {
+          "temperature_entity": "Choose the measured ambient air temperature of this room, not an external sensor. Used for room science and moisture calculations when multiple sources exist.",
+          "room_volume_m3": "Measured indoor air volume in m³ (usable floor area multiplied by ceiling height). Required to estimate nominal clean-air changes from purifier CADR.",
+          "particle_cadr_m3h": "Manufacturer-rated particle clean-air delivery rate in m³/h at the selected fan speed, not simple fan airflow. Filter performance for gases is not inferred.",
+          "purifier_entity": "Choose the purifier's real power/fan state. The environmental analysis can describe nominal filtration while the device is running; merely selecting it does not switch it on.",
+          "extractor_entity": "Select the existing mechanical extraction fan/switch for contextual humidity-event advice. A humidity rise alone does not prove a shower or cooking event.",
+          "co2_ndir_verified": "Enable only after independently verifying that the selected CO₂ source is true NDIR or equivalent measured hardware, not estimated eCO₂ derived from VOC.",
+          "co2_target_ppm": "Operational CO₂ target in ppm for ventilation effectiveness suggestions. Reaching it does not certify pathogen safety or other indoor pollutants.",
+          "sleep_room": "Mark this room as a sleeping area for interpreting nighttime overheating and noise, where sufficient sensor history exists. This does not independently detect sleep."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "Room: {area_name} — optional specialist sensors",
+        "description": "Optional. Select only sensors actually measuring the requested pollutant and units. Confirm independent hardware/calibration; synthetic HCHO, eCO₂ and generic sound-level signals are not acceptable substitutes for validated observations. Radon guidelines need nearly a full year of history.",
+        "data": {
+          "radon_entity": "Dedicated radon sensor",
+          "radon_sensor_verified": "Radon sensor uses dedicated calibrated hardware",
+          "radon_reference_bq_m3": "Annual radon screening reference (Bq/m³)",
+          "formaldehyde_entity": "Dedicated formaldehyde sensor",
+          "formaldehyde_sensor_verified": "Formaldehyde measurement is real and verified",
+          "noise_entity": "Calibrated A-weighted sound level (dB(A))",
+          "noise_sensor_calibrated": "Sound-level sensor delivers equivalent calibrated readings",
+          "illuminance_entity": "Photopic illuminance (lux)",
+          "melanopic_edi_entity": "Spectral sensor's melanopic EDI (lx)",
+          "melanopic_spectral_verified": "Melanopic EDI comes from a real spectral measurement"
+        },
+        "data_description": {
+          "radon_entity": "Select a dedicated radon monitor with Bq/m³ or pCi/L output. Use long observation periods to assess exposure; radon is associated with lung cancer risk.",
+          "radon_sensor_verified": "Confirm the device really measures radon with dedicated calibrated hardware. Ordinary VOC-based sensors are unsuitable; annual risk estimates need enough history.",
+          "radon_reference_bq_m3": "Annual radon screening reference appropriate to local rules. WHO recommends 100 Bq/m³ where feasible (national references differ, not above 300); compare annual averages only.",
+          "formaldehyde_entity": "Select a real HCHO sensor measuring formaldehyde (µg/m³ or mg/m³), not a generic VOC-estimated value. Only verified concentration can inform exposure analysis.",
+          "formaldehyde_sensor_verified": "Confirm this is a genuine HCHO measurement before using its 30-minute average. WHO short-term guidance is 100 µg/m³ (30 min), not a universal single-reading threshold.",
+          "noise_entity": "Choose calibrated A-weighted equivalent sound level in dB(A). The integration uses logarithmic sound-energy averaging; uncalibrated phone peaks are not suitable.",
+          "noise_sensor_calibrated": "Enable only if the selected source produces calibrated equivalent levels over known intervals. Peak-only or guessed readings cannot form valid LAeq estimates.",
+          "illuminance_entity": "Choose measured photopic illuminance in lux. Useful for describing daylight exposure; ordinary lux cannot establish biological melanopic stimulus.",
+          "melanopic_edi_entity": "Select a real spectral sensor providing melanopic equivalent daylight illuminance in lux. Never derive it from ordinary photopic lux with an arbitrary multiplier.",
+          "melanopic_spectral_verified": "Confirm independent actual spectral evidence for the melanopic EDI source. The system will not infer it from color temperature or ordinary lux."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "Room: {area_name} — full thermal comfort (advanced)",
+        "description": "Optional ISO 7730 PMV/PPD. You MUST provide mean radiant temperature, air speed (measured or supplied), activity in met and clothing insulation in clo. Never interpret estimates as individual comfort or building compliance.",
+        "data": {
+          "enable_pmv": "Calculate full ISO 7730 PMV/PPD (opt in)",
+          "radiant_temperature_entity": "Mean radiant temperature sensor (°C)",
+          "air_speed_entity": "Measured local air-speed sensor (m/s)",
+          "air_speed_m_s": "Otherwise: explicitly estimated air speed (m/s)",
+          "met": "Occupant activity rate (met)",
+          "clo": "Occupant clothing insulation (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Opt in to ISO 7730 Predicted Mean Vote/Predicted Percentage Dissatisfied analysis. Needs real radiant temperature, air speed, clothing and activity assumptions; off by default.",
+          "radiant_temperature_entity": "Measured mean radiant temperature (°C), not ordinary room air temperature. Required for credible PMV/PPD thermal comfort calculations.",
+          "air_speed_entity": "True local air-speed sensor in m/s; if provided, it overrides the static estimated airflow value used in PMV/PPD.",
+          "air_speed_m_s": "Explicit assumed air speed in m/s only when no real sensor is available. Enter a defensible estimate; results remain labelled as estimated.",
+          "met": "Human metabolic activity in met units. Roughly 1.0 for sitting quietly, 1.2 for light desk work; set actual occupant activity, not equipment output.",
+          "clo": "Clothing insulation in clo; roughly 0.5 for light summer clothing, 1.0 for common winter clothing. Impacts comfort estimates, not a sensor reading."
+        }
+      },
+      "pid": {
+        "title": "Climate PID — select a room",
+        "description": "Optional and disabled by default. Choose exactly one monitored room. A room's PID never controls climate devices in a different assigned Home Assistant area.",
+        "data": {
+          "pid_area": "Monitored room to configure"
+        },
+        "data_description": {
+          "pid_area": "Only that room's explicitly selected climate entities may be controlled."
+        }
+      },
+      "pid_room": {
+        "title": "Climate PID in {area_name} — devices and comfort target",
+        "description": "Enable PID only after selecting real room temperature measurements and the climate devices you authorize. The existing thermostat must already be in heat or cool mode. Windows with open or unknown contacts stop PID commands. No HVAC mode or compressor switching is performed.",
+        "data": {
+          "pid_enabled": "Enable supervisory climate PID for this room",
+          "pid_climate_entities": "Authorized climate devices",
+          "pid_temperature_entity": "Independent room temperature sensor",
+          "pid_mode": "Existing thermostat mode",
+          "pid_target_c": "Desired room temperature (°C)",
+          "pid_pause_on_window_open": "Pause when any room window is open or unknown"
+        },
+        "data_description": {
+          "pid_enabled": "Opt in to supervisory PID that adjusts setpoints only on chosen, already operating thermostats. It does not power HVAC on or defeat native compressor controls.",
+          "pid_climate_entities": "Exact climate.* devices this room's PID is authorized to adjust. No area-wide broadcast or automatic assignment; manually switched-off devices remain off.",
+          "pid_temperature_entity": "Independent room temperature source (°C/°F) refreshed in the last 10 minutes. Stale or unavailable values suspend setpoint commands.",
+          "pid_mode": "Choose HEAT or COOL only to match the actual already active thermostat mode. Supervisory PID never switches mode or powers on a compressor.",
+          "pid_target_c": "Requested room temperature (°C) used as PID reference. The controller adjusts thermostat setpoints within safety bounds; this does not guarantee comfort.",
+          "pid_pause_on_window_open": "Stop new thermostat setpoint changes when a selected room window is open or sensor state unknown. Prevents unwanted heating/cooling while airing."
+        }
+      },
+      "pid_tuning": {
+        "title": "Climate PID in {area_name} — advanced safety and tuning",
+        "description": "Kp in %/°C, Ki in %/(°C·minute), Kd in %·minute/°C. The output only trims the existing thermostat setpoint within a bounded range, at limited intervals. Start with defaults; tune gradually after reviewing room trends. Manual setpoint changes pause PID until you explicitly resume it.",
+        "data": {
+          "pid_kp": "Proportional gain Kp (% per °C)",
+          "pid_ki": "Integral gain Ki (% per °C-minute)",
+          "pid_kd": "Derivative gain Kd (%·minute per °C)",
+          "pid_offset_c": "Maximum thermostat setpoint trim (°C)",
+          "pid_min_setpoint_c": "Lowest permitted setpoint (°C)",
+          "pid_max_setpoint_c": "Highest permitted setpoint (°C)",
+          "pid_sample_seconds": "PID measurement cycle (seconds)",
+          "pid_max_change_c": "Maximum setpoint change per cycle (°C)",
+          "pid_min_change_c": "Minimum meaningful setpoint change (°C)"
+        },
+        "data_description": {
+          "pid_kp": "Proportional PID gain (% per °C): immediate response to room-temperature error. Default 22; too high can cause oscillation and frequent target changes.",
+          "pid_ki": "Integral PID gain (% per °C·minute): compensates persistent temperature error. Default 0.25; anti-windup applies, but very high values can overshoot.",
+          "pid_kd": "Derivative PID gain (%·minute/°C): responds to filtered temperature change rate. Default 0; high values amplify sensor noise.",
+          "pid_offset_c": "Maximum adjustment of the actual thermostat setpoint above heating or below cooling demand (°C). This limits PID authority without changing HVAC mode.",
+          "pid_min_setpoint_c": "Hard minimum thermostat setpoint in °C. Device's native minimum and other manufacturer protections still apply.",
+          "pid_max_setpoint_c": "Hard maximum thermostat setpoint in °C. Device's native maximum and independent thermal limits still apply.",
+          "pid_sample_seconds": "Interval between PID decisions, in seconds. Default 300 seconds and at least 120; it avoids writing on every sensor update.",
+          "pid_max_change_c": "Maximum thermostat setpoint step per control cycle (°C), default 0.5. Even a large temperature error cannot bypass this rate limit.",
+          "pid_min_change_c": "Smallest meaningful setpoint difference (°C) before issuing a command. Avoids needless small repeated adjustments and device quantization noise."
+        }
+      },
+      "climate": {
+        "title": "Climate — select room",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_area": "Room to configure"
+        },
+        "data_description": {
+          "climate_area": "This setting governs Room to configure. Physical commands require a separate device opt-in and appropriate protections."
+        }
+      },
+      "climate_room": {
+        "title": "Climate — controller, occupancy and away",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_enabled": "Enable climate planning for this room",
+          "climate_allow_actuation": "Permit commands to the explicitly selected room controllers (separate opt ins)",
+          "climate_auto_switch_hvac": "Automatically switch between supported heat/cool modes (separate opt in)",
+          "climate_prefer_native_auto": "Prefer device's native heat_cool target range when available",
+          "climate_controller": "Controller method / device capability",
+          "climate_mode": "Heat, cool, off or automatic selection",
+          "climate_entity": "Explicit room climate device",
+          "climate_temperature_entity": "Fresh independent temperature sensor",
+          "climate_hysteresis_c": "Mode-switching hysteresis (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Enables per-room climate planning and status. It does not authorize actuator commands; Allow actuation and each device's separate opt-in are required.",
+          "climate_allow_actuation": "Allows commands only through the separately enabled, capability-checked room controllers. Leave off for monitoring/advice only.",
+          "climate_auto_switch_hvac": "Separate consent to switch between supported heating and cooling modes, subject to dwell and device interlocks. Does not bypass equipment compressor protection.",
+          "climate_prefer_native_auto": "When a thermostat genuinely supports native HEAT_COOL with two target temperatures, prefer its built-in control over simulated mode switching.",
+          "climate_controller": "Choose the control strategy supported by installed equipment: native thermostat, or independently protected slow direct actuator. Do not use relays for compressors.",
+          "climate_mode": "Heating, cooling, or automatic decision only when those modes truly exist on the device. An unsupported mode remains advisory and does not send commands.",
+          "climate_entity": "Select exactly one primary climate.* device assigned to this HA room. It supplies native capabilities; manual OFF or unsupported modes cannot be auto-restarted.",
+          "climate_temperature_entity": "Independent fresh temperature sensor (°C or °F) in the same room; stale readings stop target changes. Avoid using an unrelated outdoor or thermostat estimate.",
+          "climate_hysteresis_c": "Temperature separation in °C before changing heating/cooling direction. Prevents rapid oscillation; native mode dwell protections also apply."
+        }
+      },
+      "climate_presence": {
+        "title": "Climate — occupancy, away, sleep and comfort",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "climate_occupancy_sensors": "Occupancy/presence sensors in this room",
+          "climate_away_entities": "People or device trackers for home/away",
+          "climate_unknown_occupancy": "If occupancy is unknown: assume occupied or hold",
+          "climate_unoccupied_delay_minutes": "Delay before considering a room unoccupied (minutes)",
+          "climate_occupancy_stale_minutes": "Maximum age of last occupancy sensor report (minutes)",
+          "climate_away_policy": "Whole-house away tracking policy",
+          "climate_manual_profile": "Override occupancy/away profile (auto recommended)",
+          "climate_sleep_active": "Sleep profile currently active in this room",
+          "climate_sleep_schedule_enabled": "Use a local-time sleep schedule",
+          "climate_sleep_start": "Sleep period begins (local time)",
+          "climate_sleep_end": "Sleep period ends (local time)",
+          "climate_target_source": "Fixed temperatures or optional ISO 7730 comfort",
+          "climate_comfort_adjustment_max_c": "Maximum comfort adjustment (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Select actual room presence/occupancy binary sensors. A positive value means occupied; an unavailable sensor does not prove an empty room.",
+          "climate_away_entities": "People or device trackers for home/away status. Absence is considered only with explicit, fresh evidence; unknown trackers are treated conservatively.",
+          "climate_unknown_occupancy": "When room presence is unknown choose conservative occupied assumptions or hold. Never interpret a missing sensor as permission to power devices off.",
+          "climate_unoccupied_delay_minutes": "How long all selected presence sources must continuously indicate vacancy before applying a room-unoccupied temperature profile. Prevents reacting to brief motion gaps.",
+          "climate_occupancy_stale_minutes": "Maximum age of presence data in minutes. A sensor older than this cannot prove the room empty or authorize an absence OFF.",
+          "climate_away_policy": "Choose whether any resident at home or all selected trackers must report home before assigning the at-home profile. Confirm it matches real household behavior.",
+          "climate_manual_profile": "Explicitly override the automatically selected home/unoccupied/away/sleep profile for this room. Use for diagnostics or deliberate preferences; it still obeys safety gates.",
+          "climate_sleep_active": "Manual indication that this room currently uses its sleep profile. It is separate from room occupancy and may be superseded by verified shared sleep-room data.",
+          "climate_sleep_schedule_enabled": "Enable a local-time sleep interval for this room. This does not detect sleep biologically; it selects a preset schedule.",
+          "climate_sleep_start": "Local clock time HH:MM when this room's scheduled sleep profile begins. Must differ from the end time.",
+          "climate_sleep_end": "Local clock time HH:MM when the scheduled sleep profile ends. Overnight intervals crossing midnight are supported.",
+          "climate_target_source": "Choose fixed configured heat/cool targets, or evidence-based ISO 7730 comfort adjustment when all required comfort measurements are available.",
+          "climate_comfort_adjustment_max_c": "Maximum absolute °C offset from the chosen temperature target when the qualified PMV/PPD comfort estimate is available. Avoids uncontrolled target shifts."
+        }
+      },
+      "climate_equipment": {
+        "title": "Climate — additional equipment and humidity",
+        "description": "Select optional extra HVAC, humidifiers, dehumidifiers, extraction and purification fans in this room. The planner checks actual modes and assigns exclusive roles. Secondary devices are advisory only until their safe drivers are verified.",
+        "data": {
+          "climate_heat_climate_entity": "Optional dedicated heating climate (radiator / heating zone)",
+          "climate_cool_climate_entity": "Optional dedicated cooling climate (air conditioner / heat pump)",
+          "climate_dry_climate_entity": "Optional climate with native DRY mode",
+          "climate_fan_climate_entity": "Optional climate with FAN_ONLY mode",
+          "climate_humidifier_entity": "Optional humidifier entity (adds moisture)",
+          "climate_dehumidifier_entity": "Optional dehumidifier entity (removes moisture)",
+          "climate_extraction_fan_entity": "Optional extract / ventilation fan",
+          "climate_purifier_fan_entity": "Optional air purifier fan",
+          "climate_humidity_entity": "Verified room humidity sensor (choose one if multiple)",
+          "climate_humidity_low_rh": "Minimum target relative humidity (%)",
+          "climate_humidity_high_rh": "Maximum target relative humidity (%)",
+          "climate_humidity_hysteresis_rh": "Humidity decision hysteresis (percentage points)",
+          "climate_cooling_dry_deferral_rh_points": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)",
+          "climate_humidity_setpoint_auto": "Allow native humidity setpoint changes on an already-running humidifier (extra opt-in)",
+          "climate_window_efficiency_notify": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)",
+          "climate_dry_fan_mode_auto": "Allow automatic native AC DRY/FAN_ONLY mode transitions (separate opt-in; requires device commissioning)",
+          "climate_dry_fan_hardware_confirmed": "I confirm this exact AC has independently verified compressor, defrost and minimum-cycle protections",
+          "climate_dry_fan_windowless_confirmed": "Permit native DRY/FAN_ONLY switching without a window contact (extra consent)",
+          "climate_dry_fan_mode_dwell_s": "Minimum native DRY/FAN_ONLY mode dwell (seconds; at least 1800)",
+          "climate_humidity_power_auto": "Allow automatic power control of verified dedicated humidifier/dehumidifier (separate opt-in; draft only)",
+          "climate_humidity_power_hardware_confirmed": "I confirm dedicated equipment has independent tank, frost, overheating and compressor protection",
+          "climate_humidity_power_windowless_confirmed": "Allow moisture control in this room without a window contact (extra opt-in)",
+          "climate_humidity_power_min_on_s": "Minimum power-on dwell before stopping (seconds)",
+          "climate_humidity_power_min_off_s": "Minimum observed power-off dwell before restarting (seconds)",
+          "climate_humidity_power_max_on_s": "Maximum controller-owned continuous operating time (seconds)",
+          "climate_secondary_climate_setpoint_auto": "Allow setpoint-only control of already-on secondary heating/cooling thermostats (extra opt-in)"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Optional same-room heat-only radiator or heating-zone climate.* entity. It must actually support HEAT; it never receives cooling commands.",
+          "climate_cool_climate_entity": "Optional same-room air conditioner or cooling heat-pump climate.* entity. It must support COOL; manual OFF is respected.",
+          "climate_dry_climate_entity": "Optional climate.* device with real native DRY. DRY-only devices provide humidity advice without fabricated temperature setpoints; automatic mode control is separately commissioned.",
+          "climate_fan_climate_entity": "Optional climate.* device exposing FAN_ONLY. Do not assume an arbitrary air conditioner can safely switch to fan mode.",
+          "climate_humidifier_entity": "Optional HA humidifier.* adding moisture. Select only a matching same-room device; automatic setpoint/power changes need separate authorization.",
+          "climate_dehumidifier_entity": "Optional HA dehumidifier.* removing moisture. Compressor-equipped units need independent frost, tank and cycle protections.",
+          "climate_extraction_fan_entity": "Optional same-room fan.* extracting air, driven by verified CO₂/ventilation demand. Merely selecting the entity does not power it on.",
+          "climate_purifier_fan_entity": "Optional same-room fan.* used as air purifier for measured PM2.5. Filtration capability must be real; plain ventilation is not HEPA purification.",
+          "climate_humidity_entity": "Select one fresh independent same-room RH sensor (%). Humidity controls hold rather than guess when this measurement is missing.",
+          "climate_humidity_low_rh": "Lower desired relative humidity (%) for humidifier advice. Sustained values below it may cause discomfort; prevents over-drying.",
+          "climate_humidity_high_rh": "Upper desired relative humidity (%) for dehumidification advice. Persistent high RH can promote condensation and mold on cold surfaces.",
+          "climate_humidity_hysteresis_rh": "RH percentage-point margin before changing humidify/dry decisions. Prevents repeated switching around a target.",
+          "climate_cooling_dry_deferral_rh_points": "While AC is already cooling, defer separate dehumidification until RH exceeds the upper target by this extra number of points. Set zero to disable deferral.",
+          "climate_humidity_setpoint_auto": "Separate permission to adjust humidity targets of an already-running native humidifier. Does not power on equipment or overrule manual settings.",
+          "climate_window_efficiency_notify": "Notify only when measured safe outdoor air could genuinely replace part of active heating/cooling/drying. Advisory only: never opens windows or shuts equipment off.",
+          "climate_dry_fan_mode_auto": "Experimental opt-in for supported native DRY/FAN_ONLY transitions. Requires exact-device commissioning, mode dwell and independent compressor protections.",
+          "climate_dry_fan_hardware_confirmed": "Installer attests independent compressor minimum-OFF, defrost, electrical and manufacturer protections on this exact AC. A checkbox alone cannot verify hardware.",
+          "climate_dry_fan_windowless_confirmed": "Extra explicit consent when native DRY/FAN_ONLY switching must work without a verified room window contact. Does not bypass other safety interlocks.",
+          "climate_dry_fan_mode_dwell_s": "Minimum seconds between automatic DRY/FAN_ONLY mode changes; at least 1800 seconds. Avoids aggressive switching but cannot replace physical compressor protection.",
+          "climate_humidity_power_auto": "Separate experimental permission to turn verified dedicated humidifier/dehumidifier power on/off. Requires hardware protection, measured RH and strict runtime bounds.",
+          "climate_humidity_power_hardware_confirmed": "Attest independent overflow, frost, overtemperature, electrical and any compressor-cycle protections appropriate to this exact humidity device.",
+          "climate_humidity_power_windowless_confirmed": "Extra consent to run dedicated moisture equipment in this room without a known window contact. Does not waive source freshness or safety bounds.",
+          "climate_humidity_power_min_on_s": "Minimum number of seconds dedicated humidity equipment must run before a supervised OFF is attempted, unless independent physical protection intervenes.",
+          "climate_humidity_power_min_off_s": "Minimum verified OFF duration before another managed humidity-device start. Avoid rapid compressor cycling; never bypass manufacturer limits.",
+          "climate_humidity_power_max_on_s": "Maximum continuous controller-owned run time in seconds for a humidifier or dehumidifier. Triggers bounded OFF/reconciliation.",
+          "climate_secondary_climate_setpoint_auto": "Separate opt-in to adjust the temperature setpoint of an already-running secondary heat/cool climate device. Never powers it on or changes unsupported modes."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "Climate — ventilation and air purification",
+        "description": "Select an actual same-room CO2/PM2.5 sensor, confirm NDIR/PM sensor quality, and optionally permit bounded speed increases only for already-on fans. No on/off, preset, AC mode or compressor commands are permitted.",
+        "data": {
+          "climate_fan_speed_auto": "Allow speed-only adjustment of already-on extraction/purifier fans (extra opt-in)",
+          "climate_fan_power_auto": "Allow guarded automatic on/off for dedicated extraction/purifier fan.* devices (separate draft opt-in)",
+          "climate_fan_power_hardware_confirmed": "I confirm independent electrical, backdraft, fire and ventilation-pressure protections on selected fans",
+          "climate_fan_power_min_on_s": "Minimum fan operating interval (seconds)",
+          "climate_fan_power_min_off_s": "Minimum observed fan off interval (seconds)",
+          "climate_fan_power_max_on_s": "Maximum continuous controller-owned fan operating time (seconds)",
+          "climate_pm25_sensor_verified": "I have verified this is a real PM2.5 measurement, not an estimated index",
+          "climate_co2_entity": "Selected true indoor CO₂ sensor (NDIR verification in environmental room setup)",
+          "climate_pm25_entity": "Selected indoor PM2.5 sensor",
+          "climate_pm25_action_ug_m3": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)",
+          "climate_extraction_speed_percent": "Highest target speed for already-on extraction fan (%)",
+          "climate_purifier_speed_percent": "Highest target speed for already-on purifier fan (%)"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Separate permission to increase percentage only on an already-running extraction or purifier fan with verified air measurements. Never changes fan power.",
+          "climate_fan_power_auto": "Experimental opt-in for bounded ON/OFF of the exact room fan.* device, using verified demand and hardware safety. Cannot share ownership with fan-speed automation.",
+          "climate_fan_power_hardware_confirmed": "Attest the selected extractor/purifier has independent electrical, fire, backdraft and ventilation pressure protection suitable for automatic switching.",
+          "climate_fan_power_min_on_s": "Minimum fan ON seconds after an authorized activation, before an automated OFF. Avoid rapid toggling but do not bypass required emergency cutouts.",
+          "climate_fan_power_min_off_s": "Minimum observed fan OFF seconds before another permitted start. Hardware protection still applies independently.",
+          "climate_fan_power_max_on_s": "Maximum duration in seconds that this controller can own an active fan. Exceeding it requests safe shutdown or manual reconciliation.",
+          "climate_pm25_sensor_verified": "Confirm that the selected sensor directly measures PM2.5 mass concentration (µg/m³), not an uncalibrated proxy or arbitrary AQI.",
+          "climate_co2_entity": "True same-room CO₂ sensor in ppm, preferably verified NDIR, used for demand-based extraction. eCO₂ from VOC is not equivalent.",
+          "climate_pm25_entity": "Same-room PM2.5 µg/m³ sensor used for filtration control. Missing or unsupported data cannot start a purifier.",
+          "climate_pm25_action_ug_m3": "Operational instantaneous PM2.5 threshold (µg/m³) for purifier-fan demand. Not a WHO daily exposure limit; a short spike is interpreted conservatively.",
+          "climate_extraction_speed_percent": "Maximum extraction-fan speed (%) when verified CO₂ demand requires more airflow. Applies only to a supported fan already ON.",
+          "climate_purifier_speed_percent": "Maximum purifier-fan speed (%) when PM2.5 demand exists. Changing percentage does not switch power or confirm filter efficiency."
+        }
+      },
+      "climate_profiles": {
+        "title": "Climate — temperature bands for each mode",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "home_heat": "Home heat",
+          "home_cool": "Home cool",
+          "unoccupied_heat": "Unoccupied heat",
+          "unoccupied_cool": "Unoccupied cool",
+          "away_heat": "Away heat",
+          "away_cool": "Away cool",
+          "sleep_heat": "Sleep heat",
+          "sleep_cool": "Sleep cool"
+        },
+        "data_description": {
+          "home_heat": "Room heating target (°C) when the home profile is active. It applies only to equipment with that native capability, within independent device limits.",
+          "home_cool": "Room cooling target (°C) when the home profile is active. It applies only to equipment with that native capability, within independent device limits.",
+          "unoccupied_heat": "Room heating target (°C) after confirmed stable room vacancy. It applies only to equipment with that native capability, within independent device limits.",
+          "unoccupied_cool": "Room cooling target (°C) after confirmed stable room vacancy. It applies only to equipment with that native capability, within independent device limits.",
+          "away_heat": "Room heating target (°C) when household away status is verified. It applies only to equipment with that native capability, within independent device limits.",
+          "away_cool": "Room cooling target (°C) when household away status is verified. It applies only to equipment with that native capability, within independent device limits.",
+          "sleep_heat": "Room heating target (°C) when this room uses its sleep profile. It applies only to equipment with that native capability, within independent device limits.",
+          "sleep_cool": "Room cooling target (°C) when this room uses its sleep profile. It applies only to equipment with that native capability, within independent device limits."
+        }
+      },
+      "climate_actuators": {
+        "title": "Direct actuators — verify the equipment and limits",
+        "description": "Configure each selected room independently. A fresh room temperature sensor and exact room-assigned actuators are required. Direct relay/PWM is permitted only for independently protected non-compressor loads, with confirmed on/off limits and explicit actuation opt-in. Occupied, unoccupied, away and sleep heating/cooling targets are independent.",
+        "data": {
+          "direct_hardware_confirmed": "I confirm these are non-compressor thermal actuators with independent overtemperature protection",
+          "heat_actuator": "Heating switch or proportional output",
+          "cool_actuator": "Cooling switch or proportional output",
+          "min_on_s": "Minimum energized interval (seconds)",
+          "min_off_s": "Minimum de-energized interval (seconds)",
+          "max_on_s": "Maximum continuous energized runtime (seconds)",
+          "mode_dwell_s": "Minimum delay between heating and cooling (seconds)",
+          "kp": "PID proportional gain (percentage points/°C)",
+          "ki": "PID integral gain (percentage points/(°C·minute))",
+          "kd": "PID derivative gain (percentage points·minute/°C)",
+          "sample_seconds": "PID sampling period (seconds)",
+          "pwm_period_s": "PWM cycle duration for slow thermal loads (seconds)",
+          "max_demand_change": "Maximum percentage-point change per cycle",
+          "min_demand_change": "Minimum meaningful percentage-point change"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Confirm these are independently protected, slow, non-compressor heating/cooling loads. This check must never be used to authorize a generic AC compressor relay.",
+          "heat_actuator": "Exact same-room switch or number output for independently protected heating. Never use the direct driver for an AC compressor or unknown load.",
+          "cool_actuator": "Exact same-room switch or number output for independently protected non-compressor cooling load. Verify interlocks and electrical ratings.",
+          "min_on_s": "Minimum energized seconds before switching a thermal actuator off. Slow heating equipment needs safe dwell; emergency protection remains independent.",
+          "min_off_s": "Minimum de-energized seconds before starting a thermal output again; reduces rapid cycling.",
+          "max_on_s": "Maximum uninterrupted energized seconds for an output owned by the controller. Reaching it requests a bounded safe shutdown.",
+          "mode_dwell_s": "Minimum seconds between changing heating and cooling direction. Prevents contradictory simultaneous outputs.",
+          "kp": "Proportional PID coefficient controlling how strongly current temperature error changes direct thermal demand. Too large may oscillate.",
+          "ki": "Integral PID coefficient accumulating persistent thermal error. Anti-windup and saturation limits apply; too high causes overshoot.",
+          "kd": "Derivative PID coefficient responding to the rate of measured temperature change. Noisy sensors can make large derivative gains unstable.",
+          "sample_seconds": "Time between direct thermal controller samples in seconds. Short cycles can cause excessive writes and heating oscillation.",
+          "pwm_period_s": "PWM period in seconds for slow thermal loads. Sets modulation window, not high-frequency electrical PWM; generic compressors are excluded.",
+          "max_demand_change": "Maximum change of requested proportional output percentage points each cycle. Prevents sudden steps and oversized corrections.",
+          "min_demand_change": "Minimum output change (percentage points) considered meaningful enough to send to a proportional actuator. Avoids tiny repeated updates."
+        }
+      },
+      "outside_data": {
+        "title": "Outside data",
+        "description": "Weather, warnings, outdoor pollution, AQI provider scales and pollen. Choose a subsection.",
+        "menu_options": {
+          "weather": "Weather and warnings",
+          "outdoor": "Outdoor air quality",
+          "outside_aqi": "Outside · AQI",
+          "pollen": "Pollen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Area settings",
+        "description": "Choose room monitoring, window exclusions, optional environmental measurements and device-by-device climate control.",
+        "menu_options": {
+          "areas": "Areas",
+          "indoor_sensors": "Room settings — indoor air and mold",
+          "window_sensors": "Window sensor exclusions",
+          "environment_room": "Choose a room for environmental science",
+          "climate": "Climate — select room",
+          "pid": "Climate PID — select a room",
+          "area_devices": "Area · Devices"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Devices · settings",
+        "description": "Adjust this device's automation, targets and occupancy/sleep settings, or select a different device.",
+        "menu_options": {
+          "device_settings": "Devices · control",
+          "device_choice": "Select · Devices",
+          "device_done": "settings · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "General settings",
+        "description": "Choose shared presence sensors, home trackers, and entities listing occupied or sleeping rooms. The source can hold a JSON list in its state or in a named attribute. Stale or unknown evidence NEVER means nobody is home.",
+        "data": {
+          "general_room_occupancy_sensors": "Room · Occupancy · sensor",
+          "general_occupied_rooms_entity": "Occupancy · Room · source (state)",
+          "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
+          "general_home_trackers": "Home · Occupancy · Devices",
+          "general_home_policy": "Home · Occupancy · control",
+          "general_sleep_rooms_entity": "Sleep · Room · source (state)",
+          "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
+          "general_source_stale_minutes": "Maximum room/sleep source age (minutes)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Select actual binary presence sensors assigned to Home Assistant rooms. An ON confirms occupancy; missing or stale OFF readings cannot prove a room empty.",
+          "general_occupied_rooms_entity": "Select an entity whose state or attribute contains an explicit list of HA room IDs/names, e.g. [\"living_room\"]. Do not select ordinary on/off sensors as room lists.",
+          "general_occupied_rooms_attribute": "Choose State when the entity state itself is a valid room list, or select an actual attribute that contains that list. Choices refresh when changing entity.",
+          "general_home_trackers": "Select actual person/device tracker entities for home/away evidence. Unknown trackers do not prove everyone has left.",
+          "general_home_policy": "Choose whether any tracked resident at home means Home, or all selected trackers must be home. Confirm the logic matches your household.",
+          "general_sleep_rooms_entity": "Choose an entity listing which HA rooms currently count as sleeping rooms. Sleep presence differs from general room occupancy.",
+          "general_sleep_rooms_attribute": "Choose the State field or a verified room-list attribute from the selected sleep entity. A missing or unrecognized list makes sleep state unknown.",
+          "general_source_stale_minutes": "Maximum time since either occupied-room or sleep-room source last updated (default 240 min). This is NOT how long someone must sleep; stale sources cannot authorize power OFF."
+        }
+      },
+      "pollen": {
+        "title": "Pollen",
+        "description": "Select a pollen-index sensor from any Home Assistant provider; declare its published scale and whether high pollen should prevent window advice.",
+        "data": {
+          "pollen_entity": "Pollen forecast sensor (any country/provider)",
+          "pollen_high_from": "Pollen scale: threshold treated as high",
+          "pollen_max_scale": "Pollen provider's maximum scale value",
+          "pollen_avoid_ventilation": "Avoid window ventilation when pollen is high (opt in)"
+        },
+        "data_description": {
+          "pollen_entity": "Select a numerical pollen-index sensor provided by Home Assistant. Country- and provider-specific indices are not automatically comparable.",
+          "pollen_high_from": "Define the index value above which the selected provider considers pollen high. Use the provider's scale, not a universal allergy safety threshold.",
+          "pollen_max_scale": "Maximum value on the pollen provider's numerical scale, e.g. 5 for 0–5. Used to interpret relative severity without assuming a country.",
+          "pollen_avoid_ventilation": "When enabled, reliable high-pollen evidence blocks advice to open windows. Turn on only when avoiding pollen is relevant to occupants."
+        }
+      },
+      "outside_aqi": {
+        "title": "Outside · AQI",
+        "description": "Assign a documented AQI provider scale to one sensor at a time. Unknown scales never mean safe outdoor air.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensor",
+          "outside_aqi_scale": "AQI · source",
+          "outside_aqi_limit": "AQI · target",
+          "outside_aqi_no_sources": "AQI · sensor · Required"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Select one real outdoor AQI sensor to assign its provider's published scale; ordinary pollutant concentration sensors use their own units instead.",
+          "outside_aqi_scale": "Choose US EPA (0–500), EEA categories or custom only if this exactly matches the selected AQI provider. Unknown scales cannot certify safe outside air.",
+          "outside_aqi_limit": "Operational unsafe AQI threshold only for a custom-scale provider. Do not use a US AQI value for a European category scale.",
+          "outside_aqi_no_sources": "No configured supported outdoor AQI source is available. First choose a real AQI entity under Outside data → Outdoor air quality."
+        }
+      },
+      "area_devices": {
+        "title": "Area · Devices",
+        "description": "Area · Devices: Select source, sensor / Devices · control.",
+        "data": {
+          "area_devices_area": "Select · Area"
+        },
+        "data_description": {
+          "area_devices_area": "Choose the Home Assistant area whose devices you want to review. Device discovery is for inventory and does not enable any automation."
+        }
+      },
+      "select_devices": {
+        "title": "Select · Devices",
+        "description": "All supported native devices assigned to this HA area are preselected for monitoring. Selecting does NOT authorize any device commands.",
+        "data": {
+          "selected_devices": "Select · Devices"
+        },
+        "data_description": {
+          "selected_devices": "All compatible native climate, fan and humidifier entities in this room are preselected for monitoring. Selecting does not grant permission to command them."
+        }
+      },
+      "device_choice": {
+        "title": "Select · Devices",
+        "description": "Choose exactly one selected device to configure.",
+        "data": {
+          "device_choice": "Select · Devices"
+        },
+        "data_description": {
+          "device_choice": "Choose exactly one monitored device to adjust its capabilities, consent, occupancy and setpoint rules. Other room devices remain unchanged."
+        }
+      },
+      "device_settings": {
+        "title": "Devices · control",
+        "description": "Existing keeps the previous room controller. Manual follows only your explicit targets and native choices, not occupancy changes. Automatic follows room/preset policy; PID uses verified feedback and slow duty cycles for commissioned on/off equipment. Off stops this controller and requests owned equipment OFF after its minimum run time. Power changes require the exact device's hardware commissioning; a running manual device must first be turned off before automatic power ownership. Low-noise switches limit a supported native fan, not measured sound pressure, and never start an appliance. Restart or manual-override pauses require explicit reconciliation; changing a preset cannot clear them.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatic control",
+          "device_method": "control · source",
+          "device_presence_requirement": "control · Occupancy",
+          "device_absence_action": "Off · Occupancy",
+          "device_sleep_behavior": "Sleep · control",
+          "device_hardware_confirmed": "Required · Devices · Power",
+          "device_temperature_entity": "Temperature · sensor",
+          "device_humidity_entity": "Humidity · sensor",
+          "device_co2_entity": "CO₂ · sensor",
+          "device_pm25_entity": "PM2.5 · sensor",
+          "device_fan_purpose": "control · Devices",
+          "device_sensor_verified": "sensor · Required",
+          "device_fan_speed_percent": "Speed (%)",
+          "device_humidity_target": "Humidity · target (%)",
+          "device_sleep_humidity_target": "Sleep · Humidity · target (%)",
+          "device_min_on_s": "Power · min ON (s)",
+          "device_min_off_s": "Power · min OFF (s)",
+          "device_max_on_s": "Power · max ON (s)",
+          "device_home_heat_c": "Home · Temperature + · target (°C)",
+          "device_home_cool_c": "Home · Temperature − · target (°C)",
+          "device_unoccupied_heat_c": "Room · Off · Temperature + · target (°C)",
+          "device_unoccupied_cool_c": "Room · Off · Temperature − · target (°C)",
+          "device_away_heat_c": "Home · Off · Temperature + · target (°C)",
+          "device_away_cool_c": "Home · Off · Temperature − · target (°C)",
+          "device_sleep_heat_c": "Sleep · Temperature + · target (°C)",
+          "device_sleep_cool_c": "Sleep · Temperature − · target (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Master opt-in for this exact device. OFF means monitoring/advice only. When enabled, all other device-specific capability and safety gates still apply.",
+          "device_method": "Select a control supported by this device: thermostat setpoints, verified native modes, humidity setpoint, fan speed or separately protected power. Unsupported modes are blocked.",
+          "device_presence_requirement": "Choose unconditional device control, only while this room is occupied, or only while someone is home. Unknown occupancy pauses new commands.",
+          "device_absence_action": "Select HOLD or OFF when occupancy requirement is not met. OFF is allowed only for explicitly commissioned supported equipment after safety dwell; no automatic restart.",
+          "device_sleep_behavior": "When a selected room is sleeping, choose normal operation, pause device control or sleep targets. Unknown sleep evidence does not trigger shutdown.",
+          "device_hardware_confirmed": "Confirm you have independently checked protection of this exact device. The checkbox is an assertion by the installer, not a software hardware-certification test.",
+          "device_temperature_entity": "Select a real fresh independent temperature sensor in the same area. Missing data holds thermostat setpoint changes.",
+          "device_humidity_entity": "Select a real relative-humidity sensor (%) in the same area to inform humidification/dehumidification. Stale data cannot drive a power change.",
+          "device_co2_entity": "Choose an actual CO₂ ppm source for extraction decisions, ideally verified NDIR. TVOC-derived eCO₂ is not equivalent to measured CO₂.",
+          "device_pm25_entity": "Choose a real PM2.5 µg/m³ sensor in this room for purifier decisions. Unsupported indices or estimated particle levels are not accepted.",
+          "device_fan_purpose": "Choose extraction (ventilating CO₂) or filtration (reducing PM2.5). The role determines which sensor and safety rules apply.",
+          "device_sensor_verified": "Attest the selected air sensor actually measures the stated physical quantity with appropriate units. An eCO₂ proxy is not verified CO₂.",
+          "device_fan_speed_percent": "Maximum selected percentage for an already-running supported fan when demand exists. It does not authorize turning the fan on.",
+          "device_humidity_target": "Desired RH (%) while the room follows the normal humidifier profile, bounded by device capability. Avoid overly humid conditions that promote condensation.",
+          "device_sleep_humidity_target": "Desired RH (%) when the selected room is confirmed sleeping. No sleep evidence means no unverified switch to sleep targets.",
+          "device_min_on_s": "Minimum run time after an authorized power ON before a supervised OFF is considered. Protects equipment from rapid cycles but is not a safety certification.",
+          "device_min_off_s": "Minimum observed OFF interval before the device can start again. Critical for equipment that requires rest; independent hardware protection is still needed.",
+          "device_max_on_s": "Maximum continuous runtime the controller may own before requesting safe shutdown. Should be based on the equipment's actual protection limits.",
+          "device_home_heat_c": "Desired heating target in °C when the home profile is active. It is applied only if equipment supports HEAT; safety bounds and presence evidence remain mandatory.",
+          "device_home_cool_c": "Desired cooling target in °C when the home profile is active. It is applied only if equipment supports COOL; safety bounds and presence evidence remain mandatory.",
+          "device_unoccupied_heat_c": "Desired heating target in °C when the room is confirmed unoccupied. It is applied only if equipment supports HEAT; safety bounds and presence evidence remain mandatory.",
+          "device_unoccupied_cool_c": "Desired cooling target in °C when the room is confirmed unoccupied. It is applied only if equipment supports COOL; safety bounds and presence evidence remain mandatory.",
+          "device_away_heat_c": "Desired heating target in °C when the household is confirmed away. It is applied only if equipment supports HEAT; safety bounds and presence evidence remain mandatory.",
+          "device_away_cool_c": "Desired cooling target in °C when the household is confirmed away. It is applied only if equipment supports COOL; safety bounds and presence evidence remain mandatory.",
+          "device_sleep_heat_c": "Desired heating target in °C when the room is confirmed sleeping. It is applied only if equipment supports HEAT; safety bounds and presence evidence remain mandatory.",
+          "device_sleep_cool_c": "Desired cooling target in °C when the room is confirmed sleeping. It is applied only if equipment supports COOL; safety bounds and presence evidence remain mandatory."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Select at least one supported outdoor sensor.",
+      "no_outdoor": "No supported outdoor sensor was found. Add an AQI, CO₂, PM2.5, PM10 or VOC entity with compatible units first.",
+      "invalid_weather": "Select at least one weather entity.",
+      "invalid_warning": "A weather-warning sensor is no longer supported.",
+      "missing_notify": "Enable Announcement Hub or choose a notification entity.",
+      "missing_tts": "Enable Announcement Hub or select a TTS engine and media player.",
+      "temperature_range": "The minimum temperature must be lower than the maximum.",
+      "no_areas": "Select at least one area.",
+      "no_window_areas": "No areas with window contacts were found. Assign a binary sensor with device class Window to a Home Assistant area; covers do not count.",
+      "invalid_areas": "An area is no longer available as a window area.",
+      "invalid_window_exclusions": "One or more excluded entities are no longer in the list.",
+      "invalid_indoor_exclusions": "A selected indoor sensor is not in this room’s supported list.",
+      "no_windows_after_exclusions": "These exclusions would leave no usable window contacts. Keep at least one contact included.",
+      "review_areas_after_exclusions": "Some selected rooms lost their last window contact after exclusions. Please review your rooms.",
+      "invalid_repeat_minutes": "Enter a whole number from 0 to 1440 minutes (0 disables repeats).",
+      "missing_ai_service": "The Home Assistant conversation.process action is unavailable.",
+      "invalid_ai_agent": "Select a supported Home Assistant conversation agent.",
+      "invalid_mold_temperature_sensor": "Choose a valid temperature sensor assigned to this room.",
+      "missing_mold_indoor_temperature": "The room temperature sensor has no valid recent Celsius/Fahrenheit reading. Try again when it is available.",
+      "missing_mold_outdoor_temperature": "No selected weather entity supplies a valid recent outdoor temperature. Configure weather first or wait for a valid measurement.",
+      "invalid_mold_surface_temperature": "Enter a finite measured surface temperature in °C.",
+      "invalid_mold_calibration": "Calibration needs room, outdoor and cold-surface temperatures measured together, with at least 3°C difference between room and outside. Check the three readings.",
+      "invalid_environment_scale": "Select a supported AQI/pollen scale and a valid threshold; no scale is guessed automatically.",
+      "invalid_environment_measurement": "Check this room's numeric values and allowed units/ranges.",
+      "pmv_requires_explicit_inputs": "PMV requires mean radiant temperature, air speed, clothing (clo) and activity (met). Disable it or supply them.",
+      "pid_climate_required": "Select at least one supported, explicitly authorized climate entity for this room.",
+      "pid_temperature_required": "Select a valid room temperature sensor before enabling PID.",
+      "pid_invalid_target": "Heat/cool mode and target temperature must be valid.",
+      "pid_duplicate_climate": "A selected climate device is already controlled by another room.",
+      "pid_invalid_parameters": "Review gain settings, target limits, sample interval and setpoint rate limits.",
+      "climate_dry_fan_control_inputs_missing": "Select a same-room humidity sensor and climate entity offering BOTH DRY and FAN_ONLY. Require environment-only or manual DRY controller, explicit climate actuation, independent hardware protections, and no competing humidity power/setpoint control.",
+      "climate_humidity_power_inputs_missing": "Choose a verified same-room humidity sensor and dedicated humidifier/dehumidifier; allow actuation, confirm independent equipment protections and valid timings. Native humidity setpoint and automatic power drivers cannot both own this device.",
+      "climate_secondary_control_inputs_missing": "Select a different same-room heating or cooling climate entity, enable native climate control, and opt in separately.",
+      "climate_fan_power_inputs_missing": "Select verified same-room CO₂/PM2.5 sensors and fans, confirm independent safety protections and valid timings. Fan power and fan-speed owners cannot both be enabled.",
+      "climate_fan_control_inputs_missing": "Enable authorized room control and select verified sensors for at least one selected fan.",
+      "climate_fan_sensor_invalid": "Select only same-room CO₂/PM2.5 sensors and valid fan speed limits.",
+      "climate_humidity_control_inputs_missing": "Enable authorized climate control and select a same-room humidity sensor plus humidifier/dehumidifier first.",
+      "climate_temperature_required": "Select a room temperature sensor.",
+      "climate_target_required": "Select a supported climate entity assigned to this room.",
+      "climate_direct_actuator_not_ready": "Relay/PWM/proportional drivers are still under safety testing; they cannot be enabled.",
+      "climate_controller_invalid": "Choose a supported control method.",
+      "climate_mode_invalid": "Choose auto, heat, cool or off.",
+      "climate_occupancy_invalid": "An occupancy sensor does not belong to this room.",
+      "climate_away_invalid": "Select a valid people/tracker entity.",
+      "climate_deadband_invalid": "Cooling target must be at least 1°C above heating target in every profile.",
+      "climate_attestation_required": "Confirm explicitly that selected outputs are independently protected, non-compressor thermal actuators before allowing switching.",
+      "climate_direct_targets_invalid": "Select one or two real, unique and room-assigned actuator entities of the required device type.",
+      "climate_direct_timing_invalid": "Check sample period, PWM cycle, minimum on/off durations and maximum continuous runtime.",
+      "general_invalid_presence": "Invalid · Occupancy · settings",
+      "general_invalid_trackers": "Invalid · Home · settings",
+      "general_invalid_rooms_entity": "Invalid · Room · settings",
+      "general_invalid_attribute": "Invalid · source · settings",
+      "general_invalid_source_age": "Invalid · source · settings",
+      "invalid_selected_devices": "Invalid · Devices · settings",
+      "device_policy_invalid": "Invalid · Occupancy · settings",
+      "device_method_invalid": "Invalid · control · settings",
+      "device_hardware_required": "Invalid · Required · settings",
+      "device_power_required_for_off": "Invalid · Power · settings",
+      "device_temperature_required": "Invalid · Temperature · settings",
+      "device_humidity_required": "Invalid · Humidity · settings",
+      "device_air_sensor_required": "Invalid · sensor · settings",
+      "device_temperature_band_invalid": "Invalid · Temperature · settings",
+      "device_humidity_invalid": "Invalid · Humidity · settings",
+      "device_runtime_invalid": "Invalid · Power · settings"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Window recommendations",
+        "state": {
+          "open": "Open windows",
+          "close": "Close windows",
+          "idle": "No action",
+          "blocked": "Outdoor conditions not suitable"
+        }
+      },
+      "area_overview": {
+        "name": "Environment overview"
+      },
+      "area_surface_humidity": {
+        "name": "Surface humidity (calculated)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Maximum outdoor AQI"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Maximum outdoor CO₂ (ppm)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Maximum outdoor PM2.5 (µg/m³)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Maximum outdoor PM10 (µg/m³)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Maximum outdoor VOC (µg/m³)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Maximum outdoor VOC (ppb)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "Outdoor NO₂ operational screen (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "Outdoor O₃ operational screen (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "Outdoor SO₂ operational screen (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Indoor AQI triggering ventilation"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Indoor CO₂ triggering ventilation (ppm)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Indoor PM2.5 triggering ventilation (µg/m³)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Indoor PM10 triggering ventilation (µg/m³)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Indoor VOC triggering ventilation (µg/m³)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Indoor VOC triggering ventilation (ppb)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Indoor humidity triggering ventilation (%)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Mold indication triggering ventilation (estimated surface RH, %)"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Minimum outdoor temperature (°C)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Maximum outdoor temperature (°C)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Maximum outdoor humidity (%)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Maximum wind speed (km/h)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "Maximum age of any outdoor reading (minutes)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Repeat announcements (minutes)"
+      },
+      "area_pid_target_c": {
+        "name": "Desired room temperature (°C)"
+      },
+      "area_pid_kp": {
+        "name": "Proportional gain Kp (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "Integral gain Ki (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "Derivative gain Kd (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "Maximum thermostat setpoint trim (°C)"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "Lowest permitted setpoint (°C)"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "Highest permitted setpoint (°C)"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID measurement cycle (seconds)"
+      },
+      "area_pid_max_change_c": {
+        "name": "Maximum setpoint change per cycle (°C)"
+      },
+      "area_pid_min_change_c": {
+        "name": "Minimum meaningful setpoint change (°C)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Home heat"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Home cool"
+      },
+      "area_climate_profile_unoccupied_heat": {
+        "name": "Unoccupied heat"
+      },
+      "area_climate_profile_unoccupied_cool": {
+        "name": "Unoccupied cool"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Away heat"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Away cool"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Sleep heat"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Sleep cool"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "Pollen scale: threshold treated as high"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "Pollen provider's maximum scale value"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "Maximum room/sleep source age (minutes)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "Measured room air volume (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "Air purifier rated particle CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ ventilation target (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Annual radon screening reference (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Otherwise: explicitly estimated air speed (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "Occupant activity rate (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "Occupant clothing insulation (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Delay before considering a room unoccupied (minutes)"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Maximum age of last occupancy sensor report (minutes)"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Maximum comfort adjustment (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "Minimum target relative humidity (%)"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "Maximum target relative humidity (%)"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "Humidity decision hysteresis (percentage points)"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Defer separate dehumidification while AC cools until RH exceeds upper limit by these percentage points (0 disables)"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "Short-term PM2.5 operational fan threshold (µg/m³; not WHO exposure guidance)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "Highest target speed for already-on extraction fan (%)"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "Highest target speed for already-on purifier fan (%)"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID proportional gain (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID integral gain (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID derivative gain (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "PID sampling period (seconds)"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "Maximum percentage-point change per cycle"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "Minimum meaningful percentage-point change"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Measured coldest surface temperature (°C)"
+      },
+      "equipment_kp": {
+        "name": "{channel}Proportional gain Kp (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}Integral gain Ki (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}Derivative gain Kd (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID measurement cycle (seconds)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}PWM cycle duration for slow thermal loads (seconds)"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Low-noise fan limit (%)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Notify about new recommendations automatically"
+      },
+      "home_automatic_tts": {
+        "name": "Speak new recommendations automatically"
+      },
+      "home_use_announcement_hub": {
+        "name": "Use Announcement Hub if available"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "Use AI for announcements"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "Avoid window ventilation when pollen is high (opt in)"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "This is a sleeping room"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "Calculate full ISO 7730 PMV/PPD (opt in)"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Sleep profile currently active in this room"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Use a local-time sleep schedule"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Low noise while sleeping"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Low noise while occupied"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Language"
+      },
+      "area_manual_profile": {
+        "name": "Override occupancy/away profile (auto recommended)"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Home · Occupancy · control"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "If occupancy is unknown: assume occupied or hold"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Whole-house away tracking policy"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Fixed temperatures or optional ISO 7730 comfort"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Control method",
+        "state": {
+          "existing": "Existing room controller",
+          "automatic": "Automatic",
+          "manual": "Manual",
+          "off": "Off",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Native low-noise fan mode"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Sleep period begins (local time)"
+      },
+      "area_climate_sleep_end": {
+        "name": "Sleep period ends (local time)"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Recalibrate with current room and outdoor readings"
+      },
+      "equipment_resume": {
+        "name": "{channel}Reconcile and resume"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Climate controller"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Announce air-quality recommendations",
+      "description": "Speak and/or notify the currently recommended windows and reasons. Choose a language independently for each call.",
+      "fields": {
+        "language": {
+          "name": "Override message language",
+          "description": "Override message language"
+        },
+        "channels": {
+          "name": "Message channels",
+          "description": "Message channels"
+        },
+        "areas": {
+          "name": "Only these areas (optional)",
+          "description": "Only these areas (optional)"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant default",
+        "en": "English",
+        "de": "Deutsch",
+        "el": "Ελληνικά",
+        "fr": "Français",
+        "es": "Español",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "pt": "Português",
+        "pt-br": "Português (Brasil)",
+        "pl": "Polski",
+        "ru": "Русский",
+        "uk": "Українська",
+        "tr": "Türkçe",
+        "cs": "Čeština",
+        "sk": "Slovenčina",
+        "hu": "Magyar",
+        "ro": "Română",
+        "bg": "Български",
+        "hr": "Hrvatski",
+        "sr": "Српски",
+        "sv": "Svenska",
+        "nb": "Norsk bokmål",
+        "da": "Dansk",
+        "fi": "Suomi",
+        "id": "Bahasa Indonesia",
+        "vi": "Tiếng Việt",
+        "th": "ไทย",
+        "hi": "हिन्दी",
+        "zh-hans": "简体中文",
+        "zh-hant": "繁體中文",
+        "ja": "日本語",
+        "ko": "한국어",
+        "ar": "العربية",
+        "he": "עברית",
+        "fa": "فارسی",
+        "bn": "বাংলা",
+        "ur": "اردو",
+        "ta": "தமிழ்"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Home · Occupancy",
+        "all_home": "Home · Devices · Occupancy"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "target · control",
+        "native": "Devices · control",
+        "power": "Power",
+        "speed": "Speed"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatic",
+        "room": "Room · Occupancy",
+        "home": "Home · Occupancy"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Hold",
+        "off": "Off"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatic",
+        "pause": "Hold",
+        "sleep_targets": "Sleep · target"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Outside · control",
+        "filtration": "PM2.5 · control"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "source · Invalid",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "target · settings"
+      }
+    }
+  }
+}

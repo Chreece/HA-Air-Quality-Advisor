@@ -1,0 +1,18 @@
+{
+  "version": "0.6.0b11",
+  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
+  "note": "Combined opt-in beta: Area hubs, native per-device climate interfaces, control methods, slow on/off PID and capability-aware quiet modes. New controller ownership is opt-in; stable remains v0.5.1.",
+  "validation_attempt": 0,
+  "changes": [
+    "Home/Area hub/managed equipment hierarchy without moving native physical devices or changing original entity IDs",
+    "Per-controller climate entities with measured room data, actual modes/fan/swing capabilities and Manager presets",
+    "Existing/Automatic/Manual/Off/PID selection with exclusive endpoint ownership and independent manual targets",
+    "Qualified on/off fan/humidity/climate PID with anti-windup, conservative minimum ON/OFF, bounded pulses and maximum runtime",
+    "Quiet during sleep/occupancy using supported native fan percentages or explicitly selected modes, without powering on equipment",
+    "Durable exact-target command intent and acknowledgements, live preflight rechecks, manual pauses, safe retirement and explicit restart reconciliation",
+    "Prevent recursive Manager-to-Manager selection; retain independently controlled same-physical-device channels",
+    "38-language labels/help, regression tests, reproducible generators, frontend, Hassfest, HACS and installation ZIP checks before publishing"
+  ],
+  "channel": "beta",
+  "release_branch": "beta/v0.6.0b11"
+}

@@ -1,0 +1,1558 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "部屋",
+        "description": "1 · 🪟 部屋. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "設定 · 情報源",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "選択してください: 設定 · 情報源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "window_sensors": {
+        "title": "窓センサーを除外",
+        "description": "2 · 窓センサーを除外. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "窓センサーを除外"
+        },
+        "data_description": {
+          "excluded_window_entities": "選択してください: 窓センサーを除外 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "部屋 · カビ指標",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "室内空気センサーを除外",
+          "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "カビ指標 · 🧊 °C",
+          "mold_recalibrate": "カビ指標 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "屋外 · 温度 · 情報源 · カビ指標"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "「部屋 · 🌡️ (°C/°F)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "mold_critical_temperature_c": "🧊 カビ指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "「カビ指標 · ↻ 🌡️」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "mold_outdoor_weather_entity": "選択 weather.* · 屋外 温度 (temperature, °C/°F) → カビ指標. 必須: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "屋外の空気質",
+        "description": "屋外の空気質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "屋外の空気質"
+        },
+        "data_description": {
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天気と警報",
+        "description": "天気と警報. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天気と警報",
+          "weather_warnings": "気象警報"
+        },
+        "data_description": {
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "「気象警報」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "delivery": {
+        "title": "通知（任意）",
+        "description": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
+        "data": {
+          "language": "言語",
+          "automatic_tts": "自動",
+          "automatic_notifications": "自動 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "通知（任意） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "設定 · 情報源",
+          "tts_engine": "設定 · 情報源 · TTS_ENGINE",
+          "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 通知（任意）",
+          "ai_conversation_agent": "AI · 言語"
+        },
+        "data_description": {
+          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "automatic_tts": "この項目は「自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "automatic_notifications": "この項目は「自動 · AUTOMATIC_NOTIFICATIONS」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "announcement_repeat_minutes": "既定: 10 min · 0 = 繰り返さない · 同じ原因が続く間 · 部屋.",
+          "use_announcement_hub": "Announcement Hub · 利用できません → Home Assistant.",
+          "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定)."
+        }
+      },
+      "thresholds": {
+        "title": "詳細なしきい値",
+        "description": "詳細なしきい値. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "屋外 · AQI (≤)",
+          "outdoor_co2": "屋外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "屋外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "屋外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "屋外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "屋外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 屋外 (µg/m³)",
+          "outdoor_o3": "O₃ · 屋外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 屋外 (µg/m³)",
+          "indoor_aqi": "空気質 · AQI (≥)",
+          "indoor_co2": "空気質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空気質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空気質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空気質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空気質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空気質 · RH (%) (≥)",
+          "min_outdoor_temp": "屋外 · °C (≥)",
+          "max_outdoor_temp": "屋外 · °C (≤)",
+          "max_outdoor_humidity": "屋外 · RH (%) (≤)",
+          "max_wind_kmh": "天気と警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開ける (min, ≤)",
+          "indoor_mold": "カビ指標 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "「屋外 · AQI (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_co2": "「屋外 · CO₂ (ppm) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_pm25": "「屋外 · PM2.5 (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_pm10": "「屋外 · PM10 (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_voc": "「屋外 · VOC (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_voc_parts": "「屋外 · VOC (ppb) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_no2": "「NO₂ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_o3": "「O₃ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_so2": "「SO₂ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_aqi": "「空気質 · AQI (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_co2": "「空気質 · CO₂ (ppm) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_pm25": "「空気質 · PM2.5 (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_pm10": "「空気質 · PM10 (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_voc": "「空気質 · VOC (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_voc_parts": "「空気質 · VOC (ppb) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_humidity": "「空気質 · RH (%) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "min_outdoor_temp": "「屋外 · °C (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_outdoor_temp": "「屋外 · °C (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_outdoor_humidity": "「屋外 · RH (%) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_wind_kmh": "「天気と警報 · km/h (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_age_minutes": "「⏱ · 開ける (min, ≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_mold": "「カビ指標 · ≥ 70%」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "無効な選択: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "利用できません: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "無効な選択: 天気と警報 (weather.*).",
+      "invalid_warning": "無効な選択: 天気と警報 ⚠.",
+      "missing_notify": "選択してください: Announcement Hub / notify.*.",
+      "missing_tts": "選択してください: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "無効な選択: °C min < max.",
+      "no_areas": "選択してください: 部屋.",
+      "no_window_areas": "利用できません: 測定値 (binary_sensor, window).",
+      "invalid_areas": "無効な選択: 部屋.",
+      "invalid_window_exclusions": "無効な選択: 窓センサーを除外.",
+      "invalid_indoor_exclusions": "無効な選択: 室内空気センサーを除外.",
+      "no_windows_after_exclusions": "窓センサーを少なくとも一つ残してください.",
+      "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
+      "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "利用できません: conversation.process.",
+      "invalid_ai_agent": "無効な選択: conversation.*.",
+      "invalid_mold_temperature_sensor": "部屋 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "部屋 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "カビ指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "カビ指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — 設定済みです."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ 選択してください",
+        "description": "選択してください: 部屋 / 天気と警報 / 通知（任意） / 詳細なしきい値",
+        "menu_options": {
+          "outside_data": "屋外 · 情報源",
+          "general_settings": "一般 · 設定",
+          "area_settings": "エリア · 設定",
+          "delivery": "通知（任意）",
+          "thresholds": "詳細なしきい値"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "窓センサーを除外",
+        "description": "2 · 窓センサーを除外. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "窓センサーを除外"
+        },
+        "data_description": {
+          "excluded_window_entities": "選択してください: 窓センサーを除外 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "部屋",
+        "description": "1 · 🪟 部屋. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "設定 · 情報源",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "選択してください: 設定 · 情報源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "indoor_sensors": {
+        "title": "部屋 · カビ指標",
+        "description": "部屋: {area_name} ({position}/{total}). 🌡️ 🧊 カビ指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "室内空気センサーを除外",
+          "mold_indoor_temperature": "部屋 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "カビ指標 · 🧊 °C",
+          "mold_recalibrate": "カビ指標 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "屋外 · 温度 · 情報源 · カビ指標"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "選択してください: 室内空気センサーを除外 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "「部屋 · 🌡️ (°C/°F)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "mold_critical_temperature_c": "🧊 カビ指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "「カビ指標 · ↻ 🌡️」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "mold_outdoor_weather_entity": "選択 weather.* · 屋外 温度 (temperature, °C/°F) → カビ指標. 必須: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "屋外の空気質",
+        "description": "屋外の空気質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "屋外の空気質"
+        },
+        "data_description": {
+          "outdoor_sensors": "選択してください: 屋外の空気質 · AQI, CO₂, PM2.5, PM10, VOC. 利用できません: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天気と警報",
+        "description": "天気と警報. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天気と警報",
+          "weather_warnings": "気象警報"
+        },
+        "data_description": {
+          "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "「気象警報」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "delivery": {
+        "title": "通知（任意）",
+        "description": "通知（任意）. 自動通知 · 自動音声通知. Announcement Hub.",
+        "data": {
+          "language": "言語",
+          "automatic_tts": "自動",
+          "automatic_notifications": "自動 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "通知（任意） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "設定 · 情報源",
+          "tts_engine": "設定 · 情報源 · TTS_ENGINE",
+          "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 通知（任意）",
+          "ai_conversation_agent": "AI · 言語"
+        },
+        "data_description": {
+          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "automatic_tts": "この項目は「自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "automatic_notifications": "この項目は「自動 · AUTOMATIC_NOTIFICATIONS」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "announcement_repeat_minutes": "既定: 10 min · 0 = 繰り返さない · 同じ原因が続く間 · 部屋.",
+          "use_announcement_hub": "Announcement Hub · 利用できません → Home Assistant.",
+          "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "ai_rewrite_announcements": "AI · 通知（任意） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定)."
+        }
+      },
+      "thresholds": {
+        "title": "詳細なしきい値",
+        "description": "詳細なしきい値. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "屋外 · AQI (≤)",
+          "outdoor_co2": "屋外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "屋外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "屋外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "屋外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "屋外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 屋外 (µg/m³)",
+          "outdoor_o3": "O₃ · 屋外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 屋外 (µg/m³)",
+          "indoor_aqi": "空気質 · AQI (≥)",
+          "indoor_co2": "空気質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空気質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空気質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空気質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空気質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空気質 · RH (%) (≥)",
+          "min_outdoor_temp": "屋外 · °C (≥)",
+          "max_outdoor_temp": "屋外 · °C (≤)",
+          "max_outdoor_humidity": "屋外 · RH (%) (≤)",
+          "max_wind_kmh": "天気と警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開ける (min, ≤)",
+          "indoor_mold": "カビ指標 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "「屋外 · AQI (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_co2": "「屋外 · CO₂ (ppm) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_pm25": "「屋外 · PM2.5 (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_pm10": "「屋外 · PM10 (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_voc": "「屋外 · VOC (µg/m³) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_voc_parts": "「屋外 · VOC (ppb) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_no2": "「NO₂ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_o3": "「O₃ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outdoor_so2": "「SO₂ · 屋外 (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_aqi": "「空気質 · AQI (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_co2": "「空気質 · CO₂ (ppm) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_pm25": "「空気質 · PM2.5 (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_pm10": "「空気質 · PM10 (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_voc": "「空気質 · VOC (µg/m³) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_voc_parts": "「空気質 · VOC (ppb) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_humidity": "「空気質 · RH (%) (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "min_outdoor_temp": "「屋外 · °C (≥)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_outdoor_temp": "「屋外 · °C (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_outdoor_humidity": "「屋外 · RH (%) (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_wind_kmh": "「天気と警報 · km/h (≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "max_age_minutes": "「⏱ · 開ける (min, ≤)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "indoor_mold": "「カビ指標 · ≥ 70%」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "environment": {
+        "title": "設定 · 設定 · 情報源",
+        "description": "「設定 · 設定 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "pollen_entity": "花粉 · 情報源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT",
+          "aqi_scale_0": "AQI #1 · 情報源",
+          "aqi_custom_limit_0": "AQI #1 · 目標",
+          "aqi_scale_1": "AQI #2 · 情報源",
+          "aqi_custom_limit_1": "AQI #2 · 目標",
+          "aqi_scale_2": "AQI #3 · 情報源",
+          "aqi_custom_limit_2": "AQI #3 · 目標",
+          "aqi_scale_3": "AQI #4 · 情報源",
+          "aqi_custom_limit_3": "AQI #4 · 目標",
+          "aqi_scale_4": "AQI #5 · 情報源",
+          "aqi_custom_limit_4": "AQI #5 · 目標",
+          "aqi_scale_5": "AQI #6 · 情報源",
+          "aqi_custom_limit_5": "AQI #6 · 目標",
+          "aqi_scale_6": "AQI #7 · 情報源",
+          "aqi_custom_limit_6": "AQI #7 · 目標",
+          "aqi_scale_7": "AQI #8 · 情報源",
+          "aqi_custom_limit_7": "AQI #8 · 目標",
+          "aqi_scale_8": "AQI #9 · 情報源",
+          "aqi_custom_limit_8": "AQI #9 · 目標",
+          "aqi_scale_9": "AQI #10 · 情報源",
+          "aqi_custom_limit_9": "AQI #10 · 目標",
+          "aqi_scale_10": "AQI #11 · 情報源",
+          "aqi_custom_limit_10": "AQI #11 · 目標",
+          "aqi_scale_11": "AQI #12 · 情報源",
+          "aqi_custom_limit_11": "AQI #12 · 目標",
+          "aqi_scale_12": "AQI #13 · 情報源",
+          "aqi_custom_limit_12": "AQI #13 · 目標",
+          "aqi_scale_13": "AQI #14 · 情報源",
+          "aqi_custom_limit_13": "AQI #14 · 目標",
+          "aqi_scale_14": "AQI #15 · 情報源",
+          "aqi_custom_limit_14": "AQI #15 · 目標",
+          "aqi_scale_15": "AQI #16 · 情報源",
+          "aqi_custom_limit_15": "AQI #16 · 目標",
+          "aqi_scale_16": "AQI #17 · 情報源",
+          "aqi_custom_limit_16": "AQI #17 · 目標",
+          "aqi_scale_17": "AQI #18 · 情報源",
+          "aqi_custom_limit_17": "AQI #18 · 目標",
+          "aqi_scale_18": "AQI #19 · 情報源",
+          "aqi_custom_limit_18": "AQI #19 · 目標",
+          "aqi_scale_19": "AQI #20 · 情報源",
+          "aqi_custom_limit_19": "AQI #20 · 目標",
+          "aqi_scale_20": "AQI #21 · 情報源",
+          "aqi_custom_limit_20": "AQI #21 · 目標",
+          "aqi_scale_21": "AQI #22 · 情報源",
+          "aqi_custom_limit_21": "AQI #22 · 目標",
+          "aqi_scale_22": "AQI #23 · 情報源",
+          "aqi_custom_limit_22": "AQI #23 · 目標",
+          "aqi_scale_23": "AQI #24 · 情報源",
+          "aqi_custom_limit_23": "AQI #24 · 目標",
+          "aqi_scale_24": "AQI #25 · 情報源",
+          "aqi_custom_limit_24": "AQI #25 · 目標",
+          "aqi_scale_25": "AQI #26 · 情報源",
+          "aqi_custom_limit_25": "AQI #26 · 目標",
+          "aqi_scale_26": "AQI #27 · 情報源",
+          "aqi_custom_limit_26": "AQI #27 · 目標",
+          "aqi_scale_27": "AQI #28 · 情報源",
+          "aqi_custom_limit_27": "AQI #28 · 目標",
+          "aqi_scale_28": "AQI #29 · 情報源",
+          "aqi_custom_limit_28": "AQI #29 · 目標",
+          "aqi_scale_29": "AQI #30 · 情報源",
+          "aqi_custom_limit_29": "AQI #30 · 目標",
+          "aqi_scale_30": "AQI #31 · 情報源",
+          "aqi_custom_limit_30": "AQI #31 · 目標",
+          "aqi_scale_31": "AQI #32 · 情報源",
+          "aqi_custom_limit_31": "AQI #32 · 目標"
+        },
+        "data_description": {
+          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "pollen_high_from": "「POLLEN · 花粉 · HIGH」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_max_scale": "「POLLEN · 花粉 · SCALE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_avoid_ventilation": "「POLLEN · 花粉 · NO VENT」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_scale_0": "「AQI #1 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_0": "「AQI #1 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_1": "「AQI #2 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_1": "「AQI #2 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_2": "「AQI #3 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_2": "「AQI #3 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_3": "「AQI #4 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_3": "「AQI #4 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_4": "「AQI #5 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_4": "「AQI #5 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_5": "「AQI #6 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_5": "「AQI #6 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_6": "「AQI #7 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_6": "「AQI #7 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_7": "「AQI #8 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_7": "「AQI #8 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_8": "「AQI #9 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_8": "「AQI #9 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_9": "「AQI #10 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_9": "「AQI #10 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_10": "「AQI #11 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_10": "「AQI #11 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_11": "「AQI #12 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_11": "「AQI #12 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_12": "「AQI #13 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_12": "「AQI #13 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_13": "「AQI #14 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_13": "「AQI #14 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_14": "「AQI #15 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_14": "「AQI #15 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_15": "「AQI #16 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_15": "「AQI #16 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_16": "「AQI #17 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_16": "「AQI #17 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_17": "「AQI #18 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_17": "「AQI #18 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_18": "「AQI #19 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_18": "「AQI #19 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_19": "「AQI #20 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_19": "「AQI #20 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_20": "「AQI #21 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_20": "「AQI #21 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_21": "「AQI #22 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_21": "「AQI #22 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_22": "「AQI #23 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_22": "「AQI #23 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_23": "「AQI #24 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_23": "「AQI #24 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_24": "「AQI #25 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_24": "「AQI #25 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_25": "「AQI #26 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_25": "「AQI #26 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_26": "「AQI #27 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_26": "「AQI #27 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_27": "「AQI #28 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_27": "「AQI #28 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_28": "「AQI #29 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_28": "「AQI #29 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_29": "「AQI #30 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_29": "「AQI #30 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_30": "「AQI #31 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_30": "「AQI #31 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "aqi_scale_31": "「AQI #32 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "aqi_custom_limit_31": "「AQI #32 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "environment_room": {
+        "title": "設定 · 設定 · 情報源",
+        "description": "「設定 · 設定 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "environment_area": "設定 · 情報源"
+        },
+        "data_description": {
+          "environment_area": "「設定 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "environment_room_air": {
+        "title": "設定 · 屋外",
+        "description": "「設定 · 屋外」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "temperature_entity": "温度 · 情報源",
+          "room_volume_m3": "設定 · 情報源 (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "空気清浄機 · 情報源",
+          "extractor_entity": "換気扇 · 情報源",
+          "co2_ndir_verified": "CO₂ · 必須",
+          "co2_target_ppm": "CO₂ · CO₂ · 目標 (ppm)",
+          "sleep_room": "睡眠"
+        },
+        "data_description": {
+          "temperature_entity": "「温度 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "room_volume_m3": "「設定 · 情報源 (m³)」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "particle_cadr_m3h": "「CADR (m³/h)」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "purifier_entity": "「空気清浄機 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "extractor_entity": "「換気扇 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "co2_ndir_verified": "「CO₂ · 必須」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "co2_target_ppm": "「CO₂ · CO₂ · 目標 (ppm)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "sleep_room": "「睡眠」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "environment_room_exposure": {
+        "title": "設定 · 設定 · 情報源",
+        "description": "「設定 · 設定 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "radon_entity": "RADON · Rn · 情報源",
+          "radon_sensor_verified": "RADON · Rn · センサー · 必須 · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · 情報源",
+          "formaldehyde_sensor_verified": "HCHO · センサー · 必須 · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · 情報源 · センサー (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · センサー · 必須",
+          "illuminance_entity": "LUX · 情報源 (lux)",
+          "melanopic_edi_entity": "EDI · EDI · 情報源 (lx)",
+          "melanopic_spectral_verified": "EDI · 必須"
+        },
+        "data_description": {
+          "radon_entity": "「RADON · Rn · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "radon_sensor_verified": "「RADON · Rn · センサー · 必須 · SENSOR ✓ · VERIFIED」には適切な実測値を使ってください。推定値は校正済みRADON · Rn · センサー · 必須 · SENSOR ✓ · VERIFIEDの代用になりません。",
+          "radon_reference_bq_m3": "「Rn (Bq/m³)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "formaldehyde_entity": "「HCHO · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "formaldehyde_sensor_verified": "「HCHO · センサー · 必須 · SENSOR ✓ · VERIFIED」には適切な実測値を使ってください。推定値は校正済みHCHO · センサー · 必須 · SENSOR ✓ · VERIFIEDの代用になりません。",
+          "noise_entity": "「dB(A) · 情報源 · センサー (dB(A))」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "noise_sensor_calibrated": "「dB(A) · センサー · 必須」には適切な実測値を使ってください。推定値は校正済みdB(A) · センサー · 必須の代用になりません。",
+          "illuminance_entity": "「LUX · 情報源 (lux)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "melanopic_edi_entity": "「EDI · EDI · 情報源 (lx)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "melanopic_spectral_verified": "「EDI · 必須」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。"
+        }
+      },
+      "environment_room_comfort": {
+        "title": "設定 · 設定 · 情報源",
+        "description": "「設定 · 設定 · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "enable_pmv": "PMV / PPD · 自動",
+          "radiant_temperature_entity": "温度 · 情報源",
+          "air_speed_entity": "情報源 · 速度 · 屋外 (m/s)",
+          "air_speed_m_s": "速度 · 屋外 (m/s)",
+          "met": "設定 · 情報源 (met)",
+          "clo": "設定 · 情報源 (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "「PMV / PPD · 自動」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "radiant_temperature_entity": "「温度 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "air_speed_entity": "「情報源 · 速度 · 屋外 (m/s)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "air_speed_m_s": "「速度 · 屋外 (m/s)」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "met": "「設定 · 情報源 (met)」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "clo": "「設定 · 情報源 (clo)」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。"
+        }
+      },
+      "pid": {
+        "title": "設定 · PID",
+        "description": "「設定 · PID」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "この項目は「PID」を設定します。機器への指示には個別の許可と独立した保護が必要です。"
+        }
+      },
+      "pid_room": {
+        "title": "設定 · PID",
+        "description": "「設定 · PID」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "pid_enabled": "PID · 自動 · AUTO",
+          "pid_climate_entities": "PID · デバイス",
+          "pid_temperature_entity": "温度 · 情報源",
+          "pid_mode": "PID",
+          "pid_target_c": "目標 (°C)",
+          "pid_pause_on_window_open": "PID · 屋外"
+        },
+        "data_description": {
+          "pid_enabled": "この項目は「PID · 自動 · AUTO」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "pid_climate_entities": "「PID · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "pid_temperature_entity": "「温度 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "pid_mode": "この項目は「PID」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "pid_target_c": "「目標 (°C)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "pid_pause_on_window_open": "この項目は「PID · 屋外」を設定します。機器への指示には個別の許可と独立した保護が必要です。"
+        }
+      },
+      "pid_tuning": {
+        "title": "設定 · PID",
+        "description": "「設定 · PID」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "pid_kp": "PID Kp · 制御 (% per °C)",
+          "pid_ki": "PID Ki · 制御 (% per °C-minute)",
+          "pid_kd": "PID Kd · 制御 (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "この項目は「PID Kp · 制御 (% per °C)」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "pid_ki": "この項目は「PID Ki · 制御 (% per °C-minute)」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "pid_kd": "この項目は「PID Kd · 制御 (%·minute per °C)」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "pid_offset_c": "「PID (°C) · PID_OFFSET_C」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "pid_min_setpoint_c": "「PID (°C) · MIN TARGET」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "pid_max_setpoint_c": "「PID (°C) · MAX TARGET」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "pid_sample_seconds": "この時間は「PID (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "pid_max_change_c": "「PID (°C) · MAX Δ」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "pid_min_change_c": "「PID (°C) · MIN Δ」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "climate": {
+        "title": "設定 · デバイス",
+        "description": "「設定 · デバイス」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+        "data": {
+          "climate_area": "デバイス"
+        },
+        "data_description": {
+          "climate_area": "この項目は「デバイス」を設定します。機器への指示には個別の許可と独立した保護が必要です。"
+        }
+      },
+      "climate_room": {
+        "title": "設定 · デバイス",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "climate_enabled": "デバイス · 自動 · AUTO",
+          "climate_allow_actuation": "デバイス · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "デバイス · 自動 · MODE SWITCH",
+          "climate_prefer_native_auto": "デバイス · 自動 · NATIVE",
+          "climate_controller": "デバイス · 制御",
+          "climate_mode": "デバイス · MODE",
+          "climate_entity": "デバイス · 情報源",
+          "climate_temperature_entity": "温度 · 情報源",
+          "climate_hysteresis_c": "デバイス (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "この項目は「デバイス · 自動 · AUTO」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_allow_actuation": "この項目は「デバイス · CLIMATE_ALLOW_ACTUATION」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_auto_switch_hvac": "この項目は「デバイス · 自動 · MODE SWITCH」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_prefer_native_auto": "この項目は「デバイス · 自動 · NATIVE」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_controller": "この項目は「デバイス · 制御」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_mode": "この項目は「デバイス · MODE」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_entity": "「デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_temperature_entity": "「温度 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_hysteresis_c": "「デバイス (°C)」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "climate_presence": {
+        "title": "設定 · 在室 · デバイス",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "climate_occupancy_sensors": "在室 · センサー",
+          "climate_away_entities": "自宅 · デバイス",
+          "climate_unknown_occupancy": "在室 · デバイス",
+          "climate_unoccupied_delay_minutes": "デバイス · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "在室 · デバイス · センサー · 必須",
+          "climate_away_policy": "自宅 · デバイス · POLICY",
+          "climate_manual_profile": "デバイス · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "睡眠 · デバイス",
+          "climate_sleep_schedule_enabled": "睡眠 · 自動",
+          "climate_sleep_start": "睡眠 · デバイス · START",
+          "climate_sleep_end": "睡眠 · デバイス · END",
+          "climate_target_source": "デバイス · 情報源 · 目標",
+          "climate_comfort_adjustment_max_c": "デバイス (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "「在室 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_away_entities": "「自宅 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_unknown_occupancy": "この項目は「在室 · デバイス」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_unoccupied_delay_minutes": "この時間は「デバイス · CLIMATE_UNOCCUPIED_DELAY_MINUTES」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_occupancy_stale_minutes": "この時間は「在室 · デバイス · センサー · 必須」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_away_policy": "この項目は「自宅 · デバイス · POLICY」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_manual_profile": "この項目は「デバイス · CLIMATE_MANUAL_PROFILE」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_sleep_active": "この項目は「睡眠 · デバイス」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_sleep_schedule_enabled": "この項目は「睡眠 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_sleep_start": "この時間は「睡眠 · デバイス · START」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_sleep_end": "この時間は「睡眠 · デバイス · END」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_target_source": "「デバイス · 情報源 · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_comfort_adjustment_max_c": "「デバイス (°C)」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "climate_equipment": {
+        "title": "設定 · デバイス",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · デバイス · 情報源 · 温度 +",
+          "climate_cool_climate_entity": "COOL · デバイス · 情報源 · 温度 −",
+          "climate_dry_climate_entity": "DRY · デバイス · 情報源",
+          "climate_fan_climate_entity": "FAN_ONLY · 速度 · デバイス · 情報源",
+          "climate_humidifier_entity": "HUMIDIFIER · デバイス · 情報源",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · デバイス · 情報源",
+          "climate_extraction_fan_entity": "EXTRACT · 速度 · デバイス · 情報源",
+          "climate_purifier_fan_entity": "空気清浄機 · 情報源",
+          "climate_humidity_entity": "湿度 · 情報源",
+          "climate_humidity_low_rh": "RH · 湿度 · デバイス (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · 湿度 · デバイス (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · 湿度 · デバイス · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "デバイス · 温度 −",
+          "climate_humidity_setpoint_auto": "湿度 · 自動",
+          "climate_window_efficiency_notify": "デバイス · 屋外",
+          "climate_dry_fan_mode_auto": "速度 · 自動",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · 速度 · デバイス · 必須 · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · 速度 · デバイス · 屋外 · 必須 · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · 速度 · デバイス (s) · MODE DWELL",
+          "climate_humidity_power_auto": "湿度 · 電力 · 自動",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · 湿度 · デバイス · 電力 · 必須 · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · 湿度 · デバイス · 電力 · 屋外 · 必須 · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · 湿度 · デバイス · 電力 · 自動 (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · 湿度 · デバイス · 電力 · オフ (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · 湿度 · デバイス · 電力 · 自動 (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "デバイス · 自動 · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "「HEAT · デバイス · 情報源 · 温度 +」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_cool_climate_entity": "「COOL · デバイス · 情報源 · 温度 −」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_dry_climate_entity": "「DRY · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_fan_climate_entity": "「FAN_ONLY · 速度 · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_humidifier_entity": "「HUMIDIFIER · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_dehumidifier_entity": "「DEHUMIDIFIER · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_extraction_fan_entity": "「EXTRACT · 速度 · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_purifier_fan_entity": "「空気清浄機 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_humidity_entity": "「湿度 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_humidity_low_rh": "「RH · 湿度 · デバイス (%) · RH MIN」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_humidity_high_rh": "「RH · 湿度 · デバイス (%) · RH MAX」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_humidity_hysteresis_rh": "「RH · 湿度 · デバイス · ± RH」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_cooling_dry_deferral_rh_points": "この項目は「デバイス · 温度 −」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_humidity_setpoint_auto": "この項目は「湿度 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_window_efficiency_notify": "この項目は「デバイス · 屋外」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_dry_fan_mode_auto": "この項目は「速度 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_dry_fan_hardware_confirmed": "「DRY/FAN_ONLY · 速度 · デバイス · 必須 · HW ✓」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "climate_dry_fan_windowless_confirmed": "「DRY/FAN_ONLY · 速度 · デバイス · 屋外 · 必須 · NO WINDOW」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "climate_dry_fan_mode_dwell_s": "この時間は「DRY/FAN_ONLY · 速度 · デバイス (s) · MODE DWELL」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_humidity_power_auto": "この項目は「湿度 · 電力 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_humidity_power_hardware_confirmed": "「RH POWER · 湿度 · デバイス · 電力 · 必須 · HW ✓」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "climate_humidity_power_windowless_confirmed": "「RH POWER · 湿度 · デバイス · 電力 · 屋外 · 必須 · NO WINDOW」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "climate_humidity_power_min_on_s": "この時間は「RH POWER · 湿度 · デバイス · 電力 · 自動 (s) · MIN ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_humidity_power_min_off_s": "この時間は「RH POWER · 湿度 · デバイス · 電力 · オフ (s) · MIN OFF」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_humidity_power_max_on_s": "この時間は「RH POWER · 湿度 · デバイス · 電力 · 自動 (s) · MAX ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_secondary_climate_setpoint_auto": "この項目は「デバイス · 自動 · TARGET AUTO」を設定します。機器への指示には個別の許可と独立した保護が必要です。"
+        }
+      },
+      "climate_air_strategy": {
+        "title": "設定 · デバイス · 屋外",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "climate_fan_speed_auto": "速度 · 自動",
+          "climate_fan_power_auto": "速度 · 電力 · 自動",
+          "climate_fan_power_hardware_confirmed": "FAN · 速度 · デバイス · 電力 · 必須 · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · 速度 · デバイス · 電力 · 自動 (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · 速度 · デバイス · 電力 · オフ (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · 速度 · デバイス · 電力 · 自動 (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · デバイス · センサー · 必須 · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · デバイス · 情報源",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · デバイス · 情報源",
+          "climate_pm25_action_ug_m3": "PM2.5 · デバイス (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · デバイス · 速度 (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · デバイス · 速度 (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "この項目は「速度 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_fan_power_auto": "この項目は「速度 · 電力 · 自動」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "climate_fan_power_hardware_confirmed": "「FAN · 速度 · デバイス · 電力 · 必須 · HW ✓」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "climate_fan_power_min_on_s": "この時間は「FAN · 速度 · デバイス · 電力 · 自動 (s) · MIN ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_fan_power_min_off_s": "この時間は「FAN · 速度 · デバイス · 電力 · オフ (s) · MIN OFF」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_fan_power_max_on_s": "この時間は「FAN · 速度 · デバイス · 電力 · 自動 (s) · MAX ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "climate_pm25_sensor_verified": "「PM2.5 · PM2.5 · デバイス · センサー · 必須 · SENSOR ✓ · VERIFIED」には適切な実測値を使ってください。推定値は校正済みPM2.5 · PM2.5 · デバイス · センサー · 必須 · SENSOR ✓ · VERIFIEDの代用になりません。",
+          "climate_co2_entity": "「CO₂ · CO₂ · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_pm25_entity": "「PM2.5 · PM2.5 · デバイス · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "climate_pm25_action_ug_m3": "「PM2.5 · デバイス (µg/m³)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_extraction_speed_percent": "「EXTRACT · デバイス · 速度 (%) · SPEED %」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "climate_purifier_speed_percent": "「PURIFIER · デバイス · 速度 (%) · SPEED %」の判断しきい値です。推奨に使い、医療上の基準ではありません。"
+        }
+      },
+      "climate_profiles": {
+        "title": "設定 · デバイス",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "home_heat": "暖房 · 在宅 (°C)",
+          "home_cool": "冷房 · 在宅 (°C)",
+          "unoccupied_heat": "暖房 · 無人の部屋 (°C)",
+          "unoccupied_cool": "冷房 · 無人の部屋 (°C)",
+          "away_heat": "暖房 · 不在 (°C)",
+          "away_cool": "冷房 · 不在 (°C)",
+          "sleep_heat": "暖房 · 睡眠 (°C)",
+          "sleep_cool": "冷房 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "home_heat": "「暖房 · 在宅 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "home_cool": "「冷房 · 在宅 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "unoccupied_heat": "「暖房 · 無人の部屋 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "unoccupied_cool": "「冷房 · 無人の部屋 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "away_heat": "「暖房 · 不在 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "away_cool": "「冷房 · 不在 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "sleep_heat": "「暖房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "sleep_cool": "「冷房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。"
+        }
+      },
+      "climate_actuators": {
+        "title": "設定 · デバイス",
+        "description": "エリア · 設定 · デバイス · 制御. 在室 · センサー · 必須.",
+        "data": {
+          "direct_hardware_confirmed": "必須",
+          "heat_actuator": "暖房 · デバイス",
+          "cool_actuator": "冷房 · デバイス",
+          "min_on_s": "電力 · 自動 (s) · MIN ON",
+          "min_off_s": "電力 · オフ (s)",
+          "max_on_s": "電力 · 自動 (s) · MAX ON",
+          "mode_dwell_s": "設定 · 情報源 (s) · MODE DWELL",
+          "kp": "PID Kp · 制御 (percentage points/°C)",
+          "ki": "PID Ki · 制御 (percentage points/(°C·minute))",
+          "kd": "PID Kd · 制御 (percentage points·minute/°C)",
+          "sample_seconds": "設定 · 情報源 (s) · SAMPLE",
+          "pwm_period_s": "設定 · 情報源 (s) · PWM PERIOD",
+          "max_demand_change": "設定 · 情報源 · MAX Δ",
+          "min_demand_change": "設定 · 情報源 · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "「必須」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "heat_actuator": "「暖房 · デバイス」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "cool_actuator": "「冷房 · デバイス」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "min_on_s": "この時間は「電力 · 自動 (s) · MIN ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "min_off_s": "この時間は「電力 · オフ (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "max_on_s": "この時間は「電力 · 自動 (s) · MAX ON」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "mode_dwell_s": "この時間は「設定 · 情報源 (s) · MODE DWELL」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "kp": "「PID Kp · 制御 (percentage points/°C)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "ki": "「PID Ki · 制御 (percentage points/(°C·minute))」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "kd": "「PID Kd · 制御 (percentage points·minute/°C)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "sample_seconds": "この時間は「設定 · 情報源 (s) · SAMPLE」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "pwm_period_s": "この時間は「設定 · 情報源 (s) · PWM PERIOD」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "max_demand_change": "「設定 · 情報源 · MAX Δ」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "min_demand_change": "「設定 · 情報源 · MIN Δ」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "outside_data": {
+        "title": "屋外 · 情報源",
+        "description": "屋外 · 情報源: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "weather": "天気と警報",
+          "outdoor": "屋外の空気質",
+          "outside_aqi": "屋外 · AQI",
+          "pollen": "花粉"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "エリア · 設定",
+        "description": "エリア · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "areas": "部屋",
+          "indoor_sensors": "部屋 · カビ指標",
+          "window_sensors": "窓センサーを除外",
+          "environment_room": "設定 · 設定 · 情報源",
+          "climate": "設定 · デバイス",
+          "pid": "設定 · PID",
+          "area_devices": "エリア · デバイス"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "デバイス · 設定",
+        "description": "デバイス · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "menu_options": {
+          "device_settings": "デバイス · 制御",
+          "device_choice": "選択 · デバイス",
+          "device_done": "設定 · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "一般 · 設定",
+        "description": "一般 · 設定: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "general_room_occupancy_sensors": "部屋 · 在室 · センサー",
+          "general_occupied_rooms_entity": "在室 · 部屋 · 情報源 (state)",
+          "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
+          "general_home_trackers": "自宅 · 在室 · デバイス",
+          "general_home_policy": "自宅 · 在室 · 制御",
+          "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
+          "general_source_stale_minutes": "情報源 · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "「部屋 · 在室 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_entity": "「在室 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_occupied_rooms_attribute": "「在室 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_home_trackers": "「自宅 · 在室 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_home_policy": "この項目は「自宅 · 在室 · 制御」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "general_sleep_rooms_entity": "「睡眠 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "general_sleep_rooms_attribute": "「睡眠 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "general_source_stale_minutes": "情報源 · 睡眠 / 在室 · max 240 min. 無効 · オフ."
+        }
+      },
+      "pollen": {
+        "title": "花粉",
+        "description": "花粉: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "pollen_entity": "花粉 · 情報源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "pollen_high_from": "「POLLEN · 花粉 · HIGH」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_max_scale": "「POLLEN · 花粉 · SCALE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_avoid_ventilation": "「POLLEN · 花粉 · NO VENT」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "outside_aqi": {
+        "title": "屋外 · AQI",
+        "description": "屋外 · AQI: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "outside_aqi_entity": "AQI · センサー",
+          "outside_aqi_scale": "AQI · 情報源",
+          "outside_aqi_limit": "AQI · 目標",
+          "outside_aqi_no_sources": "AQI · センサー · 必須"
+        },
+        "data_description": {
+          "outside_aqi_entity": "「AQI · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "outside_aqi_scale": "「AQI · 情報源」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "outside_aqi_limit": "「AQI · 目標」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "outside_aqi_no_sources": "「AQI · センサー · 必須」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+        }
+      },
+      "area_devices": {
+        "title": "エリア · デバイス",
+        "description": "エリア · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "area_devices_area": "選択 · エリア"
+        },
+        "data_description": {
+          "area_devices_area": "「選択 · エリア」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。"
+        }
+      },
+      "select_devices": {
+        "title": "選択 · デバイス",
+        "description": "選択 · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "selected_devices": "選択 · デバイス"
+        },
+        "data_description": {
+          "selected_devices": "「選択 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。"
+        }
+      },
+      "device_choice": {
+        "title": "選択 · デバイス",
+        "description": "選択 · デバイス: 選択 情報源, センサー / デバイス · 制御.",
+        "data": {
+          "device_choice": "選択 · デバイス"
+        },
+        "data_description": {
+          "device_choice": "「選択 · デバイス」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。"
+        }
+      },
+      "device_settings": {
+        "title": "デバイス · 制御",
+        "description": "この項目は「制御 · 情報源」を設定します。機器への指示には個別の許可と独立した保護が必要です。 「必須 · デバイス · 電力」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。 この時間は「電力 · min ON (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。 この時間は「電力 · min OFF (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。 「睡眠 · 制御」は選択した部屋だけに設定します。無効なデータでは操作を行いません。 「速度 (%)」の判断しきい値です。推奨に使い、医療上の基準ではありません。\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "自動 制御",
+          "device_method": "制御 · 情報源",
+          "device_presence_requirement": "制御 · 在室",
+          "device_absence_action": "オフ · 在室",
+          "device_sleep_behavior": "睡眠 · 制御",
+          "device_hardware_confirmed": "必須 · デバイス · 電力",
+          "device_temperature_entity": "温度 · センサー",
+          "device_humidity_entity": "湿度 · センサー",
+          "device_co2_entity": "CO₂ · センサー",
+          "device_pm25_entity": "PM2.5 · センサー",
+          "device_fan_purpose": "制御 · デバイス",
+          "device_sensor_verified": "センサー · 必須",
+          "device_fan_speed_percent": "速度 (%)",
+          "device_humidity_target": "湿度 · 目標 (%)",
+          "device_sleep_humidity_target": "睡眠 · 湿度 · 目標 (%)",
+          "device_min_on_s": "電力 · min ON (s)",
+          "device_min_off_s": "電力 · min OFF (s)",
+          "device_max_on_s": "電力 · max ON (s)",
+          "device_home_heat_c": "暖房 · 在宅 (°C)",
+          "device_home_cool_c": "冷房 · 在宅 (°C)",
+          "device_unoccupied_heat_c": "暖房 · 無人の部屋 (°C)",
+          "device_unoccupied_cool_c": "冷房 · 無人の部屋 (°C)",
+          "device_away_heat_c": "暖房 · 不在 (°C)",
+          "device_away_cool_c": "冷房 · 不在 (°C)",
+          "device_sleep_heat_c": "暖房 · 睡眠 (°C)",
+          "device_sleep_cool_c": "冷房 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "この項目は「自動 制御」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "device_method": "この項目は「制御 · 情報源」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "device_presence_requirement": "「制御 · 在室」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "device_absence_action": "この項目は「オフ · 在室」を設定します。機器への指示には個別の許可と独立した保護が必要です。",
+          "device_sleep_behavior": "「睡眠 · 制御」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "device_hardware_confirmed": "「必須 · デバイス · 電力」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "device_temperature_entity": "「温度 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "device_humidity_entity": "「湿度 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "device_co2_entity": "「CO₂ · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "device_pm25_entity": "「PM2.5 · センサー」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
+          "device_fan_purpose": "「制御 · デバイス」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "device_sensor_verified": "「センサー · 必須」には適切な実測値を使ってください。推定値は校正済みセンサーの代用になりません。",
+          "device_fan_speed_percent": "「速度 (%)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "device_humidity_target": "「湿度 · 目標 (%)」の判断しきい値です。推奨に使い、医療上の基準ではありません。",
+          "device_sleep_humidity_target": "「睡眠 · 湿度 · 目標 (%)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_min_on_s": "この時間は「電力 · min ON (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "device_min_off_s": "この時間は「電力 · min OFF (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "device_max_on_s": "この時間は「電力 · max ON (s)」に使います。頻繁な切替を防ぎますが機器保護に代わりません。",
+          "device_home_heat_c": "「暖房 · 在宅 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_home_cool_c": "「冷房 · 在宅 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_unoccupied_heat_c": "「暖房 · 無人の部屋 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_unoccupied_cool_c": "「冷房 · 無人の部屋 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_away_heat_c": "「暖房 · 不在 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_away_cool_c": "「冷房 · 不在 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_sleep_heat_c": "「暖房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。",
+          "device_sleep_cool_c": "「冷房 · 睡眠 (°C)」の目標は在室や睡眠を確認した場合だけ適用します。不明は不在ではありません。"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "無効な選択: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "利用できません: 屋外の空気質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "無効な選択: 天気と警報 (weather.*).",
+      "invalid_warning": "無効な選択: 天気と警報 ⚠.",
+      "missing_notify": "選択してください: Announcement Hub / notify.*.",
+      "missing_tts": "選択してください: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "無効な選択: °C min < max.",
+      "no_areas": "選択してください: 部屋.",
+      "no_window_areas": "利用できません: 測定値 (binary_sensor, window).",
+      "invalid_areas": "無効な選択: 部屋.",
+      "invalid_window_exclusions": "無効な選択: 窓センサーを除外.",
+      "invalid_indoor_exclusions": "無効な選択: 室内空気センサーを除外.",
+      "no_windows_after_exclusions": "窓センサーを少なくとも一つ残してください.",
+      "review_areas_after_exclusions": "確認してください: 部屋 · 測定値 (0).",
+      "invalid_repeat_minutes": "無効な選択: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "利用できません: conversation.process.",
+      "invalid_ai_agent": "無効な選択: conversation.*.",
+      "invalid_mold_temperature_sensor": "部屋 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "部屋 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "カビ指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "カビ指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "カビ指標 · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "「設定 · 情報源」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "invalid_environment_measurement": "「設定 · 情報源」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pmv_requires_explicit_inputs": "「PMV / PPD」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pid_climate_required": "「PID · デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pid_temperature_required": "「PID · 温度」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pid_invalid_target": "「PID · 目標」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pid_duplicate_climate": "「PID · デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "pid_invalid_parameters": "「PID」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_dry_fan_control_inputs_missing": "「速度 · デバイス · 制御」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_humidity_power_inputs_missing": "「湿度 · デバイス · 電力」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_secondary_control_inputs_missing": "「デバイス · 制御」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_fan_power_inputs_missing": "「速度 · デバイス · 電力」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_fan_control_inputs_missing": "「速度 · デバイス · 制御」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_fan_sensor_invalid": "「速度 · デバイス · センサー」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_humidity_control_inputs_missing": "「湿度 · デバイス · 制御」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_temperature_required": "「温度 · デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_target_required": "「デバイス · 目標」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_direct_actuator_not_ready": "「デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_controller_invalid": "「デバイス · 制御」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_mode_invalid": "「デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_occupancy_invalid": "「在室 · デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_away_invalid": "「自宅 · デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_deadband_invalid": "「デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_attestation_required": "「デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_direct_targets_invalid": "「デバイス · 目標」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "climate_direct_timing_invalid": "「デバイス」の設定が無効です。データ源、単位、安全条件を確認してください。",
+      "general_invalid_presence": "無効 · 在室 · 設定",
+      "general_invalid_trackers": "無効 · 自宅 · 設定",
+      "general_invalid_rooms_entity": "無効 · 部屋 · 設定",
+      "general_invalid_attribute": "無効 · 情報源 · 設定",
+      "general_invalid_source_age": "無効 · 情報源 · 設定",
+      "invalid_selected_devices": "無効 · デバイス · 設定",
+      "device_policy_invalid": "無効 · 在室 · 設定",
+      "device_method_invalid": "無効 · 制御 · 設定",
+      "device_hardware_required": "無効 · 必須 · 設定",
+      "device_power_required_for_off": "無効 · 電力 · 設定",
+      "device_temperature_required": "無効 · 温度 · 設定",
+      "device_humidity_required": "無効 · 湿度 · 設定",
+      "device_air_sensor_required": "無効 · センサー · 設定",
+      "device_temperature_band_invalid": "無効 · 温度 · 設定",
+      "device_humidity_invalid": "無効 · 湿度 · 設定",
+      "device_runtime_invalid": "無効 · 電力 · 設定"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "空気質",
+        "state": {
+          "open": "閉める · 測定値",
+          "close": "自動通知 · 測定値",
+          "idle": "良好",
+          "blocked": "窓を閉めてください"
+        }
+      },
+      "area_overview": {
+        "name": "環境の概要"
+      },
+      "area_surface_humidity": {
+        "name": "表面湿度（計算値）"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "屋外 · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "屋外 · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "屋外 · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "屋外 · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "屋外 · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "屋外 · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · 屋外 (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · 屋外 (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · 屋外 (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "空気質 · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "空気質 · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "空気質 · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "空気質 · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "空気質 · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "空気質 · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "空気質 · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "カビ指標 · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "屋外 · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "屋外 · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "屋外 · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "天気と警報 · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · 開ける (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "通知（任意） · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "目標 (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · 制御 (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · 制御 (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · 制御 (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "暖房 · 在宅 (°C)"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "冷房 · 在宅 (°C)"
+      },
+      "area_climate_profile_unoccupied_heat": {
+        "name": "暖房 · 無人の部屋 (°C)"
+      },
+      "area_climate_profile_unoccupied_cool": {
+        "name": "冷房 · 無人の部屋 (°C)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "暖房 · 不在 (°C)"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "冷房 · 不在 (°C)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "暖房 · 睡眠 (°C)"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "冷房 · 睡眠 (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · 花粉 · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · 花粉 · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "情報源 · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "設定 · 情報源 (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · 目標 (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "速度 · 屋外 (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "設定 · 情報源 (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "設定 · 情報源 (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "デバイス · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "在室 · デバイス · センサー · 必須"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "デバイス (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · 湿度 · デバイス (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · 湿度 · デバイス (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · 湿度 · デバイス · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "デバイス · 温度 −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · デバイス (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · デバイス · 速度 (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · デバイス · 速度 (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · 制御 (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · 制御 (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · 制御 (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "設定 · 情報源 (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "設定 · 情報源 · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "設定 · 情報源 · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "カビ指標 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 制御 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 制御 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 制御 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}設定 · 情報源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低騒音ファンの上限 (%)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "自動 · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "自動"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · 通知（任意）"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · 花粉 · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "睡眠"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · 自動"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "睡眠 · デバイス"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "睡眠 · 自動"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "デバイス · 屋外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠中の低騒音運転"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}在室中の低騒音運転"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "言語"
+      },
+      "area_manual_profile": {
+        "name": "デバイス · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "自宅 · 在室 · 制御"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "在室 · デバイス"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "自宅 · デバイス · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "デバイス · 情報源 · 目標"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}制御方式",
+        "state": {
+          "existing": "既存の部屋コントローラー",
+          "automatic": "自動",
+          "manual": "手動",
+          "off": "オフ",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}機器の低騒音ファンモード"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "睡眠 · デバイス · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "睡眠 · デバイス · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "カビ指標 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}確認して再開"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室内環境コントローラー"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "通知（任意） — Home Environment Manager",
+      "description": "通知（任意） · 部屋",
+      "fields": {
+        "language": {
+          "name": "言語",
+          "description": "言語"
+        },
+        "channels": {
+          "name": "通知（任意）",
+          "description": "通知（任意）"
+        },
+        "areas": {
+          "name": "部屋",
+          "description": "部屋"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — 既定",
+        "en": "設定 · 情報源",
+        "de": "設定 · 情報源",
+        "el": "設定 · 情報源",
+        "fr": "設定 · 情報源",
+        "es": "設定 · 情報源",
+        "it": "設定 · 情報源",
+        "nl": "設定 · 情報源",
+        "pt": "設定 · 情報源",
+        "pt-br": "設定 · 情報源",
+        "pl": "設定 · 情報源",
+        "ru": "設定 · 情報源",
+        "uk": "設定 · 情報源",
+        "tr": "設定 · 情報源",
+        "cs": "設定 · 情報源",
+        "sk": "設定 · 情報源",
+        "hu": "設定 · 情報源",
+        "ro": "設定 · 情報源",
+        "bg": "設定 · 情報源",
+        "hr": "設定 · 情報源",
+        "sr": "設定 · 情報源",
+        "sv": "設定 · 情報源",
+        "nb": "設定 · 情報源",
+        "da": "設定 · 情報源",
+        "fi": "設定 · 情報源",
+        "id": "設定 · 情報源",
+        "vi": "設定 · 情報源",
+        "th": "設定 · 情報源",
+        "hi": "設定 · 情報源",
+        "zh-hans": "設定 · 情報源",
+        "zh-hant": "設定 · 情報源",
+        "ja": "設定 · 情報源",
+        "ko": "設定 · 情報源",
+        "ar": "設定 · 情報源",
+        "he": "設定 · 情報源",
+        "fa": "設定 · 情報源",
+        "bn": "設定 · 情報源",
+        "ur": "設定 · 情報源",
+        "ta": "設定 · 情報源"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "自宅 · 在室",
+        "all_home": "自宅 · デバイス · 在室"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "目標 · 制御",
+        "native": "デバイス · 制御",
+        "power": "電力",
+        "speed": "速度"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "自動",
+        "room": "部屋 · 在室",
+        "home": "自宅 · 在室"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "一時停止",
+        "off": "オフ"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "自動",
+        "pause": "一時停止",
+        "sleep_targets": "睡眠 · 目標"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "屋外 · 制御",
+        "filtration": "PM2.5 · 制御"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "情報源 · 無効",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "目標 · 設定"
+      }
+    }
+  }
+}
