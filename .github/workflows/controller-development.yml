@@ -1,0 +1,21 @@
+name: Controller development snapshot
+on:
+  push:
+    branches: ['feat/device-climate-controllers-*']
+    paths: ['.github/workflows/controller-development.yml']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive tracked source only
+        run: git archive --format=tar.gz -o source.tar.gz HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: controller-source
+          path: source.tar.gz
+          retention-days: 3
