@@ -9,6 +9,7 @@ from homeassistant.helpers.entity import EntityCategory
 from .const import (CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES,
                     CONF_USE_MOLD, CONF_AREAS, CONF_MOLD_ROOMS,
                     DOMAIN, SIGNAL_UPDATED)
+from .device_hierarchy import controller_device_info
 from .device_controls import (
     PID_NUMBERS, PROFILE_NUMBERS, THRESHOLD_NUMBERS,
     GLOBAL_ENV_NUMBERS, GLOBAL_OCCUPANCY_NUMBERS,
@@ -20,7 +21,7 @@ from .climate_strategy import profiles
 
 
 async def async_setup_entry(hass, entry, async_add_entities) -> None:
-    from .area_entities import configured_area_ids
+    from .device_hierarchy import configured_area_ids
 
     manager = entry.runtime_data
     numbers = [
@@ -79,6 +80,8 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             active = active if isinstance(active, dict) else {}
             selected = cfg.get("selected_devices", []) if isinstance(cfg, dict) else []
             for entity_id in selected:
+                if controller_device_info(manager, area_id, entity_id) is None:
+                    continue
                 device_cfg = active.get(entity_id)
                 if not isinstance(device_cfg, dict) or device_cfg.get("auto_control") is not True:
                     continue
@@ -141,6 +144,11 @@ class ConfigNumber(NumberEntity):
         self._attr_device_info = {"identifiers": {
             (DOMAIN, entry_id if area_id is None else f"{entry_id}_area_{area_id}")
         }}
+        if kind == "device_target" and entity_id:
+            child = controller_device_info(manager, area_id, entity_id)
+            if child is None:
+                raise ValueError("Controller source is not registered in this area hub")
+            self._attr_device_info = child
         self._attr_native_min_value = bounds[0]
         self._attr_native_max_value = bounds[1]
         self._attr_native_step = bounds[2]

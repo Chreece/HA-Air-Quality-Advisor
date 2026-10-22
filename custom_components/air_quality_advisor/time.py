@@ -8,7 +8,7 @@ from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
 
-from .area_entities import configured_area_ids
+from .device_hierarchy import configured_area_ids
 from .const import DOMAIN, SIGNAL_UPDATED
 from .device_controls import climate_settings, update_device_setting
 

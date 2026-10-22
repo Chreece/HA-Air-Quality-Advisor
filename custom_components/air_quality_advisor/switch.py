@@ -16,7 +16,7 @@ CONTROLS = (CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     manager = entry.runtime_data
-    from .area_entities import configured_area_ids
+    from .device_hierarchy import configured_area_ids
     from .device_controls import AREA_ENV_FLAGS, CLIMATE_OPERATING_FLAGS, GLOBAL_ENV_FLAGS
     from .const import CONF_AREAS
     from .device_controls import climate_settings

@@ -64,6 +64,7 @@ def area_module(monkeypatch):
         def async_update_device(self, device_id, **changes):
             registry.assigned.append((device_id, changes))
 
+    device_registry.DeviceEntryType = SimpleNamespace(SERVICE="service")
     device_registry.async_get = lambda hass: Devices()
     for name, value in {
         "homeassistant.components": components,
@@ -130,7 +131,8 @@ def example_manager():
 def test_one_device_per_selected_area_and_only_calculated_optional_sensor(area_module):
     module, registry = area_module
     manager = example_manager()
-    entry = SimpleNamespace(entry_id="entry-42", runtime_data=manager)
+    entry = SimpleNamespace(entry_id="entry-42", runtime_data=manager,
+                            data=manager.settings, options={})
     entities = asyncio.run(module.async_area_entities(manager.hass, entry))
     assert len(registry.created) == 3  # Parent home device + two rooms
     assert registry.created[0]["identifiers"] == {("air_quality_advisor", "entry-42")}

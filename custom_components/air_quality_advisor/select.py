@@ -7,12 +7,13 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
 
 from .const import DOMAIN, SIGNAL_UPDATED, LANGUAGES
+from .device_hierarchy import controller_device_info
 from .device_controls import (
     climate_settings, pid_settings, tuning_source, update_device_setting,
     CLIMATE_POLICY_OPTIONS, DEVICE_POLICY_OPTIONS, GLOBAL_POLICY_OPTIONS,
     configured_aqi_entities, AQI_SCALES,
 )
-from .area_entities import configured_area_ids
+from .device_hierarchy import configured_area_ids
 
 PROFILE_OPTIONS = ("auto", "home", "unoccupied", "away", "sleep")
 GAIN_SOURCE_OPTIONS = ("defaults", "manual")
@@ -50,6 +51,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
         selected = cfg.get("selected_devices", []) if isinstance(cfg, dict) else []
         active = cfg.get("device_settings", {}) if isinstance(cfg, dict) else {}
         for entity_id in selected:
+            if controller_device_info(manager, area, entity_id) is None:
+                continue
             device = active.get(entity_id) if isinstance(active, dict) else None
             if not isinstance(device, dict) or device.get("auto_control") is not True:
                 continue
@@ -91,6 +94,11 @@ class ConfigSelect(SelectEntity):
         self._attr_device_info = {"identifiers": {
             (DOMAIN, entry_id if area is None else f"{entry_id}_area_{area}")
         }}
+        if kind == "device_policy" and entity_id:
+            child = controller_device_info(manager, area, entity_id)
+            if child is None:
+                raise ValueError("Controller source is not registered in this area hub")
+            self._attr_device_info = child
         self._attr_icon = (
             "mdi:translate" if area is None else
             "mdi:tune-variant" if kind == "pid_gain_source" else

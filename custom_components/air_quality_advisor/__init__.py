@@ -104,6 +104,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # attempt to stop any earlier-started controllers. Leave the original
     # installation error visible and never register partial service routes.
     try:
+        from .device_hierarchy import async_register_hierarchy
+        async_register_hierarchy(hass, entry)
         await manager.async_start()
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     except BaseException:

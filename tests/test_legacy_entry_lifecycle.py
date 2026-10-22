@@ -154,6 +154,11 @@ def integration(adapter,monkeypatch):
     monkeypatch.setattr(core,"ServiceResponse",dict,raising=False)
     monkeypatch.setattr(core,"SupportsResponse",
                         SimpleNamespace(OPTIONAL="optional"),raising=False)
+    from homeassistant.helpers import device_registry as dr
+    from test_device_hierarchy import DeviceRegistry
+    registry = DeviceRegistry()
+    monkeypatch.setattr(dr, "DeviceEntryType", SimpleNamespace(SERVICE="service"), raising=False)
+    monkeypatch.setattr(dr, "async_get", lambda hass: registry)
     FakeManager.instances=[]
     FakeManager.fail_start=False
     name="custom_components.air_quality_advisor._lifecycle_under_test"

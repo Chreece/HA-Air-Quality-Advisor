@@ -12,7 +12,7 @@ from typing import Any
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.core import callback
-from homeassistant.helpers import area_registry as ar, device_registry as dr
+from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import (
@@ -20,6 +20,9 @@ from .const import (
     CONF_USE_MOLD, DOMAIN, SIGNAL_UPDATED,
 )
 from .dashboard import dashboard_snapshot
+from .device_hierarchy import (
+    async_register_hierarchy, configured_area_ids, hierarchy_attributes,
+)
 
 _CONTROLLER_SOURCES = (
     "temperature_entity", "humidity_entity", "climate_entity",
@@ -35,18 +38,6 @@ _ACTUATOR_STATUS_KEYS = (
     "native_air_mode_actuation",
 )
 
-
-def configured_area_ids(settings: dict[str, Any]) -> tuple[str, ...]:
-    """Selected monitoring rooms + enabled climate/PID-only rooms, no ghosts."""
-    selected = settings.get(CONF_AREAS, [])
-    areas = list(selected) if isinstance(selected, (list, tuple)) else []
-    for key in (CONF_CLIMATE_ROOMS, CONF_PID_ROOMS):
-        configs = settings.get(key, {})
-        if isinstance(configs, dict):
-            areas.extend(area_id for area_id, cfg in configs.items()
-                         if isinstance(cfg, dict) and cfg.get("enabled") is True)
-    return tuple(dict.fromkeys(area_id for area_id in areas
-                               if isinstance(area_id, str) and area_id))
 
 
 def room_snapshot(manager: Any, area_id: str) -> dict[str, Any] | None:
@@ -132,7 +123,8 @@ def _mold_calibration_overview(settings: dict, area_id: str) -> dict | None:
 def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
     room = room_snapshot(manager, area_id)
     if room is None:
-        return {"area_id": area_id, "data_available": False}
+        return {"area_id": area_id, "data_available": False,
+                **hierarchy_attributes(manager, area_id)}
 
     climate = room.get("environment", {}).get("climate_plan", {})
     climate = climate if isinstance(climate, dict) else {}
@@ -211,6 +203,7 @@ def overview_attributes(manager: Any, area_id: str) -> dict[str, Any]:
         }
     return {
         "area_id": area_id,
+        **hierarchy_attributes(manager, area_id),
         "room_name": room.get("name"),
         "data_available": True,
         "monitoring_enabled": not room.get("climate_only", False),
@@ -230,31 +223,14 @@ async def async_area_entities(hass: Any, entry: Any) -> list[SensorEntity]:
     """Create one registry device per real selected area, keeping user area moves."""
     manager = entry.runtime_data
     areas = ar.async_get(hass)
-    devices = dr.async_get(hass)
-    # The pre-existing whole-home recommendation entity already uses this
-    # identifier. Adopt it as the parent home device instead of duplicating it.
-    devices.async_get_or_create(
-        config_entry_id=entry.entry_id,
-        identifiers={(DOMAIN, entry.entry_id)},
-        name="Home Environment Manager",
-        manufacturer="Home Environment Manager",
-        model="Home Environment Controller",
-    )
+    if not hasattr(manager, "_device_hierarchy"):
+        # Direct platform setup (and tests) still gets ordered registration.
+        async_register_hierarchy(hass, entry)
     result: list[SensorEntity] = []
     for area_id in configured_area_ids(manager.settings):
         area = areas.async_get_area(area_id)
         if area is None:  # Deleted/stale HA area; never invent a registry area.
             continue
-        device = devices.async_get_or_create(
-            config_entry_id=entry.entry_id,
-            identifiers={(DOMAIN, f"{entry.entry_id}_area_{area_id}")},
-            name=f"{area.name} Environment",
-            manufacturer="Home Environment Manager",
-            model="Area Environment",
-            via_device=(DOMAIN, entry.entry_id),
-        )
-        if device.area_id is None:
-            devices.async_update_device(device.id, area_id=area_id)
         result.append(AreaOverview(manager, entry.entry_id, area_id))
         # Mold surface RH is a derived measurement; unlike raw room humidity,
         # it has no physical HA entity already representing the calculation.
