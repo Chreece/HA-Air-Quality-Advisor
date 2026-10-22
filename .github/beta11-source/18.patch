@@ -1,0 +1,137 @@
++                assert name.startswith("{channel}") and len(name) > len("{channel}"), (lang, domain, key)
++        assert set(entities["select"]["equipment_control_mode"]["state"]) == {
++            "existing", "automatic", "manual", "off", "pid"}
++        assert len(help_text[lang]) > 150, lang
++        if lang != "en":
++            assert labels[lang]["quiet_sleep"] != labels["en"]["quiet_sleep"]
++            assert help_text[lang] != help_text["en"]
++    assert (COMPONENT / "strings.json").read_bytes() == (COMPONENT / "translations/en.json").read_bytes()
++
++
++def test_equipment_translation_final_pass_is_idempotent(tmp_path, monkeypatch):
++    # Run the actual final generator against complete catalogs, not a toy sample.
++    monkeypatch.syspath_prepend(str(ROOT))
++    from apply_equipment_i18n import apply_equipment_i18n
++    for filename in ("equipment_labels.json", "compact_locales.json", "strings.json", "equipment_text.py"):
++        shutil.copy(COMPONENT / filename, tmp_path / filename)
++    shutil.copytree(COMPONENT / "translations", tmp_path / "translations")
++    files = [tmp_path / "strings.json", tmp_path / "equipment_text.py", *sorted((tmp_path / "translations").glob("*.json"))]
++    before = {p.relative_to(tmp_path): p.read_bytes() for p in files}
++    apply_equipment_i18n(tmp_path)
++    assert {p.relative_to(tmp_path): p.read_bytes() for p in files} == before
+diff --git a/tests/test_menu_controller_audit.py b/tests/test_menu_controller_audit.py
+index eeac2851d3362ffa515d97454b68f5ba7ccb3fa5..3b58878979202270556a183c40bc6a12b0d6bf3b 100644
+--- a/tests/test_menu_controller_audit.py
++++ b/tests/test_menu_controller_audit.py
+@@ -339,3 +339,98 @@ def test_replacing_primary_climate_does_not_leave_stale_secondary_role(monkeypat
+     assert "heat_climate_entity" not in settings
+     assert settings["controller"] == "device"
+     assert settings["device_settings"][old.entity_id]["auto_control"] is False
++
++
++def test_native_dry_only_is_explicitly_commissioned_without_fake_temperature(monkeypatch, adapter):
++    opt = _make_options(monkeypatch, adapter)
++    dry = MockState("climate.living_dry", "off")
++    dry.attributes.update(hvac_modes=["off", "dry"], supported_features=0)
++    rh = MockState("sensor.living_relative", 65, device_class="humidity", unit="%")
++    _add(opt, dry, rh)
++    _start_device(opt, [dry.entity_id], dry.entity_id)
++    form = asyncio.run(opt.async_step_device_settings())
++    assert "device_humidity_entity" in form["data_schema"]
++    assert "device_temperature_entity" not in form["data_schema"]
++    result = asyncio.run(opt.async_step_device_settings({
++        "device_auto_control": True, "device_method": "native",
++        "device_hardware_confirmed": True, "device_humidity_entity": rh.entity_id,
++    }))
++    cfg = result["completed"]["data"]["climate_rooms"]["living"]
++    assert cfg["dry_climate_entity"] == dry.entity_id
++    assert cfg["controller"] == "environment"
++    assert cfg.get("auto_switch_hvac") is False
++    assert cfg.get("dry_fan_mode_auto") is not True
++    assert cfg["device_settings"][dry.entity_id]["hardware_confirmed"] is True
++
++
++def test_native_air_only_requires_off_capability_hardware_and_verified_feedback(monkeypatch, adapter):
++    for missing in ("off", "hardware", "sensor"):
++        opt = _make_options(monkeypatch, adapter)
++        fan = MockState("climate.living_native_fan", "off")
++        fan.attributes.update(hvac_modes=["fan_only"] if missing == "off" else ["off", "fan_only"], supported_features=0)
++        _add(opt, fan)
++        opt.config_entry.options["excluded_indoor_entities"] = {"living": []}
++        _start_device(opt, [fan.entity_id], fan.entity_id)
++        result = asyncio.run(opt.async_step_device_settings({
++            "device_auto_control": True, "device_method": "native",
++            "device_hardware_confirmed": missing != "hardware",
++            "device_fan_purpose": "extraction", "device_co2_entity": "sensor.living_co2",
++            "device_sensor_verified": missing != "sensor",
++        }))
++        assert result["errors"], missing
++
++
++def test_native_climate_cycle_commissioning_minimum_is_not_a_tuning_preference(monkeypatch, adapter):
++    opt = _make_options(monkeypatch, adapter)
++    heat = MockState("climate.living_binary", "off")
++    heat.attributes.update(hvac_modes=["off", "heat"], supported_features=0)
++    temp = MockState("sensor.living_t", 20, device_class="temperature", unit="°C")
++    _add(opt, heat, temp)
++    _start_device(opt, [heat.entity_id], heat.entity_id)
++    result = asyncio.run(opt.async_step_device_settings({
++        "device_auto_control": True, "device_method": "native",
++        "device_hardware_confirmed": True, "device_temperature_entity": "sensor.living_t",
++        "device_min_on_s": 5,
++    }))
++    assert result["errors"]["base"] == "device_runtime_invalid"
++
++
++def test_manager_climate_entities_are_never_offered_as_native_targets(monkeypatch, adapter):
++    from custom_components.air_quality_advisor.compact_options import _device_choices
++    from custom_components.air_quality_advisor.climate_entry_ownership import foreign_owner_hold
++    opt = _make_options(monkeypatch, adapter)
++    proxy = MockState("climate.manager_controller", "heat")
++    proxy.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
++    native = MockState("climate.native", "heat")
++    native.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
++    _add(opt, proxy, native)
++    opt.hass._entity_details[proxy.entity_id] = {"platform": "air_quality_advisor"}
++    ids = {v["value"] for v in _device_choices(opt.hass, "living")}
++    assert native.entity_id in ids and proxy.entity_id not in ids
++    opt._pid_area = "living"
++    assert proxy.entity_id not in {v["value"] for v in opt._pid_climate_choices()}
++    assert foreign_owner_hold(opt.hass, "entry", proxy.entity_id) == "managed_entity_cannot_be_physical_target"
++
++
++def test_removing_unrelated_fan_preserves_commissioned_native_dry_controller(monkeypatch, adapter):
++    _make_options(monkeypatch, adapter)
++    from custom_components.air_quality_advisor.compact_options import _reconcile_device_selection
++    previous = {
++        "enabled": True, "allow_actuation": True, "controller": "environment",
++        "selected_devices": ["climate.dry", "fan.filter"],
++        "purifier_fan_entity": "fan.filter", "fan_power_auto": True,
++        "device_settings": {
++            "climate.dry": {"auto_control": True, "method": "native", "hardware_confirmed": True},
++            "fan.filter": {"auto_control": True, "method": "power", "hardware_confirmed": True},
++        },
++    }
++    result = _reconcile_device_selection(previous, {**previous, "selected_devices": ["climate.dry"]})
++    assert result["allow_actuation"] is True
++    assert result["device_settings"]["climate.dry"]["auto_control"] is True
++    assert result["device_settings"]["fan.filter"]["auto_control"] is False
++    assert result["fan_power_auto"] is False
++    assert "purifier_fan_entity" not in result
++    # This helper may retain a grant, but it must never invent one.
++    disabled = _reconcile_device_selection(previous, {**previous, "allow_actuation": False,
++        "selected_devices": ["climate.dry"]})
++    assert disabled["allow_actuation"] is False
+diff --git a/tests/test_readme_assets.py b/tests/test_readme_assets.py
+index 699713080324e35be05653016fb93ff4a83615c6..8d9c1a83a07569bb22019f9160b418f04fd133c7 100644
+--- a/tests/test_readme_assets.py
++++ b/tests/test_readme_assets.py
+@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlparse
+ ROOT = Path(__file__).resolve().parents[1]
+ README = ROOT / "README.md"
+ RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/"
+-VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7", "v0.6.0b8", "v0.6.0b9", "v0.6.0b10")
++VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7", "v0.6.0b8", "v0.6.0b9", "v0.6.0b10", "v0.6.0b11")
+ LOCAL_ASSET_ROOT = ".github/assets/"
+ 
+ 

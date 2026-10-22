@@ -1,0 +1,309 @@
++        h.hass._entity_devices[second.entity_id] = "second-device"
++        h.hass._device_areas["second-device"] = "room"
++        h.room["selected_devices"].append(second.entity_id)
++        h.room["device_settings"][second.entity_id] = dict(h.dev)
++        spec2 = ManagedDevice("controller_two", "room", "Second fan", "second-device", (second.entity_id,))
++        h.manager._device_hierarchy["controllers"][spec2.identifier] = {"spec": spec2, "device_id": "logical-two"}
++        h.manager.entry.data[m.SETTINGS][spec2.identifier] = dict(h.cfg)
++        h.runtime._record(spec2)["off_at"][second.entity_id] = 0
++        release, dispatched = asyncio.Event(), asyncio.Event()
++        original = h.hass.services.async_call
++        async def dispatch(domain, action, data, **kwargs):
++            if kwargs["target"]["entity_id"] == h.entity:
++                dispatched.set()
++                await release.wait()
++            await original(domain, action, data, **kwargs)
++        h.hass.services.async_call = dispatch
++        first = asyncio.create_task(h.runtime._run(h.spec))
++        await dispatched.wait()
++        await h.runtime._run(spec2)
++        assert second.state == "on" and not first.done()
++        release.set()
++        await first
++    asyncio.run(run())
++
++
++def test_automatic_power_does_not_adopt_unowned_running_device(runtime_module):
++    async def run():
++        h = home(runtime_module, state="on", mode="existing")
++        with pytest.raises(Exception, match="OFF before"):
++            await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
++        h.cfg["control_mode"]="automatic"
++        await tick(h)
++        assert not h.hass.services.calls
++        assert not h.runtime.records[h.spec.identifier]["power"]
++    asyncio.run(run())
++
++
++def test_pid_keeps_explicit_dry_mode_on_multimode_native_climate(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", mode="pid", controls={"requested_mode": "dry"})
++        await tick(h)
++        assert h.hass.services.calls[0][2] == {"hvac_mode": "dry"}
++    asyncio.run(run())
++
++
++def test_manual_targets_never_follow_presence_or_sleep_changes(runtime_module):
++    async def run():
++        h=home(runtime_module,domain="climate",state="heat",mode="manual",power=False)
++        await h.runtime.async_set_targets(h.spec,{"heat":22})
++        await tick(h)
++        await tick(h,advance=1)
++        h.plan.update(away="away",sleeping=True,occupancy="unoccupied")
++        await tick(h,advance=300)
++        assert h.state.attributes["temperature"]==22
++        assert m.profile_name(m.settings(h.manager,h.spec),h.plan)=="manual"
++    asyncio.run(run())
++
++
++def test_fan_choices_are_saved_per_preset_not_one_global_setting(runtime_module):
++    async def run():
++        h=home(runtime_module,state="on",power=False,mode="manual",controls={"preset":"home"})
++        await h.runtime.async_set_fan(h.spec,"70")
++        await tick(h)
++        await tick(h,advance=1)
++        await h.runtime.async_update(h.spec,{"preset":"sleep"})
++        await h.runtime.async_set_fan(h.spec,"30")
++        await tick(h)
++        await tick(h,advance=1)
++        assert h.state.attributes["percentage"]==30
++        await h.runtime.async_update(h.spec,{"preset":"home"})
++        await tick(h)
++        assert h.state.attributes["percentage"]==70
++    asyncio.run(run())
+diff --git a/tests/test_equipment_entities.py b/tests/test_equipment_entities.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..3b0ebbba15fb1fa71ad8fa2b3f5874c92b3f3871
+--- /dev/null
++++ b/tests/test_equipment_entities.py
+@@ -0,0 +1,196 @@
++"""Home Assistant platform boundaries for per-device climate controls (mocked)."""
++from __future__ import annotations
++
++import asyncio
++from enum import IntFlag, StrEnum
++import importlib
++import sys
++import types
++from types import SimpleNamespace
++
++import pytest
++
++from test_equipment_control import home, runtime_module
++from test_discovery import adapter
++from custom_components.air_quality_advisor import equipment_model as model
++
++
++@pytest.fixture
++def platforms(monkeypatch, runtime_module):
++    core = sys.modules["homeassistant.core"]
++    core.callback = lambda f: f
++    const = types.ModuleType("homeassistant.const")
++    const.UnitOfTemperature = SimpleNamespace(CELSIUS="°C", FAHRENHEIT="°F")
++    monkeypatch.setitem(sys.modules, const.__name__, const)
++    class HVACMode(StrEnum):
++        OFF="off"
++        HEAT="heat"
++        COOL="cool"
++        HEAT_COOL="heat_cool"
++        AUTO="auto"
++        DRY="dry"
++        FAN_ONLY="fan_only"
++    class HVACAction(StrEnum):
++        OFF="off"
++        IDLE="idle"
++        HEATING="heating"
++        COOLING="cooling"
++        DRYING="drying"
++        FAN="fan"
++        DEFROSTING="defrosting"
++        PREHEATING="preheating"
++    class ClimateEntityFeature(IntFlag):
++        TARGET_TEMPERATURE=1
++        TARGET_TEMPERATURE_RANGE=2
++        TARGET_HUMIDITY=4
++        FAN_MODE=8
++        PRESET_MODE=16
++        SWING_MODE=32
++        TURN_OFF=128
++        TURN_ON=256
++        SWING_HORIZONTAL_MODE=512
++    class Entity:
++        async def async_added_to_hass(self):
++            pass
++        def async_on_remove(self, callback):
++            pass
++        def async_write_ha_state(self):
++            pass
++    entities = types.ModuleType("homeassistant.helpers.entity")
++    entities.EntityCategory = SimpleNamespace(CONFIG="config", DIAGNOSTIC="diagnostic")
++    monkeypatch.setitem(sys.modules, entities.__name__, entities)
++    monkeypatch.setitem(sys.modules, "homeassistant.components", types.ModuleType("homeassistant.components"))
++    for domain in ("climate", "number", "select", "switch", "button"):
++        native = types.ModuleType(f"homeassistant.components.{domain}")
++        setattr(native, domain.title()+"Entity", Entity)
++        if domain == "climate":
++            native.HVACMode, native.HVACAction, native.ClimateEntityFeature = HVACMode, HVACAction, ClimateEntityFeature
++        elif domain == "number":
++            native.NumberMode = SimpleNamespace(BOX="box")
++        monkeypatch.setitem(sys.modules, native.__name__, native)
++    monkeypatch.delitem(sys.modules, "custom_components.air_quality_advisor.equipment_entity", raising=False)
++    result = {}
++    for domain in ("climate", "number", "select", "switch", "button"):
++        name=f"custom_components.air_quality_advisor.{domain}"
++        monkeypatch.delitem(sys.modules, name, raising=False)
++        result[domain]=importlib.import_module(name)
++    return SimpleNamespace(**result, runtime=runtime_module, Features=ClimateEntityFeature)
++
++
++@pytest.mark.parametrize("domain,expected,has_temp,has_humidity", [
++    ("climate", {"off","heat","cool","dry","fan_only"}, True, False),
++    ("fan", {"off","fan_only"}, False, False),
++    ("humidifier", {"off","dry"}, False, True),
++    ("switch", {"off","heat"}, True, False),
++])
++def test_native_climate_facade_matches_actual_capabilities(platforms, domain, expected, has_temp, has_humidity):
++    h=home(platforms.runtime, domain=domain)
++    entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++    assert set(entity.hvac_modes)==expected
++    assert bool(entity.supported_features & platforms.Features.TARGET_TEMPERATURE)==has_temp
++    assert bool(entity.supported_features & platforms.Features.TARGET_HUMIDITY)==has_humidity
++    assert entity.current_temperature==15
++    assert entity.current_humidity==70
++    assert entity.hvac_mode=="off" and entity.hvac_action=="off"
++    assert entity._attr_device_info["identifiers"]=={("air_quality_advisor",h.spec.identifier)}
++    assert entity._attr_native_temperature_unit=="°C"
++    assert set(entity.preset_modes)==set(model.PRESETS)
++
++
++def test_climate_reports_observed_state_not_optimistic_desired_state(platforms):
++    async def run():
++        h=home(platforms.runtime,domain="climate",mode="existing")
++        entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++        await entity.async_set_hvac_mode("heat")
++        assert entity.hvac_mode=="off"
++        assert entity.extra_state_attributes["requested_hvac_mode"]=="heat"
++        assert h.hass.services.calls==[]
++        await h.runtime.tick(h.spec)
++        # Transfer deliberately starts a new observed minimum-OFF interval.
++        assert entity.hvac_mode=="off"
++        h.clock[0]+=600
++        await h.runtime.tick(h.spec)
++        assert entity.hvac_mode=="heat"
++    asyncio.run(run())
++
++
++def test_facade_temperature_and_preset_edit_effective_targets(platforms):
++    async def run():
++        h=home(platforms.runtime,domain="climate",state="heat",mode="existing",power=False)
++        entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++        await entity.async_set_preset_mode("sleep")
++        assert entity.target_temperature==18
++        await entity.async_set_temperature(temperature=19, hvac_mode="heat")
++        assert entity.target_temperature==19
++        await entity.async_set_preset_mode("away")
++        assert entity.target_temperature==16
++        await entity.async_set_preset_mode("sleep")
++        assert entity.target_temperature==19
++    asyncio.run(run())
++
++
++def test_facade_refuses_unsupported_modes_temperature_and_native_choices(platforms):
++    async def run():
++        h=home(platforms.runtime,domain="fan",speed=False)
++        entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++        for invoke in (lambda: entity.async_set_hvac_mode("heat"),
++                       lambda: entity.async_set_temperature(temperature=20),
++                       lambda: entity.async_set_humidity(55),
++                       lambda: entity.async_set_fan_mode("low")):
++            with pytest.raises(Exception):
++                await invoke()
++        assert h.manager.entry.options=={}
++    asyncio.run(run())
++
++
++def test_facade_native_swing_horizontal_bit_and_range(platforms):
++    h=home(platforms.runtime,domain="climate",state="heat_cool")
++    h.state.attributes.update(supported_features=2|512|8,hvac_modes=["off","heat_cool"],
++                              target_temp_low=18,target_temp_high=27)
++    entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++    assert entity.supported_features & platforms.Features.SWING_HORIZONTAL_MODE
++    assert entity.supported_features & platforms.Features.TARGET_TEMPERATURE_RANGE
++    assert not entity.supported_features & platforms.Features.TARGET_TEMPERATURE
++    assert entity.target_temperature_low==20 and entity.target_temperature_high==26
++
++
++def test_quiet_entities_and_control_selection_persist_device_only(platforms):
++    async def run():
++        h=home(platforms.runtime,state="on",power=False)
++        select=platforms.select.EquipmentSelect(h.manager,h.spec,"control_mode")
++        quiet=platforms.switch.EquipmentQuietSwitch(h.manager,h.spec,"quiet_sleep")
++        gain=platforms.number.EquipmentNumber(h.manager,h.spec,"kp")
++        assert set(select.options)==set(model.CONTROL_MODES)
++        await quiet.async_turn_on()
++        await gain.async_set_native_value(0.08)
++        assert quiet.is_on and gain.native_value==.08
++        assert h.manager.settings[model.SETTINGS][h.spec.identifier]["quiet_sleep"] is True
++        assert h.dev["hardware_confirmed"] is False
++        assert h.hass.services.calls==[]
++        await select.async_select_option("manual")
++        assert select.current_option=="manual"
++    asyncio.run(run())
++
++
++def test_dry_only_facade_has_real_humidity_controller_without_temperature(platforms):
++    async def run():
++        h=home(platforms.runtime,domain="climate")
++        h.state.attributes.update(hvac_modes=["off","dry"],supported_features=0)
++        entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++        assert not entity.supported_features & platforms.Features.TARGET_TEMPERATURE
++        assert entity.supported_features & platforms.Features.TARGET_HUMIDITY
++        await entity.async_set_humidity(55)
++        assert entity.target_humidity==55
++        assert h.hass.services.calls==[]
++    asyncio.run(run())
++
++
++def test_unavailable_or_wrong_room_source_facade_not_available(platforms):
++    h=home(platforms.runtime,domain="climate")
++    entity=platforms.climate.ManagedClimate(h.manager,h.spec)
++    assert entity.available
++    h.state.state="unavailable"
++    assert not entity.available
++    h.state.state="heat"
++    h.hass._entity_areas[h.entity]="wrong-room"
++    assert not entity.available
+diff --git a/tests/test_equipment_i18n.py b/tests/test_equipment_i18n.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..be1d9e90c1adade8dbc103a034dca05f0b544e74
+--- /dev/null
++++ b/tests/test_equipment_i18n.py
+@@ -0,0 +1,49 @@
++"""Native per-device entity labels/help are localized and reproducible."""
++from __future__ import annotations
++
++import json
++from pathlib import Path
++import runpy
++import shutil
++import sys
++
++ROOT = Path(__file__).resolve().parents[1]
++COMPONENT = ROOT / "custom_components/air_quality_advisor"
++
++
++def test_all_38_device_controller_catalogs_have_native_labels_and_explanations():
++    labels = json.loads((COMPONENT / "equipment_labels.json").read_text())
++    help_text = runpy.run_path(str(COMPONENT / "equipment_text.py"))["DEVICE_HELP"]
++    assert len(labels) == 38 and set(labels) == set(help_text)
++    for lang in labels:
++        doc = json.loads((COMPONENT / "translations" / f"{lang}.json").read_text())
++        entities = doc["entity"]
++        for domain, names in {
++            "climate": ("climate",), "button": ("resume",),
++            "select": ("control_mode", "quiet_fan_mode"),
++            "switch": ("quiet_sleep", "quiet_occupied"),
++            "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage"),
++        }.items():
++            for key in names:
++                name = entities[domain]["equipment_" + key]["name"]

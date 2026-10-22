@@ -1,0 +1,46 @@
+name: Materialize beta11 candidate
+on:
+  push:
+    branches: ['chore/materialize-beta11-20261022']
+permissions:
+  contents: write
+concurrency:
+  group: materialize-beta11-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Rebuild and test exact candidate
+        id: source
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: python tools/materialize_beta11.py
+      - name: Store source on staging branch only
+        if: steps.source.outputs.commit != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STORAGE_COMMIT: ${{ steps.source.outputs.commit }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF_NAME" == "chore/materialize-beta11-20261022" ]]
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$GITHUB_REF_NAME" --jq '.object.sha')"
+          [[ "$current" == "$GITHUB_SHA" ]]
+          git push origin "$STORAGE_COMMIT:refs/heads/$GITHUB_REF_NAME"

@@ -1,0 +1,252 @@
++            state = self.hass.states.get(pending["entity"])
++            if matches(state, pending["expected"]):
++                record["baseline"][pending["entity"]] = snapshot(state)
++                record["pending"] = None
++                if pending.get("power"):
++                    entity = pending["entity"]
++                    if pending.get("output_on") is False or pending["expected"].get("state") == "off":
++                        record["power"].pop(entity, None)
++                        record["off_at"][entity] = now
++                    else:
++                        record["power"].setdefault(entity, {"since": now,
++                            "min_on": pending["min_on"], "max_on": pending["max_on"]})
++                await self._save()
++            elif now < pending["when"] or now-pending["when"] > ACK_SECONDS:
++                await self._pause(spec, "physical_acknowledgement_missing")
++                return False
++            else:
++                self._status(spec, "awaiting_physical_acknowledgement")
++                return False
++        for entity, baseline in record.get("baseline", {}).items():
++            if baseline is None:
++                continue
++            observed = snapshot(self.hass.states.get(entity))
++            if observed is not None and observed != baseline:
++                await self._pause(spec, "physical_manual_override")
++                return False
++        return True
++
++    async def _send(self, spec: model.ManagedDevice, cap: model.Capabilities, entity: str,
++                    service: str, data: dict, expected: dict, *, power: bool = False,
++                    mode: str | None = None, automatic: bool = True,
++                    shutdown: bool = False) -> bool:
++        """Durable intent, exact target, live rechecks after *every* yield."""
++        record = self._record(spec)
++        if record.get("pending") or record.get("paused"):
++            return False
++        primary = self.hass.states.get(cap.primary)
++        if primary is None:
++            return False
++        cfg = model.settings(self.manager, spec)
++        plan = model.plan_for(self.manager, spec)
++        action_mode = mode or primary.state
++        if shutdown:
++            if not self._shutdown_allowed(spec, entity, expected):
++                self._status(spec, "owned_shutdown_identity_or_dwell_hold")
++                return False
++        elif why := self._gate(spec, cap, cfg, plan, action_mode, automatic=automatic):
++            self._status(spec, why)
++            return False
++        if entity not in spec.source_entities or entity_area(self.hass, entity) != spec.area_id:
++            return False
++        domain = entity.partition(".")[0]
++        if not self.hass.services.has_service(domain, service):
++            self._status(spec, "native_service_unavailable", service=f"{domain}.{service}")
++            return False
++        before_settings = deepcopy(self.manager.settings)
++        before_plan = deepcopy(plan)
++        before_sources = {e: snapshot(self.hass.states.get(e)) for e in spec.source_entities}
++        before_feedback = self.measurements(spec, cap) if automatic else None
++        before_quiet = self._quiet_context(spec, cfg, plan)
++        if shutdown:
++            owned = record["power"][entity]
++            min_on, max_on = owned["min_on"], owned["max_on"]
++        else:
++            min_on, _, max_on = model.timing(self.manager, spec, cap)
++        record["baseline"].setdefault(entity, before_sources[entity])
++        record["capabilities"] = asdict(cap)
++        pending = {"entity": entity, "service": service, "data": data,
++                   "expected": expected, "power": power, "output_on": not (
++                       expected.get("state") == "off" or service == "set_value" and data.get("value") == 0),
++                   "phase": "intent", "when": self.clock(), "min_on": min_on, "max_on": max_on}
++        record["pending"] = pending
++        await self._save()
++
++        def current() -> bool:
++            if not self._active or not self._ready or record.get("paused"):
++                return False
++            if any(snapshot(self.hass.states.get(e)) != previous for e, previous in before_sources.items()):
++                return False
++            if shutdown:
++                return self._shutdown_allowed(spec, entity, expected)
++            latest = model.settings(self.manager, spec)
++            latest_plan = model.plan_for(self.manager, spec)
++            return bool(self._current_spec(spec) and self.manager.settings == before_settings
++                and model.capabilities(self.manager, spec) == cap and latest_plan == before_plan
++                and (not automatic or self.measurements(spec, cap) == before_feedback)
++                and self._quiet_context(spec, latest, latest_plan) == before_quiet
++                and not self._gate(spec, cap, latest, latest_plan, action_mode, automatic=automatic))
++
++        async def abort() -> bool:
++            self._invalidated.add(spec.identifier)
++            record["pending"] = None  # Dispatch has NOT happened; no uncertainty.
++            await self._save()
++            self._status(spec, "authority_or_evidence_changed_before_dispatch")
++            return False
++
++        if not current():
++            return await abort()
++        try:
++            async with self._commands:
++                if not current():
++                    return await abort()
++                await asyncio.wait_for(self.hass.services.async_call(domain, service, data,
++                    target={"entity_id": entity}, blocking=True), timeout=20)
++            pending["phase"] = "commanded"
++            await self._save()
++            self._status(spec, "command_sent", entity_id=entity, service=service)
++            return True
++        except asyncio.CancelledError:
++            raise  # Persisted intent is deliberately retained.
++        except Exception:
++            if self._ready:
++                await self._pause(spec, "native_command_failed_or_uncertain")
++            return False
++
++    async def _power(self, spec: model.ManagedDevice, cap: model.Capabilities,
++                     desired: str, *, automatic: bool, shutdown: bool = False) -> bool:
++        state = self.hass.states.get(cap.primary)
++        if state is None or state.state in ("unknown", "unavailable"):
++            return False
++        if desired not in cap.modes or "off" not in cap.modes:
++            self._status(spec, "native_power_mode_unsupported")
++            return False
++        _, granted = model.permission(self.manager, spec, cap)
++        record, now = self._record(spec), self.clock()
++        owned = record.get("power", {}).get(cap.primary)
++        if not granted and not (shutdown and owned):
++            self._status(spec, "power_control_not_commissioned")
++            return False
++        proportional = cap.domain in ("number", "input_number")
++        target_state = ("0.0" if desired == "off" else "100.0") if proportional else (
++            desired if cap.domain == "climate" else "off" if desired == "off" else "on")
++        if matches(state, {"state": target_state}):
++            return False
++        if state.attributes.get("hvac_action") == "defrosting":
++            self._status(spec, "native_defrost_protection")
++            return False
++        if shutdown and owned:
++            on_min, off_min, maximum = owned["min_on"], 600, owned["max_on"]
++        else:
++            on_min, off_min, maximum = model.timing(self.manager, spec, cap)
++            if owned:
++                on_min = max(on_min, owned["min_on"])
++        if not output_off(state):
++            if desired != "off":
++                # Heat->cool is ALWAYS OFF, full dwell, then new mode.
++                desired, target_state = "off", "0.0" if proportional else "off"
++            stamp = owned.get("since") if owned else None
++            if stamp is None:
++                changed = getattr(state, "last_changed", None)
++                stamp = changed.timestamp() if changed is not None else record.setdefault("on_seen", {}).setdefault(cap.primary, now)
++            if not 0 <= now-stamp or now-stamp < on_min:
++                self._status(spec, "minimum_on_hold")
++                return False
++        else:
++            stamp = record["off_at"].setdefault(cap.primary, now)
++            changed = getattr(state, "last_changed", None)
++            if changed is not None:
++                stamp = max(stamp, changed.timestamp())
++            if not 0 <= now-stamp or now-stamp < off_min:
++                self._status(spec, "minimum_off_hold")
++                return False
++        if proportional:
++            attrs = state.attributes
++            if attrs.get("unit_of_measurement") != "%" or attrs.get("min") != 0 or attrs.get("max") != 100:
++                self._status(spec, "proportional_output_not_verified")
++                return False
++            service, data = "set_value", {"value": float(target_state)}
++        else:
++            service = "set_hvac_mode" if cap.domain == "climate" else "turn_off" if desired == "off" else "turn_on"
++            data = {"hvac_mode": desired} if cap.domain == "climate" else {}
++        return await self._send(spec, cap, cap.primary, service, data, {"state": target_state},
++                                power=True, mode=desired, automatic=automatic, shutdown=shutdown)
++
++    async def _native_target(self, spec: model.ManagedDevice, cap: model.Capabilities,
++                             mode: str, targets: dict, demand: float | None, automatic: bool) -> bool:
++        state = self.hass.states.get(cap.primary)
++        if state is None or state.state == "off":
++            return False
++        config = model.settings(self.manager, spec)
++        profile = model.profile_name(config, model.plan_for(self.manager, spec))
++        manual_humidity = not automatic and "humidity" in config.get("profile_targets", {}).get(profile, {})
++        if cap.domain == "humidifier" or cap.humidity and (mode == "dry" or manual_humidity):
++            if cap.domain == "climate" and not (model.features(state) & model.HUMIDITY):
++                return False
++            value = round(targets["humidity"])
++            if automatic:
++                actual = finite(state.attributes.get("humidity"), 0, 100)
++                if actual is None:
++                    return False
++                value = round(max(actual-5, min(actual+5, value)))
++                if self.clock()-self._record(spec).get("target_at", 0) < model.settings(self.manager, spec)["sample_seconds"]:
++                    return False
++            if not cap.min_humidity <= value <= cap.max_humidity:
++                self._status(spec, "target_outside_native_limits")
++                return False
++            if finite(state.attributes.get("humidity"), 0, 100) == value:
++                return False
++            sent = await self._send(spec, cap, cap.primary, "set_humidity", {"humidity": value},
++                {"attributes": {"humidity": value}}, automatic=automatic)
++            if sent:
++                self._record(spec)["target_at"] = self.clock()
++            return sent
++        if cap.domain != "climate" or mode not in ("heat", "cool", "heat_cool", "auto"):
++            return False
++        unit = state.attributes.get("temperature_unit")
++        if mode == "heat_cool" and cap.temperature_range:
++            data = {"target_temp_low": target_to_unit(targets["heat"], unit),
++                    "target_temp_high": target_to_unit(targets["cool"], unit)}
++        elif cap.temperature and model.features(state) & model.TEMP:
++            target = targets["cool" if mode == "cool" else "heat"]
++            if demand is not None:
++                # Setpoint-only PID never gains compressor-cycle permissions.
++                target += (1 if mode == "heat" else -1) * 1.5 * demand / 100
++            data = {"temperature": target_to_unit(target, unit)}
++        else:
++            return False
++        for key, value in data.items():
++            if value is None:
++                self._status(spec, "unsupported_temperature_unit")
++                return False
++            actual = finite(state.attributes.get(key), -50, 150)
++            if actual is None:
++                self._status(spec, "native_setpoint_unavailable")
++                return False
++            if not cap.min_temp <= target_from_unit(value, unit) <= cap.max_temp:
++                self._status(spec, "target_outside_native_limits")
++                return False
++            if automatic:
++                delta = .5 if unit in ("°C", "C") else .9
++                value = max(actual-delta, min(actual+delta, value))
++            value = quantize_target(value, state.attributes.get("target_temp_step", .5),
++                                    state.attributes.get("min_temp", 5), state.attributes.get("max_temp", 35))
++            if value is None:
++                return False
++            if automatic and abs(target_from_unit(value, unit)-target_from_unit(actual, unit)) > .500001:
++                self._status(spec, "native_step_exceeds_setpoint_rate_limit")
++                return False
++            data[key] = value
++        if all(abs(float(state.attributes.get(k))-v) < .05 for k, v in data.items()):
++            return False
++        record = self._record(spec)
++        # Sampling applies to trim/setpoint writes too, not merely PID math.
++        if automatic and self.clock()-record.get("target_at", 0) < model.settings(self.manager, spec)["sample_seconds"]:
++            return False
++        sent = await self._send(spec, cap, cap.primary, "set_temperature", data,
++                                {"attributes": data}, automatic=automatic)
++        if sent:
++            record["target_at"] = self.clock()
++        return sent
++
++    async def _fan(self, spec: model.ManagedDevice, cap: model.Capabilities,

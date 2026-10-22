@@ -1,0 +1,302 @@
++        h.state.attributes["temperature"] = 18
++        await tick(h)
++        assert h.hass.services.calls[-1][1:3] == ("set_fan_mode", {"fan_mode": "low"})
++        with pytest.raises(Exception, match="Unsupported"):
++            await h.runtime.async_update(h.spec, {"quiet_fan_mode": "turbo"})
++    asyncio.run(run())
++
++
++def test_legacy_sources_filtered_and_runtime_gate_blocks_old_driver(runtime_module):
++    from custom_components.air_quality_advisor.climate_arbitration import new_command_gate
++    h = home(runtime_module)
++    h.room["purifier_fan_entity"] = "fan.other"
++    h.room["selected_devices"].append("fan.other")
++    rooms, _ = m.legacy_settings(h.manager)
++    assert "extraction_fan_entity" not in rooms["room"]
++    assert rooms["room"]["purifier_fan_entity"] == "fan.other"
++    assert new_command_gate(h.hass, "room", h.room, h.plan, "extraction", h.entity, entry_id="entry") == "per_device_controller_owns_source"
++
++
++def test_legacy_ownership_transfer_rejected_while_old_power_owned(runtime_module):
++    async def run():
++        h = home(runtime_module, mode="existing")
++        h.manager.fan_power = SimpleNamespace(owned={h.entity: {}}, _tasks={})
++        with pytest.raises(Exception, match="reconcile"):
++            await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
++        assert h.manager.entry.options == {}
++    asyncio.run(run())
++
++
++def test_restart_requires_explicit_off_reconciliation(runtime_module, monkeypatch):
++    async def run():
++        h = home(runtime_module)
++        await tick(h)
++        await tick(h, advance=1)
++        storage = types.ModuleType("homeassistant.helpers.storage")
++        storage.Store = lambda *args: h.store
++        monkeypatch.setitem(sys.modules, storage.__name__, storage)
++        restarted = runtime_module.EquipmentRuntime(h.manager, clock=lambda: h.clock[0])
++        h.manager.equipment = restarted
++        await restarted.async_start()
++        assert restarted.records[h.spec.identifier]["paused"] == "restart_reconciliation_required"
++        with pytest.raises(Exception, match="OFF"):
++            await restarted.async_resume(h.spec)
++        h.state.state = "off"
++        await restarted.async_resume(h.spec)
++        assert not restarted.records[h.spec.identifier]["paused"]
++        assert restarted.records[h.spec.identifier]["off_at"][h.entity] == h.clock[0]
++    asyncio.run(run())
++
++
++def test_different_devices_do_not_wait_for_one_another(runtime_module):
++    async def run():
++        a, b = home(runtime_module), home(runtime_module)
++        a.hass.services.delayed = asyncio.Event()
++        task = asyncio.create_task(a.runtime._run(a.spec))
++        await asyncio.sleep(0)
++        await b.runtime._run(b.spec)
++        assert b.hass.services.calls and not task.done()
++        a.hass.services.delayed.set()
++        await task
++    asyncio.run(run())
++
++
++@pytest.mark.parametrize("reason", ["feedback", "config", "capability", "identity", "defrost", "quiet"])
++def test_dispatch_revalidates_all_mutable_evidence(runtime_module, reason):
++    async def run():
++        h = home(runtime_module, domain="climate", state="heat", power=False,
++                 controls={"quiet_sleep": True})
++        h.state.attributes["temperature"] = 18
++        if reason == "feedback":
++            hook = lambda: setattr(h.hass.states.get("sensor.temp"), "state", "25")
++        elif reason == "config":
++            hook = lambda: h.cfg.update(preset="away")
++        elif reason == "capability":
++            hook = lambda: h.state.attributes.update(supported_features=0)
++        elif reason == "identity":
++            hook = lambda: h.hass._entity_devices.update({h.entity: "replacement"})
++        elif reason == "defrost":
++            hook = lambda: h.state.attributes.update(hvac_action="defrosting")
++        else:
++            hook = lambda: h.plan.update(sleeping=True)
++        h.store.hook = hook
++        await tick(h)
++        assert h.hass.services.calls == []
++        assert not h.runtime.records[h.spec.identifier].get("pending")
++    asyncio.run(run())
++
++
++@pytest.mark.parametrize("domain", ["fan", "humidifier", "climate"])
++def test_maximum_runtime_requests_off_without_early_restart(runtime_module, domain):
++    async def run():
++        h = home(runtime_module, domain=domain)
++        await tick(h)
++        await tick(h, advance=1)
++        record = h.runtime.records[h.spec.identifier]
++        assert h.entity in record["power"]
++        await tick(h, advance=7201)
++        assert h.hass.services.calls[-1][1] in ("turn_off", "set_hvac_mode")
++        assert h.state.state == "off"
++        await tick(h, advance=1)
++        size = len(h.hass.services.calls)
++        await tick(h, advance=599)
++        assert len(h.hass.services.calls) == size
++    asyncio.run(run())
++
++
++@pytest.mark.parametrize("change", ["deselected", "removed_room", "disabled", "unavailable_feedback"])
++def test_owned_power_retires_with_original_minimum_run_time(runtime_module, change):
++    async def run():
++        h = home(runtime_module)
++        await tick(h)
++        await tick(h, advance=1)
++        if change == "deselected":
++            h.room["selected_devices"] = []
++        elif change == "removed_room":
++            h.manager.entry.data["climate_rooms"] = {}
++        elif change == "disabled":
++            h.dev["auto_control"] = False
++        else:
++            h.hass.states.get("sensor.co2").state = "unknown"
++        await tick(h, advance=30)
++        assert h.state.state == "on"
++        await tick(h, advance=570)
++        assert h.state.state == "off"
++        assert h.hass.services.calls[-1][1] == "turn_off"
++        await tick(h, advance=1)
++        assert h.entity not in h.runtime.records[h.spec.identifier]["power"]
++    asyncio.run(run())
++
++
++def test_owned_retirement_never_targets_replacement_physical_identity(runtime_module):
++    async def run():
++        h = home(runtime_module)
++        await tick(h)
++        await tick(h, advance=1)
++        h.room["selected_devices"] = []
++        h.hass._entity_devices[h.entity] = "different-physical-device"
++        await tick(h, advance=8000)
++        assert not any(call[1] == "turn_off" for call in h.hass.services.calls)
++        assert h.runtime.records[h.spec.identifier]["power"]
++    asyncio.run(run())
++
++
++def test_binary_climate_without_native_setpoints_gets_external_pid(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", mode="pid")
++        h.state.attributes.update(supported_features=0, hvac_modes=["off", "heat"])
++        cap = m.capabilities(h.manager, h.spec)
++        assert cap.temperature and "pid" in m.control_modes(h.manager, h.spec)
++        await tick(h)
++        assert h.state.state == "heat"
++        await tick(h, advance=1)
++        assert all(call[1] != "set_temperature" for call in h.hass.services.calls)
++    asyncio.run(run())
++
++
++def test_dry_only_climate_pid_uses_rh_not_fake_temperature(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", mode="pid")
++        h.state.attributes.update(supported_features=0, hvac_modes=["off", "dry"])
++        cap = m.capabilities(h.manager, h.spec)
++        assert cap.humidity and not cap.temperature
++        await tick(h)
++        assert h.hass.services.calls[0][2] == {"hvac_mode": "dry"}
++        await tick(h, advance=1)
++        assert all(call[1] not in ("set_humidity", "set_temperature") for call in h.hass.services.calls)
++    asyncio.run(run())
++
++
++def test_native_fan_only_pid_can_use_verified_air_quality(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", mode="pid")
++        h.state.attributes.update(supported_features=0, hvac_modes=["off", "fan_only"])
++        assert "pid" in m.control_modes(h.manager, h.spec)
++        await tick(h)
++        assert h.hass.services.calls[0][2] == {"hvac_mode": "fan_only"}
++    asyncio.run(run())
++
++
++def test_native_heat_cool_range_can_start_with_qualified_outside_band(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate")
++        h.state.attributes.update(supported_features=2, hvac_modes=["off", "heat_cool"],
++                                  target_temp_low=20, target_temp_high=26)
++        await tick(h)
++        assert h.state.state == "heat_cool"
++        assert "pid" not in m.control_modes(h.manager, h.spec)
++    asyncio.run(run())
++
++
++def test_fahrenheit_setpoint_write_converts_and_bounds_rate(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", state="heat", power=False)
++        h.state.attributes.update(temperature_unit="°F", temperature=64.4,
++                                  min_temp=41, max_temp=95, target_temp_step=.1)
++        await tick(h)
++        value = h.hass.services.calls[0][2]["temperature"]
++        assert 64.4 < value <= 65.3
++        assert 5 == m.capabilities(h.manager, h.spec).min_temp
++        assert 35 == m.capabilities(h.manager, h.spec).max_temp
++    asyncio.run(run())
++
++
++def test_proportional_pid_records_ownership_and_shutdown(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="number", state="0", mode="pid")
++        await tick(h)
++        assert h.hass.services.calls[0][1:3] == ("set_value", {"value": 10.})
++        await tick(h, advance=1)
++        record = h.runtime.records[h.spec.identifier]
++        assert record["power"][h.entity]["since"] == h.clock[0]
++        h.manager.entry.data["climate_rooms"] = {}
++        await tick(h, advance=600)
++        assert h.hass.services.calls[-1][2] == {"value": 0.}
++        await tick(h, advance=1)
++        assert not record["power"]
++    asyncio.run(run())
++
++
++def test_manual_fan_selection_does_not_apply_unrequested_temperature(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", state="heat", mode="manual", power=False,
++                 controls={"fan_mode": "low"})
++        h.state.attributes["temperature"] = 24
++        await tick(h)
++        assert h.hass.services.calls[0][1:3] == ("set_fan_mode", {"fan_mode": "low"})
++        assert h.state.attributes["temperature"] == 24
++    asyncio.run(run())
++
++
++def test_target_and_mode_edit_is_atomic_and_fails_without_power_authorization(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", state="heat", mode="existing", power=False)
++        with pytest.raises(Exception, match="commissioned"):
++            await h.runtime.async_set_targets(h.spec, {"cool": 23}, mode="cool")
++        assert h.manager.entry.options == {}
++        await h.runtime.async_set_targets(h.spec, {"heat": 22}, mode="heat")
++        saved = h.manager.settings[m.SETTINGS][h.spec.identifier]
++        assert saved["control_mode"] == "manual" and saved["profile_targets"]["manual"]["heat"] == 22
++    asyncio.run(run())
++
++
++def test_quiet_unknown_presence_never_restores_high_speed(runtime_module):
++    async def run():
++        h = home(runtime_module, state="on", power=False, controls={"quiet_occupied": True})
++        await tick(h)
++        await tick(h, advance=1)
++        h.plan["occupancy"] = "unknown"
++        await tick(h, advance=30)
++        assert h.state.attributes["percentage"] == 30
++        h.state.attributes["percentage_step"] = 25
++        # Native capability changes are a manual reconciliation boundary.
++        await tick(h)
++        assert h.runtime.records[h.spec.identifier]["paused"] == "physical_manual_override"
++    asyncio.run(run())
++
++
++def test_quiet_requires_real_discrete_mode_selection(runtime_module):
++    async def run():
++        h = home(runtime_module, domain="climate", state="heat", power=False)
++        h.state.attributes["fan_modes"] = ["level_1", "level_2"]
++        with pytest.raises(Exception, match="quiet fan mode"):
++            await h.runtime.async_update(h.spec, {"quiet_sleep": True})
++        await h.runtime.async_update(h.spec, {"quiet_fan_mode": "level_1", "quiet_sleep": True})
++    asyncio.run(run())
++
++
++def test_control_transfer_storage_failure_leaves_old_owner_selected(runtime_module):
++    async def run():
++        h = home(runtime_module, mode="existing")
++        h.store.fail = True
++        with pytest.raises(Exception, match="persist"):
++            await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
++        assert h.manager.settings[m.SETTINGS][h.spec.identifier]["control_mode"] == "existing"
++    asyncio.run(run())
++
++
++def test_multi_endpoint_device_retains_all_channels_under_one_child(runtime_module):
++    h = home(runtime_module, domain="climate")
++    second = MockState("climate.second", "off", name="Second zone")
++    second.attributes.update(h.state.attributes)
++    h.hass._values[second.entity_id] = second
++    h.hass._entity_areas[second.entity_id] = "room"
++    h.hass._entity_devices[second.entity_id] = "native-device"
++    h.room["selected_devices"].append(second.entity_id)
++    h.room["device_settings"][second.entity_id] = dict(h.dev)
++    grouped = ManagedDevice(h.spec.identifier, "room", "Physical device", "native-device", (h.entity, second.entity_id))
++    h.manager._device_hierarchy["controllers"][grouped.identifier]["spec"] = grouped
++    channels = m.specs(h.manager)
++    assert len(channels) == 2
++    assert {m.device_identifier(c) for c in channels} == {grouped.identifier}
++    assert {m.capabilities(h.manager, c).primary for c in channels} == {h.entity, second.entity_id}
++    assert h.runtime._lock(channels[0].identifier) is h.runtime._lock(channels[1].identifier)
++
++
++def test_shared_runtime_different_physical_devices_do_not_block(runtime_module):
++    async def run():
++        h = home(runtime_module)
++        second = MockState("fan.second", "off")
++        second.attributes.update(h.state.attributes)
++        h.hass._values[second.entity_id] = second
++        h.hass._entity_areas[second.entity_id] = "room"

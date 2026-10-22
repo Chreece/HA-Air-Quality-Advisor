@@ -1,0 +1,268 @@
++`equipment_model.py` defines capability/permission validation, profile targets,
++physical channel identities, ownership, PID math and bounded duty calculation.
++`equipment_runtime.py` owns new execution; `equipment_entity.py` supplies
++localized help and push updates. Existing Number/Select/Switch/Button platforms
++add only supported device-specific algorithm, PID, quiet and resume controls.
++
++Control method Existing preserves old room behavior and is the upgrade default.
++Automatic follows current room/preset policy. Manual/None uses independent
++manual targets and explicit native choices; changing occupancy does not change
++them. PID uses the selected feedback and supported actuator method. Off retires
++only this controller's owned outputs after minimum run time. Explicit presets
++change targets and can carry native fan choices; they never clear a safety pause.
++
++## Duty control and quiet operation
++
++Qualified fan CO2/PM, dedicated humidity and thermal feedback use sampled PID
++with anti-windup and derivative on measurement. Native on/off equipment uses
++slow duty cycles, not rapid toggling. Dwell and maximum-on settings come from
++independent equipment commissioning and cannot be shortened by changing
++algorithm. Compressor-affecting devices have at least ten-minute ON/OFF
++software floors; fan floors are two minutes, with larger configured values
++preserved. Demand pulses that cannot satisfy both dwell intervals are skipped.
++Native setpoint PID is bounded and cannot obtain new power permission.
++
++Quiet sleep/occupied controls exist only where a real fan percentage or native
++mode list can be controlled. Native discrete quiet mode must be selected (or
++actual advertised `low` used); unknown vendor options are not inferred.
++Reduction and restoration do not start equipment and require fresh known
++presence context and unchanged ownership. They are fan-setting policies, not
++sound-pressure measurement or acoustic compliance claims.
++
++## Transaction and ownership contract
++
++A logical physical device has one lock shared by all its channels; different
++physical devices can progress concurrently, with bounded dispatch concurrency.
++An in-flight/owned old driver blocks transfer. Exact new endpoints are filtered
++out of old scheduling and checked again at the old write boundary. Foreign
++entry and retained retired ownership remain conflicts.
++
++Before dispatch, the command's exact intent is persisted. Following storage
++and semaphore awaits, source identity, device capabilities, source/control
++snapshots, configuration, room plan, measurement freshness and interlocks are
++rechecked. Any relevant change cancels that tick without sending a stale
++follow-up command. Service requests target one exact entity only. Acknowledgment
++is required; uncertain or interrupted intents are never automatically retried.
++
++A physical manual change latches a pause. Restart with owned power or uncertain
++intent requires explicit reconciliation, actual OFF confirmation where needed,
++warmup and minimum-OFF dwell. Automatic power ownership refuses to adopt an
++already-running manual appliance. Removing/retiring equipment preserves its
++stored original safe timing for shutdown; reassigned identities are not touched.
++Manager-generated climate facades are rejected as physical selector inputs and
++at dispatch, preventing self-recursive control.
++
++## Verification and limits
++
++Regression tests use Home Assistant boundary doubles and mock service/state
++acknowledgements. Coverage includes native capabilities, separate channel
++identity, presets/manual isolation, binary fan/dehumidifier/climate duty,
++ON/OFF intervals, saturation/pulses, safe retirement, explicit resume,
++manual overrides, failed/uncertain transactions, post-await stale evidence,
++foreign ownership, Fahrenheit conversion and quiet-speed restoration.
++
++All 38 locale catalogs and generated device help must reproduce exactly.
++Python 3.13 and 3.14 tests, Node frontend tests, Hassfest, HACS and manual
++installation packaging gate the beta. No live Home Assistant instance or
++physical appliance is tested by these mock regressions. Software timing cannot
++certify electrical, compressor, frost/defrost, condensate, fire/backdraft or
++ventilation protection. Independently qualified real hardware is mandatory
++before enabling experimental physical power or mode changes.
++
++## User activation
++
++Upgrade via HACS beta selection and restart Home Assistant without adding a
++second integration entry. Open the Area hub, then its controller device.
++Check native hardware/source commissioning, valid current measurements and
++required manufacturer timing. Change Existing to the intended method only for
++that device. Inspect its status/help and verify physical response before
++unattended operation. Defaults are fixed gains, not automatic PID tuning.
+diff --git a/generate_translations.py b/generate_translations.py
+index 8c9874cafc5f10456ed4d52aaeda09f4e829be6e..4ecc0eca023f99b6f1d5f6922f07f634cc9c88ad 100644
+--- a/generate_translations.py
++++ b/generate_translations.py
+@@ -388,3 +388,7 @@ apply_area_entities_i18n(root)
+ # Native Home and Area entity labels after all options-flow localization passes.
+ from apply_device_controls_i18n import apply_device_controls_i18n
+ apply_device_controls_i18n(root)
++
++# Per-physical-device controllers must be translated after all previous labels.
++from apply_equipment_i18n import apply_equipment_i18n
++apply_equipment_i18n(root)
+diff --git a/tests/test_beta_distribution.py b/tests/test_beta_distribution.py
+index 50a8bac6ba9b64fb64ea79ff2616638ecfe9e860..8017581109069223246a45cc64609c4e28c2fa6b 100644
+--- a/tests/test_beta_distribution.py
++++ b/tests/test_beta_distribution.py
+@@ -1,4 +1,4 @@
+-"""The opt-in v0.6 beta 10 must not alter stable distribution guarantees."""
++"""The opt-in v0.6 beta 11 must not alter stable distribution guarantees."""
+ from __future__ import annotations
+ 
+ import json
+@@ -11,7 +11,7 @@ COMPONENT = ROOT / "custom_components" / "air_quality_advisor"
+ 
+ def test_beta_distribution_manifest_hacs_and_readme():
+     manifest = json.loads((COMPONENT / "manifest.json").read_text(encoding="utf-8"))
+-    if manifest["version"] != "0.6.0b10":
++    if manifest["version"] != "0.6.0b11":
+         return  # Stable and future feature branches have their own version.
+     assert manifest["domain"] == "air_quality_advisor"
+     assert manifest["name"] == "Home Environment Manager"
+@@ -20,13 +20,13 @@ def test_beta_distribution_manifest_hacs_and_readme():
+     assert hacs.get("zip_release") is not True  # Tagged source-tree install.
+     req = json.loads((ROOT / ".github/release-request.json").read_text(encoding="utf-8"))
+     assert (req["version"], req["channel"], req["release_branch"]) == (
+-        "0.6.0b10", "beta", "beta/v0.6.0b10"
++        "0.6.0b11", "beta", "beta/v0.6.0b11"
+     )
+     text = (ROOT / "README.md").read_text(encoding="utf-8")
+     assert "Show beta versions" in text and "v0.5.1" in text
+     assert "home_environment_manager.climate_diagnostics" in text
+     assert "disabled by default" in text.lower()
+-    note = ROOT / ".github" / "releases" / "v0.6.0b10.md"
++    note = ROOT / ".github" / "releases" / "v0.6.0b11.md"
+     assert note.stat().st_size > 1500
+     assert "physical" in note.read_text(encoding="utf-8").lower()
+ 
+@@ -54,9 +54,9 @@ def test_branded_icons_and_beta_action_icons_have_valid_dimensions():
+ def test_beta_workflow_uses_prerelease_and_never_changes_latest():
+     workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
+     if (COMPONENT / "manifest.json").read_text(encoding="utf-8").find(
+-        '"version": "0.6.0b10"'
++        '"version": "0.6.0b11"'
+     ) < 0:
+         return
+-    assert "github.ref == 'refs/heads/beta/v0.6.0b10'" in workflow
++    assert "github.ref == 'refs/heads/beta/v0.6.0b11'" in workflow
+     assert "--prerelease --latest=false" in workflow
+-    assert "gh release create v0.6.0b10" in workflow
++    assert "gh release create v0.6.0b11" in workflow
+diff --git a/tests/test_discovery.py b/tests/test_discovery.py
+index 106a8c677905542797c176a5cbaf9bbf371cf6cf..59b95ee123abdaae358d86e4e738c80c2f11d869 100644
+--- a/tests/test_discovery.py
++++ b/tests/test_discovery.py
+@@ -46,6 +46,9 @@ def adapter(monkeypatch):
+     core = types.ModuleType("homeassistant.core")
+     core.HomeAssistant = object
+     core.State = object
++    errors = types.ModuleType("homeassistant.exceptions")
++    errors.HomeAssistantError = type("HomeAssistantError", (Exception,), {})
++    monkeypatch.setitem(sys.modules, "homeassistant.exceptions", errors)
+     helpers = types.ModuleType("homeassistant.helpers")
+     util = types.ModuleType("homeassistant.util")
+     dt = types.ModuleType("homeassistant.util.dt")
+diff --git a/tests/test_equipment_control.py b/tests/test_equipment_control.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..90984e569e8a0c1321e0ba66c1990c81f62849ed
+--- /dev/null
++++ b/tests/test_equipment_control.py
+@@ -0,0 +1,764 @@
++"""Per-device control, facade, PID and ownership regression tests (no hardware)."""
++from __future__ import annotations
++
++import asyncio
++from copy import deepcopy
++from datetime import datetime, timezone
++from enum import IntFlag, StrEnum
++import importlib
++import sys
++import types
++from types import SimpleNamespace
++
++import pytest
++
++from test_discovery import FakeHass, MockState, adapter
++from custom_components.air_quality_advisor.device_hierarchy import ManagedDevice
++from custom_components.air_quality_advisor import equipment_model as m
++
++
++class Store:
++    def __init__(self):
++        self.value = None
++        self.saved = []
++        self.fail = False
++        self.hook = None
++
++    async def async_save(self, data):
++        if self.fail:
++            raise OSError("storage failed")
++        self.value = deepcopy(data)
++        self.saved.append(deepcopy(data))
++        if self.hook:
++            callback, self.hook = self.hook, None
++            callback()
++
++    async def async_load(self):
++        return deepcopy(self.value)
++
++
++class Services:
++    def __init__(self, hass, store):
++        self.hass, self.store = hass, store
++        self.calls = []
++        self.ack = True
++        self.fail = False
++        self.before = None
++        self.delayed = None
++
++    def has_service(self, domain, action):
++        return action in {"turn_on", "turn_off", "set_hvac_mode", "set_temperature", "set_humidity", "set_percentage", "set_fan_mode", "set_preset_mode", "set_swing_mode", "set_swing_horizontal_mode", "set_value"}
++
++    async def async_call(self, domain, action, data, *, target, blocking):
++        entity = target["entity_id"]
++        intents = [r.get("pending") for r in self.store.value["records"].values()]
++        assert any(p and p["phase"] == "intent" and p["entity"] == entity for p in intents), "Must persist exact intent BEFORE dispatch"
++        assert isinstance(entity, str) and "," not in entity and blocking
++        self.calls.append((domain, action, dict(data), entity))
++        if self.before:
++            self.before()
++        if self.delayed:
++            await self.delayed.wait()
++        if self.fail:
++            raise RuntimeError("physical service error")
++        if not self.ack:
++            return
++        state = self.hass.states.get(entity)
++        if action in ("turn_on", "turn_off"):
++            state.state = "on" if action == "turn_on" else "off"
++        elif action == "set_hvac_mode":
++            state.state = data["hvac_mode"]
++        elif action == "set_value":
++            state.state = str(data["value"])
++        else:
++            state.attributes.update(data)
++
++
++@pytest.fixture
++def runtime_module(adapter, monkeypatch):
++    dispatcher = types.ModuleType("homeassistant.helpers.dispatcher")
++    dispatcher.async_dispatcher_send = lambda *a: None
++    dispatcher.async_dispatcher_connect = lambda *a: lambda: None
++    monkeypatch.setitem(sys.modules, dispatcher.__name__, dispatcher)
++    monkeypatch.delitem(sys.modules, "custom_components.air_quality_advisor.equipment_runtime", raising=False)
++    return importlib.import_module("custom_components.air_quality_advisor.equipment_runtime")
++
++
++def home(module, *, domain="fan", state="off", device_class=None, speed=True,
++         mode="automatic", power=True, controls=None, **device_changes):
++    entity = f"{domain}.room"
++    actuator = MockState(entity, state, device_class=device_class)
++    if domain == "fan":
++        actuator.attributes.update(supported_features=1 if speed else 0, percentage=60, percentage_step=10)
++    elif domain == "climate":
++        actuator.attributes.update(supported_features=1 | 8 | 32 | 512,
++            hvac_modes=["off", "heat", "cool", "dry", "fan_only"], temperature=20,
++            temperature_unit="°C", min_temp=5, max_temp=35, target_temp_step=.5,
++            fan_modes=["low", "medium", "high"], fan_mode="high",
++            swing_modes=["off", "on"], swing_mode="off",
++            swing_horizontal_modes=["off", "on"], swing_horizontal_mode="off", hvac_action="idle")
++    elif domain == "humidifier":
++        actuator.attributes.update(device_class=device_class or "dehumidifier", humidity=60,
++                                   min_humidity=20, max_humidity=80)
++    elif domain == "number":
++        actuator.attributes.update(unit_of_measurement="%", min=0, max=100, step=1)
++    sensor_values = [MockState("sensor.temp", 15, device_class="temperature", unit="°C"),
++                     MockState("sensor.rh", 70, device_class="humidity", unit="%"),
++                     MockState("sensor.co2", 1600, device_class="co2", unit="ppm"),
++                     MockState("sensor.pm25", 50, device_class="pm25", unit="µg/m³"),
++                     MockState("binary_sensor.window", "off", device_class="window")]

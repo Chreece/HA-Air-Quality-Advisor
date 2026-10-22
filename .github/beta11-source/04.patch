@@ -1,0 +1,231 @@
++    selected = config.get("selected_devices", [])
++    profiles = config.get("device_settings", {})
++    if isinstance(selected, list) and isinstance(profiles, Mapping):
++        outputs.update(e for e in selected if isinstance(e, str)
++                       and isinstance(profiles.get(e), Mapping)
++                       and profiles[e].get("auto_control") is True)
+     return outputs
+ 
+ 
+@@ -87,6 +94,15 @@ def other_entry_output_owners(hass:Any, current_entry_id:str) -> dict[str,set[st
+             for entity,areas in profiles.items():
+                 for area in areas:
+                     owners[entity].add(f"{entry_id}:{area}")
++            runtime = getattr(getattr(entry, "runtime_data", None), "equipment", None)
++            for record in getattr(runtime, "records", {}).values():
++                # A removed room cannot erase an in-flight/owned physical output.
++                active = set(record.get("power", {}))
++                pending = record.get("pending")
++                if isinstance(pending, dict) and isinstance(pending.get("entity"), str):
++                    active.add(pending["entity"])
++                for entity in active:
++                    owners[entity].add(f"{entry_id}:{record.get('area', 'recovery')}")
+         return dict(owners)
+     except Exception:
+         return None
+@@ -96,6 +112,8 @@ def foreign_owner_hold(hass:Any, current_entry_id:str, entity:str) -> str | None
+     """No command if the same configured device is owned in another entry."""
+     if not isinstance(current_entry_id,str) or not current_entry_id:
+         return "entry_identity_unavailable"
++    if not native_source(hass, entity):
++        return "managed_entity_cannot_be_physical_target"
+     owners=other_entry_output_owners(hass,current_entry_id)
+     if owners is None:
+         return "other_config_entries_unverifiable"
+diff --git a/custom_components/air_quality_advisor/climate_pid.py b/custom_components/air_quality_advisor/climate_pid.py
+index a8098cd2abc5e4bd971a5386b2b0f2608c8b6792..46c28a13d25d436d55329c7ed5e5c6caa8dcc172 100644
+--- a/custom_components/air_quality_advisor/climate_pid.py
++++ b/custom_components/air_quality_advisor/climate_pid.py
+@@ -387,6 +387,10 @@ class ClimatePidCoordinator:
+         for entity, native in planned:
+             if not self._active or area in self._paused:
+                 return
++            from .equipment_model import legacy_hold
++            if hold := legacy_hold(self.hass, self.entry_id, entity):
++                self._set_status(area, hold, entity=entity)
++                return
+             other_entry=foreign_owner_hold(self.hass,self.entry_id,entity)
+             if other_entry is not None:
+                 self._set_status(
+diff --git a/custom_components/air_quality_advisor/compact_options.py b/custom_components/air_quality_advisor/compact_options.py
+index f92e2453d66bb9a9b0889384c4feefbcda81fdc1..63573b33ee3707d5caba8757858d8bbe84417f54 100644
+--- a/custom_components/air_quality_advisor/compact_options.py
++++ b/custom_components/air_quality_advisor/compact_options.py
+@@ -17,6 +17,7 @@ from .const import (
+     CONF_ENVIRONMENT_ROOMS, CONF_OCCUPANCY_GLOBAL, CONF_OUTDOOR,
+ )
+ from .discovery import entity_area, indoor_temperature_choices, supported_metric
++from .device_hierarchy import native_source
+ 
+ 
+ def _field(key: str, default: Any = None, *, required: bool = False):
+@@ -45,7 +46,7 @@ def _device_choices(hass, area: str) -> list[dict[str, str]]:
+     for state in hass.states.async_all():
+         if state.domain not in ("climate", "humidifier", "fan"):
+             continue
+-        if entity_area(hass, state.entity_id) != area:
++        if entity_area(hass, state.entity_id) != area or not native_source(hass, state.entity_id):
+             continue
+         # Device class can be missing from an otherwise valid Home Assistant
+         # humidifier entity. It remains visible for INVENTORY, but must
+@@ -166,7 +167,17 @@ def _reconcile_device_selection(previous: dict, updated: dict) -> dict:
+         "secondary_climate_setpoint_auto", "fan_speed_auto",
+         "fan_power_auto", "dry_fan_mode_auto",
+     ))
+-    if not (native_primary or direct_primary or secondary):
++    # A native DRY/FAN_ONLY controller deliberately does not arm a legacy
++    # temperature or DRY/FAN driver. Removing unrelated equipment must not
++    # revoke its already granted room permission; never create a new grant.
++    managed_native = any(
++        entity in selected and entity.startswith("climate.")
++        and cfg.get("auto_control") is True
++        and cfg.get("hardware_confirmed") is True
++        and cfg.get("method") == "native"
++        for entity, cfg in devices.items()
++    )
++    if not (native_primary or direct_primary or secondary or managed_native):
+         result["allow_actuation"] = False
+     return result
+ 
+@@ -610,7 +621,13 @@ class CompactOptionsMixin:
+             return [candidate for candidate in _sensor_choices(self.hass, area, metric)
+                     if candidate["value"] not in excluded]
+ 
+-        kind = (old.get("method") or ("setpoint" if domain != "fan" else "speed"))
++        native_modes = state.attributes.get("hvac_modes", [])
++        native_modes = set(native_modes) if isinstance(native_modes, (list, tuple)) else set()
++        thermal = bool(native_modes & {"heat", "cool", "heat_cool", "auto"})
++        native_dry = domain == "climate" and not thermal and "dry" in native_modes
++        native_fan = domain == "climate" and not thermal and not native_dry and "fan_only" in native_modes
++        kind = (old.get("method") or ("native" if native_dry or native_fan else
++                                     "setpoint" if domain != "fan" else "speed"))
+         if user_input is not None:
+             data = {
+                 **old, "auto_control": user_input.get("device_auto_control", old.get("auto_control", False)) is True,
+@@ -661,15 +678,10 @@ class CompactOptionsMixin:
+                 elif domain == "climate" and data["method"] == "native" and (
+                      not data["hardware_confirmed"]):
+                     errors["base"] = "device_hardware_required"
+-                elif domain == "climate" and not (set(
+-                    state.attributes.get("hvac_modes", ())
+-                    if isinstance(state.attributes.get("hvac_modes"), (tuple,list))
+-                    else ()
+-                ) & {"heat","cool","heat_cool"}):
+-                    # A DRY-only native climate can be monitored and advised
+-                    # but cannot accept fabricated temperature targets here.
+-                    # Its compressor-mode driver is separately commissioned.
+-                    errors["base"]="device_method_invalid"
++                elif domain == "climate" and (not (thermal or native_dry or native_fan)
++                        or (native_dry or native_fan) and data["method"] != "native"
++                        or data["method"] == "native" and "off" not in native_modes):
++                    errors["base"] = "device_method_invalid"
+                 elif domain in ("humidifier","fan") and data["method"] not in (
+                     ("setpoint", "power") if domain == "humidifier" else ("speed", "power")
+                 ):
+@@ -682,7 +694,7 @@ class CompactOptionsMixin:
+                 elif (data["absence_action"] == "off" and domain in ("fan", "humidifier")
+                       and data["method"] != "power"):
+                     errors["base"] = "device_power_required_for_off"
+-                elif domain == "climate" and (
++                elif domain == "climate" and thermal and (
+                     not isinstance(data["temperature_entity"], str) or
+                     data["temperature_entity"] not in {
+                         s["value"] for s in eligible_sensor("temperature")
+@@ -695,11 +707,11 @@ class CompactOptionsMixin:
+                         errors["base"] = "device_dry_advisory_only"
+                     else:
+                         errors["base"] = "device_temperature_required"
+-                elif domain == "humidifier" and data["humidity_entity"] not in {
++                elif (domain == "humidifier" or native_dry) and data["humidity_entity"] not in {
+                     s["value"] for s in eligible_sensor("humidity")
+                 }:
+                     errors["base"] = "device_humidity_required"
+-                elif domain == "fan" and (
++                elif (domain == "fan" or native_fan) and (
+                     data["fan_purpose"] not in ("extraction", "filtration") or
+                     data["co2_entity" if data["fan_purpose"]=="extraction" else "pm25_entity"]
+                     not in {s["value"] for s in eligible_sensor(
+@@ -754,6 +766,12 @@ class CompactOptionsMixin:
+                     if _device_type(other_entity)==domain and domain=="fan":
+                         if (other.get("method")!=data["method"]):
+                             errors["base"]="device_conflicting_control"
++            if not errors and data["auto_control"] and data["method"] in ("power", "native"):
++                if domain == "climate":
++                    values = [_valid_temperature(data[key], low, high) for key, low, high in (
++                        ("min_on_s", 600, 7200), ("min_off_s", 600, 14400), ("max_on_s", 900, 28800))]
++                    if any(v is None for v in values) or values[2] <= values[0]:
++                        errors["base"] = "device_runtime_invalid"
+             if not errors and data["auto_control"] and data["method"] == "power":
+                 # Match the exact selected driver's compressor/fan dwell and
+                 # watchdog constraints. The old form accepted combinations
+@@ -802,7 +820,21 @@ class CompactOptionsMixin:
+                         draft["auto_switch_hvac"] = False
+                     draft["enabled"] = True
+                     draft["allow_actuation"] = True
+-                    if domain == "climate":
++                    if native_dry or native_fan:
++                        # Inventory/configuration only: the new per-device selector
++                        # must explicitly transfer ownership before any new control.
++                        # Never arm the old temperature or DRY/FAN-only driver here.
++                        if not was_authorized:
++                            draft["controller"] = "environment"
++                            draft["auto_switch_hvac"] = False
++                        draft["dry_climate_entity" if native_dry else "fan_climate_entity"] = entity
++                        if native_dry:
++                            draft["humidity_entity"] = data["humidity_entity"]
++                        else:
++                            for key in ("co2_entity", "pm25_entity"):
++                                if data.get(key):
++                                    draft[key] = data[key]
++                    elif domain == "climate":
+                         from .climate_equipment import classify_hvac
+                         modes = classify_hvac(state.attributes, state.state)
+                         draft["temperature_entity"] = data["temperature_entity"]
+@@ -890,13 +922,13 @@ class CompactOptionsMixin:
+             _field("device_hardware_confirmed", old.get("hardware_confirmed",False)):
+                 selector.BooleanSelector(),
+         }
+-        if domain == "climate":
++        if domain == "climate" and not (native_dry or native_fan):
+             temp = eligible_sensor("temperature")
+             fields[_field("device_temperature_entity",
+                           old.get("temperature_entity") or draft.get("temperature_entity"))] = _select(temp)
+             # Per-device home/away/sleep policy targets are now editable
+             # on the room's Config Number entities.
+-        elif domain == "humidifier":
++        elif domain == "humidifier" or native_dry:
+             fields[_field("device_humidity_entity",
+                           old.get("humidity_entity") or draft.get("humidity_entity"))] = _select(
+                               eligible_sensor("humidity"))
+@@ -908,16 +940,18 @@ class CompactOptionsMixin:
+             fields[_field("device_pm25_entity",old.get("pm25_entity"))]=_select(
+                 [{"value":"none","label":"—"}]+eligible_sensor("pm25"))
+             fields[_field("device_sensor_verified",old.get("sensor_verified",False))]=selector.BooleanSelector()
+-        if domain in ("fan","humidifier"):
++        if domain in ("fan", "humidifier", "climate"):
+             permitted = ({
+                 "min_on_s": (300, 7200, 600),
+                 "min_off_s": (600, 14400, 600),
+                 "max_on_s": (900, 28800, 7200),
+-            } if domain == "humidifier" else {
++            } if domain in ("humidifier", "climate") else {
+                 "min_on_s": (120, 3600, 300),
+                 "min_off_s": (120, 7200, 300),
+                 "max_on_s": (900, 86400, 14400),
+             })
++            if domain == "climate":
++                permitted["min_on_s"] = (600, 7200, 600)
+             for name, (minimum, maximum, default) in permitted.items():
+                 fields[_field("device_"+name, old.get(name, default))] = _number(
+                     minimum, maximum,
+diff --git a/custom_components/air_quality_advisor/config_flow.py b/custom_components/air_quality_advisor/config_flow.py
+index c0704c48ca7af8e74c51f353d07a7f0aa8cac73c..844151ecaf8b2773c4dae4033d543279eee72541 100644
+--- a/custom_components/air_quality_advisor/config_flow.py
++++ b/custom_components/air_quality_advisor/config_flow.py
+@@ -17,6 +17,7 @@ from .languages import SUPPORTED_LANGUAGE_TAGS, resolve_language
+ 
+ from .ai_rewrite import DEFAULT_AGENT, conversation_agent_choices
+ from .hub_delivery import hub_installed
++from .device_hierarchy import native_source
+ from .const import (
+     CONF_AREAS, CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB,

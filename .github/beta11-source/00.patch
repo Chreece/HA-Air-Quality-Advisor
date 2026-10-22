@@ -1,0 +1,162 @@
+diff --git a/.github/release-request.json b/.github/release-request.json
+index 7118ff5305a1ccd5a99dcc158c5f2406e7542942..930b55f0b9ba5048f9f937c5fe12fcdf35fb7bcd 100644
+--- a/.github/release-request.json
++++ b/.github/release-request.json
+@@ -1,18 +1,18 @@
+ {
+-  "version": "0.6.0b10",
++  "version": "0.6.0b11",
+   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
+-  "note": "Opt-in beta 10: source-only configuration flow and device-owned operating controls; measured mold cold-surface recalibration; 38 language catalogs. Stable v0.5.1 and previous betas unchanged.",
++  "note": "Combined opt-in beta: Area hubs, native per-device climate interfaces, control methods, slow on/off PID and capability-aware quiet modes. New controller ownership is opt-in; stable remains v0.5.1.",
+   "validation_attempt": 0,
+   "changes": [
+-    "Restrict Configure to areas, providers, HA source/device selection, and physical hardware commissioning",
+-    "Move adjustable global comfort/science/occupancy/weather/notification policies onto Home device and room operating controls onto Area devices",
+-    "Add measured room cold-surface Number and explicit recalculate mold factor Button that validates current same-room and outside weather readings",
+-    "Offer validated room sleep start/end Time entities and AQI/pollen source policy controls",
+-    "Expose safely bounded supervised and commissioned direct PID tuning and device policy settings without duplicating native physical controls",
+-    "Regenerate 38 languages, including Greek; restore native localized mold weather source labels and explanations",
+-    "Preserve integration domain, preexisting entity identity, v0.5.1 latest stable, actuator commissioning and fail-closed interlocks",
+-    "Publish only after Python 3.13/3.14, translations, frontend, Hassfest and HACS validations"
++    "Home/Area hub/managed equipment hierarchy without moving native physical devices or changing original entity IDs",
++    "Per-controller climate entities with measured room data, actual modes/fan/swing capabilities and Manager presets",
++    "Existing/Automatic/Manual/Off/PID selection with exclusive endpoint ownership and independent manual targets",
++    "Qualified on/off fan/humidity/climate PID with anti-windup, conservative minimum ON/OFF, bounded pulses and maximum runtime",
++    "Quiet during sleep/occupancy using supported native fan percentages or explicitly selected modes, without powering on equipment",
++    "Durable exact-target command intent and acknowledgements, live preflight rechecks, manual pauses, safe retirement and explicit restart reconciliation",
++    "Prevent recursive Manager-to-Manager selection; retain independently controlled same-physical-device channels",
++    "38-language labels/help, regression tests, reproducible generators, frontend, Hassfest, HACS and installation ZIP checks before publishing"
+   ],
+   "channel": "beta",
+-  "release_branch": "beta/v0.6.0b10"
++  "release_branch": "beta/v0.6.0b11"
+ }
+diff --git a/.github/releases/v0.6.0b11.md b/.github/releases/v0.6.0b11.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..723e9cf89a85d62a56b0d0f2cc46f3896143ac88
+--- /dev/null
++++ b/.github/releases/v0.6.0b11.md
+@@ -0,0 +1,47 @@
++# Home Environment Manager v0.6.0b11 — Area hubs and per-device climate controllers
++
++**Opt-in beta 11 for Home Assistant 2026.10+.** This release combines the Area-hub hierarchy with the complete pending per-device climate, control-method, on/off PID and quiet-operation software. Stable **v0.5.1**, previous beta tags, the existing `air_quality_advisor` domain and original Home/Area entity identities remain unchanged. Back up your Home Assistant configuration before installing.
++
++## Home → Area hub → managed equipment
++
++Every configured monitoring, climate-only or PID-only area has its own logical hub. Room overview, calculated environmental values and area settings belong to that hub. Managed equipment controller devices are children of their Area hub. Physical devices stay with their native integration and gateway; Manager never replaces their physical identifiers or user area assignments. Multiple independently controlled channels on one physical device have separate climate entities on the same logical child.
++
++## A real climate interface for each supported controller
++
++Each managed endpoint exposes room temperature/humidity where valid sources exist, its actual supported HVAC modes, native fan and swing controls where advertised, and Manager presets: **None, Home, Comfort, Away, Sleep and Eco**. A fan does not acquire imaginary heating/cooling, and a dehumidifier does not acquire a fake temperature service. Binary heating/cooling equipment can use a Manager temperature target with an external sensor without calling an unsupported native setpoint service.
++
++Presets affect the Manager targets; None allows automatic/PID controllers to follow room presence and sleep policy. Manual with None keeps independent user targets rather than silently changing them with occupancy. Fan selections can be saved per preset. The climate entity reports observed physical state separately from requested mode, profile, controller diagnostics and commissioning status.
++
++## Per-device control method
++
++- **Existing** preserves the previous room controller and is the upgrade default. No new equipment power permission is granted automatically.
++- **Automatic** follows the room/preset policy using only independently commissioned device capabilities and valid measurements.
++- **Manual** follows explicit user mode, target and native option choices, while retaining physical interlocks and dwell limits.
++- **Off** stops this Manager control path and requests its owned equipment OFF after the original minimum run time. It does not adopt or shut down unrelated manually running equipment.
++- **PID** appears only for supported feedback/control combinations. It supports thermal, humidity and qualified fan air-quality feedback. Kp/Ki/Kd, sample interval and cycle duration are editable per controller.
++
++Existing room drivers yield the exact claimed endpoint, with live checks preventing two controllers from commanding the same device. Unrelated room equipment keeps its existing controller. A manual physical adjustment latches a pause rather than starting an automation fight.
++
++## PID for on/off equipment
++
++Commissioned fans, dedicated humidifiers/dehumidifiers and supported native climate ON/OFF modes can use **slow, time-proportioned duty control**. Direct qualified relay/percentage outputs are supported too. Integral anti-windup, bounded samples, pulse-length checks, minimum ON/OFF times and maximum continuous runtime are enforced. Short pulses that cannot meet the minimum runtime are skipped. Native setpoint-only PID remains bounded and cannot gain power-switching permission from a dropdown.
++
++Compressor-affecting equipment uses a minimum ten-minute software ON/OFF floor, or the larger configured equipment minimum. These values do not replace manufacturer-specific requirements, independent electrical/thermal protection, frost/defrost logic or physical commissioning. Automatic power ownership will not take over an already-running manual appliance: turn the physical endpoint OFF and verify its safeguards first.
++
++## Quiet during sleep or occupancy
++
++Devices with a genuinely adjustable fan gain **Quiet during sleep** and **Quiet while occupied** switches. Percentage fans expose a quiet-speed limit; discrete fan controls expose their actual native choices. The controller lowers and restores the previous speed only when the current context is known and the fan remains under its ownership. It never starts an appliance merely to apply quiet mode, invents no unsupported quiet preset and makes no claim to measure or guarantee acoustic decibels.
++
++## Recovery, localization and validation
++
++Every physical command records a durable intent before dispatch and then waits for acknowledgement. It rechecks current identity, settings, source values, room interlocks and competing ownership immediately before the service call. Uncertain commands are not blindly retried. Restart/manual-override pauses require the device's **Reconcile and resume** button after verifying actual equipment state. Deselected or removed owned equipment retains its original timing for bounded retirement; changed physical identities are not commanded.
++
++All 38 supplied locale catalogs include the new controller labels and help, including Greek. Python 3.13/3.14 regression tests, deterministic translations, frontend checks, HACS and Hassfest must pass before publication. These tests use simulated Home Assistant boundaries; **no live HVAC, compressor, fan or humidity device is certified by software CI**.
++
++## Install and activate deliberately
++
++In HACS select **Redownload → Show beta versions → v0.6.0b11**, then restart Home Assistant. Keep the existing integration entry. Open the Area hub and its controller child, complete the existing hardware/source commissioning where necessary, and change Control method from Existing only for the equipment you intend to transfer. Review the controller's help/status attributes and verify physical response before unattended operation.
++
++The attached ZIP is for manual installation and includes a SHA-256 checksum. Stable users remain on v0.5.1; this prerelease is not marked Latest.
++
++[Full README](https://github.com/Chreece/HA-Home-Environment-Manager/blob/v0.6.0b11/README.md) · [Controller design and verification](https://github.com/Chreece/HA-Home-Environment-Manager/blob/v0.6.0b11/docs/DEVICE_CONTROLLER_CHECKPOINT.md)
+diff --git a/.github/workflows/controller-development.yml b/.github/workflows/controller-development.yml
+index e8e3585c80ef991742499458592a5525416d7f3d..1db11ca88181848849486d1222a5f3afd63f7c9b 100644
+--- a/.github/workflows/controller-development.yml
++++ b/.github/workflows/controller-development.yml
+@@ -26,7 +26,7 @@ jobs:
+           python -m pip install pytest
+           python -m pytest -q tests
+           python generate_translations.py
+-          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations
++          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+           python -m compileall -q custom_components
+       - uses: actions/setup-node@v4
+         with:
+diff --git a/.github/workflows/validate.yml b/.github/workflows/validate.yml
+index e4103179d0ea92c743a7bc2100d8a20207d99af7..7ba4b9c0c03b0509dc698a1425bd41c8ab069df4 100644
+--- a/.github/workflows/validate.yml
++++ b/.github/workflows/validate.yml
+@@ -17,6 +17,7 @@ on:
+       - 'beta/v0.6.0b8'
+       - 'beta/v0.6.0b9'
+       - 'beta/v0.6.0b10'
++      - 'beta/v0.6.0b11'
+       - 'feat/compact-environment-settings-*'
+       - 'feat/metric-help-valid-selectors-*'
+       - 'fix/initial-flow-retry-*'
+@@ -56,7 +57,7 @@ jobs:
+       - name: Verify translations match generator
+         run: |
+           python generate_translations.py
+-          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations
++          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+       - uses: actions/setup-node@v4
+         with:
+           node-version: '22'
+@@ -186,8 +187,8 @@ jobs:
+             --latest
+ 
+   publish_beta:
+-    name: Publish opt-in v0.6.0b10 prerelease only after all checks
+-    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b10'
++    name: Publish opt-in v0.6.0b11 prerelease only after all checks
++    if: github.event_name == 'push' && github.ref == 'refs/heads/beta/v0.6.0b11'
+     needs: [test, hassfest, hacs]
+     runs-on: ubuntu-latest
+     permissions:
+@@ -208,14 +209,14 @@ jobs:
+           hacs = json.loads(Path("hacs.json").read_text(encoding="utf-8"))
+           assert manifest["domain"] == "air_quality_advisor"
+           assert manifest["name"] == "Home Environment Manager"
+-          assert manifest["version"] == "0.6.0b10"
++          assert manifest["version"] == "0.6.0b11"
+           assert request["version"] == manifest["version"]
+           assert request["channel"] == "beta"
+-          assert request["release_branch"] == "beta/v0.6.0b10"
++          assert request["release_branch"] == "beta/v0.6.0b11"
+           # HACS reads release tag tree directly. Never change the default
+           # channel's installation contract for old stable releases.
+           assert hacs.get("zip_release") is not True
+-          assert Path(".github/releases/v0.6.0b10.md").stat().st_size > 1500
++          assert Path(".github/releases/v0.6.0b11.md").stat().st_size > 1500
+           for item in ("icon.png", "icon@2x.png", "logo.png", "logo@2x.png"):
+               assert (p.parent / "brand" / item).is_file(), item
+           print("Exact prerelease identity, HACS source-tree mode, brand and notes: PASS")
+@@ -233,13 +234,13 @@ jobs:
+             echo "publish=false" >> "$GITHUB_OUTPUT"
+             exit 0
+           fi
+-          if gh release view v0.6.0b10 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
++          if gh release view v0.6.0b11 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+             echo "::notice::This beta was already published; never replace its tag"
+             echo "publish=false" >> "$GITHUB_OUTPUT"
+             exit 0
+           fi
+-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b10" >/dev/null 2>&1; then
+-            echo "::error::Existing orphan tag v0.6.0b10; refusing to move tag"

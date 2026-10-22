@@ -1,0 +1,235 @@
++                          baseline={e: snapshot(self.hass.states.get(e)) for e in spec.source_entities},
++                          off_at={e: self.clock() for e in spec.source_entities})
++            self._memory.pop(spec.identifier, None)
++            self._started = self.clock()
++            await self._save()
++            self._status(spec, "reconciled_waiting_minimum_off")
++
++    def schedule(self) -> None:
++        if not self._active or not self._ready:
++            return
++        known = {spec.identifier: spec for spec in model.specs(self.manager)}
++        for key, spec in known.items():
++            cfg = model.settings(self.manager, spec)
++            if cfg["control_mode"] == "existing" and not (self.records.get(key, {}).get("power") or self.records.get(key, {}).get("pending")):
++                continue
++            task = self._tasks.get(key)
++            if task is not None and not task.done():
++                continue
++            self._tasks[key] = self.hass.async_create_task(self._run(spec))
++        for key, record in tuple(self.records.items()):
++            if key not in known and (record.get("power") or record.get("pending")):
++                task = self._tasks.get(key)
++                if task is None or task.done():
++                    spec = model.ManagedDevice(key, record["area"], "Retired controller",
++                        record.get("source_device_id"), tuple(record["sources"]))
++                    self._tasks[key] = self.hass.async_create_task(self._run(spec))
++
++    async def _run(self, spec: model.ManagedDevice) -> None:
++        try:
++            async with self._lock(spec.identifier):
++                await self.tick(spec)
++        except asyncio.CancelledError:
++            raise
++        except Exception:
++            _LOGGER.exception("Managed controller failed for %s", spec.identifier)
++            if self._ready:
++                await self._pause(spec, "controller_exception")
++        finally:
++            if self._tasks.get(spec.identifier) is asyncio.current_task():
++                self._tasks.pop(spec.identifier, None)
++
++    def measurements(self, spec: model.ManagedDevice, cap: model.Capabilities) -> dict:
++        room, dev = model.room_config(self.manager, spec), model.device_config(self.manager, spec, cap.primary)
++        values = {}
++        for metric, key in (("temperature", "temperature_entity"), ("humidity", "humidity_entity"),
++                            ("co2", "co2_entity"), ("pm25", "pm25_entity")):
++            source = dev.get(key) or room.get(key)
++            if metric == "temperature" and not source:
++                source = self.manager.settings.get("pid_rooms", {}).get(spec.area_id, {}).get("temperature_entity")
++            excluded = self.manager.settings.get(CONF_EXCLUDED_INDOOR, {}).get(spec.area_id, [])
++            if not source and metric in ("temperature", "humidity"):
++                candidates = []
++                for observed in self.hass.states.async_all("sensor"):
++                    if observed.entity_id in excluded or entity_area(self.hass, observed.entity_id) != spec.area_id:
++                        continue
++                    if metric == "temperature":
++                        if observed.attributes.get("device_class") != "temperature":
++                            continue
++                        valid = temperature_sensor_c(self.hass, observed.entity_id, 10)
++                    else:
++                        sample = reading(self.hass, observed.entity_id, 10, outdoor=False)
++                        valid = sample.value if sample.metric == metric else None
++                    if valid is not None:
++                        candidates.append(observed.entity_id)
++                source = candidates[0] if len(candidates) == 1 else None
++            value = None
++            if isinstance(source, str) and source not in excluded and entity_area(self.hass, source) == spec.area_id:
++                if metric == "temperature":
++                    value = temperature_sensor_c(self.hass, source, 10)
++                else:
++                    observed = reading(self.hass, source, 10, outdoor=False)
++                    value = observed.value if observed.metric == metric else None
++            values[metric] = value
++            values[key] = source
++        return values
++
++    def _quiet_context(self, spec: model.ManagedDevice, cfg: dict, plan: dict) -> bool:
++        """Do not raise fan speed on missing sleep/presence evidence."""
++        room = model.room_config(self.manager, spec)
++        shared = plan.get("global_presence", {})
++        known = set(plan.get("known_presence_areas", [spec.area_id]))
++        occupied = plan.get("occupancy", "unknown")
++        sleeping = plan.get("sleeping")
++        if shared:
++            occupied, _, _ = room_presence(self.hass, spec.area_id, room, shared,
++                                            known_areas=known or {spec.area_id})
++            if shared.get("sleep_rooms_entity"):
++                value, _ = sleep_presence(self.hass, spec.area_id, shared, known or {spec.area_id})
++                # A live true/unknown value cannot be overridden by an old plan.
++                sleeping = value if value is not False else sleeping
++        else:
++            sensors = plan.get("presence_entities", [])
++            if sensors:
++                states = [self.hass.states.get(e) for e in sensors]
++                if any(st is not None and st.state == "on" for st in states):
++                    occupied = "occupied"
++                elif any(st is None or st.state != "off" for st in states):
++                    occupied = "unknown"
++                else:
++                    occupied = "unoccupied"
++        return bool(cfg["quiet_sleep"] and (cfg["preset"] == "sleep" or sleeping is not False)
++                    or cfg["quiet_occupied"] and occupied != "unoccupied")
++
++    def _shutdown_allowed(self, spec: model.ManagedDevice, entity: str, expected: dict) -> bool:
++        """Only an already-owned OFF can survive deselection or removed rooms."""
++        from homeassistant.helpers import entity_registry as er
++        record = self._record(spec)
++        item = er.async_get(self.hass).async_get(entity)
++        state = self.hass.states.get(entity)
++        is_off = expected.get("state") == "off" or entity.startswith(("number.", "input_number.")) and finite(expected.get("state"), 0, 100) == 0
++        owned = record.get("power", {}).get(entity)
++        return bool(is_off and owned and entity in record["sources"] and item is not None
++                    and getattr(item, "platform", None) != DOMAIN
++                    and getattr(item, "device_id", None) == record.get("source_device_id")
++                    and entity_area(self.hass, entity) == record["area"]
++                    and not foreign_owner_hold(self.hass, self.manager.entry.entry_id, entity)
++                    and state is not None and state.state not in ("unknown", "unavailable")
++                    and state.attributes.get("hvac_action") != "defrosting"
++                    and self.clock()-owned["since"] >= owned["min_on"])
++
++    async def _retired(self, spec: model.ManagedDevice) -> None:
++        """Drain acknowledged owned outputs using their original physical limits.
++
++        Deleted/reassigned physical identities and interrupted restart ownership
++        remain latched for manual reconciliation. No permission for a new ON is
++        inferred from an old record.
++        """
++        record = self._record(spec)
++        if record.get("paused"):
++            self._status(spec, "retired_requires_manual_reconciliation", reason=record["paused"])
++            return
++        raw = record.get("capabilities")
++        if not isinstance(raw, dict):
++            self._status(spec, "retired_requires_manual_reconciliation")
++            return
++        try:
++            cap = model.Capabilities(**raw)
++        except (TypeError, ValueError):
++            self._status(spec, "retired_requires_manual_reconciliation")
++            return
++        if not await self._reconcile(spec):
++            return
++        for entity in tuple(record["power"]):
++            if entity != cap.primary:
++                self._status(spec, "retired_identity_requires_manual_reconciliation")
++                continue
++            if await self._power(spec, cap, "off", automatic=False, shutdown=True):
++                return
++        if not record["power"] and not record.get("pending"):
++            self._status(spec, "retired_outputs_reconciled")
++
++    def _gate(self, spec: model.ManagedDevice, cap: model.Capabilities, cfg: dict, plan: dict,
++              mode: str, *, automatic: bool = True) -> str | None:
++        if not self._active or not self._ready:
++            return "controller_inactive"
++        if not self._current_spec(spec):
++            return "source_deselected_or_moved"
++        for entity in spec.source_entities:
++            if snapshot(self.hass.states.get(entity)) is None:
++                return "physical_device_unavailable"
++            if other := foreign_owner_hold(self.hass, self.manager.entry.entry_id, entity):
++                return other
++        for key, record in self.records.items():
++            if (key != spec.identifier and record.get("source_device_id") is not None
++                    and record.get("source_device_id") == spec.source_device_id
++                    and record.get("area") == spec.area_id and record.get("pending")):
++                return "other_endpoint_acknowledgement_pending"
++        if self._record(spec).get("paused"):
++            return "controller_paused"
++        if cfg["control_mode"] == "existing":
++            return "existing_controller_selected"
++        room = model.room_config(self.manager, spec)
++        native = self.hass.states.get(cap.primary)
++        if native is not None and native.attributes.get("hvac_action") == "defrosting":
++            return "native_defrost_protection"
++        if mode != "off" and cap.domain != "fan" and not _contact_interlock(self.hass, spec.area_id, plan):
++            return "open_or_unknown_window"
++        if mode in ("heat", "cool", "heat_cool"):
++            if conflict := _physical_climate_conflict(self.hass, spec.area_id, room, cap.primary, mode):
++                return conflict
++        if automatic:
++            soft, _ = model.permission(self.manager, spec, cap)
++            if not soft:
++                return "automatic_control_not_commissioned"
++            if self.clock()-self._started < STARTUP_SECONDS:
++                return "startup_warmup"
++            device = model.device_config(self.manager, spec, cap.primary)
++            if device:
++                allowed, reason = live_device_permission(self.hass, spec.area_id, room, plan, device)
++                if allowed != "eligible":
++                    return reason
++            if cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}:
++                dev = model.device_config(self.manager, spec, cap.primary)
++                purpose = dev.get("fan_purpose") or ("extraction" if room.get("extraction_fan_entity") == cap.primary else "filtration")
++                stamp = finite(plan.get("air_evidence_at"), 0, 1e13)
++                if stamp is None or not 0 <= self.clock()-stamp <= 120:
++                    return "air_quality_decision_expired"
++                if purpose == "extraction":
++                    if plan.get("air_actions", {}).get("outdoor_air_verified") is not True:
++                        return "outside_air_not_verified"
++                    if not _contact_interlock(self.hass, spec.area_id, plan):
++                        return "window_already_open_or_unknown"
++                elif not (dev.get("sensor_verified") is True or room.get("pm25_sensor_verified") is True):
++                    return "particle_sensor_not_verified"
++            if cap.domain == "humidifier" or mode == "dry":
++                opposite = room.get("dehumidifier_entity" if cap.humidifying else "humidifier_entity")
++                if opposite:
++                    other = self.hass.states.get(opposite)
++                    if other is None or other.state != "off":
++                        return "opposing_humidity_device_active_or_unknown"
++                for role in ("climate_entity", "heat_climate_entity", "cool_climate_entity", "dry_climate_entity"):
++                    other_id = room.get(role)
++                    if not other_id or other_id == cap.primary:
++                        continue
++                    other = self.hass.states.get(other_id)
++                    if other is None or other.state in ("unknown", "unavailable"):
++                        return "other_climate_unavailable"
++                    if cap.humidifying and other.state in ("cool", "dry", "heat_cool", "auto"):
++                        return "opposing_humidity_climate_active"
++                    if mode == "dry" and cap.domain == "climate" and other.state not in ("off", "fan_only"):
++                        return "thermal_priority_defer_dry"
++                    if not cap.humidifying and other.state in ("cool", "heat_cool", "auto"):
++                        humidity = self.measurements(spec, cap)["humidity"]
++                        target = model.targets(self.manager, spec, cap, cfg, plan)["humidity"]
++                        if humidity is None or humidity < target + float(room.get("cooling_dry_deferral_rh_points", 10)):
++                            return "cooling_priority_defer_dehumidifier"
++        return None
++
++    async def _reconcile(self, spec: model.ManagedDevice) -> bool:
++        record, now = self._record(spec), self.clock()
++        pending = record.get("pending")
++        if pending:
++            if not self._identity_ok(spec):
++                await self._pause(spec, "physical_source_identity_changed")
++                return False

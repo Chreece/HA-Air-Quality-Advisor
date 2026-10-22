@@ -1,0 +1,285 @@
++    if plan.get("away") == "away":
++        return "away"
++    if plan.get("sleeping") is True:
++        return "sleep"
++    if plan.get("occupancy") == "unoccupied":
++        return "unoccupied"
++    return "home"
++
++
++def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
++            plan: dict) -> dict[str, float]:
++    room, dev = room_config(manager, spec), device_config(manager, spec, cap.primary)
++    profile = profile_name(config, plan)
++    base_profile = "home" if profile in ("comfort", "manual") else profile
++    fallback = {"home": (20., 26.), "unoccupied": (18., 28.), "away": (16., 30.), "sleep": (18., 26.)}[base_profile]
++    room_band = room.get("profiles", {}).get(base_profile, {})
++    heat = dev.get(base_profile + "_heat_c", room_band.get("heat_c", fallback[0]))
++    cool = dev.get(base_profile + "_cool_c", room_band.get("cool_c", fallback[1]))
++    humidity = dev.get("sleep_humidity_target" if base_profile == "sleep" else "humidity_target",
++                       room.get("humidity_low_rh", 40) if cap.humidifying else room.get("humidity_high_rh", 60))
++    if profile == "comfort":
++        heat, cool = min(heat + 1, cool - 1), max(cool - 1, heat + 1)
++    result = {"heat": float(heat), "cool": float(cool), "humidity": float(humidity)}
++    override = config.get("profile_targets", {}).get(profile, {})
++    if isinstance(override, dict):
++        result.update({k: v for k, v in override.items() if k in result})
++    return result
++
++
++@dataclass(frozen=True, slots=True)
++class PIDMemory:
++    integral: float = 0.
++    measured: float | None = None
++    stamp: float | None = None
++    derivative: float = 0.
++    demand: float = 0.
++
++
++def pid_step(measured: float, target: float, now: float, *, increasing: bool,
++             kp: float, ki: float, kd: float, sample: float,
++             memory: PIDMemory | None = None) -> PIDMemory:
++    """Dimension-independent PID: °C, RH points, ppm or µg/m³ are never mixed.
++
++    Derivative on measurement, conditional-integration anti-windup and sample
++    hold. Reset on invalid timestamps/gaps; no integral carried across profiles.
++    """
++    old = memory or PIDMemory()
++    if any(isinstance(v, bool) or not isinstance(v, (float, int)) or not math.isfinite(v)
++           for v in (measured, target, now, kp, ki, kd, sample)) or min(kp, ki, kd) < 0 or sample < 120:
++        return PIDMemory()
++    direction = 1 if increasing else -1
++    error = direction * (target - measured)
++    if old.stamp is None or old.measured is None or now < old.stamp or now-old.stamp > max(3*sample, 1800):
++        return PIDMemory(measured=measured, stamp=now, demand=max(0., min(100., kp*error)))
++    dt = now-old.stamp
++    if dt < sample:
++        return old
++    minutes = dt/60
++    derivative = .25*(measured-old.measured)/minutes + .75*old.derivative
++    p, d = kp*error, -direction*kd*derivative
++    trial = max(-100., min(100., old.integral+ki*error*minutes))
++    raw = p+trial+d
++    integral = old.integral if (raw >= 100 and error > 0) or (raw <= 0 and error < 0) else trial
++    return PIDMemory(integral, measured, now, derivative, max(0., min(100., p+integral+d)))
++
++
++def duty_on(demand: float, elapsed: float, cycle: float, min_on: float, min_off: float,
++            *, starting: bool = False) -> bool:
++    """Slow time-proportioning. Never fabricate a pulse shorter than a dwell.
++
++    Sub-minimum demand is skipped; near-full demand is bounded by min-OFF.
++    The runtime separately enforces actual observed transitions and max-ON.
++    """
++    if any(not math.isfinite(v) for v in (demand, elapsed, cycle, min_on, min_off)) or cycle < min_on+min_off or elapsed < 0:
++        return False
++    if demand >= 100:
++        return True
++    duration = cycle * max(0., demand) / 100
++    if duration < min_on:
++        return False
++    duration = min(duration, cycle-min_off)
++    phase = elapsed % cycle
++    return phase < duration and (not starting or duration-phase >= min_on)
++
++
++def claimed_sources(manager: Any) -> set[str]:
++    active = {e for spec in specs(manager) if settings(manager, spec)["control_mode"] != "existing"
++              for e in spec.source_entities}
++    for record in getattr(getattr(manager, "equipment", None), "records", {}).values():
++        active.update(record.get("power", {}))
++        if isinstance(record.get("pending"), dict):
++            active.add(record["pending"]["entity"])
++    return active
++
++
++def legacy_settings(manager: Any) -> tuple[dict, dict]:
++    """Remove only claimed endpoints, keeping other devices/areas independent."""
++    rooms = deepcopy(manager.settings.get("climate_rooms", {}))
++    pids = deepcopy(manager.settings.get("pid_rooms", {}))
++    claimed = claimed_sources(manager)
++    if not claimed:
++        return rooms, pids
++    for cfg in rooms.values() if isinstance(rooms, dict) else ():
++        if not isinstance(cfg, dict):
++            continue
++        for key in ("climate_entity", "heat_climate_entity", "cool_climate_entity", "dry_climate_entity",
++                    "fan_climate_entity", "humidifier_entity", "dehumidifier_entity",
++                    "extraction_fan_entity", "purifier_fan_entity", "heat_actuator", "cool_actuator"):
++            if cfg.get(key) in claimed:
++                cfg.pop(key, None)
++        if isinstance(cfg.get("selected_devices"), list):
++            cfg["selected_devices"] = [e for e in cfg["selected_devices"] if e not in claimed]
++    for cfg in pids.values() if isinstance(pids, dict) else ():
++        if isinstance(cfg, dict) and isinstance(cfg.get("climate_entities"), list):
++            cfg["climate_entities"] = [e for e in cfg["climate_entities"] if e not in claimed]
++            if not cfg["climate_entities"]:
++                cfg["enabled"] = False
++    return rooms, pids
++
++
++def legacy_hold(hass: Any, entry_id: str | None, entity: str) -> str | None:
++    manager = getattr(hass, "data", {}).get(DOMAIN, {}).get(entry_id)
++    if manager is not None and entity in claimed_sources(manager):
++        return "per_device_controller_owns_source"
++    return None
+diff --git a/custom_components/air_quality_advisor/equipment_runtime.py b/custom_components/air_quality_advisor/equipment_runtime.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..de26d53070e80fcefb9345ffae217345923ef7e7
+--- /dev/null
++++ b/custom_components/air_quality_advisor/equipment_runtime.py
+@@ -0,0 +1,1077 @@
++"""One serialized, durable command owner per managed physical device.
++
++All new control is opt-in through the controller-mode selector. Existing room
++owners are never silently replaced. Power commands require the original
++commissioning grant, native capabilities, dwell and live room evidence. PID
++uses slow time proportioning for binary outputs, percentages for modulating
++outputs, or bounded native setpoint trim when only setpoint control is granted.
++"""
++from __future__ import annotations
++
++import asyncio
++from copy import deepcopy
++from dataclasses import asdict
++import logging
++import time
++from typing import Any, Callable
++
++from homeassistant.exceptions import HomeAssistantError
++
++from .const import DOMAIN, SIGNAL_UPDATED, CONF_EXCLUDED_INDOOR
++from .device_hierarchy import configured_sources
++from .discovery import entity_area, reading, temperature_sensor_c
++from .climate_arbitration import _contact_interlock, _physical_climate_conflict
++from .climate_entry_ownership import foreign_owner_hold
++from .occupancy_policy import live_device_permission, room_presence, sleep_presence
++from .pid_math import finite, target_from_unit, target_to_unit, quantize_target
++from . import equipment_model as model
++
++_LOGGER = logging.getLogger(__name__)
++ACK_SECONDS = 120
++STARTUP_SECONDS = 300
++MONITORED = ("temperature", "target_temp_low", "target_temp_high", "humidity",
++             "fan_mode", "percentage", "preset_mode", "swing_mode", "swing_horizontal_mode",
++             "supported_features", "temperature_unit", "target_temp_step", "min_temp", "max_temp",
++             "hvac_modes", "fan_modes", "swing_modes", "swing_horizontal_modes", "preset_modes",
++             "min_humidity", "max_humidity", "percentage_step", "min", "max", "step", "unit_of_measurement")
++LEGACY_DRIVERS = ("pid", "native_climate", "direct_climate", "native_humidity",
++                  "humidity_power", "secondary_climate", "running_fans", "fan_power", "native_air_mode")
++
++
++def output_off(state: Any) -> bool:
++    if state is None:
++        return False
++    if getattr(state, "domain", "") in ("number", "input_number"):
++        return finite(state.state, 0, 100) == 0
++    return state.state == "off"
++
++
++def snapshot(state: Any) -> dict | None:
++    if state is None or state.state in ("unknown", "unavailable"):
++        return None
++    return {"state": state.state, "attributes": {
++        k: state.attributes[k] for k in MONITORED if k in state.attributes}}
++
++
++def matches(state: Any, expected: dict) -> bool:
++    if state is None:
++        return False
++    if "state" in expected and state.state != expected["state"]:
++        if getattr(state, "domain", "") not in ("number", "input_number") or (
++            finite(state.state, 0, 100) is None or finite(expected["state"], 0, 100) is None
++            or abs(float(state.state)-float(expected["state"])) > .05
++        ):
++            return False
++    for key, value in expected.get("attributes", {}).items():
++        actual = state.attributes.get(key)
++        if isinstance(value, (int, float)) and not isinstance(value, bool):
++            if finite(actual, -1e8, 1e8) is None or abs(float(actual)-value) > (.5 if key == "percentage" else .05):
++                return False
++        elif actual != value:
++            return False
++    return True
++
++
++class EquipmentRuntime:
++    """Independent tasks for independent devices; one pending command each."""
++
++    def __init__(self, manager: Any, *, clock: Callable[[], float] | None = None) -> None:
++        self.manager, self.hass = manager, manager.hass
++        self.clock = clock or time.time
++        self.records: dict[str, dict] = {}
++        self.statuses: dict[str, dict] = {}
++        self._tasks: dict[str, asyncio.Task] = {}
++        self._locks: dict[str, asyncio.Lock] = {}
++        self._memory: dict[str, tuple[Any, model.PIDMemory, float]] = {}
++        self._store = None
++        self._ready = False
++        self._active = False
++        self._started = self.clock()
++        self._save_lock = asyncio.Lock()
++        self._commands = asyncio.Semaphore(8)
++        self._invalidated: set[str] = set()
++
++    def _status(self, spec: Any, status: str, **data: Any) -> None:
++        key = spec if isinstance(spec, str) else spec.identifier
++        value = {"status": status, **data}
++        if self.statuses.get(key) == value:
++            return
++        self.statuses[key] = value
++        if self._active:
++            from homeassistant.helpers.dispatcher import async_dispatcher_send
++            async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.manager.entry.entry_id}")
++
++    async def _save(self) -> None:
++        if self._store is None or not self._ready:
++            raise HomeAssistantError("Controller storage is unavailable")
++        async with self._save_lock:
++            try:
++                await self._store.async_save({"version": 1, "records": deepcopy(self.records)})
++            except Exception as error:
++                self._ready = False
++                raise HomeAssistantError("Controller state could not be persisted; no command sent") from error
++
++    async def async_start(self) -> None:
++        self._active = True
++        self._started = self.clock()
++        try:
++            from homeassistant.helpers.storage import Store
++            self._store = Store(self.hass, 1, f"{DOMAIN}.equipment_{self.manager.entry.entry_id}")
++            saved = await self._store.async_load()
++            if saved is not None and (not isinstance(saved, dict) or saved.get("version") != 1
++                                      or not isinstance(saved.get("records"), dict)):
++                raise ValueError("Unknown equipment state schema")
++            self.records = deepcopy(saved["records"]) if saved else {}
++            for key, record in self.records.items():
++                if (not isinstance(key, str) or not isinstance(record, dict)
++                    or not isinstance(record.get("area"), str)
++                    or not isinstance(record.get("sources"), list)
++                    or not all(isinstance(e, str) for e in record["sources"])
++                    or not isinstance(record.get("baseline"), dict)
++                    or not isinstance(record.get("power"), dict)
++                    or not isinstance(record.get("off_at"), dict)):
++                    raise ValueError("Invalid equipment recovery records")
++                for entity, owned in record["power"].items():
++                    if (entity not in record["sources"] or not isinstance(owned, dict)
++                        or any(finite(owned.get(k), 0, 1e13) is None for k in ("since", "min_on", "max_on"))
++                        or owned["max_on"] <= owned["min_on"]):
++                        raise ValueError("Invalid power recovery history")
++            self._ready = True
++            for record in self.records.values():
++                if record.get("pending") or record.get("power"):
++                    record["paused"] = "restart_reconciliation_required"
++            await self._save()
++        except Exception:
++            self._ready = False
++            _LOGGER.exception("Equipment controller storage unavailable; new control stays inactive")
++
++    async def async_stop(self) -> None:
++        self._active = False
++        tasks = tuple(self._tasks.values())
++        for task in tasks:
++            task.cancel()
++        if tasks:
++            await asyncio.gather(*tasks, return_exceptions=True)

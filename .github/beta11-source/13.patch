@@ -1,0 +1,289 @@
++from .equipment_model import legacy_settings as equipment_legacy_settings, claimed_sources
+ from .building_physics import moisture_potential
+ from .environment_extended import global_pollen, global_aqi
+ from .logic import Reading, Reason, Recommendation
+@@ -78,6 +80,7 @@ class AirQualityManager:
+         self._tasks: set[asyncio.Task[Any]] = set()
+         self._environment_history = EnvironmentHistory()
+         self._environment_store: Any | None = None
++        self.equipment = EquipmentRuntime(self)
+         self.pid = ClimatePidCoordinator(self.hass, self.entry.entry_id, report_changed=self._pid_updated)
+         self.native_climate = NativeClimateControl(self.hass, self.entry.entry_id)
+         self.direct_climate = DirectClimateControl(
+@@ -488,6 +491,7 @@ class AirQualityManager:
+         await self.running_fans.async_start()
+         await self.fan_power.async_start()
+         await self.native_air_mode.async_start()
++        await self.equipment.async_start()
+         self._active = True
+         self._unsubs.extend((
+             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self._on_state_changed),
+@@ -665,7 +669,12 @@ class AirQualityManager:
+         # refresh. Use the last validated plan; _tick rechecks sensor freshness.
+         if not self._active:
+             return
+-        settings=self.settings.get(CONF_CLIMATE_ROOMS,{})
++        if claimed_sources(self):
++            # Per-device control requires fresh occupancy/outdoor plans at every
++            # 30-second decision boundary, independently of notification timing.
++            self._recalculate()
++            return
++        settings, _ = equipment_legacy_settings(self)
+         if not isinstance(settings,dict) or not settings:
+             return
+         plans={area:item.get("climate_plan",{})
+@@ -730,9 +739,8 @@ class AirQualityManager:
+             self.plan = new_plan
+             async_dispatcher_send(self.hass, f"{SIGNAL_UPDATED}_{self.entry.entry_id}")
+ 
+-        configured_pid = self.settings.get(CONF_PID_ROOMS, {})
++        native_configs, configured_pid = equipment_legacy_settings(self)
+         self.pid.schedule(new_plan.rooms, configured_pid, initial=initial)
+-        native_configs=self.settings.get(CONF_CLIMATE_ROOMS,{})
+         plans={area:data.get("climate_plan",{})
+                for area,data in new_plan.environment.items()
+                if isinstance(data,dict)}
+@@ -750,6 +758,7 @@ class AirQualityManager:
+         self.running_fans.schedule(native_configs,plans)
+         self.fan_power.schedule(native_configs,plans)
+         self.native_air_mode.schedule(native_configs,plans)
++        self.equipment.schedule()
+ 
+         previous = self._active_actions
+         notices=(*new_plan.recommendations,*new_plan.climate_recommendations)
+@@ -912,6 +921,7 @@ class AirQualityManager:
+         """
+         self._active = False
+         controllers = (
++            ("equipment",self.equipment),
+             ("pid",self.pid),("native_climate",self.native_climate),
+             ("direct_climate",self.direct_climate),
+             ("native_humidity",self.native_humidity),
+diff --git a/custom_components/air_quality_advisor/manifest.json b/custom_components/air_quality_advisor/manifest.json
+index fa9ad284a67f9a17a743d38151cdc4a763a0c990..5ddb4c509ce8ccd780650b66e215ee8b9fabe57d 100644
+--- a/custom_components/air_quality_advisor/manifest.json
++++ b/custom_components/air_quality_advisor/manifest.json
+@@ -14,5 +14,5 @@
+   "iot_class": "calculated",
+   "issue_tracker": "https://github.com/Chreece/HA-Home-Environment-Manager/issues",
+   "requirements": [],
+-  "version": "0.6.0b10"
++  "version": "0.6.0b11"
+ }
+diff --git a/custom_components/air_quality_advisor/number.py b/custom_components/air_quality_advisor/number.py
+index be706d53a79b2cdd91f7208f6a063c74fe56f1c8..3159be397cc8255adc8c9f5efaa9e4a9f10dbb8b 100644
+--- a/custom_components/air_quality_advisor/number.py
++++ b/custom_components/air_quality_advisor/number.py
+@@ -108,6 +108,17 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
+                 manager, entry.entry_id, area_id, "mold_surface",
+                 "critical_temperature_c", (-60.0, 85.0, 0.1, "°C"),
+             ))
++    from . import equipment_model as equipment
++    for spec in equipment.specs(manager):
++        cap = equipment.capabilities(manager, spec)
++        if cap is None:
++            continue
++        for key in equipment.NUMBER_FIELDS:
++            if key == "quiet_percentage" and not cap.fan_percentage:
++                continue
++            if key != "quiet_percentage" and "pid" not in equipment.control_modes(manager, spec):
++                continue
++            numbers.append(EquipmentNumber(manager, spec, key))
+     async_add_entities(numbers)
+ 
+ 
+@@ -237,3 +248,25 @@ class ConfigNumber(NumberEntity):
+     @callback
+     def _update(self):
+         self.async_write_ha_state()
++
++
++from .equipment_entity import EquipmentEntity
++from . import equipment_model as equipment
++
++
++class EquipmentNumber(EquipmentEntity, NumberEntity):
++    _attr_entity_category = EntityCategory.CONFIG
++    _attr_mode = NumberMode.BOX
++
++    def __init__(self, manager, spec, key):
++        self._equipment_init(manager, spec, key)
++        bounds = equipment.NUMBER_FIELDS[key]
++        self._attr_native_min_value, self._attr_native_max_value = bounds[:2]
++        self._attr_native_step, self._attr_native_unit_of_measurement = bounds[2:4]
++
++    @property
++    def native_value(self):
++        return self.controller_settings[self._key]
++
++    async def async_set_native_value(self, value):
++        await self._manager.equipment.async_update(self._spec, {self._key: value})
+diff --git a/custom_components/air_quality_advisor/select.py b/custom_components/air_quality_advisor/select.py
+index 8a1bfd6c293eecabfeda9d32b5d7263f5a4accf5..d34da8c718e84f9ad78550b473d5b102c81e63b4 100644
+--- a/custom_components/air_quality_advisor/select.py
++++ b/custom_components/air_quality_advisor/select.py
+@@ -61,6 +61,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
+                     manager, entry.entry_id, area, "device_policy", choices,
+                     setting_key=key, entity_id=entity_id
+                 ))
++    from . import equipment_model as equipment
++    entities.extend(EquipmentSelect(manager, spec, "control_mode")
++                    for spec in equipment.specs(manager))
++    entities.extend(EquipmentSelect(manager, spec, "quiet_fan_mode")
++                    for spec in equipment.specs(manager)
++                    if (cap := equipment.capabilities(manager, spec)) is not None
++                    and cap.fan_modes and not cap.fan_percentage)
+     async_add_entities(entities)
+ 
+ 
+@@ -167,3 +174,31 @@ class ConfigSelect(SelectEntity):
+     @callback
+     def _update(self):
+         self.async_write_ha_state()
++
++
++from .equipment_entity import EquipmentEntity
++from . import equipment_model as equipment
++
++
++class EquipmentSelect(EquipmentEntity, SelectEntity):
++    _attr_entity_category = EntityCategory.CONFIG
++
++    def __init__(self, manager, spec, key):
++        self._equipment_init(manager, spec, key)
++
++    @property
++    def options(self):
++        if self._key == "control_mode":
++            return list(equipment.control_modes(self._manager, self._spec))
++        cap = equipment.capabilities(self._manager, self._spec)
++        return list(cap.fan_modes) if cap else []
++
++    @property
++    def current_option(self):
++        value = self.controller_settings.get(self._key)
++        if self._key == "quiet_fan_mode" and value is None and "low" in self.options:
++            return "low"
++        return value if value in self.options else None
++
++    async def async_select_option(self, option):
++        await self._manager.equipment.async_update(self._spec, {self._key: option})
+diff --git a/custom_components/air_quality_advisor/switch.py b/custom_components/air_quality_advisor/switch.py
+index ab0b19f23b938abc53be53b1fc93a513c5cf91f1..99c272c5df2ea3820a00f2bf482e21d1e5bf7f7b 100644
+--- a/custom_components/air_quality_advisor/switch.py
++++ b/custom_components/air_quality_advisor/switch.py
+@@ -34,6 +34,11 @@ async def async_setup_entry(hass, entry, async_add_entities):
+             entities.extend(HomeSettingSwitch(
+                 manager, entry.entry_id, key, kind="climate_operating", area=area,
+             ) for key in CLIMATE_OPERATING_FLAGS)
++    from . import equipment_model as equipment
++    entities.extend(EquipmentQuietSwitch(manager, spec, key)
++                    for spec in equipment.specs(manager)
++                    if (cap := equipment.capabilities(manager, spec)) is not None and cap.fan_modes
++                    for key in equipment.QUIET_FLAGS)
+     async_add_entities(entities)
+ 
+ 
+@@ -103,3 +108,24 @@ class HomeSettingSwitch(SwitchEntity):
+     @callback
+     def _update(self):
+         self.async_write_ha_state()
++
++
++from .equipment_entity import EquipmentEntity
++
++
++class EquipmentQuietSwitch(EquipmentEntity, SwitchEntity):
++    _attr_entity_category = EntityCategory.CONFIG
++    _attr_icon = "mdi:fan-speed-1"
++
++    def __init__(self, manager, spec, key):
++        self._equipment_init(manager, spec, key)
++
++    @property
++    def is_on(self):
++        return self.controller_settings[self._key] is True
++
++    async def async_turn_on(self, **kwargs):
++        await self._manager.equipment.async_update(self._spec, {self._key: True})
++
++    async def async_turn_off(self, **kwargs):
++        await self._manager.equipment.async_update(self._spec, {self._key: False})
+diff --git a/docs/DEVICE_CONTROLLER_CHECKPOINT.md b/docs/DEVICE_CONTROLLER_CHECKPOINT.md
+index 48c232af1d92342e4a29ae9afe09579d6b498af4..b80832fb3e3ca22c7f5531fe9c5646adf1243772 100644
+--- a/docs/DEVICE_CONTROLLER_CHECKPOINT.md
++++ b/docs/DEVICE_CONTROLLER_CHECKPOINT.md
+@@ -1,53 +1,99 @@
+-# Area hub and per-device controller checkpoint
+-
+-Development branch: `feat/device-climate-controllers-20261022`.
+-Base: published beta `v0.6.0b10`, commit `2485f39e6a205f0ca7b6d258f26427c33e23e8eb`.
+-The branch is not a new HACS prerelease.
+-
+-## Agreed ownership model
+-
+-Home Environment Manager has one logical **Home hub**, one logical **Area hub
+-for every configured area**, and the **managed equipment controller devices**
+-beneath the appropriate Area hub. Monitoring-only, climate-only and PID-only
+-areas all participate; unrelated unselected HA areas do not become controlled.
+-
+-The area hub owns room-wide environmental assessments, calculated mold data,
+-room policies and settings. Device-specific entities belong to their managed
+-controller device, not to the Home hub or a flat collection on the Area hub.
+-Multiple configured endpoints/roles of the same physical HA device in one
+-area share one logical managed device. The native device, integration,
+-identifiers, connections, area and original gateway are never reassigned.
+-
+-The source device remains accessible through the managed controller device's
+-configuration link. Area overview attributes expose the area hub ID, managed
+-controller device IDs, physical device IDs and exact source entity IDs.
+-
+-## Implemented in this checkpoint
+-
+-- Register Home, Area hubs and managed devices before forwarding entity platforms.
+-- Preserve existing Home/Area identifiers and existing entity unique IDs.
+-- Use actual registry source identities, rather than display names, for grouping.
+-- Handle current and earlier supported HA registry APIs with parent-first ordering.
+-- Keep unassigned, cross-area, deleted-area, unselected and self-referential
+-  controller sources out of the hierarchy; retain temporarily unavailable sources.
+-- Attach the existing per-device target and occupancy/sleep policy entities to
+-  their logical managed devices. Global AQI controls stay on Home; shared room
+-  and calibration settings stay on the Area hub.
+-- Cover hierarchy, duplicate roles, source renaming, reload identity, user area
+-  overrides, registry API versions and entity-device migration in regression tests.
+-
+-## Remaining work from the larger controller request
+-
+-The hierarchy is a prerequisite, not a claim that the entire new controller
+-interface exists. The following are NOT shipped by this checkpoint:
+-
+-1. Per-device climate facade with room temperature/humidity, real supported
+-   modes, fan controls and Manager home/comfort/away/sleep presets.
+-2. Independent per-device automatic/manual/off/PID control selection, without
+-   competing with the existing room drivers or resuming a safety pause.
+-3. PID demand for supported on/off fans, dehumidifiers and native climate
+-   devices, with minimum ON/OFF dwell and durable ownership/restart handling.
+-4. Sleep/occupied-room quiet switches and capability-aware lower fan speeds.
+-
+-Do not label these unfinished items as released. Keep beta `v0.6.0b10` and
+-stable `v0.5.1` unchanged until the complete next candidate is validated.
++# Managed controller implementation — beta 11
++
++## Implemented topology
++
++Home Environment Manager has one Home device and one Area hub per configured
++monitoring, climate-only or PID-only area. Room environmental/policy entities
++belong to their Area hub. Managed physical devices have logical controller
++children, linked back to the native source device without modifying its own
++integration, gateway or user-assigned area. Multiple independently controlled
++native channels remain separate climate entities on the same logical child.
++
++## Implemented controller surface
++
++`climate.py` uses actual current capability flags and real mode lists. Native
++HEAT/COOL/range/AUTO/DRY/FAN_ONLY, supported humidity, fan, swing and horizontal
++swing controls are represented without inventing native services. External
++room temperature/humidity are used only when qualified. Binary thermal
++actuators receive a logical Manager target rather than an unsupported native
++setpoint call. Manager presets are None/Home/Comfort/Away/Sleep/Eco.
++

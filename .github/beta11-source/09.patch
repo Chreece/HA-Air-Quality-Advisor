@@ -1,0 +1,213 @@
++        self._tasks.clear()
++        if self._ready:
++            await self._save()
++
++    def _record(self, spec: model.ManagedDevice) -> dict:
++        return self.records.setdefault(spec.identifier, {"area": spec.area_id,
++            "sources": list(spec.source_entities), "source_device_id": spec.source_device_id,
++            "baseline": {}, "power": {}, "off_at": {}})
++
++    def _lock(self, key: str) -> asyncio.Lock:
++        record = self.records.get(key)
++        if record:
++            group = (record["area"], record.get("source_device_id") or key)
++        else:
++            spec = next((s for s in model.specs(self.manager) if s.identifier == key), None)
++            group = (spec.area_id, spec.source_device_id or key) if spec else key
++        return self._locks.setdefault(group, asyncio.Lock())
++
++    async def _pause(self, spec: Any, reason: str) -> None:
++        self._record(spec)["paused"] = reason
++        self._status(spec, "paused", reason=reason)
++        await self._save()
++
++    def _identity_ok(self, spec: model.ManagedDevice) -> bool:
++        from homeassistant.helpers import entity_registry as er
++        registry = er.async_get(self.hass)
++        for entity in spec.source_entities:
++            item = registry.async_get(entity)
++            if item is None or getattr(item, "platform", None) == DOMAIN:
++                return False
++            if getattr(item, "device_id", None) != spec.source_device_id:
++                return False
++        return bool(spec.source_entities)
++
++    def _current_spec(self, spec: model.ManagedDevice) -> bool:
++        active = set(configured_sources(self.manager.settings, spec.area_id))
++        return self._identity_ok(spec) and all(
++            e in active and entity_area(self.hass, e) == spec.area_id
++            for e in spec.source_entities)
++
++    def _legacy_busy(self, spec: model.ManagedDevice) -> str | None:
++        for key, record in self.records.items():
++            if key != spec.identifier and set(record.get("sources", ())).intersection(spec.source_entities):
++                if record.get("power") or record.get("pending"):
++                    return "Prior device controller must reconcile this source OFF before transfer"
++        for name in LEGACY_DRIVERS:
++            driver = getattr(self.manager, name, None)
++            task = getattr(driver, "_tasks", {}).get(spec.area_id)
++            if task is not None and not task.done():
++                return "Existing room controller has a write in progress"
++            paused = getattr(driver, "paused", {})
++            if isinstance(paused, dict) and spec.area_id in paused:
++                return "Existing controller is paused; reconcile it before transferring ownership"
++            for attr in ("owned", "_owned"):
++                owned = getattr(driver, attr, {})
++                if isinstance(owned, dict) and any(e in owned for e in spec.source_entities):
++                    return "Existing power owner must reconcile this device OFF before transfer"
++        return None
++
++    async def async_update(self, spec: model.ManagedDevice, changes: dict) -> None:
++        """Validate all requested edits atomically; no hidden hardware permission."""
++        async with self._lock(spec.identifier):
++            if not self._ready:
++                raise HomeAssistantError("Controller state storage is unavailable")
++            if not self._current_spec(spec):
++                raise HomeAssistantError("Controller sources are no longer assigned to this area")
++            cap = model.capabilities(self.manager, spec)
++            if cap is None:
++                raise HomeAssistantError("Device capabilities are unavailable")
++            old = model.settings(self.manager, spec)
++            new = {**old, **deepcopy(changes)}
++            allowed = set(model.DEFAULTS) | {"fan_mode", "swing_mode", "swing_horizontal_mode"}
++            if set(changes) - allowed:
++                raise HomeAssistantError("Unsupported controller setting")
++            if new["control_mode"] not in model.control_modes(self.manager, spec):
++                raise HomeAssistantError("Unsupported control method")
++            if new["preset"] not in model.PRESETS:
++                raise HomeAssistantError("Unsupported comfort preset")
++            if new["requested_mode"] is not None and new["requested_mode"] not in cap.modes:
++                raise HomeAssistantError("The physical device does not support this HVAC mode")
++            for key, bounds in model.NUMBER_FIELDS.items():
++                number = finite(new[key], bounds[0], bounds[1])
++                if number is None:
++                    raise HomeAssistantError(f"Invalid controller value: {key}")
++                new[key] = number
++            for key in model.QUIET_FLAGS:
++                if type(new[key]) is not bool or new[key] and not cap.fan_modes:
++                    raise HomeAssistantError("Quiet control requires an adjustable native fan")
++            if (any(new[k] for k in model.QUIET_FLAGS) and not cap.fan_percentage
++                    and "low" not in cap.fan_modes and new.get("quiet_fan_mode") is None):
++                raise HomeAssistantError("Select an advertised quiet fan mode before enabling quiet control")
++            for key, choices in (("fan_mode", cap.fan_modes), ("quiet_fan_mode", cap.fan_modes),
++                                 ("swing_mode", cap.swing_modes), ("swing_horizontal_mode", cap.swing_horizontal_modes)):
++                if new.get(key) is not None and str(new[key]) not in choices:
++                    raise HomeAssistantError(f"Unsupported native choice: {key}")
++            table = new.get("profile_targets")
++            if not isinstance(table, dict) or set(table) - {"manual", "home", "comfort", "away", "sleep", "unoccupied"}:
++                raise HomeAssistantError("Invalid profile target table")
++            for profile, values in table.items():
++                if not isinstance(values, dict) or set(values) - {"heat", "cool", "humidity"}:
++                    raise HomeAssistantError("Invalid profile targets")
++                for key, value in values.items():
++                    low, high = (cap.min_humidity, cap.max_humidity) if key == "humidity" else (cap.min_temp, cap.max_temp)
++                    if finite(value, low, high) is None:
++                        raise HomeAssistantError("Target outside physical device limits")
++                profile_config = {**new, "preset": "eco" if profile == "unoccupied" else profile}
++                if profile == "manual":
++                    profile_config.update(control_mode="manual", preset="none")
++                band = model.targets(self.manager, spec, cap, profile_config, {})
++                if band["cool"]-band["heat"] < 1:
++                    raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
++            fan_table = new.get("profile_fans")
++            if not isinstance(fan_table, dict) or set(fan_table) - {"manual", "home", "comfort", "away", "sleep", "unoccupied"}:
++                raise HomeAssistantError("Invalid fan profile table")
++            if any(str(v) not in cap.fan_modes for v in fan_table.values()):
++                raise HomeAssistantError("Unsupported native fan choice for profile")
++            soft, power = model.permission(self.manager, spec, cap)
++            if "requested_mode" in changes and new["requested_mode"] is not None:
++                state = self.hass.states.get(cap.primary)
++                requested = new["requested_mode"]
++                change_power = state is not None and ((cap.domain == "climate" and state.state != requested)
++                    or cap.domain != "climate" and output_off(state) != (requested == "off"))
++                if change_power and not power and not (requested == "off" and self._record(spec).get("power")):
++                    raise HomeAssistantError("Physical power/mode control must first be commissioned in Configure")
++            if new["control_mode"] in ("automatic", "pid") and not soft:
++                raise HomeAssistantError("Enable and commission this device in Configure before automatic control")
++            if new["control_mode"] == "pid":
++                if cap.domain == "climate" and new.get("requested_mode") in ("auto", "heat_cool"):
++                    raise HomeAssistantError("PID requires an explicit single thermal, drying or fan direction")
++                if not (cap.temperature or cap.humidity or cap.domain == "fan"
++                        or set(cap.modes) == {"off", "fan_only"}):
++                    raise HomeAssistantError("No qualified feedback loop exists for this device")
++                if power:
++                    on, off, _ = model.timing(self.manager, spec, cap)
++                    if new["cycle_seconds"] < on+off:
++                        raise HomeAssistantError("PID cycle must include the full minimum ON and OFF intervals")
++                elif cap.domain == "fan" and not cap.fan_percentage:
++                    raise HomeAssistantError("On/off fan PID requires commissioned power control")
++            if old["control_mode"] == "existing" and new["control_mode"] != "existing":
++                if why := self._legacy_busy(spec):
++                    raise HomeAssistantError(why)
++                if (new["control_mode"] in ("automatic", "pid") and power
++                        and not output_off(self.hass.states.get(cap.primary))):
++                    raise HomeAssistantError("Turn the physical device OFF before transferring automatic power ownership")
++            record = self._record(spec)
++            if record.get("pending") and not record.get("paused"):
++                await self._reconcile(spec)
++            if record.get("pending"):
++                raise HomeAssistantError("Wait for the current physical-device acknowledgement before editing")
++            if new["control_mode"] == "existing" and record.get("power"):
++                raise HomeAssistantError("Reconcile managed power OFF before returning to the room controller")
++            if old["control_mode"] != new["control_mode"]:
++                record["baseline"] = {e: snapshot(self.hass.states.get(e)) for e in spec.source_entities}
++                record.setdefault("off_at", {}).update({e: self.clock() for e in spec.source_entities
++                    if output_off(self.hass.states.get(e))})
++                await self._save()
++            # Use the shared options lock to preserve simultaneous room/mold edits.
++            lock = getattr(self.manager, "_device_settings_write_lock", None)
++            if lock is None:
++                lock = self.manager._device_settings_write_lock = asyncio.Lock()
++            async with lock:
++                options = deepcopy(self.manager.entry.options)
++                saved = deepcopy(self.manager.settings.get(model.SETTINGS, {}))
++                saved = saved if isinstance(saved, dict) else {}
++                saved[spec.identifier] = new
++                options[model.SETTINGS] = saved
++                self.hass.config_entries.async_update_entry(self.manager.entry, options=options)
++            self._memory.pop(spec.identifier, None)
++            self._status(spec, "settings_updated", control_mode=new["control_mode"])
++        if getattr(self.manager, "_active", False):
++            self.manager._recalculate(initial=True)
++
++    async def async_set_targets(self, spec: model.ManagedDevice, values: dict,
++                                *, mode: str | None = None) -> None:
++        cap = model.capabilities(self.manager, spec)
++        if cap is None:
++            raise HomeAssistantError("Native capabilities unavailable")
++        cfg = model.settings(self.manager, spec)
++        changes = {}
++        if cfg["control_mode"] == "existing" or mode is not None:
++            changes["control_mode"] = "off" if mode == "off" else "manual"
++        table = deepcopy(cfg["profile_targets"])
++        profile = model.profile_name({**cfg, **changes}, model.plan_for(self.manager, spec))
++        table[profile] = {**table.get(profile, {}), **values}
++        changes["profile_targets"] = table
++        if mode is not None:
++            changes["requested_mode"] = mode
++        await self.async_update(spec, changes)
++
++    async def async_set_fan(self, spec: model.ManagedDevice, value: str) -> None:
++        cfg = model.settings(self.manager, spec)
++        changes = {"control_mode": "manual"} if cfg["control_mode"] == "existing" else {}
++        profile = model.profile_name({**cfg, **changes}, model.plan_for(self.manager, spec))
++        table = deepcopy(cfg["profile_fans"])
++        table[profile] = str(value)
++        await self.async_update(spec, {**changes, "profile_fans": table})
++
++    async def async_resume(self, spec: model.ManagedDevice) -> None:
++        """Explicitly reconcile actual OFF; changing presets never clears a pause."""
++        async with self._lock(spec.identifier):
++            if not self._ready or not self._current_spec(spec):
++                raise HomeAssistantError("Controller or its source identity is unavailable")
++            record = self._record(spec)
++            power = record.get("power", {})
++            pending = record.get("pending")
++            for entity in power:
++                state = self.hass.states.get(entity)
++                if not output_off(state):
++                    raise HomeAssistantError("Turn the owned physical equipment OFF before reconciliation")
++            if pending and pending.get("power") and (self.hass.states.get(pending["entity"]) is None
++                    or not output_off(self.hass.states.get(pending["entity"]))):
++                raise HomeAssistantError("Interrupted power command requires verified physical OFF")
++            record.update(paused=None, pending=None, power={},
