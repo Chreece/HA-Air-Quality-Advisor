@@ -1554,5 +1554,31 @@
         "custom": "objetivo · definições"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Central da divisão",
+      "initiate_flow": {
+        "user": "Central da divisão"
+      },
+      "step": {
+        "user": {
+          "title": "Central da divisão",
+          "description": "Selecione uma área do Home Assistant. O grupo contém as definições gerais da divisão e um controlador por dispositivo físico selecionado. Adicionar uma divisão não ativa o controlo automático dos equipamentos.",
+          "data": {
+            "area_id": "Divisão"
+          },
+          "data_description": {
+            "area_id": "Selecione uma área do Home Assistant. O grupo contém as definições gerais da divisão e um controlador por dispositivo físico selecionado. Adicionar uma divisão não ativa o controlo automático dos equipamentos."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Inválido: Área."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

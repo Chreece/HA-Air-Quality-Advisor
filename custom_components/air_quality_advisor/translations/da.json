@@ -1554,5 +1554,31 @@
         "custom": "mål · indstillinger"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Rumhub",
+      "initiate_flow": {
+        "user": "Rumhub"
+      },
+      "step": {
+        "user": {
+          "title": "Rumhub",
+          "description": "Vælg et område i Home Assistant. Gruppen indeholder generelle rumindstillinger og én styreenhed pr. valgt fysisk enhed. Tilføjelse af et rum aktiverer ikke automatisk styring af udstyr.",
+          "data": {
+            "area_id": "Rum"
+          },
+          "data_description": {
+            "area_id": "Vælg et område i Home Assistant. Gruppen indeholder generelle rumindstillinger og én styreenhed pr. valgt fysisk enhed. Tilføjelse af et rum aktiverer ikke automatisk styring af udstyr."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ugyldig: Område."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

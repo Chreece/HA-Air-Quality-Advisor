@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0b12 — Native room groups and service-classification correction (beta)
+
+- Replace service classification with ordinary Home/Area/controller devices and a hub integration. Explicitly migrate persisted beta 11 flags.
+- Group each area using a native configuration subentry containing room settings and one managed controller device per selected physical product.
+- Preserve registry IDs, custom names, disabled flags and native equipment; pass matching subentry IDs through every entity platform.
+- Keep selected devices visible independently of automatic-control grants. Add/remove room groups without implicit hardware authorization.
+- Cover migrations, reloads, multiple physical products, room lifecycle and localized setup in all 38 languages.
+
 ## 0.6.0b11 — Area hubs, per-device climates, on/off PID and quiet control (beta)
 
 - Complete Home → Area hub → managed-controller hierarchy, retaining physical source devices and original Home/Area entity IDs.

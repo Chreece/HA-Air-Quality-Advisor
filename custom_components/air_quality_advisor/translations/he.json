@@ -1554,5 +1554,31 @@
         "custom": "יעד · הגדרות"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "מרכז החדר",
+      "initiate_flow": {
+        "user": "מרכז החדר"
+      },
+      "step": {
+        "user": {
+          "title": "מרכז החדר",
+          "description": "בחרו אזור ב-Home Assistant. הקבוצה מכילה את הגדרות החדר הכלליות ובקר אחד לכל מכשיר פיזי שנבחר. הוספת חדר אינה מפעילה שליטה אוטומטית בציוד.",
+          "data": {
+            "area_id": "חדר"
+          },
+          "data_description": {
+            "area_id": "בחרו אזור ב-Home Assistant. הקבוצה מכילה את הגדרות החדר הכלליות ובקר אחד לכל מכשיר פיזי שנבחר. הוספת חדר אינה מפעילה שליטה אוטומטית בציוד."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "לא תקין: אזור."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

@@ -1554,5 +1554,31 @@
         "custom": "mål · innstillinger"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Rom-hub",
+      "initiate_flow": {
+        "user": "Rom-hub"
+      },
+      "step": {
+        "user": {
+          "title": "Rom-hub",
+          "description": "Velg et område i Home Assistant. Gruppen inneholder generelle rominnstillinger og én kontroller per valgt fysisk enhet. Å legge til et rom aktiverer ikke automatisk styring av utstyr.",
+          "data": {
+            "area_id": "Rom"
+          },
+          "data_description": {
+            "area_id": "Velg et område i Home Assistant. Gruppen inneholder generelle rominnstillinger og én kontroller per valgt fysisk enhet. Å legge til et rom aktiverer ikke automatisk styring av utstyr."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ugyldig: Område."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

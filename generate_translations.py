@@ -392,3 +392,7 @@ apply_device_controls_i18n(root)
 # Per-physical-device controllers must be translated after all previous labels.
 from apply_equipment_i18n import apply_equipment_i18n
 apply_equipment_i18n(root)
+
+# Integration-page room groups; no device/control identities are changed.
+from apply_room_hub_i18n import apply_room_hub_i18n
+apply_room_hub_i18n(root)

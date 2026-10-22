@@ -1554,5 +1554,31 @@
         "custom": "cilj · podešavanja"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Центар просторије",
+      "initiate_flow": {
+        "user": "Центар просторије"
+      },
+      "step": {
+        "user": {
+          "title": "Центар просторије",
+          "description": "Изаберите област у Home Assistant-у. Група садржи општа подешавања просторије и један контролер по изабраном физичком уређају. Додавање просторије не укључује аутоматско управљање опремом.",
+          "data": {
+            "area_id": "Soba"
+          },
+          "data_description": {
+            "area_id": "Изаберите област у Home Assistant-у. Група садржи општа подешавања просторије и један контролер по изабраном физичком уређају. Додавање просторије не укључује аутоматско управљање опремом."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Neispravno: Oblast."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

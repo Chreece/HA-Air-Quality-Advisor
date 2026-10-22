@@ -1554,5 +1554,31 @@
         "custom": "obiettivo · impostazioni"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Hub della stanza",
+      "initiate_flow": {
+        "user": "Hub della stanza"
+      },
+      "step": {
+        "user": {
+          "title": "Hub della stanza",
+          "description": "Seleziona un'area di Home Assistant. Il gruppo contiene le impostazioni generali della stanza e un controllore per ogni dispositivo fisico selezionato. Aggiungere una stanza non attiva il controllo automatico degli apparecchi.",
+          "data": {
+            "area_id": "Stanza"
+          },
+          "data_description": {
+            "area_id": "Seleziona un'area di Home Assistant. Il gruppo contiene le impostazioni generali della stanza e un controllore per ogni dispositivo fisico selezionato. Aggiungere una stanza non attiva il controllo automatico degli apparecchi."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Non valido: Area."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

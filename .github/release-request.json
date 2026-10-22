@@ -1,18 +1,18 @@
 {
-  "version": "0.6.0b11",
+  "version": "0.6.0b12",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Combined opt-in beta: Area hubs, native per-device climate interfaces, control methods, slow on/off PID and capability-aware quiet modes. New controller ownership is opt-in; stable remains v0.5.1.",
+  "note": "Correct beta11 service classification and provide native per-room groups containing general room settings and one managed device per physical product. Preserve identities, native hardware and existing control grants.",
   "validation_attempt": 0,
   "changes": [
-    "Home/Area hub/managed equipment hierarchy without moving native physical devices or changing original entity IDs",
-    "Per-controller climate entities with measured room data, actual modes/fan/swing capabilities and Manager presets",
-    "Existing/Automatic/Manual/Off/PID selection with exclusive endpoint ownership and independent manual targets",
-    "Qualified on/off fan/humidity/climate PID with anti-windup, conservative minimum ON/OFF, bounded pulses and maximum runtime",
-    "Quiet during sleep/occupancy using supported native fan percentages or explicitly selected modes, without powering on equipment",
-    "Durable exact-target command intent and acknowledgements, live preflight rechecks, manual pauses, safe retirement and explicit restart reconciliation",
-    "Prevent recursive Manager-to-Manager selection; retain independently controlled same-physical-device channels",
-    "38-language labels/help, regression tests, reproducible generators, frontend, Hassfest, HACS and installation ZIP checks before publishing"
+    "Register the integration as hub and ordinary Home/Area/controller devices with entry_type=None, explicitly clearing beta11 service flags",
+    "Create a native config subentry for each configured room so the integrations UI groups that room's general settings device and its managed physical-device controllers",
+    "Migrate existing device and entity registry associations in place, including disabled entities, without changing unique IDs, device IDs or user customizations",
+    "Register every entity platform under the same room subentry as its device to preserve grouping across reloads",
+    "Show selected physical devices independently of automatic-control consent; no new actuator permission is granted",
+    "Support room additions, custom titles, area renames and explicit removal with room-only grant revocation and retained calibration/tuning",
+    "Generate native room-group setup/help in all 38 supported locales, including Greek",
+    "Validate regression tests, translations, frontend, real Home Assistant registry migration, Hassfest, HACS and installation ZIP before prerelease publication"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b11"
+  "release_branch": "beta/v0.6.0b12"
 }

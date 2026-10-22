@@ -1554,5 +1554,31 @@
         "custom": "목표 · 설정"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "방 허브",
+      "initiate_flow": {
+        "user": "방 허브"
+      },
+      "step": {
+        "user": {
+          "title": "방 허브",
+          "description": "Home Assistant 영역을 선택하세요. 그룹에는 방의 일반 설정과 선택한 각 물리적 기기의 제어기 하나가 포함됩니다. 방을 추가해도 기기의 자동 제어가 활성화되지는 않습니다.",
+          "data": {
+            "area_id": "방"
+          },
+          "data_description": {
+            "area_id": "Home Assistant 영역을 선택하세요. 그룹에는 방의 일반 설정과 선택한 각 물리적 기기의 제어기 하나가 포함됩니다. 방을 추가해도 기기의 자동 제어가 활성화되지는 않습니다."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "잘못됨: 구역."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

@@ -1554,5 +1554,31 @@
         "custom": "cél · beállítások"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Helyiségközpont",
+      "initiate_flow": {
+        "user": "Helyiségközpont"
+      },
+      "step": {
+        "user": {
+          "title": "Helyiségközpont",
+          "description": "Válassz egy Home Assistant-területet. A csoport az általános helyiségbeállításokat és minden kiválasztott fizikai eszközhöz egy vezérlőt tartalmaz. A helyiség hozzáadása nem kapcsolja be az eszközök automatikus vezérlését.",
+          "data": {
+            "area_id": "Szoba"
+          },
+          "data_description": {
+            "area_id": "Válassz egy Home Assistant-területet. A csoport az általános helyiségbeállításokat és minden kiválasztott fizikai eszközhöz egy vezérlőt tartalmaz. A helyiség hozzáadása nem kapcsolja be az eszközök automatikus vezérlését."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Érvénytelen: Terület."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

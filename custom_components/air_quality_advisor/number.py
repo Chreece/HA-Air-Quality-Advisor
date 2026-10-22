@@ -1,6 +1,8 @@
 """Home-wide thresholds and room-specific supervisory number controls."""
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -119,7 +121,7 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             if key != "quiet_percentage" and "pid" not in equipment.control_modes(manager, spec):
                 continue
             numbers.append(EquipmentNumber(manager, spec, key))
-    async_add_entities(numbers)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, numbers)
 
 
 class ConfigNumber(NumberEntity):

@@ -1554,5 +1554,31 @@
         "custom": "目标 · 设置"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "房间中枢",
+      "initiate_flow": {
+        "user": "房间中枢"
+      },
+      "step": {
+        "user": {
+          "title": "房间中枢",
+          "description": "选择一个 Home Assistant 区域。其分组包含房间通用设置，以及每个已选物理设备对应的一个控制器设备。添加房间不会启用设备的自动控制。",
+          "data": {
+            "area_id": "房间"
+          },
+          "data_description": {
+            "area_id": "选择一个 Home Assistant 区域。其分组包含房间通用设置，以及每个已选物理设备对应的一个控制器设备。添加房间不会启用设备的自动控制。"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "无效: 区域."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

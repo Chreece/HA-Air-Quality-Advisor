@@ -1554,5 +1554,31 @@
         "custom": "Sollwert · Einstellungen"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Raum-Hub",
+      "initiate_flow": {
+        "user": "Raum-Hub"
+      },
+      "step": {
+        "user": {
+          "title": "Raum-Hub",
+          "description": "Wähle einen Home-Assistant-Bereich. Seine Gruppe enthält allgemeine Raumeinstellungen und ein Steuergerät pro ausgewähltem physischem Gerät. Das Hinzufügen eines Raums aktiviert keine automatische Gerätesteuerung.",
+          "data": {
+            "area_id": "Raum"
+          },
+          "data_description": {
+            "area_id": "Wähle einen Home-Assistant-Bereich. Seine Gruppe enthält allgemeine Raumeinstellungen und ein Steuergerät pro ausgewähltem physischem Gerät. Das Hinzufügen eines Raums aktiviert keine automatische Gerätesteuerung."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ungültig: Bereich."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

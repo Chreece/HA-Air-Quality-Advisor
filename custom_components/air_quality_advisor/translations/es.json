@@ -1554,5 +1554,31 @@
         "custom": "objetivo · ajustes"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centro de habitación",
+      "initiate_flow": {
+        "user": "Centro de habitación"
+      },
+      "step": {
+        "user": {
+          "title": "Centro de habitación",
+          "description": "Selecciona un área de Home Assistant. Su grupo contiene los ajustes generales de la habitación y un controlador por dispositivo físico seleccionado. Añadir una habitación no activa el control automático de equipos.",
+          "data": {
+            "area_id": "Habitación"
+          },
+          "data_description": {
+            "area_id": "Selecciona un área de Home Assistant. Su grupo contiene los ajustes generales de la habitación y un controlador por dispositivo físico seleccionado. Añadir una habitación no activa el control automático de equipos."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "No válido: Área."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

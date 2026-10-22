@@ -1554,5 +1554,31 @@
         "custom": "cieľ · nastavenia"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centrála miestnosti",
+      "initiate_flow": {
+        "user": "Centrála miestnosti"
+      },
+      "step": {
+        "user": {
+          "title": "Centrála miestnosti",
+          "description": "Vyberte oblasť Home Assistant. Jej skupina obsahuje všeobecné nastavenia miestnosti a jeden ovládač pre každé vybrané fyzické zariadenie. Pridanie miestnosti nezapína automatické riadenie zariadení.",
+          "data": {
+            "area_id": "Miestnosť"
+          },
+          "data_description": {
+            "area_id": "Vyberte oblasť Home Assistant. Jej skupina obsahuje všeobecné nastavenia miestnosti a jeden ovládač pre každé vybrané fyzické zariadenie. Pridanie miestnosti nezapína automatické riadenie zariadení."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Neplatné: Oblasť."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

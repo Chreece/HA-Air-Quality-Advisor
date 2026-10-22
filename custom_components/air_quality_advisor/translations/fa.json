@@ -1554,5 +1554,31 @@
         "custom": "هدف · تنظیمات"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "مرکز اتاق",
+      "initiate_flow": {
+        "user": "مرکز اتاق"
+      },
+      "step": {
+        "user": {
+          "title": "مرکز اتاق",
+          "description": "یک ناحیه در Home Assistant انتخاب کنید. گروه آن شامل تنظیمات عمومی اتاق و یک کنترل‌کننده برای هر دستگاه فیزیکی انتخاب‌شده است. افزودن اتاق کنترل خودکار تجهیزات را فعال نمی‌کند.",
+          "data": {
+            "area_id": "اتاق"
+          },
+          "data_description": {
+            "area_id": "یک ناحیه در Home Assistant انتخاب کنید. گروه آن شامل تنظیمات عمومی اتاق و یک کنترل‌کننده برای هر دستگاه فیزیکی انتخاب‌شده است. افزودن اتاق کنترل خودکار تجهیزات را فعال نمی‌کند."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "نامعتبر: ناحیه."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

@@ -1554,5 +1554,31 @@
         "custom": "cíl · nastavení"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centrála místnosti",
+      "initiate_flow": {
+        "user": "Centrála místnosti"
+      },
+      "step": {
+        "user": {
+          "title": "Centrála místnosti",
+          "description": "Vyberte oblast Home Assistant. Její skupina obsahuje obecná nastavení místnosti a jeden ovladač pro každé vybrané fyzické zařízení. Přidání místnosti nezapíná automatické řízení zařízení.",
+          "data": {
+            "area_id": "Místnost"
+          },
+          "data_description": {
+            "area_id": "Vyberte oblast Home Assistant. Její skupina obsahuje obecná nastavení místnosti a jeden ovladač pro každé vybrané fyzické zařízení. Přidání místnosti nezapíná automatické řízení zařízení."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Neplatné: Oblast."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

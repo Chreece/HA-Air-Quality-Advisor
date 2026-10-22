@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
@@ -21,7 +23,7 @@ async def async_setup_entry(
     """Create exactly one entity per config entry."""
     from .area_entities import async_area_entities
     area_entities = await async_area_entities(hass, entry)
-    async_add_entities([AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities])
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, [AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities])
 
 
 class AirQualityRecommendation(SensorEntity):

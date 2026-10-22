@@ -1554,5 +1554,31 @@
         "custom": "meta · configurações"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Central do ambiente",
+      "initiate_flow": {
+        "user": "Central do ambiente"
+      },
+      "step": {
+        "user": {
+          "title": "Central do ambiente",
+          "description": "Selecione uma área do Home Assistant. O grupo contém as configurações gerais do ambiente e um controlador por dispositivo físico selecionado. Adicionar um ambiente não ativa o controle automático dos equipamentos.",
+          "data": {
+            "area_id": "Cômodo"
+          },
+          "data_description": {
+            "area_id": "Selecione uma área do Home Assistant. O grupo contém as configurações gerais do ambiente e um controlador por dispositivo físico selecionado. Adicionar um ambiente não ativa o controle automático dos equipamentos."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Inválido: Área."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

@@ -1,4 +1,14 @@
-# Managed controller implementation — beta 11
+# Room hubs and managed controllers — beta 12
+
+Beta 12 corrects the earlier hierarchy-only UI mapping: each room is a native
+config subentry containing an ordinary room-settings device and its ordinary
+managed controller devices. `entry_type=None` explicitly clears prior SERVICE
+flags. Device and entity memberships migrate in place and all seven platforms
+pass matching subentry IDs. The manifest is a hub, not a service integration.
+Selected equipment is inventory, not permission to operate. All beta 11
+controller behavior and commissioning requirements below remain applicable.
+
+## Managed controller implementation — beta 11
 
 ## Implemented topology
 

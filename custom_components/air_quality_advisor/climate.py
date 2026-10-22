@@ -6,6 +6,8 @@ not fictional heating/cooling or temperature targets.
 """
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature, HVACMode, HVACAction
 from homeassistant.const import UnitOfTemperature
 from homeassistant.exceptions import HomeAssistantError
@@ -19,7 +21,7 @@ PARALLEL_UPDATES = 0
 
 async def async_setup_entry(hass, entry, async_add_entities):
     manager = entry.runtime_data
-    async_add_entities([ManagedClimate(manager, spec) for spec in model.specs(manager)])
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, [ManagedClimate(manager, spec) for spec in model.specs(manager)])
 
 
 class ManagedClimate(EquipmentEntity, ClimateEntity):

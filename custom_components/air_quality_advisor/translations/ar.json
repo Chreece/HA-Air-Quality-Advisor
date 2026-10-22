@@ -1554,5 +1554,31 @@
         "custom": "الهدف · الإعدادات"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "مركز الغرفة",
+      "initiate_flow": {
+        "user": "مركز الغرفة"
+      },
+      "step": {
+        "user": {
+          "title": "مركز الغرفة",
+          "description": "اختر منطقة في Home Assistant. تحتوي مجموعتها على إعدادات الغرفة العامة ومتحكم واحد لكل جهاز فعلي محدد. إضافة غرفة لا تفعّل التحكم التلقائي بالمعدات.",
+          "data": {
+            "area_id": "غرفة"
+          },
+          "data_description": {
+            "area_id": "اختر منطقة في Home Assistant. تحتوي مجموعتها على إعدادات الغرفة العامة ومتحكم واحد لكل جهاز فعلي محدد. إضافة غرفة لا تفعّل التحكم التلقائي بالمعدات."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "غير صالح: منطقة."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

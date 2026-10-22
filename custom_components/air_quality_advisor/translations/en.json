@@ -1554,5 +1554,31 @@
         "custom": "target · settings"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Room hub",
+      "initiate_flow": {
+        "user": "Room hub"
+      },
+      "step": {
+        "user": {
+          "title": "Room hub",
+          "description": "Select a Home Assistant area. Its group contains general room settings and one controller device per selected physical device. Adding a room does not enable automatic equipment control.",
+          "data": {
+            "area_id": "Room"
+          },
+          "data_description": {
+            "area_id": "Select a Home Assistant area. Its group contains general room settings and one controller device per selected physical device. Adding a room does not enable automatic equipment control."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Invalid: Area."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

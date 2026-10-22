@@ -8,7 +8,7 @@ DOMAIN = ROOT / "custom_components" / "air_quality_advisor"
 
 def test_is_visible_in_home_assistant_integrations_not_helpers():
     manifest = json.loads((DOMAIN / "manifest.json").read_text())
-    assert manifest["integration_type"] == "service"
+    assert manifest["integration_type"] == "hub"
     assert manifest["config_flow"] is True
     assert manifest["domain"] == "air_quality_advisor"
 

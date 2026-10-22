@@ -1554,5 +1554,31 @@
         "custom": "doelwaarde · instellingen"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Ruimtehub",
+      "initiate_flow": {
+        "user": "Ruimtehub"
+      },
+      "step": {
+        "user": {
+          "title": "Ruimtehub",
+          "description": "Selecteer een Home Assistant-ruimte. De groep bevat algemene ruimte-instellingen en één regelaar per geselecteerd fysiek apparaat. Een ruimte toevoegen schakelt geen automatische apparaatbesturing in.",
+          "data": {
+            "area_id": "Kamer"
+          },
+          "data_description": {
+            "area_id": "Selecteer een Home Assistant-ruimte. De groep bevat algemene ruimte-instellingen en één regelaar per geselecteerd fysiek apparaat. Een ruimte toevoegen schakelt geen automatische apparaatbesturing in."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ongeldig: Ruimte."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

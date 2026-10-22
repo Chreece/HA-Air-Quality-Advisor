@@ -1554,5 +1554,31 @@
         "custom": "cel · ustawienia"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centrala pomieszczenia",
+      "initiate_flow": {
+        "user": "Centrala pomieszczenia"
+      },
+      "step": {
+        "user": {
+          "title": "Centrala pomieszczenia",
+          "description": "Wybierz obszar Home Assistant. Grupa zawiera ogólne ustawienia pomieszczenia i jeden sterownik na wybrane urządzenie fizyczne. Dodanie pomieszczenia nie włącza automatycznego sterowania urządzeniami.",
+          "data": {
+            "area_id": "Pokój"
+          },
+          "data_description": {
+            "area_id": "Wybierz obszar Home Assistant. Grupa zawiera ogólne ustawienia pomieszczenia i jeden sterownik na wybrane urządzenie fizyczne. Dodanie pomieszczenia nie włącza automatycznego sterowania urządzeniami."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Nieprawidłowe: Obszar."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

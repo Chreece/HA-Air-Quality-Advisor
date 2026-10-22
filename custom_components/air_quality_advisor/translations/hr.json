@@ -1554,5 +1554,31 @@
         "custom": "cilj · postavke"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Središte prostorije",
+      "initiate_flow": {
+        "user": "Središte prostorije"
+      },
+      "step": {
+        "user": {
+          "title": "Središte prostorije",
+          "description": "Odaberite područje u Home Assistantu. Grupa sadrži opće postavke prostorije i jedan regulator po odabranom fizičkom uređaju. Dodavanje prostorije ne uključuje automatsko upravljanje opremom.",
+          "data": {
+            "area_id": "Soba"
+          },
+          "data_description": {
+            "area_id": "Odaberite područje u Home Assistantu. Grupa sadrži opće postavke prostorije i jedan regulator po odabranom fizičkom uređaju. Dodavanje prostorije ne uključuje automatsko upravljanje opremom."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Neispravno: Područje."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

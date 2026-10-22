@@ -1,6 +1,8 @@
 """Home language and room policy selectors; never direct equipment modes."""
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from homeassistant.components.select import SelectEntity
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -68,7 +70,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     for spec in equipment.specs(manager)
                     if (cap := equipment.capabilities(manager, spec)) is not None
                     and cap.fan_modes and not cap.fan_percentage)
-    async_add_entities(entities)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
 
 
 class ConfigSelect(SelectEntity):

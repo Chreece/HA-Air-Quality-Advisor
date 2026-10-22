@@ -1554,5 +1554,31 @@
         "custom": "hedef · ayarlar"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Oda merkezi",
+      "initiate_flow": {
+        "user": "Oda merkezi"
+      },
+      "step": {
+        "user": {
+          "title": "Oda merkezi",
+          "description": "Bir Home Assistant alanı seçin. Grup, genel oda ayarlarını ve seçilen her fiziksel cihaz için bir denetleyiciyi içerir. Oda eklemek, ekipmanın otomatik kontrolünü etkinleştirmez.",
+          "data": {
+            "area_id": "Oda"
+          },
+          "data_description": {
+            "area_id": "Bir Home Assistant alanı seçin. Grup, genel oda ayarlarını ve seçilen her fiziksel cihaz için bir denetleyiciyi içerir. Oda eklemek, ekipmanın otomatik kontrolünü etkinleştirmez."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Geçersiz: Alan."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

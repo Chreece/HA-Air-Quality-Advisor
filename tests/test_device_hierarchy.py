@@ -25,17 +25,25 @@ class DeviceRegistry:
     def async_get(self, device_id):
         return self.devices.get(device_id)
 
-    def async_get_or_create(self, *, config_entry_id, **info):
+    def async_get_device_by_identifier(self, identifier, config_entry_id):
+        return self.keys.get((config_entry_id, identifier))
+
+    def async_get_or_create(self, *, config_entry_id, config_subentry_id=None, **info):
         key = (config_entry_id, next(iter(info["identifiers"])))
         parent = info.get("via_device")
+        parent_id = info.get("via_device_id")
+        if parent_id:
+            assert parent_id in self.devices, "Parent must exist first"
         if parent:
             assert (config_entry_id, parent) in self.keys, "Parent must exist first"
         device = self.keys.get(key)
         if device is None:
             device = SimpleNamespace(id=f"logical-{len(self.keys)}", area_id=None,
-                                     name_by_user=None)
+                                     name_by_user=None, config_entry_id=config_entry_id,
+                                     config_subentry_id=config_subentry_id)
             self.keys[key] = device
             self.devices[device.id] = device
+        assert device.config_subentry_id == config_subentry_id, "Subentry moves must be explicit"
         for k, v in info.items():
             setattr(device, k, v)
         if parent:
@@ -47,7 +55,7 @@ class DeviceRegistry:
         assert device_id.startswith("logical-"), "Never mutate a physical device"
         self.updated.append((device_id, info))
         for key, value in info.items():
-            setattr(self.devices[device_id], key, value)
+            setattr(self.devices[device_id], "config_subentry_id" if key == "new_config_subentry_id" else key, value)
 
 
 @pytest.fixture
@@ -113,7 +121,7 @@ def test_monitoring_and_climate_only_areas_are_hubs_without_hardware(hierarchy):
     for area in configured_area_ids(h.settings):
         hub = h.registry.keys[("hem", ("air_quality_advisor", f"hem_area_{area}"))]
         assert hub.model == "Area Environment Hub"
-        assert hub.entry_type == "service"
+        assert hub.entry_type is None
         assert hub.area_id == area
         assert hub.via_device_id == home.id
 
@@ -208,22 +216,14 @@ def test_unavailable_source_keeps_its_logical_device(hierarchy):
     assert managed_devices(h.hass, "hem", h.settings) == first
 
 
-def test_current_ha_registry_api_receives_actual_parent_device_id(hierarchy, monkeypatch):
+def test_current_ha_registry_api_receives_actual_parent_device_id(hierarchy):
     h = hierarchy
     h.source("climate.ac")
-    calls = []
-    def modern(*, config_entry_id, device_info):
-        info = dict(device_info)
-        parent_id = info.pop("via_device_id", None)
-        if parent_id:
-            parent = h.registry.devices[parent_id]
-            info["via_device"] = next(iter(parent.identifiers))
-        calls.append(dict(device_info))
-        return h.registry.async_get_or_create(config_entry_id=config_entry_id, **info)
-    monkeypatch.setattr(h.registry, "async_get_or_create_device", modern, raising=False)
     async_register_hierarchy(h.hass, h.entry)
+    calls = [info for _, info in h.registry.created]
     assert all("via_device" not in call for call in calls)
     assert calls[-1]["via_device_id"] == h.manager._device_hierarchy["areas"]["kitchen"]
+    assert all(call["entry_type"] is None for call in calls)
 
 
 def test_device_setting_entities_move_without_changing_unique_ids(hierarchy, monkeypatch):

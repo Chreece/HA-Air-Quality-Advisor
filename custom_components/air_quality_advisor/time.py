@@ -1,6 +1,8 @@
 """Room sleep schedule as Home Assistant Time entities, not setup questions."""
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from datetime import time
 
 from homeassistant.components.time import TimeEntity
@@ -21,7 +23,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             continue
         for key in ("sleep_start", "sleep_end"):
             result.append(AreaScheduleTime(manager, entry.entry_id, area, key))
-    async_add_entities(result)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, result)
 
 
 class AreaScheduleTime(TimeEntity):

@@ -13,7 +13,7 @@ def test_main_push_triggers_release_with_validation_gates():
     assert "cancel-in-progress: true" in workflow
     assert "github.event_name == 'push'" in workflow
     assert "inputs.publish_release == true" in workflow
-    assert "needs: [test, hassfest, hacs]" in workflow
+    assert "needs: [test, hassfest, hacs, room_registry]" in workflow
     assert "gh release create" in workflow
     assert "steps.eligibility.outputs.should_publish == 'true'" in workflow
 

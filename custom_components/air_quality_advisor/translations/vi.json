@@ -1554,5 +1554,31 @@
         "custom": "mục tiêu · cài đặt"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Trung tâm phòng",
+      "initiate_flow": {
+        "user": "Trung tâm phòng"
+      },
+      "step": {
+        "user": {
+          "title": "Trung tâm phòng",
+          "description": "Chọn một khu vực Home Assistant. Nhóm chứa cài đặt chung của phòng và một bộ điều khiển cho mỗi thiết bị vật lý được chọn. Thêm phòng không bật điều khiển thiết bị tự động.",
+          "data": {
+            "area_id": "Phòng"
+          },
+          "data_description": {
+            "area_id": "Chọn một khu vực Home Assistant. Nhóm chứa cài đặt chung của phòng và một bộ điều khiển cho mỗi thiết bị vật lý được chọn. Thêm phòng không bật điều khiển thiết bị tự động."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Không hợp lệ: Khu vực."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

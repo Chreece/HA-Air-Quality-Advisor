@@ -1554,5 +1554,31 @@
         "custom": "consigne · paramètres"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Concentrateur de pièce",
+      "initiate_flow": {
+        "user": "Concentrateur de pièce"
+      },
+      "step": {
+        "user": {
+          "title": "Concentrateur de pièce",
+          "description": "Sélectionnez une zone Home Assistant. Son groupe contient les réglages généraux de la pièce et un contrôleur par appareil physique sélectionné. Ajouter une pièce n'active pas la commande automatique des appareils.",
+          "data": {
+            "area_id": "Pièce"
+          },
+          "data_description": {
+            "area_id": "Sélectionnez une zone Home Assistant. Son groupe contient les réglages généraux de la pièce et un contrôleur par appareil physique sélectionné. Ajouter une pièce n'active pas la commande automatique des appareils."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Invalide: Zone."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

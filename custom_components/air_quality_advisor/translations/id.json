@@ -1554,5 +1554,31 @@
         "custom": "target · pengaturan"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Pusat ruangan",
+      "initiate_flow": {
+        "user": "Pusat ruangan"
+      },
+      "step": {
+        "user": {
+          "title": "Pusat ruangan",
+          "description": "Pilih area Home Assistant. Grupnya berisi pengaturan umum ruangan dan satu pengendali untuk setiap perangkat fisik yang dipilih. Menambahkan ruangan tidak mengaktifkan kendali peralatan otomatis.",
+          "data": {
+            "area_id": "Ruangan"
+          },
+          "data_description": {
+            "area_id": "Pilih area Home Assistant. Grupnya berisi pengaturan umum ruangan dan satu pengendali untuk setiap perangkat fisik yang dipilih. Menambahkan ruangan tidak mengaktifkan kendali peralatan otomatis."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Tidak valid: Area."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

@@ -1554,5 +1554,31 @@
         "custom": "目標 · 設定"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "房間中樞",
+      "initiate_flow": {
+        "user": "房間中樞"
+      },
+      "step": {
+        "user": {
+          "title": "房間中樞",
+          "description": "選擇一個 Home Assistant 區域。其群組包含房間的一般設定，以及每個已選實體裝置對應的一個控制器裝置。新增房間不會啟用裝置的自動控制。",
+          "data": {
+            "area_id": "房間"
+          },
+          "data_description": {
+            "area_id": "選擇一個 Home Assistant 區域。其群組包含房間的一般設定，以及每個已選實體裝置對應的一個控制器裝置。新增房間不會啟用裝置的自動控制。"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "無效: 區域."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

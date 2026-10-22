@@ -42,8 +42,12 @@ class ServiceRegistry:
         self.removed.append((domain,action))
 
 
-class ConfigEntries:
+from test_room_hubs import ConfigEntries as RoomConfigEntries, Subentry
+
+
+class ConfigEntries(RoomConfigEntries):
     def __init__(self):
+        super().__init__()
         self.updated=[]
         self.forwarded=[]
         self.unloaded=[]
@@ -126,6 +130,12 @@ def integration(adapter,monkeypatch):
         url=url,path=path,cache=cache,
     )
     entries.ConfigEntry=object
+    entries.ConfigSubentry=Subentry
+    entries.ConfigEntryChange=SimpleNamespace(UPDATED="updated")
+    entries.SIGNAL_CONFIG_ENTRY_CHANGED="config_entry_changed"
+    dispatcher=types.ModuleType("homeassistant.helpers.dispatcher")
+    dispatcher.async_dispatcher_connect=lambda *args: lambda: None
+    monkeypatch.setitem(sys.modules,dispatcher.__name__,dispatcher)
     helpers.config_entry_only_config_schema=lambda domain: {"domain":domain}
     helpers.string=str
     probatio.Schema=lambda x:x
@@ -150,6 +160,7 @@ def integration(adapter,monkeypatch):
     }.items():
         monkeypatch.setitem(sys.modules,name,obj)
     from homeassistant import core
+    monkeypatch.setattr(core,"callback",lambda f:f,raising=False)
     monkeypatch.setattr(core,"ServiceCall",object,raising=False)
     monkeypatch.setattr(core,"ServiceResponse",dict,raising=False)
     monkeypatch.setattr(core,"SupportsResponse",
@@ -189,7 +200,8 @@ def legacy_entry(number=1,title="Air Quality Advisor"):
               "automatic_notifications":False,
               "language":"el"}
     return SimpleNamespace(entry_id=f"legacy-{number}",title=title,
-                           data=original,options={})
+                           data=original,options={},subentries={},
+                           async_on_unload=lambda callback:None)
 
 
 def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
@@ -204,7 +216,8 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     assert asyncio.run(module.async_setup_entry(h,entry)) is True
     assert entry.title=="Home Environment Manager"
     assert json.dumps(entry.data,sort_keys=True)==before
-    assert entry.options=={}
+    assert set(entry.options)=={"room_hub_subentry_ids"}
+    assert set(entry.options["room_hub_subentry_ids"])=={"living"}
     from custom_components.air_quality_advisor.const import PLATFORMS
     assert h.config_entries.forwarded==[("legacy-1", PLATFORMS)]
     assert set(h.services.callbacks)=={

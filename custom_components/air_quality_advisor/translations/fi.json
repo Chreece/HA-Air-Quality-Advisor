@@ -1554,5 +1554,31 @@
         "custom": "tavoite · asetukset"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Huoneen keskitin",
+      "initiate_flow": {
+        "user": "Huoneen keskitin"
+      },
+      "step": {
+        "user": {
+          "title": "Huoneen keskitin",
+          "description": "Valitse Home Assistantin alue. Ryhmä sisältää huoneen yleiset asetukset ja yhden ohjaimen kutakin valittua fyysistä laitetta kohti. Huoneen lisääminen ei ota käyttöön laitteiden automaattista ohjausta.",
+          "data": {
+            "area_id": "Huone"
+          },
+          "data_description": {
+            "area_id": "Valitse Home Assistantin alue. Ryhmä sisältää huoneen yleiset asetukset ja yhden ohjaimen kutakin valittua fyysistä laitetta kohti. Huoneen lisääminen ei ota käyttöön laitteiden automaattista ohjausta."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Virheellinen: Alue."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

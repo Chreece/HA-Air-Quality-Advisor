@@ -33,4 +33,4 @@ def test_static_registration_and_cache_version_are_declared():
 def test_single_sensor_still_exposes_dashboard_without_new_entities():
     source = (INTEGRATION / "sensor.py").read_text()
     assert "dashboard_snapshot" in source
-    assert "async_add_entities([AirQualityRecommendation" in source
+    assert "async_add_grouped_entities(entry.runtime_data, async_add_entities, [AirQualityRecommendation" in source

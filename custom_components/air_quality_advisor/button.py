@@ -1,6 +1,8 @@
 """Opt-in per-area manual mold calibration. No actuator services."""
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from homeassistant.components.button import ButtonEntity
 from homeassistant.helpers.entity import EntityCategory
 
@@ -11,11 +13,11 @@ from .mold_controls import async_recalculate_mold_factor
 async def async_setup_entry(hass, entry, async_add_entities):
     settings = entry.runtime_data.settings
     from . import equipment_model as equipment
-    async_add_entities([EquipmentResumeButton(entry.runtime_data, spec)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, [EquipmentResumeButton(entry.runtime_data, spec)
                         for spec in equipment.specs(entry.runtime_data)])
     if settings.get(CONF_USE_MOLD) is not True:
         return
-    async_add_entities([
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, [
         AreaMoldCalibrationButton(entry.runtime_data, entry.entry_id, area)
         for area in settings.get(CONF_AREAS, [])
         if isinstance(area, str)

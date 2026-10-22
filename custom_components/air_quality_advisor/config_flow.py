@@ -1797,6 +1797,12 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
 
     VERSION = 1
 
+    @classmethod
+    @callback
+    def async_get_supported_subentry_types(cls, config_entry):
+        from .room_hub_flow import RoomHubFlow
+        return {"room": RoomHubFlow}
+
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         # Show the first setup form without reserving our static unique ID.
         # Otherwise a frontend-disconnected/abandoned first attempt leaves an

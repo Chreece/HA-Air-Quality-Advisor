@@ -1,6 +1,8 @@
 """Home-wide opt-in announcement switches on the home device."""
 from __future__ import annotations
 
+from .room_hubs import async_add_grouped_entities
+
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -39,7 +41,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     for spec in equipment.specs(manager)
                     if (cap := equipment.capabilities(manager, spec)) is not None and cap.fan_modes
                     for key in equipment.QUIET_FLAGS)
-    async_add_entities(entities)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
 
 
 class HomeSettingSwitch(SwitchEntity):

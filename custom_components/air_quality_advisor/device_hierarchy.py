@@ -53,7 +53,11 @@ def configured_area_ids(settings: dict[str, Any]) -> tuple[str, ...]:
         rooms = settings.get(key, {})
         if isinstance(rooms, dict):
             result.extend(area for area, cfg in rooms.items()
-                          if isinstance(cfg, dict) and cfg.get("enabled") is True)
+                          if isinstance(cfg, dict) and (cfg.get("enabled") is True
+                              or key == CONF_CLIMATE_ROOMS
+                              and isinstance(cfg.get("selected_devices"), list)
+                              and any(isinstance(e, str) and e.partition(".")[0] in NATIVE_DOMAINS
+                                      for e in cfg["selected_devices"])))
     return tuple(dict.fromkeys(area for area in result
                                if isinstance(area, str) and area))
 
@@ -68,6 +72,13 @@ def configured_sources(settings: dict, area_id: str) -> tuple[str, ...]:
     found: set[str] = set()
     rooms = settings.get(CONF_CLIMATE_ROOMS, {})
     cfg = rooms.get(area_id) if isinstance(rooms, dict) else None
+    if isinstance(cfg, dict):
+        selected = cfg.get("selected_devices")
+        # Inventory membership is not an actuation grant. A selected physical
+        # device needs its controller/settings even while automation is OFF.
+        if isinstance(selected, list):
+            found.update(entity for entity in selected
+                         if isinstance(entity, str) and entity.partition(".")[0] in NATIVE_DOMAINS)
     if isinstance(cfg, dict) and cfg.get("enabled") is True:
         selected = cfg.get("selected_devices")
         for key in ROLES:
@@ -161,19 +172,19 @@ def managed_devices(hass: Any, entry_id: str, settings: dict) -> tuple[ManagedDe
 
 
 def _register(registry: Any, entry_id: str, info: dict, *,
-              parent: Any = None, parent_identifier: str | None = None) -> Any:
-    """Current HA API, with the earlier 2026 registry interface supported."""
-    from homeassistant.helpers import device_registry as dr
+              hass: Any, subentry_id: str | None = None,
+              parent: Any = None) -> Any:
+    """Ordinary device registration, including beta11 SERVICE migration."""
+    from .room_hubs import async_migrate_device_group
 
-    values = {**info, "entry_type": dr.DeviceEntryType.SERVICE}
-    modern = getattr(registry, "async_get_or_create_device", None)
-    if callable(modern):
-        if parent is not None:
-            values["via_device_id"] = parent.id
-        return modern(config_entry_id=entry_id, device_info=values)
+    async_migrate_device_group(hass, registry, entry_id, info["identifiers"], subentry_id)
+    # Explicit None is essential: omitting entry_type leaves old SERVICE flags.
+    values = {**info, "entry_type": None}
     if parent is not None:
-        values["via_device"] = (DOMAIN, parent_identifier)
-    return registry.async_get_or_create(config_entry_id=entry_id, **values)
+        values["via_device_id"] = parent.id
+    return registry.async_get_or_create(
+        config_entry_id=entry_id, config_subentry_id=subentry_id, **values
+    )
 
 
 def async_register_hierarchy(hass: Any, entry: Any) -> None:
@@ -193,7 +204,9 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
         "name": "Home Environment Manager",
         "manufacturer": "Home Environment Manager",
         "model": "Home Environment Hub",
-    })
+    }, hass=hass)
+    subentries = getattr(manager, "_room_subentries", {})
+    device_subentries = {entry.entry_id: None}
     area_devices = {}
     for area_id in configured_area_ids(settings):
         area = areas.async_get_area(area_id)
@@ -204,10 +217,11 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
             "name": f"{area.name} Environment",
             "manufacturer": "Home Environment Manager",
             "model": "Area Environment Hub",
-        }, parent=home, parent_identifier=entry.entry_id)
+        }, hass=hass, subentry_id=subentries.get(area_id), parent=home)
         if device.area_id is None:
             registry.async_update_device(device.id, area_id=area_id)
         area_devices[area_id] = device
+        device_subentries[area_identifier(entry.entry_id, area_id)] = subentries.get(area_id)
     specs = managed_devices(hass, entry.entry_id, settings)
     controllers, by_source = {}, {}
     for spec in specs:
@@ -224,8 +238,9 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
             info["configuration_url"] = (
                 f"homeassistant://config/devices/device/{spec.source_device_id}"
             )
-        child = _register(registry, entry.entry_id, info, parent=parent,
-                          parent_identifier=area_identifier(entry.entry_id, spec.area_id))
+        child = _register(registry, entry.entry_id, info, hass=hass, parent=parent,
+                          subentry_id=subentries.get(spec.area_id))
+        device_subentries[spec.identifier] = subentries.get(spec.area_id)
         if child.area_id is None:
             registry.async_update_device(child.id, area_id=spec.area_id)
         controllers[spec.identifier] = {"spec": spec, "device_id": child.id}
@@ -233,6 +248,8 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
             by_source[(spec.area_id, entity_id)] = spec.identifier
     manager._device_hierarchy = {
         "home_device_id": home.id,
+        "room_subentries": dict(subentries),
+        "device_subentries": device_subentries,
         "areas": {area: device.id for area, device in area_devices.items()},
         "controllers": controllers,
         "by_source": by_source,
@@ -251,6 +268,7 @@ def hierarchy_attributes(manager: Any, area_id: str) -> dict[str, Any]:
     state = getattr(manager, "_device_hierarchy", {})
     return {
         "area_hub_device_id": state.get("areas", {}).get(area_id),
+        "room_hub_subentry_id": state.get("room_subentries", {}).get(area_id),
         "managed_devices": [
             {"controller_device_id": item["device_id"],
              "source_device_id": item["spec"].source_device_id,

@@ -1554,5 +1554,31 @@
         "custom": "țintă · setări"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centru de cameră",
+      "initiate_flow": {
+        "user": "Centru de cameră"
+      },
+      "step": {
+        "user": {
+          "title": "Centru de cameră",
+          "description": "Selectați o zonă Home Assistant. Grupul conține setările generale ale camerei și un controler pentru fiecare dispozitiv fizic selectat. Adăugarea unei camere nu activează controlul automat al echipamentelor.",
+          "data": {
+            "area_id": "Cameră"
+          },
+          "data_description": {
+            "area_id": "Selectați o zonă Home Assistant. Grupul conține setările generale ale camerei și un controler pentru fiecare dispozitiv fizic selectat. Adăugarea unei camere nu activează controlul automat al echipamentelor."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Invalid: Zonă."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

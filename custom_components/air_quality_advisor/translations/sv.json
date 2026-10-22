@@ -1554,5 +1554,31 @@
         "custom": "mål · inställningar"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Rumshubb",
+      "initiate_flow": {
+        "user": "Rumshubb"
+      },
+      "step": {
+        "user": {
+          "title": "Rumshubb",
+          "description": "Välj ett område i Home Assistant. Gruppen innehåller allmänna rumsinställningar och en styrenhet per vald fysisk enhet. Att lägga till ett rum aktiverar inte automatisk styrning av utrustning.",
+          "data": {
+            "area_id": "Rum"
+          },
+          "data_description": {
+            "area_id": "Välj ett område i Home Assistant. Gruppen innehåller allmänna rumsinställningar och en styrenhet per vald fysisk enhet. Att lägga till ett rum aktiverar inte automatisk styrning av utrustning."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ogiltig: Område."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }

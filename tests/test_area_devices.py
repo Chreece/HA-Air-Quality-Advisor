@@ -57,6 +57,9 @@ def area_module(monkeypatch):
     )
 
     class Devices:
+        def async_get_device_by_identifier(self, identifier, config_entry_id):
+            return None
+
         def async_get_or_create(self, **fields):
             registry.created.append(fields)
             return SimpleNamespace(id=f"device-{len(registry.created)}", area_id=None)

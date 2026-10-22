@@ -1554,5 +1554,31 @@
         "custom": "目標 · 設定"
       }
     }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "部屋のハブ",
+      "initiate_flow": {
+        "user": "部屋のハブ"
+      },
+      "step": {
+        "user": {
+          "title": "部屋のハブ",
+          "description": "Home Assistantのエリアを選択してください。グループには部屋の共通設定と、選択した物理機器ごとに1つのコントローラーが含まれます。部屋を追加しても機器の自動制御は有効になりません。",
+          "data": {
+            "area_id": "部屋"
+          },
+          "data_description": {
+            "area_id": "Home Assistantのエリアを選択してください。グループには部屋の共通設定と、選択した物理機器ごとに1つのコントローラーが含まれます。部屋を追加しても機器の自動制御は有効になりません。"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "無効: エリア."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
   }
 }
