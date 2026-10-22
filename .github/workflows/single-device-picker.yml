@@ -1,0 +1,163 @@
+name: Single device picker verification and beta13 release
+on:
+  push:
+    branches: ['fix/single-device-picker-20261022', 'beta/v0.6.0b13']
+permissions:
+  contents: read
+concurrency:
+  group: single-device-picker-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Prepare reviewed source when present
+        run: |
+          if [ -f .github/apply-single-device-picker.py ]; then python .github/apply-single-device-picker.py; fi
+      - name: Full regressions and reproducible translations
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests
+          python generate_translations.py
+          git diff --exit-code
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: |
+          if [ -f .github/apply-single-device-picker.py ]; then python .github/apply-single-device-picker.py; fi
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: |
+          if [ -f .github/apply-single-device-picker.py ]; then python .github/apply-single-device-picker.py; fi
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+  room_registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: |
+          if [ -f .github/apply-single-device-picker.py ]; then python .github/apply-single-device-picker.py; fi
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - name: Verify actual Home Assistant room/device registry migration
+        run: python tools/verify_room_hubs_ha.py
+  save_source:
+    if: github.ref == 'refs/heads/fix/single-device-picker-20261022'
+    needs: [test, hassfest, hacs, room_registry]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Commit only the validated source without changing workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f .github/apply-single-device-picker.py ]; then exit 0; fi
+          python .github/apply-single-device-picker.py
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/fix/single-device-picker-20261022" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(beta13): one physical-device picker per room; keep controls on devices'
+          git push origin HEAD:refs/heads/fix/single-device-picker-20261022
+          echo "VALIDATED_SOURCE_SHA=$(git rev-parse HEAD)"
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b13'
+    needs: [test, hassfest, hacs, room_registry]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify final source metadata
+        run: |
+          test ! -e .github/apply-single-device-picker.py
+          test ! -e .github/single-device-picker.patch
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path('custom_components/air_quality_advisor/manifest.json').read_text())
+          request = json.loads(Path('.github/release-request.json').read_text())
+          assert manifest['version'] == request['version'] == '0.6.0b13'
+          assert manifest['domain'] == 'air_quality_advisor' and manifest['integration_type'] == 'hub'
+          assert request['channel'] == 'beta' and request['release_branch'] == 'beta/v0.6.0b13'
+          assert Path('.github/releases/v0.6.0b13.md').stat().st_size > 1500
+          PY
+      - name: Package and verify installation ZIP
+        run: |
+          mkdir -p dist
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b13.zip custom_components/air_quality_advisor -x '*__pycache__*' '*.pyc' '*.pyo'
+          python - <<'PY'
+          import json, zipfile
+          path = 'dist/HA-Home-Environment-Manager-v0.6.0b13.zip'
+          prefix = 'custom_components/air_quality_advisor/'
+          with zipfile.ZipFile(path) as z:
+              assert z.testzip() is None
+              assert all(n.startswith(prefix) for n in z.namelist())
+              assert json.loads(z.read(prefix+'manifest.json'))['version'] == '0.6.0b13'
+              for name in ('room_device_picker.py', 'room_hubs.py', 'device_hierarchy.py', 'equipment_runtime.py', 'climate.py', 'translations/el.json', 'frontend/air-quality-advisor-card.js'):
+                  assert prefix+name in z.namelist()
+              for name in z.namelist():
+                  if name.endswith('.json'): json.loads(z.read(name))
+          PY
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b13.zip > dist/HA-Home-Environment-Manager-v0.6.0b13.zip.sha256
+      - name: Publish immutable opt-in beta, never stable latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b13" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b13 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b13" >/dev/null 2>&1; then echo 'Orphan tag; refusing to move it'; exit 1; fi
+          gh release create v0.6.0b13 \
+            dist/HA-Home-Environment-Manager-v0.6.0b13.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b13.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 13' \
+            --notes-file .github/releases/v0.6.0b13.md --prerelease --latest=false
