@@ -9,7 +9,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 BASE = '9ca2e689929b62b4f42bac3e7d83962c209de10b'
 BASE_TREE = '79ea0aa8c0af26ce54f796f3759fedc83766a555'
-TREE = 'e39873294b1c74e12d3db43faa51454563531e98'
+TREE = '23656ba98b022361aa092f351b5d058bd8466ce8'
 PARTS = '.github/room-hubs-transfer'
 STAGING = {f'{PARTS}/{i}.txt' for i in range(3)} | {
     '.github/prepare_room_hubs.py', '.github/workflows/prepare-room-hubs.yml'}
@@ -34,6 +34,21 @@ def main():
         raise RuntimeError('Source patch checksum mismatch')
     git('apply', '--check', '--index', '-', data=patch)
     git('apply', '--index', '-', data=patch)
+    fixture = ROOT / 'tools/verify_room_hubs_ha.py'
+    before = '    area_registry = await ar.async_load(hass)\n    device_registry = await dr.async_load(hass)\n    entity_registry = await er.async_load(hass)\n'
+    after = ('    # HA 2026.10 registers devices before loading the registry stores;\n'
+             '    # async_load() returns None, so fetch the registry instances afterwards.\n'
+             '    dr.async_setup(hass)\n'
+             '    await ar.async_load(hass)\n'
+             '    await dr.async_load(hass)\n'
+             '    await er.async_load(hass)\n'
+             '    area_registry = ar.async_get(hass)\n'
+             '    device_registry = dr.async_get(hass)\n'
+             '    entity_registry = er.async_get(hass)\n')
+    text = fixture.read_text()
+    if text.count(before) != 1:
+        raise RuntimeError('Unexpected registry fixture setup')
+    fixture.write_text(text.replace(before, after, 1))
     git('rm', '-r', *sorted(STAGING))
     subprocess.run([sys.executable, 'generate_translations.py'], cwd=ROOT, check=True)
     git('add', '-A')

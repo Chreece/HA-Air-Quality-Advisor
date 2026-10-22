@@ -99,7 +99,7 @@ jobs:
           set -euo pipefail
           BASE='9ca2e689929b62b4f42bac3e7d83962c209de10b'
           FIX='fix/room-hubs-20261022'
-          TREE='e39873294b1c74e12d3db43faa51454563531e98'
+          TREE='23656ba98b022361aa092f351b5d058bd8466ce8'
           python .github/prepare_room_hubs.py
           [[ "$(git write-tree)" == "$TREE" ]]
           current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$FIX" --jq '.object.sha')"
