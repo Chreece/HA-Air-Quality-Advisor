@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b24 - Flat HACS tag payload (beta)
+
+- Stop using HACS `zip_release` after the release-asset path still failed in the domain-switch upgrade.
+- Publish the beta tag itself as a flattened `environment_manager` integration with `manifest.json`, `__init__.py`, platforms, translations, frontend and brand files at tag root.
+- Keep `content_in_root: true` so a cached `custom_components/air_quality_advisor` remote path is replaced by the canonical root manifest/domain.
+- Use HACS's normal GitHub tag-archive extraction path, which strips the internal `tags/` prefix before downloading.
+- Simulate the cached-old-domain HACS extraction against the exact flattened payload before publishing.
+- Preserve beta22's exact config-entry-ID migration and all controller/safety behavior.
+
 ## 0.6.0b23 - HACS domain-switch installation fix (beta)
 
 - Fix HACS upgrades that still cache `custom_components/air_quality_advisor` and therefore fail to find beta22's canonical manifest.
