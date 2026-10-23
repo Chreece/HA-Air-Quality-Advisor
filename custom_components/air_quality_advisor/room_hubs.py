@@ -21,7 +21,8 @@ HOME_TYPE = "home"
 
 def home_subentry_id(entry: Any) -> str | None:
     """Resolve the single native Home group without persisting a private ID."""
-    matches = [sub.subentry_id for sub in entry.subentries.values()
+    subentries = getattr(entry, "subentries", {}) or {}
+    matches = [sub.subentry_id for sub in subentries.values()
                if sub.subentry_type == HOME_TYPE]
     return matches[0] if len(matches) == 1 else None
 

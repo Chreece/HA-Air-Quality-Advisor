@@ -58,8 +58,8 @@ def apply_beta16_i18n(root: Path) -> None:
         labels = {
             "pollen": f"{words['pollen']} · {words['source']} · {words['select']}",
             "hub": f"{words['automatic']} · Announcement Hub",
-            "ai": f"AI · {words['source']}",
-            "language": f"TTS · {words['source']} · language",
+            "ai": f"AI · {words['select']} · {words['source']}",
+            "language": f"TTS · {words['select']} · {words['source']}",
             "cooldown": f"{words['house']} · Away · cooldown (min)",
         }
         for scope in ("config", "options"):
