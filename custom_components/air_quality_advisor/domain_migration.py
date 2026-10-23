@@ -8,12 +8,11 @@ preserving its entry ID, subentry IDs, registry IDs and user customizations.
 from __future__ import annotations
 
 import asyncio
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from homeassistant import loader
-from homeassistant.config_entries import ConfigEntry, ConfigEntryChange
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers import device_registry as dr, entity_registry as er
+if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
 
 OLD_DOMAIN = "air_quality_advisor"
 NEW_DOMAIN = "environment_manager"
@@ -22,6 +21,11 @@ DATA_KEY = f"{OLD_DOMAIN}_domain_migration"
 
 async def async_new_domain_available(hass: HomeAssistant) -> bool:
     """Return whether the new custom integration package is installed."""
+    try:
+        from homeassistant import loader
+    except ImportError:
+        # Unit-test/minimal HA stubs: migration remains dormant.
+        return False
     try:
         await loader.async_get_integration(hass, NEW_DOMAIN)
     except loader.IntegrationNotFound:
@@ -55,6 +59,7 @@ def _new_device_identifiers(identifiers: set[tuple[str, str]]) -> set[tuple[str,
 
 def _preflight_registry_migration(hass: HomeAssistant, entry_id: str) -> None:
     """Fail before writes if any new-domain registry identity already conflicts."""
+    from homeassistant.helpers import device_registry as dr, entity_registry as er
     entity_registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(entity_registry, entry_id):
         if entity.platform != OLD_DOMAIN:
@@ -85,6 +90,7 @@ def _preflight_registry_migration(hass: HomeAssistant, entry_id: str) -> None:
 
 def _migrate_registries(hass: HomeAssistant, entry_id: str) -> None:
     """Move registry ownership namespaces without changing registry IDs."""
+    from homeassistant.helpers import device_registry as dr, entity_registry as er
     entity_registry = er.async_get(hass)
     for entity in list(er.async_entries_for_config_entry(entity_registry, entry_id)):
         if entity.platform != OLD_DOMAIN:
@@ -109,6 +115,7 @@ def _migrate_registries(hass: HomeAssistant, entry_id: str) -> None:
 
 def _copy_entry_with_new_domain(entry: ConfigEntry) -> ConfigEntry:
     """Build the replacement entry while preserving all stable identity fields."""
+    from homeassistant.config_entries import ConfigEntry
     return ConfigEntry(
         created_at=entry.created_at,
         data=dict(entry.data),
@@ -131,6 +138,7 @@ def _copy_entry_with_new_domain(entry: ConfigEntry) -> ConfigEntry:
 
 async def _async_migrate_domain_entry(hass: HomeAssistant, entry_id: str) -> None:
     """Replace the old config entry without clearing its registries."""
+    from homeassistant.config_entries import ConfigEntryChange
     # async_setup_entry scheduled this task while its setup lock was held.
     await asyncio.sleep(0)
     pending = hass.data.setdefault(DATA_KEY, set())
