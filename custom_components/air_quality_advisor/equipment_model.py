@@ -45,11 +45,11 @@ LIMIT_FIELDS = (
 DEVICE_SELECTS = {"presence_requirement": ("always", "occupied", "absent"),
                   "sleep_behavior": ("normal", "pause", "sleep_targets"),
                   "fan_purpose": ("auto", "extraction", "filtration")}
+ROOM_LIMITS_KEY = "equipment_limits"
 DEFAULTS = {"control_mode": "existing", "preset": "none", "requested_mode": None,
             "quiet_sleep": False, "quiet_occupied": False,
             "quiet_fan_mode": None, "profile_targets": {}, "profile_fans": {},
-            **{key: item[4] for key, item in NUMBER_FIELDS.items()},
-            **{key: None for key in LIMIT_FIELDS}}
+            **{key: item[4] for key, item in NUMBER_FIELDS.items()}}
 
 
 @dataclass(frozen=True, slots=True)
@@ -260,32 +260,112 @@ def _fan_bounds(cap: Capabilities) -> tuple[float, float, float]:
     return values[0], values[-1], step
 
 
-def device_limits(cap: Capabilities, config: dict) -> dict[str, float]:
-    """Effective per-controller limits, always inside the native capabilities."""
-    fan_lo, fan_hi, _ = _fan_bounds(cap)
-    def bound(key: str, low: float, high: float, fallback: float) -> float:
-        value = config.get(key)
-        parsed = finite(value, low, high) if value is not None else None
-        return fallback if parsed is None else float(parsed)
-    result = {
-        "temperature_min_limit": bound("temperature_min_limit", cap.min_temp, cap.max_temp, cap.min_temp),
-        "temperature_max_limit": bound("temperature_max_limit", cap.min_temp, cap.max_temp, cap.max_temp),
-        "humidity_min_limit": bound("humidity_min_limit", cap.min_humidity, cap.max_humidity, cap.min_humidity),
-        "humidity_max_limit": bound("humidity_max_limit", cap.min_humidity, cap.max_humidity, cap.max_humidity),
-        "fan_min_percentage": bound("fan_min_percentage", fan_lo, fan_hi, fan_lo),
-        "fan_max_percentage": bound("fan_max_percentage", fan_lo, fan_hi, fan_hi),
-    }
+def room_limit_bounds(manager: Any, area: str, key: str) -> tuple[float, float, float, str | None] | None:
+    """Common safe editable range from the selected physical devices in one room."""
+    caps = [cap for spec in specs(manager) if spec.area_id == area
+            if (cap := capabilities(manager, spec)) is not None]
+    if key in ("temperature_min_limit", "temperature_max_limit"):
+        relevant = [cap for cap in caps if cap.temperature or cap.temperature_range]
+        if not relevant:
+            return None
+        low = max(cap.min_temp for cap in relevant)
+        high = min(cap.max_temp for cap in relevant)
+        if high <= low:
+            return None
+        step = min(max(cap.temp_step, 0.1) for cap in relevant)
+        return float(low), float(high), float(step), "°C"
+    if key in ("humidity_min_limit", "humidity_max_limit"):
+        relevant = [cap for cap in caps if cap.humidity]
+        if not relevant:
+            return None
+        low = max(cap.min_humidity for cap in relevant)
+        high = min(cap.max_humidity for cap in relevant)
+        if high <= low:
+            return None
+        return float(low), float(high), 1.0, "%"
+    if key in ("fan_min_percentage", "fan_max_percentage"):
+        relevant = [_fan_bounds(cap) for cap in caps if cap.fan_percentage]
+        if not relevant:
+            return None
+        low = max(item[0] for item in relevant)
+        high = min(item[1] for item in relevant)
+        if high < low:
+            return None
+        return float(low), float(high), 1.0, "%"
+    return None
+
+
+def available_room_limit_fields(manager: Any, area: str) -> tuple[str, ...]:
+    return tuple(key for key in LIMIT_FIELDS if room_limit_bounds(manager, area, key) is not None)
+
+
+def _legacy_room_limit(manager: Any, area: str, key: str, bounds: tuple[float, float, float, str | None]) -> float | None:
+    """Conservatively merge beta17 per-device limits into one room value."""
+    profiles = manager.settings.get(SETTINGS, {})
+    if not isinstance(profiles, dict):
+        return None
+    values = []
+    for spec in specs(manager):
+        if spec.area_id != area:
+            continue
+        raw = profiles.get(spec.identifier, {})
+        value = raw.get(key) if isinstance(raw, dict) else None
+        parsed = finite(value, bounds[0], bounds[1]) if value is not None else None
+        if parsed is not None:
+            values.append(float(parsed))
+    if not values:
+        return None
+    return max(values) if "_min_" in key else min(values)
+
+
+def room_limit_values(manager: Any, area: str) -> dict[str, float]:
+    """Room Environment limits, with conservative beta17 migration fallback."""
+    env_rooms = manager.settings.get("environment_rooms", {})
+    env = env_rooms.get(area, {}) if isinstance(env_rooms, dict) else {}
+    saved = env.get(ROOM_LIMITS_KEY, {}) if isinstance(env, dict) else {}
+    saved = saved if isinstance(saved, dict) else {}
+    result: dict[str, float] = {}
+    for key in LIMIT_FIELDS:
+        bounds = room_limit_bounds(manager, area, key)
+        if bounds is None:
+            continue
+        default = bounds[0] if "_min_" in key else bounds[1]
+        raw = saved.get(key)
+        parsed = finite(raw, bounds[0], bounds[1]) if raw is not None else None
+        if parsed is None:
+            parsed = _legacy_room_limit(manager, area, key, bounds)
+        result[key] = float(default if parsed is None else parsed)
+    for low_key, high_key in (
+        ("temperature_min_limit", "temperature_max_limit"),
+        ("humidity_min_limit", "humidity_max_limit"),
+        ("fan_min_percentage", "fan_max_percentage"),
+    ):
+        if low_key in result and high_key in result and result[low_key] > result[high_key]:
+            low_bounds = room_limit_bounds(manager, area, low_key)
+            high_bounds = room_limit_bounds(manager, area, high_key)
+            result[low_key] = float(low_bounds[0])
+            result[high_key] = float(high_bounds[1])
     return result
 
 
+def device_limits(manager: Any, spec: ManagedDevice, cap: Capabilities) -> dict[str, float]:
+    """Apply room-wide limits while retaining this device's stricter native bounds."""
+    room = room_limit_values(manager, spec.area_id)
+    fan_lo, fan_hi, _ = _fan_bounds(cap)
+    return {
+        "temperature_min_limit": max(cap.min_temp, room.get("temperature_min_limit", cap.min_temp)),
+        "temperature_max_limit": min(cap.max_temp, room.get("temperature_max_limit", cap.max_temp)),
+        "humidity_min_limit": max(cap.min_humidity, room.get("humidity_min_limit", cap.min_humidity)),
+        "humidity_max_limit": min(cap.max_humidity, room.get("humidity_max_limit", cap.max_humidity)),
+        "fan_min_percentage": max(fan_lo, room.get("fan_min_percentage", fan_lo)),
+        "fan_max_percentage": min(fan_hi, room.get("fan_max_percentage", fan_hi)),
+    }
+
+
 def number_bounds(cap: Capabilities, key: str) -> tuple[float, float, float, str | None]:
-    """HA Number bounds that reflect the physical device, never a generic range."""
+    """Per-controller numeric bounds for algorithm/quiet settings only."""
     if key in NUMBER_FIELDS:
         return NUMBER_FIELDS[key][:4]
-    if key in ("temperature_min_limit", "temperature_max_limit"):
-        return cap.min_temp, cap.max_temp, cap.temp_step, "°C"
-    if key in ("humidity_min_limit", "humidity_max_limit"):
-        return cap.min_humidity, cap.max_humidity, 1.0, "%"
     if key in ("fan_min_percentage", "fan_max_percentage"):
         low, high, step = _fan_bounds(cap)
         return low, high, step, "%"
@@ -293,6 +373,7 @@ def number_bounds(cap: Capabilities, key: str) -> tuple[float, float, float, str
 
 
 def applicable_limit_fields(cap: Capabilities) -> tuple[str, ...]:
+    """Capability classification retained for migration/tests; UI limits are room-owned."""
     result = []
     if cap.temperature or cap.temperature_range:
         result.extend(("temperature_min_limit", "temperature_max_limit"))
@@ -434,7 +515,7 @@ def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
     override = config.get("profile_targets", {}).get(profile, {})
     if isinstance(override, dict):
         result.update({k: v for k, v in override.items() if k in result})
-    limits = device_limits(cap, config)
+    limits = device_limits(manager, spec, cap)
     result["heat"] = max(limits["temperature_min_limit"],
                          min(limits["temperature_max_limit"], float(result["heat"])))
     result["cool"] = max(limits["temperature_min_limit"],

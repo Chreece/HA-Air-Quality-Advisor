@@ -238,27 +238,6 @@ class EquipmentRuntime:
                 if number is None:
                     raise HomeAssistantError(f"Invalid controller value: {key}")
                 new[key] = number
-            applicable_limits = set(model.applicable_limit_fields(cap))
-            for key in model.LIMIT_FIELDS:
-                value = new.get(key)
-                if value is None:
-                    continue
-                if key not in applicable_limits:
-                    raise HomeAssistantError(f"This physical device does not support {key}")
-                bounds = model.number_bounds(cap, key)
-                number = finite(value, bounds[0], bounds[1])
-                if number is None:
-                    raise HomeAssistantError(f"Invalid controller limit: {key}")
-                new[key] = number
-            limits = model.device_limits(cap, new)
-            if (cap.temperature or cap.temperature_range) and (
-                    limits["temperature_max_limit"] - limits["temperature_min_limit"]
-                    < max(cap.temp_step, 0.1)):
-                raise HomeAssistantError("Maximum temperature limit must exceed minimum temperature limit")
-            if cap.humidity and limits["humidity_max_limit"] <= limits["humidity_min_limit"]:
-                raise HomeAssistantError("Maximum humidity limit must exceed minimum humidity limit")
-            if cap.fan_percentage and limits["fan_max_percentage"] < limits["fan_min_percentage"]:
-                raise HomeAssistantError("Maximum fan percentage must not be below minimum fan percentage")
             for key in model.QUIET_FLAGS:
                 if type(new[key]) is not bool or new[key] and not cap.fan_modes:
                     raise HomeAssistantError("Quiet control requires an adjustable native fan")
@@ -464,17 +443,28 @@ class EquipmentRuntime:
             from .room_sources import selected, aggregate
             group = metric if metric in ("temperature", "humidity") else "air_quality"
             chosen = selected(self.manager.settings, spec.area_id, group)
-            if chosen is not None and group == "air_quality":
-                from .discovery import supported_metric
-                chosen = tuple(e for e in chosen if (s := self.hass.states.get(e)) is not None
-                               and supported_metric(self.hass, s, outdoor=False) == metric)
+            if chosen is not None:
+                if group == "air_quality":
+                    from .discovery import supported_metric
+                    chosen = tuple(
+                        entity for entity in chosen
+                        if (state := self.hass.states.get(entity)) is not None
+                        and supported_metric(self.hass, state, outdoor=False) == metric
+                    )
+                value, _ = aggregate(self.hass, chosen, spec.area_id, group, 10)
+                values[metric] = value
+                values[key] = None
+                values[metric + "_selected_entities"] = list(chosen)
+                values[metric + "_source"] = "room_selected_mean"
+                continue
+
+            # Legacy fallback only when this room has never been given an
+            # explicit source selection for this metric.
             source = dev.get(key) or room.get(key)
-            if chosen is not None and source not in chosen:
-                source = None
-            if metric == "temperature" and not source and chosen is None:
+            if metric == "temperature" and not source:
                 source = self.manager.settings.get("pid_rooms", {}).get(spec.area_id, {}).get("temperature_entity")
             excluded = self.manager.settings.get(CONF_EXCLUDED_INDOOR, {}).get(spec.area_id, [])
-            if not source and metric in ("temperature", "humidity") and chosen is None:
+            if not source and metric in ("temperature", "humidity"):
                 candidates = []
                 for observed in self.hass.states.async_all("sensor"):
                     if observed.entity_id in excluded or entity_area(self.hass, observed.entity_id) != spec.area_id:
@@ -496,12 +486,9 @@ class EquipmentRuntime:
                 else:
                     observed = reading(self.hass, source, 10, outdoor=False)
                     value = observed.value if observed.metric == metric else None
-            if source is None and chosen is not None:
-                value, _ = aggregate(self.hass, chosen, spec.area_id, group, 10)
             values[metric] = value
             values[key] = source
-            if chosen is not None:
-                values[metric + "_selected_entities"] = list(chosen)
+            values[metric + "_source"] = "legacy_fallback" if source else "unavailable"
         return values
 
     def _quiet_context(self, spec: model.ManagedDevice, cfg: dict, plan: dict) -> bool:
@@ -859,7 +846,7 @@ class EquipmentRuntime:
         if state is None or state.state == "off":
             return False
         config = model.settings(self.manager, spec)
-        limits = model.device_limits(cap, config)
+        limits = model.device_limits(self.manager, spec, cap)
         profile = model.profile_name(config, model.plan_for(self.manager, spec))
         manual_humidity = not automatic and "humidity" in config.get("profile_targets", {}).get(profile, {})
         if cap.domain == "humidifier" or cap.humidity and (mode == "dry" or manual_humidity):
@@ -983,7 +970,7 @@ class EquipmentRuntime:
                 self._status(spec, "quiet_context_unknown")
                 return True  # handled hold: do not overwrite status or change speed
             quiet = quiet_state is True
-            limits = model.device_limits(cap, cfg)
+            limits = model.device_limits(self.manager, spec, cap)
             value = max(limits["fan_min_percentage"],
                         min(limits["fan_max_percentage"], float(normal)))
             if quiet:

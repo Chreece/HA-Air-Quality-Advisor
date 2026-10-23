@@ -48,7 +48,14 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             "custom_limit", (0.0, 10000.0, 1.0, None),
             entity_id=entity_id,
         ))
+    from . import equipment_model as equipment
     for area_id in configured_area_ids(manager.settings):
+        for key in equipment.available_room_limit_fields(manager, area_id):
+            bounds = equipment.room_limit_bounds(manager, area_id, key)
+            if bounds is not None:
+                numbers.append(ConfigNumber(
+                    manager, entry.entry_id, area_id, "room_equipment_limit", key, bounds,
+                ))
         if pid_settings(manager.settings, area_id) is not None:
             numbers.extend(
                 ConfigNumber(manager, entry.entry_id, area_id, "pid", key, bounds)
@@ -110,14 +117,10 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 manager, entry.entry_id, area_id, "mold_surface",
                 "critical_temperature_c", (-60.0, 85.0, 0.1, "°C"),
             ))
-    from . import equipment_model as equipment
     for spec in equipment.specs(manager):
         cap = equipment.capabilities(manager, spec)
         if cap is None:
             continue
-        # Limits exist only where the physical device exposes that capability.
-        for key in equipment.applicable_limit_fields(cap):
-            numbers.append(EquipmentNumber(manager, spec, key))
         for key in equipment.NUMBER_FIELDS:
             if key == "quiet_percentage" and not cap.fan_percentage:
                 continue
@@ -189,6 +192,9 @@ class ConfigNumber(NumberEntity):
             cfg = cfg if isinstance(cfg, dict) else {}
             raw = cfg.get(self._key, bounds[self._key][4])
             return float(raw) if raw is not None else None
+        if self._kind == "room_equipment_limit":
+            from . import equipment_model as equipment
+            return equipment.room_limit_values(self._manager, self._area_id).get(self._key)
         if self._kind in ("area_environment", "climate_operating"):
             section, bounds = (
                 ("environment_rooms", AREA_ENV_NUMBERS) if self._kind == "area_environment"
@@ -285,11 +291,6 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
 
     @property
     def native_value(self):
-        if self._key in equipment.LIMIT_FIELDS:
-            cap = equipment.capabilities(self._manager, self._spec)
-            if cap is None:
-                return None
-            return equipment.device_limits(cap, self.controller_settings)[self._key]
         return self.controller_settings[self._key]
 
     async def async_set_native_value(self, value):

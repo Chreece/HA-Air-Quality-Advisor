@@ -79,15 +79,17 @@ def apply_equipment_i18n(root: Path) -> None:
             add("select", key, data["device_" + key], state=states)
         for key, old in (("min_on_seconds", "min_on_s"), ("min_off_seconds", "min_off_s"), ("max_on_seconds", "max_on_s")):
             add("number", key, data["device_" + old])
-        for key, label in (
-            ("temperature_min_limit", f"{v['temperature']} · min"),
-            ("temperature_max_limit", f"{v['temperature']} · max"),
-            ("humidity_min_limit", f"{v['humidity']} · min"),
-            ("humidity_max_limit", f"{v['humidity']} · max"),
-            ("fan_min_percentage", f"{v['speed']} · min (%)"),
-            ("fan_max_percentage", f"{v['speed']} · max (%)"),
-        ):
-            add("number", key, label)
+        room_limits = (
+            ("temperature_min_limit", f"{v['room']} · {v['temperature']} · min"),
+            ("temperature_max_limit", f"{v['room']} · {v['temperature']} · max"),
+            ("humidity_min_limit", f"{v['room']} · {v['humidity']} · min"),
+            ("humidity_max_limit", f"{v['room']} · {v['humidity']} · max"),
+            ("fan_min_percentage", f"{v['room']} · {v['speed']} · min (%)"),
+            ("fan_max_percentage", f"{v['room']} · {v['speed']} · max (%)"),
+        )
+        for key, label in room_limits:
+            entities.setdefault("number", {}).pop("equipment_" + key, None)
+            entities["number"]["area_room_equipment_limit_" + key] = {"name": label}
         comfort = steps["environment_room_comfort"]["data"]
         for key in ("radiant_temperature_entity", "air_speed_entity"):
             entities.setdefault("select", {})["area_area_science_" + key] = {"name": comfort[key]}

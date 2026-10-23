@@ -352,6 +352,44 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 data[area] = room
             options[section] = data
 
+        elif kind == "room_equipment_limit":
+            from . import equipment_model as equipment
+            from .device_hierarchy import configured_area_ids
+            if area not in configured_area_ids(current):
+                raise HomeAssistantError("Select or configure the room before setting equipment limits")
+            bounds = equipment.room_limit_bounds(manager, area, key)
+            if key not in equipment.LIMIT_FIELDS or bounds is None:
+                raise HomeAssistantError("No selected physical device supports this room limit")
+            number = _finite(value, bounds)
+            effective = equipment.room_limit_values(manager, area)
+            proposed = {**effective, key: number}
+            for low_key, high_key, message in (
+                ("temperature_min_limit", "temperature_max_limit",
+                 "Room maximum temperature limit must exceed minimum"),
+                ("humidity_min_limit", "humidity_max_limit",
+                 "Room maximum humidity limit must exceed minimum"),
+                ("fan_min_percentage", "fan_max_percentage",
+                 "Room maximum fan percentage must not be below minimum"),
+            ):
+                if low_key in proposed and high_key in proposed:
+                    if low_key.startswith("fan_"):
+                        invalid = proposed[low_key] > proposed[high_key]
+                    else:
+                        invalid = proposed[low_key] >= proposed[high_key]
+                    if invalid:
+                        raise HomeAssistantError(message)
+            from .const import CONF_ENVIRONMENT_ROOMS
+            rooms = deepcopy(current.get(CONF_ENVIRONMENT_ROOMS, {}))
+            rooms = rooms if isinstance(rooms, dict) else {}
+            room = deepcopy(rooms.get(area, {}))
+            room = room if isinstance(room, dict) else {}
+            limits = deepcopy(room.get(equipment.ROOM_LIMITS_KEY, {}))
+            limits = limits if isinstance(limits, dict) else {}
+            limits[key] = number
+            room[equipment.ROOM_LIMITS_KEY] = limits
+            rooms[area] = room
+            options[CONF_ENVIRONMENT_ROOMS] = rooms
+
         elif kind == "area_science":
             if area not in current.get(CONF_AREAS, []) or key not in ("radiant_temperature_entity", "air_speed_entity"):
                 raise HomeAssistantError("Unknown room science input")

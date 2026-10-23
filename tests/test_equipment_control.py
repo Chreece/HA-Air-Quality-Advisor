@@ -823,9 +823,11 @@ def test_legacy_room_and_home_presence_settings_migrate_to_strict_occupied(runti
 def test_percentage_fan_limits_override_normal_and_quiet_demands(runtime_module):
     async def run():
         h = home(runtime_module, state="on", power=False, controls={
-            "fan_min_percentage": 40, "fan_max_percentage": 50,
             "quiet_occupied": True, "quiet_percentage": 20,
         })
+        h.manager.entry.data["environment_rooms"] = {
+            "room": {"equipment_limits": {"fan_min_percentage": 40, "fan_max_percentage": 50}}
+        }
         h.plan["occupancy"] = "occupied"
         await tick(h)
         # Quiet request 20% is below the device minimum, so the minimum wins.
@@ -853,10 +855,12 @@ def test_unknown_quiet_context_holds_current_fan_speed_without_command(runtime_m
 def test_temperature_limits_clamp_profile_and_native_write(runtime_module):
     async def run():
         h = home(runtime_module, domain="climate", state="heat", power=False, controls={
-            "temperature_min_limit": 19,
-            "temperature_max_limit": 21,
             "profile_targets": {"home": {"heat": 10, "cool": 30}},
         })
+        h.manager.entry.data["environment_rooms"] = {
+            "room": {"equipment_limits": {
+                "temperature_min_limit": 19, "temperature_max_limit": 21}}
+        }
         h.state.attributes["temperature"] = 30  # native target is already above max
         cap = m.capabilities(h.manager, h.spec)
         values = m.targets(h.manager, h.spec, cap, m.settings(h.manager, h.spec), h.plan)
@@ -869,25 +873,77 @@ def test_temperature_limits_clamp_profile_and_native_write(runtime_module):
 
 def test_humidity_limits_override_target_and_rate_limit(runtime_module):
     async def run():
-        h = home(runtime_module, domain="humidifier", state="on", power=False, controls={
-            "humidity_min_limit": 40, "humidity_max_limit": 55,
-        })
+        h = home(runtime_module, domain="humidifier", state="on", power=False)
+        h.manager.entry.data["environment_rooms"] = {
+            "room": {"equipment_limits": {
+                "humidity_min_limit": 40, "humidity_max_limit": 55}}
+        }
         h.state.attributes["humidity"] = 70
         await tick(h)
         assert h.hass.services.calls[-1][1:3] == ("set_humidity", {"humidity": 55})
     asyncio.run(run())
 
 
-def test_invalid_per_device_limit_pairs_are_rejected_atomically(runtime_module):
+def test_per_device_limit_edits_are_removed_and_room_limits_are_authoritative(runtime_module):
     async def run():
         h = home(runtime_module, domain="climate", state="heat", power=False)
-        with pytest.raises(Exception, match="Maximum temperature"):
-            await h.runtime.async_update(h.spec, {
-                "temperature_min_limit": 24, "temperature_max_limit": 20})
+        with pytest.raises(Exception, match="Unsupported controller setting"):
+            await h.runtime.async_update(h.spec, {"temperature_min_limit": 18})
         assert h.manager.entry.options == {}
-        fan = home(runtime_module, state="on", power=False)
-        with pytest.raises(Exception, match="Maximum fan"):
-            await fan.runtime.async_update(fan.spec, {
-                "fan_min_percentage": 80, "fan_max_percentage": 20})
-        assert fan.manager.entry.options == {}
     asyncio.run(run())
+
+
+def test_beta17_device_limits_migrate_conservatively_to_room(runtime_module):
+    h = home(runtime_module, domain="climate", state="heat", power=False, controls={
+        "temperature_min_limit": 18, "temperature_max_limit": 24,
+    })
+    values = m.room_limit_values(h.manager, "room")
+    assert values["temperature_min_limit"] == 18
+    assert values["temperature_max_limit"] == 24
+
+
+def test_room_limit_bounds_intersect_available_physical_devices(runtime_module):
+    h = home(runtime_module, domain="climate", state="off")
+    second = MockState("climate.second_room", "off")
+    second.attributes.update(h.state.attributes)
+    second.attributes.update(min_temp=16, max_temp=30, target_temp_step=1)
+    h.hass._values[second.entity_id] = second
+    h.hass._entity_areas[second.entity_id] = "room"
+    h.hass._entity_devices[second.entity_id] = "second-device"
+    h.hass._device_areas["second-device"] = "room"
+    h.room["selected_devices"].append(second.entity_id)
+    h.room["device_settings"][second.entity_id] = dict(h.dev)
+    spec2 = ManagedDevice("controller_two", "room", "Second climate",
+                          "second-device", (second.entity_id,))
+    h.manager._device_hierarchy["controllers"][spec2.identifier] = {
+        "spec": spec2, "device_id": "logical-two"}
+    h.manager.entry.data[m.SETTINGS][spec2.identifier] = dict(h.cfg)
+    assert m.room_limit_bounds(h.manager, "room", "temperature_min_limit")[:2] == (16.0, 30.0)
+    assert m.room_limit_bounds(h.manager, "room", "temperature_max_limit")[:2] == (16.0, 30.0)
+
+
+def test_room_selected_temperature_and_humidity_override_device_sources(runtime_module):
+    h = home(runtime_module, domain="climate", state="heat", power=False)
+    t2 = MockState("sensor.temp2", 25, device_class="temperature", unit="°C")
+    rh2 = MockState("sensor.rh2", 50, device_class="humidity", unit="%")
+    for state in (t2, rh2):
+        h.hass._values[state.entity_id] = state
+        h.hass._entity_areas[state.entity_id] = "room"
+    h.state.attributes["current_temperature"] = 99
+    h.state.attributes["current_humidity"] = 1
+    h.dev["temperature_entity"] = "sensor.temp"
+    h.dev["humidity_entity"] = "sensor.rh"
+    h.manager.entry.data["room_sources"] = {
+        "room": {
+            "temperature": ["sensor.temp", "sensor.temp2"],
+            "humidity": ["sensor.rh", "sensor.rh2"],
+            "air_quality": [],
+        }
+    }
+    measured = h.runtime.measurements(h.spec, m.capabilities(h.manager, h.spec))
+    assert measured["temperature"] == 20
+    assert measured["humidity"] == 60
+    assert measured["temperature_entity"] is None
+    assert measured["humidity_entity"] is None
+    assert measured["temperature_source"] == "room_selected_mean"
+    assert measured["humidity_source"] == "room_selected_mean"

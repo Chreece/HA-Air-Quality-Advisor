@@ -229,33 +229,56 @@ def test_presence_selector_is_per_controller_and_has_only_requested_modes(platfo
     assert entity.current_option=="always"
 
 
-def test_capability_specific_limit_numbers_use_native_ranges(platforms):
+def test_room_limit_numbers_attach_to_room_environment_device(platforms):
     climate=home(platforms.runtime,domain="climate",state="heat",power=False)
-    tmin=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_min_limit")
-    tmax=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_max_limit")
+    bounds=model.room_limit_bounds(climate.manager,"room","temperature_min_limit")
+    tmin=platforms.number.ConfigNumber(
+        climate.manager,"entry","room","room_equipment_limit",
+        "temperature_min_limit",bounds)
+    assert tmin._attr_device_info["identifiers"] == {
+        ("air_quality_advisor","entry_area_room")}
     assert (tmin._attr_native_min_value,tmin._attr_native_max_value)==(5,35)
-    assert (tmax._attr_native_min_value,tmax._attr_native_max_value)==(5,35)
-    assert tmin.native_value==5 and tmax.native_value==35
+    assert tmin.native_value==5
 
     fan=home(platforms.runtime,state="on",power=False)
-    fmin=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_min_percentage")
-    fmax=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_max_percentage")
-    assert fmin.native_value==10 and fmax.native_value==100
-    assert fmin._attr_native_step==10
+    fbounds=model.room_limit_bounds(fan.manager,"room","fan_min_percentage")
+    fmin=platforms.number.ConfigNumber(
+        fan.manager,"entry","room","room_equipment_limit",
+        "fan_min_percentage",fbounds)
+    assert fmin.native_value==10
 
     humidity=home(platforms.runtime,domain="humidifier",state="on",power=False)
-    hmin=platforms.number.EquipmentNumber(humidity.manager,humidity.spec,"humidity_min_limit")
-    hmax=platforms.number.EquipmentNumber(humidity.manager,humidity.spec,"humidity_max_limit")
-    assert hmin.native_value==20 and hmax.native_value==80
+    hbounds=model.room_limit_bounds(humidity.manager,"room","humidity_max_limit")
+    hmax=platforms.number.ConfigNumber(
+        humidity.manager,"entry","room","room_equipment_limit",
+        "humidity_max_limit",hbounds)
+    assert hmax.native_value==80
 
 
-def test_climate_facade_exposes_soft_device_limits(platforms):
-    h=home(platforms.runtime,domain="climate",state="heat",power=False,controls={
-        "temperature_min_limit":18,"temperature_max_limit":24})
+def test_climate_facade_exposes_room_limits(platforms):
+    h=home(platforms.runtime,domain="climate",state="heat",power=False)
+    h.manager.entry.data["environment_rooms"]={"room":{"equipment_limits":{
+        "temperature_min_limit":18,"temperature_max_limit":24}}}
     entity=platforms.climate.ManagedClimate(h.manager,h.spec)
     assert entity.min_temp==18 and entity.max_temp==24
 
-    humidity=home(platforms.runtime,domain="humidifier",state="on",power=False,controls={
-        "humidity_min_limit":35,"humidity_max_limit":60})
+    humidity=home(platforms.runtime,domain="humidifier",state="on",power=False)
+    humidity.manager.entry.data["environment_rooms"]={"room":{"equipment_limits":{
+        "humidity_min_limit":35,"humidity_max_limit":60}}}
     hentity=platforms.climate.ManagedClimate(humidity.manager,humidity.spec)
     assert hentity.min_humidity==35 and hentity.max_humidity==60
+
+
+
+def test_room_limit_number_persists_under_environment_room(platforms):
+    async def run():
+        h=home(platforms.runtime,domain="climate",state="heat",power=False)
+        bounds=model.room_limit_bounds(h.manager,"room","temperature_min_limit")
+        entity=platforms.number.ConfigNumber(
+            h.manager,"entry","room","room_equipment_limit",
+            "temperature_min_limit",bounds)
+        await entity.async_set_native_value(18)
+        saved=h.manager.entry.options["environment_rooms"]["room"]["equipment_limits"]
+        assert saved["temperature_min_limit"]==18
+        assert model.room_limit_values(h.manager,"room")["temperature_min_limit"]==18
+    asyncio.run(run())
