@@ -36,7 +36,8 @@ def test_b19_and_b20_are_both_migration_sources():
 def test_service_and_card_compatibility_aliases_remain():
     init = source("__init__.py")
     const = source("const.py")
-    assert 'BETA20_PUBLIC_ACTION_DOMAIN = "home_enviroment_manager"' in const
+    assert 'LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"' in const
+    assert 'BETA20_DOMAIN = "enviroment_manager"' in const
     assert "SERVICE_ALIAS_DOMAINS" in init
     assert "BETA20_DOMAIN" in init
     assert 'StaticPathConfig(f"/{BETA20_DOMAIN}/air-quality-advisor-card.js"' in init
