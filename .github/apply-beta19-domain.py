@@ -34,6 +34,7 @@ def main():
 
     # Canonical imports/paths/domain literals throughout active code and tests.
     targets=[NEW_DIR,*[p for p in (ROOT/"tests").glob("*.py")],
+             ROOT/"tests"/"card_test.cjs",
              *[p for p in (ROOT/"tools").glob("*.py")],
              *[p for p in ROOT.glob("*.py")],
              ROOT/"README.md",ROOT/"RELEASING.md",ROOT/"CHANGELOG.md"]
@@ -41,7 +42,7 @@ def main():
     for item in targets:
         paths=item.rglob("*") if item.is_dir() else [item]
         for path in paths:
-            if not path.is_file() or path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".md"}:
+            if not path.is_file() or path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".cjs",".md"}:
                 continue
             text=path.read_text(encoding="utf-8")
             text=text.replace("custom_components.air_quality_advisor","custom_components.environment_manager")
