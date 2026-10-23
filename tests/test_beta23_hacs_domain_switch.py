@@ -1,4 +1,4 @@
-"""Beta23 HACS domain-switch packaging contract."""
+"""Beta24 HACS domain-switch packaging contract."""
 from pathlib import Path
 import json
 
@@ -12,12 +12,12 @@ def test_hacs_root_discovery_breaks_cached_old_remote_path():
     canonical = json.loads((PKG / "manifest.json").read_text(encoding="utf-8"))
 
     assert hacs["content_in_root"] is True
-    assert hacs["zip_release"] is True
-    assert hacs["filename"] == "environment_manager.zip"
+    assert hacs.get("zip_release") is not True
+    assert "filename" not in hacs
     assert hacs["hide_default_branch"] is True
     assert root_manifest == canonical
     assert canonical["domain"] == "environment_manager"
-    assert canonical["version"] == "0.6.0b23"
+    assert canonical["version"] == "0.6.0b24"
 
     # Mirror the relevant HACS integration repository logic. An existing HACS
     # record may still carry the previous remote directory. content_in_root
@@ -34,15 +34,15 @@ def test_hacs_root_discovery_breaks_cached_old_remote_path():
     assert local_path == "/config/custom_components/environment_manager"
 
 
-def test_hacs_zip_is_built_from_integration_contents_not_parent_folder():
-    workflow = (ROOT / ".github" / "workflows" / "beta23-hacs-domain-switch.yml").read_text(
+def test_hacs_flat_tag_payload_is_built_from_integration_contents():
+    workflow = (ROOT / ".github" / "workflows" / "beta24-hacs-flat-payload.yml").read_text(
         encoding="utf-8"
     )
-    assert "dist/environment_manager.zip" in workflow
-    assert "cd custom_components/environment_manager" in workflow
-    assert "assert 'custom_components/' not in name" in workflow
-    assert "assert 'manifest.json' in names" in workflow
-    assert "assert '__init__.py' in names" in workflow
+    assert "cp -a custom_components/environment_manager/. \"$payload/\"" in workflow
+    assert "cp hacs.json \"$payload/hacs.json\"" in workflow
+    assert "git checkout --orphan beta24-payload" in workflow
+    assert "git push origin HEAD:refs/heads/beta/v0.6.0b24" in workflow
+    assert "zip_release" not in json.dumps(json.loads((ROOT / "hacs.json").read_text()))
 
 
 def test_root_hacs_discovery_brand_exists():
