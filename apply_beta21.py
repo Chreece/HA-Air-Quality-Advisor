@@ -12,6 +12,8 @@ TEXT = {".py", ".json", ".md", ".js", ".cjs", ".yml", ".yaml", ".txt"}
 def rewrite(path: Path, version: bool = False) -> None:
     if not path.is_file() or path.resolve() == Path(__file__).resolve():
         return
+    if path == ROOT / "tests" / "test_beta21_domain_repair.py":
+        return
     try:
         value = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
@@ -61,7 +63,6 @@ LEGACY_DOMAIN = "air_quality_advisor"
 BETA20_DOMAIN = "enviroment_manager"
 LEGACY_DOMAINS = (BETA20_DOMAIN, LEGACY_DOMAIN)
 LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"
-BETA20_PUBLIC_ACTION_DOMAIN = "home_enviroment_manager"
 '''
 if old not in const:
     raise RuntimeError("Unexpected domain constants")
@@ -111,12 +112,12 @@ init_path = PKG / "__init__.py"
 init = init_path.read_text(encoding="utf-8")
 init = init.replace(
     "from .const import DOMAIN, LEGACY_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES",
-    "from .const import (DOMAIN, LEGACY_DOMAIN, BETA20_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, BETA20_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES)",
+    "from .const import (DOMAIN, LEGACY_DOMAIN, BETA20_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES)",
     1,
 )
 init = init.replace(
     'PUBLIC_ACTION_DOMAIN = "home_environment_manager"  # Alias only; existing domain remains.',
-    'PUBLIC_ACTION_DOMAIN = LEGACY_PUBLIC_ACTION_DOMAIN\nSERVICE_ALIAS_DOMAINS = (PUBLIC_ACTION_DOMAIN, BETA20_PUBLIC_ACTION_DOMAIN, BETA20_DOMAIN, LEGACY_DOMAIN)',
+    'PUBLIC_ACTION_DOMAIN = LEGACY_PUBLIC_ACTION_DOMAIN\nSERVICE_ALIAS_DOMAINS = (PUBLIC_ACTION_DOMAIN, BETA20_DOMAIN, LEGACY_DOMAIN)',
     1,
 )
 init = init.replace(
@@ -269,6 +270,38 @@ if test.exists():
         1,
     )
     test.write_text(value, encoding="utf-8")
+
+
+# Tests that intentionally describe beta21 itself must keep the beta20 typo as
+# legacy evidence while following the new release workflow.
+distribution = ROOT / "tests" / "test_beta_distribution.py"
+if distribution.exists():
+    value = distribution.read_text(encoding="utf-8")
+    value = value.replace(
+        '.github/workflows/beta20-domain-runtime.yml',
+        '.github/workflows/beta21-canonical-domain.yml',
+    )
+    distribution.write_text(value, encoding="utf-8")
+
+lifecycle = ROOT / "tests" / "test_legacy_entry_lifecycle.py"
+if lifecycle.exists():
+    value = lifecycle.read_text(encoding="utf-8")
+    marker = 'PUBLIC_ACTION_DOMAIN = "home_environment_manager"\n'
+    if 'BETA20_DOMAIN = "enviroment_manager"' not in value:
+        value = value.replace(marker, marker + 'BETA20_DOMAIN = "enviroment_manager"\n', 1)
+    value = value.replace(
+        '        f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js",\n',
+        '        f"/{BETA20_DOMAIN}/air-quality-advisor-card.js",\n'
+        '        f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js",\n',
+        1,
+    )
+    value = value.replace(
+        'for domain in (CANONICAL_DOMAIN,PUBLIC_ACTION_DOMAIN,LEGACY_DOMAIN)',
+        'for domain in (CANONICAL_DOMAIN,PUBLIC_ACTION_DOMAIN,BETA20_DOMAIN,LEGACY_DOMAIN)',
+    )
+    value = value.replace('assert len(h.services.registered)==12', 'assert len(h.services.registered)==16')
+    value = value.replace('assert len(h.services.callbacks)==12', 'assert len(h.services.callbacks)==16')
+    lifecycle.write_text(value, encoding="utf-8")
 
 manifest_path = PKG / "manifest.json"
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
