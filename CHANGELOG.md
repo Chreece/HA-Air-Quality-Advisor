@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b23 - HACS domain-switch installation fix (beta)
+
+- Fix HACS upgrades that still cache `custom_components/air_quality_advisor` and therefore fail to find beta22's canonical manifest.
+- Use HACS `content_in_root` + `zip_release` with `environment_manager.zip` and a root discovery manifest for the canonical `environment_manager` domain.
+- Package integration contents at ZIP root so HACS extracts directly into `/config/custom_components/environment_manager` without nested `custom_components/`.
+- Hide the default branch in beta23 HACS metadata to keep the historical stable branch layout out of the beta migration path.
+- Add a cached-old-path regression plus root manifest/ZIP layout checks.
+- Preserve beta22 exact config-entry-ID migration and all existing controller/safety behavior.
+
 ## 0.6.0b22 - Preserve exact config-entry identity during domain migration (beta)
 
 - Migrate legacy `air_quality_advisor` and beta20 `enviroment_manager` config entries in place so the exact Home Assistant config-entry ID survives.
