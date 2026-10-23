@@ -240,7 +240,7 @@ def main() -> None:
 
     # Schedule orphan legacy-directory cleanup only after the new entry has
     # successfully set up all platforms.
-    return_marker = "    return True\\n\\n\\nasync def async_unload_entry"
+    return_marker = "    return True\n\n\nasync def async_unload_entry"
     if return_marker not in text:
         raise RuntimeError("setup return marker changed")
     text = text.replace(
@@ -356,7 +356,7 @@ async def _async_cleanup(hass: HomeAssistant, entry_id: str) -> None:
             if OLD in line and not any(token in line for token in allowed):
                 unexpected.append(f"{path.relative_to(ROOT)}:{lineno}:{line.strip()}")
     if unexpected:
-        raise RuntimeError("Unexpected legacy-domain references:\\n" + "\\n".join(unexpected))
+        raise RuntimeError("Unexpected legacy-domain references:\n" + "\n".join(unexpected))
 
     run("git", "add", "-A")
     print("environment_manager domain source prepared")
