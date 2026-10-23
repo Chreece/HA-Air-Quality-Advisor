@@ -38,7 +38,9 @@ def main():
              *[p for p in (ROOT/"tools").glob("*.py")],
              *[p for p in ROOT.glob("*.py")],
              ROOT/"README.md",ROOT/"RELEASING.md",ROOT/"CHANGELOG.md"]
-    targets += list((ROOT/".github"/"workflows").glob("*.yml"))
+    # Historical/release workflows are not part of the integration domain
+    # runtime and rewriting them would require GitHub workflow-write permission.
+    # The beta19 validator already targets the canonical path explicitly.
     for item in targets:
         paths=item.rglob("*") if item.is_dir() else [item]
         for path in paths:
