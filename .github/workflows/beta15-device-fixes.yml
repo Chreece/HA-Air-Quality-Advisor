@@ -1,20 +1,169 @@
-name: Device settings and selectors regression work
+name: Device settings, template selectors and beta15 release
 on:
   push:
-    branches: ['fix/device-settings-beta15-20261023']
+    branches: ['fix/device-settings-beta15-20261023', 'beta/v0.6.0b15']
 permissions:
   contents: read
+concurrency:
+  group: beta15-device-fixes-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  source:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Prepare reviewed candidate if present
+        run: |
+          if [ -f .github/apply-beta15-fixes.py ]; then python .github/apply-beta15-fixes.py; fi
+      - name: Regressions, compilation and reproducible translations
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests
+          python generate_translations.py
+          git diff --exit-code
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Dashboard frontend checks
+        run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+  hassfest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Archive exact tracked development source
-        run: git archive --format=tar.gz -o source.tar.gz HEAD
-      - uses: actions/upload-artifact@v4
+      - uses: actions/setup-python@v5
         with:
-          name: beta15-development-source
-          path: source.tar.gz
-          retention-days: 3
+          python-version: '3.13'
+      - run: |
+          if [ -f .github/apply-beta15-fixes.py ]; then python .github/apply-beta15-fixes.py; fi
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: |
+          if [ -f .github/apply-beta15-fixes.py ]; then python .github/apply-beta15-fixes.py; fi
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+  home_assistant:
+    name: Actual HA settings, selectors and registries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: |
+          if [ -f .github/apply-beta15-fixes.py ]; then python .github/apply-beta15-fixes.py; fi
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - name: Real registry migration and rooms-first source selection
+        run: |
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+  save_source:
+    if: github.ref == 'refs/heads/fix/device-settings-beta15-20261023'
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Save validated source on the development branch only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f .github/apply-beta15-fixes.py ]; then exit 0; fi
+          python .github/apply-beta15-fixes.py
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/fix/device-settings-beta15-20261023" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(beta15): native device methods, mutable HA options, template sources and selector labels'
+          git push origin HEAD:refs/heads/fix/device-settings-beta15-20261023
+          echo "VERIFIED_SOURCE_SHA=$(git rev-parse HEAD)"
+          echo "VERIFIED_SOURCE_TREE=$(git rev-parse HEAD^{tree})"
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b15'
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify final-source release metadata
+        run: |
+          test ! -e .github/apply-beta15-fixes.py
+          test ! -e .github/beta15-fixes-transfer
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path('custom_components/air_quality_advisor/manifest.json').read_text())
+          request = json.loads(Path('.github/release-request.json').read_text())
+          assert manifest['version'] == request['version'] == '0.6.0b15'
+          assert manifest['domain'] == 'air_quality_advisor' and manifest['integration_type'] == 'hub'
+          assert request['channel'] == 'beta' and request['release_branch'] == 'beta/v0.6.0b15'
+          assert Path('.github/releases/v0.6.0b15.md').stat().st_size > 1500
+          PY
+      - name: Package and verify manual installation archive
+        run: |
+          mkdir -p dist
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b15.zip custom_components/air_quality_advisor -x '*__pycache__*' '*.pyc' '*.pyo'
+          python - <<'PY'
+          import json, zipfile
+          prefix = 'custom_components/air_quality_advisor/'
+          with zipfile.ZipFile('dist/HA-Home-Environment-Manager-v0.6.0b15.zip') as z:
+              assert z.testzip() is None
+              assert all(n.startswith(prefix) for n in z.namelist())
+              assert not any('__pycache__' in n or n.endswith(('.pyc','.pyo')) for n in z.namelist())
+              assert json.loads(z.read(prefix+'manifest.json'))['version'] == '0.6.0b15'
+              for name in ('config_data.py', 'device_activation.py', 'room_setup.py', 'room_sources.py', 'room_hubs.py', 'device_hierarchy.py', 'equipment_runtime.py', 'climate.py', 'translations/el.json', 'frontend/air-quality-advisor-card.js'):
+                  assert prefix+name in z.namelist()
+              for name in z.namelist():
+                  if name.endswith('.json'): json.loads(z.read(name))
+          PY
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b15.zip > dist/HA-Home-Environment-Manager-v0.6.0b15.zip.sha256
+      - name: Publish opt-in beta without changing stable Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b15" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b15 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b15" >/dev/null 2>&1; then echo 'Existing orphan tag; refusing to overwrite'; exit 1; fi
+          gh release create v0.6.0b15 \
+            dist/HA-Home-Environment-Manager-v0.6.0b15.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b15.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 15' \
+            --notes-file .github/releases/v0.6.0b15.md --prerelease --latest=false
