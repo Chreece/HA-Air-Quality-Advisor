@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b16/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b17/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,17 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 16 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b16) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 17 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b17) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+
+## Beta 17 - Per-device quiet, occupancy and hard control bounds
+
+Every managed physical-device controller with an adjustable fan now has **Quiet when in room** and **Quiet when sleeping**. Percentage fans use the controller's quiet percentage; discrete fans use an advertised native mode such as Low. Unknown occupancy or sleep evidence holds the current fan setting instead of reducing or restoring speed, and quiet control never powers an appliance merely to change its fan speed.
+
+Each managed controller also has one **Control availability** policy: **Always**, **Room occupied**, or **Room absent**. Automatic/PID control is permitted only in that device's selected state; unknown occupancy blocks conditional control. Legacy room/home policies remain compatible for old drivers, but managed controllers migrate to the stricter room-occupied policy.
+
+Capability-specific min/max bounds live on each controller: temperature bounds for temperature-capable equipment, humidity bounds for humidity-capable equipment, and fan-percentage bounds for percentage fans. Manager-generated targets, PID trims and speed commands are clamped to these values and the physical device's own native bounds. These are hard bounds for the **Manager-owned control path**; they do not seize unrelated manual/native control from another integration.
+
+The runtime now checks that every selected native endpoint of the managed physical device is available **before** calculating capabilities, occupancy policy, targets, room measurements or PID demand. Unavailable devices remain in a waiting state and receive no control calculation or service command.
 
 ## Beta 16 - General sources, Home hub, Task AI and away cooldown
 

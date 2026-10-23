@@ -1,17 +1,18 @@
 {
-  "version": "0.6.0b16",
+  "version": "0.6.0b17",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "General-source defaults, Announcement Hub availability, Task AI, provider-aware TTS languages, Home hub grouping and away cooldown",
+  "note": "Per-device quiet occupancy/sleep behavior, strict occupied/absent/always control, capability-specific soft bounds and availability-first runtime gating",
   "validation_attempt": 0,
   "changes": [
-    "Preselect all discovered weather and outdoor air-quality sources on first setup; preselect all pollen providers while preserving later explicit empty choices",
-    "Show Announcement Hub only when configured and keep Hub delivery authoritative when enabled",
-    "Offer data-capable ai_task entities beside conversation agents; direct Task AI rewrites call ai_task.generate_data with safe validation/fallback",
-    "Use selected TTS provider capabilities for human-readable language choices, adding region codes only for multiple supported variants",
-    "Create a native Home subentry/group and place all home-wide settings/input/output entities on the Home hub while preserving IDs",
-    "Treat a fresh empty occupied-room list as nobody home only after a configurable Home away cooldown; stale/unknown occupancy remains unknown",
-    "Retain rooms-first setup, exact controller ownership, physical equipment safety gates, 38 localized catalogs and stable v0.5.1"
+    "Expose Quiet when in room and Quiet when sleeping switches on each managed physical-device controller when its native fan is adjustable",
+    "Use the configured native low/quiet fan mode or quiet percentage, clamped to the same controller's fan bounds, without powering a device merely for quiet mode",
+    "Replace managed-device presence control with per-device Always, Room occupied, or Room absent policy; unknown evidence never authorizes a conditional policy",
+    "Expose temperature, humidity and percentage-fan min/max limits only when supported by that physical device, inside its native capabilities",
+    "Clamp all Manager-issued targets, PID trims, humidity commands and fan percentages to those per-device limits while the Manager owns the control path",
+    "Wait for every selected native endpoint of the managed physical device to become available before capability, occupancy, target, measurement or PID calculations",
+    "Preserve legacy room/home policy semantics for old drivers while migrating managed-controller legacy values conservatively to Room occupied",
+    "Retain rooms-first setup, Home/room/controller hierarchy, command ownership, dwell/interlock protections and stable v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b16"
+  "release_branch": "beta/v0.6.0b17"
 }

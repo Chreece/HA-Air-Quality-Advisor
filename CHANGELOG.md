@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b17 - Per-device quiet, occupancy, limits and availability gating (beta)
+
+- Add per-controller Quiet when in room / Quiet when sleeping switches for devices with adjustable native fan support.
+- Use a native quiet/low mode or percentage, clamped to controller fan bounds; unknown presence/sleep holds the current fan speed and quiet logic never powers a device on by itself.
+- Give every managed controller one Always / Room occupied / Room absent control-availability selector; conditional control requires verified room evidence.
+- Add capability-specific temperature, humidity and percentage-fan min/max limits on the managed device and clamp every Manager-issued target/output to them and the physical native range.
+- Gate runtime control before capabilities, occupancy, target, measurement or PID calculations until every selected physical endpoint is available.
+- Preserve legacy room/home driver behavior while conservatively mapping old managed-controller values to Room occupied.
+- Preserve command ownership, acknowledgement, dwell/interlock protections, rooms-first setup and stable v0.5.1.
+
 ## 0.6.0b16 - General sources, Home hub, Task AI, TTS languages and away cooldown (beta)
 
 - Preselect discovered weather, outdoor air-quality and pollen sources on first General setup while preserving later explicit empty selections.
