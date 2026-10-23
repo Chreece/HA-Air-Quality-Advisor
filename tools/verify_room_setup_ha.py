@@ -22,7 +22,9 @@ from custom_components.air_quality_advisor.compact_options import CompactOptions
 from custom_components.air_quality_advisor.room_setup import RoomSetupMixin
 from custom_components.air_quality_advisor.room_sources import GROUPS
 from custom_components.air_quality_advisor.device_hierarchy import async_register_hierarchy
-from custom_components.air_quality_advisor.room_hubs import async_sync_room_hubs
+from custom_components.air_quality_advisor.room_hubs import (
+    HOME_TYPE, async_sync_room_hubs, home_subentry_id,
+)
 
 
 class Wizard(RoomSetupMixin, CompactOptionsMixin):
@@ -108,7 +110,11 @@ async def check(config_dir):
     manager_entry.runtime_data = manager
     manager._room_subentries = async_sync_room_hubs(hass, manager_entry)
     async_register_hierarchy(hass, manager_entry)
-    assert len(manager_entry.subentries) == 2
+    home_sid = home_subentry_id(manager_entry)
+    assert home_sid is not None and manager_entry.subentries[home_sid].subentry_type == HOME_TYPE
+    assert len(manager_entry.subentries) == 3  # Home + Living room + Office.
+    home_device = devices.async_get(manager._device_hierarchy["home_device_id"])
+    assert home_device is not None and home_device.config_subentry_id == home_sid
     assert len(manager._device_hierarchy["controllers"]) == 1
     assert devices.async_get(physical.id).config_entry_id == native.entry_id
     assert len(manager._device_hierarchy["areas"]) == 2
