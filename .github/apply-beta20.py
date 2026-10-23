@@ -29,6 +29,8 @@ def main():
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
+        if ROOT/".github"/"workflows" in path.parents:
+            continue
         if path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".cjs",".md"}:
             continue
         text=path.read_text(encoding="utf-8")
