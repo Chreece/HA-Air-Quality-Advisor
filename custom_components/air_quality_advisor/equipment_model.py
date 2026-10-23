@@ -486,36 +486,62 @@ def plan_for(manager: Any, spec: ManagedDevice) -> dict:
 def profile_name(config: dict, plan: dict) -> str:
     requested = config.get("preset", "none")
     if requested != "none" and requested in PRESETS:
-        return "unoccupied" if requested == "eco" else requested
+        return requested
     if config.get("control_mode") == "manual":
-        return "manual"  # Never silently follow occupancy in manual mode.
+        return "manual"  # Manual None keeps its independent explicit targets.
     if plan.get("away") == "away":
         return "away"
     if plan.get("sleeping") is True:
         return "sleep"
-    if plan.get("occupancy") == "unoccupied":
-        return "unoccupied"
+    if plan.get("occupancy") == "occupied":
+        return "comfort"
+    # A verified home with an empty room, and incomplete occupancy evidence,
+    # both use Home. Unknown evidence must never imply Away.
     return "home"
 
 
 def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
             plan: dict) -> dict[str, float]:
-    room, dev = room_config(manager, spec), device_config(manager, spec, cap.primary)
+    room = room_config(manager, spec)
     profile = profile_name(config, plan)
-    base_profile = "home" if profile in ("comfort", "manual") else profile
-    fallback = {"home": (20., 26.), "unoccupied": (18., 28.), "away": (16., 30.), "sleep": (18., 26.)}[base_profile]
-    room_band = room.get("profiles", {}).get(base_profile, {})
-    heat = dev.get(base_profile + "_heat_c", room_band.get("heat_c", fallback[0]))
-    cool = dev.get(base_profile + "_cool_c", room_band.get("cool_c", fallback[1]))
-    humidity = dev.get("sleep_humidity_target" if base_profile == "sleep" else "humidity_target",
-                       room.get("humidity_low_rh", 40) if cap.humidifying else room.get("humidity_high_rh", 60))
-    if profile == "comfort":
-        heat, cool = min(heat + 1, cool - 1), max(cool - 1, heat + 1)
-    result = {"heat": float(heat), "cool": float(cool), "humidity": float(humidity)}
-    override = config.get("profile_targets", {}).get(profile, {})
-    if isinstance(override, dict):
-        result.update({k: v for k, v in override.items() if k in result})
     limits = device_limits(manager, spec, cap)
+
+    # Room Environment owns automatic preset setpoints. Beta18 migration:
+    # old home -> Comfort; old unoccupied -> Home.
+    raw_profiles = room.get("profiles", {}) if isinstance(room, dict) else {}
+    raw_profiles = raw_profiles if isinstance(raw_profiles, dict) else {}
+    fallbacks = {
+        "comfort": raw_profiles.get("home", {"heat_c": 21.0, "cool_c": 25.0}),
+        "home": raw_profiles.get("unoccupied", {"heat_c": 18.0, "cool_c": 28.0}),
+        "sleep": raw_profiles.get("sleep", {"heat_c": 18.0, "cool_c": 26.0}),
+        "eco": {"heat_c": 17.0, "cool_c": 29.0},
+    }
+
+    if profile == "away":
+        heat = limits["temperature_min_limit"]
+        cool = limits["temperature_max_limit"]
+    elif profile == "manual":
+        base = fallbacks["comfort"]
+        heat, cool = float(base["heat_c"]), float(base["cool_c"])
+    else:
+        band = raw_profiles.get(profile, fallbacks.get(profile, fallbacks["home"]))
+        heat = float(band.get("heat_c", fallbacks.get(profile, fallbacks["home"])["heat_c"]))
+        cool = float(band.get("cool_c", fallbacks.get(profile, fallbacks["home"])["cool_c"]))
+
+    humidity = room.get(
+        "sleep_humidity_target" if profile == "sleep" else "humidity_target",
+        room.get("humidity_low_rh", 40) if cap.humidifying else room.get("humidity_high_rh", 60),
+    )
+
+    result = {"heat": float(heat), "cool": float(cool), "humidity": float(humidity)}
+
+    # Per-device target overrides are retained only for Manual None. Automatic
+    # presets are room-owned and cannot silently diverge across devices.
+    if profile == "manual":
+        override = config.get("profile_targets", {}).get("manual", {})
+        if isinstance(override, dict):
+            result.update({k: v for k, v in override.items() if k in result})
+
     result["heat"] = max(limits["temperature_min_limit"],
                          min(limits["temperature_max_limit"], float(result["heat"])))
     result["cool"] = max(limits["temperature_min_limit"],

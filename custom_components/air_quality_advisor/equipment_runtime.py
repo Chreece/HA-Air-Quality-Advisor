@@ -249,7 +249,7 @@ class EquipmentRuntime:
                 if new.get(key) is not None and str(new[key]) not in choices:
                     raise HomeAssistantError(f"Unsupported native choice: {key}")
             table = new.get("profile_targets")
-            if not isinstance(table, dict) or set(table) - {"manual", "home", "comfort", "away", "sleep", "unoccupied"}:
+            if not isinstance(table, dict) or set(table) - {"manual"}:
                 raise HomeAssistantError("Invalid profile target table")
             for profile, values in table.items():
                 if not isinstance(values, dict) or set(values) - {"heat", "cool", "humidity"}:
@@ -265,7 +265,7 @@ class EquipmentRuntime:
                 if band["cool"]-band["heat"] < 1:
                     raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
             fan_table = new.get("profile_fans")
-            if not isinstance(fan_table, dict) or set(fan_table) - {"manual", "home", "comfort", "away", "sleep", "unoccupied"}:
+            if not isinstance(fan_table, dict) or set(fan_table) - {"manual", "home", "comfort", "away", "sleep", "eco"}:
                 raise HomeAssistantError("Invalid fan profile table")
             if any(str(v) not in cap.fan_modes for v in fan_table.values()):
                 raise HomeAssistantError("Unsupported native fan choice for profile")
@@ -285,7 +285,14 @@ class EquipmentRuntime:
                            and cap.domain in ("climate", "fan", "humidifier"))
             if authorizing:
                 new["_native_authorization"] = authority_context(self.manager, spec)
-                new.setdefault("allow_power", power)
+                # Choosing Automatic/PID is explicit consent for this exact
+                # native climate/fan/humidifier to start/stop and switch its
+                # real HVAC mode when demand/policy requires it. Raw relays
+                # remain separately commissioned.
+                if new["control_mode"] in ("automatic", "pid") and "off" in cap.modes:
+                    new["allow_power"] = True
+                else:
+                    new.setdefault("allow_power", power)
                 soft = True
                 power = new["allow_power"] is True
             elif "_native_authorization" in new:
@@ -362,13 +369,64 @@ class EquipmentRuntime:
         changes = {}
         if cfg["control_mode"] == "existing" or mode is not None:
             changes["control_mode"] = "off" if mode == "off" else "manual"
-        table = deepcopy(cfg["profile_targets"])
-        profile = model.profile_name({**cfg, **changes}, model.plan_for(self.manager, spec))
-        table[profile] = {**table.get(profile, {}), **values}
-        changes["profile_targets"] = table
-        if mode is not None:
-            changes["requested_mode"] = mode
-        await self.async_update(spec, changes)
+        effective = {**cfg, **changes}
+        profile = model.profile_name(effective, model.plan_for(self.manager, spec))
+
+        if effective["control_mode"] == "manual" and effective.get("preset", "none") == "none":
+            table = deepcopy(cfg["profile_targets"])
+            table["manual"] = {**table.get("manual", {}), **values}
+            changes["profile_targets"] = table
+            if mode is not None:
+                changes["requested_mode"] = mode
+            await self.async_update(spec, changes)
+            return
+
+        if profile == "away":
+            raise HomeAssistantError(
+                "Away targets are the Room Environment minimum/maximum temperature limits"
+            )
+        if profile not in ("comfort", "home", "sleep", "eco"):
+            raise HomeAssistantError("Select a room preset before editing its setpoint")
+
+        limits = model.device_limits(self.manager, spec, cap)
+        requested = {}
+        for key, value in values.items():
+            if key not in ("heat", "cool"):
+                continue
+            number = finite(value, limits["temperature_min_limit"], limits["temperature_max_limit"])
+            if number is None:
+                raise HomeAssistantError("Target outside Room Environment limits")
+            requested[key] = number
+        if not requested:
+            raise HomeAssistantError("No supported room temperature target supplied")
+
+        lock = getattr(self.manager, "_device_settings_write_lock", None)
+        if lock is None:
+            lock = self.manager._device_settings_write_lock = asyncio.Lock()
+        async with lock:
+            options = deepcopy(self.manager.entry.options)
+            rooms = deepcopy(self.manager.settings.get("climate_rooms", {}))
+            room = deepcopy(rooms.get(spec.area_id, {}))
+            profiles = deepcopy(room.get("profiles", {}))
+            band = deepcopy(profiles.get(profile, {}))
+            if "heat" in requested:
+                band["heat_c"] = requested["heat"]
+            if "cool" in requested:
+                band["cool_c"] = requested["cool"]
+            heat = float(band.get("heat_c", model.targets(
+                self.manager, spec, cap, {**cfg, "preset": profile}, {})["heat"]))
+            cool = float(band.get("cool_c", model.targets(
+                self.manager, spec, cap, {**cfg, "preset": profile}, {})["cool"]))
+            if cool - heat < 1.0:
+                raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
+            profiles[profile] = band
+            room["profiles"] = profiles
+            rooms[spec.area_id] = room
+            options["climate_rooms"] = rooms
+            self.hass.config_entries.async_update_entry(self.manager.entry, options=options)
+        if getattr(self.manager, "_active", False):
+            self.manager._recalculate(initial=True)
+
 
     async def async_set_fan(self, spec: model.ManagedDevice, value: str) -> None:
         cfg = model.settings(self.manager, spec)

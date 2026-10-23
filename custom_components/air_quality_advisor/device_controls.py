@@ -37,12 +37,12 @@ PID_NUMBERS = {
     "max_change_c": (0.1, 2.0, 0.05, "°C"),
     "min_change_c": (0.05, 1.0, 0.05, "°C"),
 }
-# These are supervisory profile bands (home/away/sleep) and not copies of
-# a thermostat's native currently active setpoint.
+# Room-owned operating bands. Away intentionally uses the room's hard
+# temperature min/max limits, so it has no duplicate setpoint entities here.
 PROFILE_NUMBERS = {
     f"{profile}_{mode}": (5.0 if mode == "heat" else 6.0,
                            35.0 if mode == "heat" else 40.0, 0.5, "°C")
-    for profile in ("home", "unoccupied", "away", "sleep")
+    for profile in ("comfort", "home", "sleep", "eco")
     for mode in ("heat", "cool")
 }
 THRESHOLD_NUMBERS = {

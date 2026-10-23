@@ -46,11 +46,14 @@ def profiles(settings: dict) -> tuple[dict[str,Profile],str|None]:
     tolerance=_num(settings.get("hysteresis_c",0.7),0.2,3.0) if isinstance(settings,dict) else None
     if tolerance is None:
         return {},"invalid_hysteresis"
+    # Migration: beta18 "home" was effectively occupied/comfort, while
+    # "unoccupied" meant somebody home but this room empty.
     defaults={
-        "home": {"heat_c":20.0,"cool_c":26.0},
-        "unoccupied": {"heat_c":18.0,"cool_c":28.0},
-        "away": {"heat_c":16.0,"cool_c":30.0},
-        "sleep": {"heat_c":18.0,"cool_c":26.0},
+        "comfort": raw.get("home", {"heat_c":21.0,"cool_c":25.0}),
+        "home": raw.get("unoccupied", {"heat_c":18.0,"cool_c":28.0}),
+        "away": raw.get("away", {"heat_c":16.0,"cool_c":30.0}),
+        "sleep": raw.get("sleep", {"heat_c":18.0,"cool_c":26.0}),
+        "eco": {"heat_c":17.0,"cool_c":29.0},
     }
     parsed={}
     for name, fallback in defaults.items():
@@ -91,14 +94,20 @@ def home_away_evidence(states: list[bool|None], *, mode: str="any_home") -> tupl
 
 def select_profile(settings:dict, *, at_home:str, occupied:str,
                    sleeping:bool=False, manual:str|None=None) -> tuple[str,str]:
-    if manual in ("home","unoccupied","away","sleep"):
+    # Eco is intentionally explicit-only; it is not another occupancy state.
+    if manual in ("comfort","home","away","sleep","eco"):
         return manual,"manual_profile"
-    if at_home=="away": return "away","all_trackers_away"
-    if at_home=="unknown" or occupied=="unknown":
-        return "home","incomplete_evidence"
-    if sleeping: return "sleep","sleep_mode_active"
-    if occupied=="unoccupied": return "unoccupied","room_unoccupied"
-    return "home","room_occupied"
+    if at_home=="away":
+        return "away","nobody_home"
+    if sleeping:
+        return "sleep","sleep_mode_active"
+    if occupied=="occupied":
+        return "comfort","room_occupied"
+    if at_home=="home" and occupied=="unoccupied":
+        return "home","someone_home_room_unoccupied"
+    # Unknown evidence must never imply Away. Home is the conservative
+    # middle setpoint until valid occupancy evidence returns.
+    return "home","incomplete_presence_evidence"
 
 
 def capabilities(attributes: dict, current_mode: str) -> dict:
@@ -204,9 +213,9 @@ def policy(settings:dict, *, temp_c:float|None,
         return Output(status,name,None,None,
                       "no_configured_"+desired+"_capability",strategy)
     heat_target,cool_target=band.heat_c,band.cool_c
-    # Apply PMV only as a bounded modification to *home/sleep* comfort
-    # bands. The preconfigured away and unoccupied setbacks are sacrosanct.
-    if settings.get("target_source")=="pmv" and name in ("home","sleep"):
+    # Apply PMV only to occupied Comfort/Sleep bands. Home/Away/Eco
+    # energy setpoints remain explicit room policy.
+    if settings.get("target_source")=="pmv" and name in ("comfort","sleep"):
         comfort=_num(comfort_target_c,16,30)
         influence=_num(settings.get("comfort_adjustment_max_c",1.5),0,2.5)
         if comfort is not None and influence is not None:
