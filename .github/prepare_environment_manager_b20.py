@@ -365,6 +365,7 @@ async def _async_cleanup(hass: HomeAssistant, entry_id: str) -> None:
         "air_quality_advisor.native_dry_fan_",
         "air_quality_advisor.secondary_native_",
         "air_quality_advisor_",
+        "pair[0]==='air_quality_advisor'",
         "air_quality_advisor-card",
     )
     unexpected = []
