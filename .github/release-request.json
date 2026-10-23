@@ -1,17 +1,17 @@
 {
-  "version": "0.6.0b22",
-  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, HACS and installed Home Assistant 2026.10 identity-migration checks; never update main or stable latest",
-  "note": "Preserve the exact Home Assistant config-entry ID while migrating air_quality_advisor or beta20 enviroment_manager to canonical environment_manager",
+  "version": "0.6.0b23",
+  "intent": "Pre-release fixing HACS installation across the integration-domain rename; validate Python 3.13/3.14, frontend, Hassfest, HACS, HA 2026.10 exact-ID migration and HACS ZIP layout before publication; never update stable latest",
+  "note": "Use HACS content_in_root plus zip_release so cached air_quality_advisor repository paths switch cleanly to environment_manager",
   "validation_attempt": 0,
   "changes": [
-    "Re-home the existing ConfigEntry in place from air_quality_advisor or beta20 enviroment_manager to environment_manager instead of creating a replacement entry",
-    "Preserve the exact config entry ID, config subentry objects/IDs, entity IDs and unique IDs, device IDs, disabled states, custom names, options and stored controller settings",
-    "Reindex Home Assistant 2026.10 ConfigEntryItems only after validating the private API shape; fail closed on unsupported HA internals or unsafe entry states",
-    "Change only entity platform ownership and Manager-owned device identifier namespaces; keep config_entry_id and config_subentry_id associations unchanged",
-    "Retain legacy storage ancestry for direct beta19 -> beta22 and chained beta19 -> beta20 -> beta22 upgrades",
-    "Keep canonical environment_manager services plus temporary air_quality_advisor, enviroment_manager and home_environment_manager compatibility aliases",
-    "Preserve beta21 room presets, room-wide limits, room sensor precedence and controller safety semantics; stable v0.5.1 remains unchanged"
+    "Set HACS content_in_root=true and zip_release=true with environment_manager.zip so selected beta metadata overrides a cached custom_components/air_quality_advisor remote path",
+    "Add a root manifest.json matching the canonical environment_manager manifest solely for HACS repository discovery and validation",
+    "Ship environment_manager.zip with integration files at ZIP root so HACS extracts directly into /config/custom_components/environment_manager without nested custom_components directories",
+    "Hide the default branch in beta23 HACS metadata to avoid offering the stable branch's historical air_quality_advisor layout during the migration beta",
+    "Regression-test the exact cached-old-path scenario shown by HACS and verify root discovery resolves to environment_manager",
+    "Preserve beta22 exact ConfigEntry-ID migration and all controller, room, translation and safety behavior unchanged",
+    "Stable Latest remains v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b22"
+  "release_branch": "beta/v0.6.0b23"
 }
