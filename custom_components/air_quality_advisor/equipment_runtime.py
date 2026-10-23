@@ -981,7 +981,7 @@ class EquipmentRuntime:
             quiet_state = self._quiet_context(spec, cfg, plan) if automatic else False
             if quiet_state is None:
                 self._status(spec, "quiet_context_unknown")
-                return False
+                return True  # handled hold: do not overwrite status or change speed
             quiet = quiet_state is True
             limits = model.device_limits(cap, cfg)
             value = max(limits["fan_min_percentage"],
@@ -1005,7 +1005,7 @@ class EquipmentRuntime:
             quiet_state = self._quiet_context(spec, cfg, plan) if automatic else False
             if quiet_state is None:
                 self._status(spec, "quiet_context_unknown")
-                return False
+                return True  # handled hold: do not overwrite status or change speed
             quiet = quiet_state is True
             low = cfg.get("quiet_fan_mode") or ("low" if "low" in cap.fan_modes else None)
             value = low if quiet and low is not None else normal

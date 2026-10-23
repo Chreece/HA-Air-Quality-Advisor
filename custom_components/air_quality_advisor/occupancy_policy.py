@@ -282,7 +282,19 @@ def device_permission(device: Mapping, room_status: str, home_status: str,
     elif sleep != "normal":
         return "held", "invalid_sleep_policy"
     source = device.get("presence_requirement", "always")
-    if source in ("room", "occupied"):
+    # Legacy room/home semantics are retained for the old room drivers only.
+    # The new per-controller UI never offers these values.
+    if source == "room":
+        if room_status == "unoccupied":
+            return "absent", "room_unoccupied"
+        if room_status != "occupied":
+            return "held", "room_occupancy_unknown"
+    elif source == "home":
+        if home_status == "away":
+            return "absent", "house_unoccupied"
+        if home_status != "home":
+            return "held", "house_occupancy_unknown"
+    elif source == "occupied":
         if room_status == "unoccupied":
             return "held", "room_not_occupied"
         if room_status != "occupied":
@@ -292,11 +304,6 @@ def device_permission(device: Mapping, room_status: str, home_status: str,
             return "held", "room_not_absent"
         if room_status != "unoccupied":
             return "held", "room_occupancy_unknown"
-    elif source == "home":  # Legacy only; new UI no longer offers this policy.
-        if home_status == "away":
-            return "held", "house_unoccupied"
-        if home_status != "home":
-            return "held", "house_occupancy_unknown"
     elif source != "always":
         return "held", "invalid_presence_policy"
     return "eligible", "device_policy_approved"

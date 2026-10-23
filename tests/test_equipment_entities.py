@@ -233,15 +233,15 @@ def test_capability_specific_limit_numbers_use_native_ranges(platforms):
     climate=home(platforms.runtime,domain="climate",state="heat",power=False)
     tmin=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_min_limit")
     tmax=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_max_limit")
-    assert (tmin.native_min_value,tmin.native_max_value)==(5,35)
-    assert (tmax.native_min_value,tmax.native_max_value)==(5,35)
+    assert (tmin._attr_native_min_value,tmin._attr_native_max_value)==(5,35)
+    assert (tmax._attr_native_min_value,tmax._attr_native_max_value)==(5,35)
     assert tmin.native_value==5 and tmax.native_value==35
 
     fan=home(platforms.runtime,state="on",power=False)
     fmin=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_min_percentage")
     fmax=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_max_percentage")
     assert fmin.native_value==10 and fmax.native_value==100
-    assert fmin.native_step==10
+    assert fmin._attr_native_step==10
 
     humidity=home(platforms.runtime,domain="humidifier",state="on",power=False)
     hmin=platforms.number.EquipmentNumber(humidity.manager,humidity.spec,"humidity_min_limit")
