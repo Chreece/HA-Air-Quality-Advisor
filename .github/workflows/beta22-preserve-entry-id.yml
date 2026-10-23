@@ -51,7 +51,7 @@ jobs:
           assert m['version']=='0.6.0b22'
           migration=(p/'domain_migration.py').read_text()
           assert 'async_remove(legacy.entry_id)' not in migration
-          assert 'new_config_entry_id=' not in migration
+          assert 'new_config_entry_id=legacy.entry_id' in migration
           assert '_reindex_entry_domain(hass, legacy, DOMAIN)' in migration
           PY
       - name: Require reproducible generated catalogs on release branch
