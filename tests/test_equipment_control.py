@@ -248,7 +248,7 @@ def test_mode_selector_is_explicit_exact_device_authorization(runtime_module):
         h.dev["auto_control"] = False
         await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
         assert m.settings(h.manager, h.spec)["control_mode"] == "automatic"
-        assert m.permission(h.manager, h.spec, h.cap) == (True, False)
+        assert m.permission(h.manager, h.spec, h.cap) == (True, True)
         assert h.dev["auto_control"] is False
         assert not h.hass.services.calls
     asyncio.run(run())
@@ -260,7 +260,13 @@ def test_presets_are_independent_and_change_policy_targets(runtime_module):
     sleep = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "sleep"}, h.plan)
     away = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "away"}, h.plan)
     comfort = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "comfort"}, h.plan)
-    assert away["heat"] < sleep["heat"] < old["heat"] < comfort["heat"]
+    limits=m.device_limits(h.manager,h.spec,h.cap)
+    assert away["heat"] == limits["temperature_min_limit"]
+    assert away["cool"] == limits["temperature_max_limit"]
+    assert comfort["heat"] > old["heat"]
+    assert sleep["heat"] >= away["heat"]
+    eco=m.targets(h.manager,h.spec,h.cap,{**h.cfg,"preset":"eco"},h.plan)
+    assert eco["heat"] <= old["heat"] and eco["cool"] >= comfort["cool"]
 
 
 def test_bad_targets_rejected_without_persistence(runtime_module):

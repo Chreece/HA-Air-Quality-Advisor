@@ -57,7 +57,9 @@ def test_fresh_device_can_choose_method_without_legacy_configure(runtime_module,
         assert m.settings(h.manager, h.spec)["control_mode"] == method
         assert h.dev["auto_control"] is False and h.room["allow_actuation"] is False
         assert not h.hass.services.calls  # Choosing settings does not dispatch hardware.
-        if method in ("automatic", "pid", "manual"):
+        if method in ("automatic", "pid"):
+            assert m.permission(h.manager, h.spec, h.cap) == (True, True)
+        elif method == "manual":
             assert m.permission(h.manager, h.spec, h.cap) == (True, False)
     asyncio.run(run())
 
@@ -81,10 +83,9 @@ def test_binary_pid_uses_device_power_switch_not_an_old_config_menu(runtime_modu
         h.room.update(enabled=False, allow_actuation=False)
         h.dev["auto_control"] = False
         await h.runtime.async_update(h.spec, {"control_mode": "pid", "kp": 20})
+        # Selecting PID is explicit per-device consent to start/stop this
+        # native fan when verified demand and dwell permit it.
         await tick(h, advance=601)
-        assert not h.hass.services.calls
-        await h.runtime.async_update(h.spec, {"allow_power": True})
-        await tick(h, advance=1)
         assert h.hass.services.calls[-1][1] == "turn_on"
         await tick(h, advance=1)
         await h.runtime.async_update(h.spec, {"allow_power": False})

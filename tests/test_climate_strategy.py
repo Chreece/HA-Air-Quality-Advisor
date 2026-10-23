@@ -8,8 +8,10 @@ CFG={"enabled":True,"controller":"device","mode":"auto"}
 DEVICE={"kind":"climate","heat":True,"cool":True,"setpoint":True}
 def test_default_profiles_keep_heating_and_cooling_separate():
     p,err=profiles({})
-    assert err is None and p["home"].heat_c==20 and p["home"].cool_c==26
-    assert profiles({"profiles":{"home":{"heat_c":25,"cool_c":25}}})[1]
+    assert err is None and p["comfort"].heat_c==20 and p["comfort"].cool_c==26
+    assert p["home"].heat_c==18 and p["home"].cool_c==28
+    assert p["eco"].heat_c==17 and p["eco"].cool_c==29
+    assert profiles({"profiles":{"comfort":{"heat_c":25,"cool_c":25}}})[1]
 def test_presence_does_not_invent_vacancy():
     assert occupied_evidence([False,False])[0]=="unoccupied"
     assert occupied_evidence([False,True])[0]=="occupied"
@@ -22,7 +24,7 @@ def test_global_away_requires_all_people_away():
     assert home_away_evidence([],mode="all_home")[0]=="home"
 def test_profile_priority_away_vs_occupancy_vs_sleep():
     assert select_profile({},at_home="away",occupied="occupied")[0]=="away"
-    assert select_profile({},at_home="home",occupied="unoccupied")[0]=="unoccupied"
+    assert select_profile({},at_home="home",occupied="unoccupied")[0]=="home"
     assert select_profile({},at_home="home",occupied="occupied",sleeping=True)[0]=="sleep"
     assert select_profile({},at_home="away",occupied="occupied",manual="home")[0]=="home"
 def test_auto_mode_schmitt_prevents_short_cycling():
@@ -35,8 +37,9 @@ def test_auto_mode_schmitt_prevents_short_cycling():
 def test_policy_device_is_conservative_and_capability_gated():
     p=policy(CFG,temp_c=19,capability=DEVICE,at_home="home",occupied="occupied")
     assert (p.state,p.desired_hvac_mode,p.temperature_c)==("ready","heat",20)
+    assert p.profile=="comfort"
     assert policy(CFG,temp_c=27,capability=DEVICE,at_home="home",occupied="occupied").desired_hvac_mode=="cool"
-    assert policy(CFG,temp_c=23,capability=DEVICE,at_home="home",occupied="unoccupied").profile=="unoccupied"
+    assert policy(CFG,temp_c=23,capability=DEVICE,at_home="home",occupied="unoccupied").profile=="home"
     assert policy(CFG,temp_c=18,capability=DEVICE,at_home="away",occupied="occupied").profile=="away"
     assert policy(CFG,temp_c=19,capability=DEVICE,at_home="home",occupied="occupied",window_safe=False).state=="hold"
     assert policy(CFG,temp_c=27,capability={**DEVICE,"cool":False},at_home="home",occupied="occupied").state=="hold"

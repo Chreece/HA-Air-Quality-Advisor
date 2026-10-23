@@ -26,20 +26,20 @@ def test_auto_discovers_all_room_presence_and_any_on_wins(adapter):
     report,tracked=gather(hass,room,c)
     assert report["occupancy"]=="occupied"
     assert len(report["presence_entities"])==2
-    assert report["profile"]=="home"
+    assert report["profile"]=="comfort"
     assert report["mode"]=="heat"
     assert report["automatic_actuation_enabled"] is False
     assert "binary_sensor.kitchen_occupancy" in tracked
 
 
-def test_all_presence_off_selects_eco_while_any_unknown_does_not_claim_vacancy(adapter):
+def test_all_presence_off_selects_home_while_any_unknown_never_claims_away(adapter):
     from custom_components.air_quality_advisor.climate_rooms import gather
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     cfg={"enabled":True,"controller":"device","mode":"heat",
          "unoccupied_delay_minutes":0,
          "temperature_entity":"sensor.kitchen_temperature","climate_entity":"climate.kitchen"}
     result,_=gather(home(),room,cfg)
-    assert result["profile"]=="unoccupied"
+    assert result["profile"]=="home"
     result,_=gather(home(unknown=True),room,cfg)
     assert result["profile"]=="home"
 
@@ -74,7 +74,7 @@ def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
     for entity in ("binary_sensor.kitchen_occupancy","binary_sensor.kitchen_presence"):
         home_hass.states.get(entity).last_changed=before
     status,_=gather(home_hass,room,conf)
-    assert status["profile"]=="unoccupied"
+    assert status["profile"]=="home"
 
 
 def test_climate_only_room_without_windows_is_not_forced_to_hold(adapter):

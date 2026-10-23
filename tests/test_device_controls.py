@@ -129,17 +129,17 @@ def test_pid_gain_source_can_restore_conservative_fixed_defaults(controls):
     assert prepared == ["living", "living"]
 
 
-def test_profile_target_updates_preserve_other_band_and_safety(controls):
+def test_profile_target_updates_preserve_room_comfort_band_and_safety(controls):
     module, Err = controls
     controller, writes, _ = manager()
     asyncio.run(module.update_device_setting(
-        controller, "climate_profile", "away_heat", 17.0, area="living"))
+        controller, "climate_profile", "comfort_heat", 21.0, area="living"))
     saved = controller.settings["climate_rooms"]["living"]
-    assert saved["profiles"]["away"] == {"heat_c": 17.0, "cool_c": 30.0}
+    assert saved["profiles"]["comfort"] == {"heat_c": 21.0, "cool_c": 26.0}
     with pytest.raises(Err, match="Invalid comfort band"):
         asyncio.run(module.update_device_setting(
-            controller, "climate_profile", "away_cool", 17.2, area="living"))
-    assert controller.settings["climate_rooms"]["living"]["profiles"]["away"]["cool_c"] == 30.0
+            controller, "climate_profile", "comfort_cool", 21.2, area="living"))
+    assert controller.settings["climate_rooms"]["living"]["profiles"]["comfort"]["cool_c"] == 26.0
 
 
 def test_global_thresholds_are_home_only_and_check_temperature_limits(controls):
