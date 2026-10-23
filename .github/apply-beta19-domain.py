@@ -35,10 +35,8 @@ def main():
     # Canonical imports/paths/domain literals throughout active code and tests.
     targets=[NEW_DIR,*[p for p in (ROOT/"tests").glob("*.py")],
              *[p for p in (ROOT/"tools").glob("*.py")],
-             ROOT/"README.md",ROOT/"RELEASING.md",ROOT/"CHANGELOG.md",
-             ROOT/"generate_translations.py",ROOT/"apply_device_controls_i18n.py",
-             ROOT/"apply_equipment_i18n.py",ROOT/"apply_room_setup_i18n.py",
-             ROOT/"apply_beta16_i18n.py"]
+             *[p for p in ROOT.glob("*.py")],
+             ROOT/"README.md",ROOT/"RELEASING.md",ROOT/"CHANGELOG.md"]
     targets += list((ROOT/".github"/"workflows").glob("*.yml"))
     for item in targets:
         paths=item.rglob("*") if item.is_dir() else [item]
