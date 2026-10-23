@@ -322,6 +322,21 @@ async def _async_cleanup(hass: HomeAssistant, entry_id: str) -> None:
         text = text.replace("air_quality_advisor", "environment_manager")
         path.write_text(text, encoding="utf-8")
 
+    # The dashboard/device grouping must recognize both migrated identifiers
+    # and any legacy identifiers still visible during the handoff window.
+    card = NEW_DIR / "frontend" / "air-quality-advisor-card.js"
+    card_text = card.read_text(encoding="utf-8")
+    old_filter = ".filter((pair) => Array.isArray(pair) && pair[0]==='air_quality_advisor')"
+    if old_filter not in card_text:
+        raise RuntimeError("legacy frontend device-identifier filter changed")
+    card_text = card_text.replace(
+        old_filter,
+        ".filter((pair) => Array.isArray(pair) && "
+        "(pair[0]==='environment_manager' || pair[0]==='air_quality_advisor'))",
+        1,
+    )
+    card.write_text(card_text, encoding="utf-8")
+
     # Recreate the final migration verifier after the broad repository rewrite.
     verifier = ROOT / "tools" / "verify_domain_switch_ha.py"
     verifier.write_text(FINAL_VERIFIER, encoding="utf-8")
@@ -346,6 +361,10 @@ async def _async_cleanup(hass: HomeAssistant, entry_id: str) -> None:
         "air_quality_advisor.fan_power_",
         "air_quality_advisor.humidity_power_",
         "air_quality_advisor.running_fan_",
+        "air_quality_advisor.humidity_native_",
+        "air_quality_advisor.native_dry_fan_",
+        "air_quality_advisor.secondary_native_",
+        "air_quality_advisor_",
         "air_quality_advisor-card",
     )
     unexpected = []
