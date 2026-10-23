@@ -144,14 +144,19 @@ async def async_migrate_legacy_registry(hass: Any, legacy: Any) -> Any:
     devices.sort(key=lambda d: bool(getattr(d, "parent_device_id", None)))
 
     moved_devices: list[tuple[str, set[tuple[str, str]]]] = []
-    moved_entities: list[str] = []
+    moved_entities: list[tuple[str, str | None]] = []
     domain_changed = False
     try:
         # Keep config_entry_id and config_subentry_id untouched. Only the
         # integration platform / Manager-owned identifier namespace changes.
         for entity in entities:
-            ent_reg.async_update_entity_platform(entity.entity_id, DOMAIN)
-            moved_entities.append(entity.entity_id)
+            ent_reg.async_update_entity_platform(
+                entity.entity_id,
+                DOMAIN,
+                new_config_entry_id=legacy.entry_id,
+                new_config_subentry_id=entity.config_subentry_id,
+            )
+            moved_entities.append((entity.entity_id, entity.config_subentry_id))
 
         for device in devices:
             old_ids = set(device.identifiers)
@@ -201,9 +206,14 @@ async def async_migrate_legacy_registry(hass: Any, legacy: Any) -> Any:
                 dev_reg.async_update_device(device_id, new_identifiers=old_ids)
             except Exception:
                 pass
-        for entity_id in reversed(moved_entities):
+        for entity_id, subentry_id in reversed(moved_entities):
             try:
-                ent_reg.async_update_entity_platform(entity_id, source_domain)
+                ent_reg.async_update_entity_platform(
+                    entity_id,
+                    source_domain,
+                    new_config_entry_id=legacy.entry_id,
+                    new_config_subentry_id=subentry_id,
+                )
             except Exception:
                 pass
         raise
