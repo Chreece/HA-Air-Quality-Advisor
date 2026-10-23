@@ -212,13 +212,14 @@ async def update_device_setting(manager: Any, kind: str, key: str,
         "pid_gain_source", "global_environment", "global_occupancy",
         "area_environment", "climate_operating", "global_policy", "climate_policy",
         "device_target", "device_policy", "aqi_scale", "aqi_limit",
-        "climate_schedule", "direct_tuning", "area_science",
+        "climate_schedule", "direct_tuning", "area_science", "room_equipment_limit",
     ):
         raise HomeAssistantError("Unsupported settings editor")
     if kind in (
         "pid", "profile", "climate_profile", "pid_gain_source",
         "area_environment", "climate_operating", "climate_policy",
         "device_target", "device_policy", "climate_schedule", "direct_tuning", "area_science",
+        "room_equipment_limit",
     ) and not area:
         raise HomeAssistantError("A configured Home Assistant area is required")
 
