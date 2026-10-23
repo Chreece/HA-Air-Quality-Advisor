@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b21/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b22/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,36 +21,33 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 19 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. This beta changes the Home Assistant integration domain to **environment_manager**. Existing beta18 users must use the built-in migration flow described below; **do not delete the old integration entry**. Physical equipment protections remain mandatory and software tests do not certify hardware.
+> **v0.6.0 beta 22 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Beta22 uses the canonical Home Assistant domain **environment_manager** and completes the legacy-domain migration while preserving the exact Home Assistant config-entry ID. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
 
-## Beta 20 - actual environment_manager domain and automatic room presets
+## Beta 22 - exact config-entry identity during domain migration
 
-This is the first release whose installed Home Assistant integration domain is **environment_manager**. The b19 release was only the old-domain migration bridge. Existing air_quality_advisor entries are migrated through the new config flow while preserving room/device/entity registry identities.
+Beta22 migrates an existing `air_quality_advisor` or beta20 `enviroment_manager` entry **in place**. The exact config-entry ID survives, as do room subentry IDs, entity IDs/unique IDs, device IDs, user custom names, disabled states, options and stored settings. Only the registry ownership that must follow the canonical domain changes.
 
-General settings is now one page only: changing the TTS provider or occupied/sleep list source is normalized on submit instead of rendering General settings a second time.
+Home Assistant 2026.10 freezes a config entry's domain and does not provide a public cross-domain setter. The migration therefore performs a tightly checked reindex of the existing entry and fails closed if the validated HA internals are unavailable or the entry is in an unsafe transitional state. The release gate runs this migration against installed Home Assistant 2026.10 for both legacy domains.
 
-The separate **Allow power and HVAC mode control** entity and backend flag are removed. Selecting Automatic, PID or Manual on an authorized native controller is the control permission; when its room policy and demand require it, the controller can turn the native device/mode on, regulate it and turn it off again under the existing availability, ownership, dwell, window and protection gates.
+After updating through HACS and restarting, use **Settings -> Devices & services -> Add integration -> Home Environment Manager** if the migration is not already surfaced. Confirming migration re-homes the existing entry; it does not create a second Home Environment Manager instance.
 
-Room Environment owns the temperature setpoints:
-- **Comfort**: room occupied.
-- **Home**: somebody home but this room unoccupied.
-- **Away**: nobody home; uses the Room Environment temperature min/max limits rather than duplicate setpoint inputs.
-- **Sleep**: sleeping-room setpoints.
-- **Eco**: explicit energy-saving override with its own room setpoints; it is never selected automatically from occupancy.
+## Beta 21 - canonical environment_manager spelling repair
 
-Per-device duplicated heating/cooling preset numbers are removed.
+Beta21 corrected beta20's domain spelling mistake. The installed package is `custom_components/environment_manager` and the runtime/manifest domain is `environment_manager`. It retained `air_quality_advisor`, beta20 `enviroment_manager`, and `home_environment_manager` service/card compatibility during the beta migration window.
 
-## Beta 19 - Canonical environment_manager domain and room-owned operating presets
+Beta21 preserved entity/device registry identity, room-owned Comfort/Home/Sleep/Eco targets, verified Away behavior, room-wide limits and room-sensor feedback precedence. Beta22 supersedes its temporary replacement-entry migration by preserving the config-entry ID as well.
 
-The integration's canonical Home Assistant domain is now **environment_manager**. Because Home Assistant freezes a config entry's domain, the existing `air_quality_advisor` entry cannot simply be renamed in place. After updating through HACS and restarting Home Assistant, open **Settings → Devices & services → Add integration → Home Environment Manager**. The first page detects the old entry and offers **Migrate existing installation**. Confirm it once; do not delete/recreate the old entry manually.
+## Beta 20 - transitional enviroment_manager typo and automatic room presets
 
-The migration copies the old entry data/options and the existing Home/room subentries, then moves entity and device registry ownership before removing the legacy entry. Existing entity IDs, unique IDs, device IDs, custom device names, disabled states and room membership are preserved. Persisted controller/safety history is imported on first use. Old `air_quality_advisor.*` service calls and the old dashboard-card URL remain compatibility aliases, while new integrations and services use `environment_manager`.
+Beta20 introduced the room-owned preset/controller changes but accidentally installed under the misspelled domain **enviroment_manager**. Beta22 treats that domain as a migration source so beta20 testers are not stranded.
 
-Room operating presets now have strict meanings: **Comfort = verified room occupied**; **Home = someone is home but this room is unoccupied, or occupancy evidence is incomplete**; **Away = verified nobody home**; **Sleep = room is sleeping**; **Eco = explicit energy-saving override only**. Unknown presence never becomes Away and never earns Comfort. During the unoccupied dwell delay the room stays Home.
+The separate **Allow power and HVAC mode control** entity/backend flag was removed. Selecting Automatic, PID or Manual on an authorized native controller is the control permission; when room policy and demand require it, the controller may turn the native device/mode on, regulate it and turn it off again under availability, ownership, dwell, window and protection gates.
 
-The Room Environment device owns editable **Comfort, Home, Sleep and Eco** heating/cooling setpoints. **Away has no duplicate setpoint fields**: heating uses the room's minimum temperature limit and cooling uses its room maximum limit. Existing beta18 profile values migrate so the old occupied Home band becomes Comfort and the old Unoccupied band becomes Home.
+Room Environment owns **Comfort**, **Home**, **Sleep** and explicit **Eco** heating/cooling targets. **Away** is chosen only from verified nobody-home evidence and uses the Room Environment temperature bounds instead of duplicate device setpoints.
 
-For a selected native climate/fan/humidifier, choosing **Automatic** or **PID** is now explicit consent for that exact controller to turn itself on/off and change its supported native mode when verified demand and its per-device occupancy policy require it. The controller still refuses to seize a device that was already running manually, waits for physical availability before calculations, and retains acknowledgement, minimum ON/OFF, maximum-runtime, window/defrost/interlock and manual-override protections. Raw switches/proportional outputs remain separately commissioned.
+## Beta 19 - migration bridge and room-owned operating presets
+
+Beta19 remained on the legacy `air_quality_advisor` package/domain as the HACS-safe bridge toward the later canonical package. It introduced the room preset semantics and migration metadata needed by subsequent betas. Direct beta19 -> beta22 and chained beta19 -> beta20 -> beta22 storage ancestry are both retained.
 
 ## Beta 18 - Room Environment limits and room-sensor control feedback
 
