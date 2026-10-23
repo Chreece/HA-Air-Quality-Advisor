@@ -1,0 +1,18 @@
+name: Audit beta19 domain migration
+on:
+  push:
+    branches: ['fix/domain-and-room-presets-beta19-20261023']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find legacy literals in new integration
+        shell: bash
+        run: |
+          set +e
+          grep -RIn --exclude-dir=translations --exclude='equipment_text.py' --exclude='strings.json' 'air_quality_advisor' custom_components/environment_manager | tee /tmp/domain-hits.txt
+          echo "LEGACY_DOMAIN_HIT_COUNT=$(wc -l < /tmp/domain-hits.txt)"
+          exit 0

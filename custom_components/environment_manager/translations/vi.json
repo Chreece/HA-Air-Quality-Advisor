@@ -1,0 +1,1808 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Phòng",
+        "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "cài đặt · nguồn",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Chọn: cài đặt · nguồn · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Loại trừ cảm biến cửa sổ",
+        "description": "2 · Loại trừ cảm biến cửa sổ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ"
+        },
+        "data_description": {
+          "excluded_window_entities": "Chọn: Loại trừ cảm biến cửa sổ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Phòng · Chỉ số nấm mốc",
+        "description": "Phòng: {area_name} ({position}/{total}). 🌡️ 🧊 Chỉ số nấm mốc · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà",
+          "mold_indoor_temperature": "Phòng · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Chỉ số nấm mốc · 🧊 °C",
+          "mold_recalibrate": "Chỉ số nấm mốc · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Bên ngoài · Nhiệt độ · nguồn · Chỉ số nấm mốc"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Chỉ thiết lập “Phòng · 🌡️ (°C/°F)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "mold_critical_temperature_c": "🧊 Chỉ số nấm mốc · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Dùng phép đo thực phù hợp cho “Chỉ số nấm mốc · ↻ 🌡️”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "mold_outdoor_weather_entity": "Chọn weather.* · Bên ngoài Nhiệt độ (temperature, °C/°F) → Chỉ số nấm mốc. Bắt buộc: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Chất lượng không khí ngoài trời",
+        "description": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời"
+        },
+        "data_description": {
+          "outdoor_sensors": "Chọn: Chất lượng không khí ngoài trời · AQI, CO₂, PM2.5, PM10, VOC. Không khả dụng: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Thời tiết và cảnh báo",
+        "description": "Thời tiết và cảnh báo. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "weather_warnings": "Cảnh báo thời tiết"
+        },
+        "data_description": {
+          "weather_entities": "Chọn: Thời tiết và cảnh báo · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Thời tiết và cảnh báo · ⚠ (Không khả dụng) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Thông báo (tùy chọn)",
+        "description": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+        "data": {
+          "language": "Ngôn ngữ",
+          "automatic_tts": "Tự động",
+          "automatic_notifications": "Tự động · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Thông báo (tùy chọn) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "cài đặt · nguồn",
+          "tts_engine": "cài đặt · nguồn · TTS_ENGINE",
+          "media_players": "cài đặt · nguồn · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Thông báo (tùy chọn)",
+          "ai_conversation_agent": "AI · Ngôn ngữ"
+        },
+        "data_description": {
+          "language": "Ngôn ngữ: Home Assistant (Mặc định).",
+          "automatic_tts": "Mặc định: ⛔ · Tự động · 🪟 90 s. Tùy chọn này điều khiển “Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "automatic_notifications": "Tùy chọn này điều khiển “Tự động · AUTOMATIC_NOTIFICATIONS”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "announcement_repeat_minutes": "Mặc định: 10 min · 0 = không bao giờ · Khi nguyên nhân vẫn còn · Phòng.",
+          "use_announcement_hub": "Announcement Hub · Không khả dụng → Home Assistant.",
+          "notify_entities": "Chọn: notify.* · cài đặt · nguồn. Chọn nguồn Home Assistant thực cho “cài đặt · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "tts_engine": "Chọn: tts.* · cài đặt · nguồn · TTS_ENGINE.",
+          "media_players": "Chọn: media_player.* · cài đặt · nguồn · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Thông báo (tùy chọn) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Chọn: conversation.* (Home Assistant · Mặc định)."
+        }
+      },
+      "thresholds": {
+        "title": "Ngưỡng nâng cao",
+        "description": "Ngưỡng nâng cao. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ngoài trời · AQI (≤)",
+          "outdoor_co2": "Ngoài trời · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ngoài trời · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ngoài trời · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ngoài trời · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ngoài trời · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Bên ngoài (µg/m³)",
+          "outdoor_o3": "O₃ · Bên ngoài (µg/m³)",
+          "outdoor_so2": "SO₂ · Bên ngoài (µg/m³)",
+          "indoor_aqi": "Chất lượng không khí · AQI (≥)",
+          "indoor_co2": "Chất lượng không khí · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Chất lượng không khí · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Chất lượng không khí · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Chất lượng không khí · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Chất lượng không khí · VOC (ppb) (≥)",
+          "indoor_humidity": "Chất lượng không khí · RH (%) (≥)",
+          "min_outdoor_temp": "Ngoài trời · °C (≥)",
+          "max_outdoor_temp": "Ngoài trời · °C (≤)",
+          "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
+          "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
+          "max_age_minutes": "⏱ · Mở (min, ≤)",
+          "indoor_mold": "Chỉ số nấm mốc · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Ngưỡng quyết định cho “Ngoài trời · AQI (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_co2": "Ngưỡng quyết định cho “Ngoài trời · CO₂ (ppm) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_pm25": "Ngưỡng quyết định cho “Ngoài trời · PM2.5 (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_pm10": "Ngưỡng quyết định cho “Ngoài trời · PM10 (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_voc": "Ngưỡng quyết định cho “Ngoài trời · VOC (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_voc_parts": "Ngưỡng quyết định cho “Ngoài trời · VOC (ppb) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_no2": "Ngưỡng quyết định cho “NO₂ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_o3": "Ngưỡng quyết định cho “O₃ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_so2": "Ngưỡng quyết định cho “SO₂ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_aqi": "Ngưỡng quyết định cho “Chất lượng không khí · AQI (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_co2": "Ngưỡng quyết định cho “Chất lượng không khí · CO₂ (ppm) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_pm25": "Ngưỡng quyết định cho “Chất lượng không khí · PM2.5 (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_pm10": "Ngưỡng quyết định cho “Chất lượng không khí · PM10 (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_voc": "Ngưỡng quyết định cho “Chất lượng không khí · VOC (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_voc_parts": "Ngưỡng quyết định cho “Chất lượng không khí · VOC (ppb) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_humidity": "Ngưỡng quyết định cho “Chất lượng không khí · RH (%) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "min_outdoor_temp": "Ngưỡng quyết định cho “Ngoài trời · °C (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_outdoor_temp": "Ngưỡng quyết định cho “Ngoài trời · °C (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_outdoor_humidity": "Ngưỡng quyết định cho “Ngoài trời · RH (%) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_wind_kmh": "Ngưỡng quyết định cho “Thời tiết và cảnh báo · km/h (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_age_minutes": "Ngưỡng quyết định cho “⏱ · Mở (min, ≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_mold": "Ngưỡng quyết định cho “Chỉ số nấm mốc · ≥ 70%”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "setup_rooms": {
+        "title": "Phòng cần giám sát",
+        "description": "Phòng cần giám sát → nguồn → Chung cài đặt",
+        "data": {
+          "areas": "Phòng cần giám sát"
+        },
+        "data_description": {
+          "areas": "Phòng cần giám sát. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Phòng · {area_name} · {room_index}/{room_count}",
+        "description": "Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+        "data": {
+          "windows": "Cửa sổ",
+          "air_quality": "Cảm biến chất lượng không khí và môi trường",
+          "temperature": "Nhiệt độ",
+          "humidity": "Độ ẩm",
+          "pressure": "Cảm biến áp suất",
+          "climate_devices": "Thiết bị"
+        },
+        "data_description": {
+          "windows": "Cửa sổ. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "air_quality": "Cảm biến chất lượng không khí và môi trường. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "temperature": "Nhiệt độ. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "humidity": "Độ ẩm. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "pressure": "Cảm biến áp suất. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "climate_devices": "Thiết bị. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động."
+        }
+      },
+      "setup_general": {
+        "title": "Chung cài đặt",
+        "description": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng.",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "outdoor_sensors": "Chất lượng không khí ngoài trời",
+          "weather_warnings": "Cảnh báo thời tiết",
+          "general_room_occupancy_sensors": "Phòng · Hiện diện · cảm biến",
+          "general_home_trackers": "Nhà · Hiện diện · Thiết bị",
+          "general_occupied_rooms_entity": "Hiện diện · Phòng · nguồn (state)",
+          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
+          "general_sleep_rooms_entity": "Ngủ · Phòng · nguồn (state)",
+          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)",
+          "notify_entities": "cài đặt · nguồn",
+          "media_players": "cài đặt · nguồn · MEDIA_PLAYERS",
+          "tts_engine": "cài đặt · nguồn · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Chọn · nguồn",
+          "language": "TTS · Chọn · nguồn",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%",
+          "pollen_entities": "Phấn hoa · nguồn · Chọn",
+          "use_announcement_hub": "Tự động · Announcement Hub",
+          "general_away_cooldown_minutes": "Nhà · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Chọn: Thời tiết và cảnh báo · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Chọn: Chất lượng không khí ngoài trời · AQI, CO₂, PM2.5, PM10, VOC. Không khả dụng: ⚠",
+          "weather_warnings": "Thời tiết và cảnh báo · ⚠ (Không khả dụng) → 🪟🔒",
+          "general_room_occupancy_sensors": "Chọn nguồn Home Assistant thực cho “Phòng · Hiện diện · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_home_trackers": "Chọn nguồn Home Assistant thực cho “Nhà · Hiện diện · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_entity": "Chọn nguồn Home Assistant thực cho “Hiện diện · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_attribute": "Chỉ thiết lập “Hiện diện · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "general_sleep_rooms_entity": "Chọn nguồn Home Assistant thực cho “Ngủ · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_sleep_rooms_attribute": "Chỉ thiết lập “Ngủ · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "notify_entities": "Chọn: notify.* · cài đặt · nguồn. Chọn nguồn Home Assistant thực cho “cài đặt · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "media_players": "Chọn: media_player.* · cài đặt · nguồn · MEDIA_PLAYERS.",
+          "tts_engine": "Chọn: tts.* · cài đặt · nguồn · TTS_ENGINE.",
+          "ai_conversation_agent": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · AI · Chọn · nguồn · conversation.* / ai_task.*.",
+          "language": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · TTS · Chọn · nguồn · provider capabilities.",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Phấn hoa · nguồn · Chọn.",
+          "use_announcement_hub": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Tự động · Announcement Hub.",
+          "general_away_cooldown_minutes": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Nhà · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Lựa chọn không hợp lệ: Chất lượng không khí ngoài trời (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Không khả dụng: Chất lượng không khí ngoài trời (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Lựa chọn không hợp lệ: Thời tiết và cảnh báo (weather.*).",
+      "invalid_warning": "Lựa chọn không hợp lệ: Thời tiết và cảnh báo ⚠.",
+      "missing_notify": "Chọn: Announcement Hub / notify.*.",
+      "missing_tts": "Chọn: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Lựa chọn không hợp lệ: °C min < max.",
+      "no_areas": "Chọn: Phòng.",
+      "no_window_areas": "Không khả dụng: Đo lường (binary_sensor, window).",
+      "invalid_areas": "Lựa chọn không hợp lệ: Phòng.",
+      "invalid_window_exclusions": "Lựa chọn không hợp lệ: Loại trừ cảm biến cửa sổ.",
+      "invalid_indoor_exclusions": "Lựa chọn không hợp lệ: Loại trừ cảm biến không khí trong nhà.",
+      "no_windows_after_exclusions": "Giữ ít nhất một cảm biến cửa sổ.",
+      "review_areas_after_exclusions": "Kiểm tra: Phòng · Đo lường (0).",
+      "invalid_repeat_minutes": "Lựa chọn không hợp lệ: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Không khả dụng: conversation.process.",
+      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*.",
+      "invalid_mold_temperature_sensor": "Phòng · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Phòng · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Chỉ số nấm mốc · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Chỉ số nấm mốc · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Chỉ số nấm mốc · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Không hợp lệ: Phòng cần giám sát",
+      "invalid_room_source": "Không hợp lệ: Phòng · nguồn"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — đã được cấu hình.",
+      "setup_area_removed": "Không hợp lệ: Phòng cần giám sát",
+      "setup_changed": "cài đặt ↻ Phòng cần giám sát"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Chọn",
+        "description": "Chọn: Phòng / Thời tiết và cảnh báo / Thông báo (tùy chọn) / Ngưỡng nâng cao",
+        "menu_options": {
+          "outside_data": "Bên ngoài · nguồn",
+          "general_settings": "Chung · cài đặt",
+          "area_settings": "Khu vực · cài đặt",
+          "delivery": "Thông báo (tùy chọn)",
+          "thresholds": "Ngưỡng nâng cao"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Loại trừ cảm biến cửa sổ",
+        "description": "2 · Loại trừ cảm biến cửa sổ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Loại trừ cảm biến cửa sổ"
+        },
+        "data_description": {
+          "excluded_window_entities": "Chọn: Loại trừ cảm biến cửa sổ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Phòng",
+        "description": "1 · 🪟 Phòng. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "cài đặt · nguồn",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Chọn: cài đặt · nguồn · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Phòng · Chỉ số nấm mốc",
+        "description": "Phòng: {area_name} ({position}/{total}). 🌡️ 🧊 Chỉ số nấm mốc · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Loại trừ cảm biến không khí trong nhà",
+          "mold_indoor_temperature": "Phòng · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Chỉ số nấm mốc · 🧊 °C",
+          "mold_recalibrate": "Chỉ số nấm mốc · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Bên ngoài · Nhiệt độ · nguồn · Chỉ số nấm mốc"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Chọn: Loại trừ cảm biến không khí trong nhà · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Chỉ thiết lập “Phòng · 🌡️ (°C/°F)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "mold_critical_temperature_c": "🧊 Chỉ số nấm mốc · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Dùng phép đo thực phù hợp cho “Chỉ số nấm mốc · ↻ 🌡️”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "mold_outdoor_weather_entity": "Chọn weather.* · Bên ngoài Nhiệt độ (temperature, °C/°F) → Chỉ số nấm mốc. Bắt buộc: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Chất lượng không khí ngoài trời",
+        "description": "Chất lượng không khí ngoài trời. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Chất lượng không khí ngoài trời"
+        },
+        "data_description": {
+          "outdoor_sensors": "Chọn: Chất lượng không khí ngoài trời · AQI, CO₂, PM2.5, PM10, VOC. Không khả dụng: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Thời tiết và cảnh báo",
+        "description": "Thời tiết và cảnh báo. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "weather_warnings": "Cảnh báo thời tiết"
+        },
+        "data_description": {
+          "weather_entities": "Chọn: Thời tiết và cảnh báo · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Thời tiết và cảnh báo · ⚠ (Không khả dụng) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Thông báo (tùy chọn)",
+        "description": "Thông báo (tùy chọn). Thông báo tự động · Thông báo giọng nói tự động. Announcement Hub.",
+        "data": {
+          "language": "Ngôn ngữ",
+          "automatic_tts": "Tự động",
+          "automatic_notifications": "Tự động · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Thông báo (tùy chọn) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "cài đặt · nguồn",
+          "tts_engine": "cài đặt · nguồn · TTS_ENGINE",
+          "media_players": "cài đặt · nguồn · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Thông báo (tùy chọn)",
+          "ai_conversation_agent": "AI · Ngôn ngữ"
+        },
+        "data_description": {
+          "language": "Ngôn ngữ: Home Assistant (Mặc định).",
+          "automatic_tts": "Mặc định: ⛔ · Tự động · 🪟 90 s. Tùy chọn này điều khiển “Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "automatic_notifications": "Tùy chọn này điều khiển “Tự động · AUTOMATIC_NOTIFICATIONS”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "announcement_repeat_minutes": "Mặc định: 10 min · 0 = không bao giờ · Khi nguyên nhân vẫn còn · Phòng.",
+          "use_announcement_hub": "Announcement Hub · Không khả dụng → Home Assistant.",
+          "notify_entities": "Chọn: notify.* · cài đặt · nguồn. Chọn nguồn Home Assistant thực cho “cài đặt · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "tts_engine": "Chọn: tts.* · cài đặt · nguồn · TTS_ENGINE.",
+          "media_players": "Chọn: media_player.* · cài đặt · nguồn · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Thông báo (tùy chọn) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Chọn: conversation.* (Home Assistant · Mặc định)."
+        }
+      },
+      "thresholds": {
+        "title": "Ngưỡng nâng cao",
+        "description": "Ngưỡng nâng cao. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ngoài trời · AQI (≤)",
+          "outdoor_co2": "Ngoài trời · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ngoài trời · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ngoài trời · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ngoài trời · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ngoài trời · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Bên ngoài (µg/m³)",
+          "outdoor_o3": "O₃ · Bên ngoài (µg/m³)",
+          "outdoor_so2": "SO₂ · Bên ngoài (µg/m³)",
+          "indoor_aqi": "Chất lượng không khí · AQI (≥)",
+          "indoor_co2": "Chất lượng không khí · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Chất lượng không khí · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Chất lượng không khí · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Chất lượng không khí · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Chất lượng không khí · VOC (ppb) (≥)",
+          "indoor_humidity": "Chất lượng không khí · RH (%) (≥)",
+          "min_outdoor_temp": "Ngoài trời · °C (≥)",
+          "max_outdoor_temp": "Ngoài trời · °C (≤)",
+          "max_outdoor_humidity": "Ngoài trời · RH (%) (≤)",
+          "max_wind_kmh": "Thời tiết và cảnh báo · km/h (≤)",
+          "max_age_minutes": "⏱ · Mở (min, ≤)",
+          "indoor_mold": "Chỉ số nấm mốc · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Ngưỡng quyết định cho “Ngoài trời · AQI (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_co2": "Ngưỡng quyết định cho “Ngoài trời · CO₂ (ppm) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_pm25": "Ngưỡng quyết định cho “Ngoài trời · PM2.5 (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_pm10": "Ngưỡng quyết định cho “Ngoài trời · PM10 (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_voc": "Ngưỡng quyết định cho “Ngoài trời · VOC (µg/m³) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_voc_parts": "Ngưỡng quyết định cho “Ngoài trời · VOC (ppb) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_no2": "Ngưỡng quyết định cho “NO₂ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_o3": "Ngưỡng quyết định cho “O₃ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outdoor_so2": "Ngưỡng quyết định cho “SO₂ · Bên ngoài (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_aqi": "Ngưỡng quyết định cho “Chất lượng không khí · AQI (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_co2": "Ngưỡng quyết định cho “Chất lượng không khí · CO₂ (ppm) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_pm25": "Ngưỡng quyết định cho “Chất lượng không khí · PM2.5 (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_pm10": "Ngưỡng quyết định cho “Chất lượng không khí · PM10 (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_voc": "Ngưỡng quyết định cho “Chất lượng không khí · VOC (µg/m³) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_voc_parts": "Ngưỡng quyết định cho “Chất lượng không khí · VOC (ppb) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_humidity": "Ngưỡng quyết định cho “Chất lượng không khí · RH (%) (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "min_outdoor_temp": "Ngưỡng quyết định cho “Ngoài trời · °C (≥)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_outdoor_temp": "Ngưỡng quyết định cho “Ngoài trời · °C (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_outdoor_humidity": "Ngưỡng quyết định cho “Ngoài trời · RH (%) (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_wind_kmh": "Ngưỡng quyết định cho “Thời tiết và cảnh báo · km/h (≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "max_age_minutes": "Ngưỡng quyết định cho “⏱ · Mở (min, ≤)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "indoor_mold": "Ngưỡng quyết định cho “Chỉ số nấm mốc · ≥ 70%”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "environment": {
+        "title": "cài đặt · cài đặt · nguồn",
+        "description": "Chỉ thiết lập “cài đặt · cài đặt · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "pollen_entity": "Phấn hoa · nguồn",
+          "pollen_high_from": "POLLEN · Phấn hoa · HIGH",
+          "pollen_max_scale": "POLLEN · Phấn hoa · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Phấn hoa · NO VENT",
+          "aqi_scale_0": "AQI #1 · nguồn",
+          "aqi_custom_limit_0": "AQI #1 · mục tiêu",
+          "aqi_scale_1": "AQI #2 · nguồn",
+          "aqi_custom_limit_1": "AQI #2 · mục tiêu",
+          "aqi_scale_2": "AQI #3 · nguồn",
+          "aqi_custom_limit_2": "AQI #3 · mục tiêu",
+          "aqi_scale_3": "AQI #4 · nguồn",
+          "aqi_custom_limit_3": "AQI #4 · mục tiêu",
+          "aqi_scale_4": "AQI #5 · nguồn",
+          "aqi_custom_limit_4": "AQI #5 · mục tiêu",
+          "aqi_scale_5": "AQI #6 · nguồn",
+          "aqi_custom_limit_5": "AQI #6 · mục tiêu",
+          "aqi_scale_6": "AQI #7 · nguồn",
+          "aqi_custom_limit_6": "AQI #7 · mục tiêu",
+          "aqi_scale_7": "AQI #8 · nguồn",
+          "aqi_custom_limit_7": "AQI #8 · mục tiêu",
+          "aqi_scale_8": "AQI #9 · nguồn",
+          "aqi_custom_limit_8": "AQI #9 · mục tiêu",
+          "aqi_scale_9": "AQI #10 · nguồn",
+          "aqi_custom_limit_9": "AQI #10 · mục tiêu",
+          "aqi_scale_10": "AQI #11 · nguồn",
+          "aqi_custom_limit_10": "AQI #11 · mục tiêu",
+          "aqi_scale_11": "AQI #12 · nguồn",
+          "aqi_custom_limit_11": "AQI #12 · mục tiêu",
+          "aqi_scale_12": "AQI #13 · nguồn",
+          "aqi_custom_limit_12": "AQI #13 · mục tiêu",
+          "aqi_scale_13": "AQI #14 · nguồn",
+          "aqi_custom_limit_13": "AQI #14 · mục tiêu",
+          "aqi_scale_14": "AQI #15 · nguồn",
+          "aqi_custom_limit_14": "AQI #15 · mục tiêu",
+          "aqi_scale_15": "AQI #16 · nguồn",
+          "aqi_custom_limit_15": "AQI #16 · mục tiêu",
+          "aqi_scale_16": "AQI #17 · nguồn",
+          "aqi_custom_limit_16": "AQI #17 · mục tiêu",
+          "aqi_scale_17": "AQI #18 · nguồn",
+          "aqi_custom_limit_17": "AQI #18 · mục tiêu",
+          "aqi_scale_18": "AQI #19 · nguồn",
+          "aqi_custom_limit_18": "AQI #19 · mục tiêu",
+          "aqi_scale_19": "AQI #20 · nguồn",
+          "aqi_custom_limit_19": "AQI #20 · mục tiêu",
+          "aqi_scale_20": "AQI #21 · nguồn",
+          "aqi_custom_limit_20": "AQI #21 · mục tiêu",
+          "aqi_scale_21": "AQI #22 · nguồn",
+          "aqi_custom_limit_21": "AQI #22 · mục tiêu",
+          "aqi_scale_22": "AQI #23 · nguồn",
+          "aqi_custom_limit_22": "AQI #23 · mục tiêu",
+          "aqi_scale_23": "AQI #24 · nguồn",
+          "aqi_custom_limit_23": "AQI #24 · mục tiêu",
+          "aqi_scale_24": "AQI #25 · nguồn",
+          "aqi_custom_limit_24": "AQI #25 · mục tiêu",
+          "aqi_scale_25": "AQI #26 · nguồn",
+          "aqi_custom_limit_25": "AQI #26 · mục tiêu",
+          "aqi_scale_26": "AQI #27 · nguồn",
+          "aqi_custom_limit_26": "AQI #27 · mục tiêu",
+          "aqi_scale_27": "AQI #28 · nguồn",
+          "aqi_custom_limit_27": "AQI #28 · mục tiêu",
+          "aqi_scale_28": "AQI #29 · nguồn",
+          "aqi_custom_limit_28": "AQI #29 · mục tiêu",
+          "aqi_scale_29": "AQI #30 · nguồn",
+          "aqi_custom_limit_29": "AQI #30 · mục tiêu",
+          "aqi_scale_30": "AQI #31 · nguồn",
+          "aqi_custom_limit_30": "AQI #31 · mục tiêu",
+          "aqi_scale_31": "AQI #32 · nguồn",
+          "aqi_custom_limit_31": "AQI #32 · mục tiêu"
+        },
+        "data_description": {
+          "pollen_entity": "Chọn nguồn Home Assistant thực cho “Phấn hoa · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "pollen_high_from": "Chỉ thiết lập “POLLEN · Phấn hoa · HIGH” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "pollen_max_scale": "Chỉ thiết lập “POLLEN · Phấn hoa · SCALE” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "pollen_avoid_ventilation": "Chỉ thiết lập “POLLEN · Phấn hoa · NO VENT” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_scale_0": "Chỉ thiết lập “AQI #1 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_0": "Ngưỡng quyết định cho “AQI #1 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_1": "Chỉ thiết lập “AQI #2 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_1": "Ngưỡng quyết định cho “AQI #2 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_2": "Chỉ thiết lập “AQI #3 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_2": "Ngưỡng quyết định cho “AQI #3 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_3": "Chỉ thiết lập “AQI #4 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_3": "Ngưỡng quyết định cho “AQI #4 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_4": "Chỉ thiết lập “AQI #5 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_4": "Ngưỡng quyết định cho “AQI #5 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_5": "Chỉ thiết lập “AQI #6 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_5": "Ngưỡng quyết định cho “AQI #6 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_6": "Chỉ thiết lập “AQI #7 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_6": "Ngưỡng quyết định cho “AQI #7 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_7": "Chỉ thiết lập “AQI #8 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_7": "Ngưỡng quyết định cho “AQI #8 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_8": "Chỉ thiết lập “AQI #9 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_8": "Ngưỡng quyết định cho “AQI #9 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_9": "Chỉ thiết lập “AQI #10 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_9": "Ngưỡng quyết định cho “AQI #10 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_10": "Chỉ thiết lập “AQI #11 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_10": "Ngưỡng quyết định cho “AQI #11 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_11": "Chỉ thiết lập “AQI #12 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_11": "Ngưỡng quyết định cho “AQI #12 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_12": "Chỉ thiết lập “AQI #13 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_12": "Ngưỡng quyết định cho “AQI #13 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_13": "Chỉ thiết lập “AQI #14 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_13": "Ngưỡng quyết định cho “AQI #14 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_14": "Chỉ thiết lập “AQI #15 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_14": "Ngưỡng quyết định cho “AQI #15 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_15": "Chỉ thiết lập “AQI #16 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_15": "Ngưỡng quyết định cho “AQI #16 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_16": "Chỉ thiết lập “AQI #17 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_16": "Ngưỡng quyết định cho “AQI #17 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_17": "Chỉ thiết lập “AQI #18 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_17": "Ngưỡng quyết định cho “AQI #18 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_18": "Chỉ thiết lập “AQI #19 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_18": "Ngưỡng quyết định cho “AQI #19 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_19": "Chỉ thiết lập “AQI #20 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_19": "Ngưỡng quyết định cho “AQI #20 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_20": "Chỉ thiết lập “AQI #21 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_20": "Ngưỡng quyết định cho “AQI #21 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_21": "Chỉ thiết lập “AQI #22 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_21": "Ngưỡng quyết định cho “AQI #22 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_22": "Chỉ thiết lập “AQI #23 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_22": "Ngưỡng quyết định cho “AQI #23 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_23": "Chỉ thiết lập “AQI #24 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_23": "Ngưỡng quyết định cho “AQI #24 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_24": "Chỉ thiết lập “AQI #25 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_24": "Ngưỡng quyết định cho “AQI #25 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_25": "Chỉ thiết lập “AQI #26 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_25": "Ngưỡng quyết định cho “AQI #26 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_26": "Chỉ thiết lập “AQI #27 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_26": "Ngưỡng quyết định cho “AQI #27 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_27": "Chỉ thiết lập “AQI #28 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_27": "Ngưỡng quyết định cho “AQI #28 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_28": "Chỉ thiết lập “AQI #29 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_28": "Ngưỡng quyết định cho “AQI #29 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_29": "Chỉ thiết lập “AQI #30 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_29": "Ngưỡng quyết định cho “AQI #30 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_30": "Chỉ thiết lập “AQI #31 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_30": "Ngưỡng quyết định cho “AQI #31 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "aqi_scale_31": "Chỉ thiết lập “AQI #32 · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "aqi_custom_limit_31": "Ngưỡng quyết định cho “AQI #32 · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "environment_room": {
+        "title": "cài đặt · cài đặt · nguồn",
+        "description": "Chỉ thiết lập “cài đặt · cài đặt · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "environment_area": "cài đặt · nguồn"
+        },
+        "data_description": {
+          "environment_area": "Chỉ thiết lập “cài đặt · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác."
+        }
+      },
+      "environment_room_air": {
+        "title": "cài đặt · Bên ngoài",
+        "description": "Chỉ thiết lập “cài đặt · Bên ngoài” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "temperature_entity": "Nhiệt độ · nguồn",
+          "room_volume_m3": "cài đặt · nguồn (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Máy lọc không khí · nguồn",
+          "extractor_entity": "Quạt hút · nguồn",
+          "co2_ndir_verified": "CO₂ · Bắt buộc",
+          "co2_target_ppm": "CO₂ · CO₂ · mục tiêu (ppm)",
+          "sleep_room": "Ngủ"
+        },
+        "data_description": {
+          "temperature_entity": "Chọn nguồn Home Assistant thực cho “Nhiệt độ · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "room_volume_m3": "Dùng phép đo thực phù hợp cho “cài đặt · nguồn (m³)”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "particle_cadr_m3h": "Dùng phép đo thực phù hợp cho “CADR (m³/h)”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "purifier_entity": "Chọn Máy lọc không khí · nguồn Home Assistant thực cho “Máy lọc không khí · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "extractor_entity": "Chọn Quạt hút · nguồn Home Assistant thực cho “Quạt hút · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "co2_ndir_verified": "Dùng phép đo thực phù hợp cho “CO₂ · Bắt buộc”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "co2_target_ppm": "Ngưỡng quyết định cho “CO₂ · CO₂ · mục tiêu (ppm)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "sleep_room": "Chỉ thiết lập “Ngủ” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "cài đặt · cài đặt · nguồn",
+        "description": "Chỉ thiết lập “cài đặt · cài đặt · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "radon_entity": "RADON · Rn · nguồn",
+          "radon_sensor_verified": "RADON · Rn · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · nguồn",
+          "formaldehyde_sensor_verified": "HCHO · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · nguồn · cảm biến (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · cảm biến · Bắt buộc",
+          "illuminance_entity": "LUX · nguồn (lux)",
+          "melanopic_edi_entity": "EDI · EDI · nguồn (lx)",
+          "melanopic_spectral_verified": "EDI · Bắt buộc"
+        },
+        "data_description": {
+          "radon_entity": "Chọn RADON · Rn · nguồn Home Assistant thực cho “RADON · Rn · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "radon_sensor_verified": "Dùng phép đo thực phù hợp cho “RADON · Rn · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED”. Ước tính không thay thế RADON · Rn · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED hiệu chuẩn.",
+          "radon_reference_bq_m3": "Chỉ thiết lập “Rn (Bq/m³)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "formaldehyde_entity": "Chọn HCHO · nguồn Home Assistant thực cho “HCHO · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "formaldehyde_sensor_verified": "Dùng phép đo thực phù hợp cho “HCHO · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED”. Ước tính không thay thế HCHO · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED hiệu chuẩn.",
+          "noise_entity": "Chọn dB(A) · nguồn · cảm biến (dB(A)) Home Assistant thực cho “dB(A) · nguồn · cảm biến (dB(A))”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "noise_sensor_calibrated": "Dùng phép đo thực phù hợp cho “dB(A) · cảm biến · Bắt buộc”. Ước tính không thay thế dB(A) · cảm biến · Bắt buộc hiệu chuẩn.",
+          "illuminance_entity": "Chọn LUX · nguồn (lux) Home Assistant thực cho “LUX · nguồn (lux)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "melanopic_edi_entity": "Chọn EDI · EDI · nguồn (lx) Home Assistant thực cho “EDI · EDI · nguồn (lx)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "melanopic_spectral_verified": "Dùng phép đo thực phù hợp cho “EDI · Bắt buộc”. Ước tính không thay thế cảm biến hiệu chuẩn."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "cài đặt · cài đặt · nguồn",
+        "description": "Chỉ thiết lập “cài đặt · cài đặt · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Tự động",
+          "radiant_temperature_entity": "Nhiệt độ · nguồn",
+          "air_speed_entity": "nguồn · Tốc độ · Bên ngoài (m/s)",
+          "air_speed_m_s": "Tốc độ · Bên ngoài (m/s)",
+          "met": "cài đặt · nguồn (met)",
+          "clo": "cài đặt · nguồn (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Chỉ thiết lập “PMV / PPD · Tự động” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "radiant_temperature_entity": "Chọn nguồn Home Assistant thực cho “Nhiệt độ · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "air_speed_entity": "Chọn nguồn · Tốc độ · Bên ngoài (m/s) Home Assistant thực cho “nguồn · Tốc độ · Bên ngoài (m/s)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "air_speed_m_s": "Dùng phép đo thực phù hợp cho “Tốc độ · Bên ngoài (m/s)”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "met": "Dùng phép đo thực phù hợp cho “cài đặt · nguồn (met)”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "clo": "Dùng phép đo thực phù hợp cho “cài đặt · nguồn (clo)”. Ước tính không thay thế cảm biến hiệu chuẩn."
+        }
+      },
+      "pid": {
+        "title": "cài đặt · PID",
+        "description": "Chỉ thiết lập “cài đặt · PID” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Tùy chọn này điều khiển “PID”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập."
+        }
+      },
+      "pid_room": {
+        "title": "cài đặt · PID",
+        "description": "Chỉ thiết lập “cài đặt · PID” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "pid_enabled": "PID · Tự động · AUTO",
+          "pid_climate_entities": "PID · Thiết bị",
+          "pid_temperature_entity": "Nhiệt độ · nguồn",
+          "pid_mode": "PID",
+          "pid_target_c": "mục tiêu (°C)",
+          "pid_pause_on_window_open": "PID · Bên ngoài"
+        },
+        "data_description": {
+          "pid_enabled": "Tùy chọn này điều khiển “PID · Tự động · AUTO”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "pid_climate_entities": "Chọn nguồn Home Assistant thực cho “PID · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "pid_temperature_entity": "Chọn nguồn Home Assistant thực cho “Nhiệt độ · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "pid_mode": "Tùy chọn này điều khiển “PID”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "pid_target_c": "Ngưỡng quyết định cho “mục tiêu (°C)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "pid_pause_on_window_open": "Tùy chọn này điều khiển “PID · Bên ngoài”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập."
+        }
+      },
+      "pid_tuning": {
+        "title": "cài đặt · PID",
+        "description": "Chỉ thiết lập “cài đặt · PID” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "pid_kp": "PID Kp · điều khiển (% per °C)",
+          "pid_ki": "PID Ki · điều khiển (% per °C-minute)",
+          "pid_kd": "PID Kd · điều khiển (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Tùy chọn này điều khiển “PID Kp · điều khiển (% per °C)”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "pid_ki": "Tùy chọn này điều khiển “PID Ki · điều khiển (% per °C-minute)”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "pid_kd": "Tùy chọn này điều khiển “PID Kd · điều khiển (%·minute per °C)”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "pid_offset_c": "Ngưỡng quyết định cho “PID (°C) · PID_OFFSET_C”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "pid_min_setpoint_c": "Ngưỡng quyết định cho “PID (°C) · MIN TARGET”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "pid_max_setpoint_c": "Ngưỡng quyết định cho “PID (°C) · MAX TARGET”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "pid_sample_seconds": "Khoảng thời gian này áp dụng cho “PID (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "pid_max_change_c": "Ngưỡng quyết định cho “PID (°C) · MAX Δ”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "pid_min_change_c": "Ngưỡng quyết định cho “PID (°C) · MIN Δ”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "climate": {
+        "title": "cài đặt · Thiết bị",
+        "description": "Chỉ thiết lập “cài đặt · Thiết bị” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+        "data": {
+          "climate_area": "Thiết bị"
+        },
+        "data_description": {
+          "climate_area": "Tùy chọn này điều khiển “Thiết bị”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập."
+        }
+      },
+      "climate_room": {
+        "title": "cài đặt · Thiết bị",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "climate_enabled": "Thiết bị · Tự động · AUTO",
+          "climate_allow_actuation": "Thiết bị · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Thiết bị · Tự động · MODE SWITCH",
+          "climate_prefer_native_auto": "Thiết bị · Tự động · NATIVE",
+          "climate_controller": "Thiết bị · điều khiển",
+          "climate_mode": "Thiết bị · MODE",
+          "climate_entity": "Thiết bị · nguồn",
+          "climate_temperature_entity": "Nhiệt độ · nguồn",
+          "climate_hysteresis_c": "Thiết bị (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Tùy chọn này điều khiển “Thiết bị · Tự động · AUTO”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_allow_actuation": "Tùy chọn này điều khiển “Thiết bị · CLIMATE_ALLOW_ACTUATION”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_auto_switch_hvac": "Tùy chọn này điều khiển “Thiết bị · Tự động · MODE SWITCH”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_prefer_native_auto": "Tùy chọn này điều khiển “Thiết bị · Tự động · NATIVE”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_controller": "Tùy chọn này Thiết bị · điều khiển “Thiết bị · điều khiển”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_mode": "Tùy chọn này điều khiển “Thiết bị · MODE”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_entity": "Chọn Thiết bị · nguồn Home Assistant thực cho “Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_temperature_entity": "Chọn nguồn Home Assistant thực cho “Nhiệt độ · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_hysteresis_c": "Ngưỡng quyết định cho “Thiết bị (°C)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "climate_presence": {
+        "title": "cài đặt · Hiện diện · Thiết bị",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "climate_occupancy_sensors": "Hiện diện · cảm biến",
+          "climate_away_entities": "Nhà · Thiết bị",
+          "climate_unknown_occupancy": "Hiện diện · Thiết bị",
+          "climate_unoccupied_delay_minutes": "Thiết bị · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Hiện diện · Thiết bị · cảm biến · Bắt buộc",
+          "climate_away_policy": "Nhà · Thiết bị · POLICY",
+          "climate_manual_profile": "Thiết bị · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Ngủ · Thiết bị",
+          "climate_sleep_schedule_enabled": "Ngủ · Tự động",
+          "climate_sleep_start": "Ngủ · Thiết bị · START",
+          "climate_sleep_end": "Ngủ · Thiết bị · END",
+          "climate_target_source": "Thiết bị · nguồn · mục tiêu",
+          "climate_comfort_adjustment_max_c": "Thiết bị (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Chọn nguồn Home Assistant thực cho “Hiện diện · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_away_entities": "Chọn nguồn Home Assistant thực cho “Nhà · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_unknown_occupancy": "Tùy chọn này điều khiển “Hiện diện · Thiết bị”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_unoccupied_delay_minutes": "Khoảng thời gian này áp dụng cho “Thiết bị · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_occupancy_stale_minutes": "Khoảng thời gian này áp dụng cho “Hiện diện · Thiết bị · cảm biến · Bắt buộc”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_away_policy": "Tùy chọn này điều khiển “Nhà · Thiết bị · POLICY”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_manual_profile": "Tùy chọn này điều khiển “Thiết bị · CLIMATE_MANUAL_PROFILE”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_sleep_active": "Tùy chọn này điều khiển “Ngủ · Thiết bị”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_sleep_schedule_enabled": "Tùy chọn này điều khiển “Ngủ · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_sleep_start": "Khoảng thời gian này áp dụng cho “Ngủ · Thiết bị · START”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_sleep_end": "Khoảng thời gian này áp dụng cho “Ngủ · Thiết bị · END”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_target_source": "Ngưỡng quyết định cho “Thiết bị · nguồn · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_comfort_adjustment_max_c": "Ngưỡng quyết định cho “Thiết bị (°C)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "climate_equipment": {
+        "title": "cài đặt · Thiết bị",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Thiết bị · nguồn · Nhiệt độ +",
+          "climate_cool_climate_entity": "COOL · Thiết bị · nguồn · Nhiệt độ −",
+          "climate_dry_climate_entity": "DRY · Thiết bị · nguồn",
+          "climate_fan_climate_entity": "FAN_ONLY · Tốc độ · Thiết bị · nguồn",
+          "climate_humidifier_entity": "HUMIDIFIER · Thiết bị · nguồn",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Thiết bị · nguồn",
+          "climate_extraction_fan_entity": "EXTRACT · Tốc độ · Thiết bị · nguồn",
+          "climate_purifier_fan_entity": "Máy lọc không khí · nguồn",
+          "climate_humidity_entity": "Độ ẩm · nguồn",
+          "climate_humidity_low_rh": "RH · Độ ẩm · Thiết bị (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Độ ẩm · Thiết bị (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Độ ẩm · Thiết bị · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Thiết bị · Nhiệt độ −",
+          "climate_humidity_setpoint_auto": "Độ ẩm · Tự động",
+          "climate_window_efficiency_notify": "Thiết bị · Bên ngoài",
+          "climate_dry_fan_mode_auto": "Tốc độ · Tự động",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Tốc độ · Thiết bị · Bắt buộc · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Tốc độ · Thiết bị · Bên ngoài · Bắt buộc · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Tốc độ · Thiết bị (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Độ ẩm · Công suất · Tự động",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Độ ẩm · Thiết bị · Công suất · Bắt buộc · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Độ ẩm · Thiết bị · Công suất · Bên ngoài · Bắt buộc · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Độ ẩm · Thiết bị · Công suất · Tự động (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Độ ẩm · Thiết bị · Công suất · Tắt (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Độ ẩm · Thiết bị · Công suất · Tự động (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Thiết bị · Tự động · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Chọn HEAT · Thiết bị · nguồn · Nhiệt độ + Home Assistant thực cho “HEAT · Thiết bị · nguồn · Nhiệt độ +”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_cool_climate_entity": "Chọn COOL · Thiết bị · nguồn · Nhiệt độ − Home Assistant thực cho “COOL · Thiết bị · nguồn · Nhiệt độ −”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_dry_climate_entity": "Chọn DRY · Thiết bị · nguồn Home Assistant thực cho “DRY · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_fan_climate_entity": "Chọn nguồn Home Assistant thực cho “FAN_ONLY · Tốc độ · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_humidifier_entity": "Chọn HUMIDIFIER · Thiết bị · nguồn Home Assistant thực cho “HUMIDIFIER · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_dehumidifier_entity": "Chọn DEHUMIDIFIER · Thiết bị · nguồn Home Assistant thực cho “DEHUMIDIFIER · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_extraction_fan_entity": "Chọn nguồn Home Assistant thực cho “EXTRACT · Tốc độ · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_purifier_fan_entity": "Chọn nguồn Home Assistant thực cho “Máy lọc không khí · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_humidity_entity": "Chọn nguồn Home Assistant thực cho “Độ ẩm · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_humidity_low_rh": "Ngưỡng quyết định cho “RH · Độ ẩm · Thiết bị (%) · RH MIN”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_humidity_high_rh": "Ngưỡng quyết định cho “RH · Độ ẩm · Thiết bị (%) · RH MAX”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_humidity_hysteresis_rh": "Ngưỡng quyết định cho “RH · Độ ẩm · Thiết bị · ± RH”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_cooling_dry_deferral_rh_points": "Tùy chọn này điều khiển “Thiết bị · Nhiệt độ −”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_humidity_setpoint_auto": "Tùy chọn này điều khiển “Độ ẩm · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_window_efficiency_notify": "Tùy chọn này điều khiển “Thiết bị · Bên ngoài”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_dry_fan_mode_auto": "Tùy chọn này điều khiển “Tốc độ · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_dry_fan_hardware_confirmed": "Dùng phép đo thực phù hợp cho “DRY/FAN_ONLY · Tốc độ · Thiết bị · Bắt buộc · HW ✓”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "climate_dry_fan_windowless_confirmed": "Dùng phép đo thực phù hợp cho “DRY/FAN_ONLY · Tốc độ · Thiết bị · Bên ngoài · Bắt buộc · NO WINDOW”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "climate_dry_fan_mode_dwell_s": "Khoảng thời gian này áp dụng cho “DRY/FAN_ONLY · Tốc độ · Thiết bị (s) · MODE DWELL”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_humidity_power_auto": "Tùy chọn này điều khiển “Độ ẩm · Công suất · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_humidity_power_hardware_confirmed": "Dùng phép đo thực phù hợp cho “RH POWER · Độ ẩm · Thiết bị · Công suất · Bắt buộc · HW ✓”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "climate_humidity_power_windowless_confirmed": "Dùng phép đo thực phù hợp cho “RH POWER · Độ ẩm · Thiết bị · Công suất · Bên ngoài · Bắt buộc · NO WINDOW”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "climate_humidity_power_min_on_s": "Khoảng thời gian này áp dụng cho “RH POWER · Độ ẩm · Thiết bị · Công suất · Tự động (s) · MIN ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_humidity_power_min_off_s": "Khoảng thời gian này áp dụng cho “RH POWER · Độ ẩm · Thiết bị · Công suất · Tắt (s) · MIN OFF”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_humidity_power_max_on_s": "Khoảng thời gian này áp dụng cho “RH POWER · Độ ẩm · Thiết bị · Công suất · Tự động (s) · MAX ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_secondary_climate_setpoint_auto": "Tùy chọn này điều khiển “Thiết bị · Tự động · TARGET AUTO”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "cài đặt · Thiết bị · Bên ngoài",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "climate_fan_speed_auto": "Tốc độ · Tự động",
+          "climate_fan_power_auto": "Tốc độ · Công suất · Tự động",
+          "climate_fan_power_hardware_confirmed": "FAN · Tốc độ · Thiết bị · Công suất · Bắt buộc · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Tốc độ · Thiết bị · Công suất · Tự động (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Tốc độ · Thiết bị · Công suất · Tắt (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Tốc độ · Thiết bị · Công suất · Tự động (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Thiết bị · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Thiết bị · nguồn",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Thiết bị · nguồn",
+          "climate_pm25_action_ug_m3": "PM2.5 · Thiết bị (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Thiết bị · Tốc độ (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Thiết bị · Tốc độ (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Tùy chọn này điều khiển “Tốc độ · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_fan_power_auto": "Tùy chọn này điều khiển “Tốc độ · Công suất · Tự động”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "climate_fan_power_hardware_confirmed": "Dùng phép đo thực phù hợp cho “FAN · Tốc độ · Thiết bị · Công suất · Bắt buộc · HW ✓”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "climate_fan_power_min_on_s": "Khoảng thời gian này áp dụng cho “FAN · Tốc độ · Thiết bị · Công suất · Tự động (s) · MIN ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_fan_power_min_off_s": "Khoảng thời gian này áp dụng cho “FAN · Tốc độ · Thiết bị · Công suất · Tắt (s) · MIN OFF”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_fan_power_max_on_s": "Khoảng thời gian này áp dụng cho “FAN · Tốc độ · Thiết bị · Công suất · Tự động (s) · MAX ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "climate_pm25_sensor_verified": "Dùng phép đo thực phù hợp cho “PM2.5 · PM2.5 · Thiết bị · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED”. Ước tính không thay thế PM2.5 · PM2.5 · Thiết bị · cảm biến · Bắt buộc · SENSOR ✓ · VERIFIED hiệu chuẩn.",
+          "climate_co2_entity": "Chọn CO₂ · CO₂ · Thiết bị · nguồn Home Assistant thực cho “CO₂ · CO₂ · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_pm25_entity": "Chọn PM2.5 · PM2.5 · Thiết bị · nguồn Home Assistant thực cho “PM2.5 · PM2.5 · Thiết bị · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "climate_pm25_action_ug_m3": "Ngưỡng quyết định cho “PM2.5 · Thiết bị (µg/m³)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_extraction_speed_percent": "Ngưỡng quyết định cho “EXTRACT · Thiết bị · Tốc độ (%) · SPEED %”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "climate_purifier_speed_percent": "Ngưỡng quyết định cho “PURIFIER · Thiết bị · Tốc độ (%) · SPEED %”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế."
+        }
+      },
+      "climate_profiles": {
+        "title": "cài đặt · Thiết bị",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "home_heat": "Sưởi · Ở nhà (°C)",
+          "home_cool": "Làm mát · Ở nhà (°C)",
+          "unoccupied_heat": "Sưởi · Phòng không có người (°C)",
+          "unoccupied_cool": "Làm mát · Phòng không có người (°C)",
+          "away_heat": "Sưởi · Vắng nhà (°C)",
+          "away_cool": "Làm mát · Vắng nhà (°C)",
+          "sleep_heat": "Sưởi · Ngủ (°C)",
+          "sleep_cool": "Làm mát · Ngủ (°C)"
+        },
+        "data_description": {
+          "home_heat": "Mục tiêu “Sưởi · Ở nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "home_cool": "Mục tiêu “Làm mát · Ở nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "unoccupied_heat": "Mục tiêu “Sưởi · Phòng không có người (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "unoccupied_cool": "Mục tiêu “Làm mát · Phòng không có người (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "away_heat": "Mục tiêu “Sưởi · Vắng nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "away_cool": "Mục tiêu “Làm mát · Vắng nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "sleep_heat": "Mục tiêu “Sưởi · Ngủ (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "sleep_cool": "Mục tiêu “Làm mát · Ngủ (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống."
+        }
+      },
+      "climate_actuators": {
+        "title": "cài đặt · Thiết bị",
+        "description": "Khu vực · cài đặt · Thiết bị · điều khiển. Hiện diện · cảm biến · Bắt buộc.",
+        "data": {
+          "direct_hardware_confirmed": "Bắt buộc",
+          "heat_actuator": "Sưởi · Thiết bị",
+          "cool_actuator": "Làm mát · Thiết bị",
+          "min_on_s": "Công suất · Tự động (s) · MIN ON",
+          "min_off_s": "Công suất · Tắt (s)",
+          "max_on_s": "Công suất · Tự động (s) · MAX ON",
+          "mode_dwell_s": "cài đặt · nguồn (s) · MODE DWELL",
+          "kp": "PID Kp · điều khiển (percentage points/°C)",
+          "ki": "PID Ki · điều khiển (percentage points/(°C·minute))",
+          "kd": "PID Kd · điều khiển (percentage points·minute/°C)",
+          "sample_seconds": "cài đặt · nguồn (s) · SAMPLE",
+          "pwm_period_s": "cài đặt · nguồn (s) · PWM PERIOD",
+          "max_demand_change": "cài đặt · nguồn · MAX Δ",
+          "min_demand_change": "cài đặt · nguồn · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Dùng phép đo thực phù hợp cho “Bắt buộc”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "heat_actuator": "Chỉ thiết lập “Sưởi · Thiết bị” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "cool_actuator": "Chỉ thiết lập “Làm mát · Thiết bị” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "min_on_s": "Khoảng thời gian này áp dụng cho “Công suất · Tự động (s) · MIN ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "min_off_s": "Khoảng thời gian này áp dụng cho “Công suất · Tắt (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "max_on_s": "Khoảng thời gian này áp dụng cho “Công suất · Tự động (s) · MAX ON”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "mode_dwell_s": "Khoảng thời gian này áp dụng cho “cài đặt · nguồn (s) · MODE DWELL”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "kp": "Chỉ thiết lập “PID Kp · điều khiển (percentage points/°C)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "ki": "Chỉ thiết lập “PID Ki · điều khiển (percentage points/(°C·minute))” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "kd": "Chỉ thiết lập “PID Kd · điều khiển (percentage points·minute/°C)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "sample_seconds": "Khoảng thời gian này áp dụng cho “cài đặt · nguồn (s) · SAMPLE”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "pwm_period_s": "Khoảng thời gian này áp dụng cho “cài đặt · nguồn (s) · PWM PERIOD”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "max_demand_change": "Chỉ thiết lập “cài đặt · nguồn · MAX Δ” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "min_demand_change": "Chỉ thiết lập “cài đặt · nguồn · MIN Δ” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác."
+        }
+      },
+      "outside_data": {
+        "title": "Bên ngoài · nguồn",
+        "description": "Bên ngoài · nguồn: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "menu_options": {
+          "weather": "Thời tiết và cảnh báo",
+          "outdoor": "Chất lượng không khí ngoài trời",
+          "outside_aqi": "Bên ngoài · AQI",
+          "pollen": "Phấn hoa"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Khu vực · cài đặt",
+        "description": "Khu vực · cài đặt: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "menu_options": {
+          "areas": "Phòng",
+          "indoor_sensors": "Phòng · Chỉ số nấm mốc",
+          "window_sensors": "Loại trừ cảm biến cửa sổ",
+          "environment_room": "cài đặt · cài đặt · nguồn",
+          "area_devices": "Thiết bị khí hậu"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Thiết bị · cài đặt",
+        "description": "Tùy chọn: tiếp tục đến cảm biến và quyền an toàn riêng của thiết bị. Để tắt để lưu danh sách ngay.",
+        "menu_options": {
+          "device_settings": "Thiết bị · điều khiển",
+          "device_choice": "Chọn · Thiết bị",
+          "device_done": "cài đặt · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Chung · cài đặt",
+        "description": "Chung · cài đặt: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "general_room_occupancy_sensors": "Phòng · Hiện diện · cảm biến",
+          "general_occupied_rooms_entity": "Hiện diện · Phòng · nguồn (state)",
+          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
+          "general_home_trackers": "Nhà · Hiện diện · Thiết bị",
+          "general_home_policy": "Nhà · Hiện diện · điều khiển",
+          "general_sleep_rooms_entity": "Ngủ · Phòng · nguồn (state)",
+          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)",
+          "general_source_stale_minutes": "nguồn · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Chọn nguồn Home Assistant thực cho “Phòng · Hiện diện · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_entity": "Chọn nguồn Home Assistant thực cho “Hiện diện · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_attribute": "Chỉ thiết lập “Hiện diện · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "general_home_trackers": "Chọn nguồn Home Assistant thực cho “Nhà · Hiện diện · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_home_policy": "Tùy chọn này điều khiển “Nhà · Hiện diện · điều khiển”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "general_sleep_rooms_entity": "Chọn nguồn Home Assistant thực cho “Ngủ · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_sleep_rooms_attribute": "Chỉ thiết lập “Ngủ · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "general_source_stale_minutes": "nguồn · Ngủ / Hiện diện · max 240 min. Không hợp lệ · Tắt."
+        }
+      },
+      "pollen": {
+        "title": "Phấn hoa",
+        "description": "Phấn hoa: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "pollen_entity": "Phấn hoa · nguồn",
+          "pollen_high_from": "POLLEN · Phấn hoa · HIGH",
+          "pollen_max_scale": "POLLEN · Phấn hoa · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Phấn hoa · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Chọn nguồn Home Assistant thực cho “Phấn hoa · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "pollen_high_from": "Chỉ thiết lập “POLLEN · Phấn hoa · HIGH” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "pollen_max_scale": "Chỉ thiết lập “POLLEN · Phấn hoa · SCALE” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "pollen_avoid_ventilation": "Chỉ thiết lập “POLLEN · Phấn hoa · NO VENT” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác."
+        }
+      },
+      "outside_aqi": {
+        "title": "Bên ngoài · AQI",
+        "description": "Bên ngoài · AQI: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "outside_aqi_entity": "AQI · cảm biến",
+          "outside_aqi_scale": "AQI · nguồn",
+          "outside_aqi_limit": "AQI · mục tiêu",
+          "outside_aqi_no_sources": "AQI · cảm biến · Bắt buộc"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Chọn nguồn Home Assistant thực cho “AQI · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "outside_aqi_scale": "Chỉ thiết lập “AQI · nguồn” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "outside_aqi_limit": "Ngưỡng quyết định cho “AQI · mục tiêu”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "outside_aqi_no_sources": "Chỉ thiết lập “AQI · cảm biến · Bắt buộc” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác."
+        }
+      },
+      "area_devices": {
+        "title": "Thiết bị khí hậu",
+        "description": "Chọn · Khu vực",
+        "data": {
+          "area_devices_area": "Chọn · Khu vực"
+        },
+        "data_description": {
+          "area_devices_area": "Chọn nguồn Home Assistant thực cho “Chọn · Khu vực”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác."
+        }
+      },
+      "select_devices": {
+        "title": "Thiết bị khí hậu",
+        "description": "Chọn thiết bị cho {area_name}. Lưu sẽ tạo một bộ điều khiển cho mỗi thiết bị vật lý trong trung tâm phòng. Đặt mục tiêu, hồ sơ, tự động/thủ công/tắt/PID và vận hành êm trên thiết bị. Việc chọn không bật điều khiển tự động.",
+        "data": {
+          "selected_devices": "Chọn · Thiết bị",
+          "configure_device_sources": "Cấu hình cảm biến và quyền thiết bị ngay"
+        },
+        "data_description": {
+          "selected_devices": "Chọn thiết bị cho {area_name}. Lưu sẽ tạo một bộ điều khiển cho mỗi thiết bị vật lý trong trung tâm phòng. Đặt mục tiêu, hồ sơ, tự động/thủ công/tắt/PID và vận hành êm trên thiết bị. Việc chọn không bật điều khiển tự động.",
+          "configure_device_sources": "Tùy chọn: tiếp tục đến cảm biến và quyền an toàn riêng của thiết bị. Để tắt để lưu danh sách ngay."
+        }
+      },
+      "device_choice": {
+        "title": "Chọn · Thiết bị",
+        "description": "Chọn · Thiết bị: Chọn nguồn, cảm biến / Thiết bị · điều khiển.",
+        "data": {
+          "device_choice": "Chọn · Thiết bị"
+        },
+        "data_description": {
+          "device_choice": "Chọn nguồn Home Assistant thực cho “Chọn · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác."
+        }
+      },
+      "device_settings": {
+        "title": "Thiết bị · điều khiển",
+        "description": "Tùy chọn này điều khiển “điều khiển · nguồn”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập. Dùng phép đo thực phù hợp cho “Bắt buộc · Thiết bị · Công suất”. Ước tính không thay thế cảm biến hiệu chuẩn. Khoảng thời gian này áp dụng cho “Công suất · min ON (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng. Khoảng thời gian này áp dụng cho “Công suất · min OFF (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng. Chỉ thiết lập “Ngủ · điều khiển” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác. Ngưỡng quyết định cho “Tốc độ (%)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Tự động điều khiển",
+          "device_method": "điều khiển · nguồn",
+          "device_presence_requirement": "điều khiển · Hiện diện",
+          "device_absence_action": "Tắt · Hiện diện",
+          "device_sleep_behavior": "Ngủ · điều khiển",
+          "device_hardware_confirmed": "Bắt buộc · Thiết bị · Công suất",
+          "device_temperature_entity": "Nhiệt độ · cảm biến",
+          "device_humidity_entity": "Độ ẩm · cảm biến",
+          "device_co2_entity": "CO₂ · cảm biến",
+          "device_pm25_entity": "PM2.5 · cảm biến",
+          "device_fan_purpose": "điều khiển · Thiết bị",
+          "device_sensor_verified": "cảm biến · Bắt buộc",
+          "device_fan_speed_percent": "Tốc độ (%)",
+          "device_humidity_target": "Độ ẩm · mục tiêu (%)",
+          "device_sleep_humidity_target": "Ngủ · Độ ẩm · mục tiêu (%)",
+          "device_min_on_s": "Công suất · min ON (s)",
+          "device_min_off_s": "Công suất · min OFF (s)",
+          "device_max_on_s": "Công suất · max ON (s)",
+          "device_home_heat_c": "Sưởi · Ở nhà (°C)",
+          "device_home_cool_c": "Làm mát · Ở nhà (°C)",
+          "device_unoccupied_heat_c": "Sưởi · Phòng không có người (°C)",
+          "device_unoccupied_cool_c": "Làm mát · Phòng không có người (°C)",
+          "device_away_heat_c": "Sưởi · Vắng nhà (°C)",
+          "device_away_cool_c": "Làm mát · Vắng nhà (°C)",
+          "device_sleep_heat_c": "Sưởi · Ngủ (°C)",
+          "device_sleep_cool_c": "Làm mát · Ngủ (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Tùy chọn này điều khiển “Tự động điều khiển”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "device_method": "Tùy chọn này điều khiển “điều khiển · nguồn”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "device_presence_requirement": "Chỉ thiết lập “điều khiển · Hiện diện” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "device_absence_action": "Tùy chọn này điều khiển “Tắt · Hiện diện”. Lệnh vật lý cần đồng ý riêng và bảo vệ độc lập.",
+          "device_sleep_behavior": "Chỉ thiết lập “Ngủ · điều khiển” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "device_hardware_confirmed": "Dùng phép đo thực phù hợp cho “Bắt buộc · Thiết bị · Công suất”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "device_temperature_entity": "Chọn nguồn Home Assistant thực cho “Nhiệt độ · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "device_humidity_entity": "Chọn nguồn Home Assistant thực cho “Độ ẩm · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "device_co2_entity": "Chọn nguồn Home Assistant thực cho “CO₂ · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "device_pm25_entity": "Chọn nguồn Home Assistant thực cho “PM2.5 · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "device_fan_purpose": "Chỉ thiết lập “điều khiển · Thiết bị” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "device_sensor_verified": "Dùng phép đo thực phù hợp cho “cảm biến · Bắt buộc”. Ước tính không thay thế cảm biến hiệu chuẩn.",
+          "device_fan_speed_percent": "Ngưỡng quyết định cho “Tốc độ (%)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "device_humidity_target": "Ngưỡng quyết định cho “Độ ẩm · mục tiêu (%)”. Ảnh hưởng đến khuyến nghị, không phải giới hạn y tế.",
+          "device_sleep_humidity_target": "Mục tiêu “Ngủ · Độ ẩm · mục tiêu (%)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_min_on_s": "Khoảng thời gian này áp dụng cho “Công suất · min ON (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "device_min_off_s": "Khoảng thời gian này áp dụng cho “Công suất · min OFF (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "device_max_on_s": "Khoảng thời gian này áp dụng cho “Công suất · max ON (s)”. Giảm bật tắt liên tục, không thay thế bảo vệ phần cứng.",
+          "device_home_heat_c": "Mục tiêu “Sưởi · Ở nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_home_cool_c": "Mục tiêu “Làm mát · Ở nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_unoccupied_heat_c": "Mục tiêu “Sưởi · Phòng không có người (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_unoccupied_cool_c": "Mục tiêu “Làm mát · Phòng không có người (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_away_heat_c": "Mục tiêu “Sưởi · Vắng nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_away_cool_c": "Mục tiêu “Làm mát · Vắng nhà (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_sleep_heat_c": "Mục tiêu “Sưởi · Ngủ (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống.",
+          "device_sleep_cool_c": "Mục tiêu “Làm mát · Ngủ (°C)” chỉ dùng khi xác nhận có người hoặc đang ngủ. Không rõ không có nghĩa là phòng trống."
+        }
+      },
+      "setup_rooms": {
+        "title": "Phòng cần giám sát",
+        "description": "Phòng cần giám sát → nguồn → Chung cài đặt",
+        "data": {
+          "areas": "Phòng cần giám sát"
+        },
+        "data_description": {
+          "areas": "Phòng cần giám sát. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Phòng · {area_name} · {room_index}/{room_count}",
+        "description": "Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+        "data": {
+          "windows": "Cửa sổ",
+          "air_quality": "Cảm biến chất lượng không khí và môi trường",
+          "temperature": "Nhiệt độ",
+          "humidity": "Độ ẩm",
+          "pressure": "Cảm biến áp suất",
+          "climate_devices": "Thiết bị"
+        },
+        "data_description": {
+          "windows": "Cửa sổ. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "air_quality": "Cảm biến chất lượng không khí và môi trường. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "temperature": "Nhiệt độ. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "humidity": "Độ ẩm. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "pressure": "Cảm biến áp suất. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động.",
+          "climate_devices": "Thiết bị. Chọn đầu vào của phòng: tên thiết bị - tên thực thể. Nhóm trống không được dùng và không bật khám phá hoặc điều khiển tự động."
+        }
+      },
+      "setup_general": {
+        "title": "Chung cài đặt",
+        "description": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng.",
+        "data": {
+          "weather_entities": "Thời tiết và cảnh báo",
+          "outdoor_sensors": "Chất lượng không khí ngoài trời",
+          "weather_warnings": "Cảnh báo thời tiết",
+          "general_room_occupancy_sensors": "Phòng · Hiện diện · cảm biến",
+          "general_home_trackers": "Nhà · Hiện diện · Thiết bị",
+          "general_occupied_rooms_entity": "Hiện diện · Phòng · nguồn (state)",
+          "general_occupied_rooms_attribute": "Hiện diện · Phòng · nguồn (attribute)",
+          "general_sleep_rooms_entity": "Ngủ · Phòng · nguồn (state)",
+          "general_sleep_rooms_attribute": "Ngủ · Phòng · nguồn (attribute)",
+          "notify_entities": "cài đặt · nguồn",
+          "media_players": "cài đặt · nguồn · MEDIA_PLAYERS",
+          "tts_engine": "cài đặt · nguồn · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Chọn · nguồn",
+          "language": "TTS · Chọn · nguồn",
+          "use_mold_indicator": "Chỉ số nấm mốc · RH (%) → 70%",
+          "pollen_entities": "Phấn hoa · nguồn · Chọn",
+          "use_announcement_hub": "Tự động · Announcement Hub",
+          "general_away_cooldown_minutes": "Nhà · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Chọn: Thời tiết và cảnh báo · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Chọn: Chất lượng không khí ngoài trời · AQI, CO₂, PM2.5, PM10, VOC. Không khả dụng: ⚠",
+          "weather_warnings": "Thời tiết và cảnh báo · ⚠ (Không khả dụng) → 🪟🔒",
+          "general_room_occupancy_sensors": "Chọn nguồn Home Assistant thực cho “Phòng · Hiện diện · cảm biến”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_home_trackers": "Chọn nguồn Home Assistant thực cho “Nhà · Hiện diện · Thiết bị”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_entity": "Chọn nguồn Home Assistant thực cho “Hiện diện · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_occupied_rooms_attribute": "Chỉ thiết lập “Hiện diện · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "general_sleep_rooms_entity": "Chọn nguồn Home Assistant thực cho “Ngủ · Phòng · nguồn (state)”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "general_sleep_rooms_attribute": "Chỉ thiết lập “Ngủ · Phòng · nguồn (attribute)” trong phòng đã chọn. Dữ liệu sai sẽ chặn thao tác.",
+          "notify_entities": "Chọn: notify.* · cài đặt · nguồn. Chọn nguồn Home Assistant thực cho “cài đặt · nguồn”. Dữ liệu thiếu hoặc cũ sẽ tạm dừng thao tác.",
+          "media_players": "Chọn: media_player.* · cài đặt · nguồn · MEDIA_PLAYERS.",
+          "tts_engine": "Chọn: tts.* · cài đặt · nguồn · TTS_ENGINE.",
+          "ai_conversation_agent": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · AI · Chọn · nguồn · conversation.* / ai_task.*.",
+          "language": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · TTS · Chọn · nguồn · provider capabilities.",
+          "use_mold_indicator": "🧱 Chỉ số nấm mốc · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Phấn hoa · nguồn · Chọn.",
+          "use_announcement_hub": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Tự động · Announcement Hub.",
+          "general_away_cooldown_minutes": "Chọn nguồn chung và đầu ra thông báo. Lưu hoàn tất thiết lập. Cài đặt vận hành nằm trên thiết bị của nhà và phòng. · Nhà · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Lựa chọn không hợp lệ: Chất lượng không khí ngoài trời (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Không khả dụng: Chất lượng không khí ngoài trời (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Lựa chọn không hợp lệ: Thời tiết và cảnh báo (weather.*).",
+      "invalid_warning": "Lựa chọn không hợp lệ: Thời tiết và cảnh báo ⚠.",
+      "missing_notify": "Chọn: Announcement Hub / notify.*.",
+      "missing_tts": "Chọn: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Lựa chọn không hợp lệ: °C min < max.",
+      "no_areas": "Chọn: Phòng.",
+      "no_window_areas": "Không khả dụng: Đo lường (binary_sensor, window).",
+      "invalid_areas": "Lựa chọn không hợp lệ: Phòng.",
+      "invalid_window_exclusions": "Lựa chọn không hợp lệ: Loại trừ cảm biến cửa sổ.",
+      "invalid_indoor_exclusions": "Lựa chọn không hợp lệ: Loại trừ cảm biến không khí trong nhà.",
+      "no_windows_after_exclusions": "Giữ ít nhất một cảm biến cửa sổ.",
+      "review_areas_after_exclusions": "Kiểm tra: Phòng · Đo lường (0).",
+      "invalid_repeat_minutes": "Lựa chọn không hợp lệ: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Không khả dụng: conversation.process.",
+      "invalid_ai_agent": "Lựa chọn không hợp lệ: conversation.*.",
+      "invalid_mold_temperature_sensor": "Phòng · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Phòng · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Chỉ số nấm mốc · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Chỉ số nấm mốc · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Chỉ số nấm mốc · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Thiết lập “cài đặt · nguồn” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "invalid_environment_measurement": "Thiết lập “cài đặt · nguồn” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pmv_requires_explicit_inputs": "Thiết lập “PMV / PPD” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pid_climate_required": "Thiết lập “PID · Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pid_temperature_required": "Thiết lập “PID · Nhiệt độ” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pid_invalid_target": "Thiết lập “PID · mục tiêu” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pid_duplicate_climate": "Thiết lập “PID · Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "pid_invalid_parameters": "Thiết lập “PID” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_dry_fan_control_inputs_missing": "Thiết lập “Tốc độ · Thiết bị · điều khiển” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_humidity_power_inputs_missing": "Thiết lập “Độ ẩm · Thiết bị · Công suất” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_secondary_control_inputs_missing": "Thiết lập “Thiết bị · điều khiển” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_fan_power_inputs_missing": "Thiết lập “Tốc độ · Thiết bị · Công suất” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_fan_control_inputs_missing": "Thiết lập “Tốc độ · Thiết bị · điều khiển” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_fan_sensor_invalid": "Thiết lập “Tốc độ · Thiết bị · cảm biến” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_humidity_control_inputs_missing": "Thiết lập “Độ ẩm · Thiết bị · điều khiển” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_temperature_required": "Thiết lập “Nhiệt độ · Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_target_required": "Thiết lập “Thiết bị · mục tiêu” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_direct_actuator_not_ready": "Thiết lập “Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_controller_invalid": "Thiết lập “Thiết bị · điều khiển” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_mode_invalid": "Thiết lập “Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_occupancy_invalid": "Thiết lập “Hiện diện · Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_away_invalid": "Thiết lập “Nhà · Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_deadband_invalid": "Thiết lập “Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_attestation_required": "Thiết lập “Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_direct_targets_invalid": "Thiết lập “Thiết bị · mục tiêu” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "climate_direct_timing_invalid": "Thiết lập “Thiết bị” không hợp lệ. Kiểm tra nguồn, đơn vị và an toàn.",
+      "general_invalid_presence": "Không hợp lệ · Hiện diện · cài đặt",
+      "general_invalid_trackers": "Không hợp lệ · Nhà · cài đặt",
+      "general_invalid_rooms_entity": "Không hợp lệ · Phòng · cài đặt",
+      "general_invalid_attribute": "Không hợp lệ · nguồn · cài đặt",
+      "general_invalid_source_age": "Không hợp lệ · nguồn · cài đặt",
+      "invalid_selected_devices": "Không hợp lệ · Thiết bị · cài đặt",
+      "device_policy_invalid": "Không hợp lệ · Hiện diện · cài đặt",
+      "device_method_invalid": "Không hợp lệ · điều khiển · cài đặt",
+      "device_hardware_required": "Không hợp lệ · Bắt buộc · cài đặt",
+      "device_power_required_for_off": "Không hợp lệ · Công suất · cài đặt",
+      "device_temperature_required": "Không hợp lệ · Nhiệt độ · cài đặt",
+      "device_humidity_required": "Không hợp lệ · Độ ẩm · cài đặt",
+      "device_air_sensor_required": "Không hợp lệ · cảm biến · cài đặt",
+      "device_temperature_band_invalid": "Không hợp lệ · Nhiệt độ · cài đặt",
+      "device_humidity_invalid": "Không hợp lệ · Độ ẩm · cài đặt",
+      "device_runtime_invalid": "Không hợp lệ · Công suất · cài đặt",
+      "invalid_setup_rooms": "Không hợp lệ: Phòng cần giám sát",
+      "invalid_room_source": "Không hợp lệ: Phòng · nguồn"
+    },
+    "abort": {
+      "setup_area_removed": "Không hợp lệ: Phòng cần giám sát",
+      "setup_changed": "cài đặt ↻ Phòng cần giám sát"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Chất lượng không khí",
+        "state": {
+          "open": "Đóng · Đo lường",
+          "close": "Thông báo tự động · Đo lường",
+          "idle": "Tốt",
+          "blocked": "Giữ cửa sổ đóng"
+        }
+      },
+      "area_overview": {
+        "name": "Tổng quan môi trường"
+      },
+      "area_surface_humidity": {
+        "name": "Độ ẩm bề mặt (tính toán)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Ngoài trời · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Ngoài trời · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Ngoài trời · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Ngoài trời · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Ngoài trời · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Ngoài trời · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Bên ngoài (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Bên ngoài (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Bên ngoài (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Chất lượng không khí · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Chất lượng không khí · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Chất lượng không khí · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Chất lượng không khí · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Chất lượng không khí · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Chất lượng không khí · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Chất lượng không khí · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Chỉ số nấm mốc · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Ngoài trời · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Ngoài trời · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Ngoài trời · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Thời tiết và cảnh báo · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Mở (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Thông báo (tùy chọn) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "mục tiêu (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · điều khiển (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · điều khiển (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · điều khiển (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Sưởi · Ở nhà (°C)"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Làm mát · Ở nhà (°C)"
+      },
+      "area_climate_profile_unoccupied_heat": {
+        "name": "Sưởi · Phòng không có người (°C)"
+      },
+      "area_climate_profile_unoccupied_cool": {
+        "name": "Làm mát · Phòng không có người (°C)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Sưởi · Vắng nhà (°C)"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Làm mát · Vắng nhà (°C)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Sưởi · Ngủ (°C)"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Làm mát · Ngủ (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Phấn hoa · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Phấn hoa · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "nguồn · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "cài đặt · nguồn (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · mục tiêu (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Tốc độ · Bên ngoài (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "cài đặt · nguồn (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "cài đặt · nguồn (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Thiết bị · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Hiện diện · Thiết bị · cảm biến · Bắt buộc"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Thiết bị (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Độ ẩm · Thiết bị (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Độ ẩm · Thiết bị (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Độ ẩm · Thiết bị · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Thiết bị · Nhiệt độ −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Thiết bị (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Thiết bị · Tốc độ (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Thiết bị · Tốc độ (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · điều khiển (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · điều khiển (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · điều khiển (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "cài đặt · nguồn (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "cài đặt · nguồn · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "cài đặt · nguồn · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Chỉ số nấm mốc · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · điều khiển (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · điều khiển (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · điều khiển (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}cài đặt · nguồn (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Giới hạn quạt chạy êm (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Công suất · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Công suất · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Công suất · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Phòng · Nhiệt độ · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Phòng · Nhiệt độ · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Phòng · Độ ẩm · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Phòng · Độ ẩm · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Phòng · Tốc độ · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Phòng · Tốc độ · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Nhà · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Tự động · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Tự động"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Thông báo (tùy chọn)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Phấn hoa · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Ngủ"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Tự động"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Ngủ · Thiết bị"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Ngủ · Tự động"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Thiết bị · Bên ngoài"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Giảm tiếng ồn khi ngủ"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Giảm tiếng ồn khi có người"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}Công suất · điều khiển"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}cảm biến · Bắt buộc"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Ngôn ngữ"
+      },
+      "area_manual_profile": {
+        "name": "Thiết bị · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Nhà · Hiện diện · điều khiển"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Hiện diện · Thiết bị"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Nhà · Thiết bị · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Thiết bị · nguồn · mục tiêu"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Phương pháp điều khiển",
+        "state": {
+          "existing": "Bộ điều khiển phòng hiện có",
+          "automatic": "Tự động",
+          "manual": "Thủ công",
+          "off": "Tắt",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Chế độ quạt êm của thiết bị"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}điều khiển · Hiện diện",
+        "state": {
+          "always": "Tự động",
+          "occupied": "Phòng · Hiện diện",
+          "absent": "Phòng · Hiện diện · Tắt"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Ngủ · điều khiển",
+        "state": {
+          "normal": "Tự động",
+          "pause": "Tạm dừng",
+          "sleep_targets": "Ngủ · mục tiêu"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}điều khiển · Thiết bị",
+        "state": {
+          "extraction": "Bên ngoài · điều khiển",
+          "filtration": "PM2.5 · điều khiển",
+          "auto": "Tự động"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Nhiệt độ · nguồn"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "nguồn · Tốc độ · Bên ngoài (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Ngủ · Thiết bị · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Ngủ · Thiết bị · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Chỉ số nấm mốc · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kiểm tra và tiếp tục"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Bộ điều khiển khí hậu"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Thông báo (tùy chọn) — Home Environment Manager",
+      "description": "Thông báo (tùy chọn) · Phòng",
+      "fields": {
+        "language": {
+          "name": "Ngôn ngữ",
+          "description": "Ngôn ngữ"
+        },
+        "channels": {
+          "name": "Thông báo (tùy chọn)",
+          "description": "Thông báo (tùy chọn)"
+        },
+        "areas": {
+          "name": "Phòng",
+          "description": "Phòng"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Mặc định",
+        "en": "cài đặt · nguồn",
+        "de": "cài đặt · nguồn",
+        "el": "cài đặt · nguồn",
+        "fr": "cài đặt · nguồn",
+        "es": "cài đặt · nguồn",
+        "it": "cài đặt · nguồn",
+        "nl": "cài đặt · nguồn",
+        "pt": "cài đặt · nguồn",
+        "pt-br": "cài đặt · nguồn",
+        "pl": "cài đặt · nguồn",
+        "ru": "cài đặt · nguồn",
+        "uk": "cài đặt · nguồn",
+        "tr": "cài đặt · nguồn",
+        "cs": "cài đặt · nguồn",
+        "sk": "cài đặt · nguồn",
+        "hu": "cài đặt · nguồn",
+        "ro": "cài đặt · nguồn",
+        "bg": "cài đặt · nguồn",
+        "hr": "cài đặt · nguồn",
+        "sr": "cài đặt · nguồn",
+        "sv": "cài đặt · nguồn",
+        "nb": "cài đặt · nguồn",
+        "da": "cài đặt · nguồn",
+        "fi": "cài đặt · nguồn",
+        "id": "cài đặt · nguồn",
+        "vi": "cài đặt · nguồn",
+        "th": "cài đặt · nguồn",
+        "hi": "cài đặt · nguồn",
+        "zh-hans": "cài đặt · nguồn",
+        "zh-hant": "cài đặt · nguồn",
+        "ja": "cài đặt · nguồn",
+        "ko": "cài đặt · nguồn",
+        "ar": "cài đặt · nguồn",
+        "he": "cài đặt · nguồn",
+        "fa": "cài đặt · nguồn",
+        "bn": "cài đặt · nguồn",
+        "ur": "cài đặt · nguồn",
+        "ta": "cài đặt · nguồn"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Nhà · Hiện diện",
+        "all_home": "Nhà · Thiết bị · Hiện diện"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "mục tiêu · điều khiển",
+        "native": "Thiết bị · điều khiển",
+        "power": "Công suất",
+        "speed": "Tốc độ"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Tự động",
+        "room": "Phòng · Hiện diện",
+        "home": "Nhà · Hiện diện"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Tạm dừng",
+        "off": "Tắt"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Tự động",
+        "pause": "Tạm dừng",
+        "sleep_targets": "Ngủ · mục tiêu"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Bên ngoài · điều khiển",
+        "filtration": "PM2.5 · điều khiển"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "nguồn · Không hợp lệ",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "mục tiêu · cài đặt"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Trung tâm phòng",
+      "initiate_flow": {
+        "user": "Trung tâm phòng"
+      },
+      "step": {
+        "user": {
+          "title": "Trung tâm phòng",
+          "description": "Chọn một khu vực Home Assistant. Nhóm chứa cài đặt chung của phòng và một bộ điều khiển cho mỗi thiết bị vật lý được chọn. Thêm phòng không bật điều khiển thiết bị tự động.",
+          "data": {
+            "area_id": "Phòng"
+          },
+          "data_description": {
+            "area_id": "Chọn một khu vực Home Assistant. Nhóm chứa cài đặt chung của phòng và một bộ điều khiển cho mỗi thiết bị vật lý được chọn. Thêm phòng không bật điều khiển thiết bị tự động."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Không hợp lệ: Khu vực."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

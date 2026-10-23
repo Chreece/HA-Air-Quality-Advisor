@@ -1,0 +1,1808 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "방",
+        "description": "1 · 🪟 방. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "설정 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "선택하세요: 설정 · 정보원 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "window_sensors": {
+        "title": "창문 센서 제외",
+        "description": "2 · 창문 센서 제외. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "창문 센서 제외"
+        },
+        "data_description": {
+          "excluded_window_entities": "선택하세요: 창문 센서 제외 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "방 · 곰팡이 지표",
+        "description": "방: {area_name} ({position}/{total}). 🌡️ 🧊 곰팡이 지표 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "실내 공기 센서 제외",
+          "mold_indoor_temperature": "방 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "곰팡이 지표 · 🧊 °C",
+          "mold_recalibrate": "곰팡이 지표 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "외부 · 온도 · 정보원 · 곰팡이 지표"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "“방 · 🌡️ (°C/°F)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "mold_critical_temperature_c": "🧊 곰팡이 지표 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "“곰팡이 지표 · ↻ 🌡️”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "mold_outdoor_weather_entity": "선택 weather.* · 외부 온도 (temperature, °C/°F) → 곰팡이 지표. 필수: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "실외 공기질",
+        "description": "실외 공기질. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "실외 공기질"
+        },
+        "data_description": {
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠"
+        }
+      },
+      "weather": {
+        "title": "날씨 및 경보",
+        "description": "날씨 및 경보. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "weather_warnings": "기상 경보"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "delivery": {
+        "title": "알림(선택 사항)",
+        "description": "알림(선택 사항). 자동 알림 · 자동 음성 안내. Announcement Hub.",
+        "data": {
+          "language": "언어",
+          "automatic_tts": "자동",
+          "automatic_notifications": "자동 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "알림(선택 사항) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "설정 · 정보원",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 알림(선택 사항)",
+          "ai_conversation_agent": "AI · 언어"
+        },
+        "data_description": {
+          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "automatic_tts": "이 옵션은 “자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "automatic_notifications": "이 옵션은 “자동 · AUTOMATIC_NOTIFICATIONS”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "announcement_repeat_minutes": "기본값: 10 min · 0 = 반복 안 함 · 같은 원인이 지속되는 동안 · 방.",
+          "use_announcement_hub": "Announcement Hub · 사용할 수 없음 → Home Assistant.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_rewrite_announcements": "AI · 알림(선택 사항) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값)."
+        }
+      },
+      "thresholds": {
+        "title": "고급 임계값",
+        "description": "고급 임계값. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "실외 · AQI (≤)",
+          "outdoor_co2": "실외 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "실외 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "실외 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "실외 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "실외 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 외부 (µg/m³)",
+          "outdoor_o3": "O₃ · 외부 (µg/m³)",
+          "outdoor_so2": "SO₂ · 외부 (µg/m³)",
+          "indoor_aqi": "공기질 · AQI (≥)",
+          "indoor_co2": "공기질 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "공기질 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "공기질 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "공기질 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "공기질 · VOC (ppb) (≥)",
+          "indoor_humidity": "공기질 · RH (%) (≥)",
+          "min_outdoor_temp": "실외 · °C (≥)",
+          "max_outdoor_temp": "실외 · °C (≤)",
+          "max_outdoor_humidity": "실외 · RH (%) (≤)",
+          "max_wind_kmh": "날씨 및 경보 · km/h (≤)",
+          "max_age_minutes": "⏱ · 열기 (min, ≤)",
+          "indoor_mold": "곰팡이 지표 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "“실외 · AQI (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_co2": "“실외 · CO₂ (ppm) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_pm25": "“실외 · PM2.5 (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_pm10": "“실외 · PM10 (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_voc": "“실외 · VOC (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_voc_parts": "“실외 · VOC (ppb) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_no2": "“NO₂ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_o3": "“O₃ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_so2": "“SO₂ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_aqi": "“공기질 · AQI (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_co2": "“공기질 · CO₂ (ppm) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_pm25": "“공기질 · PM2.5 (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_pm10": "“공기질 · PM10 (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_voc": "“공기질 · VOC (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_voc_parts": "“공기질 · VOC (ppb) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_humidity": "“공기질 · RH (%) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "min_outdoor_temp": "“실외 · °C (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_outdoor_temp": "“실외 · °C (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_outdoor_humidity": "“실외 · RH (%) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_wind_kmh": "“날씨 및 경보 · km/h (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_age_minutes": "“⏱ · 열기 (min, ≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_mold": "“곰팡이 지표 · ≥ 70%”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "setup_rooms": {
+        "title": "모니터링할 방",
+        "description": "모니터링할 방 → 정보원 → 일반 설정",
+        "data": {
+          "areas": "모니터링할 방"
+        },
+        "data_description": {
+          "areas": "모니터링할 방. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_room_sources": {
+        "title": "방 · {area_name} · {room_index}/{room_count}",
+        "description": "방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+        "data": {
+          "windows": "창문",
+          "air_quality": "공기질 및 환경 센서",
+          "temperature": "온도",
+          "humidity": "습도",
+          "pressure": "압력 센서",
+          "climate_devices": "장치"
+        },
+        "data_description": {
+          "windows": "창문. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "air_quality": "공기질 및 환경 센서. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "temperature": "온도. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "humidity": "습도. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "pressure": "압력 센서. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "climate_devices": "장치. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_general": {
+        "title": "일반 설정",
+        "description": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다.",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "outdoor_sensors": "실외 공기질",
+          "weather_warnings": "기상 경보",
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "notify_entities": "설정 · 정보원",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 선택 · 정보원",
+          "language": "TTS · 선택 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%",
+          "pollen_entities": "꽃가루 · 정보원 · 선택",
+          "use_announcement_hub": "자동 · Announcement Hub",
+          "general_away_cooldown_minutes": "집 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_room_occupancy_sensors": "“방 · 재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_home_trackers": "“집 · 재실 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_entity": "“재실 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_conversation_agent": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · AI · 선택 · 정보원 · conversation.* / ai_task.*.",
+          "language": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · TTS · 선택 · 정보원 · provider capabilities.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entities": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 꽃가루 · 정보원 · 선택.",
+          "use_announcement_hub": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 자동 · Announcement Hub.",
+          "general_away_cooldown_minutes": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 집 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "잘못된 선택: 실외 공기질 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "사용할 수 없음: 실외 공기질 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "잘못된 선택: 날씨 및 경보 (weather.*).",
+      "invalid_warning": "잘못된 선택: 날씨 및 경보 ⚠.",
+      "missing_notify": "선택하세요: Announcement Hub / notify.*.",
+      "missing_tts": "선택하세요: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "잘못된 선택: °C min < max.",
+      "no_areas": "선택하세요: 방.",
+      "no_window_areas": "사용할 수 없음: 측정값 (binary_sensor, window).",
+      "invalid_areas": "잘못된 선택: 방.",
+      "invalid_window_exclusions": "잘못된 선택: 창문 센서 제외.",
+      "invalid_indoor_exclusions": "잘못된 선택: 실내 공기 센서 제외.",
+      "no_windows_after_exclusions": "창문 센서를 하나 이상 유지하세요.",
+      "review_areas_after_exclusions": "확인하세요: 방 · 측정값 (0).",
+      "invalid_repeat_minutes": "잘못된 선택: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "사용할 수 없음: conversation.process.",
+      "invalid_ai_agent": "잘못된 선택: conversation.*.",
+      "invalid_mold_temperature_sensor": "방 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "방 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "곰팡이 지표 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "곰팡이 지표 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "잘못됨: 모니터링할 방",
+      "invalid_room_source": "잘못됨: 방 · 정보원"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — 이미 설정됨.",
+      "setup_area_removed": "잘못됨: 모니터링할 방",
+      "setup_changed": "설정 ↻ 모니터링할 방"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ 선택하세요",
+        "description": "선택하세요: 방 / 날씨 및 경보 / 알림(선택 사항) / 고급 임계값",
+        "menu_options": {
+          "outside_data": "외부 · 정보원",
+          "general_settings": "일반 · 설정",
+          "area_settings": "구역 · 설정",
+          "delivery": "알림(선택 사항)",
+          "thresholds": "고급 임계값"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "창문 센서 제외",
+        "description": "2 · 창문 센서 제외. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "창문 센서 제외"
+        },
+        "data_description": {
+          "excluded_window_entities": "선택하세요: 창문 센서 제외 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "방",
+        "description": "1 · 🪟 방. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "설정 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "선택하세요: 설정 · 정보원 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "indoor_sensors": {
+        "title": "방 · 곰팡이 지표",
+        "description": "방: {area_name} ({position}/{total}). 🌡️ 🧊 곰팡이 지표 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "실내 공기 센서 제외",
+          "mold_indoor_temperature": "방 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "곰팡이 지표 · 🧊 °C",
+          "mold_recalibrate": "곰팡이 지표 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "외부 · 온도 · 정보원 · 곰팡이 지표"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "선택하세요: 실내 공기 센서 제외 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "“방 · 🌡️ (°C/°F)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "mold_critical_temperature_c": "🧊 곰팡이 지표 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "“곰팡이 지표 · ↻ 🌡️”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "mold_outdoor_weather_entity": "선택 weather.* · 외부 온도 (temperature, °C/°F) → 곰팡이 지표. 필수: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "실외 공기질",
+        "description": "실외 공기질. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "실외 공기질"
+        },
+        "data_description": {
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠"
+        }
+      },
+      "weather": {
+        "title": "날씨 및 경보",
+        "description": "날씨 및 경보. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "weather_warnings": "기상 경보"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "delivery": {
+        "title": "알림(선택 사항)",
+        "description": "알림(선택 사항). 자동 알림 · 자동 음성 안내. Announcement Hub.",
+        "data": {
+          "language": "언어",
+          "automatic_tts": "자동",
+          "automatic_notifications": "자동 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "알림(선택 사항) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "설정 · 정보원",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 알림(선택 사항)",
+          "ai_conversation_agent": "AI · 언어"
+        },
+        "data_description": {
+          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "automatic_tts": "이 옵션은 “자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "automatic_notifications": "이 옵션은 “자동 · AUTOMATIC_NOTIFICATIONS”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "announcement_repeat_minutes": "기본값: 10 min · 0 = 반복 안 함 · 같은 원인이 지속되는 동안 · 방.",
+          "use_announcement_hub": "Announcement Hub · 사용할 수 없음 → Home Assistant.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_rewrite_announcements": "AI · 알림(선택 사항) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값)."
+        }
+      },
+      "thresholds": {
+        "title": "고급 임계값",
+        "description": "고급 임계값. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "실외 · AQI (≤)",
+          "outdoor_co2": "실외 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "실외 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "실외 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "실외 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "실외 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 외부 (µg/m³)",
+          "outdoor_o3": "O₃ · 외부 (µg/m³)",
+          "outdoor_so2": "SO₂ · 외부 (µg/m³)",
+          "indoor_aqi": "공기질 · AQI (≥)",
+          "indoor_co2": "공기질 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "공기질 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "공기질 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "공기질 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "공기질 · VOC (ppb) (≥)",
+          "indoor_humidity": "공기질 · RH (%) (≥)",
+          "min_outdoor_temp": "실외 · °C (≥)",
+          "max_outdoor_temp": "실외 · °C (≤)",
+          "max_outdoor_humidity": "실외 · RH (%) (≤)",
+          "max_wind_kmh": "날씨 및 경보 · km/h (≤)",
+          "max_age_minutes": "⏱ · 열기 (min, ≤)",
+          "indoor_mold": "곰팡이 지표 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "“실외 · AQI (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_co2": "“실외 · CO₂ (ppm) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_pm25": "“실외 · PM2.5 (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_pm10": "“실외 · PM10 (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_voc": "“실외 · VOC (µg/m³) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_voc_parts": "“실외 · VOC (ppb) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_no2": "“NO₂ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_o3": "“O₃ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outdoor_so2": "“SO₂ · 외부 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_aqi": "“공기질 · AQI (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_co2": "“공기질 · CO₂ (ppm) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_pm25": "“공기질 · PM2.5 (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_pm10": "“공기질 · PM10 (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_voc": "“공기질 · VOC (µg/m³) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_voc_parts": "“공기질 · VOC (ppb) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_humidity": "“공기질 · RH (%) (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "min_outdoor_temp": "“실외 · °C (≥)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_outdoor_temp": "“실외 · °C (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_outdoor_humidity": "“실외 · RH (%) (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_wind_kmh": "“날씨 및 경보 · km/h (≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "max_age_minutes": "“⏱ · 열기 (min, ≤)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "indoor_mold": "“곰팡이 지표 · ≥ 70%”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "environment": {
+        "title": "설정 · 설정 · 정보원",
+        "description": "“설정 · 설정 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "pollen_entity": "꽃가루 · 정보원",
+          "pollen_high_from": "POLLEN · 꽃가루 · HIGH",
+          "pollen_max_scale": "POLLEN · 꽃가루 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 꽃가루 · NO VENT",
+          "aqi_scale_0": "AQI #1 · 정보원",
+          "aqi_custom_limit_0": "AQI #1 · 목표",
+          "aqi_scale_1": "AQI #2 · 정보원",
+          "aqi_custom_limit_1": "AQI #2 · 목표",
+          "aqi_scale_2": "AQI #3 · 정보원",
+          "aqi_custom_limit_2": "AQI #3 · 목표",
+          "aqi_scale_3": "AQI #4 · 정보원",
+          "aqi_custom_limit_3": "AQI #4 · 목표",
+          "aqi_scale_4": "AQI #5 · 정보원",
+          "aqi_custom_limit_4": "AQI #5 · 목표",
+          "aqi_scale_5": "AQI #6 · 정보원",
+          "aqi_custom_limit_5": "AQI #6 · 목표",
+          "aqi_scale_6": "AQI #7 · 정보원",
+          "aqi_custom_limit_6": "AQI #7 · 목표",
+          "aqi_scale_7": "AQI #8 · 정보원",
+          "aqi_custom_limit_7": "AQI #8 · 목표",
+          "aqi_scale_8": "AQI #9 · 정보원",
+          "aqi_custom_limit_8": "AQI #9 · 목표",
+          "aqi_scale_9": "AQI #10 · 정보원",
+          "aqi_custom_limit_9": "AQI #10 · 목표",
+          "aqi_scale_10": "AQI #11 · 정보원",
+          "aqi_custom_limit_10": "AQI #11 · 목표",
+          "aqi_scale_11": "AQI #12 · 정보원",
+          "aqi_custom_limit_11": "AQI #12 · 목표",
+          "aqi_scale_12": "AQI #13 · 정보원",
+          "aqi_custom_limit_12": "AQI #13 · 목표",
+          "aqi_scale_13": "AQI #14 · 정보원",
+          "aqi_custom_limit_13": "AQI #14 · 목표",
+          "aqi_scale_14": "AQI #15 · 정보원",
+          "aqi_custom_limit_14": "AQI #15 · 목표",
+          "aqi_scale_15": "AQI #16 · 정보원",
+          "aqi_custom_limit_15": "AQI #16 · 목표",
+          "aqi_scale_16": "AQI #17 · 정보원",
+          "aqi_custom_limit_16": "AQI #17 · 목표",
+          "aqi_scale_17": "AQI #18 · 정보원",
+          "aqi_custom_limit_17": "AQI #18 · 목표",
+          "aqi_scale_18": "AQI #19 · 정보원",
+          "aqi_custom_limit_18": "AQI #19 · 목표",
+          "aqi_scale_19": "AQI #20 · 정보원",
+          "aqi_custom_limit_19": "AQI #20 · 목표",
+          "aqi_scale_20": "AQI #21 · 정보원",
+          "aqi_custom_limit_20": "AQI #21 · 목표",
+          "aqi_scale_21": "AQI #22 · 정보원",
+          "aqi_custom_limit_21": "AQI #22 · 목표",
+          "aqi_scale_22": "AQI #23 · 정보원",
+          "aqi_custom_limit_22": "AQI #23 · 목표",
+          "aqi_scale_23": "AQI #24 · 정보원",
+          "aqi_custom_limit_23": "AQI #24 · 목표",
+          "aqi_scale_24": "AQI #25 · 정보원",
+          "aqi_custom_limit_24": "AQI #25 · 목표",
+          "aqi_scale_25": "AQI #26 · 정보원",
+          "aqi_custom_limit_25": "AQI #26 · 목표",
+          "aqi_scale_26": "AQI #27 · 정보원",
+          "aqi_custom_limit_26": "AQI #27 · 목표",
+          "aqi_scale_27": "AQI #28 · 정보원",
+          "aqi_custom_limit_27": "AQI #28 · 목표",
+          "aqi_scale_28": "AQI #29 · 정보원",
+          "aqi_custom_limit_28": "AQI #29 · 목표",
+          "aqi_scale_29": "AQI #30 · 정보원",
+          "aqi_custom_limit_29": "AQI #30 · 목표",
+          "aqi_scale_30": "AQI #31 · 정보원",
+          "aqi_custom_limit_30": "AQI #31 · 목표",
+          "aqi_scale_31": "AQI #32 · 정보원",
+          "aqi_custom_limit_31": "AQI #32 · 목표"
+        },
+        "data_description": {
+          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "pollen_high_from": "“POLLEN · 꽃가루 · HIGH”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_max_scale": "“POLLEN · 꽃가루 · SCALE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_avoid_ventilation": "“POLLEN · 꽃가루 · NO VENT”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_scale_0": "“AQI #1 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_0": "“AQI #1 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_1": "“AQI #2 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_1": "“AQI #2 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_2": "“AQI #3 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_2": "“AQI #3 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_3": "“AQI #4 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_3": "“AQI #4 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_4": "“AQI #5 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_4": "“AQI #5 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_5": "“AQI #6 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_5": "“AQI #6 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_6": "“AQI #7 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_6": "“AQI #7 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_7": "“AQI #8 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_7": "“AQI #8 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_8": "“AQI #9 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_8": "“AQI #9 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_9": "“AQI #10 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_9": "“AQI #10 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_10": "“AQI #11 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_10": "“AQI #11 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_11": "“AQI #12 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_11": "“AQI #12 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_12": "“AQI #13 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_12": "“AQI #13 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_13": "“AQI #14 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_13": "“AQI #14 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_14": "“AQI #15 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_14": "“AQI #15 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_15": "“AQI #16 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_15": "“AQI #16 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_16": "“AQI #17 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_16": "“AQI #17 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_17": "“AQI #18 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_17": "“AQI #18 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_18": "“AQI #19 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_18": "“AQI #19 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_19": "“AQI #20 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_19": "“AQI #20 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_20": "“AQI #21 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_20": "“AQI #21 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_21": "“AQI #22 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_21": "“AQI #22 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_22": "“AQI #23 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_22": "“AQI #23 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_23": "“AQI #24 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_23": "“AQI #24 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_24": "“AQI #25 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_24": "“AQI #25 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_25": "“AQI #26 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_25": "“AQI #26 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_26": "“AQI #27 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_26": "“AQI #27 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_27": "“AQI #28 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_27": "“AQI #28 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_28": "“AQI #29 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_28": "“AQI #29 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_29": "“AQI #30 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_29": "“AQI #30 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_30": "“AQI #31 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_30": "“AQI #31 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "aqi_scale_31": "“AQI #32 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "aqi_custom_limit_31": "“AQI #32 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "environment_room": {
+        "title": "설정 · 설정 · 정보원",
+        "description": "“설정 · 설정 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "environment_area": "설정 · 정보원"
+        },
+        "data_description": {
+          "environment_area": "“설정 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "environment_room_air": {
+        "title": "설정 · 외부",
+        "description": "“설정 · 외부”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "temperature_entity": "온도 · 정보원",
+          "room_volume_m3": "설정 · 정보원 (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "공기청정기 · 정보원",
+          "extractor_entity": "배기 팬 · 정보원",
+          "co2_ndir_verified": "CO₂ · 필수",
+          "co2_target_ppm": "CO₂ · CO₂ · 목표 (ppm)",
+          "sleep_room": "수면"
+        },
+        "data_description": {
+          "temperature_entity": "“온도 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "room_volume_m3": "“설정 · 정보원 (m³)”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "particle_cadr_m3h": "“CADR (m³/h)”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "purifier_entity": "“공기청정기 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "extractor_entity": "“배기 팬 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "co2_ndir_verified": "“CO₂ · 필수”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "co2_target_ppm": "“CO₂ · CO₂ · 목표 (ppm)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "sleep_room": "“수면”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "설정 · 설정 · 정보원",
+        "description": "“설정 · 설정 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "radon_entity": "RADON · Rn · 정보원",
+          "radon_sensor_verified": "RADON · Rn · 센서 · 필수 · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · 정보원",
+          "formaldehyde_sensor_verified": "HCHO · 센서 · 필수 · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · 정보원 · 센서 (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · 센서 · 필수",
+          "illuminance_entity": "LUX · 정보원 (lux)",
+          "melanopic_edi_entity": "EDI · EDI · 정보원 (lx)",
+          "melanopic_spectral_verified": "EDI · 필수"
+        },
+        "data_description": {
+          "radon_entity": "“RADON · Rn · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "radon_sensor_verified": "“RADON · Rn · 센서 · 필수 · SENSOR ✓ · VERIFIED”에 실제 측정값을 사용하세요. 추정값은 보정된 RADON · Rn · 센서 · 필수 · SENSOR ✓ · VERIFIED를 대신하지 못합니다.",
+          "radon_reference_bq_m3": "“Rn (Bq/m³)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "formaldehyde_entity": "“HCHO · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "formaldehyde_sensor_verified": "“HCHO · 센서 · 필수 · SENSOR ✓ · VERIFIED”에 실제 측정값을 사용하세요. 추정값은 보정된 HCHO · 센서 · 필수 · SENSOR ✓ · VERIFIED를 대신하지 못합니다.",
+          "noise_entity": "“dB(A) · 정보원 · 센서 (dB(A))”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "noise_sensor_calibrated": "“dB(A) · 센서 · 필수”에 실제 측정값을 사용하세요. 추정값은 보정된 dB(A) · 센서 · 필수를 대신하지 못합니다.",
+          "illuminance_entity": "“LUX · 정보원 (lux)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "melanopic_edi_entity": "“EDI · EDI · 정보원 (lx)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "melanopic_spectral_verified": "“EDI · 필수”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "설정 · 설정 · 정보원",
+        "description": "“설정 · 설정 · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "enable_pmv": "PMV / PPD · 자동",
+          "radiant_temperature_entity": "온도 · 정보원",
+          "air_speed_entity": "정보원 · 속도 · 외부 (m/s)",
+          "air_speed_m_s": "속도 · 외부 (m/s)",
+          "met": "설정 · 정보원 (met)",
+          "clo": "설정 · 정보원 (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "“PMV / PPD · 자동”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "radiant_temperature_entity": "“온도 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "air_speed_entity": "“정보원 · 속도 · 외부 (m/s)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "air_speed_m_s": "“속도 · 외부 (m/s)”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "met": "“설정 · 정보원 (met)”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "clo": "“설정 · 정보원 (clo)”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다."
+        }
+      },
+      "pid": {
+        "title": "설정 · PID",
+        "description": "“설정 · PID”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "이 옵션은 “PID”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다."
+        }
+      },
+      "pid_room": {
+        "title": "설정 · PID",
+        "description": "“설정 · PID”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "pid_enabled": "PID · 자동 · AUTO",
+          "pid_climate_entities": "PID · 장치",
+          "pid_temperature_entity": "온도 · 정보원",
+          "pid_mode": "PID",
+          "pid_target_c": "목표 (°C)",
+          "pid_pause_on_window_open": "PID · 외부"
+        },
+        "data_description": {
+          "pid_enabled": "이 옵션은 “PID · 자동 · AUTO”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "pid_climate_entities": "“PID · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "pid_temperature_entity": "“온도 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "pid_mode": "이 옵션은 “PID”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "pid_target_c": "“목표 (°C)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "pid_pause_on_window_open": "이 옵션은 “PID · 외부”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다."
+        }
+      },
+      "pid_tuning": {
+        "title": "설정 · PID",
+        "description": "“설정 · PID”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "pid_kp": "PID Kp · 제어 (% per °C)",
+          "pid_ki": "PID Ki · 제어 (% per °C-minute)",
+          "pid_kd": "PID Kd · 제어 (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "이 옵션은 “PID Kp · 제어 (% per °C)”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "pid_ki": "이 옵션은 “PID Ki · 제어 (% per °C-minute)”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "pid_kd": "이 옵션은 “PID Kd · 제어 (%·minute per °C)”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "pid_offset_c": "“PID (°C) · PID_OFFSET_C”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "pid_min_setpoint_c": "“PID (°C) · MIN TARGET”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "pid_max_setpoint_c": "“PID (°C) · MAX TARGET”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "pid_sample_seconds": "이 시간은 “PID (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "pid_max_change_c": "“PID (°C) · MAX Δ”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "pid_min_change_c": "“PID (°C) · MIN Δ”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "climate": {
+        "title": "설정 · 장치",
+        "description": "“설정 · 장치”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+        "data": {
+          "climate_area": "장치"
+        },
+        "data_description": {
+          "climate_area": "이 옵션은 “장치”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다."
+        }
+      },
+      "climate_room": {
+        "title": "설정 · 장치",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "climate_enabled": "장치 · 자동 · AUTO",
+          "climate_allow_actuation": "장치 · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "장치 · 자동 · MODE SWITCH",
+          "climate_prefer_native_auto": "장치 · 자동 · NATIVE",
+          "climate_controller": "장치 · 제어",
+          "climate_mode": "장치 · MODE",
+          "climate_entity": "장치 · 정보원",
+          "climate_temperature_entity": "온도 · 정보원",
+          "climate_hysteresis_c": "장치 (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "이 옵션은 “장치 · 자동 · AUTO”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_allow_actuation": "이 옵션은 “장치 · CLIMATE_ALLOW_ACTUATION”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_auto_switch_hvac": "이 옵션은 “장치 · 자동 · MODE SWITCH”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_prefer_native_auto": "이 옵션은 “장치 · 자동 · NATIVE”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_controller": "이 옵션은 “장치 · 제어”을 장치 · 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_mode": "이 옵션은 “장치 · MODE”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_entity": "“장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_temperature_entity": "“온도 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_hysteresis_c": "“장치 (°C)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "climate_presence": {
+        "title": "설정 · 재실 · 장치",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "climate_occupancy_sensors": "재실 · 센서",
+          "climate_away_entities": "집 · 장치",
+          "climate_unknown_occupancy": "재실 · 장치",
+          "climate_unoccupied_delay_minutes": "장치 · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "재실 · 장치 · 센서 · 필수",
+          "climate_away_policy": "집 · 장치 · POLICY",
+          "climate_manual_profile": "장치 · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "수면 · 장치",
+          "climate_sleep_schedule_enabled": "수면 · 자동",
+          "climate_sleep_start": "수면 · 장치 · START",
+          "climate_sleep_end": "수면 · 장치 · END",
+          "climate_target_source": "장치 · 정보원 · 목표",
+          "climate_comfort_adjustment_max_c": "장치 (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "“재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_away_entities": "“집 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_unknown_occupancy": "이 옵션은 “재실 · 장치”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_unoccupied_delay_minutes": "이 시간은 “장치 · CLIMATE_UNOCCUPIED_DELAY_MINUTES”에 적용됩니다. 잦은 전환을 줄이지만 장치 · CLIMATE_UNOCCUPIED_DELAY_MINUTES 보호를 대체하지 않습니다.",
+          "climate_occupancy_stale_minutes": "이 시간은 “재실 · 장치 · 센서 · 필수”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_away_policy": "이 옵션은 “집 · 장치 · POLICY”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_manual_profile": "이 옵션은 “장치 · CLIMATE_MANUAL_PROFILE”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_sleep_active": "이 옵션은 “수면 · 장치”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_sleep_schedule_enabled": "이 옵션은 “수면 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_sleep_start": "이 시간은 “수면 · 장치 · START”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_sleep_end": "이 시간은 “수면 · 장치 · END”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_target_source": "“장치 · 정보원 · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_comfort_adjustment_max_c": "“장치 (°C)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "climate_equipment": {
+        "title": "설정 · 장치",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · 장치 · 정보원 · 온도 +",
+          "climate_cool_climate_entity": "COOL · 장치 · 정보원 · 온도 −",
+          "climate_dry_climate_entity": "DRY · 장치 · 정보원",
+          "climate_fan_climate_entity": "FAN_ONLY · 속도 · 장치 · 정보원",
+          "climate_humidifier_entity": "HUMIDIFIER · 장치 · 정보원",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · 장치 · 정보원",
+          "climate_extraction_fan_entity": "EXTRACT · 속도 · 장치 · 정보원",
+          "climate_purifier_fan_entity": "공기청정기 · 정보원",
+          "climate_humidity_entity": "습도 · 정보원",
+          "climate_humidity_low_rh": "RH · 습도 · 장치 (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · 습도 · 장치 (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · 습도 · 장치 · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "장치 · 온도 −",
+          "climate_humidity_setpoint_auto": "습도 · 자동",
+          "climate_window_efficiency_notify": "장치 · 외부",
+          "climate_dry_fan_mode_auto": "속도 · 자동",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · 속도 · 장치 · 필수 · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · 속도 · 장치 · 외부 · 필수 · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · 속도 · 장치 (s) · MODE DWELL",
+          "climate_humidity_power_auto": "습도 · 전력 · 자동",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · 습도 · 장치 · 전력 · 필수 · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · 습도 · 장치 · 전력 · 외부 · 필수 · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · 습도 · 장치 · 전력 · 자동 (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · 습도 · 장치 · 전력 · 끄기 (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · 습도 · 장치 · 전력 · 자동 (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "장치 · 자동 · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "“HEAT · 장치 · 정보원 · 온도 +”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_cool_climate_entity": "“COOL · 장치 · 정보원 · 온도 −”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_dry_climate_entity": "“DRY · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_fan_climate_entity": "“FAN_ONLY · 속도 · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_humidifier_entity": "“HUMIDIFIER · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_dehumidifier_entity": "“DEHUMIDIFIER · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_extraction_fan_entity": "“EXTRACT · 속도 · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_purifier_fan_entity": "“공기청정기 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_humidity_entity": "“습도 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_humidity_low_rh": "“RH · 습도 · 장치 (%) · RH MIN”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_humidity_high_rh": "“RH · 습도 · 장치 (%) · RH MAX”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_humidity_hysteresis_rh": "“RH · 습도 · 장치 · ± RH”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_cooling_dry_deferral_rh_points": "이 옵션은 “장치 · 온도 −”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_humidity_setpoint_auto": "이 옵션은 “습도 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_window_efficiency_notify": "이 옵션은 “장치 · 외부”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_dry_fan_mode_auto": "이 옵션은 “속도 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_dry_fan_hardware_confirmed": "“DRY/FAN_ONLY · 속도 · 장치 · 필수 · HW ✓”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "climate_dry_fan_windowless_confirmed": "“DRY/FAN_ONLY · 속도 · 장치 · 외부 · 필수 · NO WINDOW”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "climate_dry_fan_mode_dwell_s": "이 시간은 “DRY/FAN_ONLY · 속도 · 장치 (s) · MODE DWELL”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_humidity_power_auto": "이 옵션은 “습도 · 전력 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_humidity_power_hardware_confirmed": "“RH POWER · 습도 · 장치 · 전력 · 필수 · HW ✓”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "climate_humidity_power_windowless_confirmed": "“RH POWER · 습도 · 장치 · 전력 · 외부 · 필수 · NO WINDOW”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "climate_humidity_power_min_on_s": "이 시간은 “RH POWER · 습도 · 장치 · 전력 · 자동 (s) · MIN ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_humidity_power_min_off_s": "이 시간은 “RH POWER · 습도 · 장치 · 전력 · 끄기 (s) · MIN OFF”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_humidity_power_max_on_s": "이 시간은 “RH POWER · 습도 · 장치 · 전력 · 자동 (s) · MAX ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_secondary_climate_setpoint_auto": "이 옵션은 “장치 · 자동 · TARGET AUTO”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "설정 · 장치 · 외부",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "climate_fan_speed_auto": "속도 · 자동",
+          "climate_fan_power_auto": "속도 · 전력 · 자동",
+          "climate_fan_power_hardware_confirmed": "FAN · 속도 · 장치 · 전력 · 필수 · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · 속도 · 장치 · 전력 · 자동 (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · 속도 · 장치 · 전력 · 끄기 (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · 속도 · 장치 · 전력 · 자동 (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · 장치 · 센서 · 필수 · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · 장치 · 정보원",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · 장치 · 정보원",
+          "climate_pm25_action_ug_m3": "PM2.5 · 장치 (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · 장치 · 속도 (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · 장치 · 속도 (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "이 옵션은 “속도 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_fan_power_auto": "이 옵션은 “속도 · 전력 · 자동”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "climate_fan_power_hardware_confirmed": "“FAN · 속도 · 장치 · 전력 · 필수 · HW ✓”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "climate_fan_power_min_on_s": "이 시간은 “FAN · 속도 · 장치 · 전력 · 자동 (s) · MIN ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_fan_power_min_off_s": "이 시간은 “FAN · 속도 · 장치 · 전력 · 끄기 (s) · MIN OFF”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_fan_power_max_on_s": "이 시간은 “FAN · 속도 · 장치 · 전력 · 자동 (s) · MAX ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "climate_pm25_sensor_verified": "“PM2.5 · PM2.5 · 장치 · 센서 · 필수 · SENSOR ✓ · VERIFIED”에 실제 측정값을 사용하세요. 추정값은 보정된 PM2.5 · PM2.5 · 장치 · 센서 · 필수 · SENSOR ✓ · VERIFIED를 대신하지 못합니다.",
+          "climate_co2_entity": "“CO₂ · CO₂ · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_pm25_entity": "“PM2.5 · PM2.5 · 장치 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "climate_pm25_action_ug_m3": "“PM2.5 · 장치 (µg/m³)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_extraction_speed_percent": "“EXTRACT · 장치 · 속도 (%) · SPEED %”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "climate_purifier_speed_percent": "“PURIFIER · 장치 · 속도 (%) · SPEED %”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다."
+        }
+      },
+      "climate_profiles": {
+        "title": "설정 · 장치",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "home_heat": "난방 · 재택 (°C)",
+          "home_cool": "냉방 · 재택 (°C)",
+          "unoccupied_heat": "난방 · 빈 방 (°C)",
+          "unoccupied_cool": "냉방 · 빈 방 (°C)",
+          "away_heat": "난방 · 외출 (°C)",
+          "away_cool": "냉방 · 외출 (°C)",
+          "sleep_heat": "난방 · 수면 (°C)",
+          "sleep_cool": "냉방 · 수면 (°C)"
+        },
+        "data_description": {
+          "home_heat": "“난방 · 재택 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "home_cool": "“냉방 · 재택 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "unoccupied_heat": "“난방 · 빈 방 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "unoccupied_cool": "“냉방 · 빈 방 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "away_heat": "“난방 · 외출 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "away_cool": "“냉방 · 외출 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "sleep_heat": "“난방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "sleep_cool": "“냉방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다."
+        }
+      },
+      "climate_actuators": {
+        "title": "설정 · 장치",
+        "description": "구역 · 설정 · 장치 · 제어. 재실 · 센서 · 필수.",
+        "data": {
+          "direct_hardware_confirmed": "필수",
+          "heat_actuator": "난방 · 장치",
+          "cool_actuator": "냉방 · 장치",
+          "min_on_s": "전력 · 자동 (s) · MIN ON",
+          "min_off_s": "전력 · 끄기 (s)",
+          "max_on_s": "전력 · 자동 (s) · MAX ON",
+          "mode_dwell_s": "설정 · 정보원 (s) · MODE DWELL",
+          "kp": "PID Kp · 제어 (percentage points/°C)",
+          "ki": "PID Ki · 제어 (percentage points/(°C·minute))",
+          "kd": "PID Kd · 제어 (percentage points·minute/°C)",
+          "sample_seconds": "설정 · 정보원 (s) · SAMPLE",
+          "pwm_period_s": "설정 · 정보원 (s) · PWM PERIOD",
+          "max_demand_change": "설정 · 정보원 · MAX Δ",
+          "min_demand_change": "설정 · 정보원 · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "“필수”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "heat_actuator": "“난방 · 장치”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "cool_actuator": "“냉방 · 장치”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "min_on_s": "이 시간은 “전력 · 자동 (s) · MIN ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "min_off_s": "이 시간은 “전력 · 끄기 (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "max_on_s": "이 시간은 “전력 · 자동 (s) · MAX ON”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "mode_dwell_s": "이 시간은 “설정 · 정보원 (s) · MODE DWELL”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "kp": "“PID Kp · 제어 (percentage points/°C)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ki": "“PID Ki · 제어 (percentage points/(°C·minute))”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "kd": "“PID Kd · 제어 (percentage points·minute/°C)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "sample_seconds": "이 시간은 “설정 · 정보원 (s) · SAMPLE”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "pwm_period_s": "이 시간은 “설정 · 정보원 (s) · PWM PERIOD”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "max_demand_change": "“설정 · 정보원 · MAX Δ”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "min_demand_change": "“설정 · 정보원 · MIN Δ”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "outside_data": {
+        "title": "외부 · 정보원",
+        "description": "외부 · 정보원: 선택 정보원, 센서 / 장치 · 제어.",
+        "menu_options": {
+          "weather": "날씨 및 경보",
+          "outdoor": "실외 공기질",
+          "outside_aqi": "외부 · AQI",
+          "pollen": "꽃가루"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "구역 · 설정",
+        "description": "구역 · 설정: 선택 정보원, 센서 / 장치 · 제어.",
+        "menu_options": {
+          "areas": "방",
+          "indoor_sensors": "방 · 곰팡이 지표",
+          "window_sensors": "창문 센서 제외",
+          "environment_room": "설정 · 설정 · 정보원",
+          "area_devices": "실내 환경 기기"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "장치 · 설정",
+        "description": "선택 사항: 센서와 기기별 안전 권한 설정으로 이동합니다. 목록만 즉시 저장하려면 꺼 두세요.",
+        "menu_options": {
+          "device_settings": "장치 · 제어",
+          "device_choice": "선택 · 장치",
+          "device_done": "설정 · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "일반 · 설정",
+        "description": "일반 · 설정: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_home_policy": "집 · 재실 · 제어",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "general_source_stale_minutes": "정보원 · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "“방 · 재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_entity": "“재실 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_home_trackers": "“집 · 재실 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_home_policy": "이 옵션은 “집 · 재실 · 제어”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_source_stale_minutes": "정보원 · 수면 / 재실 · max 240 min. 잘못됨 · 끄기."
+        }
+      },
+      "pollen": {
+        "title": "꽃가루",
+        "description": "꽃가루: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "pollen_entity": "꽃가루 · 정보원",
+          "pollen_high_from": "POLLEN · 꽃가루 · HIGH",
+          "pollen_max_scale": "POLLEN · 꽃가루 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 꽃가루 · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "pollen_high_from": "“POLLEN · 꽃가루 · HIGH”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_max_scale": "“POLLEN · 꽃가루 · SCALE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_avoid_ventilation": "“POLLEN · 꽃가루 · NO VENT”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "outside_aqi": {
+        "title": "외부 · AQI",
+        "description": "외부 · AQI: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "outside_aqi_entity": "AQI · 센서",
+          "outside_aqi_scale": "AQI · 정보원",
+          "outside_aqi_limit": "AQI · 목표",
+          "outside_aqi_no_sources": "AQI · 센서 · 필수"
+        },
+        "data_description": {
+          "outside_aqi_entity": "“AQI · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "outside_aqi_scale": "“AQI · 정보원”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "outside_aqi_limit": "“AQI · 목표”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "outside_aqi_no_sources": "“AQI · 센서 · 필수”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+        }
+      },
+      "area_devices": {
+        "title": "실내 환경 기기",
+        "description": "선택 · 구역",
+        "data": {
+          "area_devices_area": "선택 · 구역"
+        },
+        "data_description": {
+          "area_devices_area": "“선택 · 구역”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다."
+        }
+      },
+      "select_devices": {
+        "title": "실내 환경 기기",
+        "description": "{area_name}의 기기를 선택하세요. 저장하면 방 허브에 물리적 기기마다 제어 기기 하나가 생성됩니다. 목표, 프리셋, 자동/수동/꺼짐/PID와 저소음 운전은 각 기기에서 설정하세요. 선택만으로 자동 제어가 켜지지 않습니다.",
+        "data": {
+          "selected_devices": "선택 · 장치",
+          "configure_device_sources": "지금 센서와 기기 권한 설정"
+        },
+        "data_description": {
+          "selected_devices": "{area_name}의 기기를 선택하세요. 저장하면 방 허브에 물리적 기기마다 제어 기기 하나가 생성됩니다. 목표, 프리셋, 자동/수동/꺼짐/PID와 저소음 운전은 각 기기에서 설정하세요. 선택만으로 자동 제어가 켜지지 않습니다.",
+          "configure_device_sources": "선택 사항: 센서와 기기별 안전 권한 설정으로 이동합니다. 목록만 즉시 저장하려면 꺼 두세요."
+        }
+      },
+      "device_choice": {
+        "title": "선택 · 장치",
+        "description": "선택 · 장치: 선택 정보원, 센서 / 장치 · 제어.",
+        "data": {
+          "device_choice": "선택 · 장치"
+        },
+        "data_description": {
+          "device_choice": "“선택 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다."
+        }
+      },
+      "device_settings": {
+        "title": "장치 · 제어",
+        "description": "이 옵션은 “제어 · 정보원”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다. “필수 · 장치 · 전력”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다. 이 시간은 “전력 · min ON (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다. 이 시간은 “전력 · min OFF (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다. “수면 · 제어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다. “속도 (%)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "자동 제어",
+          "device_method": "제어 · 정보원",
+          "device_presence_requirement": "제어 · 재실",
+          "device_absence_action": "끄기 · 재실",
+          "device_sleep_behavior": "수면 · 제어",
+          "device_hardware_confirmed": "필수 · 장치 · 전력",
+          "device_temperature_entity": "온도 · 센서",
+          "device_humidity_entity": "습도 · 센서",
+          "device_co2_entity": "CO₂ · 센서",
+          "device_pm25_entity": "PM2.5 · 센서",
+          "device_fan_purpose": "제어 · 장치",
+          "device_sensor_verified": "센서 · 필수",
+          "device_fan_speed_percent": "속도 (%)",
+          "device_humidity_target": "습도 · 목표 (%)",
+          "device_sleep_humidity_target": "수면 · 습도 · 목표 (%)",
+          "device_min_on_s": "전력 · min ON (s)",
+          "device_min_off_s": "전력 · min OFF (s)",
+          "device_max_on_s": "전력 · max ON (s)",
+          "device_home_heat_c": "난방 · 재택 (°C)",
+          "device_home_cool_c": "냉방 · 재택 (°C)",
+          "device_unoccupied_heat_c": "난방 · 빈 방 (°C)",
+          "device_unoccupied_cool_c": "냉방 · 빈 방 (°C)",
+          "device_away_heat_c": "난방 · 외출 (°C)",
+          "device_away_cool_c": "냉방 · 외출 (°C)",
+          "device_sleep_heat_c": "난방 · 수면 (°C)",
+          "device_sleep_cool_c": "냉방 · 수면 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "이 옵션은 “자동 제어”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "device_method": "이 옵션은 “제어 · 정보원”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "device_presence_requirement": "“제어 · 재실”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "device_absence_action": "이 옵션은 “끄기 · 재실”을 제어합니다. 물리적 명령에는 별도 승인과 독립 보호가 필요합니다.",
+          "device_sleep_behavior": "“수면 · 제어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "device_hardware_confirmed": "“필수 · 장치 · 전력”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "device_temperature_entity": "“온도 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "device_humidity_entity": "“습도 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "device_co2_entity": "“CO₂ · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "device_pm25_entity": "“PM2.5 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "device_fan_purpose": "“제어 · 장치”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "device_sensor_verified": "“센서 · 필수”에 실제 측정값을 사용하세요. 추정값은 보정된 센서를 대신하지 못합니다.",
+          "device_fan_speed_percent": "“속도 (%)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "device_humidity_target": "“습도 · 목표 (%)”의 판단 기준값입니다. 권고에 영향을 주지만 의료 기준은 아닙니다.",
+          "device_sleep_humidity_target": "“수면 · 습도 · 목표 (%)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_min_on_s": "이 시간은 “전력 · min ON (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "device_min_off_s": "이 시간은 “전력 · min OFF (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "device_max_on_s": "이 시간은 “전력 · max ON (s)”에 적용됩니다. 잦은 전환을 줄이지만 장치 보호를 대체하지 않습니다.",
+          "device_home_heat_c": "“난방 · 재택 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_home_cool_c": "“냉방 · 재택 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_unoccupied_heat_c": "“난방 · 빈 방 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_unoccupied_cool_c": "“냉방 · 빈 방 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_away_heat_c": "“난방 · 외출 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_away_cool_c": "“냉방 · 외출 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_sleep_heat_c": "“난방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다.",
+          "device_sleep_cool_c": "“냉방 · 수면 (°C)” 목표는 재실 또는 수면이 확인된 경우에만 적용됩니다. 알 수 없음은 빈 방이 아닙니다."
+        }
+      },
+      "setup_rooms": {
+        "title": "모니터링할 방",
+        "description": "모니터링할 방 → 정보원 → 일반 설정",
+        "data": {
+          "areas": "모니터링할 방"
+        },
+        "data_description": {
+          "areas": "모니터링할 방. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_room_sources": {
+        "title": "방 · {area_name} · {room_index}/{room_count}",
+        "description": "방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+        "data": {
+          "windows": "창문",
+          "air_quality": "공기질 및 환경 센서",
+          "temperature": "온도",
+          "humidity": "습도",
+          "pressure": "압력 센서",
+          "climate_devices": "장치"
+        },
+        "data_description": {
+          "windows": "창문. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "air_quality": "공기질 및 환경 센서. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "temperature": "온도. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "humidity": "습도. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "pressure": "압력 센서. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다.",
+          "climate_devices": "장치. 방의 입력을 선택하세요. 기기 이름 - 엔티티 이름으로 표시됩니다. 빈 그룹은 사용하지 않으며 자동 검색이나 제어를 켜지 않습니다."
+        }
+      },
+      "setup_general": {
+        "title": "일반 설정",
+        "description": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다.",
+        "data": {
+          "weather_entities": "날씨 및 경보",
+          "outdoor_sensors": "실외 공기질",
+          "weather_warnings": "기상 경보",
+          "general_room_occupancy_sensors": "방 · 재실 · 센서",
+          "general_home_trackers": "집 · 재실 · 장치",
+          "general_occupied_rooms_entity": "재실 · 방 · 정보원 (state)",
+          "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
+          "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
+          "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
+          "notify_entities": "설정 · 정보원",
+          "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
+          "tts_engine": "설정 · 정보원 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 선택 · 정보원",
+          "language": "TTS · 선택 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%",
+          "pollen_entities": "꽃가루 · 정보원 · 선택",
+          "use_announcement_hub": "자동 · Announcement Hub",
+          "general_away_cooldown_minutes": "집 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "선택하세요: 실외 공기질 · AQI, CO₂, PM2.5, PM10, VOC. 사용할 수 없음: ⚠",
+          "weather_warnings": "“기상 경보”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_room_occupancy_sensors": "“방 · 재실 · 센서”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_home_trackers": "“집 · 재실 · 장치”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_entity": "“재실 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
+          "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "ai_conversation_agent": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · AI · 선택 · 정보원 · conversation.* / ai_task.*.",
+          "language": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · TTS · 선택 · 정보원 · provider capabilities.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entities": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 꽃가루 · 정보원 · 선택.",
+          "use_announcement_hub": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 자동 · Announcement Hub.",
+          "general_away_cooldown_minutes": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 집 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "잘못된 선택: 실외 공기질 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "사용할 수 없음: 실외 공기질 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "잘못된 선택: 날씨 및 경보 (weather.*).",
+      "invalid_warning": "잘못된 선택: 날씨 및 경보 ⚠.",
+      "missing_notify": "선택하세요: Announcement Hub / notify.*.",
+      "missing_tts": "선택하세요: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "잘못된 선택: °C min < max.",
+      "no_areas": "선택하세요: 방.",
+      "no_window_areas": "사용할 수 없음: 측정값 (binary_sensor, window).",
+      "invalid_areas": "잘못된 선택: 방.",
+      "invalid_window_exclusions": "잘못된 선택: 창문 센서 제외.",
+      "invalid_indoor_exclusions": "잘못된 선택: 실내 공기 센서 제외.",
+      "no_windows_after_exclusions": "창문 센서를 하나 이상 유지하세요.",
+      "review_areas_after_exclusions": "확인하세요: 방 · 측정값 (0).",
+      "invalid_repeat_minutes": "잘못된 선택: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "사용할 수 없음: conversation.process.",
+      "invalid_ai_agent": "잘못된 선택: conversation.*.",
+      "invalid_mold_temperature_sensor": "방 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "방 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "곰팡이 지표 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "곰팡이 지표 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "곰팡이 지표 · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "“설정 · 정보원” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "invalid_environment_measurement": "“설정 · 정보원” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pmv_requires_explicit_inputs": "“PMV / PPD” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pid_climate_required": "“PID · 장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pid_temperature_required": "“PID · 온도” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pid_invalid_target": "“PID · 목표” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pid_duplicate_climate": "“PID · 장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "pid_invalid_parameters": "“PID” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_dry_fan_control_inputs_missing": "“속도 · 장치 · 제어” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_humidity_power_inputs_missing": "“습도 · 장치 · 전력” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_secondary_control_inputs_missing": "“장치 · 제어” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_fan_power_inputs_missing": "“속도 · 장치 · 전력” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_fan_control_inputs_missing": "“속도 · 장치 · 제어” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_fan_sensor_invalid": "“속도 · 장치 · 센서” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_humidity_control_inputs_missing": "“습도 · 장치 · 제어” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_temperature_required": "“온도 · 장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_target_required": "“장치 · 목표” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_direct_actuator_not_ready": "“장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_controller_invalid": "“장치 · 제어” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_mode_invalid": "“장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_occupancy_invalid": "“재실 · 장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_away_invalid": "“집 · 장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_deadband_invalid": "“장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_attestation_required": "“장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_direct_targets_invalid": "“장치 · 목표” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "climate_direct_timing_invalid": "“장치” 설정이 잘못되었습니다. 소스, 단위, 안전 조건을 확인하세요.",
+      "general_invalid_presence": "잘못됨 · 재실 · 설정",
+      "general_invalid_trackers": "잘못됨 · 집 · 설정",
+      "general_invalid_rooms_entity": "잘못됨 · 방 · 설정",
+      "general_invalid_attribute": "잘못됨 · 정보원 · 설정",
+      "general_invalid_source_age": "잘못됨 · 정보원 · 설정",
+      "invalid_selected_devices": "잘못됨 · 장치 · 설정",
+      "device_policy_invalid": "잘못됨 · 재실 · 설정",
+      "device_method_invalid": "잘못됨 · 제어 · 설정",
+      "device_hardware_required": "잘못됨 · 필수 · 설정",
+      "device_power_required_for_off": "잘못됨 · 전력 · 설정",
+      "device_temperature_required": "잘못됨 · 온도 · 설정",
+      "device_humidity_required": "잘못됨 · 습도 · 설정",
+      "device_air_sensor_required": "잘못됨 · 센서 · 설정",
+      "device_temperature_band_invalid": "잘못됨 · 온도 · 설정",
+      "device_humidity_invalid": "잘못됨 · 습도 · 설정",
+      "device_runtime_invalid": "잘못됨 · 전력 · 설정",
+      "invalid_setup_rooms": "잘못됨: 모니터링할 방",
+      "invalid_room_source": "잘못됨: 방 · 정보원"
+    },
+    "abort": {
+      "setup_area_removed": "잘못됨: 모니터링할 방",
+      "setup_changed": "설정 ↻ 모니터링할 방"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "공기질",
+        "state": {
+          "open": "닫기 · 측정값",
+          "close": "자동 알림 · 측정값",
+          "idle": "좋음",
+          "blocked": "창문을 닫아 두세요"
+        }
+      },
+      "area_overview": {
+        "name": "환경 개요"
+      },
+      "area_surface_humidity": {
+        "name": "표면 습도(계산값)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "실외 · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "실외 · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "실외 · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "실외 · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "실외 · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "실외 · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · 외부 (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · 외부 (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · 외부 (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "공기질 · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "공기질 · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "공기질 · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "공기질 · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "공기질 · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "공기질 · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "공기질 · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "곰팡이 지표 · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "실외 · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "실외 · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "실외 · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "날씨 및 경보 · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · 열기 (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "알림(선택 사항) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "목표 (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · 제어 (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · 제어 (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · 제어 (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "난방 · 재택 (°C)"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "냉방 · 재택 (°C)"
+      },
+      "area_climate_profile_unoccupied_heat": {
+        "name": "난방 · 빈 방 (°C)"
+      },
+      "area_climate_profile_unoccupied_cool": {
+        "name": "냉방 · 빈 방 (°C)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "난방 · 외출 (°C)"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "냉방 · 외출 (°C)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "난방 · 수면 (°C)"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "냉방 · 수면 (°C)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · 꽃가루 · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · 꽃가루 · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "정보원 · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "설정 · 정보원 (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · 목표 (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "속도 · 외부 (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "설정 · 정보원 (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "설정 · 정보원 (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "장치 · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "재실 · 장치 · 센서 · 필수"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "장치 (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · 습도 · 장치 (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · 습도 · 장치 (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · 습도 · 장치 · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "장치 · 온도 −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · 장치 (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · 장치 · 속도 (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · 장치 · 속도 (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · 제어 (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · 제어 (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · 제어 (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "설정 · 정보원 (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "설정 · 정보원 · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "설정 · 정보원 · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "곰팡이 지표 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 제어 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 제어 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 제어 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}설정 · 정보원 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}저소음 팬 속도 제한 (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}전력 · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}전력 · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}전력 · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "방 · 온도 · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "방 · 온도 · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "방 · 습도 · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "방 · 습도 · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "방 · 속도 · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "방 · 속도 · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "집 · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "자동 · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "자동"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · 알림(선택 사항)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · 꽃가루 · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "수면"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · 자동"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "수면 · 장치"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "수면 · 자동"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "장치 · 외부"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}수면 중 저소음"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}재실 중 저소음"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}전력 · 제어"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}센서 · 필수"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "언어"
+      },
+      "area_manual_profile": {
+        "name": "장치 · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "집 · 재실 · 제어"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "재실 · 장치"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "집 · 장치 · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "장치 · 정보원 · 목표"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}제어 방식",
+        "state": {
+          "existing": "기존 방 제어기",
+          "automatic": "자동",
+          "manual": "수동",
+          "off": "끄기",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}기기 기본 저소음 팬 모드"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}제어 · 재실",
+        "state": {
+          "always": "자동",
+          "occupied": "방 · 재실",
+          "absent": "방 · 재실 · 끄기"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}수면 · 제어",
+        "state": {
+          "normal": "자동",
+          "pause": "일시 중지",
+          "sleep_targets": "수면 · 목표"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}제어 · 장치",
+        "state": {
+          "extraction": "외부 · 제어",
+          "filtration": "PM2.5 · 제어",
+          "auto": "자동"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "온도 · 정보원"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "정보원 · 속도 · 외부 (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "수면 · 장치 · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "수면 · 장치 · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "곰팡이 지표 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}확인 후 재개"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}실내 환경 제어기"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "알림(선택 사항) — Home Environment Manager",
+      "description": "알림(선택 사항) · 방",
+      "fields": {
+        "language": {
+          "name": "언어",
+          "description": "언어"
+        },
+        "channels": {
+          "name": "알림(선택 사항)",
+          "description": "알림(선택 사항)"
+        },
+        "areas": {
+          "name": "방",
+          "description": "방"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — 기본값",
+        "en": "설정 · 정보원",
+        "de": "설정 · 정보원",
+        "el": "설정 · 정보원",
+        "fr": "설정 · 정보원",
+        "es": "설정 · 정보원",
+        "it": "설정 · 정보원",
+        "nl": "설정 · 정보원",
+        "pt": "설정 · 정보원",
+        "pt-br": "설정 · 정보원",
+        "pl": "설정 · 정보원",
+        "ru": "설정 · 정보원",
+        "uk": "설정 · 정보원",
+        "tr": "설정 · 정보원",
+        "cs": "설정 · 정보원",
+        "sk": "설정 · 정보원",
+        "hu": "설정 · 정보원",
+        "ro": "설정 · 정보원",
+        "bg": "설정 · 정보원",
+        "hr": "설정 · 정보원",
+        "sr": "설정 · 정보원",
+        "sv": "설정 · 정보원",
+        "nb": "설정 · 정보원",
+        "da": "설정 · 정보원",
+        "fi": "설정 · 정보원",
+        "id": "설정 · 정보원",
+        "vi": "설정 · 정보원",
+        "th": "설정 · 정보원",
+        "hi": "설정 · 정보원",
+        "zh-hans": "설정 · 정보원",
+        "zh-hant": "설정 · 정보원",
+        "ja": "설정 · 정보원",
+        "ko": "설정 · 정보원",
+        "ar": "설정 · 정보원",
+        "he": "설정 · 정보원",
+        "fa": "설정 · 정보원",
+        "bn": "설정 · 정보원",
+        "ur": "설정 · 정보원",
+        "ta": "설정 · 정보원"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "집 · 재실",
+        "all_home": "집 · 장치 · 재실"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "목표 · 제어",
+        "native": "장치 · 제어",
+        "power": "전력",
+        "speed": "속도"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "자동",
+        "room": "방 · 재실",
+        "home": "집 · 재실"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "일시 중지",
+        "off": "끄기"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "자동",
+        "pause": "일시 중지",
+        "sleep_targets": "수면 · 목표"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "외부 · 제어",
+        "filtration": "PM2.5 · 제어"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "정보원 · 잘못됨",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "목표 · 설정"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "방 허브",
+      "initiate_flow": {
+        "user": "방 허브"
+      },
+      "step": {
+        "user": {
+          "title": "방 허브",
+          "description": "Home Assistant 영역을 선택하세요. 그룹에는 방의 일반 설정과 선택한 각 물리적 기기의 제어기 하나가 포함됩니다. 방을 추가해도 기기의 자동 제어가 활성화되지는 않습니다.",
+          "data": {
+            "area_id": "방"
+          },
+          "data_description": {
+            "area_id": "Home Assistant 영역을 선택하세요. 그룹에는 방의 일반 설정과 선택한 각 물리적 기기의 제어기 하나가 포함됩니다. 방을 추가해도 기기의 자동 제어가 활성화되지는 않습니다."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "잘못됨: 구역."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
