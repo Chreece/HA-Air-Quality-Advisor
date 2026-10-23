@@ -144,9 +144,12 @@ jobs:
               assert (dest/'__init__.py').is_file()
               assert not (dest/'custom_components').exists()
           PY
-      - name: Hassfest the exact flat payload
+      - name: Hassfest the exact flat payload as installed by HACS
         run: |
-          docker run --rm -v /tmp/beta24-payload:/github/workspace ghcr.io/home-assistant/hassfest
+          rm -rf /tmp/beta24-hassfest
+          mkdir -p /tmp/beta24-hassfest/custom_components/environment_manager
+          cp -a /tmp/beta24-payload/. /tmp/beta24-hassfest/custom_components/environment_manager/
+          docker run --rm -v /tmp/beta24-hassfest:/github/workspace ghcr.io/home-assistant/hassfest
       - name: Publish flattened beta branch and prerelease
         env:
           GH_TOKEN: ${{ github.token }}
