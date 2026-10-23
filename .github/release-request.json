@@ -1,18 +1,19 @@
 {
-  "version": "0.6.0b18",
+  "version": "0.6.0b19",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Room Environment owns capability-derived controller limits; controllers prefer selected room feedback over device-native measurements",
+  "note": "Canonical environment_manager domain migration; room-owned Comfort/Home/Sleep/Eco setpoints; Away uses room limits; Automatic/PID starts and stops exact native controllers when demanded",
   "validation_attempt": 0,
   "changes": [
-    "Move temperature, humidity and percentage-fan min/max controls from physical-device controllers to the Room Environment device",
-    "Derive each room limit's editable range from the intersection of the available selected physical devices that support that capability",
-    "Apply one room limit set to every compatible managed controller while still respecting each device's stricter native bounds",
-    "Conservatively migrate beta17 per-device limits to room defaults and remove only the obsolete beta17 per-device limit registry entities",
-    "Use explicitly selected room temperature/humidity/air-quality sensors as the controller feedback source; aggregate multiple selected room sensors",
-    "Do not let a climate device's own temperature/humidity reading override explicitly selected room measurements",
-    "Keep per-device Quiet when in room/sleeping and Always/Occupied/Absent policies unchanged",
-    "Retain availability-first calculations, command ownership, dwell/interlock protections, rooms-first setup and stable v0.5.1"
+    "Rename the canonical Home Assistant custom integration domain and package from air_quality_advisor to environment_manager",
+    "Provide one-click migration from the frozen legacy config-entry domain, preserving data/options/subentries, entity IDs/unique IDs, device IDs/custom names and registry ownership",
+    "Retain legacy air_quality_advisor and home_environment_manager service aliases plus the legacy dashboard-card URL after migration",
+    "Migrate persisted equipment, environment-history, PID, fan-power and humidity-power safety stores from the old entry/domain on first use",
+    "Define Comfort as verified room occupied, Home as someone home but room not occupied/unknown, Away as verified nobody home, Sleep as sleeping room and Eco as explicit-only energy-saving override",
+    "Place editable Comfort/Home/Sleep/Eco heating and cooling setpoints on the Room Environment device; Away uses the Room Environment temperature minimum/maximum bounds",
+    "Map beta18 Home profile to Comfort and beta18 Unoccupied profile to Home without duplicating device-level automatic setpoints",
+    "Selecting Automatic or PID on a native climate/fan/humidifier explicitly authorizes this exact controller to start/stop and switch supported native modes when demand and policy require it; raw relay/proportional hardware keeps separate commissioning",
+    "Preserve availability-first calculations, room-selected feedback, device ownership, acknowledgement, dwell/runtime/interlock protections and stable v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b18"
+  "release_branch": "beta/v0.6.0b19"
 }

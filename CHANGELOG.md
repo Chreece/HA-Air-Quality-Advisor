@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0b19 - environment_manager domain migration and room-owned presets (beta)
+
+- Rename the canonical custom-integration package/domain to `environment_manager`; keep legacy service/card aliases for existing automations and dashboards.
+- Add one-click migration from the immutable `air_quality_advisor` config-entry domain, preserving data/options/subentries and entity/device registry identities before retiring the old entry.
+- Import legacy equipment/environment/PID/fan/humidity safety stores into the new-domain entry on first use.
+- Define automatic room semantics: Comfort = verified occupied, Home = someone home but room unoccupied/unknown, Away = verified nobody home, Sleep = sleeping room; Eco is explicit-only.
+- Put Comfort/Home/Sleep/Eco heat/cool setpoints on the Room Environment device. Away uses the room minimum/maximum temperature bounds and has no duplicate setpoint entities.
+- Migrate beta18 Home → Comfort and Unoccupied → Home bands conservatively.
+- Selecting Automatic/PID on exact native climate/fan/humidifier grants that controller power/mode consent so it can start/stop on verified demand; existing manual-running equipment is not seized and raw outputs retain separate commissioning.
+- Preserve availability-first calculations, room sensor precedence, ownership/acknowledgement, dwell/runtime/interlock protections and stable v0.5.1.
+
 ## 0.6.0b18 - Room Environment limits and room feedback precedence (beta)
 
 - Move temperature/humidity/fan percentage min/max controls from physical controllers to the Room Environment device.

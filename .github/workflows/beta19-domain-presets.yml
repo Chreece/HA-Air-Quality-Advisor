@@ -115,3 +115,80 @@ jobs:
           git push origin HEAD:refs/heads/feat/environment-manager-domain-presets-beta19-20261023
           echo "VALIDATED_SOURCE_SHA=$(git rev-parse HEAD)"
           echo "VALIDATED_SOURCE_TREE=$(git rev-parse HEAD^{tree})"
+
+
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b19'
+    needs: [test,hassfest,hacs,home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify final canonical package and release metadata
+        run: |
+          set -euo pipefail
+          test -d custom_components/environment_manager
+          test ! -d custom_components/air_quality_advisor
+          test ! -e .github/apply-beta19-domain.py
+          python generate_translations.py
+          git diff --exit-code -- custom_components/environment_manager/strings.json custom_components/environment_manager/translations custom_components/environment_manager/equipment_text.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('custom_components/environment_manager/manifest.json').read_text())
+          r=json.loads(Path('.github/release-request.json').read_text())
+          assert m['domain']=='environment_manager'
+          assert m['version']==r['version']=='0.6.0b19'
+          assert r['channel']=='beta' and r['release_branch']=='beta/v0.6.0b19'
+          note=Path('.github/releases/v0.6.0b19.md')
+          assert note.stat().st_size > 2500
+          assert 'air_quality_advisor' in note.read_text()
+          assert 'environment_manager' in note.read_text()
+          PY
+      - name: Package and verify canonical installation ZIP
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b19.zip custom_components/environment_manager -x '*__pycache__*' '*.pyc' '*.pyo'
+          python - <<'PY'
+          import json,zipfile
+          path='dist/HA-Home-Environment-Manager-v0.6.0b19.zip'
+          prefix='custom_components/environment_manager/'
+          with zipfile.ZipFile(path) as z:
+              assert z.testzip() is None
+              assert all(name.startswith(prefix) for name in z.namelist())
+              assert not any('air_quality_advisor/' in name for name in z.namelist())
+              manifest=json.loads(z.read(prefix+'manifest.json'))
+              assert manifest['domain']=='environment_manager'
+              assert manifest['version']=='0.6.0b19'
+              for name in (
+                  'domain_migration.py','equipment_model.py','equipment_runtime.py',
+                  'climate.py','number.py','translations/el.json',
+                  'frontend/air-quality-advisor-card.js',
+              ):
+                  assert prefix+name in z.namelist(),name
+              for name in z.namelist():
+                  if name.endswith('.json'): json.loads(z.read(name))
+          PY
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b19.zip > dist/HA-Home-Environment-Manager-v0.6.0b19.zip.sha256
+      - name: Publish immutable opt-in beta, never stable Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b19" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b19 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b19" >/dev/null 2>&1; then
+            echo 'Existing orphan tag; refusing to overwrite'
+            exit 1
+          fi
+          gh release create v0.6.0b19 \
+            dist/HA-Home-Environment-Manager-v0.6.0b19.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b19.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 19' \
+            --notes-file .github/releases/v0.6.0b19.md --prerelease --latest=false
