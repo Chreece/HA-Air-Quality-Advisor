@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b23/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b24/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 23 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Beta23 fixes HACS installation across the historical `air_quality_advisor` → canonical `environment_manager` domain change. It keeps beta22's exact config-entry-ID migration. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
+> **v0.6.0 beta 24 is available for opt-in testing.** Stable remains **v0.5.1**. Beta24 fixes the HACS domain-switch install by publishing the beta tag itself as a flat `environment_manager` integration payload, avoiding HACS's release-asset ZIP path. Beta22's exact config-entry-ID migration is retained. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
+
+## Beta 24 - flat HACS tag payload
+
+Beta24 no longer uses HACS `zip_release`. The `v0.6.0b24` tag itself contains the integration files at repository root, with `content_in_root: true`. HACS can therefore switch away from its cached `custom_components/air_quality_advisor` remote path, discover the root `environment_manager` manifest, and extract GitHub's normal tag archive directly into `/config/custom_components/environment_manager`.
+
+This avoids both earlier failure modes: looking for the old `air_quality_advisor/manifest.json`, and the later release-asset download failure. The Home Assistant migration remains the beta22 identity-preserving migration.
 
 ## Beta 23 - HACS domain-switch installation fix
 
