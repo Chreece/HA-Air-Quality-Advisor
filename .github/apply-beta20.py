@@ -205,7 +205,7 @@ on/off as needed. Raw relay commissioning is never inferred.''')
     controls=NEWPKG/"device_controls.py"
     text=controls.read_text(encoding="utf-8")
     start=text.index("DEVICE_TARGET_NUMBERS = {")
-    end=text.index("\\nCLIMATE_POLICY_OPTIONS =",start)
+    end=text.index("\nCLIMATE_POLICY_OPTIONS =",start)
     text=text[:start]+'''DEVICE_TARGET_NUMBERS = {
     # Device-specific environmental/fan settings only. Temperature preset
     # targets are owned by the Room Environment device.
