@@ -303,6 +303,25 @@ if lifecycle.exists():
     value = value.replace('assert len(h.services.callbacks)==12', 'assert len(h.services.callbacks)==16')
     lifecycle.write_text(value, encoding="utf-8")
 
+
+changelog = ROOT / "CHANGELOG.md"
+if changelog.exists():
+    value = changelog.read_text(encoding="utf-8")
+    heading = "## 0.6.0b21 - Canonical environment_manager domain repair (beta)"
+    if heading not in value:
+        section = """## 0.6.0b21 - Canonical environment_manager domain repair (beta)
+
+- Correct the beta20 `enviroment_manager` package/domain typo to canonical `environment_manager`.
+- Migrate registry ownership from both `air_quality_advisor` and beta20 `enviroment_manager` while preserving entity/device IDs, subentries and user customizations.
+- Preserve chained storage migration markers for beta19 -> beta20 -> beta21 and direct beta19 -> beta21 upgrades.
+- Keep temporary service/card compatibility for the historical domains while making `environment_manager` authoritative.
+- Preserve beta20 room-owned presets, room-wide limits, selected-room feedback and controller safety behavior.
+- Validate both migration paths on installed Home Assistant 2026.10 before publishing.
+
+"""
+        value = value.replace("# Changelog\n\n", "# Changelog\n\n" + section, 1)
+        changelog.write_text(value, encoding="utf-8")
+
 manifest_path = PKG / "manifest.json"
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 manifest["domain"] = "environment_manager"
