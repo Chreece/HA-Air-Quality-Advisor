@@ -272,9 +272,9 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry:
     manager.write_text(text.replace(old,new),encoding="utf-8")
 
     for filename,suffix,old_snippet in (
-        ("climate_pid.py","pid", 'self._store = Store(self.hass, 1, f"environment_manager.pid_{self.entry_id}")\n            data = await self._store.async_load()'),
-        ("climate_fan_power.py","fan_power", 'self._store = Store(\n                self.hass, 1,\n                f"environment_manager.fan_power_{self.entry_id}",\n            )\n            saved = await self._store.async_load()'),
-        ("climate_humidity_power.py","humidity_power", 'self._store = Store(self.hass, 1,\n                f"environment_manager.humidity_power_{self.entry_id}")\n            loaded = await self._store.async_load()'),
+        ("climate_pid.py","pid", 'self._store = Store(self.hass, 1, f"air_quality_advisor.pid_{self.entry_id}")\n            data = await self._store.async_load()'),
+        ("climate_fan_power.py","fan_power", 'self._store = Store(\n                self.hass, 1,\n                f"air_quality_advisor.fan_power_{self.entry_id}",\n            )\n            saved = await self._store.async_load()'),
+        ("climate_humidity_power.py","humidity_power", 'self._store = Store(self.hass, 1,\n                f"air_quality_advisor.humidity_power_{self.entry_id}")\n            loaded = await self._store.async_load()'),
     ):
         path=NEW_DIR/filename
         text=path.read_text(encoding="utf-8")
