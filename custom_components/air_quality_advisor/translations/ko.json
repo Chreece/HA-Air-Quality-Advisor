@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
           "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
           "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
-          "pollen_entity": "꽃가루 · 정보원",
           "notify_entities": "설정 · 정보원",
           "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
           "tts_engine": "설정 · 정보원 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 언어",
-          "language": "언어",
-          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 선택 · 정보원",
+          "language": "TTS · 선택 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%",
+          "pollen_entities": "꽃가루 · 정보원 · 선택",
+          "use_announcement_hub": "자동 · Announcement Hub",
+          "general_away_cooldown_minutes": "집 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
           "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
           "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값).",
-          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+          "ai_conversation_agent": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · AI · 선택 · 정보원 · conversation.* / ai_task.*.",
+          "language": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · TTS · 선택 · 정보원 · provider capabilities.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entities": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 꽃가루 · 정보원 · 선택.",
+          "use_announcement_hub": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 자동 · Announcement Hub.",
+          "general_away_cooldown_minutes": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 집 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "재실 · 방 · 정보원 (attribute)",
           "general_sleep_rooms_entity": "수면 · 방 · 정보원 (state)",
           "general_sleep_rooms_attribute": "수면 · 방 · 정보원 (attribute)",
-          "pollen_entity": "꽃가루 · 정보원",
           "notify_entities": "설정 · 정보원",
           "media_players": "설정 · 정보원 · MEDIA_PLAYERS",
           "tts_engine": "설정 · 정보원 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 언어",
-          "language": "언어",
-          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 선택 · 정보원",
+          "language": "TTS · 선택 · 정보원",
+          "use_mold_indicator": "곰팡이 지표 · RH (%) → 70%",
+          "pollen_entities": "꽃가루 · 정보원 · 선택",
+          "use_announcement_hub": "자동 · Announcement Hub",
+          "general_away_cooldown_minutes": "집 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "선택하세요: 날씨 및 경보 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "“재실 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
           "general_sleep_rooms_entity": "“수면 · 방 · 정보원 (state)”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "general_sleep_rooms_attribute": "“수면 · 방 · 정보원 (attribute)”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "pollen_entity": "“꽃가루 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "notify_entities": "“설정 · 정보원”에 실제 Home Assistant 데이터 소스를 선택하세요. 누락되거나 오래된 값은 관련 작업을 보류합니다.",
           "media_players": "“설정 · 정보원 · MEDIA_PLAYERS”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
           "tts_engine": "“설정 · 정보원 · TTS_ENGINE”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "ai_conversation_agent": "선택하세요: conversation.* (Home Assistant · 기본값).",
-          "language": "“언어”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
-          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다."
+          "ai_conversation_agent": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · AI · 선택 · 정보원 · conversation.* / ai_task.*.",
+          "language": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · TTS · 선택 · 정보원 · provider capabilities.",
+          "use_mold_indicator": "“곰팡이 지표 · RH (%) → 70%”은 선택한 방에만 설정하세요. 유효하지 않은 데이터는 동작을 중지합니다.",
+          "pollen_entities": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 꽃가루 · 정보원 · 선택.",
+          "use_announcement_hub": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 자동 · Announcement Hub.",
+          "general_away_cooldown_minutes": "공유 소스와 알림 출력을 선택하세요. 저장하면 설정이 끝납니다. 운전 설정은 집과 방의 기기에 남습니다. · 집 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}전력 · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "집 · Away · cooldown (min)"
       }
     },
     "switch": {

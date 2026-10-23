@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Présence · Pièce · source (attribute)",
           "general_sleep_rooms_entity": "Sommeil · Pièce · source (state)",
           "general_sleep_rooms_attribute": "Sommeil · Pièce · source (attribute)",
-          "pollen_entity": "Pollen · source",
           "notify_entities": "Destinations de notification directes",
           "media_players": "Lecteurs média TTS directs",
           "tts_engine": "Moteur TTS direct",
-          "ai_conversation_agent": "Agent conversationnel",
-          "language": "Langue",
-          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
+          "ai_conversation_agent": "AI · Choisir · source",
+          "language": "TTS · Choisir · source",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative",
+          "pollen_entities": "Pollen · source · Choisir",
+          "use_announcement_hub": "Automatique · Announcement Hub",
+          "general_away_cooldown_minutes": "Maison · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Au moins une entité météo est nécessaire. Pluie, orages, vent fort et températures extrêmes empêchent d'ouvrir les fenêtres. L'indicateur de moisissure utilise l'attribut temperature (°C/°F) d'une entité météo sélectionnée comme température extérieure. Sélectionnez une source qui fournit une température.",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "Configurez « Présence · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
           "general_sleep_rooms_entity": "Choisissez une source Home Assistant réelle pour « Sommeil · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
           "general_sleep_rooms_attribute": "Configurez « Sommeil · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
-          "pollen_entity": "Choisissez une source Home Assistant réelle pour « Pollen · source ». Une valeur absente ou périmée suspend l'action concernée.",
           "notify_entities": "Destinations de notification directe lorsqu'Announcement Hub n'est pas utilisé.",
           "media_players": "Lecteurs pour les annonces vocales directes. L'affectation aux pièces détermine les destinataires.",
           "tts_engine": "Moteur de synthèse vocale pour les annonces directes sans Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent.",
-          "language": "Le mode automatique utilise la langue de Home Assistant. L'action manuelle peut choisir une autre langue.",
-          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
+          "ai_conversation_agent": "Choisissez la valeur par défaut, un agent conversationnel ou une entité Task AI compatible données. Task AI utilise ai_task.generate_data.",
+          "language": "Les langues proviennent du fournisseur TTS choisi. Le code régional n'apparaît que s'il existe plusieurs variantes d'une même langue.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible.",
+          "pollen_entities": "Au premier réglage, toutes les sources de pollen trouvées sont présélectionnées. Un choix vide explicite ultérieur reste vide.",
+          "use_announcement_hub": "Affiché seulement si Announcement Hub est installé. Une fois activé, les annonces passent par le Hub lorsqu'il est disponible.",
+          "general_away_cooldown_minutes": "Après qu'une source valide de pièces occupées devient vide, attendez ce nombre de minutes avant Away. Les données inconnues ou anciennes ne déclenchent jamais Away."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Présence · Pièce · source (attribute)",
           "general_sleep_rooms_entity": "Sommeil · Pièce · source (state)",
           "general_sleep_rooms_attribute": "Sommeil · Pièce · source (attribute)",
-          "pollen_entity": "Pollen · source",
           "notify_entities": "Destinations de notification directes",
           "media_players": "Lecteurs média TTS directs",
           "tts_engine": "Moteur TTS direct",
-          "ai_conversation_agent": "Agent conversationnel",
-          "language": "Langue",
-          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative"
+          "ai_conversation_agent": "AI · Choisir · source",
+          "language": "TTS · Choisir · source",
+          "use_mold_indicator": "Utiliser l’indicateur de moisissure au lieu de l’humidité relative",
+          "pollen_entities": "Pollen · source · Choisir",
+          "use_announcement_hub": "Automatique · Announcement Hub",
+          "general_away_cooldown_minutes": "Maison · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Au moins une entité météo est nécessaire. Pluie, orages, vent fort et températures extrêmes empêchent d'ouvrir les fenêtres. L'indicateur de moisissure utilise l'attribut temperature (°C/°F) d'une entité météo sélectionnée comme température extérieure. Sélectionnez une source qui fournit une température.",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "Configurez « Présence · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
           "general_sleep_rooms_entity": "Choisissez une source Home Assistant réelle pour « Sommeil · Pièce · source (state) ». Une valeur absente ou périmée suspend l'action concernée.",
           "general_sleep_rooms_attribute": "Configurez « Sommeil · Pièce · source (attribute) » dans la pièce choisie. Des données manquantes ou incompatibles bloquent l'action.",
-          "pollen_entity": "Choisissez une source Home Assistant réelle pour « Pollen · source ». Une valeur absente ou périmée suspend l'action concernée.",
           "notify_entities": "Destinations de notification directe lorsqu'Announcement Hub n'est pas utilisé.",
           "media_players": "Lecteurs pour les annonces vocales directes. L'affectation aux pièces détermine les destinataires.",
           "tts_engine": "Moteur de synthèse vocale pour les annonces directes sans Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant par défaut est présélectionné. Un agent personnalisé remplace celui du Hub ou reformule directement; par défaut, le Hub conserve son propre agent.",
-          "language": "Le mode automatique utilise la langue de Home Assistant. L'action manuelle peut choisir une autre langue.",
-          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible."
+          "ai_conversation_agent": "Choisissez la valeur par défaut, un agent conversationnel ou une entité Task AI compatible données. Task AI utilise ai_task.generate_data.",
+          "language": "Les langues proviennent du fournisseur TTS choisi. Le code régional n'apparaît que s'il existe plusieurs variantes d'une même langue.",
+          "use_mold_indicator": "Les conseils d’aération reposent sur l’humidité estimée près de la surface la plus froide plutôt que sur l’humidité ambiante. Calibrez chaque pièce ; sinon l’indicateur reste indisponible.",
+          "pollen_entities": "Au premier réglage, toutes les sources de pollen trouvées sont présélectionnées. Un choix vide explicite ultérieur reste vide.",
+          "use_announcement_hub": "Affiché seulement si Announcement Hub est installé. Une fois activé, les annonces passent par le Hub lorsqu'il est disponible.",
+          "general_away_cooldown_minutes": "Après qu'une source valide de pièces occupées devient vide, attendez ce nombre de minutes avant Away. Les données inconnues ou anciennes ne déclenchent jamais Away."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Puissance · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Maison · Away · cooldown (min)"
       }
     },
     "switch": {

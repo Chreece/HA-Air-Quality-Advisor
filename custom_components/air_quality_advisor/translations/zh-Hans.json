@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
           "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
           "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
-          "pollen_entity": "花粉 · 来源",
           "notify_entities": "设置 · 来源",
           "media_players": "设置 · 来源 · MEDIA_PLAYERS",
           "tts_engine": "设置 · 来源 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 语言",
-          "language": "语言",
-          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 选择 · 来源",
+          "language": "TTS · 选择 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 来源 · 选择",
+          "use_announcement_hub": "自动 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
           "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
-          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
           "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
-          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认).",
-          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
-          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+          "ai_conversation_agent": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · AI · 选择 · 来源 · conversation.* / ai_task.*.",
+          "language": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · TTS · 选择 · 来源 · provider capabilities.",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。",
+          "pollen_entities": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 花粉 · 来源 · 选择.",
+          "use_announcement_hub": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 自动 · Announcement Hub.",
+          "general_away_cooldown_minutes": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
           "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
           "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
-          "pollen_entity": "花粉 · 来源",
           "notify_entities": "设置 · 来源",
           "media_players": "设置 · 来源 · MEDIA_PLAYERS",
           "tts_engine": "设置 · 来源 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 语言",
-          "language": "语言",
-          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 选择 · 来源",
+          "language": "TTS · 选择 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 来源 · 选择",
+          "use_announcement_hub": "自动 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
           "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
-          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
           "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
           "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
-          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认).",
-          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
-          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+          "ai_conversation_agent": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · AI · 选择 · 来源 · conversation.* / ai_task.*.",
+          "language": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · TTS · 选择 · 来源 · provider capabilities.",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。",
+          "pollen_entities": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 花粉 · 来源 · 选择.",
+          "use_announcement_hub": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 自动 · Announcement Hub.",
+          "general_away_cooldown_minutes": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}功率 · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "家中 · Away · cooldown (min)"
       }
     },
     "switch": {

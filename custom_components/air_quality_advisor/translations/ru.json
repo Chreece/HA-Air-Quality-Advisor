@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Присутствие · Комната · источник (attribute)",
           "general_sleep_rooms_entity": "Сон · Комната · источник (state)",
           "general_sleep_rooms_attribute": "Сон · Комната · источник (attribute)",
-          "pollen_entity": "Пыльца · источник",
           "notify_entities": "настройки · источник",
           "media_players": "настройки · источник · MEDIA_PLAYERS",
           "tts_engine": "настройки · источник · TTS_ENGINE",
-          "ai_conversation_agent": "AI · Язык",
-          "language": "Язык",
-          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%"
+          "ai_conversation_agent": "AI · Выбрать · источник",
+          "language": "TTS · Выбрать · источник",
+          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%",
+          "pollen_entities": "Пыльца · источник · Выбрать",
+          "use_announcement_hub": "Автоматическое · Announcement Hub",
+          "general_away_cooldown_minutes": "Дом · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Выберите: Погода и предупреждения · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "Настройка «Присутствие · Комната · источник (attribute)» только для выбранной комнаты. Неверные данные блокируют действие.",
           "general_sleep_rooms_entity": "Выберите реальный источник Home Assistant для «Сон · Комната · источник (state)». Старые или отсутствующие данные блокируют действие.",
           "general_sleep_rooms_attribute": "Настройка «Сон · Комната · источник (attribute)» только для выбранной комнаты. Неверные данные блокируют действие.",
-          "pollen_entity": "Выберите реальный источник Home Assistant для «Пыльца · источник». Старые или отсутствующие данные блокируют действие.",
           "notify_entities": "Выберите: notify.* · настройки · источник.",
           "media_players": "Выберите: media_player.* · настройки · источник · MEDIA_PLAYERS.",
           "tts_engine": "Выберите: tts.* · настройки · источник · TTS_ENGINE.",
-          "ai_conversation_agent": "Выберите: conversation.* (Home Assistant · По умолчанию).",
-          "language": "Язык: Home Assistant (По умолчанию).",
-          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · AI · Выбрать · источник · conversation.* / ai_task.*.",
+          "language": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · TTS · Выбрать · источник · provider capabilities.",
+          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Пыльца · источник · Выбрать.",
+          "use_announcement_hub": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Автоматическое · Announcement Hub.",
+          "general_away_cooldown_minutes": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Дом · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Присутствие · Комната · источник (attribute)",
           "general_sleep_rooms_entity": "Сон · Комната · источник (state)",
           "general_sleep_rooms_attribute": "Сон · Комната · источник (attribute)",
-          "pollen_entity": "Пыльца · источник",
           "notify_entities": "настройки · источник",
           "media_players": "настройки · источник · MEDIA_PLAYERS",
           "tts_engine": "настройки · источник · TTS_ENGINE",
-          "ai_conversation_agent": "AI · Язык",
-          "language": "Язык",
-          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%"
+          "ai_conversation_agent": "AI · Выбрать · источник",
+          "language": "TTS · Выбрать · источник",
+          "use_mold_indicator": "Индикатор плесени · RH (%) → 70%",
+          "pollen_entities": "Пыльца · источник · Выбрать",
+          "use_announcement_hub": "Автоматическое · Announcement Hub",
+          "general_away_cooldown_minutes": "Дом · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Выберите: Погода и предупреждения · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "Настройка «Присутствие · Комната · источник (attribute)» только для выбранной комнаты. Неверные данные блокируют действие.",
           "general_sleep_rooms_entity": "Выберите реальный источник Home Assistant для «Сон · Комната · источник (state)». Старые или отсутствующие данные блокируют действие.",
           "general_sleep_rooms_attribute": "Настройка «Сон · Комната · источник (attribute)» только для выбранной комнаты. Неверные данные блокируют действие.",
-          "pollen_entity": "Выберите реальный источник Home Assistant для «Пыльца · источник». Старые или отсутствующие данные блокируют действие.",
           "notify_entities": "Выберите: notify.* · настройки · источник.",
           "media_players": "Выберите: media_player.* · настройки · источник · MEDIA_PLAYERS.",
           "tts_engine": "Выберите: tts.* · настройки · источник · TTS_ENGINE.",
-          "ai_conversation_agent": "Выберите: conversation.* (Home Assistant · По умолчанию).",
-          "language": "Язык: Home Assistant (По умолчанию).",
-          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · AI · Выбрать · источник · conversation.* / ai_task.*.",
+          "language": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · TTS · Выбрать · источник · provider capabilities.",
+          "use_mold_indicator": "🧱 Индикатор плесени · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Пыльца · источник · Выбрать.",
+          "use_announcement_hub": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Автоматическое · Announcement Hub.",
+          "general_away_cooldown_minutes": "Выберите общие источники и выходы уведомлений. Сохранение завершает настройку. Рабочие параметры остаются на устройствах дома и комнат. · Дом · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Мощность · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Дом · Away · cooldown (min)"
       }
     },
     "switch": {

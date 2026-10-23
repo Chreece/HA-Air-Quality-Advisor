@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "การมีคนอยู่ · ห้อง · แหล่งข้อมูล (attribute)",
           "general_sleep_rooms_entity": "นอน · ห้อง · แหล่งข้อมูล (state)",
           "general_sleep_rooms_attribute": "นอน · ห้อง · แหล่งข้อมูล (attribute)",
-          "pollen_entity": "ละอองเกสร · แหล่งข้อมูล",
           "notify_entities": "การตั้งค่า · แหล่งข้อมูล",
           "media_players": "การตั้งค่า · แหล่งข้อมูล · MEDIA_PLAYERS",
           "tts_engine": "การตั้งค่า · แหล่งข้อมูล · TTS_ENGINE",
-          "ai_conversation_agent": "AI · ภาษา",
-          "language": "ภาษา",
-          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%"
+          "ai_conversation_agent": "AI · เลือก · แหล่งข้อมูล",
+          "language": "TTS · เลือก · แหล่งข้อมูล",
+          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%",
+          "pollen_entities": "ละอองเกสร · แหล่งข้อมูล · เลือก",
+          "use_announcement_hub": "อัตโนมัติ · Announcement Hub",
+          "general_away_cooldown_minutes": "บ้าน · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "เลือก: สภาพอากาศและคำเตือน · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "ตั้งค่า “การมีคนอยู่ · ห้อง · แหล่งข้อมูล (attribute)” เฉพาะห้องที่เลือก ข้อมูลไม่ถูกต้องจะยับยั้งการทำงาน",
           "general_sleep_rooms_entity": "เลือกแหล่งข้อมูล Home Assistant ที่วัดจริงสำหรับ “นอน · ห้อง · แหล่งข้อมูล (state)” หากข้อมูลหายหรือเก่าจะระงับการทำงาน",
           "general_sleep_rooms_attribute": "ตั้งค่า “นอน · ห้อง · แหล่งข้อมูล (attribute)” เฉพาะห้องที่เลือก ข้อมูลไม่ถูกต้องจะยับยั้งการทำงาน",
-          "pollen_entity": "เลือกแหล่งข้อมูล Home Assistant ที่วัดจริงสำหรับ “ละอองเกสร · แหล่งข้อมูล” หากข้อมูลหายหรือเก่าจะระงับการทำงาน",
           "notify_entities": "เลือก: notify.* · การตั้งค่า · แหล่งข้อมูล.",
           "media_players": "เลือก: media_player.* · การตั้งค่า · แหล่งข้อมูล · MEDIA_PLAYERS.",
           "tts_engine": "เลือก: tts.* · การตั้งค่า · แหล่งข้อมูล · TTS_ENGINE.",
-          "ai_conversation_agent": "เลือก: conversation.* (Home Assistant · ค่าเริ่มต้น).",
-          "language": "ภาษา: Home Assistant (ค่าเริ่มต้น).",
-          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · AI · เลือก · แหล่งข้อมูล · conversation.* / ai_task.*.",
+          "language": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · TTS · เลือก · แหล่งข้อมูล · provider capabilities.",
+          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · ละอองเกสร · แหล่งข้อมูล · เลือก.",
+          "use_announcement_hub": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · อัตโนมัติ · Announcement Hub.",
+          "general_away_cooldown_minutes": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · บ้าน · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "การมีคนอยู่ · ห้อง · แหล่งข้อมูล (attribute)",
           "general_sleep_rooms_entity": "นอน · ห้อง · แหล่งข้อมูล (state)",
           "general_sleep_rooms_attribute": "นอน · ห้อง · แหล่งข้อมูล (attribute)",
-          "pollen_entity": "ละอองเกสร · แหล่งข้อมูล",
           "notify_entities": "การตั้งค่า · แหล่งข้อมูล",
           "media_players": "การตั้งค่า · แหล่งข้อมูล · MEDIA_PLAYERS",
           "tts_engine": "การตั้งค่า · แหล่งข้อมูล · TTS_ENGINE",
-          "ai_conversation_agent": "AI · ภาษา",
-          "language": "ภาษา",
-          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%"
+          "ai_conversation_agent": "AI · เลือก · แหล่งข้อมูล",
+          "language": "TTS · เลือก · แหล่งข้อมูล",
+          "use_mold_indicator": "ตัวชี้วัดเชื้อรา · RH (%) → 70%",
+          "pollen_entities": "ละอองเกสร · แหล่งข้อมูล · เลือก",
+          "use_announcement_hub": "อัตโนมัติ · Announcement Hub",
+          "general_away_cooldown_minutes": "บ้าน · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "เลือก: สภาพอากาศและคำเตือน · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "ตั้งค่า “การมีคนอยู่ · ห้อง · แหล่งข้อมูล (attribute)” เฉพาะห้องที่เลือก ข้อมูลไม่ถูกต้องจะยับยั้งการทำงาน",
           "general_sleep_rooms_entity": "เลือกแหล่งข้อมูล Home Assistant ที่วัดจริงสำหรับ “นอน · ห้อง · แหล่งข้อมูล (state)” หากข้อมูลหายหรือเก่าจะระงับการทำงาน",
           "general_sleep_rooms_attribute": "ตั้งค่า “นอน · ห้อง · แหล่งข้อมูล (attribute)” เฉพาะห้องที่เลือก ข้อมูลไม่ถูกต้องจะยับยั้งการทำงาน",
-          "pollen_entity": "เลือกแหล่งข้อมูล Home Assistant ที่วัดจริงสำหรับ “ละอองเกสร · แหล่งข้อมูล” หากข้อมูลหายหรือเก่าจะระงับการทำงาน",
           "notify_entities": "เลือก: notify.* · การตั้งค่า · แหล่งข้อมูล.",
           "media_players": "เลือก: media_player.* · การตั้งค่า · แหล่งข้อมูล · MEDIA_PLAYERS.",
           "tts_engine": "เลือก: tts.* · การตั้งค่า · แหล่งข้อมูล · TTS_ENGINE.",
-          "ai_conversation_agent": "เลือก: conversation.* (Home Assistant · ค่าเริ่มต้น).",
-          "language": "ภาษา: Home Assistant (ค่าเริ่มต้น).",
-          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · AI · เลือก · แหล่งข้อมูล · conversation.* / ai_task.*.",
+          "language": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · TTS · เลือก · แหล่งข้อมูล · provider capabilities.",
+          "use_mold_indicator": "🧱 ตัวชี้วัดเชื้อรา · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · ละอองเกสร · แหล่งข้อมูล · เลือก.",
+          "use_announcement_hub": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · อัตโนมัติ · Announcement Hub.",
+          "general_away_cooldown_minutes": "เลือกแหล่งข้อมูลร่วมและเอาต์พุตการแจ้งเตือน บันทึกเพื่อจบการตั้งค่า การตั้งค่าการทำงานยังอยู่บนอุปกรณ์ของบ้านและห้อง · บ้าน · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}กำลังไฟ · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "บ้าน · Away · cooldown (min)"
       }
     },
     "switch": {

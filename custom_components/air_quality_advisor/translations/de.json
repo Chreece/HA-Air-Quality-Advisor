@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
           "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
           "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
-          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "media_players": "Direkte TTS-Mediaplayer",
           "tts_engine": "Direkte TTS-Engine",
-          "ai_conversation_agent": "Konversationsagent",
-          "language": "Sprache",
-          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+          "ai_conversation_agent": "AI · Auswählen · Quelle",
+          "language": "TTS · Auswählen · Quelle",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden",
+          "pollen_entities": "Pollen · Quelle · Auswählen",
+          "use_announcement_hub": "Automatische · Announcement Hub",
+          "general_away_cooldown_minutes": "Zuhause · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "„Belegung · Raum · Quelle (attribute)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
           "general_sleep_rooms_entity": "Eine passende Home-Assistant-Quelle für „Schlaf · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
           "general_sleep_rooms_attribute": "Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen.",
-          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
           "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
           "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
           "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten.",
-          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
-          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+          "ai_conversation_agent": "Home-Assistant-Standard, Conversation-Agent oder datenfähige Task-AI wählen. Task AI verwendet ai_task.generate_data.",
+          "language": "Sprachen stammen vom gewählten TTS-Anbieter. Regionscodes erscheinen nur bei mehreren Varianten derselben Sprache.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt.",
+          "pollen_entities": "Beim ersten Einrichten werden alle gefundenen Pollenquellen vorausgewählt. Eine später bewusst leere Auswahl bleibt leer.",
+          "use_announcement_hub": "Wird nur angezeigt, wenn Announcement Hub installiert ist. Aktiviert wird darüber geroutet, sobald der Hub verfügbar ist.",
+          "general_away_cooldown_minutes": "Nach einer frisch bestätigten leeren Raumbelegung so viele Minuten warten, bevor Away gilt. Unbekannte oder veraltete Daten lösen Away nicht aus."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Belegung · Raum · Quelle (attribute)",
           "general_sleep_rooms_entity": "Schlaf · Raum · Quelle (state)",
           "general_sleep_rooms_attribute": "Schlaf · Raum · Quelle (attribute)",
-          "pollen_entity": "Pollenprognose-Sensor (beliebiges Land)",
           "notify_entities": "Direkte Benachrichtigungsentitäten",
           "media_players": "Direkte TTS-Mediaplayer",
           "tts_engine": "Direkte TTS-Engine",
-          "ai_conversation_agent": "Konversationsagent",
-          "language": "Sprache",
-          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden"
+          "ai_conversation_agent": "AI · Auswählen · Quelle",
+          "language": "TTS · Auswählen · Quelle",
+          "use_mold_indicator": "Schimmelindikator statt relativer Raumluftfeuchte verwenden",
+          "pollen_entities": "Pollen · Quelle · Auswählen",
+          "use_announcement_hub": "Automatische · Announcement Hub",
+          "general_away_cooldown_minutes": "Zuhause · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Mindestens eine Wetterentität ist erforderlich. Regen, Gewitter, starker Wind und extreme Temperaturen verhindern das Öffnen. Der Schimmelindikator nutzt das aktuelle Attribut temperature (°C/°F) einer ausgewählten Wetterentität als Außentemperatur. Wähle einen Anbieter mit Temperaturwerten.",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "„Belegung · Raum · Quelle (attribute)“ nur im gewählten Raum konfigurieren. Fehlende oder inkompatible Daten verhindern die Aktion.",
           "general_sleep_rooms_entity": "Eine passende Home-Assistant-Quelle für „Schlaf · Raum · Quelle (state)“ wählen. Fehlende oder veraltete Werte verhindern die zugehörige Aktion.",
           "general_sleep_rooms_attribute": "Zustand oder ein tatsächlich mit einer Raumliste gefülltes Attribut wählen.",
-          "pollen_entity": "Numerischen Pollenindex eines beliebigen Home-Assistant-Anbieters wählen.",
           "notify_entities": "Direkte Benachrichtigungsziele, wenn Announcement Hub nicht verwendet wird.",
           "media_players": "Mediaplayer für direkte Sprachausgabe. Die Raumzuordnung bestimmt die Ziele.",
           "tts_engine": "Sprachausgabe für direkte Ansagen ohne Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant Standard ist vorausgewählt. Ein eigener Agent wird an den Hub weitergereicht oder für direkte Ansagen verwendet; Standard übernimmt beim Hub dessen eigenen Agenten.",
-          "language": "Die automatische Auswahl verwendet die Sprache von Home Assistant. Die manuelle Aktion kann sie überschreiben.",
-          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt."
+          "ai_conversation_agent": "Home-Assistant-Standard, Conversation-Agent oder datenfähige Task-AI wählen. Task AI verwendet ai_task.generate_data.",
+          "language": "Sprachen stammen vom gewählten TTS-Anbieter. Regionscodes erscheinen nur bei mehreren Varianten derselben Sprache.",
+          "use_mold_indicator": "Die Lüftungsempfehlung berücksichtigt die geschätzte relative Feuchte an der kältesten Oberfläche statt der normalen Raumluftfeuchte. Pro Raum kalibrieren; ohne Kalibrierung wird der Wert als unbekannt angezeigt.",
+          "pollen_entities": "Beim ersten Einrichten werden alle gefundenen Pollenquellen vorausgewählt. Eine später bewusst leere Auswahl bleibt leer.",
+          "use_announcement_hub": "Wird nur angezeigt, wenn Announcement Hub installiert ist. Aktiviert wird darüber geroutet, sobald der Hub verfügbar ist.",
+          "general_away_cooldown_minutes": "Nach einer frisch bestätigten leeren Raumbelegung so viele Minuten warten, bevor Away gilt. Unbekannte oder veraltete Daten lösen Away nicht aus."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Leistung · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Zuhause · Away · cooldown (min)"
       }
     },
     "switch": {

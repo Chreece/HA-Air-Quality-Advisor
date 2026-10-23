@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "উপস্থিতি · ঘর · উৎস (attribute)",
           "general_sleep_rooms_entity": "ঘুম · ঘর · উৎস (state)",
           "general_sleep_rooms_attribute": "ঘুম · ঘর · উৎস (attribute)",
-          "pollen_entity": "পরাগ · উৎস",
           "notify_entities": "সেটিংস · উৎস",
           "media_players": "সেটিংস · উৎস · MEDIA_PLAYERS",
           "tts_engine": "সেটিংস · উৎস · TTS_ENGINE",
-          "ai_conversation_agent": "AI · ভাষা",
-          "language": "ভাষা",
-          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%"
+          "ai_conversation_agent": "AI · নির্বাচন · উৎস",
+          "language": "TTS · নির্বাচন · উৎস",
+          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%",
+          "pollen_entities": "পরাগ · উৎস · নির্বাচন",
+          "use_announcement_hub": "স্বয়ংক্রিয় · Announcement Hub",
+          "general_away_cooldown_minutes": "বাড়ি · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "নির্বাচন করুন: আবহাওয়া ও সতর্কতা · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "“উপস্থিতি · ঘর · উৎস (attribute)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "general_sleep_rooms_entity": "“ঘুম · ঘর · উৎস (state)” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "general_sleep_rooms_attribute": "“ঘুম · ঘর · উৎস (attribute)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_entity": "“পরাগ · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "notify_entities": "নির্বাচন করুন: notify.* · সেটিংস · উৎস.",
           "media_players": "নির্বাচন করুন: media_player.* · সেটিংস · উৎস · MEDIA_PLAYERS.",
           "tts_engine": "নির্বাচন করুন: tts.* · সেটিংস · উৎস · TTS_ENGINE.",
-          "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট).",
-          "language": "“ভাষা” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · AI · নির্বাচন · উৎস · conversation.* / ai_task.*.",
+          "language": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · TTS · নির্বাচন · উৎস · provider capabilities.",
+          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · পরাগ · উৎস · নির্বাচন.",
+          "use_announcement_hub": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · স্বয়ংক্রিয় · Announcement Hub.",
+          "general_away_cooldown_minutes": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · বাড়ি · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "উপস্থিতি · ঘর · উৎস (attribute)",
           "general_sleep_rooms_entity": "ঘুম · ঘর · উৎস (state)",
           "general_sleep_rooms_attribute": "ঘুম · ঘর · উৎস (attribute)",
-          "pollen_entity": "পরাগ · উৎস",
           "notify_entities": "সেটিংস · উৎস",
           "media_players": "সেটিংস · উৎস · MEDIA_PLAYERS",
           "tts_engine": "সেটিংস · উৎস · TTS_ENGINE",
-          "ai_conversation_agent": "AI · ভাষা",
-          "language": "ভাষা",
-          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%"
+          "ai_conversation_agent": "AI · নির্বাচন · উৎস",
+          "language": "TTS · নির্বাচন · উৎস",
+          "use_mold_indicator": "ছাঁচের সূচক · RH (%) → 70%",
+          "pollen_entities": "পরাগ · উৎস · নির্বাচন",
+          "use_announcement_hub": "স্বয়ংক্রিয় · Announcement Hub",
+          "general_away_cooldown_minutes": "বাড়ি · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "নির্বাচন করুন: আবহাওয়া ও সতর্কতা · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "“উপস্থিতি · ঘর · উৎস (attribute)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
           "general_sleep_rooms_entity": "“ঘুম · ঘর · উৎস (state)” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "general_sleep_rooms_attribute": "“ঘুম · ঘর · উৎস (attribute)” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "pollen_entity": "“পরাগ · উৎস” এর জন্য প্রকৃত Home Assistant উৎস বেছে নিন। অনুপস্থিত বা পুরোনো তথ্য কাজ স্থগিত করে।",
           "notify_entities": "নির্বাচন করুন: notify.* · সেটিংস · উৎস.",
           "media_players": "নির্বাচন করুন: media_player.* · সেটিংস · উৎস · MEDIA_PLAYERS.",
           "tts_engine": "নির্বাচন করুন: tts.* · সেটিংস · উৎস · TTS_ENGINE.",
-          "ai_conversation_agent": "নির্বাচন করুন: conversation.* (Home Assistant · ডিফল্ট).",
-          "language": "“ভাষা” শুধু নির্বাচিত ঘরে সেট করুন। অবৈধ তথ্য কাজ বন্ধ রাখে।",
-          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · AI · নির্বাচন · উৎস · conversation.* / ai_task.*.",
+          "language": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · TTS · নির্বাচন · উৎস · provider capabilities.",
+          "use_mold_indicator": "🧱 ছাঁচের সূচক · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · পরাগ · উৎস · নির্বাচন.",
+          "use_announcement_hub": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · স্বয়ংক্রিয় · Announcement Hub.",
+          "general_away_cooldown_minutes": "যৌথ উৎস ও বিজ্ঞপ্তির আউটপুট বেছে নিন। সংরক্ষণ করলে সেটআপ শেষ হয়। চালনার সেটিং বাড়ি ও ঘরের ডিভাইসে থাকে। · বাড়ি · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}শক্তি · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "বাড়ি · Away · cooldown (min)"
       }
     },
     "switch": {

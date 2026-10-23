@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Присутність · Кімната · джерело (attribute)",
           "general_sleep_rooms_entity": "Сон · Кімната · джерело (state)",
           "general_sleep_rooms_attribute": "Сон · Кімната · джерело (attribute)",
-          "pollen_entity": "Пилок · джерело",
           "notify_entities": "налаштування · джерело",
           "media_players": "налаштування · джерело · MEDIA_PLAYERS",
           "tts_engine": "налаштування · джерело · TTS_ENGINE",
-          "ai_conversation_agent": "AI · Мова",
-          "language": "Мова",
-          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%"
+          "ai_conversation_agent": "AI · Обрати · джерело",
+          "language": "TTS · Обрати · джерело",
+          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%",
+          "pollen_entities": "Пилок · джерело · Обрати",
+          "use_announcement_hub": "Автоматичне · Announcement Hub",
+          "general_away_cooldown_minutes": "Дім · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Оберіть: Погода та попередження · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "Налаштовуйте «Присутність · Кімната · джерело (attribute)» лише для вибраної кімнати. Недійсні дані блокують дію.",
           "general_sleep_rooms_entity": "Оберіть справжнє джерело Home Assistant для «Сон · Кімната · джерело (state)». Відсутні чи застарілі дані блокують дію.",
           "general_sleep_rooms_attribute": "Налаштовуйте «Сон · Кімната · джерело (attribute)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_entity": "Оберіть справжнє джерело Home Assistant для «Пилок · джерело». Відсутні чи застарілі дані блокують дію.",
           "notify_entities": "Оберіть: notify.* · налаштування · джерело.",
           "media_players": "Оберіть: media_player.* · налаштування · джерело · MEDIA_PLAYERS.",
           "tts_engine": "Оберіть: tts.* · налаштування · джерело · TTS_ENGINE.",
-          "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово).",
-          "language": "Налаштовуйте «Мова» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · AI · Обрати · джерело · conversation.* / ai_task.*.",
+          "language": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · TTS · Обрати · джерело · provider capabilities.",
+          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Пилок · джерело · Обрати.",
+          "use_announcement_hub": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Автоматичне · Announcement Hub.",
+          "general_away_cooldown_minutes": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Дім · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Присутність · Кімната · джерело (attribute)",
           "general_sleep_rooms_entity": "Сон · Кімната · джерело (state)",
           "general_sleep_rooms_attribute": "Сон · Кімната · джерело (attribute)",
-          "pollen_entity": "Пилок · джерело",
           "notify_entities": "налаштування · джерело",
           "media_players": "налаштування · джерело · MEDIA_PLAYERS",
           "tts_engine": "налаштування · джерело · TTS_ENGINE",
-          "ai_conversation_agent": "AI · Мова",
-          "language": "Мова",
-          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%"
+          "ai_conversation_agent": "AI · Обрати · джерело",
+          "language": "TTS · Обрати · джерело",
+          "use_mold_indicator": "Індикатор цвілі · RH (%) → 70%",
+          "pollen_entities": "Пилок · джерело · Обрати",
+          "use_announcement_hub": "Автоматичне · Announcement Hub",
+          "general_away_cooldown_minutes": "Дім · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Оберіть: Погода та попередження · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "Налаштовуйте «Присутність · Кімната · джерело (attribute)» лише для вибраної кімнати. Недійсні дані блокують дію.",
           "general_sleep_rooms_entity": "Оберіть справжнє джерело Home Assistant для «Сон · Кімната · джерело (state)». Відсутні чи застарілі дані блокують дію.",
           "general_sleep_rooms_attribute": "Налаштовуйте «Сон · Кімната · джерело (attribute)» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "pollen_entity": "Оберіть справжнє джерело Home Assistant для «Пилок · джерело». Відсутні чи застарілі дані блокують дію.",
           "notify_entities": "Оберіть: notify.* · налаштування · джерело.",
           "media_players": "Оберіть: media_player.* · налаштування · джерело · MEDIA_PLAYERS.",
           "tts_engine": "Оберіть: tts.* · налаштування · джерело · TTS_ENGINE.",
-          "ai_conversation_agent": "Оберіть: conversation.* (Home Assistant · Типово).",
-          "language": "Налаштовуйте «Мова» лише для вибраної кімнати. Недійсні дані блокують дію.",
-          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊"
+          "ai_conversation_agent": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · AI · Обрати · джерело · conversation.* / ai_task.*.",
+          "language": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · TTS · Обрати · джерело · provider capabilities.",
+          "use_mold_indicator": "🧱 Індикатор цвілі · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Пилок · джерело · Обрати.",
+          "use_announcement_hub": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Автоматичне · Announcement Hub.",
+          "general_away_cooldown_minutes": "Виберіть спільні джерела й виходи сповіщень. Збереження завершує налаштування. Робочі параметри залишаються на пристроях дому й кімнат. · Дім · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Потужність · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Дім · Away · cooldown (min)"
       }
     },
     "switch": {

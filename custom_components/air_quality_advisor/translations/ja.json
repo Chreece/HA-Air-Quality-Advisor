@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
           "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
           "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
-          "pollen_entity": "花粉 · 情報源",
           "notify_entities": "設定 · 情報源",
           "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
           "tts_engine": "設定 · 情報源 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 言語",
-          "language": "言語",
-          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 選択 · 情報源",
+          "language": "TTS · 選択 · 情報源",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 情報源 · 選択",
+          "use_announcement_hub": "自動 · Announcement Hub",
+          "general_away_cooldown_minutes": "自宅 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "「在室 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
           "general_sleep_rooms_entity": "「睡眠 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "general_sleep_rooms_attribute": "「睡眠 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
           "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定).",
-          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+          "ai_conversation_agent": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · AI · 選択 · 情報源 · conversation.* / ai_task.*.",
+          "language": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · TTS · 選択 · 情報源 · provider capabilities.",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_entities": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 花粉 · 情報源 · 選択.",
+          "use_announcement_hub": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 自動 · Announcement Hub.",
+          "general_away_cooldown_minutes": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 自宅 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "在室 · 部屋 · 情報源 (attribute)",
           "general_sleep_rooms_entity": "睡眠 · 部屋 · 情報源 (state)",
           "general_sleep_rooms_attribute": "睡眠 · 部屋 · 情報源 (attribute)",
-          "pollen_entity": "花粉 · 情報源",
           "notify_entities": "設定 · 情報源",
           "media_players": "設定 · 情報源 · MEDIA_PLAYERS",
           "tts_engine": "設定 · 情報源 · TTS_ENGINE",
-          "ai_conversation_agent": "AI · 言語",
-          "language": "言語",
-          "use_mold_indicator": "カビ指標 · RH (%) → 70%"
+          "ai_conversation_agent": "AI · 選択 · 情報源",
+          "language": "TTS · 選択 · 情報源",
+          "use_mold_indicator": "カビ指標 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 情報源 · 選択",
+          "use_announcement_hub": "自動 · Announcement Hub",
+          "general_away_cooldown_minutes": "自宅 · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "選択してください: 天気と警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "「在室 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
           "general_sleep_rooms_entity": "「睡眠 · 部屋 · 情報源 (state)」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "general_sleep_rooms_attribute": "「睡眠 · 部屋 · 情報源 (attribute)」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "pollen_entity": "「花粉 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "notify_entities": "「設定 · 情報源」には実際の Home Assistant データ源を選んでください。欠落や古い値では操作を保留します。",
           "media_players": "「設定 · 情報源 · MEDIA_PLAYERS」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
           "tts_engine": "「設定 · 情報源 · TTS_ENGINE」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "ai_conversation_agent": "選択してください: conversation.* (Home Assistant · 既定).",
-          "language": "「言語」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
-          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。"
+          "ai_conversation_agent": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · AI · 選択 · 情報源 · conversation.* / ai_task.*.",
+          "language": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · TTS · 選択 · 情報源 · provider capabilities.",
+          "use_mold_indicator": "「カビ指標 · RH (%) → 70%」は選択した部屋だけに設定します。無効なデータでは操作を行いません。",
+          "pollen_entities": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 花粉 · 情報源 · 選択.",
+          "use_announcement_hub": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 自動 · Announcement Hub.",
+          "general_away_cooldown_minutes": "共通の入力源と通知出力を選択します。保存すると設定が完了します。運転設定は家と部屋のデバイスに残ります。 · 自宅 · Away · cooldown (min) · occupancy transition delay."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}電力 · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "自宅 · Away · cooldown (min)"
       }
     },
     "switch": {

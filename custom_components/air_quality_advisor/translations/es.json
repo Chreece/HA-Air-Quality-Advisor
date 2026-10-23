@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
           "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
           "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
-          "pollen_entity": "Polen · fuente",
           "notify_entities": "Destinos directos de notificación",
           "media_players": "Reproductores TTS directos",
           "tts_engine": "Motor TTS directo",
-          "ai_conversation_agent": "Agente de conversación",
-          "language": "Idioma",
-          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
+          "ai_conversation_agent": "AI · Elegir · fuente",
+          "language": "TTS · Elegir · fuente",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa",
+          "pollen_entities": "Polen · fuente · Elegir",
+          "use_announcement_hub": "Automático · Announcement Hub",
+          "general_away_cooldown_minutes": "Casa · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir. El indicador de moho obtiene la temperatura exterior del atributo temperature (°C/°F) de una entidad meteorológica seleccionada. Elige una fuente que proporcione la temperatura.",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "Configura «Ocupación · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
           "general_sleep_rooms_entity": "Elige una fuente real de Home Assistant para «Sueño · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
           "general_sleep_rooms_attribute": "Configura «Sueño · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
-          "pollen_entity": "Elige una fuente real de Home Assistant para «Polen · fuente». Los datos ausentes o antiguos detienen la acción asociada.",
           "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
           "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
           "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub.",
-          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
-          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
+          "ai_conversation_agent": "Elige el valor predeterminado, un agente de conversación o una entidad Task AI compatible con datos. Task AI usa ai_task.generate_data.",
+          "language": "Los idiomas proceden del proveedor TTS seleccionado. El código regional solo aparece cuando hay varias variantes del mismo idioma.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida.",
+          "pollen_entities": "En la primera configuración se preseleccionan todas las fuentes de polen encontradas. Una selección vacía explícita posterior permanece vacía.",
+          "use_announcement_hub": "Solo aparece si Announcement Hub está instalado. Al activarlo, los anuncios usan el Hub cuando está disponible.",
+          "general_away_cooldown_minutes": "Cuando una fuente válida de habitaciones ocupadas queda vacía, espera estos minutos antes de aplicar Away. Datos desconocidos o antiguos no activan Away."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Ocupación · Habitación · fuente (attribute)",
           "general_sleep_rooms_entity": "Sueño · Habitación · fuente (state)",
           "general_sleep_rooms_attribute": "Sueño · Habitación · fuente (attribute)",
-          "pollen_entity": "Polen · fuente",
           "notify_entities": "Destinos directos de notificación",
           "media_players": "Reproductores TTS directos",
           "tts_engine": "Motor TTS directo",
-          "ai_conversation_agent": "Agente de conversación",
-          "language": "Idioma",
-          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa"
+          "ai_conversation_agent": "AI · Elegir · fuente",
+          "language": "TTS · Elegir · fuente",
+          "use_mold_indicator": "Usar indicador de moho en lugar de humedad relativa",
+          "pollen_entities": "Polen · fuente · Elegir",
+          "use_announcement_hub": "Automático · Announcement Hub",
+          "general_away_cooldown_minutes": "Casa · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "Se requiere al menos una entidad meteorológica. La lluvia, las tormentas, el viento fuerte y las temperaturas extremas impiden abrir. El indicador de moho obtiene la temperatura exterior del atributo temperature (°C/°F) de una entidad meteorológica seleccionada. Elige una fuente que proporcione la temperatura.",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "Configura «Ocupación · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
           "general_sleep_rooms_entity": "Elige una fuente real de Home Assistant para «Sueño · Habitación · fuente (state)». Los datos ausentes o antiguos detienen la acción asociada.",
           "general_sleep_rooms_attribute": "Configura «Sueño · Habitación · fuente (attribute)» solo en la habitación seleccionada. Datos incompatibles o ausentes bloquean la acción.",
-          "pollen_entity": "Elige una fuente real de Home Assistant para «Polen · fuente». Los datos ausentes o antiguos detienen la acción asociada.",
           "notify_entities": "Destinos de notificación directa cuando no se utiliza Announcement Hub.",
           "media_players": "Reproductores para los anuncios de voz directos. La asignación de habitación determina los destinos.",
           "tts_engine": "Motor de voz para anuncios directos sin Announcement Hub.",
-          "ai_conversation_agent": "Home Assistant predeterminado está preseleccionado. Un agente personalizado se envía al Hub o se usa directamente; la opción predeterminada respeta el agente propio del Hub.",
-          "language": "El modo automático usa el idioma de Home Assistant. La acción manual puede elegir otro idioma.",
-          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida."
+          "ai_conversation_agent": "Elige el valor predeterminado, un agente de conversación o una entidad Task AI compatible con datos. Task AI usa ai_task.generate_data.",
+          "language": "Los idiomas proceden del proveedor TTS seleccionado. El código regional solo aparece cuando hay varias variantes del mismo idioma.",
+          "use_mold_indicator": "Las recomendaciones se basan en la humedad estimada de la superficie más fría, no en la humedad relativa ambiental. Calibra cada habitación; sin calibración la lectura es desconocida.",
+          "pollen_entities": "En la primera configuración se preseleccionan todas las fuentes de polen encontradas. Una selección vacía explícita posterior permanece vacía.",
+          "use_announcement_hub": "Solo aparece si Announcement Hub está instalado. Al activarlo, los anuncios usan el Hub cuando está disponible.",
+          "general_away_cooldown_minutes": "Cuando una fuente válida de habitaciones ocupadas queda vacía, espera estos minutos antes de aplicar Away. Datos desconocidos o antiguos no activan Away."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Potencia · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Casa · Away · cooldown (min)"
       }
     },
     "switch": {

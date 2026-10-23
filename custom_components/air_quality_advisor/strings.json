@@ -187,13 +187,15 @@
           "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
           "general_sleep_rooms_entity": "Sleep · Room · source (state)",
           "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
-          "pollen_entity": "Pollen forecast sensor (any country/provider)",
           "notify_entities": "Direct notification entities",
           "media_players": "Direct TTS media players",
           "tts_engine": "Direct TTS engine",
-          "ai_conversation_agent": "Conversation agent",
-          "language": "Language",
-          "use_mold_indicator": "Use mold indication instead of raw room RH"
+          "ai_conversation_agent": "AI · Select · source",
+          "language": "TTS · Select · source",
+          "use_mold_indicator": "Use mold indication instead of raw room RH",
+          "pollen_entities": "Pollen · source · Select",
+          "use_announcement_hub": "Automatic · Announcement Hub",
+          "general_away_cooldown_minutes": "Home · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
@@ -205,13 +207,15 @@
           "general_occupied_rooms_attribute": "Choose State when the entity state itself is a valid room list, or select an actual attribute that contains that list. Choices refresh when changing entity.",
           "general_sleep_rooms_entity": "Choose an entity listing which HA rooms currently count as sleeping rooms. Sleep presence differs from general room occupancy.",
           "general_sleep_rooms_attribute": "Choose the State field or a verified room-list attribute from the selected sleep entity. A missing or unrecognized list makes sleep state unknown.",
-          "pollen_entity": "Select a numerical pollen-index sensor provided by Home Assistant. Country- and provider-specific indices are not automatically comparable.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected.",
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+          "ai_conversation_agent": "Choose Home Assistant default, a conversation agent, or a data-capable Task AI entity. Task AI selections use ai_task.generate_data.",
+          "language": "Languages come from the selected TTS provider. Region codes are shown only when that provider offers multiple variants of the same language.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe.",
+          "pollen_entities": "All discovered pollen providers are selected on first setup; later explicit empty selections stay empty.",
+          "use_announcement_hub": "Shown only when Announcement Hub is installed. Enabling it routes announcements through the Hub when available.",
+          "general_away_cooldown_minutes": "After a fresh occupied-room source becomes empty, wait this many minutes before applying Away. Unknown or stale occupancy never starts Away."
         }
       }
     },
@@ -1135,13 +1139,15 @@
           "general_occupied_rooms_attribute": "Occupancy · Room · source (attribute)",
           "general_sleep_rooms_entity": "Sleep · Room · source (state)",
           "general_sleep_rooms_attribute": "Sleep · Room · source (attribute)",
-          "pollen_entity": "Pollen forecast sensor (any country/provider)",
           "notify_entities": "Direct notification entities",
           "media_players": "Direct TTS media players",
           "tts_engine": "Direct TTS engine",
-          "ai_conversation_agent": "Conversation agent",
-          "language": "Language",
-          "use_mold_indicator": "Use mold indication instead of raw room RH"
+          "ai_conversation_agent": "AI · Select · source",
+          "language": "TTS · Select · source",
+          "use_mold_indicator": "Use mold indication instead of raw room RH",
+          "pollen_entities": "Pollen · source · Select",
+          "use_announcement_hub": "Automatic · Announcement Hub",
+          "general_away_cooldown_minutes": "Home · Away · cooldown (min)"
         },
         "data_description": {
           "weather_entities": "At least one weather provider. Rain, storms and extreme wind/temperature block opening. Mold indication uses the current temperature attribute (°C/°F) of a selected weather entity for outdoor temperature. Choose a source that reports temperature.",
@@ -1153,13 +1159,15 @@
           "general_occupied_rooms_attribute": "Choose State when the entity state itself is a valid room list, or select an actual attribute that contains that list. Choices refresh when changing entity.",
           "general_sleep_rooms_entity": "Choose an entity listing which HA rooms currently count as sleeping rooms. Sleep presence differs from general room occupancy.",
           "general_sleep_rooms_attribute": "Choose the State field or a verified room-list attribute from the selected sleep entity. A missing or unrecognized list makes sleep state unknown.",
-          "pollen_entity": "Select a numerical pollen-index sensor provided by Home Assistant. Country- and provider-specific indices are not automatically comparable.",
           "notify_entities": "Direct outputs when Announcement Hub is not used.",
           "media_players": "Direct audio destinations; room assignment controls targeting.",
           "tts_engine": "Direct speech provider when Announcement Hub is not used.",
-          "ai_conversation_agent": "Home Assistant default is preselected. A custom agent overrides the Hub agent or is used for direct rewriting; default inherits Hub's own agent when Hub is selected.",
-          "language": "Choose auto for Home Assistant’s language; the manual action can override it.",
-          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe."
+          "ai_conversation_agent": "Choose Home Assistant default, a conversation agent, or a data-capable Task AI entity. Task AI selections use ai_task.generate_data.",
+          "language": "Languages come from the selected TTS provider. Region codes are shown only when that provider offers multiple variants of the same language.",
+          "use_mold_indicator": "When enabled, humidity recommendations use the estimated relative humidity at each room's coldest surface instead of raw RH. Calibrate each room under the Room settings menu; an uncalibrated room remains unknown rather than safe.",
+          "pollen_entities": "All discovered pollen providers are selected on first setup; later explicit empty selections stay empty.",
+          "use_announcement_hub": "Shown only when Announcement Hub is installed. Enabling it routes announcements through the Hub when available.",
+          "general_away_cooldown_minutes": "After a fresh occupied-room source becomes empty, wait this many minutes before applying Away. Unknown or stale occupancy never starts Away."
         }
       }
     },
@@ -1485,6 +1493,9 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Power · max ON (s)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Home · Away · cooldown (min)"
       }
     },
     "switch": {
