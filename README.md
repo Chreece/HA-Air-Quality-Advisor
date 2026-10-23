@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b22/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b23/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 22 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Beta22 uses the canonical Home Assistant domain **environment_manager** and completes the legacy-domain migration while preserving the exact Home Assistant config-entry ID. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
+> **v0.6.0 beta 23 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Beta23 fixes HACS installation across the historical `air_quality_advisor` → canonical `environment_manager` domain change. It keeps beta22's exact config-entry-ID migration. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
+
+## Beta 23 - HACS domain-switch installation fix
+
+If HACS previously knew this repository as `custom_components/air_quality_advisor`, beta22 could fail before download with **No manifest.json file found 'custom_components/air_quality_advisor/manifest.json'**. Beta23 fixes that repository-path transition using HACS-supported root discovery plus a release ZIP.
+
+The beta23 tag has `content_in_root: true`, `zip_release: true` and `filename: environment_manager.zip`. A root discovery manifest declares the canonical domain `environment_manager`, so HACS resets the cached old remote directory and targets `/config/custom_components/environment_manager`. The attached ZIP contains the integration files directly at archive root, preventing a nested `custom_components/` install.
+
+Beta22's in-place config-entry migration is unchanged: the exact config-entry ID, room subentries, entity/device identities, options and user customizations are preserved.
 
 ## Beta 22 - exact config-entry identity during domain migration
 
