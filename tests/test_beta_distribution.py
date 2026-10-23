@@ -6,14 +6,14 @@ import struct
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "custom_components" / "air_quality_advisor"
+COMPONENT = ROOT / "custom_components" / "environment_manager"
 
 
 def test_beta_distribution_manifest_hacs_and_readme():
     manifest = json.loads((COMPONENT / "manifest.json").read_text(encoding="utf-8"))
     if manifest["version"] != "0.6.0b18":
         return  # Stable and future feature branches have their own version.
-    assert manifest["domain"] == "air_quality_advisor"
+    assert manifest["domain"] == "environment_manager"
     assert manifest["name"] == "Home Environment Manager"
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     assert hacs["name"] == manifest["name"]

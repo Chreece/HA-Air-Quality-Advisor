@@ -14,7 +14,7 @@ def native(adapter,monkeypatch):
     storage=types.ModuleType("homeassistant.helpers.storage")
     storage.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",storage)
-    return importlib.import_module("custom_components.air_quality_advisor.climate_native")
+    return importlib.import_module("custom_components.environment_manager.climate_native")
 
 
 def settings(**changes):
@@ -285,7 +285,7 @@ def test_native_refuses_armed_opposing_secondary_climate(native):
 
 def test_unified_room_gate_rechecks_opposing_ac_after_plan_was_approved(native):
     async def scenario():
-        from custom_components.air_quality_advisor.climate_arbitration import (
+        from custom_components.environment_manager.climate_arbitration import (
             room_coordination,
         )
         from test_discovery import MockState

@@ -6,12 +6,12 @@ import json
 import re
 from pathlib import Path
 
-from custom_components.air_quality_advisor.languages import SUPPORTED_LANGUAGE_TAGS
+from custom_components.environment_manager.languages import SUPPORTED_LANGUAGE_TAGS
 from test_discovery import adapter
 
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "custom_components" / "air_quality_advisor"
+COMPONENT = ROOT / "custom_components" / "environment_manager"
 TRANSLATIONS = COMPONENT / "translations"
 SCOPES = ("config", "options")
 USER_VISIBLE = ("step", "error", "abort")
@@ -119,16 +119,16 @@ def test_greek_weather_and_all_advanced_limits_are_translated():
 
 
 def test_home_language_selector_reuses_canonical_bcp47_codes_without_duplicates():
-    from custom_components.air_quality_advisor.const import LANGUAGES
+    from custom_components.environment_manager.const import LANGUAGES
     assert LANGUAGES[0] == "auto"
     assert set(LANGUAGES[1:]) == set(SUPPORTED_LANGUAGE_TAGS)
     assert {"pt-BR", "zh-Hans", "zh-Hant", "el", "de"}.issubset(LANGUAGES)
-    code = (ROOT / "custom_components" / "air_quality_advisor" / "select.py").read_text()
+    code = (ROOT / "custom_components" / "environment_manager" / "select.py").read_text()
     assert 'TTSLanguageSelect(manager, entry.entry_id)' in code
     assert 'language_options' in code and 'preferred_language' in code
     for file in ("en.json", "el.json", "de.json"):
         translations = json.loads((ROOT / "custom_components" /
-                        "air_quality_advisor" / "translations" / file).read_text())
+                        "environment_manager" / "translations" / file).read_text())
         assert translations["entity"]["select"]["home_language"]["name"]
 
 
@@ -146,7 +146,7 @@ def test_regional_language_settings_remain_unchanged_during_provider_edits(monke
 
 
 def test_translation_generator_uses_reviewed_overrides_and_provider_names_are_intact():
-    root = ROOT / "custom_components" / "air_quality_advisor"
+    root = ROOT / "custom_components" / "environment_manager"
     code = (ROOT / "generate_translations.py").read_text(encoding="utf-8")
     assert "apply_config_overrides(root)" in code
     spec = json.loads((root / "config_i18n_overrides.json").read_text(encoding="utf-8"))

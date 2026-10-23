@@ -10,7 +10,7 @@ if "custom_components" not in sys.modules:
     pkg = types.ModuleType("custom_components")
     pkg.__path__ = [str(ROOT)]
     sys.modules[pkg.__name__] = pkg
-if "custom_components.air_quality_advisor" not in sys.modules:
-    pkg = types.ModuleType("custom_components.air_quality_advisor")
-    pkg.__path__ = [str(ROOT / "air_quality_advisor")]
+if "custom_components.environment_manager" not in sys.modules:
+    pkg = types.ModuleType("custom_components.environment_manager")
+    pkg.__path__ = [str(ROOT / "environment_manager")]
     sys.modules[pkg.__name__] = pkg

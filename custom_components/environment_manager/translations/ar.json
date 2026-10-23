@@ -1,0 +1,1821 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "الغرف",
+        "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "الغرف",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "استبعاد مستشعرات النوافذ",
+        "description": "2 · استبعاد مستشعرات النوافذ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ"
+        },
+        "data_description": {
+          "excluded_window_entities": "اختر: استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "الغرف · مؤشر العفن",
+        "description": "الغرف: {area_name} ({position}/{total}). 🌡️ 🧊 مؤشر العفن · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي",
+          "mold_indoor_temperature": "الغرف · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "مؤشر العفن · 🧊 °C",
+          "mold_recalibrate": "مؤشر العفن · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "خارجي · الحرارة · المصدر · مؤشر العفن"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "اضبط «الغرف · 🌡️ (°C/°F)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "mold_critical_temperature_c": "🧊 مؤشر العفن · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "استخدم قياسًا حقيقيًا مناسبًا لـ «مؤشر العفن · ↻ 🌡️». التقدير لا يحل محل حساس معاير.",
+          "mold_outdoor_weather_entity": "اختيار weather.* · خارجي الحرارة (temperature, °C/°F) → مؤشر العفن. مطلوب: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "جودة الهواء الخارجي",
+        "description": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "جودة الهواء الخارجي"
+        },
+        "data_description": {
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠"
+        }
+      },
+      "weather": {
+        "title": "الطقس والتحذيرات",
+        "description": "الطقس والتحذيرات. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "weather_warnings": "تحذيرات الطقس"
+        },
+        "data_description": {
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "الإعلانات (اختياري)",
+        "description": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+        "data": {
+          "language": "اللغة",
+          "automatic_tts": "تلقائي",
+          "automatic_notifications": "تلقائي · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "الإعلانات (اختياري) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "الإعدادات · المصدر",
+          "tts_engine": "الإعدادات · المصدر · TTS_ENGINE",
+          "media_players": "الإعدادات · المصدر · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري)",
+          "ai_conversation_agent": "AI · اللغة"
+        },
+        "data_description": {
+          "language": "اضبط «اللغة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "automatic_tts": "افتراضي: ⛔ · تلقائي · 🪟 90 s. يتحكم هذا الخيار في «تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "automatic_notifications": "يتحكم هذا الخيار في «تلقائي · AUTOMATIC_NOTIFICATIONS». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "announcement_repeat_minutes": "افتراضي: 10 min · 0 = أبدًا · ما دام السبب نفسه مستمرًا · الغرف.",
+          "use_announcement_hub": "Announcement Hub · غير متاح → Home Assistant.",
+          "notify_entities": "اختر مصدر Home Assistant حقيقيًا لـ «الإعدادات · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "tts_engine": "اختر: tts.* · الإعدادات · المصدر · TTS_ENGINE.",
+          "media_players": "اختر: media_player.* · الإعدادات · المصدر · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "اختر: conversation.* (Home Assistant · افتراضي)."
+        }
+      },
+      "thresholds": {
+        "title": "حدود متقدمة",
+        "description": "حدود متقدمة. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "الخارج · AQI (≤)",
+          "outdoor_co2": "الخارج · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "الخارج · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "الخارج · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "الخارج · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "الخارج · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · خارجي (µg/m³)",
+          "outdoor_o3": "O₃ · خارجي (µg/m³)",
+          "outdoor_so2": "SO₂ · خارجي (µg/m³)",
+          "indoor_aqi": "جودة الهواء · AQI (≥)",
+          "indoor_co2": "جودة الهواء · CO₂ (ppm) (≥)",
+          "indoor_pm25": "جودة الهواء · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "جودة الهواء · PM10 (µg/m³) (≥)",
+          "indoor_voc": "جودة الهواء · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "جودة الهواء · VOC (ppb) (≥)",
+          "indoor_humidity": "جودة الهواء · RH (%) (≥)",
+          "min_outdoor_temp": "الخارج · °C (≥)",
+          "max_outdoor_temp": "الخارج · °C (≤)",
+          "max_outdoor_humidity": "الخارج · RH (%) (≤)",
+          "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
+          "max_age_minutes": "⏱ · افتح (min, ≤)",
+          "indoor_mold": "مؤشر العفن · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "هذه عتبة القرار لـ «الخارج · AQI (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_co2": "هذه عتبة القرار لـ «الخارج · CO₂ (ppm) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_pm25": "هذه عتبة القرار لـ «الخارج · PM2.5 (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_pm10": "هذه عتبة القرار لـ «الخارج · PM10 (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_voc": "هذه عتبة القرار لـ «الخارج · VOC (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_voc_parts": "هذه عتبة القرار لـ «الخارج · VOC (ppb) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_no2": "هذه عتبة القرار لـ «NO₂ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_o3": "هذه عتبة القرار لـ «O₃ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_so2": "هذه عتبة القرار لـ «SO₂ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_aqi": "هذه عتبة القرار لـ «جودة الهواء · AQI (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_co2": "هذه عتبة القرار لـ «جودة الهواء · CO₂ (ppm) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_pm25": "هذه عتبة القرار لـ «جودة الهواء · PM2.5 (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_pm10": "هذه عتبة القرار لـ «جودة الهواء · PM10 (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_voc": "هذه عتبة القرار لـ «جودة الهواء · VOC (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_voc_parts": "هذه عتبة القرار لـ «جودة الهواء · VOC (ppb) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_humidity": "هذه عتبة القرار لـ «جودة الهواء · RH (%) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "min_outdoor_temp": "هذه عتبة القرار لـ «الخارج · °C (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_outdoor_temp": "هذه عتبة القرار لـ «الخارج · °C (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_outdoor_humidity": "هذه عتبة القرار لـ «الخارج · RH (%) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_wind_kmh": "هذه عتبة القرار لـ «الطقس والتحذيرات · km/h (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_age_minutes": "هذه عتبة القرار لـ «⏱ · افتح (min, ≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_mold": "هذه عتبة القرار لـ «مؤشر العفن · ≥ 70%». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "setup_rooms": {
+        "title": "الغرف المراد مراقبتها",
+        "description": "الغرف المراد مراقبتها → المصدر → عام الإعدادات",
+        "data": {
+          "areas": "الغرف المراد مراقبتها"
+        },
+        "data_description": {
+          "areas": "الغرف المراد مراقبتها. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي."
+        }
+      },
+      "setup_room_sources": {
+        "title": "غرفة · {area_name} · {room_index}/{room_count}",
+        "description": "اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+        "data": {
+          "windows": "النوافذ",
+          "air_quality": "مستشعرات جودة الهواء والبيئة",
+          "temperature": "الحرارة",
+          "humidity": "الرطوبة",
+          "pressure": "مستشعرات الضغط",
+          "climate_devices": "الأجهزة"
+        },
+        "data_description": {
+          "windows": "النوافذ. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "air_quality": "مستشعرات جودة الهواء والبيئة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "temperature": "الحرارة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "humidity": "الرطوبة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "pressure": "مستشعرات الضغط. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "climate_devices": "الأجهزة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي."
+        }
+      },
+      "setup_general": {
+        "title": "عام الإعدادات",
+        "description": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف.",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "outdoor_sensors": "جودة الهواء الخارجي",
+          "weather_warnings": "تحذيرات الطقس",
+          "general_room_occupancy_sensors": "غرفة · الإشغال · مستشعر",
+          "general_home_trackers": "المنزل · الإشغال · الأجهزة",
+          "general_occupied_rooms_entity": "الإشغال · غرفة · المصدر (state)",
+          "general_occupied_rooms_attribute": "الإشغال · غرفة · المصدر (attribute)",
+          "general_sleep_rooms_entity": "النوم · غرفة · المصدر (state)",
+          "general_sleep_rooms_attribute": "النوم · غرفة · المصدر (attribute)",
+          "notify_entities": "الإعدادات · المصدر",
+          "media_players": "الإعدادات · المصدر · MEDIA_PLAYERS",
+          "tts_engine": "الإعدادات · المصدر · TTS_ENGINE",
+          "ai_conversation_agent": "AI · اختيار · المصدر",
+          "language": "TTS · اختيار · المصدر",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%",
+          "pollen_entities": "حبوب اللقاح · المصدر · اختيار",
+          "use_announcement_hub": "تلقائي · Announcement Hub",
+          "general_away_cooldown_minutes": "المنزل · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒",
+          "general_room_occupancy_sensors": "اختر مصدر Home Assistant حقيقيًا لـ «غرفة · الإشغال · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_home_trackers": "اختر مصدر Home Assistant حقيقيًا لـ «المنزل · الإشغال · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الإشغال · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_attribute": "اضبط «الإشغال · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "general_sleep_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «النوم · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_sleep_rooms_attribute": "اضبط «النوم · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "notify_entities": "اختر مصدر Home Assistant حقيقيًا لـ «الإعدادات · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "media_players": "اختر: media_player.* · الإعدادات · المصدر · MEDIA_PLAYERS.",
+          "tts_engine": "اختر: tts.* · الإعدادات · المصدر · TTS_ENGINE.",
+          "ai_conversation_agent": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · AI · اختيار · المصدر · conversation.* / ai_task.*.",
+          "language": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · TTS · اختيار · المصدر · provider capabilities.",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · حبوب اللقاح · المصدر · اختيار.",
+          "use_announcement_hub": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · تلقائي · Announcement Hub.",
+          "general_away_cooldown_minutes": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · المنزل · Away · cooldown (min) · occupancy transition delay."
+        }
+      },
+      "migrate_legacy": {
+        "title": "Home Environment Manager · الإعدادات",
+        "description": "Home Environment Manager · environment_manager · الإعدادات",
+        "data": {
+          "confirm": "اختيار · environment_manager"
+        },
+        "data_description": {
+          "confirm": "Home Environment Manager · environment_manager · الإعدادات"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "اختيار غير صالح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "غير متاح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "اختيار غير صالح: الطقس والتحذيرات (weather.*).",
+      "invalid_warning": "اختيار غير صالح: الطقس والتحذيرات ⚠.",
+      "missing_notify": "اختر: Announcement Hub / notify.*.",
+      "missing_tts": "اختر: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "اختيار غير صالح: °C min < max.",
+      "no_areas": "اختر: الغرف.",
+      "no_window_areas": "غير متاح: القياسات (binary_sensor, window).",
+      "invalid_areas": "اختيار غير صالح: الغرف.",
+      "invalid_window_exclusions": "اختيار غير صالح: استبعاد مستشعرات النوافذ.",
+      "invalid_indoor_exclusions": "اختيار غير صالح: استبعاد مستشعرات الهواء الداخلي.",
+      "no_windows_after_exclusions": "اترك مستشعر نافذة واحدًا على الأقل.",
+      "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
+      "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "غير متاح: conversation.process.",
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*.",
+      "invalid_mold_temperature_sensor": "الغرف · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "الغرف · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "مؤشر العفن · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "مؤشر العفن · 🧊 °C ⚠",
+      "invalid_mold_calibration": "مؤشر العفن · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "غير صالح: الغرف المراد مراقبتها",
+      "invalid_room_source": "غير صالح: غرفة · المصدر"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — تم الإعداد مسبقًا.",
+      "setup_area_removed": "غير صالح: الغرف المراد مراقبتها",
+      "setup_changed": "الإعدادات ↻ الغرف المراد مراقبتها",
+      "legacy_migration_ambiguous": "الإعدادات · environment_manager · 2+",
+      "legacy_migration_missing": "الإعدادات · environment_manager · ?",
+      "legacy_migration_cancelled": "الإعدادات · environment_manager · ×"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ اختر",
+        "description": "اختر: الغرف / الطقس والتحذيرات / الإعلانات (اختياري) / حدود متقدمة",
+        "menu_options": {
+          "outside_data": "خارجي · المصدر",
+          "general_settings": "عام · الإعدادات",
+          "area_settings": "منطقة · الإعدادات",
+          "delivery": "الإعلانات (اختياري)",
+          "thresholds": "حدود متقدمة"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "استبعاد مستشعرات النوافذ",
+        "description": "2 · استبعاد مستشعرات النوافذ. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "استبعاد مستشعرات النوافذ"
+        },
+        "data_description": {
+          "excluded_window_entities": "اختر: استبعاد مستشعرات النوافذ · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "الغرف",
+        "description": "1 · 🪟 الغرف. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "الغرف",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "اختر: الغرف · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "الغرف · مؤشر العفن",
+        "description": "الغرف: {area_name} ({position}/{total}). 🌡️ 🧊 مؤشر العفن · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "استبعاد مستشعرات الهواء الداخلي",
+          "mold_indoor_temperature": "الغرف · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "مؤشر العفن · 🧊 °C",
+          "mold_recalibrate": "مؤشر العفن · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "خارجي · الحرارة · المصدر · مؤشر العفن"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "اختر: استبعاد مستشعرات الهواء الداخلي · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "اضبط «الغرف · 🌡️ (°C/°F)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "mold_critical_temperature_c": "🧊 مؤشر العفن · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "استخدم قياسًا حقيقيًا مناسبًا لـ «مؤشر العفن · ↻ 🌡️». التقدير لا يحل محل حساس معاير.",
+          "mold_outdoor_weather_entity": "اختيار weather.* · خارجي الحرارة (temperature, °C/°F) → مؤشر العفن. مطلوب: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "جودة الهواء الخارجي",
+        "description": "جودة الهواء الخارجي. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "جودة الهواء الخارجي"
+        },
+        "data_description": {
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠"
+        }
+      },
+      "weather": {
+        "title": "الطقس والتحذيرات",
+        "description": "الطقس والتحذيرات. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "weather_warnings": "تحذيرات الطقس"
+        },
+        "data_description": {
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "الإعلانات (اختياري)",
+        "description": "الإعلانات (اختياري). إشعارات تلقائية · إعلانات صوتية تلقائية. Announcement Hub.",
+        "data": {
+          "language": "اللغة",
+          "automatic_tts": "تلقائي",
+          "automatic_notifications": "تلقائي · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "الإعلانات (اختياري) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "الإعدادات · المصدر",
+          "tts_engine": "الإعدادات · المصدر · TTS_ENGINE",
+          "media_players": "الإعدادات · المصدر · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري)",
+          "ai_conversation_agent": "AI · اللغة"
+        },
+        "data_description": {
+          "language": "اضبط «اللغة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "automatic_tts": "افتراضي: ⛔ · تلقائي · 🪟 90 s. يتحكم هذا الخيار في «تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "automatic_notifications": "يتحكم هذا الخيار في «تلقائي · AUTOMATIC_NOTIFICATIONS». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "announcement_repeat_minutes": "افتراضي: 10 min · 0 = أبدًا · ما دام السبب نفسه مستمرًا · الغرف.",
+          "use_announcement_hub": "Announcement Hub · غير متاح → Home Assistant.",
+          "notify_entities": "اختر مصدر Home Assistant حقيقيًا لـ «الإعدادات · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "tts_engine": "اختر: tts.* · الإعدادات · المصدر · TTS_ENGINE.",
+          "media_players": "اختر: media_player.* · الإعدادات · المصدر · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · الإعلانات (اختياري) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "اختر: conversation.* (Home Assistant · افتراضي)."
+        }
+      },
+      "thresholds": {
+        "title": "حدود متقدمة",
+        "description": "حدود متقدمة. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "الخارج · AQI (≤)",
+          "outdoor_co2": "الخارج · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "الخارج · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "الخارج · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "الخارج · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "الخارج · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · خارجي (µg/m³)",
+          "outdoor_o3": "O₃ · خارجي (µg/m³)",
+          "outdoor_so2": "SO₂ · خارجي (µg/m³)",
+          "indoor_aqi": "جودة الهواء · AQI (≥)",
+          "indoor_co2": "جودة الهواء · CO₂ (ppm) (≥)",
+          "indoor_pm25": "جودة الهواء · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "جودة الهواء · PM10 (µg/m³) (≥)",
+          "indoor_voc": "جودة الهواء · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "جودة الهواء · VOC (ppb) (≥)",
+          "indoor_humidity": "جودة الهواء · RH (%) (≥)",
+          "min_outdoor_temp": "الخارج · °C (≥)",
+          "max_outdoor_temp": "الخارج · °C (≤)",
+          "max_outdoor_humidity": "الخارج · RH (%) (≤)",
+          "max_wind_kmh": "الطقس والتحذيرات · km/h (≤)",
+          "max_age_minutes": "⏱ · افتح (min, ≤)",
+          "indoor_mold": "مؤشر العفن · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "هذه عتبة القرار لـ «الخارج · AQI (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_co2": "هذه عتبة القرار لـ «الخارج · CO₂ (ppm) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_pm25": "هذه عتبة القرار لـ «الخارج · PM2.5 (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_pm10": "هذه عتبة القرار لـ «الخارج · PM10 (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_voc": "هذه عتبة القرار لـ «الخارج · VOC (µg/m³) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_voc_parts": "هذه عتبة القرار لـ «الخارج · VOC (ppb) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_no2": "هذه عتبة القرار لـ «NO₂ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_o3": "هذه عتبة القرار لـ «O₃ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outdoor_so2": "هذه عتبة القرار لـ «SO₂ · خارجي (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_aqi": "هذه عتبة القرار لـ «جودة الهواء · AQI (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_co2": "هذه عتبة القرار لـ «جودة الهواء · CO₂ (ppm) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_pm25": "هذه عتبة القرار لـ «جودة الهواء · PM2.5 (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_pm10": "هذه عتبة القرار لـ «جودة الهواء · PM10 (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_voc": "هذه عتبة القرار لـ «جودة الهواء · VOC (µg/m³) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_voc_parts": "هذه عتبة القرار لـ «جودة الهواء · VOC (ppb) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_humidity": "هذه عتبة القرار لـ «جودة الهواء · RH (%) (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "min_outdoor_temp": "هذه عتبة القرار لـ «الخارج · °C (≥)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_outdoor_temp": "هذه عتبة القرار لـ «الخارج · °C (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_outdoor_humidity": "هذه عتبة القرار لـ «الخارج · RH (%) (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_wind_kmh": "هذه عتبة القرار لـ «الطقس والتحذيرات · km/h (≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "max_age_minutes": "هذه عتبة القرار لـ «⏱ · افتح (min, ≤)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "indoor_mold": "هذه عتبة القرار لـ «مؤشر العفن · ≥ 70%». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "environment": {
+        "title": "الإعدادات · الإعدادات · المصدر",
+        "description": "اضبط «الإعدادات · الإعدادات · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "pollen_entity": "حبوب اللقاح · المصدر",
+          "pollen_high_from": "POLLEN · حبوب اللقاح · HIGH",
+          "pollen_max_scale": "POLLEN · حبوب اللقاح · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · حبوب اللقاح · NO VENT",
+          "aqi_scale_0": "AQI #1 · المصدر",
+          "aqi_custom_limit_0": "AQI #1 · الهدف",
+          "aqi_scale_1": "AQI #2 · المصدر",
+          "aqi_custom_limit_1": "AQI #2 · الهدف",
+          "aqi_scale_2": "AQI #3 · المصدر",
+          "aqi_custom_limit_2": "AQI #3 · الهدف",
+          "aqi_scale_3": "AQI #4 · المصدر",
+          "aqi_custom_limit_3": "AQI #4 · الهدف",
+          "aqi_scale_4": "AQI #5 · المصدر",
+          "aqi_custom_limit_4": "AQI #5 · الهدف",
+          "aqi_scale_5": "AQI #6 · المصدر",
+          "aqi_custom_limit_5": "AQI #6 · الهدف",
+          "aqi_scale_6": "AQI #7 · المصدر",
+          "aqi_custom_limit_6": "AQI #7 · الهدف",
+          "aqi_scale_7": "AQI #8 · المصدر",
+          "aqi_custom_limit_7": "AQI #8 · الهدف",
+          "aqi_scale_8": "AQI #9 · المصدر",
+          "aqi_custom_limit_8": "AQI #9 · الهدف",
+          "aqi_scale_9": "AQI #10 · المصدر",
+          "aqi_custom_limit_9": "AQI #10 · الهدف",
+          "aqi_scale_10": "AQI #11 · المصدر",
+          "aqi_custom_limit_10": "AQI #11 · الهدف",
+          "aqi_scale_11": "AQI #12 · المصدر",
+          "aqi_custom_limit_11": "AQI #12 · الهدف",
+          "aqi_scale_12": "AQI #13 · المصدر",
+          "aqi_custom_limit_12": "AQI #13 · الهدف",
+          "aqi_scale_13": "AQI #14 · المصدر",
+          "aqi_custom_limit_13": "AQI #14 · الهدف",
+          "aqi_scale_14": "AQI #15 · المصدر",
+          "aqi_custom_limit_14": "AQI #15 · الهدف",
+          "aqi_scale_15": "AQI #16 · المصدر",
+          "aqi_custom_limit_15": "AQI #16 · الهدف",
+          "aqi_scale_16": "AQI #17 · المصدر",
+          "aqi_custom_limit_16": "AQI #17 · الهدف",
+          "aqi_scale_17": "AQI #18 · المصدر",
+          "aqi_custom_limit_17": "AQI #18 · الهدف",
+          "aqi_scale_18": "AQI #19 · المصدر",
+          "aqi_custom_limit_18": "AQI #19 · الهدف",
+          "aqi_scale_19": "AQI #20 · المصدر",
+          "aqi_custom_limit_19": "AQI #20 · الهدف",
+          "aqi_scale_20": "AQI #21 · المصدر",
+          "aqi_custom_limit_20": "AQI #21 · الهدف",
+          "aqi_scale_21": "AQI #22 · المصدر",
+          "aqi_custom_limit_21": "AQI #22 · الهدف",
+          "aqi_scale_22": "AQI #23 · المصدر",
+          "aqi_custom_limit_22": "AQI #23 · الهدف",
+          "aqi_scale_23": "AQI #24 · المصدر",
+          "aqi_custom_limit_23": "AQI #24 · الهدف",
+          "aqi_scale_24": "AQI #25 · المصدر",
+          "aqi_custom_limit_24": "AQI #25 · الهدف",
+          "aqi_scale_25": "AQI #26 · المصدر",
+          "aqi_custom_limit_25": "AQI #26 · الهدف",
+          "aqi_scale_26": "AQI #27 · المصدر",
+          "aqi_custom_limit_26": "AQI #27 · الهدف",
+          "aqi_scale_27": "AQI #28 · المصدر",
+          "aqi_custom_limit_27": "AQI #28 · الهدف",
+          "aqi_scale_28": "AQI #29 · المصدر",
+          "aqi_custom_limit_28": "AQI #29 · الهدف",
+          "aqi_scale_29": "AQI #30 · المصدر",
+          "aqi_custom_limit_29": "AQI #30 · الهدف",
+          "aqi_scale_30": "AQI #31 · المصدر",
+          "aqi_custom_limit_30": "AQI #31 · الهدف",
+          "aqi_scale_31": "AQI #32 · المصدر",
+          "aqi_custom_limit_31": "AQI #32 · الهدف"
+        },
+        "data_description": {
+          "pollen_entity": "اختر مصدر Home Assistant حقيقيًا لـ «حبوب اللقاح · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "pollen_high_from": "اضبط «POLLEN · حبوب اللقاح · HIGH» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "pollen_max_scale": "اضبط «POLLEN · حبوب اللقاح · SCALE» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "pollen_avoid_ventilation": "اضبط «POLLEN · حبوب اللقاح · NO VENT» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_scale_0": "اضبط «AQI #1 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_0": "هذه عتبة القرار لـ «AQI #1 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_1": "اضبط «AQI #2 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_1": "هذه عتبة القرار لـ «AQI #2 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_2": "اضبط «AQI #3 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_2": "هذه عتبة القرار لـ «AQI #3 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_3": "اضبط «AQI #4 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_3": "هذه عتبة القرار لـ «AQI #4 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_4": "اضبط «AQI #5 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_4": "هذه عتبة القرار لـ «AQI #5 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_5": "اضبط «AQI #6 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_5": "هذه عتبة القرار لـ «AQI #6 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_6": "اضبط «AQI #7 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_6": "هذه عتبة القرار لـ «AQI #7 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_7": "اضبط «AQI #8 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_7": "هذه عتبة القرار لـ «AQI #8 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_8": "اضبط «AQI #9 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_8": "هذه عتبة القرار لـ «AQI #9 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_9": "اضبط «AQI #10 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_9": "هذه عتبة القرار لـ «AQI #10 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_10": "اضبط «AQI #11 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_10": "هذه عتبة القرار لـ «AQI #11 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_11": "اضبط «AQI #12 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_11": "هذه عتبة القرار لـ «AQI #12 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_12": "اضبط «AQI #13 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_12": "هذه عتبة القرار لـ «AQI #13 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_13": "اضبط «AQI #14 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_13": "هذه عتبة القرار لـ «AQI #14 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_14": "اضبط «AQI #15 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_14": "هذه عتبة القرار لـ «AQI #15 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_15": "اضبط «AQI #16 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_15": "هذه عتبة القرار لـ «AQI #16 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_16": "اضبط «AQI #17 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_16": "هذه عتبة القرار لـ «AQI #17 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_17": "اضبط «AQI #18 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_17": "هذه عتبة القرار لـ «AQI #18 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_18": "اضبط «AQI #19 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_18": "هذه عتبة القرار لـ «AQI #19 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_19": "اضبط «AQI #20 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_19": "هذه عتبة القرار لـ «AQI #20 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_20": "اضبط «AQI #21 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_20": "هذه عتبة القرار لـ «AQI #21 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_21": "اضبط «AQI #22 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_21": "هذه عتبة القرار لـ «AQI #22 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_22": "اضبط «AQI #23 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_22": "هذه عتبة القرار لـ «AQI #23 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_23": "اضبط «AQI #24 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_23": "هذه عتبة القرار لـ «AQI #24 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_24": "اضبط «AQI #25 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_24": "هذه عتبة القرار لـ «AQI #25 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_25": "اضبط «AQI #26 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_25": "هذه عتبة القرار لـ «AQI #26 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_26": "اضبط «AQI #27 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_26": "هذه عتبة القرار لـ «AQI #27 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_27": "اضبط «AQI #28 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_27": "هذه عتبة القرار لـ «AQI #28 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_28": "اضبط «AQI #29 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_28": "هذه عتبة القرار لـ «AQI #29 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_29": "اضبط «AQI #30 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_29": "هذه عتبة القرار لـ «AQI #30 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_30": "اضبط «AQI #31 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_30": "هذه عتبة القرار لـ «AQI #31 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "aqi_scale_31": "اضبط «AQI #32 · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "aqi_custom_limit_31": "هذه عتبة القرار لـ «AQI #32 · الهدف». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "environment_room": {
+        "title": "الإعدادات · الإعدادات · المصدر",
+        "description": "اضبط «الإعدادات · الإعدادات · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "environment_area": "الإعدادات · المصدر"
+        },
+        "data_description": {
+          "environment_area": "اضبط «الإعدادات · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء."
+        }
+      },
+      "environment_room_air": {
+        "title": "الإعدادات · خارجي",
+        "description": "اضبط «الإعدادات · خارجي» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "temperature_entity": "الحرارة · المصدر",
+          "room_volume_m3": "الإعدادات · المصدر (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "منقّي الهواء · المصدر",
+          "extractor_entity": "مروحة شفط · المصدر",
+          "co2_ndir_verified": "CO₂ · مطلوب",
+          "co2_target_ppm": "CO₂ · CO₂ · الهدف (ppm)",
+          "sleep_room": "النوم"
+        },
+        "data_description": {
+          "temperature_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الحرارة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "room_volume_m3": "استخدم قياسًا حقيقيًا مناسبًا لـ «الإعدادات · المصدر (m³)». التقدير لا يحل محل حساس معاير.",
+          "particle_cadr_m3h": "استخدم قياسًا حقيقيًا مناسبًا لـ «CADR (m³/h)». التقدير لا يحل محل حساس معاير.",
+          "purifier_entity": "اختر مصدر Home Assistant حقيقيًا لـ «منقّي الهواء · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "extractor_entity": "اختر مصدر Home Assistant حقيقيًا لـ «مروحة شفط · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "co2_ndir_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «CO₂ · مطلوب». التقدير لا يحل محل حساس معاير.",
+          "co2_target_ppm": "هذه عتبة القرار لـ «CO₂ · CO₂ · الهدف (ppm)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "sleep_room": "اضبط «النوم» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "الإعدادات · الإعدادات · المصدر",
+        "description": "اضبط «الإعدادات · الإعدادات · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "radon_entity": "RADON · Rn · المصدر",
+          "radon_sensor_verified": "RADON · Rn · مستشعر · مطلوب · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · المصدر",
+          "formaldehyde_sensor_verified": "HCHO · مستشعر · مطلوب · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · المصدر · مستشعر (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · مستشعر · مطلوب",
+          "illuminance_entity": "LUX · المصدر (lux)",
+          "melanopic_edi_entity": "EDI · EDI · المصدر (lx)",
+          "melanopic_spectral_verified": "EDI · مطلوب"
+        },
+        "data_description": {
+          "radon_entity": "اختر مصدر Home Assistant حقيقيًا لـ «RADON · Rn · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "radon_sensor_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «RADON · Rn · مستشعر · مطلوب · SENSOR ✓ · VERIFIED». التقدير لا يحل محل حساس معاير.",
+          "radon_reference_bq_m3": "اضبط «Rn (Bq/m³)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "formaldehyde_entity": "اختر مصدر Home Assistant حقيقيًا لـ «HCHO · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "formaldehyde_sensor_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «HCHO · مستشعر · مطلوب · SENSOR ✓ · VERIFIED». التقدير لا يحل محل حساس معاير.",
+          "noise_entity": "اختر مصدر Home Assistant حقيقيًا لـ «dB(A) · المصدر · مستشعر (dB(A))». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "noise_sensor_calibrated": "استخدم قياسًا حقيقيًا مناسبًا لـ «dB(A) · مستشعر · مطلوب». التقدير لا يحل محل حساس معاير.",
+          "illuminance_entity": "اختر مصدر Home Assistant حقيقيًا لـ «LUX · المصدر (lux)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "melanopic_edi_entity": "اختر مصدر Home Assistant حقيقيًا لـ «EDI · EDI · المصدر (lx)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "melanopic_spectral_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «EDI · مطلوب». التقدير لا يحل محل حساس معاير."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "الإعدادات · الإعدادات · المصدر",
+        "description": "اضبط «الإعدادات · الإعدادات · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "enable_pmv": "PMV / PPD · تلقائي",
+          "radiant_temperature_entity": "الحرارة · المصدر",
+          "air_speed_entity": "المصدر · السرعة · خارجي (m/s)",
+          "air_speed_m_s": "السرعة · خارجي (m/s)",
+          "met": "الإعدادات · المصدر (met)",
+          "clo": "الإعدادات · المصدر (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "اضبط «PMV / PPD · تلقائي» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "radiant_temperature_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الحرارة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "air_speed_entity": "اختر مصدر Home Assistant حقيقيًا لـ «المصدر · السرعة · خارجي (m/s)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "air_speed_m_s": "استخدم قياسًا حقيقيًا مناسبًا لـ «السرعة · خارجي (m/s)». التقدير لا يحل محل حساس معاير.",
+          "met": "استخدم قياسًا حقيقيًا مناسبًا لـ «الإعدادات · المصدر (met)». التقدير لا يحل محل حساس معاير.",
+          "clo": "استخدم قياسًا حقيقيًا مناسبًا لـ «الإعدادات · المصدر (clo)». التقدير لا يحل محل حساس معاير."
+        }
+      },
+      "pid": {
+        "title": "الإعدادات · PID",
+        "description": "اضبط «الإعدادات · PID» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "يتحكم هذا الخيار في «PID». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية."
+        }
+      },
+      "pid_room": {
+        "title": "الإعدادات · PID",
+        "description": "اضبط «الإعدادات · PID» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "pid_enabled": "PID · تلقائي · AUTO",
+          "pid_climate_entities": "PID · الأجهزة",
+          "pid_temperature_entity": "الحرارة · المصدر",
+          "pid_mode": "PID",
+          "pid_target_c": "الهدف (°C)",
+          "pid_pause_on_window_open": "PID · خارجي"
+        },
+        "data_description": {
+          "pid_enabled": "يتحكم هذا الخيار في «PID · تلقائي · AUTO». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "pid_climate_entities": "اختر مصدر Home Assistant حقيقيًا لـ «PID · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "pid_temperature_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الحرارة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "pid_mode": "يتحكم هذا الخيار في «PID». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "pid_target_c": "هذه عتبة القرار لـ «الهدف (°C)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "pid_pause_on_window_open": "يتحكم هذا الخيار في «PID · خارجي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية."
+        }
+      },
+      "pid_tuning": {
+        "title": "الإعدادات · PID",
+        "description": "اضبط «الإعدادات · PID» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "pid_kp": "PID Kp · التحكم (% per °C)",
+          "pid_ki": "PID Ki · التحكم (% per °C-minute)",
+          "pid_kd": "PID Kd · التحكم (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "يتحكم هذا الخيار في «PID Kp · التحكم (% per °C)». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "pid_ki": "يتحكم هذا الخيار في «PID Ki · التحكم (% per °C-minute)». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "pid_kd": "يتحكم هذا الخيار في «PID Kd · التحكم (%·minute per °C)». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "pid_offset_c": "هذه عتبة القرار لـ «PID (°C) · PID_OFFSET_C». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "pid_min_setpoint_c": "هذه عتبة القرار لـ «PID (°C) · MIN TARGET». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "pid_max_setpoint_c": "هذه عتبة القرار لـ «PID (°C) · MAX TARGET». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "pid_sample_seconds": "تضبط هذه المدة «PID (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "pid_max_change_c": "هذه عتبة القرار لـ «PID (°C) · MAX Δ». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "pid_min_change_c": "هذه عتبة القرار لـ «PID (°C) · MIN Δ». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "climate": {
+        "title": "الإعدادات · الأجهزة",
+        "description": "اضبط «الإعدادات · الأجهزة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+        "data": {
+          "climate_area": "الأجهزة"
+        },
+        "data_description": {
+          "climate_area": "يتحكم هذا الخيار في «الأجهزة». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية."
+        }
+      },
+      "climate_room": {
+        "title": "الإعدادات · الأجهزة",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "climate_enabled": "الأجهزة · تلقائي · AUTO",
+          "climate_allow_actuation": "الأجهزة · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "الأجهزة · تلقائي · MODE SWITCH",
+          "climate_prefer_native_auto": "الأجهزة · تلقائي · NATIVE",
+          "climate_controller": "الأجهزة · التحكم",
+          "climate_mode": "الأجهزة · MODE",
+          "climate_entity": "الأجهزة · المصدر",
+          "climate_temperature_entity": "الحرارة · المصدر",
+          "climate_hysteresis_c": "الأجهزة (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "يتحكم هذا الخيار في «الأجهزة · تلقائي · AUTO». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_allow_actuation": "يتحكم هذا الخيار في «الأجهزة · CLIMATE_ALLOW_ACTUATION». أوامر الأجهزة · CLIMATE_ALLOW_ACTUATION تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_auto_switch_hvac": "يتحكم هذا الخيار في «الأجهزة · تلقائي · MODE SWITCH». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_prefer_native_auto": "يتحكم هذا الخيار في «الأجهزة · تلقائي · NATIVE». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_controller": "يتحكم هذا الخيار في «الأجهزة · التحكم». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_mode": "يتحكم هذا الخيار في «الأجهزة · MODE». أوامر الأجهزة · MODE تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_temperature_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الحرارة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_hysteresis_c": "هذه عتبة القرار لـ «الأجهزة (°C)». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "climate_presence": {
+        "title": "الإعدادات · الإشغال · الأجهزة",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "climate_occupancy_sensors": "الإشغال · مستشعر",
+          "climate_away_entities": "المنزل · الأجهزة",
+          "climate_unknown_occupancy": "الإشغال · الأجهزة",
+          "climate_unoccupied_delay_minutes": "الأجهزة · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "الإشغال · الأجهزة · مستشعر · مطلوب",
+          "climate_away_policy": "المنزل · الأجهزة · POLICY",
+          "climate_manual_profile": "الأجهزة · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "النوم · الأجهزة",
+          "climate_sleep_schedule_enabled": "النوم · تلقائي",
+          "climate_sleep_start": "النوم · الأجهزة · START",
+          "climate_sleep_end": "النوم · الأجهزة · END",
+          "climate_target_source": "الأجهزة · المصدر · الهدف",
+          "climate_comfort_adjustment_max_c": "الأجهزة (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "اختر مصدر Home Assistant حقيقيًا لـ «الإشغال · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_away_entities": "اختر مصدر Home Assistant حقيقيًا لـ «المنزل · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_unknown_occupancy": "يتحكم هذا الخيار في «الإشغال · الأجهزة». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_unoccupied_delay_minutes": "تضبط هذه المدة «الأجهزة · CLIMATE_UNOCCUPIED_DELAY_MINUTES». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_occupancy_stale_minutes": "تضبط هذه المدة «الإشغال · الأجهزة · مستشعر · مطلوب». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_away_policy": "يتحكم هذا الخيار في «المنزل · الأجهزة · POLICY». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_manual_profile": "يتحكم هذا الخيار في «الأجهزة · CLIMATE_MANUAL_PROFILE». أوامر الأجهزة · CLIMATE_MANUAL_PROFILE تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_sleep_active": "يتحكم هذا الخيار في «النوم · الأجهزة». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_sleep_schedule_enabled": "يتحكم هذا الخيار في «النوم · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_sleep_start": "تضبط هذه المدة «النوم · الأجهزة · START». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_sleep_end": "تضبط هذه المدة «النوم · الأجهزة · END». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_target_source": "هذه عتبة القرار لـ «الأجهزة · المصدر · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_comfort_adjustment_max_c": "هذه عتبة القرار لـ «الأجهزة (°C)». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "climate_equipment": {
+        "title": "الإعدادات · الأجهزة",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · الأجهزة · المصدر · الحرارة +",
+          "climate_cool_climate_entity": "COOL · الأجهزة · المصدر · الحرارة −",
+          "climate_dry_climate_entity": "DRY · الأجهزة · المصدر",
+          "climate_fan_climate_entity": "FAN_ONLY · السرعة · الأجهزة · المصدر",
+          "climate_humidifier_entity": "HUMIDIFIER · الأجهزة · المصدر",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · الأجهزة · المصدر",
+          "climate_extraction_fan_entity": "EXTRACT · السرعة · الأجهزة · المصدر",
+          "climate_purifier_fan_entity": "منقّي الهواء · المصدر",
+          "climate_humidity_entity": "الرطوبة · المصدر",
+          "climate_humidity_low_rh": "RH · الرطوبة · الأجهزة (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · الرطوبة · الأجهزة (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · الرطوبة · الأجهزة · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "الأجهزة · الحرارة −",
+          "climate_humidity_setpoint_auto": "الرطوبة · تلقائي",
+          "climate_window_efficiency_notify": "الأجهزة · خارجي",
+          "climate_dry_fan_mode_auto": "السرعة · تلقائي",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · السرعة · الأجهزة · مطلوب · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · السرعة · الأجهزة · خارجي · مطلوب · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · السرعة · الأجهزة (s) · MODE DWELL",
+          "climate_humidity_power_auto": "الرطوبة · الطاقة · تلقائي",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · الرطوبة · الأجهزة · الطاقة · مطلوب · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · الرطوبة · الأجهزة · الطاقة · خارجي · مطلوب · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · الرطوبة · الأجهزة · الطاقة · تلقائي (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · الرطوبة · الأجهزة · الطاقة · إيقاف (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · الرطوبة · الأجهزة · الطاقة · تلقائي (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "الأجهزة · تلقائي · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "اختر مصدر Home Assistant حقيقيًا لـ «HEAT · الأجهزة · المصدر · الحرارة +». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_cool_climate_entity": "اختر مصدر Home Assistant حقيقيًا لـ «COOL · الأجهزة · المصدر · الحرارة −». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_dry_climate_entity": "اختر مصدر Home Assistant حقيقيًا لـ «DRY · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_fan_climate_entity": "اختر مصدر Home Assistant حقيقيًا لـ «FAN_ONLY · السرعة · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_humidifier_entity": "اختر مصدر Home Assistant حقيقيًا لـ «HUMIDIFIER · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_dehumidifier_entity": "اختر مصدر Home Assistant حقيقيًا لـ «DEHUMIDIFIER · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_extraction_fan_entity": "اختر مصدر Home Assistant حقيقيًا لـ «EXTRACT · السرعة · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_purifier_fan_entity": "اختر مصدر Home Assistant حقيقيًا لـ «منقّي الهواء · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_humidity_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الرطوبة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_humidity_low_rh": "هذه عتبة القرار لـ «RH · الرطوبة · الأجهزة (%) · RH MIN». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_humidity_high_rh": "هذه عتبة القرار لـ «RH · الرطوبة · الأجهزة (%) · RH MAX». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_humidity_hysteresis_rh": "هذه عتبة القرار لـ «RH · الرطوبة · الأجهزة · ± RH». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_cooling_dry_deferral_rh_points": "يتحكم هذا الخيار في «الأجهزة · الحرارة −». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_humidity_setpoint_auto": "يتحكم هذا الخيار في «الرطوبة · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_window_efficiency_notify": "يتحكم هذا الخيار في «الأجهزة · خارجي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_dry_fan_mode_auto": "يتحكم هذا الخيار في «السرعة · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_dry_fan_hardware_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «DRY/FAN_ONLY · السرعة · الأجهزة · مطلوب · HW ✓». التقدير لا يحل محل حساس معاير.",
+          "climate_dry_fan_windowless_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «DRY/FAN_ONLY · السرعة · الأجهزة · خارجي · مطلوب · NO WINDOW». التقدير لا يحل محل حساس معاير.",
+          "climate_dry_fan_mode_dwell_s": "تضبط هذه المدة «DRY/FAN_ONLY · السرعة · الأجهزة (s) · MODE DWELL». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_humidity_power_auto": "يتحكم هذا الخيار في «الرطوبة · الطاقة · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_humidity_power_hardware_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «RH POWER · الرطوبة · الأجهزة · الطاقة · مطلوب · HW ✓». التقدير لا يحل محل حساس معاير.",
+          "climate_humidity_power_windowless_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «RH POWER · الرطوبة · الأجهزة · الطاقة · خارجي · مطلوب · NO WINDOW». التقدير لا يحل محل حساس معاير.",
+          "climate_humidity_power_min_on_s": "تضبط هذه المدة «RH POWER · الرطوبة · الأجهزة · الطاقة · تلقائي (s) · MIN ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_humidity_power_min_off_s": "تضبط هذه المدة «RH POWER · الرطوبة · الأجهزة · الطاقة · إيقاف (s) · MIN OFF». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_humidity_power_max_on_s": "تضبط هذه المدة «RH POWER · الرطوبة · الأجهزة · الطاقة · تلقائي (s) · MAX ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_secondary_climate_setpoint_auto": "يتحكم هذا الخيار في «الأجهزة · تلقائي · TARGET AUTO». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "الإعدادات · الأجهزة · خارجي",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "climate_fan_speed_auto": "السرعة · تلقائي",
+          "climate_fan_power_auto": "السرعة · الطاقة · تلقائي",
+          "climate_fan_power_hardware_confirmed": "FAN · السرعة · الأجهزة · الطاقة · مطلوب · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · السرعة · الأجهزة · الطاقة · تلقائي (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · السرعة · الأجهزة · الطاقة · إيقاف (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · السرعة · الأجهزة · الطاقة · تلقائي (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · الأجهزة · مستشعر · مطلوب · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · الأجهزة · المصدر",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · الأجهزة · المصدر",
+          "climate_pm25_action_ug_m3": "PM2.5 · الأجهزة (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · الأجهزة · السرعة (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · الأجهزة · السرعة (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "يتحكم هذا الخيار في «السرعة · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_fan_power_auto": "يتحكم هذا الخيار في «السرعة · الطاقة · تلقائي». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "climate_fan_power_hardware_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «FAN · السرعة · الأجهزة · الطاقة · مطلوب · HW ✓». التقدير لا يحل محل حساس معاير.",
+          "climate_fan_power_min_on_s": "تضبط هذه المدة «FAN · السرعة · الأجهزة · الطاقة · تلقائي (s) · MIN ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_fan_power_min_off_s": "تضبط هذه المدة «FAN · السرعة · الأجهزة · الطاقة · إيقاف (s) · MIN OFF». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_fan_power_max_on_s": "تضبط هذه المدة «FAN · السرعة · الأجهزة · الطاقة · تلقائي (s) · MAX ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "climate_pm25_sensor_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «PM2.5 · PM2.5 · الأجهزة · مستشعر · مطلوب · SENSOR ✓ · VERIFIED». التقدير لا يحل محل حساس معاير.",
+          "climate_co2_entity": "اختر مصدر Home Assistant حقيقيًا لـ «CO₂ · CO₂ · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_pm25_entity": "اختر مصدر Home Assistant حقيقيًا لـ «PM2.5 · PM2.5 · الأجهزة · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "climate_pm25_action_ug_m3": "هذه عتبة القرار لـ «PM2.5 · الأجهزة (µg/m³)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_extraction_speed_percent": "هذه عتبة القرار لـ «EXTRACT · الأجهزة · السرعة (%) · SPEED %». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "climate_purifier_speed_percent": "هذه عتبة القرار لـ «PURIFIER · الأجهزة · السرعة (%) · SPEED %». تؤثر في التوصيات وليست حدًا طبيًا."
+        }
+      },
+      "climate_profiles": {
+        "title": "الإعدادات · الأجهزة",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "home_heat": "تدفئة · في المنزل (°C)",
+          "home_cool": "تبريد · في المنزل (°C)",
+          "unoccupied_heat": "تدفئة · غرفة غير مشغولة (°C)",
+          "unoccupied_cool": "تبريد · غرفة غير مشغولة (°C)",
+          "away_heat": "تدفئة · غياب (°C)",
+          "away_cool": "تبريد · غياب (°C)",
+          "sleep_heat": "تدفئة · نوم (°C)",
+          "sleep_cool": "تبريد · نوم (°C)"
+        },
+        "data_description": {
+          "home_heat": "يطبق هدف «تدفئة · في المنزل (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "home_cool": "يطبق هدف «تبريد · في المنزل (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "unoccupied_heat": "يطبق هدف «تدفئة · غرفة غير مشغولة (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "unoccupied_cool": "يطبق هدف «تبريد · غرفة غير مشغولة (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "away_heat": "يطبق هدف «تدفئة · غياب (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "away_cool": "يطبق هدف «تبريد · غياب (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "sleep_heat": "يطبق هدف «تدفئة · نوم (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "sleep_cool": "يطبق هدف «تبريد · نوم (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية."
+        }
+      },
+      "climate_actuators": {
+        "title": "الإعدادات · الأجهزة",
+        "description": "منطقة · الإعدادات · الأجهزة · التحكم. الإشغال · مستشعر · مطلوب.",
+        "data": {
+          "direct_hardware_confirmed": "مطلوب",
+          "heat_actuator": "تدفئة · الأجهزة",
+          "cool_actuator": "تبريد · الأجهزة",
+          "min_on_s": "الطاقة · تلقائي (s) · MIN ON",
+          "min_off_s": "الطاقة · إيقاف (s)",
+          "max_on_s": "الطاقة · تلقائي (s) · MAX ON",
+          "mode_dwell_s": "الإعدادات · المصدر (s) · MODE DWELL",
+          "kp": "PID Kp · التحكم (percentage points/°C)",
+          "ki": "PID Ki · التحكم (percentage points/(°C·minute))",
+          "kd": "PID Kd · التحكم (percentage points·minute/°C)",
+          "sample_seconds": "الإعدادات · المصدر (s) · SAMPLE",
+          "pwm_period_s": "الإعدادات · المصدر (s) · PWM PERIOD",
+          "max_demand_change": "الإعدادات · المصدر · MAX Δ",
+          "min_demand_change": "الإعدادات · المصدر · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «مطلوب». التقدير لا يحل محل حساس معاير.",
+          "heat_actuator": "اضبط «تدفئة · الأجهزة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "cool_actuator": "اضبط «تبريد · الأجهزة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "min_on_s": "تضبط هذه المدة «الطاقة · تلقائي (s) · MIN ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "min_off_s": "تضبط هذه المدة «الطاقة · إيقاف (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "max_on_s": "تضبط هذه المدة «الطاقة · تلقائي (s) · MAX ON». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "mode_dwell_s": "تضبط هذه المدة «الإعدادات · المصدر (s) · MODE DWELL». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "kp": "اضبط «PID Kp · التحكم (percentage points/°C)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "ki": "اضبط «PID Ki · التحكم (percentage points/(°C·minute))» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "kd": "اضبط «PID Kd · التحكم (percentage points·minute/°C)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "sample_seconds": "تضبط هذه المدة «الإعدادات · المصدر (s) · SAMPLE». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "pwm_period_s": "تضبط هذه المدة «الإعدادات · المصدر (s) · PWM PERIOD». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "max_demand_change": "اضبط «الإعدادات · المصدر · MAX Δ» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "min_demand_change": "اضبط «الإعدادات · المصدر · MIN Δ» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء."
+        }
+      },
+      "outside_data": {
+        "title": "خارجي · المصدر",
+        "description": "خارجي · المصدر: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "menu_options": {
+          "weather": "الطقس والتحذيرات",
+          "outdoor": "جودة الهواء الخارجي",
+          "outside_aqi": "خارجي · AQI",
+          "pollen": "حبوب اللقاح"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "منطقة · الإعدادات",
+        "description": "منطقة · الإعدادات: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "menu_options": {
+          "areas": "الغرف",
+          "indoor_sensors": "الغرف · مؤشر العفن",
+          "window_sensors": "استبعاد مستشعرات النوافذ",
+          "environment_room": "الإعدادات · الإعدادات · المصدر",
+          "area_devices": "أجهزة المناخ"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "الأجهزة · الإعدادات",
+        "description": "اختياري: تابع إلى المستشعرات وأذونات السلامة الخاصة بالجهاز. اتركه معطلاً لحفظ القائمة مباشرة.",
+        "menu_options": {
+          "device_settings": "الأجهزة · التحكم",
+          "device_choice": "اختيار · الأجهزة",
+          "device_done": "الإعدادات · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "عام · الإعدادات",
+        "description": "عام · الإعدادات: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "general_room_occupancy_sensors": "غرفة · الإشغال · مستشعر",
+          "general_occupied_rooms_entity": "الإشغال · غرفة · المصدر (state)",
+          "general_occupied_rooms_attribute": "الإشغال · غرفة · المصدر (attribute)",
+          "general_home_trackers": "المنزل · الإشغال · الأجهزة",
+          "general_home_policy": "المنزل · الإشغال · التحكم",
+          "general_sleep_rooms_entity": "النوم · غرفة · المصدر (state)",
+          "general_sleep_rooms_attribute": "النوم · غرفة · المصدر (attribute)",
+          "general_source_stale_minutes": "المصدر · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "اختر مصدر Home Assistant حقيقيًا لـ «غرفة · الإشغال · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الإشغال · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_attribute": "اضبط «الإشغال · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "general_home_trackers": "اختر مصدر Home Assistant حقيقيًا لـ «المنزل · الإشغال · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_home_policy": "يتحكم هذا الخيار في «المنزل · الإشغال · التحكم». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "general_sleep_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «النوم · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_sleep_rooms_attribute": "اضبط «النوم · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "general_source_stale_minutes": "المصدر · النوم / الإشغال · max 240 min. غير صالح · إيقاف."
+        }
+      },
+      "pollen": {
+        "title": "حبوب اللقاح",
+        "description": "حبوب اللقاح: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "pollen_entity": "حبوب اللقاح · المصدر",
+          "pollen_high_from": "POLLEN · حبوب اللقاح · HIGH",
+          "pollen_max_scale": "POLLEN · حبوب اللقاح · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · حبوب اللقاح · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "اختر مصدر Home Assistant حقيقيًا لـ «حبوب اللقاح · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "pollen_high_from": "اضبط «POLLEN · حبوب اللقاح · HIGH» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "pollen_max_scale": "اضبط «POLLEN · حبوب اللقاح · SCALE» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "pollen_avoid_ventilation": "اضبط «POLLEN · حبوب اللقاح · NO VENT» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء."
+        }
+      },
+      "outside_aqi": {
+        "title": "خارجي · AQI",
+        "description": "خارجي · AQI: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "outside_aqi_entity": "AQI · مستشعر",
+          "outside_aqi_scale": "AQI · المصدر",
+          "outside_aqi_limit": "AQI · الهدف",
+          "outside_aqi_no_sources": "AQI · مستشعر · مطلوب"
+        },
+        "data_description": {
+          "outside_aqi_entity": "اختر مصدر Home Assistant حقيقيًا لـ «AQI · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "outside_aqi_scale": "اضبط «AQI · المصدر» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "outside_aqi_limit": "هذه عتبة القرار لـ «AQI · الهدف». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "outside_aqi_no_sources": "اضبط «AQI · مستشعر · مطلوب» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء."
+        }
+      },
+      "area_devices": {
+        "title": "أجهزة المناخ",
+        "description": "اختيار · منطقة",
+        "data": {
+          "area_devices_area": "اختيار · منطقة"
+        },
+        "data_description": {
+          "area_devices_area": "اختر مصدر Home Assistant حقيقيًا لـ «اختيار · منطقة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط."
+        }
+      },
+      "select_devices": {
+        "title": "أجهزة المناخ",
+        "description": "اختر أجهزة {area_name}. ينشئ الحفظ متحكمًا واحدًا لكل جهاز فعلي داخل مركز الغرفة. اضبط الأهداف والملفات والتشغيل التلقائي واليدوي والإيقاف وPID والوضع الهادئ على الأجهزة. الاختيار وحده لا يفعّل التحكم التلقائي.",
+        "data": {
+          "selected_devices": "اختيار · الأجهزة",
+          "configure_device_sources": "إعداد المستشعرات وأذونات الأجهزة الآن"
+        },
+        "data_description": {
+          "selected_devices": "اختر أجهزة {area_name}. ينشئ الحفظ متحكمًا واحدًا لكل جهاز فعلي داخل مركز الغرفة. اضبط الأهداف والملفات والتشغيل التلقائي واليدوي والإيقاف وPID والوضع الهادئ على الأجهزة. الاختيار وحده لا يفعّل التحكم التلقائي.",
+          "configure_device_sources": "اختياري: تابع إلى المستشعرات وأذونات السلامة الخاصة بالجهاز. اتركه معطلاً لحفظ القائمة مباشرة."
+        }
+      },
+      "device_choice": {
+        "title": "اختيار · الأجهزة",
+        "description": "اختيار · الأجهزة: اختيار المصدر, مستشعر / الأجهزة · التحكم.",
+        "data": {
+          "device_choice": "اختيار · الأجهزة"
+        },
+        "data_description": {
+          "device_choice": "اختر مصدر Home Assistant حقيقيًا لـ «اختيار · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط."
+        }
+      },
+      "device_settings": {
+        "title": "الأجهزة · التحكم",
+        "description": "يتحكم هذا الخيار في «التحكم · المصدر». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية. استخدم قياسًا حقيقيًا مناسبًا لـ «مطلوب · الأجهزة · الطاقة». التقدير لا يحل محل حساس معاير. تضبط هذه المدة «الطاقة · min ON (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية. تضبط هذه المدة «الطاقة · min OFF (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية. اضبط «النوم · التحكم» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء. هذه عتبة القرار لـ «السرعة (%)». تؤثر في التوصيات وليست حدًا طبيًا.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "تلقائي التحكم",
+          "device_method": "التحكم · المصدر",
+          "device_presence_requirement": "التحكم · الإشغال",
+          "device_absence_action": "إيقاف · الإشغال",
+          "device_sleep_behavior": "النوم · التحكم",
+          "device_hardware_confirmed": "مطلوب · الأجهزة · الطاقة",
+          "device_temperature_entity": "الحرارة · مستشعر",
+          "device_humidity_entity": "الرطوبة · مستشعر",
+          "device_co2_entity": "CO₂ · مستشعر",
+          "device_pm25_entity": "PM2.5 · مستشعر",
+          "device_fan_purpose": "التحكم · الأجهزة",
+          "device_sensor_verified": "مستشعر · مطلوب",
+          "device_fan_speed_percent": "السرعة (%)",
+          "device_humidity_target": "الرطوبة · الهدف (%)",
+          "device_sleep_humidity_target": "النوم · الرطوبة · الهدف (%)",
+          "device_min_on_s": "الطاقة · min ON (s)",
+          "device_min_off_s": "الطاقة · min OFF (s)",
+          "device_max_on_s": "الطاقة · max ON (s)",
+          "device_home_heat_c": "تدفئة · في المنزل (°C)",
+          "device_home_cool_c": "تبريد · في المنزل (°C)",
+          "device_unoccupied_heat_c": "تدفئة · غرفة غير مشغولة (°C)",
+          "device_unoccupied_cool_c": "تبريد · غرفة غير مشغولة (°C)",
+          "device_away_heat_c": "تدفئة · غياب (°C)",
+          "device_away_cool_c": "تبريد · غياب (°C)",
+          "device_sleep_heat_c": "تدفئة · نوم (°C)",
+          "device_sleep_cool_c": "تبريد · نوم (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "يتحكم هذا الخيار في «تلقائي التحكم». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "device_method": "يتحكم هذا الخيار في «التحكم · المصدر». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "device_presence_requirement": "اضبط «التحكم · الإشغال» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "device_absence_action": "يتحكم هذا الخيار في «إيقاف · الإشغال». أوامر الأجهزة تتطلب موافقة مستقلة ووسائل حماية.",
+          "device_sleep_behavior": "اضبط «النوم · التحكم» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "device_hardware_confirmed": "استخدم قياسًا حقيقيًا مناسبًا لـ «مطلوب · الأجهزة · الطاقة». التقدير لا يحل محل حساس معاير.",
+          "device_temperature_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الحرارة · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "device_humidity_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الرطوبة · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "device_co2_entity": "اختر مصدر Home Assistant حقيقيًا لـ «CO₂ · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "device_pm25_entity": "اختر مصدر Home Assistant حقيقيًا لـ «PM2.5 · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "device_fan_purpose": "اضبط «التحكم · الأجهزة» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "device_sensor_verified": "استخدم قياسًا حقيقيًا مناسبًا لـ «مستشعر · مطلوب». التقدير لا يحل محل حساس معاير.",
+          "device_fan_speed_percent": "هذه عتبة القرار لـ «السرعة (%)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "device_humidity_target": "هذه عتبة القرار لـ «الرطوبة · الهدف (%)». تؤثر في التوصيات وليست حدًا طبيًا.",
+          "device_sleep_humidity_target": "يطبق هدف «النوم · الرطوبة · الهدف (%)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_min_on_s": "تضبط هذه المدة «الطاقة · min ON (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "device_min_off_s": "تضبط هذه المدة «الطاقة · min OFF (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "device_max_on_s": "تضبط هذه المدة «الطاقة · max ON (s)». تحد من التبديل السريع ولا تحل محل وسائل الحماية المادية.",
+          "device_home_heat_c": "يطبق هدف «تدفئة · في المنزل (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_home_cool_c": "يطبق هدف «تبريد · في المنزل (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_unoccupied_heat_c": "يطبق هدف «تدفئة · غرفة غير مشغولة (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_unoccupied_cool_c": "يطبق هدف «تبريد · غرفة غير مشغولة (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_away_heat_c": "يطبق هدف «تدفئة · غياب (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_away_cool_c": "يطبق هدف «تبريد · غياب (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_sleep_heat_c": "يطبق هدف «تدفئة · نوم (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية.",
+          "device_sleep_cool_c": "يطبق هدف «تبريد · نوم (°C)» عند تأكيد الإشغال أو النوم. الحالة المجهولة لا تعني غرفة خالية."
+        }
+      },
+      "setup_rooms": {
+        "title": "الغرف المراد مراقبتها",
+        "description": "الغرف المراد مراقبتها → المصدر → عام الإعدادات",
+        "data": {
+          "areas": "الغرف المراد مراقبتها"
+        },
+        "data_description": {
+          "areas": "الغرف المراد مراقبتها. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي."
+        }
+      },
+      "setup_room_sources": {
+        "title": "غرفة · {area_name} · {room_index}/{room_count}",
+        "description": "اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+        "data": {
+          "windows": "النوافذ",
+          "air_quality": "مستشعرات جودة الهواء والبيئة",
+          "temperature": "الحرارة",
+          "humidity": "الرطوبة",
+          "pressure": "مستشعرات الضغط",
+          "climate_devices": "الأجهزة"
+        },
+        "data_description": {
+          "windows": "النوافذ. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "air_quality": "مستشعرات جودة الهواء والبيئة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "temperature": "الحرارة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "humidity": "الرطوبة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "pressure": "مستشعرات الضغط. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي.",
+          "climate_devices": "الأجهزة. اختر مدخلات الغرفة: اسم الجهاز - اسم الكيان. المجموعات الفارغة لا تستخدم ولا تفعّل الاكتشاف أو التحكم التلقائي."
+        }
+      },
+      "setup_general": {
+        "title": "عام الإعدادات",
+        "description": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف.",
+        "data": {
+          "weather_entities": "الطقس والتحذيرات",
+          "outdoor_sensors": "جودة الهواء الخارجي",
+          "weather_warnings": "تحذيرات الطقس",
+          "general_room_occupancy_sensors": "غرفة · الإشغال · مستشعر",
+          "general_home_trackers": "المنزل · الإشغال · الأجهزة",
+          "general_occupied_rooms_entity": "الإشغال · غرفة · المصدر (state)",
+          "general_occupied_rooms_attribute": "الإشغال · غرفة · المصدر (attribute)",
+          "general_sleep_rooms_entity": "النوم · غرفة · المصدر (state)",
+          "general_sleep_rooms_attribute": "النوم · غرفة · المصدر (attribute)",
+          "notify_entities": "الإعدادات · المصدر",
+          "media_players": "الإعدادات · المصدر · MEDIA_PLAYERS",
+          "tts_engine": "الإعدادات · المصدر · TTS_ENGINE",
+          "ai_conversation_agent": "AI · اختيار · المصدر",
+          "language": "TTS · اختيار · المصدر",
+          "use_mold_indicator": "مؤشر العفن · RH (%) → 70%",
+          "pollen_entities": "حبوب اللقاح · المصدر · اختيار",
+          "use_announcement_hub": "تلقائي · Announcement Hub",
+          "general_away_cooldown_minutes": "المنزل · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "اختر: الطقس والتحذيرات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "اختر: جودة الهواء الخارجي · AQI, CO₂, PM2.5, PM10, VOC. غير متاح: ⚠",
+          "weather_warnings": "الطقس والتحذيرات · ⚠ (غير متاح) → 🪟🔒",
+          "general_room_occupancy_sensors": "اختر مصدر Home Assistant حقيقيًا لـ «غرفة · الإشغال · مستشعر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_home_trackers": "اختر مصدر Home Assistant حقيقيًا لـ «المنزل · الإشغال · الأجهزة». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «الإشغال · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_occupied_rooms_attribute": "اضبط «الإشغال · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "general_sleep_rooms_entity": "اختر مصدر Home Assistant حقيقيًا لـ «النوم · غرفة · المصدر (state)». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "general_sleep_rooms_attribute": "اضبط «النوم · غرفة · المصدر (attribute)» للغرفة المختارة فقط. البيانات غير الصالحة تمنع الإجراء.",
+          "notify_entities": "اختر مصدر Home Assistant حقيقيًا لـ «الإعدادات · المصدر». البيانات المفقودة أو القديمة توقف الإجراء المرتبط.",
+          "media_players": "اختر: media_player.* · الإعدادات · المصدر · MEDIA_PLAYERS.",
+          "tts_engine": "اختر: tts.* · الإعدادات · المصدر · TTS_ENGINE.",
+          "ai_conversation_agent": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · AI · اختيار · المصدر · conversation.* / ai_task.*.",
+          "language": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · TTS · اختيار · المصدر · provider capabilities.",
+          "use_mold_indicator": "🧱 مؤشر العفن · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · حبوب اللقاح · المصدر · اختيار.",
+          "use_announcement_hub": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · تلقائي · Announcement Hub.",
+          "general_away_cooldown_minutes": "اختر المصادر المشتركة ومخرجات الإشعارات. الحفظ ينهي الإعداد. تبقى إعدادات التشغيل على أجهزة المنزل والغرف. · المنزل · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "اختيار غير صالح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "غير متاح: جودة الهواء الخارجي (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "اختيار غير صالح: الطقس والتحذيرات (weather.*).",
+      "invalid_warning": "اختيار غير صالح: الطقس والتحذيرات ⚠.",
+      "missing_notify": "اختر: Announcement Hub / notify.*.",
+      "missing_tts": "اختر: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "اختيار غير صالح: °C min < max.",
+      "no_areas": "اختر: الغرف.",
+      "no_window_areas": "غير متاح: القياسات (binary_sensor, window).",
+      "invalid_areas": "اختيار غير صالح: الغرف.",
+      "invalid_window_exclusions": "اختيار غير صالح: استبعاد مستشعرات النوافذ.",
+      "invalid_indoor_exclusions": "اختيار غير صالح: استبعاد مستشعرات الهواء الداخلي.",
+      "no_windows_after_exclusions": "اترك مستشعر نافذة واحدًا على الأقل.",
+      "review_areas_after_exclusions": "تحقق: الغرف · القياسات (0).",
+      "invalid_repeat_minutes": "اختيار غير صالح: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "غير متاح: conversation.process.",
+      "invalid_ai_agent": "اختيار غير صالح: conversation.*.",
+      "invalid_mold_temperature_sensor": "الغرف · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "الغرف · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "مؤشر العفن · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "مؤشر العفن · 🧊 °C ⚠",
+      "invalid_mold_calibration": "مؤشر العفن · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "إعداد غير صالح لـ «الإعدادات · المصدر». تحقق من المصدر والوحدات والحماية.",
+      "invalid_environment_measurement": "إعداد غير صالح لـ «الإعدادات · المصدر». تحقق من المصدر والوحدات والحماية.",
+      "pmv_requires_explicit_inputs": "إعداد غير صالح لـ «PMV / PPD». تحقق من المصدر والوحدات والحماية.",
+      "pid_climate_required": "إعداد غير صالح لـ «PID · الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "pid_temperature_required": "إعداد غير صالح لـ «PID · الحرارة». تحقق من المصدر والوحدات والحماية.",
+      "pid_invalid_target": "إعداد غير صالح لـ «PID · الهدف». تحقق من المصدر والوحدات والحماية.",
+      "pid_duplicate_climate": "إعداد غير صالح لـ «PID · الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "pid_invalid_parameters": "إعداد غير صالح لـ «PID». تحقق من المصدر والوحدات والحماية.",
+      "climate_dry_fan_control_inputs_missing": "إعداد غير صالح لـ «السرعة · الأجهزة · التحكم». تحقق من المصدر والوحدات والحماية.",
+      "climate_humidity_power_inputs_missing": "إعداد غير صالح لـ «الرطوبة · الأجهزة · الطاقة». تحقق من المصدر والوحدات والحماية.",
+      "climate_secondary_control_inputs_missing": "إعداد غير صالح لـ «الأجهزة · التحكم». تحقق من المصدر والوحدات والحماية.",
+      "climate_fan_power_inputs_missing": "إعداد غير صالح لـ «السرعة · الأجهزة · الطاقة». تحقق من المصدر والوحدات والحماية.",
+      "climate_fan_control_inputs_missing": "إعداد غير صالح لـ «السرعة · الأجهزة · التحكم». تحقق من المصدر والوحدات والحماية.",
+      "climate_fan_sensor_invalid": "إعداد غير صالح لـ «السرعة · الأجهزة · مستشعر». تحقق من المصدر والوحدات والحماية.",
+      "climate_humidity_control_inputs_missing": "إعداد غير صالح لـ «الرطوبة · الأجهزة · التحكم». تحقق من المصدر والوحدات والحماية.",
+      "climate_temperature_required": "إعداد غير صالح لـ «الحرارة · الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_target_required": "إعداد غير صالح لـ «الأجهزة · الهدف». تحقق من المصدر والوحدات والحماية.",
+      "climate_direct_actuator_not_ready": "إعداد غير صالح لـ «الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_controller_invalid": "إعداد غير صالح لـ «الأجهزة · التحكم». تحقق من المصدر والوحدات والحماية.",
+      "climate_mode_invalid": "إعداد غير صالح لـ «الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_occupancy_invalid": "إعداد غير صالح لـ «الإشغال · الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_away_invalid": "إعداد غير صالح لـ «المنزل · الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_deadband_invalid": "إعداد غير صالح لـ «الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_attestation_required": "إعداد غير صالح لـ «الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "climate_direct_targets_invalid": "إعداد غير صالح لـ «الأجهزة · الهدف». تحقق من المصدر والوحدات والحماية.",
+      "climate_direct_timing_invalid": "إعداد غير صالح لـ «الأجهزة». تحقق من المصدر والوحدات والحماية.",
+      "general_invalid_presence": "غير صالح · الإشغال · الإعدادات",
+      "general_invalid_trackers": "غير صالح · المنزل · الإعدادات",
+      "general_invalid_rooms_entity": "غير صالح · غرفة · الإعدادات",
+      "general_invalid_attribute": "غير صالح · المصدر · الإعدادات",
+      "general_invalid_source_age": "غير صالح · المصدر · الإعدادات",
+      "invalid_selected_devices": "غير صالح · الأجهزة · الإعدادات",
+      "device_policy_invalid": "غير صالح · الإشغال · الإعدادات",
+      "device_method_invalid": "غير صالح · التحكم · الإعدادات",
+      "device_hardware_required": "غير صالح · مطلوب · الإعدادات",
+      "device_power_required_for_off": "غير صالح · الطاقة · الإعدادات",
+      "device_temperature_required": "غير صالح · الحرارة · الإعدادات",
+      "device_humidity_required": "غير صالح · الرطوبة · الإعدادات",
+      "device_air_sensor_required": "غير صالح · مستشعر · الإعدادات",
+      "device_temperature_band_invalid": "غير صالح · الحرارة · الإعدادات",
+      "device_humidity_invalid": "غير صالح · الرطوبة · الإعدادات",
+      "device_runtime_invalid": "غير صالح · الطاقة · الإعدادات",
+      "invalid_setup_rooms": "غير صالح: الغرف المراد مراقبتها",
+      "invalid_room_source": "غير صالح: غرفة · المصدر"
+    },
+    "abort": {
+      "setup_area_removed": "غير صالح: الغرف المراد مراقبتها",
+      "setup_changed": "الإعدادات ↻ الغرف المراد مراقبتها"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "جودة الهواء",
+        "state": {
+          "open": "أغلق · القياسات",
+          "close": "إشعارات تلقائية · القياسات",
+          "idle": "جيدة",
+          "blocked": "أبقِ النوافذ مغلقة"
+        }
+      },
+      "area_overview": {
+        "name": "نظرة عامة على البيئة"
+      },
+      "area_surface_humidity": {
+        "name": "رطوبة السطح (محسوبة)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "الخارج · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "الخارج · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "الخارج · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "الخارج · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "الخارج · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "الخارج · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · خارجي (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · خارجي (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · خارجي (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "جودة الهواء · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "جودة الهواء · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "جودة الهواء · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "جودة الهواء · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "جودة الهواء · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "جودة الهواء · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "جودة الهواء · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "مؤشر العفن · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "الخارج · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "الخارج · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "الخارج · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "الطقس والتحذيرات · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · افتح (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "الإعلانات (اختياري) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "الهدف (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · التحكم (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · التحكم (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · التحكم (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "تدفئة · غرفة · الإشغال"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "تبريد · غرفة · الإشغال"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "تدفئة · المنزل · غرفة"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "تبريد · المنزل · غرفة"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "تدفئة · غرفة · النوم"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "تبريد · غرفة · النوم"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "تدفئة · المنزل · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "تبريد · المنزل · ECO"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · حبوب اللقاح · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · حبوب اللقاح · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "المصدر · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "الإعدادات · المصدر (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · الهدف (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "السرعة · خارجي (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "الإعدادات · المصدر (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "الإعدادات · المصدر (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "الأجهزة · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "الإشغال · الأجهزة · مستشعر · مطلوب"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "الأجهزة (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · الرطوبة · الأجهزة (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · الرطوبة · الأجهزة (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · الرطوبة · الأجهزة · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "الأجهزة · الحرارة −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · الأجهزة (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · الأجهزة · السرعة (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · الأجهزة · السرعة (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · التحكم (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · التحكم (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · التحكم (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "الإعدادات · المصدر (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "الإعدادات · المصدر · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "الإعدادات · المصدر · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "مؤشر العفن · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · التحكم (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · التحكم (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · التحكم (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}الإعدادات · المصدر (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}حد سرعة المروحة الهادئة (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}الطاقة · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}الطاقة · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}الطاقة · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "غرفة · الحرارة · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "غرفة · الحرارة · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "غرفة · الرطوبة · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "غرفة · الرطوبة · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "غرفة · السرعة · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "غرفة · السرعة · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "المنزل · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "تلقائي · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "تلقائي"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · الإعلانات (اختياري)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · حبوب اللقاح · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "النوم"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · تلقائي"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "النوم · الأجهزة"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "النوم · تلقائي"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "الأجهزة · خارجي"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}ضوضاء أقل أثناء النوم"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}ضوضاء أقل عند وجود أشخاص"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}الطاقة · التحكم"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}مستشعر · مطلوب"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "اللغة"
+      },
+      "area_manual_profile": {
+        "name": "الأجهزة · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "المنزل · الإشغال · التحكم"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "الإشغال · الأجهزة"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "المنزل · الأجهزة · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "الأجهزة · المصدر · الهدف"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}طريقة التحكم",
+        "state": {
+          "existing": "متحكم الغرفة الحالي",
+          "automatic": "تلقائي",
+          "manual": "يدوي",
+          "off": "إيقاف",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}وضع المروحة الهادئ الأصلي"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}التحكم · الإشغال",
+        "state": {
+          "always": "تلقائي",
+          "occupied": "غرفة · الإشغال",
+          "absent": "غرفة · الإشغال · إيقاف"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}النوم · التحكم",
+        "state": {
+          "normal": "تلقائي",
+          "pause": "تعليق",
+          "sleep_targets": "النوم · الهدف"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}التحكم · الأجهزة",
+        "state": {
+          "extraction": "خارجي · التحكم",
+          "filtration": "PM2.5 · التحكم",
+          "auto": "تلقائي"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "الحرارة · المصدر"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "المصدر · السرعة · خارجي (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "النوم · الأجهزة · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "النوم · الأجهزة · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "مؤشر العفن · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}تحقق واستأنف"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}متحكم المناخ"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "الإعلانات (اختياري) — Home Environment Manager",
+      "description": "الإعلانات (اختياري) · الغرف",
+      "fields": {
+        "language": {
+          "name": "اللغة",
+          "description": "اللغة"
+        },
+        "channels": {
+          "name": "الإعلانات (اختياري)",
+          "description": "الإعلانات (اختياري)"
+        },
+        "areas": {
+          "name": "الغرف",
+          "description": "الغرف"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — افتراضي",
+        "en": "الإعدادات · المصدر",
+        "de": "الإعدادات · المصدر",
+        "el": "الإعدادات · المصدر",
+        "fr": "الإعدادات · المصدر",
+        "es": "الإعدادات · المصدر",
+        "it": "الإعدادات · المصدر",
+        "nl": "الإعدادات · المصدر",
+        "pt": "الإعدادات · المصدر",
+        "pt-br": "الإعدادات · المصدر",
+        "pl": "الإعدادات · المصدر",
+        "ru": "الإعدادات · المصدر",
+        "uk": "الإعدادات · المصدر",
+        "tr": "الإعدادات · المصدر",
+        "cs": "الإعدادات · المصدر",
+        "sk": "الإعدادات · المصدر",
+        "hu": "الإعدادات · المصدر",
+        "ro": "الإعدادات · المصدر",
+        "bg": "الإعدادات · المصدر",
+        "hr": "الإعدادات · المصدر",
+        "sr": "الإعدادات · المصدر",
+        "sv": "الإعدادات · المصدر",
+        "nb": "الإعدادات · المصدر",
+        "da": "الإعدادات · المصدر",
+        "fi": "الإعدادات · المصدر",
+        "id": "الإعدادات · المصدر",
+        "vi": "الإعدادات · المصدر",
+        "th": "الإعدادات · المصدر",
+        "hi": "الإعدادات · المصدر",
+        "zh-hans": "الإعدادات · المصدر",
+        "zh-hant": "الإعدادات · المصدر",
+        "ja": "الإعدادات · المصدر",
+        "ko": "الإعدادات · المصدر",
+        "ar": "الإعدادات · المصدر",
+        "he": "الإعدادات · المصدر",
+        "fa": "الإعدادات · المصدر",
+        "bn": "الإعدادات · المصدر",
+        "ur": "الإعدادات · المصدر",
+        "ta": "الإعدادات · المصدر"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "المنزل · الإشغال",
+        "all_home": "المنزل · الأجهزة · الإشغال"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "الهدف · التحكم",
+        "native": "الأجهزة · التحكم",
+        "power": "الطاقة",
+        "speed": "السرعة"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "تلقائي",
+        "room": "غرفة · الإشغال",
+        "home": "المنزل · الإشغال"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "تعليق",
+        "off": "إيقاف"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "تلقائي",
+        "pause": "تعليق",
+        "sleep_targets": "النوم · الهدف"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "خارجي · التحكم",
+        "filtration": "PM2.5 · التحكم"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "المصدر · غير صالح",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "الهدف · الإعدادات"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "مركز الغرفة",
+      "initiate_flow": {
+        "user": "مركز الغرفة"
+      },
+      "step": {
+        "user": {
+          "title": "مركز الغرفة",
+          "description": "اختر منطقة في Home Assistant. تحتوي مجموعتها على إعدادات الغرفة العامة ومتحكم واحد لكل جهاز فعلي محدد. إضافة غرفة لا تفعّل التحكم التلقائي بالمعدات.",
+          "data": {
+            "area_id": "غرفة"
+          },
+          "data_description": {
+            "area_id": "اختر منطقة في Home Assistant. تحتوي مجموعتها على إعدادات الغرفة العامة ومتحكم واحد لكل جهاز فعلي محدد. إضافة غرفة لا تفعّل التحكم التلقائي بالمعدات."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "غير صالح: منطقة."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

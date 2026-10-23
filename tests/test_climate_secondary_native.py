@@ -16,7 +16,7 @@ def secondary(adapter, monkeypatch):
     storage.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",storage)
     return importlib.import_module(
-        "custom_components.air_quality_advisor.climate_secondary_native")
+        "custom_components.environment_manager.climate_secondary_native")
 
 
 class Services:

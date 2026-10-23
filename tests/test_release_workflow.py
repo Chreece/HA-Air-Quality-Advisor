@@ -30,7 +30,7 @@ def test_release_skips_superseded_commits_and_existing_versions():
 
 def test_manifest_release_request_and_notes_match():
     manifest = json.loads(
-        (ROOT / "custom_components/air_quality_advisor/manifest.json").read_text(encoding="utf-8")
+        (ROOT / "custom_components/environment_manager/manifest.json").read_text(encoding="utf-8")
     )
     request = json.loads(
         (ROOT / ".github/release-request.json").read_text(encoding="utf-8")

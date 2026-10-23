@@ -15,7 +15,7 @@ def module(adapter, monkeypatch):
     storage.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",storage)
     return importlib.import_module(
-        "custom_components.air_quality_advisor.climate_humidity_native")
+        "custom_components.environment_manager.climate_humidity_native")
 
 
 class Services:

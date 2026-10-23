@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOMAIN = ROOT / "custom_components" / "air_quality_advisor"
+DOMAIN = ROOT / "custom_components" / "environment_manager"
 
 
 def test_public_name_and_domain_migration_is_canonical_and_backward_compatible():

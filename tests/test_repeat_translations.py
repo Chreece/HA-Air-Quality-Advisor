@@ -1,9 +1,9 @@
 """The repeat setting is available in all 38 Home Assistant languages."""
 import json
 from pathlib import Path
-from custom_components.air_quality_advisor.languages import SUPPORTED_LANGUAGE_TAGS
+from custom_components.environment_manager.languages import SUPPORTED_LANGUAGE_TAGS
 
-ROOT = Path(__file__).resolve().parents[1] / "custom_components/air_quality_advisor"
+ROOT = Path(__file__).resolve().parents[1] / "custom_components/environment_manager"
 
 def test_every_language_exposes_repeat_minutes_and_validation():
     for tag in SUPPORTED_LANGUAGE_TAGS:

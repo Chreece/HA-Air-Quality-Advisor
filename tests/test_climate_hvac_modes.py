@@ -1,16 +1,16 @@
 """Native AC DRY/FAN_ONLY advice never starts or switches a compressor."""
 from datetime import datetime,timedelta,timezone
 
-from custom_components.air_quality_advisor.logic import Reading
+from custom_components.environment_manager.logic import Reading
 from test_discovery import adapter
 from test_climate_coordination import home,config
 
 
 def setup(adapter,*,mode="fan_only",rh=75,thermal="off",age_minutes=40):
-    from custom_components.air_quality_advisor.climate_coordination import (
+    from custom_components.environment_manager.climate_coordination import (
         room_equipment_plan,
     )
-    from custom_components.air_quality_advisor.climate_hvac_modes import (
+    from custom_components.environment_manager.climate_hvac_modes import (
         native_air_mode_advice,
     )
     h=home()
@@ -61,8 +61,8 @@ def test_native_mode_stability_dwell_and_manual_off(adapter):
 
 
 def test_hvac_capability_unknown_and_missing_measurement_hold(adapter):
-    from custom_components.air_quality_advisor.climate_coordination import room_equipment_plan
-    from custom_components.air_quality_advisor.climate_hvac_modes import native_air_mode_advice
+    from custom_components.environment_manager.climate_coordination import room_equipment_plan
+    from custom_components.environment_manager.climate_hvac_modes import native_air_mode_advice
     h=home()
     h.states.get("climate.ac").attributes["hvac_modes"]=["off","cool"]
     cfg={**config(),"enabled":True}
@@ -79,8 +79,8 @@ def test_hvac_capability_unknown_and_missing_measurement_hold(adapter):
 
 
 def test_dry_only_climate_does_not_invent_a_fan_mode(adapter):
-    from custom_components.air_quality_advisor.climate_hvac_modes import native_air_mode_advice
-    from custom_components.air_quality_advisor.climate_coordination import room_equipment_plan
+    from custom_components.environment_manager.climate_hvac_modes import native_air_mode_advice
+    from custom_components.environment_manager.climate_coordination import room_equipment_plan
     h=home()
     dry=h.states.get("climate.ac")
     dry.state="dry"

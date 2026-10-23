@@ -1,7 +1,7 @@
 """Ensure presentation metadata never calls an uncertain room 'safe'."""
-from custom_components.air_quality_advisor.const import DEFAULT_THRESHOLDS
-from custom_components.air_quality_advisor.dashboard import dashboard_snapshot
-from custom_components.air_quality_advisor.logic import (
+from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
+from custom_components.environment_manager.dashboard import dashboard_snapshot
+from custom_components.environment_manager.logic import (
     Reading, Room, Warning, Weather, Window, evaluate,
 )
 

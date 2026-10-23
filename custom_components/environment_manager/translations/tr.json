@@ -1,0 +1,1821 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Odalar",
+        "description": "1 · 🪟 Odalar. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Odalar",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Pencere sensörlerini hariç tut",
+        "description": "2 · Pencere sensörlerini hariç tut. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Pencere sensörlerini hariç tut"
+        },
+        "data_description": {
+          "excluded_window_entities": "Seçin: Pencere sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Odalar · Küf göstergesi",
+        "description": "Odalar: {area_name} ({position}/{total}). 🌡️ 🧊 Küf göstergesi · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut",
+          "mold_indoor_temperature": "Odalar · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Küf göstergesi · 🧊 °C",
+          "mold_recalibrate": "Küf göstergesi · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Dış · Sıcaklık · kaynak · Küf göstergesi"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "«Odalar · 🌡️ (°C/°F)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "mold_critical_temperature_c": "🧊 Küf göstergesi · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "«Küf göstergesi · ↻ 🌡️» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "mold_outdoor_weather_entity": "Seç weather.* · Dış Sıcaklık (temperature, °C/°F) → Küf göstergesi. Gerekli: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Dış hava kalitesi",
+        "description": "Dış hava kalitesi. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Dış hava kalitesi"
+        },
+        "data_description": {
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Hava durumu ve uyarılar",
+        "description": "Hava durumu ve uyarılar. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "weather_warnings": "Hava durumu uyarıları"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Duyurular (isteğe bağlı)",
+        "description": "Duyurular (isteğe bağlı). Otomatik bildirimler · Otomatik sesli duyurular. Announcement Hub.",
+        "data": {
+          "language": "Dil",
+          "automatic_tts": "Otomatik",
+          "automatic_notifications": "Otomatik · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Duyurular (isteğe bağlı) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ayarlar · kaynak",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Duyurular (isteğe bağlı)",
+          "ai_conversation_agent": "AI · Dil"
+        },
+        "data_description": {
+          "language": "«Dil» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "automatic_tts": "Varsayılan: ⛔ · Otomatik · 🪟 90 s. Bu ayar «Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "automatic_notifications": "Varsayılan: ⛔ · Otomatik · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Varsayılan: 10 min · 0 = asla · Aynı neden sürdükçe · Odalar.",
+          "use_announcement_hub": "Announcement Hub · Kullanılamıyor → Home Assistant.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Duyurular (isteğe bağlı) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Seçin: conversation.* (Home Assistant · Varsayılan)."
+        }
+      },
+      "thresholds": {
+        "title": "Gelişmiş eşikler",
+        "description": "Gelişmiş eşikler. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Dışarısı · AQI (≤)",
+          "outdoor_co2": "Dışarısı · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Dışarısı · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Dışarısı · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Dışarısı · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Dışarısı · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Dış (µg/m³)",
+          "outdoor_o3": "O₃ · Dış (µg/m³)",
+          "outdoor_so2": "SO₂ · Dış (µg/m³)",
+          "indoor_aqi": "Hava kalitesi · AQI (≥)",
+          "indoor_co2": "Hava kalitesi · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Hava kalitesi · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Hava kalitesi · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Hava kalitesi · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Hava kalitesi · VOC (ppb) (≥)",
+          "indoor_humidity": "Hava kalitesi · RH (%) (≥)",
+          "min_outdoor_temp": "Dışarısı · °C (≥)",
+          "max_outdoor_temp": "Dışarısı · °C (≤)",
+          "max_outdoor_humidity": "Dışarısı · RH (%) (≤)",
+          "max_wind_kmh": "Hava durumu ve uyarılar · km/h (≤)",
+          "max_age_minutes": "⏱ · Açın (min, ≤)",
+          "indoor_mold": "Küf göstergesi · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "«Dışarısı · AQI (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_co2": "«Dışarısı · CO₂ (ppm) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_pm25": "«Dışarısı · PM2.5 (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_pm10": "«Dışarısı · PM10 (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_voc": "«Dışarısı · VOC (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_voc_parts": "«Dışarısı · VOC (ppb) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_no2": "«NO₂ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_o3": "«O₃ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_so2": "«SO₂ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_aqi": "«Hava kalitesi · AQI (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_co2": "«Hava kalitesi · CO₂ (ppm) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_pm25": "«Hava kalitesi · PM2.5 (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_pm10": "«Hava kalitesi · PM10 (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_voc": "«Hava kalitesi · VOC (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_voc_parts": "«Hava kalitesi · VOC (ppb) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_humidity": "«Hava kalitesi · RH (%) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "min_outdoor_temp": "«Dışarısı · °C (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_outdoor_temp": "«Dışarısı · °C (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_outdoor_humidity": "«Dışarısı · RH (%) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_wind_kmh": "«Hava durumu ve uyarılar · km/h (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_age_minutes": "«⏱ · Açın (min, ≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_mold": "«Küf göstergesi · ≥ 70%» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "setup_rooms": {
+        "title": "İzlenecek odalar",
+        "description": "İzlenecek odalar → kaynak → Genel ayarlar",
+        "data": {
+          "areas": "İzlenecek odalar"
+        },
+        "data_description": {
+          "areas": "İzlenecek odalar. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Oda · {area_name} · {room_index}/{room_count}",
+        "description": "Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+        "data": {
+          "windows": "Pencereler",
+          "air_quality": "Hava kalitesi ve çevre sensörleri",
+          "temperature": "Sıcaklık",
+          "humidity": "Nem",
+          "pressure": "Basınç sensörleri",
+          "climate_devices": "Cihazlar"
+        },
+        "data_description": {
+          "windows": "Pencereler. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "air_quality": "Hava kalitesi ve çevre sensörleri. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "temperature": "Sıcaklık. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "humidity": "Nem. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "pressure": "Basınç sensörleri. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "climate_devices": "Cihazlar. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_general": {
+        "title": "Genel ayarlar",
+        "description": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır.",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "outdoor_sensors": "Dış hava kalitesi",
+          "weather_warnings": "Hava durumu uyarıları",
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "notify_entities": "ayarlar · kaynak",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Seç · kaynak",
+          "language": "TTS · Seç · kaynak",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%",
+          "pollen_entities": "Polen · kaynak · Seç",
+          "use_announcement_hub": "Otomatik · Announcement Hub",
+          "general_away_cooldown_minutes": "Ev · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒",
+          "general_room_occupancy_sensors": "«Oda · Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_home_trackers": "«Ev · Doluluk · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_entity": "«Doluluk · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_attribute": "«Doluluk · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_sleep_rooms_entity": "«Uyku · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_sleep_rooms_attribute": "«Uyku · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "ai_conversation_agent": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · AI · Seç · kaynak · conversation.* / ai_task.*.",
+          "language": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · TTS · Seç · kaynak · provider capabilities.",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Polen · kaynak · Seç.",
+          "use_announcement_hub": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Otomatik · Announcement Hub.",
+          "general_away_cooldown_minutes": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Ev · Away · cooldown (min) · occupancy transition delay."
+        }
+      },
+      "migrate_legacy": {
+        "title": "Home Environment Manager · ayarlar",
+        "description": "Home Environment Manager · environment_manager · ayarlar",
+        "data": {
+          "confirm": "Seç · environment_manager"
+        },
+        "data_description": {
+          "confirm": "Home Environment Manager · environment_manager · ayarlar"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Geçersiz seçim: Dış hava kalitesi (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Kullanılamıyor: Dış hava kalitesi (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Geçersiz seçim: Hava durumu ve uyarılar (weather.*).",
+      "invalid_warning": "Geçersiz seçim: Hava durumu ve uyarılar ⚠.",
+      "missing_notify": "Seçin: Announcement Hub / notify.*.",
+      "missing_tts": "Seçin: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Geçersiz seçim: °C min < max.",
+      "no_areas": "Seçin: Odalar.",
+      "no_window_areas": "Kullanılamıyor: Ölçümler (binary_sensor, window).",
+      "invalid_areas": "Geçersiz seçim: Odalar.",
+      "invalid_window_exclusions": "Geçersiz seçim: Pencere sensörlerini hariç tut.",
+      "invalid_indoor_exclusions": "Geçersiz seçim: İç ortam hava sensörlerini hariç tut.",
+      "no_windows_after_exclusions": "En az bir pencere sensörünü etkin bırakın.",
+      "review_areas_after_exclusions": "Kontrol edin: Odalar · Ölçümler (0).",
+      "invalid_repeat_minutes": "Geçersiz seçim: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Kullanılamıyor: conversation.process.",
+      "invalid_ai_agent": "Geçersiz seçim: conversation.*.",
+      "invalid_mold_temperature_sensor": "Odalar · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Odalar · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Küf göstergesi · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Küf göstergesi · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Geçersiz: İzlenecek odalar",
+      "invalid_room_source": "Geçersiz: Oda · kaynak"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — zaten yapılandırılmış.",
+      "setup_area_removed": "Geçersiz: İzlenecek odalar",
+      "setup_changed": "ayarlar ↻ İzlenecek odalar",
+      "legacy_migration_ambiguous": "ayarlar · environment_manager · 2+",
+      "legacy_migration_missing": "ayarlar · environment_manager · ?",
+      "legacy_migration_cancelled": "ayarlar · environment_manager · ×"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Seçin",
+        "description": "Seçin: Odalar / Hava durumu ve uyarılar / Duyurular (isteğe bağlı) / Gelişmiş eşikler",
+        "menu_options": {
+          "outside_data": "Dış · kaynak",
+          "general_settings": "Genel · ayarlar",
+          "area_settings": "Alan · ayarlar",
+          "delivery": "Duyurular (isteğe bağlı)",
+          "thresholds": "Gelişmiş eşikler"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Pencere sensörlerini hariç tut",
+        "description": "2 · Pencere sensörlerini hariç tut. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Pencere sensörlerini hariç tut"
+        },
+        "data_description": {
+          "excluded_window_entities": "Seçin: Pencere sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Odalar",
+        "description": "1 · 🪟 Odalar. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Odalar",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Seçin: Odalar · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Odalar · Küf göstergesi",
+        "description": "Odalar: {area_name} ({position}/{total}). 🌡️ 🧊 Küf göstergesi · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "İç ortam hava sensörlerini hariç tut",
+          "mold_indoor_temperature": "Odalar · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Küf göstergesi · 🧊 °C",
+          "mold_recalibrate": "Küf göstergesi · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Dış · Sıcaklık · kaynak · Küf göstergesi"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Seçin: İç ortam hava sensörlerini hariç tut · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "«Odalar · 🌡️ (°C/°F)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "mold_critical_temperature_c": "🧊 Küf göstergesi · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "«Küf göstergesi · ↻ 🌡️» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "mold_outdoor_weather_entity": "Seç weather.* · Dış Sıcaklık (temperature, °C/°F) → Küf göstergesi. Gerekli: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Dış hava kalitesi",
+        "description": "Dış hava kalitesi. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Dış hava kalitesi"
+        },
+        "data_description": {
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Hava durumu ve uyarılar",
+        "description": "Hava durumu ve uyarılar. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "weather_warnings": "Hava durumu uyarıları"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Duyurular (isteğe bağlı)",
+        "description": "Duyurular (isteğe bağlı). Otomatik bildirimler · Otomatik sesli duyurular. Announcement Hub.",
+        "data": {
+          "language": "Dil",
+          "automatic_tts": "Otomatik",
+          "automatic_notifications": "Otomatik · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Duyurular (isteğe bağlı) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ayarlar · kaynak",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Duyurular (isteğe bağlı)",
+          "ai_conversation_agent": "AI · Dil"
+        },
+        "data_description": {
+          "language": "«Dil» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "automatic_tts": "Varsayılan: ⛔ · Otomatik · 🪟 90 s. Bu ayar «Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "automatic_notifications": "Varsayılan: ⛔ · Otomatik · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Varsayılan: 10 min · 0 = asla · Aynı neden sürdükçe · Odalar.",
+          "use_announcement_hub": "Announcement Hub · Kullanılamıyor → Home Assistant.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Duyurular (isteğe bağlı) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Seçin: conversation.* (Home Assistant · Varsayılan)."
+        }
+      },
+      "thresholds": {
+        "title": "Gelişmiş eşikler",
+        "description": "Gelişmiş eşikler. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Dışarısı · AQI (≤)",
+          "outdoor_co2": "Dışarısı · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Dışarısı · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Dışarısı · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Dışarısı · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Dışarısı · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Dış (µg/m³)",
+          "outdoor_o3": "O₃ · Dış (µg/m³)",
+          "outdoor_so2": "SO₂ · Dış (µg/m³)",
+          "indoor_aqi": "Hava kalitesi · AQI (≥)",
+          "indoor_co2": "Hava kalitesi · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Hava kalitesi · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Hava kalitesi · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Hava kalitesi · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Hava kalitesi · VOC (ppb) (≥)",
+          "indoor_humidity": "Hava kalitesi · RH (%) (≥)",
+          "min_outdoor_temp": "Dışarısı · °C (≥)",
+          "max_outdoor_temp": "Dışarısı · °C (≤)",
+          "max_outdoor_humidity": "Dışarısı · RH (%) (≤)",
+          "max_wind_kmh": "Hava durumu ve uyarılar · km/h (≤)",
+          "max_age_minutes": "⏱ · Açın (min, ≤)",
+          "indoor_mold": "Küf göstergesi · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "«Dışarısı · AQI (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_co2": "«Dışarısı · CO₂ (ppm) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_pm25": "«Dışarısı · PM2.5 (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_pm10": "«Dışarısı · PM10 (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_voc": "«Dışarısı · VOC (µg/m³) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_voc_parts": "«Dışarısı · VOC (ppb) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_no2": "«NO₂ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_o3": "«O₃ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outdoor_so2": "«SO₂ · Dış (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_aqi": "«Hava kalitesi · AQI (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_co2": "«Hava kalitesi · CO₂ (ppm) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_pm25": "«Hava kalitesi · PM2.5 (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_pm10": "«Hava kalitesi · PM10 (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_voc": "«Hava kalitesi · VOC (µg/m³) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_voc_parts": "«Hava kalitesi · VOC (ppb) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_humidity": "«Hava kalitesi · RH (%) (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "min_outdoor_temp": "«Dışarısı · °C (≥)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_outdoor_temp": "«Dışarısı · °C (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_outdoor_humidity": "«Dışarısı · RH (%) (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_wind_kmh": "«Hava durumu ve uyarılar · km/h (≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "max_age_minutes": "«⏱ · Açın (min, ≤)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "indoor_mold": "«Küf göstergesi · ≥ 70%» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "environment": {
+        "title": "ayarlar · ayarlar · kaynak",
+        "description": "«ayarlar · ayarlar · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "pollen_entity": "Polen · kaynak",
+          "pollen_high_from": "POLLEN · Polen · HIGH",
+          "pollen_max_scale": "POLLEN · Polen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Polen · NO VENT",
+          "aqi_scale_0": "AQI #1 · kaynak",
+          "aqi_custom_limit_0": "AQI #1 · hedef",
+          "aqi_scale_1": "AQI #2 · kaynak",
+          "aqi_custom_limit_1": "AQI #2 · hedef",
+          "aqi_scale_2": "AQI #3 · kaynak",
+          "aqi_custom_limit_2": "AQI #3 · hedef",
+          "aqi_scale_3": "AQI #4 · kaynak",
+          "aqi_custom_limit_3": "AQI #4 · hedef",
+          "aqi_scale_4": "AQI #5 · kaynak",
+          "aqi_custom_limit_4": "AQI #5 · hedef",
+          "aqi_scale_5": "AQI #6 · kaynak",
+          "aqi_custom_limit_5": "AQI #6 · hedef",
+          "aqi_scale_6": "AQI #7 · kaynak",
+          "aqi_custom_limit_6": "AQI #7 · hedef",
+          "aqi_scale_7": "AQI #8 · kaynak",
+          "aqi_custom_limit_7": "AQI #8 · hedef",
+          "aqi_scale_8": "AQI #9 · kaynak",
+          "aqi_custom_limit_8": "AQI #9 · hedef",
+          "aqi_scale_9": "AQI #10 · kaynak",
+          "aqi_custom_limit_9": "AQI #10 · hedef",
+          "aqi_scale_10": "AQI #11 · kaynak",
+          "aqi_custom_limit_10": "AQI #11 · hedef",
+          "aqi_scale_11": "AQI #12 · kaynak",
+          "aqi_custom_limit_11": "AQI #12 · hedef",
+          "aqi_scale_12": "AQI #13 · kaynak",
+          "aqi_custom_limit_12": "AQI #13 · hedef",
+          "aqi_scale_13": "AQI #14 · kaynak",
+          "aqi_custom_limit_13": "AQI #14 · hedef",
+          "aqi_scale_14": "AQI #15 · kaynak",
+          "aqi_custom_limit_14": "AQI #15 · hedef",
+          "aqi_scale_15": "AQI #16 · kaynak",
+          "aqi_custom_limit_15": "AQI #16 · hedef",
+          "aqi_scale_16": "AQI #17 · kaynak",
+          "aqi_custom_limit_16": "AQI #17 · hedef",
+          "aqi_scale_17": "AQI #18 · kaynak",
+          "aqi_custom_limit_17": "AQI #18 · hedef",
+          "aqi_scale_18": "AQI #19 · kaynak",
+          "aqi_custom_limit_18": "AQI #19 · hedef",
+          "aqi_scale_19": "AQI #20 · kaynak",
+          "aqi_custom_limit_19": "AQI #20 · hedef",
+          "aqi_scale_20": "AQI #21 · kaynak",
+          "aqi_custom_limit_20": "AQI #21 · hedef",
+          "aqi_scale_21": "AQI #22 · kaynak",
+          "aqi_custom_limit_21": "AQI #22 · hedef",
+          "aqi_scale_22": "AQI #23 · kaynak",
+          "aqi_custom_limit_22": "AQI #23 · hedef",
+          "aqi_scale_23": "AQI #24 · kaynak",
+          "aqi_custom_limit_23": "AQI #24 · hedef",
+          "aqi_scale_24": "AQI #25 · kaynak",
+          "aqi_custom_limit_24": "AQI #25 · hedef",
+          "aqi_scale_25": "AQI #26 · kaynak",
+          "aqi_custom_limit_25": "AQI #26 · hedef",
+          "aqi_scale_26": "AQI #27 · kaynak",
+          "aqi_custom_limit_26": "AQI #27 · hedef",
+          "aqi_scale_27": "AQI #28 · kaynak",
+          "aqi_custom_limit_27": "AQI #28 · hedef",
+          "aqi_scale_28": "AQI #29 · kaynak",
+          "aqi_custom_limit_28": "AQI #29 · hedef",
+          "aqi_scale_29": "AQI #30 · kaynak",
+          "aqi_custom_limit_29": "AQI #30 · hedef",
+          "aqi_scale_30": "AQI #31 · kaynak",
+          "aqi_custom_limit_30": "AQI #31 · hedef",
+          "aqi_scale_31": "AQI #32 · kaynak",
+          "aqi_custom_limit_31": "AQI #32 · hedef"
+        },
+        "data_description": {
+          "pollen_entity": "«Polen · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "pollen_high_from": "«POLLEN · Polen · HIGH» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_max_scale": "«POLLEN · Polen · SCALE» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_avoid_ventilation": "«POLLEN · Polen · NO VENT» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_scale_0": "«AQI #1 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_0": "«AQI #1 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_1": "«AQI #2 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_1": "«AQI #2 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_2": "«AQI #3 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_2": "«AQI #3 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_3": "«AQI #4 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_3": "«AQI #4 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_4": "«AQI #5 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_4": "«AQI #5 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_5": "«AQI #6 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_5": "«AQI #6 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_6": "«AQI #7 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_6": "«AQI #7 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_7": "«AQI #8 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_7": "«AQI #8 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_8": "«AQI #9 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_8": "«AQI #9 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_9": "«AQI #10 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_9": "«AQI #10 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_10": "«AQI #11 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_10": "«AQI #11 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_11": "«AQI #12 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_11": "«AQI #12 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_12": "«AQI #13 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_12": "«AQI #13 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_13": "«AQI #14 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_13": "«AQI #14 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_14": "«AQI #15 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_14": "«AQI #15 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_15": "«AQI #16 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_15": "«AQI #16 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_16": "«AQI #17 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_16": "«AQI #17 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_17": "«AQI #18 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_17": "«AQI #18 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_18": "«AQI #19 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_18": "«AQI #19 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_19": "«AQI #20 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_19": "«AQI #20 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_20": "«AQI #21 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_20": "«AQI #21 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_21": "«AQI #22 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_21": "«AQI #22 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_22": "«AQI #23 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_22": "«AQI #23 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_23": "«AQI #24 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_23": "«AQI #24 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_24": "«AQI #25 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_24": "«AQI #25 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_25": "«AQI #26 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_25": "«AQI #26 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_26": "«AQI #27 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_26": "«AQI #27 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_27": "«AQI #28 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_27": "«AQI #28 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_28": "«AQI #29 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_28": "«AQI #29 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_29": "«AQI #30 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_29": "«AQI #30 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_30": "«AQI #31 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_30": "«AQI #31 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "aqi_scale_31": "«AQI #32 · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "aqi_custom_limit_31": "«AQI #32 · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "environment_room": {
+        "title": "ayarlar · ayarlar · kaynak",
+        "description": "«ayarlar · ayarlar · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "environment_area": "ayarlar · kaynak"
+        },
+        "data_description": {
+          "environment_area": "«ayarlar · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller."
+        }
+      },
+      "environment_room_air": {
+        "title": "ayarlar · Dış",
+        "description": "«ayarlar · Dış» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "temperature_entity": "Sıcaklık · kaynak",
+          "room_volume_m3": "ayarlar · kaynak (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Hava temizleyici · kaynak",
+          "extractor_entity": "Egzoz fanı · kaynak",
+          "co2_ndir_verified": "CO₂ · Gerekli",
+          "co2_target_ppm": "CO₂ · CO₂ · hedef (ppm)",
+          "sleep_room": "Uyku"
+        },
+        "data_description": {
+          "temperature_entity": "«Sıcaklık · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "room_volume_m3": "«ayarlar · kaynak (m³)» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "particle_cadr_m3h": "«CADR (m³/h)» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "purifier_entity": "«Hava temizleyici · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "extractor_entity": "«Egzoz fanı · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "co2_ndir_verified": "«CO₂ · Gerekli» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "co2_target_ppm": "«CO₂ · CO₂ · hedef (ppm)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "sleep_room": "«Uyku» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "ayarlar · ayarlar · kaynak",
+        "description": "«ayarlar · ayarlar · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "radon_entity": "RADON · Rn · kaynak",
+          "radon_sensor_verified": "RADON · Rn · sensör · Gerekli · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · kaynak",
+          "formaldehyde_sensor_verified": "HCHO · sensör · Gerekli · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · kaynak · sensör (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · sensör · Gerekli",
+          "illuminance_entity": "LUX · kaynak (lux)",
+          "melanopic_edi_entity": "EDI · EDI · kaynak (lx)",
+          "melanopic_spectral_verified": "EDI · Gerekli"
+        },
+        "data_description": {
+          "radon_entity": "«RADON · Rn · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "radon_sensor_verified": "«RADON · Rn · sensör · Gerekli · SENSOR ✓ · VERIFIED» için uygun gerçek ölçüm kullanın. Tahminler kalibre RADON · Rn · sensör · Gerekli · SENSOR ✓ · VERIFIEDün yerini tutmaz.",
+          "radon_reference_bq_m3": "«Rn (Bq/m³)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "formaldehyde_entity": "«HCHO · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "formaldehyde_sensor_verified": "«HCHO · sensör · Gerekli · SENSOR ✓ · VERIFIED» için uygun gerçek ölçüm kullanın. Tahminler kalibre HCHO · sensör · Gerekli · SENSOR ✓ · VERIFIEDün yerini tutmaz.",
+          "noise_entity": "«dB(A) · kaynak · sensör (dB(A))» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "noise_sensor_calibrated": "«dB(A) · sensör · Gerekli» için uygun gerçek ölçüm kullanın. Tahminler kalibre dB(A) · sensör · Gerekliün yerini tutmaz.",
+          "illuminance_entity": "«LUX · kaynak (lux)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "melanopic_edi_entity": "«EDI · EDI · kaynak (lx)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "melanopic_spectral_verified": "«EDI · Gerekli» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "ayarlar · ayarlar · kaynak",
+        "description": "«ayarlar · ayarlar · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Otomatik",
+          "radiant_temperature_entity": "Sıcaklık · kaynak",
+          "air_speed_entity": "kaynak · Hız · Dış (m/s)",
+          "air_speed_m_s": "Hız · Dış (m/s)",
+          "met": "ayarlar · kaynak (met)",
+          "clo": "ayarlar · kaynak (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "«PMV / PPD · Otomatik» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "radiant_temperature_entity": "«Sıcaklık · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "air_speed_entity": "«kaynak · Hız · Dış (m/s)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "air_speed_m_s": "«Hız · Dış (m/s)» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "met": "«ayarlar · kaynak (met)» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "clo": "«ayarlar · kaynak (clo)» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz."
+        }
+      },
+      "pid": {
+        "title": "ayarlar · PID",
+        "description": "«ayarlar · PID» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Bu ayar «PID» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir."
+        }
+      },
+      "pid_room": {
+        "title": "ayarlar · PID",
+        "description": "«ayarlar · PID» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "pid_enabled": "PID · Otomatik · AUTO",
+          "pid_climate_entities": "PID · Cihazlar",
+          "pid_temperature_entity": "Sıcaklık · kaynak",
+          "pid_mode": "PID",
+          "pid_target_c": "hedef (°C)",
+          "pid_pause_on_window_open": "PID · Dış"
+        },
+        "data_description": {
+          "pid_enabled": "Bu ayar «PID · Otomatik · AUTO» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "pid_climate_entities": "«PID · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "pid_temperature_entity": "«Sıcaklık · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "pid_mode": "Bu ayar «PID» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "pid_target_c": "«hedef (°C)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "pid_pause_on_window_open": "Bu ayar «PID · Dış» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir."
+        }
+      },
+      "pid_tuning": {
+        "title": "ayarlar · PID",
+        "description": "«ayarlar · PID» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "pid_kp": "PID Kp · kontrol (% per °C)",
+          "pid_ki": "PID Ki · kontrol (% per °C-minute)",
+          "pid_kd": "PID Kd · kontrol (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Bu ayar «PID Kp · kontrol (% per °C)» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "pid_ki": "Bu ayar «PID Ki · kontrol (% per °C-minute)» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "pid_kd": "Bu ayar «PID Kd · kontrol (%·minute per °C)» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "pid_offset_c": "«PID (°C) · PID_OFFSET_C» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "pid_min_setpoint_c": "«PID (°C) · MIN TARGET» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "pid_max_setpoint_c": "«PID (°C) · MAX TARGET» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "pid_sample_seconds": "Bu süre «PID (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "pid_max_change_c": "«PID (°C) · MAX Δ» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "pid_min_change_c": "«PID (°C) · MIN Δ» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "climate": {
+        "title": "ayarlar · Cihazlar",
+        "description": "«ayarlar · Cihazlar» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+        "data": {
+          "climate_area": "Cihazlar"
+        },
+        "data_description": {
+          "climate_area": "Bu ayar «Cihazlar» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir."
+        }
+      },
+      "climate_room": {
+        "title": "ayarlar · Cihazlar",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "climate_enabled": "Cihazlar · Otomatik · AUTO",
+          "climate_allow_actuation": "Cihazlar · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Cihazlar · Otomatik · MODE SWITCH",
+          "climate_prefer_native_auto": "Cihazlar · Otomatik · NATIVE",
+          "climate_controller": "Cihazlar · kontrol",
+          "climate_mode": "Cihazlar · MODE",
+          "climate_entity": "Cihazlar · kaynak",
+          "climate_temperature_entity": "Sıcaklık · kaynak",
+          "climate_hysteresis_c": "Cihazlar (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Bu ayar «Cihazlar · Otomatik · AUTO» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_allow_actuation": "Bu ayar «Cihazlar · CLIMATE_ALLOW_ACTUATION» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_auto_switch_hvac": "Bu ayar «Cihazlar · Otomatik · MODE SWITCH» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_prefer_native_auto": "Bu ayar «Cihazlar · Otomatik · NATIVE» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_controller": "Bu ayar «Cihazlar · kontrol» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_mode": "Bu ayar «Cihazlar · MODE» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_entity": "«Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_temperature_entity": "«Sıcaklık · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_hysteresis_c": "«Cihazlar (°C)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "climate_presence": {
+        "title": "ayarlar · Doluluk · Cihazlar",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "climate_occupancy_sensors": "Doluluk · sensör",
+          "climate_away_entities": "Ev · Cihazlar",
+          "climate_unknown_occupancy": "Doluluk · Cihazlar",
+          "climate_unoccupied_delay_minutes": "Cihazlar · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Doluluk · Cihazlar · sensör · Gerekli",
+          "climate_away_policy": "Ev · Cihazlar · POLICY",
+          "climate_manual_profile": "Cihazlar · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Uyku · Cihazlar",
+          "climate_sleep_schedule_enabled": "Uyku · Otomatik",
+          "climate_sleep_start": "Uyku · Cihazlar · START",
+          "climate_sleep_end": "Uyku · Cihazlar · END",
+          "climate_target_source": "Cihazlar · kaynak · hedef",
+          "climate_comfort_adjustment_max_c": "Cihazlar (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "«Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_away_entities": "«Ev · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_unknown_occupancy": "Bu ayar «Doluluk · Cihazlar» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_unoccupied_delay_minutes": "Bu süre «Cihazlar · CLIMATE_UNOCCUPIED_DELAY_MINUTES» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_occupancy_stale_minutes": "Bu süre «Doluluk · Cihazlar · sensör · Gerekli» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_away_policy": "Bu ayar «Ev · Cihazlar · POLICY» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_manual_profile": "Bu ayar «Cihazlar · CLIMATE_MANUAL_PROFILE» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_sleep_active": "Bu ayar «Uyku · Cihazlar» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_sleep_schedule_enabled": "Bu ayar «Uyku · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_sleep_start": "Bu süre «Uyku · Cihazlar · START» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_sleep_end": "Bu süre «Uyku · Cihazlar · END» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_target_source": "«Cihazlar · kaynak · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_comfort_adjustment_max_c": "«Cihazlar (°C)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "climate_equipment": {
+        "title": "ayarlar · Cihazlar",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Cihazlar · kaynak · Sıcaklık +",
+          "climate_cool_climate_entity": "COOL · Cihazlar · kaynak · Sıcaklık −",
+          "climate_dry_climate_entity": "DRY · Cihazlar · kaynak",
+          "climate_fan_climate_entity": "FAN_ONLY · Hız · Cihazlar · kaynak",
+          "climate_humidifier_entity": "HUMIDIFIER · Cihazlar · kaynak",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Cihazlar · kaynak",
+          "climate_extraction_fan_entity": "EXTRACT · Hız · Cihazlar · kaynak",
+          "climate_purifier_fan_entity": "Hava temizleyici · kaynak",
+          "climate_humidity_entity": "Nem · kaynak",
+          "climate_humidity_low_rh": "RH · Nem · Cihazlar (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Nem · Cihazlar (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Nem · Cihazlar · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Cihazlar · Sıcaklık −",
+          "climate_humidity_setpoint_auto": "Nem · Otomatik",
+          "climate_window_efficiency_notify": "Cihazlar · Dış",
+          "climate_dry_fan_mode_auto": "Hız · Otomatik",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Hız · Cihazlar · Gerekli · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Hız · Cihazlar · Dış · Gerekli · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Hız · Cihazlar (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Nem · Güç · Otomatik",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Nem · Cihazlar · Güç · Gerekli · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Nem · Cihazlar · Güç · Dış · Gerekli · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Nem · Cihazlar · Güç · Otomatik (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Nem · Cihazlar · Güç · Kapat (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Nem · Cihazlar · Güç · Otomatik (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Cihazlar · Otomatik · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "«HEAT · Cihazlar · kaynak · Sıcaklık +» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_cool_climate_entity": "«COOL · Cihazlar · kaynak · Sıcaklık −» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_dry_climate_entity": "«DRY · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_fan_climate_entity": "«FAN_ONLY · Hız · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_humidifier_entity": "«HUMIDIFIER · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_dehumidifier_entity": "«DEHUMIDIFIER · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_extraction_fan_entity": "«EXTRACT · Hız · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_purifier_fan_entity": "«Hava temizleyici · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_humidity_entity": "«Nem · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_humidity_low_rh": "«RH · Nem · Cihazlar (%) · RH MIN» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_humidity_high_rh": "«RH · Nem · Cihazlar (%) · RH MAX» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_humidity_hysteresis_rh": "«RH · Nem · Cihazlar · ± RH» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_cooling_dry_deferral_rh_points": "Bu ayar «Cihazlar · Sıcaklık −» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_humidity_setpoint_auto": "Bu ayar «Nem · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_window_efficiency_notify": "Bu ayar «Cihazlar · Dış» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_dry_fan_mode_auto": "Bu ayar «Hız · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_dry_fan_hardware_confirmed": "«DRY/FAN_ONLY · Hız · Cihazlar · Gerekli · HW ✓» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "climate_dry_fan_windowless_confirmed": "«DRY/FAN_ONLY · Hız · Cihazlar · Dış · Gerekli · NO WINDOW» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "climate_dry_fan_mode_dwell_s": "Bu süre «DRY/FAN_ONLY · Hız · Cihazlar (s) · MODE DWELL» için kullanılır. DRY/FAN_ONLY · Hız · Cihazlar (s) · MODE DWELLlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_humidity_power_auto": "Bu ayar «Nem · Güç · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_humidity_power_hardware_confirmed": "«RH POWER · Nem · Cihazlar · Güç · Gerekli · HW ✓» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "climate_humidity_power_windowless_confirmed": "«RH POWER · Nem · Cihazlar · Güç · Dış · Gerekli · NO WINDOW» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "climate_humidity_power_min_on_s": "Bu süre «RH POWER · Nem · Cihazlar · Güç · Otomatik (s) · MIN ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_humidity_power_min_off_s": "Bu süre «RH POWER · Nem · Cihazlar · Güç · Kapat (s) · MIN OFF» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_humidity_power_max_on_s": "Bu süre «RH POWER · Nem · Cihazlar · Güç · Otomatik (s) · MAX ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_secondary_climate_setpoint_auto": "Bu ayar «Cihazlar · Otomatik · TARGET AUTO» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "ayarlar · Cihazlar · Dış",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "climate_fan_speed_auto": "Hız · Otomatik",
+          "climate_fan_power_auto": "Hız · Güç · Otomatik",
+          "climate_fan_power_hardware_confirmed": "FAN · Hız · Cihazlar · Güç · Gerekli · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Hız · Cihazlar · Güç · Otomatik (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Hız · Cihazlar · Güç · Kapat (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Hız · Cihazlar · Güç · Otomatik (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Cihazlar · sensör · Gerekli · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Cihazlar · kaynak",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Cihazlar · kaynak",
+          "climate_pm25_action_ug_m3": "PM2.5 · Cihazlar (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Cihazlar · Hız (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Cihazlar · Hız (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Bu ayar «Hız · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_fan_power_auto": "Bu ayar «Hız · Güç · Otomatik» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "climate_fan_power_hardware_confirmed": "«FAN · Hız · Cihazlar · Güç · Gerekli · HW ✓» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "climate_fan_power_min_on_s": "Bu süre «FAN · Hız · Cihazlar · Güç · Otomatik (s) · MIN ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_fan_power_min_off_s": "Bu süre «FAN · Hız · Cihazlar · Güç · Kapat (s) · MIN OFF» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_fan_power_max_on_s": "Bu süre «FAN · Hız · Cihazlar · Güç · Otomatik (s) · MAX ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "climate_pm25_sensor_verified": "«PM2.5 · PM2.5 · Cihazlar · sensör · Gerekli · SENSOR ✓ · VERIFIED» için uygun gerçek ölçüm kullanın. Tahminler kalibre PM2.5 · PM2.5 · Cihazlar · sensör · Gerekli · SENSOR ✓ · VERIFIEDün yerini tutmaz.",
+          "climate_co2_entity": "«CO₂ · CO₂ · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_pm25_entity": "«PM2.5 · PM2.5 · Cihazlar · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "climate_pm25_action_ug_m3": "«PM2.5 · Cihazlar (µg/m³)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_extraction_speed_percent": "«EXTRACT · Cihazlar · Hız (%) · SPEED %» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "climate_purifier_speed_percent": "«PURIFIER · Cihazlar · Hız (%) · SPEED %» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir."
+        }
+      },
+      "climate_profiles": {
+        "title": "ayarlar · Cihazlar",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "home_heat": "Isıtma · Evde (°C)",
+          "home_cool": "Soğutma · Evde (°C)",
+          "unoccupied_heat": "Isıtma · Boş oda (°C)",
+          "unoccupied_cool": "Soğutma · Boş oda (°C)",
+          "away_heat": "Isıtma · Evde yok (°C)",
+          "away_cool": "Soğutma · Evde yok (°C)",
+          "sleep_heat": "Isıtma · Uyku (°C)",
+          "sleep_cool": "Soğutma · Uyku (°C)"
+        },
+        "data_description": {
+          "home_heat": "«Isıtma · Evde (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "home_cool": "«Soğutma · Evde (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "unoccupied_heat": "«Isıtma · Boş oda (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "unoccupied_cool": "«Soğutma · Boş oda (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "away_heat": "«Isıtma · Evde yok (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "away_cool": "«Soğutma · Evde yok (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "sleep_heat": "«Isıtma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "sleep_cool": "«Soğutma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir."
+        }
+      },
+      "climate_actuators": {
+        "title": "ayarlar · Cihazlar",
+        "description": "Alan · ayarlar · Cihazlar · kontrol. Doluluk · sensör · Gerekli.",
+        "data": {
+          "direct_hardware_confirmed": "Gerekli",
+          "heat_actuator": "Isıtma · Cihazlar",
+          "cool_actuator": "Soğutma · Cihazlar",
+          "min_on_s": "Güç · Otomatik (s) · MIN ON",
+          "min_off_s": "Güç · Kapat (s)",
+          "max_on_s": "Güç · Otomatik (s) · MAX ON",
+          "mode_dwell_s": "ayarlar · kaynak (s) · MODE DWELL",
+          "kp": "PID Kp · kontrol (percentage points/°C)",
+          "ki": "PID Ki · kontrol (percentage points/(°C·minute))",
+          "kd": "PID Kd · kontrol (percentage points·minute/°C)",
+          "sample_seconds": "ayarlar · kaynak (s) · SAMPLE",
+          "pwm_period_s": "ayarlar · kaynak (s) · PWM PERIOD",
+          "max_demand_change": "ayarlar · kaynak · MAX Δ",
+          "min_demand_change": "ayarlar · kaynak · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "«Gerekli» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "heat_actuator": "«Isıtma · Cihazlar» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "cool_actuator": "«Soğutma · Cihazlar» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "min_on_s": "Bu süre «Güç · Otomatik (s) · MIN ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "min_off_s": "Bu süre «Güç · Kapat (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "max_on_s": "Bu süre «Güç · Otomatik (s) · MAX ON» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "mode_dwell_s": "Bu süre «ayarlar · kaynak (s) · MODE DWELL» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "kp": "«PID Kp · kontrol (percentage points/°C)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "ki": "«PID Ki · kontrol (percentage points/(°C·minute))» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "kd": "«PID Kd · kontrol (percentage points·minute/°C)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "sample_seconds": "Bu süre «ayarlar · kaynak (s) · SAMPLE» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "pwm_period_s": "Bu süre «ayarlar · kaynak (s) · PWM PERIOD» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "max_demand_change": "«ayarlar · kaynak · MAX Δ» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "min_demand_change": "«ayarlar · kaynak · MIN Δ» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller."
+        }
+      },
+      "outside_data": {
+        "title": "Dış · kaynak",
+        "description": "Dış · kaynak: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "menu_options": {
+          "weather": "Hava durumu ve uyarılar",
+          "outdoor": "Dış hava kalitesi",
+          "outside_aqi": "Dış · AQI",
+          "pollen": "Polen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Alan · ayarlar",
+        "description": "Alan · ayarlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "menu_options": {
+          "areas": "Odalar",
+          "indoor_sensors": "Odalar · Küf göstergesi",
+          "window_sensors": "Pencere sensörlerini hariç tut",
+          "environment_room": "ayarlar · ayarlar · kaynak",
+          "area_devices": "İklim cihazları"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Cihazlar · ayarlar",
+        "description": "İsteğe bağlı: sensörlere ve cihaza özgü güvenlik izinlerine devam edin. Listeyi hemen kaydetmek için kapalı bırakın.",
+        "menu_options": {
+          "device_settings": "Cihazlar · kontrol",
+          "device_choice": "Seç · Cihazlar",
+          "device_done": "ayarlar · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Genel · ayarlar",
+        "description": "Genel · ayarlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_home_policy": "Ev · Doluluk · kontrol",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "general_source_stale_minutes": "kaynak · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "«Oda · Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_entity": "«Doluluk · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_attribute": "«Doluluk · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_home_trackers": "«Ev · Doluluk · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_home_policy": "Bu ayar «Ev · Doluluk · kontrol» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "general_sleep_rooms_entity": "«Uyku · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_sleep_rooms_attribute": "«Uyku · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_source_stale_minutes": "kaynak · Uyku / Doluluk · max 240 min. Geçersiz · Kapat."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "pollen_entity": "Polen · kaynak",
+          "pollen_high_from": "POLLEN · Polen · HIGH",
+          "pollen_max_scale": "POLLEN · Polen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Polen · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "«Polen · kaynak» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "pollen_high_from": "«POLLEN · Polen · HIGH» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_max_scale": "«POLLEN · Polen · SCALE» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "pollen_avoid_ventilation": "«POLLEN · Polen · NO VENT» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller."
+        }
+      },
+      "outside_aqi": {
+        "title": "Dış · AQI",
+        "description": "Dış · AQI: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "outside_aqi_entity": "AQI · sensör",
+          "outside_aqi_scale": "AQI · kaynak",
+          "outside_aqi_limit": "AQI · hedef",
+          "outside_aqi_no_sources": "AQI · sensör · Gerekli"
+        },
+        "data_description": {
+          "outside_aqi_entity": "«AQI · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "outside_aqi_scale": "«AQI · kaynak» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "outside_aqi_limit": "«AQI · hedef» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "outside_aqi_no_sources": "«AQI · sensör · Gerekli» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller."
+        }
+      },
+      "area_devices": {
+        "title": "İklim cihazları",
+        "description": "Seç · Alan",
+        "data": {
+          "area_devices_area": "Seç · Alan"
+        },
+        "data_description": {
+          "area_devices_area": "«Seç · Alan» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur."
+        }
+      },
+      "select_devices": {
+        "title": "İklim cihazları",
+        "description": "{area_name} için cihazları seçin. Kaydetmek, oda merkezinde her fiziksel ürün için bir denetleyici oluşturur. Hedefleri, profilleri, otomatik/manuel/kapalı/PID ve sessiz çalışmayı cihazlarda ayarlayın. Seçim otomatik kontrolü etkinleştirmez.",
+        "data": {
+          "selected_devices": "Seç · Cihazlar",
+          "configure_device_sources": "Sensörleri ve cihaz izinlerini şimdi ayarla"
+        },
+        "data_description": {
+          "selected_devices": "{area_name} için cihazları seçin. Kaydetmek, oda merkezinde her fiziksel ürün için bir denetleyici oluşturur. Hedefleri, profilleri, otomatik/manuel/kapalı/PID ve sessiz çalışmayı cihazlarda ayarlayın. Seçim otomatik kontrolü etkinleştirmez.",
+          "configure_device_sources": "İsteğe bağlı: sensörlere ve cihaza özgü güvenlik izinlerine devam edin. Listeyi hemen kaydetmek için kapalı bırakın."
+        }
+      },
+      "device_choice": {
+        "title": "Seç · Cihazlar",
+        "description": "Seç · Cihazlar: Seç kaynak, sensör / Cihazlar · kontrol.",
+        "data": {
+          "device_choice": "Seç · Cihazlar"
+        },
+        "data_description": {
+          "device_choice": "«Seç · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur."
+        }
+      },
+      "device_settings": {
+        "title": "Cihazlar · kontrol",
+        "description": "Bu ayar «kontrol · kaynak» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir. «Gerekli · Cihazlar · Güç» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz. Bu süre «Güç · min ON (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz. Bu süre «Güç · min OFF (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz. «Uyku · kontrol» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller. «Hız (%)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Otomatik kontrol",
+          "device_method": "kontrol · kaynak",
+          "device_presence_requirement": "kontrol · Doluluk",
+          "device_absence_action": "Kapat · Doluluk",
+          "device_sleep_behavior": "Uyku · kontrol",
+          "device_hardware_confirmed": "Gerekli · Cihazlar · Güç",
+          "device_temperature_entity": "Sıcaklık · sensör",
+          "device_humidity_entity": "Nem · sensör",
+          "device_co2_entity": "CO₂ · sensör",
+          "device_pm25_entity": "PM2.5 · sensör",
+          "device_fan_purpose": "kontrol · Cihazlar",
+          "device_sensor_verified": "sensör · Gerekli",
+          "device_fan_speed_percent": "Hız (%)",
+          "device_humidity_target": "Nem · hedef (%)",
+          "device_sleep_humidity_target": "Uyku · Nem · hedef (%)",
+          "device_min_on_s": "Güç · min ON (s)",
+          "device_min_off_s": "Güç · min OFF (s)",
+          "device_max_on_s": "Güç · max ON (s)",
+          "device_home_heat_c": "Isıtma · Evde (°C)",
+          "device_home_cool_c": "Soğutma · Evde (°C)",
+          "device_unoccupied_heat_c": "Isıtma · Boş oda (°C)",
+          "device_unoccupied_cool_c": "Soğutma · Boş oda (°C)",
+          "device_away_heat_c": "Isıtma · Evde yok (°C)",
+          "device_away_cool_c": "Soğutma · Evde yok (°C)",
+          "device_sleep_heat_c": "Isıtma · Uyku (°C)",
+          "device_sleep_cool_c": "Soğutma · Uyku (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Bu ayar «Otomatik kontrol» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "device_method": "Bu ayar «kontrol · kaynak» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "device_presence_requirement": "«kontrol · Doluluk» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "device_absence_action": "Bu ayar «Kapat · Doluluk» için geçerlidir. Fiziksel komutlar ayrı onay ve bağımsız koruma gerektirir.",
+          "device_sleep_behavior": "«Uyku · kontrol» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "device_hardware_confirmed": "«Gerekli · Cihazlar · Güç» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "device_temperature_entity": "«Sıcaklık · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "device_humidity_entity": "«Nem · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "device_co2_entity": "«CO₂ · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "device_pm25_entity": "«PM2.5 · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "device_fan_purpose": "«kontrol · Cihazlar» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "device_sensor_verified": "«sensör · Gerekli» için uygun gerçek ölçüm kullanın. Tahminler kalibre sensörün yerini tutmaz.",
+          "device_fan_speed_percent": "«Hız (%)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "device_humidity_target": "«Nem · hedef (%)» için karar eşiği. Önerileri etkiler; tıbbi sınır değildir.",
+          "device_sleep_humidity_target": "«Uyku · Nem · hedef (%)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_min_on_s": "Bu süre «Güç · min ON (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "device_min_off_s": "Bu süre «Güç · min OFF (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "device_max_on_s": "Bu süre «Güç · max ON (s)» için kullanılır. Hızlı anahtarlamayı sınırlar, donanım korumasının yerini almaz.",
+          "device_home_heat_c": "«Isıtma · Evde (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_home_cool_c": "«Soğutma · Evde (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_unoccupied_heat_c": "«Isıtma · Boş oda (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_unoccupied_cool_c": "«Soğutma · Boş oda (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_away_heat_c": "«Isıtma · Evde yok (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_away_cool_c": "«Soğutma · Evde yok (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_sleep_heat_c": "«Isıtma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir.",
+          "device_sleep_cool_c": "«Soğutma · Uyku (°C)» hedefi yalnızca varlık veya uyku doğrulandığında kullanılır. Bilinmeyen durum boş oda demek değildir."
+        }
+      },
+      "setup_rooms": {
+        "title": "İzlenecek odalar",
+        "description": "İzlenecek odalar → kaynak → Genel ayarlar",
+        "data": {
+          "areas": "İzlenecek odalar"
+        },
+        "data_description": {
+          "areas": "İzlenecek odalar. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Oda · {area_name} · {room_index}/{room_count}",
+        "description": "Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+        "data": {
+          "windows": "Pencereler",
+          "air_quality": "Hava kalitesi ve çevre sensörleri",
+          "temperature": "Sıcaklık",
+          "humidity": "Nem",
+          "pressure": "Basınç sensörleri",
+          "climate_devices": "Cihazlar"
+        },
+        "data_description": {
+          "windows": "Pencereler. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "air_quality": "Hava kalitesi ve çevre sensörleri. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "temperature": "Sıcaklık. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "humidity": "Nem. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "pressure": "Basınç sensörleri. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez.",
+          "climate_devices": "Cihazlar. Odanın girişlerini seçin: cihaz adı - varlık adı. Boş gruplar kullanılmaz ve otomatik keşif veya kontrolü etkinleştirmez."
+        }
+      },
+      "setup_general": {
+        "title": "Genel ayarlar",
+        "description": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır.",
+        "data": {
+          "weather_entities": "Hava durumu ve uyarılar",
+          "outdoor_sensors": "Dış hava kalitesi",
+          "weather_warnings": "Hava durumu uyarıları",
+          "general_room_occupancy_sensors": "Oda · Doluluk · sensör",
+          "general_home_trackers": "Ev · Doluluk · Cihazlar",
+          "general_occupied_rooms_entity": "Doluluk · Oda · kaynak (state)",
+          "general_occupied_rooms_attribute": "Doluluk · Oda · kaynak (attribute)",
+          "general_sleep_rooms_entity": "Uyku · Oda · kaynak (state)",
+          "general_sleep_rooms_attribute": "Uyku · Oda · kaynak (attribute)",
+          "notify_entities": "ayarlar · kaynak",
+          "media_players": "ayarlar · kaynak · MEDIA_PLAYERS",
+          "tts_engine": "ayarlar · kaynak · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Seç · kaynak",
+          "language": "TTS · Seç · kaynak",
+          "use_mold_indicator": "Küf göstergesi · RH (%) → 70%",
+          "pollen_entities": "Polen · kaynak · Seç",
+          "use_announcement_hub": "Otomatik · Announcement Hub",
+          "general_away_cooldown_minutes": "Ev · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Seçin: Hava durumu ve uyarılar · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Seçin: Dış hava kalitesi · AQI, CO₂, PM2.5, PM10, VOC. Kullanılamıyor: ⚠",
+          "weather_warnings": "Hava durumu ve uyarılar · ⚠ (Kullanılamıyor) → 🪟🔒",
+          "general_room_occupancy_sensors": "«Oda · Doluluk · sensör» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_home_trackers": "«Ev · Doluluk · Cihazlar» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_entity": "«Doluluk · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_occupied_rooms_attribute": "«Doluluk · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "general_sleep_rooms_entity": "«Uyku · Oda · kaynak (state)» için gerçek bir Home Assistant kaynağı seçin. Eski veya eksik veriler ilgili işlemi durdurur.",
+          "general_sleep_rooms_attribute": "«Uyku · Oda · kaynak (attribute)» yalnızca seçilen oda için ayarlanır. Eksik veya uyumsuz veri işlemi engeller.",
+          "notify_entities": "Seçin: notify.* · ayarlar · kaynak.",
+          "media_players": "Seçin: media_player.* · ayarlar · kaynak · MEDIA_PLAYERS.",
+          "tts_engine": "Seçin: tts.* · ayarlar · kaynak · TTS_ENGINE.",
+          "ai_conversation_agent": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · AI · Seç · kaynak · conversation.* / ai_task.*.",
+          "language": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · TTS · Seç · kaynak · provider capabilities.",
+          "use_mold_indicator": "🧱 Küf göstergesi · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Polen · kaynak · Seç.",
+          "use_announcement_hub": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Otomatik · Announcement Hub.",
+          "general_away_cooldown_minutes": "Ortak kaynakları ve bildirim çıkışlarını seçin. Kaydet kurulumu tamamlar. Çalışma ayarları ev ve oda cihazlarında kalır. · Ev · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Geçersiz seçim: Dış hava kalitesi (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Kullanılamıyor: Dış hava kalitesi (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Geçersiz seçim: Hava durumu ve uyarılar (weather.*).",
+      "invalid_warning": "Geçersiz seçim: Hava durumu ve uyarılar ⚠.",
+      "missing_notify": "Seçin: Announcement Hub / notify.*.",
+      "missing_tts": "Seçin: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Geçersiz seçim: °C min < max.",
+      "no_areas": "Seçin: Odalar.",
+      "no_window_areas": "Kullanılamıyor: Ölçümler (binary_sensor, window).",
+      "invalid_areas": "Geçersiz seçim: Odalar.",
+      "invalid_window_exclusions": "Geçersiz seçim: Pencere sensörlerini hariç tut.",
+      "invalid_indoor_exclusions": "Geçersiz seçim: İç ortam hava sensörlerini hariç tut.",
+      "no_windows_after_exclusions": "En az bir pencere sensörünü etkin bırakın.",
+      "review_areas_after_exclusions": "Kontrol edin: Odalar · Ölçümler (0).",
+      "invalid_repeat_minutes": "Geçersiz seçim: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Kullanılamıyor: conversation.process.",
+      "invalid_ai_agent": "Geçersiz seçim: conversation.*.",
+      "invalid_mold_temperature_sensor": "Odalar · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Odalar · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Küf göstergesi · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Küf göstergesi · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Küf göstergesi · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "«ayarlar · kaynak» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "invalid_environment_measurement": "«ayarlar · kaynak» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pmv_requires_explicit_inputs": "«PMV / PPD» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pid_climate_required": "«PID · Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pid_temperature_required": "«PID · Sıcaklık» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pid_invalid_target": "«PID · hedef» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pid_duplicate_climate": "«PID · Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "pid_invalid_parameters": "«PID» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_dry_fan_control_inputs_missing": "«Hız · Cihazlar · kontrol» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_humidity_power_inputs_missing": "«Nem · Cihazlar · Güç» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_secondary_control_inputs_missing": "«Cihazlar · kontrol» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_fan_power_inputs_missing": "«Hız · Cihazlar · Güç» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_fan_control_inputs_missing": "«Hız · Cihazlar · kontrol» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_fan_sensor_invalid": "«Hız · Cihazlar · sensör» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_humidity_control_inputs_missing": "«Nem · Cihazlar · kontrol» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_temperature_required": "«Sıcaklık · Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_target_required": "«Cihazlar · hedef» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_direct_actuator_not_ready": "«Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_controller_invalid": "«Cihazlar · kontrol» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_mode_invalid": "«Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_occupancy_invalid": "«Doluluk · Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_away_invalid": "«Ev · Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_deadband_invalid": "«Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_attestation_required": "«Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_direct_targets_invalid": "«Cihazlar · hedef» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "climate_direct_timing_invalid": "«Cihazlar» için geçersiz ayar. Kaynağı, birimi ve güvenliği kontrol edin.",
+      "general_invalid_presence": "Geçersiz · Doluluk · ayarlar",
+      "general_invalid_trackers": "Geçersiz · Ev · ayarlar",
+      "general_invalid_rooms_entity": "Geçersiz · Oda · ayarlar",
+      "general_invalid_attribute": "Geçersiz · kaynak · ayarlar",
+      "general_invalid_source_age": "Geçersiz · kaynak · ayarlar",
+      "invalid_selected_devices": "Geçersiz · Cihazlar · ayarlar",
+      "device_policy_invalid": "Geçersiz · Doluluk · ayarlar",
+      "device_method_invalid": "Geçersiz · kontrol · ayarlar",
+      "device_hardware_required": "Geçersiz · Gerekli · ayarlar",
+      "device_power_required_for_off": "Geçersiz · Güç · ayarlar",
+      "device_temperature_required": "Geçersiz · Sıcaklık · ayarlar",
+      "device_humidity_required": "Geçersiz · Nem · ayarlar",
+      "device_air_sensor_required": "Geçersiz · sensör · ayarlar",
+      "device_temperature_band_invalid": "Geçersiz · Sıcaklık · ayarlar",
+      "device_humidity_invalid": "Geçersiz · Nem · ayarlar",
+      "device_runtime_invalid": "Geçersiz · Güç · ayarlar",
+      "invalid_setup_rooms": "Geçersiz: İzlenecek odalar",
+      "invalid_room_source": "Geçersiz: Oda · kaynak"
+    },
+    "abort": {
+      "setup_area_removed": "Geçersiz: İzlenecek odalar",
+      "setup_changed": "ayarlar ↻ İzlenecek odalar"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Hava kalitesi",
+        "state": {
+          "open": "Kapatın · Ölçümler",
+          "close": "Otomatik bildirimler · Ölçümler",
+          "idle": "İyi",
+          "blocked": "Pencereleri kapalı tutun"
+        }
+      },
+      "area_overview": {
+        "name": "Ortam özeti"
+      },
+      "area_surface_humidity": {
+        "name": "Yüzey nemi (hesaplanan)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Dışarısı · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Dışarısı · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Dışarısı · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Dışarısı · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Dışarısı · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Dışarısı · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Dış (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Dış (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Dış (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Hava kalitesi · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Hava kalitesi · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Hava kalitesi · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Hava kalitesi · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Hava kalitesi · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Hava kalitesi · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Hava kalitesi · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Küf göstergesi · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Dışarısı · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Dışarısı · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Dışarısı · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Hava durumu ve uyarılar · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Açın (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Duyurular (isteğe bağlı) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "hedef (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · kontrol (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · kontrol (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · kontrol (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Isıtma · Oda · Doluluk"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Soğutma · Oda · Doluluk"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Isıtma · Ev · Oda"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Soğutma · Ev · Oda"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Isıtma · Oda · Uyku"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Soğutma · Oda · Uyku"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Isıtma · Ev · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Soğutma · Ev · ECO"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Polen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Polen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "kaynak · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "ayarlar · kaynak (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · hedef (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Hız · Dış (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "ayarlar · kaynak (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "ayarlar · kaynak (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Cihazlar · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Doluluk · Cihazlar · sensör · Gerekli"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Cihazlar (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Nem · Cihazlar (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Nem · Cihazlar (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Nem · Cihazlar · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Cihazlar · Sıcaklık −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Cihazlar (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Cihazlar · Hız (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Cihazlar · Hız (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · kontrol (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · kontrol (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · kontrol (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "ayarlar · kaynak (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "ayarlar · kaynak · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "ayarlar · kaynak · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Küf göstergesi · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · kontrol (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · kontrol (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · kontrol (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ayarlar · kaynak (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Sessiz fan sınırı (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Güç · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Güç · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Güç · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Oda · Sıcaklık · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Oda · Sıcaklık · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Oda · Nem · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Oda · Nem · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Oda · Hız · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Oda · Hız · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Ev · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Otomatik · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Otomatik"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Duyurular (isteğe bağlı)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Polen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Uyku"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Otomatik"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Uyku · Cihazlar"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Uyku · Otomatik"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Cihazlar · Dış"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Uykuda düşük gürültü"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Odada biri varken düşük gürültü"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}Güç · kontrol"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}sensör · Gerekli"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Dil"
+      },
+      "area_manual_profile": {
+        "name": "Cihazlar · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Ev · Doluluk · kontrol"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Doluluk · Cihazlar"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Ev · Cihazlar · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Cihazlar · kaynak · hedef"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Kontrol yöntemi",
+        "state": {
+          "existing": "Mevcut oda denetleyicisi",
+          "automatic": "Otomatik",
+          "manual": "Manuel",
+          "off": "Kapat",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Cihazın sessiz fan kademesi"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}kontrol · Doluluk",
+        "state": {
+          "always": "Otomatik",
+          "occupied": "Oda · Doluluk",
+          "absent": "Oda · Doluluk · Kapat"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Uyku · kontrol",
+        "state": {
+          "normal": "Otomatik",
+          "pause": "Duraklat",
+          "sleep_targets": "Uyku · hedef"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}kontrol · Cihazlar",
+        "state": {
+          "extraction": "Dış · kontrol",
+          "filtration": "PM2.5 · kontrol",
+          "auto": "Otomatik"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Sıcaklık · kaynak"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "kaynak · Hız · Dış (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Uyku · Cihazlar · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Uyku · Cihazlar · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Küf göstergesi · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Doğrula ve sürdür"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}İklim denetleyicisi"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Duyurular (isteğe bağlı) — Home Environment Manager",
+      "description": "Duyurular (isteğe bağlı) · Odalar",
+      "fields": {
+        "language": {
+          "name": "Dil",
+          "description": "Dil"
+        },
+        "channels": {
+          "name": "Duyurular (isteğe bağlı)",
+          "description": "Duyurular (isteğe bağlı)"
+        },
+        "areas": {
+          "name": "Odalar",
+          "description": "Odalar"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Varsayılan",
+        "en": "ayarlar · kaynak",
+        "de": "ayarlar · kaynak",
+        "el": "ayarlar · kaynak",
+        "fr": "ayarlar · kaynak",
+        "es": "ayarlar · kaynak",
+        "it": "ayarlar · kaynak",
+        "nl": "ayarlar · kaynak",
+        "pt": "ayarlar · kaynak",
+        "pt-br": "ayarlar · kaynak",
+        "pl": "ayarlar · kaynak",
+        "ru": "ayarlar · kaynak",
+        "uk": "ayarlar · kaynak",
+        "tr": "ayarlar · kaynak",
+        "cs": "ayarlar · kaynak",
+        "sk": "ayarlar · kaynak",
+        "hu": "ayarlar · kaynak",
+        "ro": "ayarlar · kaynak",
+        "bg": "ayarlar · kaynak",
+        "hr": "ayarlar · kaynak",
+        "sr": "ayarlar · kaynak",
+        "sv": "ayarlar · kaynak",
+        "nb": "ayarlar · kaynak",
+        "da": "ayarlar · kaynak",
+        "fi": "ayarlar · kaynak",
+        "id": "ayarlar · kaynak",
+        "vi": "ayarlar · kaynak",
+        "th": "ayarlar · kaynak",
+        "hi": "ayarlar · kaynak",
+        "zh-hans": "ayarlar · kaynak",
+        "zh-hant": "ayarlar · kaynak",
+        "ja": "ayarlar · kaynak",
+        "ko": "ayarlar · kaynak",
+        "ar": "ayarlar · kaynak",
+        "he": "ayarlar · kaynak",
+        "fa": "ayarlar · kaynak",
+        "bn": "ayarlar · kaynak",
+        "ur": "ayarlar · kaynak",
+        "ta": "ayarlar · kaynak"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Ev · Doluluk",
+        "all_home": "Ev · Cihazlar · Doluluk"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "hedef · kontrol",
+        "native": "Cihazlar · kontrol",
+        "power": "Güç",
+        "speed": "Hız"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Otomatik",
+        "room": "Oda · Doluluk",
+        "home": "Ev · Doluluk"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Duraklat",
+        "off": "Kapat"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Otomatik",
+        "pause": "Duraklat",
+        "sleep_targets": "Uyku · hedef"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Dış · kontrol",
+        "filtration": "PM2.5 · kontrol"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "kaynak · Geçersiz",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "hedef · ayarlar"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Oda merkezi",
+      "initiate_flow": {
+        "user": "Oda merkezi"
+      },
+      "step": {
+        "user": {
+          "title": "Oda merkezi",
+          "description": "Bir Home Assistant alanı seçin. Grup, genel oda ayarlarını ve seçilen her fiziksel cihaz için bir denetleyiciyi içerir. Oda eklemek, ekipmanın otomatik kontrolünü etkinleştirmez.",
+          "data": {
+            "area_id": "Oda"
+          },
+          "data_description": {
+            "area_id": "Bir Home Assistant alanı seçin. Grup, genel oda ayarlarını ve seçilen her fiziksel cihaz için bir denetleyiciyi içerir. Oda eklemek, ekipmanın otomatik kontrolünü etkinleştirmez."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Geçersiz: Alan."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

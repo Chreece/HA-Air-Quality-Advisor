@@ -5,15 +5,15 @@ import json
 import string
 from pathlib import Path
 
-from custom_components.air_quality_advisor.languages import (
+from custom_components.environment_manager.languages import (
     EXTRA_LOCALES, NATIVE_NAMES, SUPPORTED_LANGUAGE_TAGS, LANGUAGE_OPTIONS,
     resolve_language, RTL_LANGUAGES,
 )
-from custom_components.air_quality_advisor.messages import TEXT, announcement
-from custom_components.air_quality_advisor.logic import Window, Reason, Recommendation
+from custom_components.environment_manager.messages import TEXT, announcement
+from custom_components.environment_manager.logic import Window, Reason, Recommendation
 
 ROOT = Path(__file__).resolve().parents[1]
-TRANSLATIONS = ROOT / "custom_components" / "air_quality_advisor" / "translations"
+TRANSLATIONS = ROOT / "custom_components" / "environment_manager" / "translations"
 
 
 def test_38_unique_and_named_supported_languages():
@@ -95,7 +95,7 @@ def test_all_spoken_announcement_placeholders_and_reasons_work():
 
 
 def test_rh_fallback_announcements_use_localized_reason_name():
-    from custom_components.air_quality_advisor.messages import explain
+    from custom_components.environment_manager.messages import explain
     value = Reason("inside_humidity", "Average room relative humidity (fallback)", "70 %")
     assert "μέση σχετική υγρασία" in explain(value, "el_GR")
     assert "mittlere relative Raumfeuchte" in explain(value, "de")

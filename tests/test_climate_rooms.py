@@ -1,5 +1,5 @@
 """HA area occupancy and tracking inputs, with conservative sensor handling."""
-from custom_components.air_quality_advisor.logic import Room,Window
+from custom_components.environment_manager.logic import Room,Window
 from test_discovery import FakeHass,MockState,adapter
 
 
@@ -17,7 +17,7 @@ def home(*,room_occupied=False,second_occupied=False,away=False,unknown=False):
 
 
 def test_auto_discovers_all_room_presence_and_any_on_wins(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.environment_manager.climate_rooms import gather
     hass=home(room_occupied=False,second_occupied=True)
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     c={"enabled":True,"controller":"device","mode":"auto",
@@ -33,7 +33,7 @@ def test_auto_discovers_all_room_presence_and_any_on_wins(adapter):
 
 
 def test_all_presence_off_selects_home_while_any_unknown_never_claims_away(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.environment_manager.climate_rooms import gather
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     cfg={"enabled":True,"controller":"device","mode":"heat",
          "unoccupied_delay_minutes":0,
@@ -45,7 +45,7 @@ def test_all_presence_off_selects_home_while_any_unknown_never_claims_away(adapt
 
 
 def test_person_tracker_away_priority_and_open_window_hold(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.environment_manager.climate_rooms import gather
     cfg={"enabled":True,"controller":"device","mode":"auto",
          "temperature_entity":"sensor.kitchen_temperature","climate_entity":"climate.kitchen",
          "away_entities":["person.resident"]}
@@ -57,7 +57,7 @@ def test_person_tracker_away_priority_and_open_window_hold(adapter):
     assert report["status"]=="hold"
 
 def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.environment_manager.climate_rooms import gather
     home_hass=home(room_occupied=False,second_occupied=False)
     room=Room("kitchen","Kitchen",(Window("binary_sensor.win","Window",False),),())
     conf={"enabled":True,"controller":"device","mode":"heat",
@@ -80,7 +80,7 @@ def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
 
 
 def test_climate_only_room_without_windows_is_not_forced_to_hold(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
+    from custom_components.environment_manager.climate_rooms import gather
     house=home(room_occupied=True)
     cfg={"enabled":True,"controller":"device","mode":"heat",
          "temperature_entity":"sensor.kitchen_temperature",
@@ -95,8 +95,8 @@ def test_climate_only_room_without_windows_is_not_forced_to_hold(adapter):
 
 
 def test_room_mode_can_plan_secondary_ac_without_claiming_radiator_cooling(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
-    from custom_components.air_quality_advisor.logic import Room,Window
+    from custom_components.environment_manager.climate_rooms import gather
+    from custom_components.environment_manager.logic import Room,Window
     air=home(room_occupied=True)
     radiator=air.states.get("climate.kitchen")
     radiator.attributes["hvac_modes"]=["off","heat"]
@@ -122,8 +122,8 @@ def test_room_mode_can_plan_secondary_ac_without_claiming_radiator_cooling(adapt
 
 
 def test_environment_only_plans_moisture_without_temperature_or_climate_device(adapter):
-    from custom_components.air_quality_advisor.climate_rooms import gather
-    from custom_components.air_quality_advisor.logic import Reading
+    from custom_components.environment_manager.climate_rooms import gather
+    from custom_components.environment_manager.logic import Reading
     from test_discovery import FakeHass,MockState
     humidity=MockState("sensor.bathroom_humidity",74,
                        device_class="humidity",unit="%")

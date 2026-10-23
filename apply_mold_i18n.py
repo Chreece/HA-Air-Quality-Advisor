@@ -12,7 +12,7 @@ from pathlib import Path
 
 from apply_config_i18n import native_languages
 
-ROOT = Path(__file__).resolve().parent / "custom_components" / "air_quality_advisor"
+ROOT = Path(__file__).resolve().parent / "custom_components" / "environment_manager"
 MOLD_NAMES = runpy.run_path(str(ROOT / "mold_text.py"))["MOLD_NAMES"]
 
 FIVE = {

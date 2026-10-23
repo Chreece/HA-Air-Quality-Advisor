@@ -14,7 +14,7 @@ def fan_module(adapter,monkeypatch):
     mock=types.ModuleType("homeassistant.helpers.storage")
     mock.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",mock)
-    return importlib.import_module("custom_components.air_quality_advisor.climate_fan_native")
+    return importlib.import_module("custom_components.environment_manager.climate_fan_native")
 
 
 class FanServices:
@@ -257,7 +257,7 @@ def test_expired_air_evidence_never_commands_fan_speed(fan_module):
 
 def test_running_extractor_speed_rechecks_window_after_room_grant(fan_module):
     async def scenario():
-        from custom_components.air_quality_advisor.climate_arbitration import (
+        from custom_components.environment_manager.climate_arbitration import (
             room_coordination,
         )
         h=home()

@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from custom_components.air_quality_advisor.pmv_core import pmv_ppd_iso
-from custom_components.air_quality_advisor.environment_science import pmv_iso7730
+from custom_components.environment_manager.pmv_core import pmv_ppd_iso
+from custom_components.environment_manager.environment_science import pmv_iso7730
 
 
 @pytest.mark.parametrize("inputs,expected_pmv,expected_ppd", [
@@ -56,6 +56,6 @@ def test_standard_pmv_still_operates_without_third_party_packages():
 
 def test_no_mandatory_binary_dependencies_in_manifest():
     manifest=json.loads((Path(__file__).resolve().parents[1]/
-        "custom_components/air_quality_advisor/manifest.json").read_text(
+        "custom_components/environment_manager/manifest.json").read_text(
             encoding="utf-8"))
     assert manifest["requirements"] == []

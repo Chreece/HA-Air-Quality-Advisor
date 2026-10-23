@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / ".github" / "assets" / "screenshots"
-CARD_JS = ROOT / "custom_components" / "air_quality_advisor" / "frontend" / "air-quality-advisor-card.js"
+CARD_JS = ROOT / "custom_components" / "environment_manager" / "frontend" / "air-quality-advisor-card.js"
 
 CSS = """
 *{box-sizing:border-box}

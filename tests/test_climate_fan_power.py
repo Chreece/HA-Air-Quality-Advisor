@@ -15,7 +15,7 @@ def driver(adapter,monkeypatch):
     m=types.ModuleType("homeassistant.helpers.storage")
     m.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",m)
-    return importlib.import_module("custom_components.air_quality_advisor.climate_fan_power")
+    return importlib.import_module("custom_components.environment_manager.climate_fan_power")
 
 
 class Services:
@@ -262,7 +262,7 @@ def test_restart_with_owned_fan_requires_reconciliation_not_power_command(driver
 
 def test_live_room_gate_prevents_unsafe_extractor_start_after_window_change(driver):
     async def scenario():
-        from custom_components.air_quality_advisor.climate_arbitration import (
+        from custom_components.environment_manager.climate_arbitration import (
             room_coordination,
         )
         h=home()

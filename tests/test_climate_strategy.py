@@ -1,6 +1,6 @@
 """Scientific comfort bands and actuator safeguards, no fake climate devices."""
 import pytest
-from custom_components.air_quality_advisor.climate_strategy import (
+from custom_components.environment_manager.climate_strategy import (
     profiles,occupied_evidence,home_away_evidence,select_profile,
     capabilities,auto_mode,policy,relay_demand,guarded_transition,pwm_slot,
 )

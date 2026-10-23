@@ -1,9 +1,9 @@
 """Room integration tests with Home Assistant stand-ins and no cloud inputs."""
 from __future__ import annotations
 
-from custom_components.air_quality_advisor.building_physics import DAY_S, WEEK_S
-from custom_components.air_quality_advisor.environment_history import EnvironmentHistory
-from custom_components.air_quality_advisor.logic import Reading, Room, Weather, Window, evaluate
+from custom_components.environment_manager.building_physics import DAY_S, WEEK_S
+from custom_components.environment_manager.environment_history import EnvironmentHistory
+from custom_components.environment_manager.logic import Reading, Room, Weather, Window, evaluate
 from test_discovery import FakeHass, MockState, adapter
 
 
@@ -29,7 +29,7 @@ def fixture_home(*, other_temp=False):
 
 
 def test_room_moisture_drying_diagnostics_use_measured_paired_weather(adapter):
-    from custom_components.air_quality_advisor.environment import build_environment
+    from custom_components.environment_manager.environment import build_environment
     h = EnvironmentHistory()
     input_room = room()
     data, changed = build_environment(
@@ -51,7 +51,7 @@ def test_room_moisture_drying_diagnostics_use_measured_paired_weather(adapter):
 
 
 def test_multiple_temperature_sources_without_calibration_fail_closed(adapter):
-    from custom_components.air_quality_advisor.environment import build_environment
+    from custom_components.environment_manager.environment import build_environment
     rec = room()
     report, _ = build_environment(
         fixture_home(other_temp=True), (rec,), (rec,),
@@ -65,7 +65,7 @@ def test_multiple_temperature_sources_without_calibration_fail_closed(adapter):
 
 
 def test_configured_temperature_wins_when_multiple_sources(adapter):
-    from custom_components.air_quality_advisor.environment import build_environment
+    from custom_components.environment_manager.environment import build_environment
     rec = room()
     report, _ = build_environment(
         fixture_home(other_temp=True), (rec,), (rec,),
@@ -77,7 +77,7 @@ def test_configured_temperature_wins_when_multiple_sources(adapter):
 
 
 def test_ambiguous_outdoor_weather_sources_withheld(adapter):
-    from custom_components.air_quality_advisor.environment import build_environment
+    from custom_components.environment_manager.environment import build_environment
     rec = room()
     report, _ = build_environment(
         fixture_home(), (rec,), (rec,),
@@ -112,7 +112,7 @@ def test_humidity_only_open_action_withheld_when_outside_more_humid():
 
 
 def test_7_day_adaptive_mean_requires_continuous_observations(adapter):
-    from custom_components.air_quality_advisor.environment import build_environment
+    from custom_components.environment_manager.environment import build_environment
     h = EnvironmentHistory()
     current = WEEK_S + 1000000
     for elapsed in range(0, WEEK_S + 1, 300):

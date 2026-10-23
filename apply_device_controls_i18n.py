@@ -59,7 +59,7 @@ def apply_device_controls_i18n(root: Path) -> None:
             number["area_pid_" + key] = {
                 "name": caption or (words[5] if key == "target_c" else "PID " + key)
             }
-        for kind in ("home", "unoccupied", "away", "sleep"):
+        for kind in ("comfort", "home", "sleep", "eco"):
             for mode in ("heat", "cool"):
                 key = kind + "_" + mode
                 prefix = words[0] if mode == "heat" else words[1]

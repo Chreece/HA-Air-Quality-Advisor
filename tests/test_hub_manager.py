@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 from test_discovery import adapter, FakeHass, MockState
-from custom_components.air_quality_advisor.logic import Recommendation, Window, Reason, Plan
+from custom_components.environment_manager.logic import Recommendation, Window, Reason, Plan
 
 
 REC = Recommendation(
@@ -40,7 +40,7 @@ def delivery_module(monkeypatch, adapter):
     events.async_call_later = lambda *args: None
     events.async_track_time_interval = lambda *args: None
     monkeypatch.setitem(sys.modules, "homeassistant.helpers.event", events)
-    package = "custom_components.air_quality_advisor.manager"
+    package = "custom_components.environment_manager.manager"
     monkeypatch.delitem(sys.modules, package, raising=False)
     return importlib.import_module(package)
 
@@ -222,7 +222,7 @@ def test_live_hub_rejections_never_trigger_direct_or_system_notifications(
 def test_live_hub_timeout_does_not_create_native_notification(
     monkeypatch, delivery_module,
 ):
-    import custom_components.air_quality_advisor.hub_delivery as delivery
+    import custom_components.environment_manager.hub_delivery as delivery
     async def slow_service(*args, **kwargs):
         await asyncio.sleep(0.05)
         return {"accepted":True,"job_id":"eventually"}

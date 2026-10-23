@@ -12,7 +12,7 @@ import pytest
 
 from test_equipment_control import home, runtime_module
 from test_discovery import adapter
-from custom_components.air_quality_advisor import equipment_model as model
+from custom_components.environment_manager import equipment_model as model
 
 
 @pytest.fixture
@@ -68,10 +68,10 @@ def platforms(monkeypatch, runtime_module):
         elif domain == "number":
             native.NumberMode = SimpleNamespace(BOX="box")
         monkeypatch.setitem(sys.modules, native.__name__, native)
-    monkeypatch.delitem(sys.modules, "custom_components.air_quality_advisor.equipment_entity", raising=False)
+    monkeypatch.delitem(sys.modules, "custom_components.environment_manager.equipment_entity", raising=False)
     result = {}
     for domain in ("climate", "number", "select", "switch", "button"):
-        name=f"custom_components.air_quality_advisor.{domain}"
+        name=f"custom_components.environment_manager.{domain}"
         monkeypatch.delitem(sys.modules, name, raising=False)
         result[domain]=importlib.import_module(name)
     return SimpleNamespace(**result, runtime=runtime_module, Features=ClimateEntityFeature)
@@ -92,7 +92,7 @@ def test_native_climate_facade_matches_actual_capabilities(platforms, domain, ex
     assert entity.current_temperature==15
     assert entity.current_humidity==70
     assert entity.hvac_mode=="off" and entity.hvac_action=="off"
-    assert entity._attr_device_info["identifiers"]=={("air_quality_advisor",h.spec.identifier)}
+    assert entity._attr_device_info["identifiers"]=={("environment_manager",h.spec.identifier)}
     assert entity._attr_native_temperature_unit=="°C"
     assert set(entity.preset_modes)==set(model.PRESETS)
 
@@ -238,7 +238,7 @@ def test_room_limit_numbers_attach_to_room_environment_device(platforms):
         climate.manager,"entry","room","room_equipment_limit",
         "temperature_min_limit",bounds)
     assert tmin._attr_device_info["identifiers"] == {
-        ("air_quality_advisor","entry_area_room")}
+        ("environment_manager","entry_area_room")}
     assert (tmin._attr_native_min_value,tmin._attr_native_max_value)==(5,35)
     assert tmin.native_value==5
 

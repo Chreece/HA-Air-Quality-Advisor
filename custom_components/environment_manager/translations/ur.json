@@ -1,0 +1,1821 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "کمرے",
+        "description": "1 · 🪟 کمرے. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "کمرے",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "کھڑکی کے سینسر خارج کریں",
+        "description": "2 · کھڑکی کے سینسر خارج کریں. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "کھڑکی کے سینسر خارج کریں"
+        },
+        "data_description": {
+          "excluded_window_entities": "منتخب کریں: کھڑکی کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "کمرے · پھپھوندی کی نشاندہی",
+        "description": "کمرے: {area_name} ({position}/{total}). 🌡️ 🧊 پھپھوندی کی نشاندہی · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں",
+          "mold_indoor_temperature": "کمرے · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "پھپھوندی کی نشاندہی · 🧊 °C",
+          "mold_recalibrate": "پھپھوندی کی نشاندہی · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "باہر · درجہ حرارت · ماخذ · پھپھوندی کی نشاندہی"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "کمرے: 🌡️ °C/°F · پھپھوندی کی نشاندہی.",
+          "mold_critical_temperature_c": "🧊 پھپھوندی کی نشاندہی · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "«پھپھوندی کی نشاندہی · ↻ 🌡️» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "mold_outdoor_weather_entity": "منتخب کریں weather.* · باہر درجہ حرارت (temperature, °C/°F) → پھپھوندی کی نشاندہی. ضروری: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "بیرونی ہوا کا معیار",
+        "description": "بیرونی ہوا کا معیار. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "بیرونی ہوا کا معیار"
+        },
+        "data_description": {
+          "outdoor_sensors": "منتخب کریں: بیرونی ہوا کا معیار · AQI, CO₂, PM2.5, PM10, VOC. دستیاب نہیں: ⚠"
+        }
+      },
+      "weather": {
+        "title": "موسم اور انتباہات",
+        "description": "موسم اور انتباہات. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "موسم اور انتباہات",
+          "weather_warnings": "موسم کی تنبیہات"
+        },
+        "data_description": {
+          "weather_entities": "منتخب کریں: موسم اور انتباہات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "موسم اور انتباہات · ⚠ (دستیاب نہیں) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "اعلانات (اختیاری)",
+        "description": "اعلانات (اختیاری). خودکار اطلاعات · خودکار صوتی اعلانات. Announcement Hub.",
+        "data": {
+          "language": "زبان",
+          "automatic_tts": "خودکار",
+          "automatic_notifications": "خودکار · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "اعلانات (اختیاری) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ترتیبات · ماخذ",
+          "tts_engine": "ترتیبات · ماخذ · TTS_ENGINE",
+          "media_players": "ترتیبات · ماخذ · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · اعلانات (اختیاری)",
+          "ai_conversation_agent": "AI · زبان"
+        },
+        "data_description": {
+          "language": "زبان: Home Assistant (پہلے سے طے شدہ).",
+          "automatic_tts": "پہلے سے طے شدہ: ⛔ · خودکار · 🪟 90 s.",
+          "automatic_notifications": "پہلے سے طے شدہ: ⛔ · خودکار · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "پہلے سے طے شدہ: 10 min · 0 = کبھی نہیں · جب تک وہی وجہ برقرار رہے · کمرے.",
+          "use_announcement_hub": "Announcement Hub · دستیاب نہیں → Home Assistant.",
+          "notify_entities": "منتخب کریں: notify.* · ترتیبات · ماخذ.",
+          "tts_engine": "منتخب کریں: tts.* · ترتیبات · ماخذ · TTS_ENGINE.",
+          "media_players": "منتخب کریں: media_player.* · ترتیبات · ماخذ · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · اعلانات (اختیاری) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "منتخب کریں: conversation.* (Home Assistant · پہلے سے طے شدہ)."
+        }
+      },
+      "thresholds": {
+        "title": "اعلیٰ حدود",
+        "description": "اعلیٰ حدود. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "باہر · AQI (≤)",
+          "outdoor_co2": "باہر · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "باہر · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "باہر · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "باہر · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "باہر · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · باہر (µg/m³)",
+          "outdoor_o3": "O₃ · باہر (µg/m³)",
+          "outdoor_so2": "SO₂ · باہر (µg/m³)",
+          "indoor_aqi": "ہوا کا معیار · AQI (≥)",
+          "indoor_co2": "ہوا کا معیار · CO₂ (ppm) (≥)",
+          "indoor_pm25": "ہوا کا معیار · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "ہوا کا معیار · PM10 (µg/m³) (≥)",
+          "indoor_voc": "ہوا کا معیار · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "ہوا کا معیار · VOC (ppb) (≥)",
+          "indoor_humidity": "ہوا کا معیار · RH (%) (≥)",
+          "min_outdoor_temp": "باہر · °C (≥)",
+          "max_outdoor_temp": "باہر · °C (≤)",
+          "max_outdoor_humidity": "باہر · RH (%) (≤)",
+          "max_wind_kmh": "موسم اور انتباہات · km/h (≤)",
+          "max_age_minutes": "⏱ · کھولیں (min, ≤)",
+          "indoor_mold": "پھپھوندی کی نشاندہی · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "«باہر · AQI (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_co2": "«باہر · CO₂ (ppm) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_pm25": "«باہر · PM2.5 (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_pm10": "«باہر · PM10 (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_voc": "«باہر · VOC (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_voc_parts": "«باہر · VOC (ppb) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_no2": "«NO₂ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_o3": "«O₃ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_so2": "«SO₂ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_aqi": "«ہوا کا معیار · AQI (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_co2": "«ہوا کا معیار · CO₂ (ppm) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_pm25": "«ہوا کا معیار · PM2.5 (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_pm10": "«ہوا کا معیار · PM10 (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_voc": "«ہوا کا معیار · VOC (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_voc_parts": "«ہوا کا معیار · VOC (ppb) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_humidity": "«ہوا کا معیار · RH (%) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "min_outdoor_temp": "«باہر · °C (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_outdoor_temp": "«باہر · °C (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_outdoor_humidity": "«باہر · RH (%) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_wind_kmh": "«موسم اور انتباہات · km/h (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_age_minutes": "«⏱ · کھولیں (min, ≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_mold": "«پھپھوندی کی نشاندہی · ≥ 70%» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "setup_rooms": {
+        "title": "نگرانی کے کمرے",
+        "description": "نگرانی کے کمرے → ماخذ → عمومی ترتیبات",
+        "data": {
+          "areas": "نگرانی کے کمرے"
+        },
+        "data_description": {
+          "areas": "نگرانی کے کمرے. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔"
+        }
+      },
+      "setup_room_sources": {
+        "title": "کمرہ · {area_name} · {room_index}/{room_count}",
+        "description": "کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+        "data": {
+          "windows": "کھڑکیاں",
+          "air_quality": "ہوا کے معیار اور ماحول کے سینسر",
+          "temperature": "درجہ حرارت",
+          "humidity": "نمی",
+          "pressure": "دباؤ کے سینسر",
+          "climate_devices": "آلات"
+        },
+        "data_description": {
+          "windows": "کھڑکیاں. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "air_quality": "ہوا کے معیار اور ماحول کے سینسر. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "temperature": "درجہ حرارت. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "humidity": "نمی. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "pressure": "دباؤ کے سینسر. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "climate_devices": "آلات. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔"
+        }
+      },
+      "setup_general": {
+        "title": "عمومی ترتیبات",
+        "description": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔",
+        "data": {
+          "weather_entities": "موسم اور انتباہات",
+          "outdoor_sensors": "بیرونی ہوا کا معیار",
+          "weather_warnings": "موسم کی تنبیہات",
+          "general_room_occupancy_sensors": "کمرہ · موجودگی · سینسر",
+          "general_home_trackers": "گھر · موجودگی · آلات",
+          "general_occupied_rooms_entity": "موجودگی · کمرہ · ماخذ (state)",
+          "general_occupied_rooms_attribute": "موجودگی · کمرہ · ماخذ (attribute)",
+          "general_sleep_rooms_entity": "نیند · کمرہ · ماخذ (state)",
+          "general_sleep_rooms_attribute": "نیند · کمرہ · ماخذ (attribute)",
+          "notify_entities": "ترتیبات · ماخذ",
+          "media_players": "ترتیبات · ماخذ · MEDIA_PLAYERS",
+          "tts_engine": "ترتیبات · ماخذ · TTS_ENGINE",
+          "ai_conversation_agent": "AI · منتخب کریں · ماخذ",
+          "language": "TTS · منتخب کریں · ماخذ",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%",
+          "pollen_entities": "زرگل · ماخذ · منتخب کریں",
+          "use_announcement_hub": "خودکار · Announcement Hub",
+          "general_away_cooldown_minutes": "گھر · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "منتخب کریں: موسم اور انتباہات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "منتخب کریں: بیرونی ہوا کا معیار · AQI, CO₂, PM2.5, PM10, VOC. دستیاب نہیں: ⚠",
+          "weather_warnings": "موسم اور انتباہات · ⚠ (دستیاب نہیں) → 🪟🔒",
+          "general_room_occupancy_sensors": "«کمرہ · موجودگی · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_home_trackers": "«گھر · موجودگی · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_entity": "«موجودگی · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_attribute": "«موجودگی · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "general_sleep_rooms_entity": "«نیند · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_sleep_rooms_attribute": "«نیند · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "notify_entities": "منتخب کریں: notify.* · ترتیبات · ماخذ.",
+          "media_players": "منتخب کریں: media_player.* · ترتیبات · ماخذ · MEDIA_PLAYERS.",
+          "tts_engine": "منتخب کریں: tts.* · ترتیبات · ماخذ · TTS_ENGINE.",
+          "ai_conversation_agent": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · AI · منتخب کریں · ماخذ · conversation.* / ai_task.*.",
+          "language": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · TTS · منتخب کریں · ماخذ · provider capabilities.",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · زرگل · ماخذ · منتخب کریں.",
+          "use_announcement_hub": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · خودکار · Announcement Hub.",
+          "general_away_cooldown_minutes": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · گھر · Away · cooldown (min) · occupancy transition delay."
+        }
+      },
+      "migrate_legacy": {
+        "title": "Home Environment Manager · ترتیبات",
+        "description": "Home Environment Manager · environment_manager · ترتیبات",
+        "data": {
+          "confirm": "منتخب کریں · environment_manager"
+        },
+        "data_description": {
+          "confirm": "Home Environment Manager · environment_manager · ترتیبات"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "غلط انتخاب: بیرونی ہوا کا معیار (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "دستیاب نہیں: بیرونی ہوا کا معیار (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "غلط انتخاب: موسم اور انتباہات (weather.*).",
+      "invalid_warning": "غلط انتخاب: موسم اور انتباہات ⚠.",
+      "missing_notify": "منتخب کریں: Announcement Hub / notify.*.",
+      "missing_tts": "منتخب کریں: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "غلط انتخاب: °C min < max.",
+      "no_areas": "منتخب کریں: کمرے.",
+      "no_window_areas": "دستیاب نہیں: پیمائشیں (binary_sensor, window).",
+      "invalid_areas": "غلط انتخاب: کمرے.",
+      "invalid_window_exclusions": "غلط انتخاب: کھڑکی کے سینسر خارج کریں.",
+      "invalid_indoor_exclusions": "غلط انتخاب: اندرونی ہوا کے سینسر خارج کریں.",
+      "no_windows_after_exclusions": "کم از کم ایک کھڑکی کا سینسر فعال رکھیں.",
+      "review_areas_after_exclusions": "چیک کریں: کمرے · پیمائشیں (0).",
+      "invalid_repeat_minutes": "غلط انتخاب: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "دستیاب نہیں: conversation.process.",
+      "invalid_ai_agent": "غلط انتخاب: conversation.*.",
+      "invalid_mold_temperature_sensor": "کمرے · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "کمرے · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "پھپھوندی کی نشاندہی · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "پھپھوندی کی نشاندہی · 🧊 °C ⚠",
+      "invalid_mold_calibration": "پھپھوندی کی نشاندہی · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "غلط: نگرانی کے کمرے",
+      "invalid_room_source": "غلط: کمرہ · ماخذ"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — پہلے سے ترتیب دیا گیا.",
+      "setup_area_removed": "غلط: نگرانی کے کمرے",
+      "setup_changed": "ترتیبات ↻ نگرانی کے کمرے",
+      "legacy_migration_ambiguous": "ترتیبات · environment_manager · 2+",
+      "legacy_migration_missing": "ترتیبات · environment_manager · ?",
+      "legacy_migration_cancelled": "ترتیبات · environment_manager · ×"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ منتخب کریں",
+        "description": "منتخب کریں: کمرے / موسم اور انتباہات / اعلانات (اختیاری) / اعلیٰ حدود",
+        "menu_options": {
+          "outside_data": "باہر · ماخذ",
+          "general_settings": "عمومی · ترتیبات",
+          "area_settings": "علاقہ · ترتیبات",
+          "delivery": "اعلانات (اختیاری)",
+          "thresholds": "اعلیٰ حدود"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "کھڑکی کے سینسر خارج کریں",
+        "description": "2 · کھڑکی کے سینسر خارج کریں. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "کھڑکی کے سینسر خارج کریں"
+        },
+        "data_description": {
+          "excluded_window_entities": "منتخب کریں: کھڑکی کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "کمرے",
+        "description": "1 · 🪟 کمرے. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "کمرے",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "منتخب کریں: کمرے · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "کمرے · پھپھوندی کی نشاندہی",
+        "description": "کمرے: {area_name} ({position}/{total}). 🌡️ 🧊 پھپھوندی کی نشاندہی · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "اندرونی ہوا کے سینسر خارج کریں",
+          "mold_indoor_temperature": "کمرے · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "پھپھوندی کی نشاندہی · 🧊 °C",
+          "mold_recalibrate": "پھپھوندی کی نشاندہی · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "باہر · درجہ حرارت · ماخذ · پھپھوندی کی نشاندہی"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "منتخب کریں: اندرونی ہوا کے سینسر خارج کریں · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "کمرے: 🌡️ °C/°F · پھپھوندی کی نشاندہی.",
+          "mold_critical_temperature_c": "🧊 پھپھوندی کی نشاندہی · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "«پھپھوندی کی نشاندہی · ↻ 🌡️» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "mold_outdoor_weather_entity": "منتخب کریں weather.* · باہر درجہ حرارت (temperature, °C/°F) → پھپھوندی کی نشاندہی. ضروری: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "بیرونی ہوا کا معیار",
+        "description": "بیرونی ہوا کا معیار. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "بیرونی ہوا کا معیار"
+        },
+        "data_description": {
+          "outdoor_sensors": "منتخب کریں: بیرونی ہوا کا معیار · AQI, CO₂, PM2.5, PM10, VOC. دستیاب نہیں: ⚠"
+        }
+      },
+      "weather": {
+        "title": "موسم اور انتباہات",
+        "description": "موسم اور انتباہات. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "موسم اور انتباہات",
+          "weather_warnings": "موسم کی تنبیہات"
+        },
+        "data_description": {
+          "weather_entities": "منتخب کریں: موسم اور انتباہات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "موسم اور انتباہات · ⚠ (دستیاب نہیں) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "اعلانات (اختیاری)",
+        "description": "اعلانات (اختیاری). خودکار اطلاعات · خودکار صوتی اعلانات. Announcement Hub.",
+        "data": {
+          "language": "زبان",
+          "automatic_tts": "خودکار",
+          "automatic_notifications": "خودکار · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "اعلانات (اختیاری) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ترتیبات · ماخذ",
+          "tts_engine": "ترتیبات · ماخذ · TTS_ENGINE",
+          "media_players": "ترتیبات · ماخذ · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · اعلانات (اختیاری)",
+          "ai_conversation_agent": "AI · زبان"
+        },
+        "data_description": {
+          "language": "زبان: Home Assistant (پہلے سے طے شدہ).",
+          "automatic_tts": "پہلے سے طے شدہ: ⛔ · خودکار · 🪟 90 s.",
+          "automatic_notifications": "پہلے سے طے شدہ: ⛔ · خودکار · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "پہلے سے طے شدہ: 10 min · 0 = کبھی نہیں · جب تک وہی وجہ برقرار رہے · کمرے.",
+          "use_announcement_hub": "Announcement Hub · دستیاب نہیں → Home Assistant.",
+          "notify_entities": "منتخب کریں: notify.* · ترتیبات · ماخذ.",
+          "tts_engine": "منتخب کریں: tts.* · ترتیبات · ماخذ · TTS_ENGINE.",
+          "media_players": "منتخب کریں: media_player.* · ترتیبات · ماخذ · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · اعلانات (اختیاری) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "منتخب کریں: conversation.* (Home Assistant · پہلے سے طے شدہ)."
+        }
+      },
+      "thresholds": {
+        "title": "اعلیٰ حدود",
+        "description": "اعلیٰ حدود. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "باہر · AQI (≤)",
+          "outdoor_co2": "باہر · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "باہر · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "باہر · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "باہر · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "باہر · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · باہر (µg/m³)",
+          "outdoor_o3": "O₃ · باہر (µg/m³)",
+          "outdoor_so2": "SO₂ · باہر (µg/m³)",
+          "indoor_aqi": "ہوا کا معیار · AQI (≥)",
+          "indoor_co2": "ہوا کا معیار · CO₂ (ppm) (≥)",
+          "indoor_pm25": "ہوا کا معیار · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "ہوا کا معیار · PM10 (µg/m³) (≥)",
+          "indoor_voc": "ہوا کا معیار · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "ہوا کا معیار · VOC (ppb) (≥)",
+          "indoor_humidity": "ہوا کا معیار · RH (%) (≥)",
+          "min_outdoor_temp": "باہر · °C (≥)",
+          "max_outdoor_temp": "باہر · °C (≤)",
+          "max_outdoor_humidity": "باہر · RH (%) (≤)",
+          "max_wind_kmh": "موسم اور انتباہات · km/h (≤)",
+          "max_age_minutes": "⏱ · کھولیں (min, ≤)",
+          "indoor_mold": "پھپھوندی کی نشاندہی · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "«باہر · AQI (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_co2": "«باہر · CO₂ (ppm) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_pm25": "«باہر · PM2.5 (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_pm10": "«باہر · PM10 (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_voc": "«باہر · VOC (µg/m³) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_voc_parts": "«باہر · VOC (ppb) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_no2": "«NO₂ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_o3": "«O₃ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outdoor_so2": "«SO₂ · باہر (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_aqi": "«ہوا کا معیار · AQI (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_co2": "«ہوا کا معیار · CO₂ (ppm) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_pm25": "«ہوا کا معیار · PM2.5 (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_pm10": "«ہوا کا معیار · PM10 (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_voc": "«ہوا کا معیار · VOC (µg/m³) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_voc_parts": "«ہوا کا معیار · VOC (ppb) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_humidity": "«ہوا کا معیار · RH (%) (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "min_outdoor_temp": "«باہر · °C (≥)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_outdoor_temp": "«باہر · °C (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_outdoor_humidity": "«باہر · RH (%) (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_wind_kmh": "«موسم اور انتباہات · km/h (≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "max_age_minutes": "«⏱ · کھولیں (min, ≤)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "indoor_mold": "«پھپھوندی کی نشاندہی · ≥ 70%» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "environment": {
+        "title": "ترتیبات · ترتیبات · ماخذ",
+        "description": "«ترتیبات · ترتیبات · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "pollen_entity": "زرگل · ماخذ",
+          "pollen_high_from": "POLLEN · زرگل · HIGH",
+          "pollen_max_scale": "POLLEN · زرگل · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · زرگل · NO VENT",
+          "aqi_scale_0": "AQI #1 · ماخذ",
+          "aqi_custom_limit_0": "AQI #1 · ہدف",
+          "aqi_scale_1": "AQI #2 · ماخذ",
+          "aqi_custom_limit_1": "AQI #2 · ہدف",
+          "aqi_scale_2": "AQI #3 · ماخذ",
+          "aqi_custom_limit_2": "AQI #3 · ہدف",
+          "aqi_scale_3": "AQI #4 · ماخذ",
+          "aqi_custom_limit_3": "AQI #4 · ہدف",
+          "aqi_scale_4": "AQI #5 · ماخذ",
+          "aqi_custom_limit_4": "AQI #5 · ہدف",
+          "aqi_scale_5": "AQI #6 · ماخذ",
+          "aqi_custom_limit_5": "AQI #6 · ہدف",
+          "aqi_scale_6": "AQI #7 · ماخذ",
+          "aqi_custom_limit_6": "AQI #7 · ہدف",
+          "aqi_scale_7": "AQI #8 · ماخذ",
+          "aqi_custom_limit_7": "AQI #8 · ہدف",
+          "aqi_scale_8": "AQI #9 · ماخذ",
+          "aqi_custom_limit_8": "AQI #9 · ہدف",
+          "aqi_scale_9": "AQI #10 · ماخذ",
+          "aqi_custom_limit_9": "AQI #10 · ہدف",
+          "aqi_scale_10": "AQI #11 · ماخذ",
+          "aqi_custom_limit_10": "AQI #11 · ہدف",
+          "aqi_scale_11": "AQI #12 · ماخذ",
+          "aqi_custom_limit_11": "AQI #12 · ہدف",
+          "aqi_scale_12": "AQI #13 · ماخذ",
+          "aqi_custom_limit_12": "AQI #13 · ہدف",
+          "aqi_scale_13": "AQI #14 · ماخذ",
+          "aqi_custom_limit_13": "AQI #14 · ہدف",
+          "aqi_scale_14": "AQI #15 · ماخذ",
+          "aqi_custom_limit_14": "AQI #15 · ہدف",
+          "aqi_scale_15": "AQI #16 · ماخذ",
+          "aqi_custom_limit_15": "AQI #16 · ہدف",
+          "aqi_scale_16": "AQI #17 · ماخذ",
+          "aqi_custom_limit_16": "AQI #17 · ہدف",
+          "aqi_scale_17": "AQI #18 · ماخذ",
+          "aqi_custom_limit_17": "AQI #18 · ہدف",
+          "aqi_scale_18": "AQI #19 · ماخذ",
+          "aqi_custom_limit_18": "AQI #19 · ہدف",
+          "aqi_scale_19": "AQI #20 · ماخذ",
+          "aqi_custom_limit_19": "AQI #20 · ہدف",
+          "aqi_scale_20": "AQI #21 · ماخذ",
+          "aqi_custom_limit_20": "AQI #21 · ہدف",
+          "aqi_scale_21": "AQI #22 · ماخذ",
+          "aqi_custom_limit_21": "AQI #22 · ہدف",
+          "aqi_scale_22": "AQI #23 · ماخذ",
+          "aqi_custom_limit_22": "AQI #23 · ہدف",
+          "aqi_scale_23": "AQI #24 · ماخذ",
+          "aqi_custom_limit_23": "AQI #24 · ہدف",
+          "aqi_scale_24": "AQI #25 · ماخذ",
+          "aqi_custom_limit_24": "AQI #25 · ہدف",
+          "aqi_scale_25": "AQI #26 · ماخذ",
+          "aqi_custom_limit_25": "AQI #26 · ہدف",
+          "aqi_scale_26": "AQI #27 · ماخذ",
+          "aqi_custom_limit_26": "AQI #27 · ہدف",
+          "aqi_scale_27": "AQI #28 · ماخذ",
+          "aqi_custom_limit_27": "AQI #28 · ہدف",
+          "aqi_scale_28": "AQI #29 · ماخذ",
+          "aqi_custom_limit_28": "AQI #29 · ہدف",
+          "aqi_scale_29": "AQI #30 · ماخذ",
+          "aqi_custom_limit_29": "AQI #30 · ہدف",
+          "aqi_scale_30": "AQI #31 · ماخذ",
+          "aqi_custom_limit_30": "AQI #31 · ہدف",
+          "aqi_scale_31": "AQI #32 · ماخذ",
+          "aqi_custom_limit_31": "AQI #32 · ہدف"
+        },
+        "data_description": {
+          "pollen_entity": "«زرگل · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "pollen_high_from": "«POLLEN · زرگل · HIGH» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "pollen_max_scale": "«POLLEN · زرگل · SCALE» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "pollen_avoid_ventilation": "«POLLEN · زرگل · NO VENT» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_scale_0": "«AQI #1 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_0": "«AQI #1 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_1": "«AQI #2 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_1": "«AQI #2 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_2": "«AQI #3 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_2": "«AQI #3 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_3": "«AQI #4 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_3": "«AQI #4 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_4": "«AQI #5 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_4": "«AQI #5 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_5": "«AQI #6 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_5": "«AQI #6 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_6": "«AQI #7 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_6": "«AQI #7 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_7": "«AQI #8 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_7": "«AQI #8 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_8": "«AQI #9 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_8": "«AQI #9 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_9": "«AQI #10 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_9": "«AQI #10 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_10": "«AQI #11 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_10": "«AQI #11 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_11": "«AQI #12 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_11": "«AQI #12 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_12": "«AQI #13 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_12": "«AQI #13 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_13": "«AQI #14 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_13": "«AQI #14 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_14": "«AQI #15 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_14": "«AQI #15 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_15": "«AQI #16 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_15": "«AQI #16 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_16": "«AQI #17 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_16": "«AQI #17 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_17": "«AQI #18 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_17": "«AQI #18 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_18": "«AQI #19 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_18": "«AQI #19 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_19": "«AQI #20 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_19": "«AQI #20 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_20": "«AQI #21 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_20": "«AQI #21 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_21": "«AQI #22 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_21": "«AQI #22 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_22": "«AQI #23 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_22": "«AQI #23 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_23": "«AQI #24 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_23": "«AQI #24 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_24": "«AQI #25 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_24": "«AQI #25 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_25": "«AQI #26 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_25": "«AQI #26 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_26": "«AQI #27 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_26": "«AQI #27 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_27": "«AQI #28 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_27": "«AQI #28 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_28": "«AQI #29 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_28": "«AQI #29 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_29": "«AQI #30 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_29": "«AQI #30 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_30": "«AQI #31 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_30": "«AQI #31 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "aqi_scale_31": "«AQI #32 · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "aqi_custom_limit_31": "«AQI #32 · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "environment_room": {
+        "title": "ترتیبات · ترتیبات · ماخذ",
+        "description": "«ترتیبات · ترتیبات · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "environment_area": "ترتیبات · ماخذ"
+        },
+        "data_description": {
+          "environment_area": "«ترتیبات · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔"
+        }
+      },
+      "environment_room_air": {
+        "title": "ترتیبات · باہر",
+        "description": "«ترتیبات · باہر» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "temperature_entity": "درجہ حرارت · ماخذ",
+          "room_volume_m3": "ترتیبات · ماخذ (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "ہوا صاف کرنے والا · ماخذ",
+          "extractor_entity": "اخراج پنکھا · ماخذ",
+          "co2_ndir_verified": "CO₂ · ضروری",
+          "co2_target_ppm": "CO₂ · CO₂ · ہدف (ppm)",
+          "sleep_room": "نیند"
+        },
+        "data_description": {
+          "temperature_entity": "«درجہ حرارت · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "room_volume_m3": "«ترتیبات · ماخذ (m³)» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "particle_cadr_m3h": "«CADR (m³/h)» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "purifier_entity": "«ہوا صاف کرنے والا · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "extractor_entity": "«اخراج پنکھا · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "co2_ndir_verified": "«CO₂ · ضروری» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "co2_target_ppm": "«CO₂ · CO₂ · ہدف (ppm)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "sleep_room": "«نیند» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔"
+        }
+      },
+      "environment_room_exposure": {
+        "title": "ترتیبات · ترتیبات · ماخذ",
+        "description": "«ترتیبات · ترتیبات · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "radon_entity": "RADON · Rn · ماخذ",
+          "radon_sensor_verified": "RADON · Rn · سینسر · ضروری · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · ماخذ",
+          "formaldehyde_sensor_verified": "HCHO · سینسر · ضروری · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · ماخذ · سینسر (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · سینسر · ضروری",
+          "illuminance_entity": "LUX · ماخذ (lux)",
+          "melanopic_edi_entity": "EDI · EDI · ماخذ (lx)",
+          "melanopic_spectral_verified": "EDI · ضروری"
+        },
+        "data_description": {
+          "radon_entity": "«RADON · Rn · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "radon_sensor_verified": "«RADON · Rn · سینسر · ضروری · SENSOR ✓ · VERIFIED» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ RADON · Rn · سینسر · ضروری · SENSOR ✓ · VERIFIED کا متبادل نہیں۔",
+          "radon_reference_bq_m3": "«Rn (Bq/m³)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "formaldehyde_entity": "«HCHO · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "formaldehyde_sensor_verified": "«HCHO · سینسر · ضروری · SENSOR ✓ · VERIFIED» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ HCHO · سینسر · ضروری · SENSOR ✓ · VERIFIED کا متبادل نہیں۔",
+          "noise_entity": "«dB(A) · ماخذ · سینسر (dB(A))» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "noise_sensor_calibrated": "«dB(A) · سینسر · ضروری» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ dB(A) · سینسر · ضروری کا متبادل نہیں۔",
+          "illuminance_entity": "«LUX · ماخذ (lux)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "melanopic_edi_entity": "«EDI · EDI · ماخذ (lx)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "melanopic_spectral_verified": "«EDI · ضروری» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔"
+        }
+      },
+      "environment_room_comfort": {
+        "title": "ترتیبات · ترتیبات · ماخذ",
+        "description": "«ترتیبات · ترتیبات · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "enable_pmv": "PMV / PPD · خودکار",
+          "radiant_temperature_entity": "درجہ حرارت · ماخذ",
+          "air_speed_entity": "ماخذ · رفتار · باہر (m/s)",
+          "air_speed_m_s": "رفتار · باہر (m/s)",
+          "met": "ترتیبات · ماخذ (met)",
+          "clo": "ترتیبات · ماخذ (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "«PMV / PPD · خودکار» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "radiant_temperature_entity": "«درجہ حرارت · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "air_speed_entity": "«ماخذ · رفتار · باہر (m/s)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "air_speed_m_s": "«رفتار · باہر (m/s)» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "met": "«ترتیبات · ماخذ (met)» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "clo": "«ترتیبات · ماخذ (clo)» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔"
+        }
+      },
+      "pid": {
+        "title": "ترتیبات · PID",
+        "description": "«ترتیبات · PID» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "یہ اختیار «PID» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔"
+        }
+      },
+      "pid_room": {
+        "title": "ترتیبات · PID",
+        "description": "«ترتیبات · PID» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "pid_enabled": "PID · خودکار · AUTO",
+          "pid_climate_entities": "PID · آلات",
+          "pid_temperature_entity": "درجہ حرارت · ماخذ",
+          "pid_mode": "PID",
+          "pid_target_c": "ہدف (°C)",
+          "pid_pause_on_window_open": "PID · باہر"
+        },
+        "data_description": {
+          "pid_enabled": "یہ اختیار «PID · خودکار · AUTO» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "pid_climate_entities": "«PID · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "pid_temperature_entity": "«درجہ حرارت · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "pid_mode": "یہ اختیار «PID» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "pid_target_c": "«ہدف (°C)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "pid_pause_on_window_open": "یہ اختیار «PID · باہر» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔"
+        }
+      },
+      "pid_tuning": {
+        "title": "ترتیبات · PID",
+        "description": "«ترتیبات · PID» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "pid_kp": "PID Kp · کنٹرول (% per °C)",
+          "pid_ki": "PID Ki · کنٹرول (% per °C-minute)",
+          "pid_kd": "PID Kd · کنٹرول (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "یہ اختیار «PID Kp · کنٹرول (% per °C)» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "pid_ki": "یہ اختیار «PID Ki · کنٹرول (% per °C-minute)» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "pid_kd": "یہ اختیار «PID Kd · کنٹرول (%·minute per °C)» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "pid_offset_c": "«PID (°C) · PID_OFFSET_C» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "pid_min_setpoint_c": "«PID (°C) · MIN TARGET» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "pid_max_setpoint_c": "«PID (°C) · MAX TARGET» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "pid_sample_seconds": "یہ وقت «PID (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "pid_max_change_c": "«PID (°C) · MAX Δ» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "pid_min_change_c": "«PID (°C) · MIN Δ» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "climate": {
+        "title": "ترتیبات · آلات",
+        "description": "«ترتیبات · آلات» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+        "data": {
+          "climate_area": "آلات"
+        },
+        "data_description": {
+          "climate_area": "یہ اختیار «آلات» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔"
+        }
+      },
+      "climate_room": {
+        "title": "ترتیبات · آلات",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "climate_enabled": "آلات · خودکار · AUTO",
+          "climate_allow_actuation": "آلات · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "آلات · خودکار · MODE SWITCH",
+          "climate_prefer_native_auto": "آلات · خودکار · NATIVE",
+          "climate_controller": "آلات · کنٹرول",
+          "climate_mode": "آلات · MODE",
+          "climate_entity": "آلات · ماخذ",
+          "climate_temperature_entity": "درجہ حرارت · ماخذ",
+          "climate_hysteresis_c": "آلات (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "یہ اختیار «آلات · خودکار · AUTO» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_allow_actuation": "یہ اختیار «آلات · CLIMATE_ALLOW_ACTUATION» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_auto_switch_hvac": "یہ اختیار «آلات · خودکار · MODE SWITCH» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_prefer_native_auto": "یہ اختیار «آلات · خودکار · NATIVE» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_controller": "یہ اختیار «آلات · کنٹرول» کو آلات · کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_mode": "یہ اختیار «آلات · MODE» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_entity": "«آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_temperature_entity": "«درجہ حرارت · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_hysteresis_c": "«آلات (°C)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "climate_presence": {
+        "title": "ترتیبات · موجودگی · آلات",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "climate_occupancy_sensors": "موجودگی · سینسر",
+          "climate_away_entities": "گھر · آلات",
+          "climate_unknown_occupancy": "موجودگی · آلات",
+          "climate_unoccupied_delay_minutes": "آلات · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "موجودگی · آلات · سینسر · ضروری",
+          "climate_away_policy": "گھر · آلات · POLICY",
+          "climate_manual_profile": "آلات · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "نیند · آلات",
+          "climate_sleep_schedule_enabled": "نیند · خودکار",
+          "climate_sleep_start": "نیند · آلات · START",
+          "climate_sleep_end": "نیند · آلات · END",
+          "climate_target_source": "آلات · ماخذ · ہدف",
+          "climate_comfort_adjustment_max_c": "آلات (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "«موجودگی · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_away_entities": "«گھر · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_unknown_occupancy": "یہ اختیار «موجودگی · آلات» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_unoccupied_delay_minutes": "یہ وقت «آلات · CLIMATE_UNOCCUPIED_DELAY_MINUTES» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_occupancy_stale_minutes": "یہ وقت «موجودگی · آلات · سینسر · ضروری» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_away_policy": "یہ اختیار «گھر · آلات · POLICY» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_manual_profile": "یہ اختیار «آلات · CLIMATE_MANUAL_PROFILE» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_sleep_active": "یہ اختیار «نیند · آلات» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_sleep_schedule_enabled": "یہ اختیار «نیند · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_sleep_start": "یہ وقت «نیند · آلات · START» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_sleep_end": "یہ وقت «نیند · آلات · END» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_target_source": "«آلات · ماخذ · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_comfort_adjustment_max_c": "«آلات (°C)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "climate_equipment": {
+        "title": "ترتیبات · آلات",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · آلات · ماخذ · درجہ حرارت +",
+          "climate_cool_climate_entity": "COOL · آلات · ماخذ · درجہ حرارت −",
+          "climate_dry_climate_entity": "DRY · آلات · ماخذ",
+          "climate_fan_climate_entity": "FAN_ONLY · رفتار · آلات · ماخذ",
+          "climate_humidifier_entity": "HUMIDIFIER · آلات · ماخذ",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · آلات · ماخذ",
+          "climate_extraction_fan_entity": "EXTRACT · رفتار · آلات · ماخذ",
+          "climate_purifier_fan_entity": "ہوا صاف کرنے والا · ماخذ",
+          "climate_humidity_entity": "نمی · ماخذ",
+          "climate_humidity_low_rh": "RH · نمی · آلات (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · نمی · آلات (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · نمی · آلات · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "آلات · درجہ حرارت −",
+          "climate_humidity_setpoint_auto": "نمی · خودکار",
+          "climate_window_efficiency_notify": "آلات · باہر",
+          "climate_dry_fan_mode_auto": "رفتار · خودکار",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · رفتار · آلات · ضروری · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · رفتار · آلات · باہر · ضروری · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · رفتار · آلات (s) · MODE DWELL",
+          "climate_humidity_power_auto": "نمی · طاقت · خودکار",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · نمی · آلات · طاقت · ضروری · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · نمی · آلات · طاقت · باہر · ضروری · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · نمی · آلات · طاقت · خودکار (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · نمی · آلات · طاقت · بند (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · نمی · آلات · طاقت · خودکار (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "آلات · خودکار · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "«HEAT · آلات · ماخذ · درجہ حرارت +» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_cool_climate_entity": "«COOL · آلات · ماخذ · درجہ حرارت −» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_dry_climate_entity": "«DRY · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_fan_climate_entity": "«FAN_ONLY · رفتار · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_humidifier_entity": "«HUMIDIFIER · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_dehumidifier_entity": "«DEHUMIDIFIER · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_extraction_fan_entity": "«EXTRACT · رفتار · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_purifier_fan_entity": "«ہوا صاف کرنے والا · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_humidity_entity": "«نمی · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_humidity_low_rh": "«RH · نمی · آلات (%) · RH MIN» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_humidity_high_rh": "«RH · نمی · آلات (%) · RH MAX» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_humidity_hysteresis_rh": "«RH · نمی · آلات · ± RH» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_cooling_dry_deferral_rh_points": "یہ اختیار «آلات · درجہ حرارت −» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_humidity_setpoint_auto": "یہ اختیار «نمی · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_window_efficiency_notify": "یہ اختیار «آلات · باہر» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_dry_fan_mode_auto": "یہ اختیار «رفتار · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_dry_fan_hardware_confirmed": "«DRY/FAN_ONLY · رفتار · آلات · ضروری · HW ✓» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "climate_dry_fan_windowless_confirmed": "«DRY/FAN_ONLY · رفتار · آلات · باہر · ضروری · NO WINDOW» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "climate_dry_fan_mode_dwell_s": "یہ وقت «DRY/FAN_ONLY · رفتار · آلات (s) · MODE DWELL» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_humidity_power_auto": "یہ اختیار «نمی · طاقت · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_humidity_power_hardware_confirmed": "«RH POWER · نمی · آلات · طاقت · ضروری · HW ✓» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "climate_humidity_power_windowless_confirmed": "«RH POWER · نمی · آلات · طاقت · باہر · ضروری · NO WINDOW» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "climate_humidity_power_min_on_s": "یہ وقت «RH POWER · نمی · آلات · طاقت · خودکار (s) · MIN ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_humidity_power_min_off_s": "یہ وقت «RH POWER · نمی · آلات · طاقت · بند (s) · MIN OFF» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_humidity_power_max_on_s": "یہ وقت «RH POWER · نمی · آلات · طاقت · خودکار (s) · MAX ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_secondary_climate_setpoint_auto": "یہ اختیار «آلات · خودکار · TARGET AUTO» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔"
+        }
+      },
+      "climate_air_strategy": {
+        "title": "ترتیبات · آلات · باہر",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "climate_fan_speed_auto": "رفتار · خودکار",
+          "climate_fan_power_auto": "رفتار · طاقت · خودکار",
+          "climate_fan_power_hardware_confirmed": "FAN · رفتار · آلات · طاقت · ضروری · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · رفتار · آلات · طاقت · خودکار (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · رفتار · آلات · طاقت · بند (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · رفتار · آلات · طاقت · خودکار (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · آلات · سینسر · ضروری · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · آلات · ماخذ",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · آلات · ماخذ",
+          "climate_pm25_action_ug_m3": "PM2.5 · آلات (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · آلات · رفتار (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · آلات · رفتار (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "یہ اختیار «رفتار · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_fan_power_auto": "یہ اختیار «رفتار · طاقت · خودکار» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "climate_fan_power_hardware_confirmed": "«FAN · رفتار · آلات · طاقت · ضروری · HW ✓» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "climate_fan_power_min_on_s": "یہ وقت «FAN · رفتار · آلات · طاقت · خودکار (s) · MIN ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_fan_power_min_off_s": "یہ وقت «FAN · رفتار · آلات · طاقت · بند (s) · MIN OFF» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_fan_power_max_on_s": "یہ وقت «FAN · رفتار · آلات · طاقت · خودکار (s) · MAX ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "climate_pm25_sensor_verified": "«PM2.5 · PM2.5 · آلات · سینسر · ضروری · SENSOR ✓ · VERIFIED» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ PM2.5 · PM2.5 · آلات · سینسر · ضروری · SENSOR ✓ · VERIFIED کا متبادل نہیں۔",
+          "climate_co2_entity": "«CO₂ · CO₂ · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_pm25_entity": "«PM2.5 · PM2.5 · آلات · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "climate_pm25_action_ug_m3": "«PM2.5 · آلات (µg/m³)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_extraction_speed_percent": "«EXTRACT · آلات · رفتار (%) · SPEED %» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "climate_purifier_speed_percent": "«PURIFIER · آلات · رفتار (%) · SPEED %» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔"
+        }
+      },
+      "climate_profiles": {
+        "title": "ترتیبات · آلات",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "home_heat": "حرارت · گھر میں (°C)",
+          "home_cool": "ٹھنڈک · گھر میں (°C)",
+          "unoccupied_heat": "حرارت · خالی کمرہ (°C)",
+          "unoccupied_cool": "ٹھنڈک · خالی کمرہ (°C)",
+          "away_heat": "حرارت · غیر موجود (°C)",
+          "away_cool": "ٹھنڈک · غیر موجود (°C)",
+          "sleep_heat": "حرارت · نیند (°C)",
+          "sleep_cool": "ٹھنڈک · نیند (°C)"
+        },
+        "data_description": {
+          "home_heat": "«حرارت · گھر میں (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "home_cool": "«ٹھنڈک · گھر میں (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "unoccupied_heat": "«حرارت · خالی کمرہ (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "unoccupied_cool": "«ٹھنڈک · خالی کمرہ (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "away_heat": "«حرارت · غیر موجود (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "away_cool": "«ٹھنڈک · غیر موجود (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "sleep_heat": "«حرارت · نیند (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "sleep_cool": "«ٹھنڈک · نیند (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔"
+        }
+      },
+      "climate_actuators": {
+        "title": "ترتیبات · آلات",
+        "description": "علاقہ · ترتیبات · آلات · کنٹرول. موجودگی · سینسر · ضروری.",
+        "data": {
+          "direct_hardware_confirmed": "ضروری",
+          "heat_actuator": "حرارت · آلات",
+          "cool_actuator": "ٹھنڈک · آلات",
+          "min_on_s": "طاقت · خودکار (s) · MIN ON",
+          "min_off_s": "طاقت · بند (s)",
+          "max_on_s": "طاقت · خودکار (s) · MAX ON",
+          "mode_dwell_s": "ترتیبات · ماخذ (s) · MODE DWELL",
+          "kp": "PID Kp · کنٹرول (percentage points/°C)",
+          "ki": "PID Ki · کنٹرول (percentage points/(°C·minute))",
+          "kd": "PID Kd · کنٹرول (percentage points·minute/°C)",
+          "sample_seconds": "ترتیبات · ماخذ (s) · SAMPLE",
+          "pwm_period_s": "ترتیبات · ماخذ (s) · PWM PERIOD",
+          "max_demand_change": "ترتیبات · ماخذ · MAX Δ",
+          "min_demand_change": "ترتیبات · ماخذ · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "«ضروری» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "heat_actuator": "«حرارت · آلات» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "cool_actuator": "«ٹھنڈک · آلات» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "min_on_s": "یہ وقت «طاقت · خودکار (s) · MIN ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "min_off_s": "یہ وقت «طاقت · بند (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "max_on_s": "یہ وقت «طاقت · خودکار (s) · MAX ON» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "mode_dwell_s": "یہ وقت «ترتیبات · ماخذ (s) · MODE DWELL» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "kp": "«PID Kp · کنٹرول (percentage points/°C)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "ki": "«PID Ki · کنٹرول (percentage points/(°C·minute))» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "kd": "«PID Kd · کنٹرول (percentage points·minute/°C)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "sample_seconds": "یہ وقت «ترتیبات · ماخذ (s) · SAMPLE» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "pwm_period_s": "یہ وقت «ترتیبات · ماخذ (s) · PWM PERIOD» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "max_demand_change": "«ترتیبات · ماخذ · MAX Δ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "min_demand_change": "«ترتیبات · ماخذ · MIN Δ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔"
+        }
+      },
+      "outside_data": {
+        "title": "باہر · ماخذ",
+        "description": "باہر · ماخذ: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "menu_options": {
+          "weather": "موسم اور انتباہات",
+          "outdoor": "بیرونی ہوا کا معیار",
+          "outside_aqi": "باہر · AQI",
+          "pollen": "زرگل"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "علاقہ · ترتیبات",
+        "description": "علاقہ · ترتیبات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "menu_options": {
+          "areas": "کمرے",
+          "indoor_sensors": "کمرے · پھپھوندی کی نشاندہی",
+          "window_sensors": "کھڑکی کے سینسر خارج کریں",
+          "environment_room": "ترتیبات · ترتیبات · ماخذ",
+          "area_devices": "آب و ہوا کے آلات"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "آلات · ترتیبات",
+        "description": "اختیاری: سینسر اور آلے کی حفاظتی اجازتوں پر جائیں۔ فہرست فوراً محفوظ کرنے کے لیے بند رکھیں۔",
+        "menu_options": {
+          "device_settings": "آلات · کنٹرول",
+          "device_choice": "منتخب کریں · آلات",
+          "device_done": "ترتیبات · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "عمومی · ترتیبات",
+        "description": "عمومی · ترتیبات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "general_room_occupancy_sensors": "کمرہ · موجودگی · سینسر",
+          "general_occupied_rooms_entity": "موجودگی · کمرہ · ماخذ (state)",
+          "general_occupied_rooms_attribute": "موجودگی · کمرہ · ماخذ (attribute)",
+          "general_home_trackers": "گھر · موجودگی · آلات",
+          "general_home_policy": "گھر · موجودگی · کنٹرول",
+          "general_sleep_rooms_entity": "نیند · کمرہ · ماخذ (state)",
+          "general_sleep_rooms_attribute": "نیند · کمرہ · ماخذ (attribute)",
+          "general_source_stale_minutes": "ماخذ · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "«کمرہ · موجودگی · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_entity": "«موجودگی · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_attribute": "«موجودگی · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "general_home_trackers": "«گھر · موجودگی · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_home_policy": "یہ اختیار «گھر · موجودگی · کنٹرول» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "general_sleep_rooms_entity": "«نیند · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_sleep_rooms_attribute": "«نیند · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "general_source_stale_minutes": "ماخذ · نیند / موجودگی · max 240 min. غلط · بند."
+        }
+      },
+      "pollen": {
+        "title": "زرگل",
+        "description": "زرگل: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "pollen_entity": "زرگل · ماخذ",
+          "pollen_high_from": "POLLEN · زرگل · HIGH",
+          "pollen_max_scale": "POLLEN · زرگل · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · زرگل · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "«زرگل · ماخذ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "pollen_high_from": "«POLLEN · زرگل · HIGH» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "pollen_max_scale": "«POLLEN · زرگل · SCALE» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "pollen_avoid_ventilation": "«POLLEN · زرگل · NO VENT» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔"
+        }
+      },
+      "outside_aqi": {
+        "title": "باہر · AQI",
+        "description": "باہر · AQI: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "outside_aqi_entity": "AQI · سینسر",
+          "outside_aqi_scale": "AQI · ماخذ",
+          "outside_aqi_limit": "AQI · ہدف",
+          "outside_aqi_no_sources": "AQI · سینسر · ضروری"
+        },
+        "data_description": {
+          "outside_aqi_entity": "«AQI · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "outside_aqi_scale": "«AQI · ماخذ» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "outside_aqi_limit": "«AQI · ہدف» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "outside_aqi_no_sources": "«AQI · سینسر · ضروری» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔"
+        }
+      },
+      "area_devices": {
+        "title": "آب و ہوا کے آلات",
+        "description": "منتخب کریں · علاقہ",
+        "data": {
+          "area_devices_area": "منتخب کریں · علاقہ"
+        },
+        "data_description": {
+          "area_devices_area": "«منتخب کریں · علاقہ» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔"
+        }
+      },
+      "select_devices": {
+        "title": "آب و ہوا کے آلات",
+        "description": "{area_name} کے آلات منتخب کریں۔ محفوظ کرنے سے کمرے کے مرکز میں ہر حقیقی آلے کا ایک کنٹرولر بنتا ہے۔ اہداف، پروفائل، خودکار/دستی/بند/PID اور خاموش عمل آلات پر مقرر کریں۔ انتخاب خودکار کنٹرول فعال نہیں کرتا۔",
+        "data": {
+          "selected_devices": "منتخب کریں · آلات",
+          "configure_device_sources": "سینسر اور آلے کی اجازتیں ابھی ترتیب دیں"
+        },
+        "data_description": {
+          "selected_devices": "{area_name} کے آلات منتخب کریں۔ محفوظ کرنے سے کمرے کے مرکز میں ہر حقیقی آلے کا ایک کنٹرولر بنتا ہے۔ اہداف، پروفائل، خودکار/دستی/بند/PID اور خاموش عمل آلات پر مقرر کریں۔ انتخاب خودکار کنٹرول فعال نہیں کرتا۔",
+          "configure_device_sources": "اختیاری: سینسر اور آلے کی حفاظتی اجازتوں پر جائیں۔ فہرست فوراً محفوظ کرنے کے لیے بند رکھیں۔"
+        }
+      },
+      "device_choice": {
+        "title": "منتخب کریں · آلات",
+        "description": "منتخب کریں · آلات: منتخب کریں ماخذ, سینسر / آلات · کنٹرول.",
+        "data": {
+          "device_choice": "منتخب کریں · آلات"
+        },
+        "data_description": {
+          "device_choice": "«منتخب کریں · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔"
+        }
+      },
+      "device_settings": {
+        "title": "آلات · کنٹرول",
+        "description": "یہ اختیار «کنٹرول · ماخذ» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔ «ضروری · آلات · طاقت» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔ یہ وقت «طاقت · min ON (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔ یہ وقت «طاقت · min OFF (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔ «نیند · کنٹرول» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔ «رفتار (%)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "خودکار کنٹرول",
+          "device_method": "کنٹرول · ماخذ",
+          "device_presence_requirement": "کنٹرول · موجودگی",
+          "device_absence_action": "بند · موجودگی",
+          "device_sleep_behavior": "نیند · کنٹرول",
+          "device_hardware_confirmed": "ضروری · آلات · طاقت",
+          "device_temperature_entity": "درجہ حرارت · سینسر",
+          "device_humidity_entity": "نمی · سینسر",
+          "device_co2_entity": "CO₂ · سینسر",
+          "device_pm25_entity": "PM2.5 · سینسر",
+          "device_fan_purpose": "کنٹرول · آلات",
+          "device_sensor_verified": "سینسر · ضروری",
+          "device_fan_speed_percent": "رفتار (%)",
+          "device_humidity_target": "نمی · ہدف (%)",
+          "device_sleep_humidity_target": "نیند · نمی · ہدف (%)",
+          "device_min_on_s": "طاقت · min ON (s)",
+          "device_min_off_s": "طاقت · min OFF (s)",
+          "device_max_on_s": "طاقت · max ON (s)",
+          "device_home_heat_c": "حرارت · گھر میں (°C)",
+          "device_home_cool_c": "ٹھنڈک · گھر میں (°C)",
+          "device_unoccupied_heat_c": "حرارت · خالی کمرہ (°C)",
+          "device_unoccupied_cool_c": "ٹھنڈک · خالی کمرہ (°C)",
+          "device_away_heat_c": "حرارت · غیر موجود (°C)",
+          "device_away_cool_c": "ٹھنڈک · غیر موجود (°C)",
+          "device_sleep_heat_c": "حرارت · نیند (°C)",
+          "device_sleep_cool_c": "ٹھنڈک · نیند (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "یہ اختیار «خودکار کنٹرول» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "device_method": "یہ اختیار «کنٹرول · ماخذ» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "device_presence_requirement": "«کنٹرول · موجودگی» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "device_absence_action": "یہ اختیار «بند · موجودگی» کو کنٹرول کرتا ہے۔ جسمانی حکم کے لیے الگ اجازت اور حفاظتی انتظام ضروری ہے۔",
+          "device_sleep_behavior": "«نیند · کنٹرول» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "device_hardware_confirmed": "«ضروری · آلات · طاقت» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "device_temperature_entity": "«درجہ حرارت · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "device_humidity_entity": "«نمی · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "device_co2_entity": "«CO₂ · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "device_pm25_entity": "«PM2.5 · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "device_fan_purpose": "«کنٹرول · آلات» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "device_sensor_verified": "«سینسر · ضروری» کے لیے درست حقیقی پیمائش استعمال کریں۔ تخمینہ درست شدہ سینسر کا متبادل نہیں۔",
+          "device_fan_speed_percent": "«رفتار (%)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "device_humidity_target": "«نمی · ہدف (%)» کے لیے فیصلہ کرنے کی حد ہے۔ یہ مشوروں پر اثر انداز ہوتی ہے، طبی حد نہیں۔",
+          "device_sleep_humidity_target": "«نیند · نمی · ہدف (%)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_min_on_s": "یہ وقت «طاقت · min ON (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "device_min_off_s": "یہ وقت «طاقت · min OFF (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "device_max_on_s": "یہ وقت «طاقت · max ON (s)» کو مقرر کرتا ہے۔ بار بار سوئچنگ روکتا ہے، ہارڈویئر حفاظت کا متبادل نہیں۔",
+          "device_home_heat_c": "«حرارت · گھر میں (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_home_cool_c": "«ٹھنڈک · گھر میں (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_unoccupied_heat_c": "«حرارت · خالی کمرہ (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_unoccupied_cool_c": "«ٹھنڈک · خالی کمرہ (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_away_heat_c": "«حرارت · غیر موجود (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_away_cool_c": "«ٹھنڈک · غیر موجود (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_sleep_heat_c": "«حرارت · نیند (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔",
+          "device_sleep_cool_c": "«ٹھنڈک · نیند (°C)» کا ہدف صرف مصدقہ موجودگی یا نیند پر لاگو ہوتا ہے۔ نامعلوم کا مطلب خالی کمرہ نہیں۔"
+        }
+      },
+      "setup_rooms": {
+        "title": "نگرانی کے کمرے",
+        "description": "نگرانی کے کمرے → ماخذ → عمومی ترتیبات",
+        "data": {
+          "areas": "نگرانی کے کمرے"
+        },
+        "data_description": {
+          "areas": "نگرانی کے کمرے. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔"
+        }
+      },
+      "setup_room_sources": {
+        "title": "کمرہ · {area_name} · {room_index}/{room_count}",
+        "description": "کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+        "data": {
+          "windows": "کھڑکیاں",
+          "air_quality": "ہوا کے معیار اور ماحول کے سینسر",
+          "temperature": "درجہ حرارت",
+          "humidity": "نمی",
+          "pressure": "دباؤ کے سینسر",
+          "climate_devices": "آلات"
+        },
+        "data_description": {
+          "windows": "کھڑکیاں. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "air_quality": "ہوا کے معیار اور ماحول کے سینسر. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "temperature": "درجہ حرارت. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "humidity": "نمی. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "pressure": "دباؤ کے سینسر. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔",
+          "climate_devices": "آلات. کمرے کے ان پٹ منتخب کریں: آلے کا نام - اینٹیٹی کا نام۔ خالی گروپ استعمال نہیں ہوتے اور خودکار تلاش یا کنٹرول فعال نہیں کرتے۔"
+        }
+      },
+      "setup_general": {
+        "title": "عمومی ترتیبات",
+        "description": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔",
+        "data": {
+          "weather_entities": "موسم اور انتباہات",
+          "outdoor_sensors": "بیرونی ہوا کا معیار",
+          "weather_warnings": "موسم کی تنبیہات",
+          "general_room_occupancy_sensors": "کمرہ · موجودگی · سینسر",
+          "general_home_trackers": "گھر · موجودگی · آلات",
+          "general_occupied_rooms_entity": "موجودگی · کمرہ · ماخذ (state)",
+          "general_occupied_rooms_attribute": "موجودگی · کمرہ · ماخذ (attribute)",
+          "general_sleep_rooms_entity": "نیند · کمرہ · ماخذ (state)",
+          "general_sleep_rooms_attribute": "نیند · کمرہ · ماخذ (attribute)",
+          "notify_entities": "ترتیبات · ماخذ",
+          "media_players": "ترتیبات · ماخذ · MEDIA_PLAYERS",
+          "tts_engine": "ترتیبات · ماخذ · TTS_ENGINE",
+          "ai_conversation_agent": "AI · منتخب کریں · ماخذ",
+          "language": "TTS · منتخب کریں · ماخذ",
+          "use_mold_indicator": "پھپھوندی کی نشاندہی · RH (%) → 70%",
+          "pollen_entities": "زرگل · ماخذ · منتخب کریں",
+          "use_announcement_hub": "خودکار · Announcement Hub",
+          "general_away_cooldown_minutes": "گھر · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "منتخب کریں: موسم اور انتباہات · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "منتخب کریں: بیرونی ہوا کا معیار · AQI, CO₂, PM2.5, PM10, VOC. دستیاب نہیں: ⚠",
+          "weather_warnings": "موسم اور انتباہات · ⚠ (دستیاب نہیں) → 🪟🔒",
+          "general_room_occupancy_sensors": "«کمرہ · موجودگی · سینسر» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_home_trackers": "«گھر · موجودگی · آلات» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_entity": "«موجودگی · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_occupied_rooms_attribute": "«موجودگی · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "general_sleep_rooms_entity": "«نیند · کمرہ · ماخذ (state)» کے لیے حقیقی Home Assistant ذریعہ منتخب کریں۔ گم شدہ یا پرانا ڈیٹا متعلقہ عمل روک دیتا ہے۔",
+          "general_sleep_rooms_attribute": "«نیند · کمرہ · ماخذ (attribute)» صرف منتخب کمرے میں مقرر کریں۔ غلط ڈیٹا عمل کو روکتا ہے۔",
+          "notify_entities": "منتخب کریں: notify.* · ترتیبات · ماخذ.",
+          "media_players": "منتخب کریں: media_player.* · ترتیبات · ماخذ · MEDIA_PLAYERS.",
+          "tts_engine": "منتخب کریں: tts.* · ترتیبات · ماخذ · TTS_ENGINE.",
+          "ai_conversation_agent": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · AI · منتخب کریں · ماخذ · conversation.* / ai_task.*.",
+          "language": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · TTS · منتخب کریں · ماخذ · provider capabilities.",
+          "use_mold_indicator": "🧱 پھپھوندی کی نشاندہی · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · زرگل · ماخذ · منتخب کریں.",
+          "use_announcement_hub": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · خودکار · Announcement Hub.",
+          "general_away_cooldown_minutes": "مشترکہ ذرائع اور اطلاع کے آؤٹ پٹ منتخب کریں۔ محفوظ کرنے سے سیٹ اپ مکمل ہوتا ہے۔ عملی ترتیبات گھر اور کمرے کے آلات پر رہتی ہیں۔ · گھر · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "غلط انتخاب: بیرونی ہوا کا معیار (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "دستیاب نہیں: بیرونی ہوا کا معیار (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "غلط انتخاب: موسم اور انتباہات (weather.*).",
+      "invalid_warning": "غلط انتخاب: موسم اور انتباہات ⚠.",
+      "missing_notify": "منتخب کریں: Announcement Hub / notify.*.",
+      "missing_tts": "منتخب کریں: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "غلط انتخاب: °C min < max.",
+      "no_areas": "منتخب کریں: کمرے.",
+      "no_window_areas": "دستیاب نہیں: پیمائشیں (binary_sensor, window).",
+      "invalid_areas": "غلط انتخاب: کمرے.",
+      "invalid_window_exclusions": "غلط انتخاب: کھڑکی کے سینسر خارج کریں.",
+      "invalid_indoor_exclusions": "غلط انتخاب: اندرونی ہوا کے سینسر خارج کریں.",
+      "no_windows_after_exclusions": "کم از کم ایک کھڑکی کا سینسر فعال رکھیں.",
+      "review_areas_after_exclusions": "چیک کریں: کمرے · پیمائشیں (0).",
+      "invalid_repeat_minutes": "غلط انتخاب: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "دستیاب نہیں: conversation.process.",
+      "invalid_ai_agent": "غلط انتخاب: conversation.*.",
+      "invalid_mold_temperature_sensor": "کمرے · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "کمرے · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "پھپھوندی کی نشاندہی · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "پھپھوندی کی نشاندہی · 🧊 °C ⚠",
+      "invalid_mold_calibration": "پھپھوندی کی نشاندہی · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "«ترتیبات · ماخذ» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "invalid_environment_measurement": "«ترتیبات · ماخذ» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pmv_requires_explicit_inputs": "«PMV / PPD» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pid_climate_required": "«PID · آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pid_temperature_required": "«PID · درجہ حرارت» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pid_invalid_target": "«PID · ہدف» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pid_duplicate_climate": "«PID · آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "pid_invalid_parameters": "«PID» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_dry_fan_control_inputs_missing": "«رفتار · آلات · کنٹرول» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_humidity_power_inputs_missing": "«نمی · آلات · طاقت» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_secondary_control_inputs_missing": "«آلات · کنٹرول» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_fan_power_inputs_missing": "«رفتار · آلات · طاقت» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_fan_control_inputs_missing": "«رفتار · آلات · کنٹرول» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_fan_sensor_invalid": "«رفتار · آلات · سینسر» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_humidity_control_inputs_missing": "«نمی · آلات · کنٹرول» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_temperature_required": "«درجہ حرارت · آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_target_required": "«آلات · ہدف» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_direct_actuator_not_ready": "«آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_controller_invalid": "«آلات · کنٹرول» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_mode_invalid": "«آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_occupancy_invalid": "«موجودگی · آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_away_invalid": "«گھر · آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_deadband_invalid": "«آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_attestation_required": "«آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_direct_targets_invalid": "«آلات · ہدف» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "climate_direct_timing_invalid": "«آلات» کی ترتیب غلط ہے۔ ذریعہ، اکائی اور حفاظت چیک کریں۔",
+      "general_invalid_presence": "غلط · موجودگی · ترتیبات",
+      "general_invalid_trackers": "غلط · گھر · ترتیبات",
+      "general_invalid_rooms_entity": "غلط · کمرہ · ترتیبات",
+      "general_invalid_attribute": "غلط · ماخذ · ترتیبات",
+      "general_invalid_source_age": "غلط · ماخذ · ترتیبات",
+      "invalid_selected_devices": "غلط · آلات · ترتیبات",
+      "device_policy_invalid": "غلط · موجودگی · ترتیبات",
+      "device_method_invalid": "غلط · کنٹرول · ترتیبات",
+      "device_hardware_required": "غلط · ضروری · ترتیبات",
+      "device_power_required_for_off": "غلط · طاقت · ترتیبات",
+      "device_temperature_required": "غلط · درجہ حرارت · ترتیبات",
+      "device_humidity_required": "غلط · نمی · ترتیبات",
+      "device_air_sensor_required": "غلط · سینسر · ترتیبات",
+      "device_temperature_band_invalid": "غلط · درجہ حرارت · ترتیبات",
+      "device_humidity_invalid": "غلط · نمی · ترتیبات",
+      "device_runtime_invalid": "غلط · طاقت · ترتیبات",
+      "invalid_setup_rooms": "غلط: نگرانی کے کمرے",
+      "invalid_room_source": "غلط: کمرہ · ماخذ"
+    },
+    "abort": {
+      "setup_area_removed": "غلط: نگرانی کے کمرے",
+      "setup_changed": "ترتیبات ↻ نگرانی کے کمرے"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "ہوا کا معیار",
+        "state": {
+          "open": "بند کریں · پیمائشیں",
+          "close": "خودکار اطلاعات · پیمائشیں",
+          "idle": "اچھا",
+          "blocked": "کھڑکیاں بند رکھیں"
+        }
+      },
+      "area_overview": {
+        "name": "ماحول کا جائزہ"
+      },
+      "area_surface_humidity": {
+        "name": "سطح کی نمی (حساب شدہ)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "باہر · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "باہر · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "باہر · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "باہر · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "باہر · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "باہر · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · باہر (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · باہر (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · باہر (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "ہوا کا معیار · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "ہوا کا معیار · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "ہوا کا معیار · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "ہوا کا معیار · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "ہوا کا معیار · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "ہوا کا معیار · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "ہوا کا معیار · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "پھپھوندی کی نشاندہی · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "باہر · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "باہر · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "باہر · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "موسم اور انتباہات · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · کھولیں (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "اعلانات (اختیاری) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "ہدف (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · کنٹرول (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · کنٹرول (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · کنٹرول (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "حرارت · کمرہ · موجودگی"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "ٹھنڈک · کمرہ · موجودگی"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "حرارت · گھر · کمرہ"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "ٹھنڈک · گھر · کمرہ"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "حرارت · کمرہ · نیند"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "ٹھنڈک · کمرہ · نیند"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "حرارت · گھر · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "ٹھنڈک · گھر · ECO"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · زرگل · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · زرگل · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "ماخذ · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "ترتیبات · ماخذ (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · ہدف (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "رفتار · باہر (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "ترتیبات · ماخذ (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "ترتیبات · ماخذ (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "آلات · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "موجودگی · آلات · سینسر · ضروری"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "آلات (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · نمی · آلات (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · نمی · آلات (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · نمی · آلات · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "آلات · درجہ حرارت −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · آلات (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · آلات · رفتار (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · آلات · رفتار (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · کنٹرول (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · کنٹرول (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · کنٹرول (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "ترتیبات · ماخذ (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "ترتیبات · ماخذ · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "ترتیبات · ماخذ · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "پھپھوندی کی نشاندہی · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · کنٹرول (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · کنٹرول (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · کنٹرول (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ترتیبات · ماخذ (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}کم شور والے پنکھے کی حد (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}طاقت · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}طاقت · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}طاقت · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "کمرہ · درجہ حرارت · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "کمرہ · درجہ حرارت · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "کمرہ · نمی · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "کمرہ · نمی · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "کمرہ · رفتار · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "کمرہ · رفتار · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "گھر · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "خودکار · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "خودکار"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · اعلانات (اختیاری)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · زرگل · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "نیند"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · خودکار"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "نیند · آلات"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "نیند · خودکار"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "آلات · باہر"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}سوتے وقت کم شور"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}موجودگی میں کم شور"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}طاقت · کنٹرول"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}سینسر · ضروری"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "زبان"
+      },
+      "area_manual_profile": {
+        "name": "آلات · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "گھر · موجودگی · کنٹرول"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "موجودگی · آلات"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "گھر · آلات · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "آلات · ماخذ · ہدف"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}کنٹرول کا طریقہ",
+        "state": {
+          "existing": "موجودہ کمرے کا کنٹرولر",
+          "automatic": "خودکار",
+          "manual": "دستی",
+          "off": "بند",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}آلے کا کم شور پنکھا موڈ"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}کنٹرول · موجودگی",
+        "state": {
+          "always": "خودکار",
+          "occupied": "کمرہ · موجودگی",
+          "absent": "کمرہ · موجودگی · بند"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}نیند · کنٹرول",
+        "state": {
+          "normal": "خودکار",
+          "pause": "وقفہ",
+          "sleep_targets": "نیند · ہدف"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}کنٹرول · آلات",
+        "state": {
+          "extraction": "باہر · کنٹرول",
+          "filtration": "PM2.5 · کنٹرول",
+          "auto": "خودکار"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "درجہ حرارت · ماخذ"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "ماخذ · رفتار · باہر (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "نیند · آلات · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "نیند · آلات · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "پھپھوندی کی نشاندہی · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}تصدیق کریں اور دوبارہ شروع کریں"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}آب و ہوا کنٹرولر"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "اعلانات (اختیاری) — Home Environment Manager",
+      "description": "اعلانات (اختیاری) · کمرے",
+      "fields": {
+        "language": {
+          "name": "زبان",
+          "description": "زبان"
+        },
+        "channels": {
+          "name": "اعلانات (اختیاری)",
+          "description": "اعلانات (اختیاری)"
+        },
+        "areas": {
+          "name": "کمرے",
+          "description": "کمرے"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — پہلے سے طے شدہ",
+        "en": "ترتیبات · ماخذ",
+        "de": "ترتیبات · ماخذ",
+        "el": "ترتیبات · ماخذ",
+        "fr": "ترتیبات · ماخذ",
+        "es": "ترتیبات · ماخذ",
+        "it": "ترتیبات · ماخذ",
+        "nl": "ترتیبات · ماخذ",
+        "pt": "ترتیبات · ماخذ",
+        "pt-br": "ترتیبات · ماخذ",
+        "pl": "ترتیبات · ماخذ",
+        "ru": "ترتیبات · ماخذ",
+        "uk": "ترتیبات · ماخذ",
+        "tr": "ترتیبات · ماخذ",
+        "cs": "ترتیبات · ماخذ",
+        "sk": "ترتیبات · ماخذ",
+        "hu": "ترتیبات · ماخذ",
+        "ro": "ترتیبات · ماخذ",
+        "bg": "ترتیبات · ماخذ",
+        "hr": "ترتیبات · ماخذ",
+        "sr": "ترتیبات · ماخذ",
+        "sv": "ترتیبات · ماخذ",
+        "nb": "ترتیبات · ماخذ",
+        "da": "ترتیبات · ماخذ",
+        "fi": "ترتیبات · ماخذ",
+        "id": "ترتیبات · ماخذ",
+        "vi": "ترتیبات · ماخذ",
+        "th": "ترتیبات · ماخذ",
+        "hi": "ترتیبات · ماخذ",
+        "zh-hans": "ترتیبات · ماخذ",
+        "zh-hant": "ترتیبات · ماخذ",
+        "ja": "ترتیبات · ماخذ",
+        "ko": "ترتیبات · ماخذ",
+        "ar": "ترتیبات · ماخذ",
+        "he": "ترتیبات · ماخذ",
+        "fa": "ترتیبات · ماخذ",
+        "bn": "ترتیبات · ماخذ",
+        "ur": "ترتیبات · ماخذ",
+        "ta": "ترتیبات · ماخذ"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "گھر · موجودگی",
+        "all_home": "گھر · آلات · موجودگی"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "ہدف · کنٹرول",
+        "native": "آلات · کنٹرول",
+        "power": "طاقت",
+        "speed": "رفتار"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "خودکار",
+        "room": "کمرہ · موجودگی",
+        "home": "گھر · موجودگی"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "وقفہ",
+        "off": "بند"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "خودکار",
+        "pause": "وقفہ",
+        "sleep_targets": "نیند · ہدف"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "باہر · کنٹرول",
+        "filtration": "PM2.5 · کنٹرول"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "ماخذ · غلط",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "ہدف · ترتیبات"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "کمرے کا مرکز",
+      "initiate_flow": {
+        "user": "کمرے کا مرکز"
+      },
+      "step": {
+        "user": {
+          "title": "کمرے کا مرکز",
+          "description": "Home Assistant کا ایک علاقہ منتخب کریں۔ اس کے گروپ میں کمرے کی عمومی ترتیبات اور ہر منتخب جسمانی آلے کے لیے ایک کنٹرولر ہوتا ہے۔ کمرہ شامل کرنے سے آلات کا خودکار کنٹرول فعال نہیں ہوتا۔",
+          "data": {
+            "area_id": "کمرہ"
+          },
+          "data_description": {
+            "area_id": "Home Assistant کا ایک علاقہ منتخب کریں۔ اس کے گروپ میں کمرے کی عمومی ترتیبات اور ہر منتخب جسمانی آلے کے لیے ایک کنٹرولر ہوتا ہے۔ کمرہ شامل کرنے سے آلات کا خودکار کنٹرول فعال نہیں ہوتا۔"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "غلط: علاقہ."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

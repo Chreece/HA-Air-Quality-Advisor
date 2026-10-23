@@ -51,7 +51,7 @@ This opt-in HACS prerelease is published from the isolated `beta/v0.6.0b3` branc
 Version `v0.6.0b2` is the next HACS-selectable **prerelease**, created from
 `beta/v0.6.0b2` at its validated HEAD. GitHub Latest remains stable `v0.5.1`
 and the first `v0.6.0b1` tag is immutable. HACS uses the tagged source tree
-(`custom_components/air_quality_advisor`); the attached ZIP is for manual
+(`custom_components/environment_manager`); the attached ZIP is for manual
 installation. The validation workflow gates publication on Python 3.13/3.14,
 full translations, frontend tests, Hassfest, HACS checks, and package smoke
 tests. This beta does not merge the experimental branch to `main`.
@@ -66,7 +66,7 @@ commissioned hardware, never of these software tests.
 
 The first 0.6 preview publishes from `beta/v0.6.0b1` as the GitHub **prerelease** tag `v0.6.0b1`, with the same `0.6.0b1` manifest version. The beta workflow is branch- and version-locked and runs the Python 3.13/3.14 tests, generated translations, frontend, Hassfest, HACS checks and package smoke test **before** creating the release. It pins the tag to the validated exact Git SHA, never retags/overwrites it, and uses `--prerelease --latest=false` so v0.5.1 remains stable/latest.
 
-The existing `hacs.json` intentionally uses HACS's supported release-tag source-tree installation from `custom_components/air_quality_advisor/` rather than `zip_release`. Changing `zip_release` retroactively could strand v0.5.1 installs whose assets had different names. The attached ZIP is **for manual installation only**; its contents are verified to begin at `custom_components/air_quality_advisor/`, include the manifest and Home Assistant brand PNGs, and exclude bytecode/cache files.
+The existing `hacs.json` intentionally uses HACS's supported release-tag source-tree installation from `custom_components/environment_manager/` rather than `zip_release`. Changing `zip_release` retroactively could strand v0.5.1 installs whose assets had different names. The attached ZIP is **for manual installation only**; its contents are verified to begin at `custom_components/environment_manager/`, include the manifest and Home Assistant brand PNGs, and exclude bytecode/cache files.
 
 For HACS beta testers: Add this repository as a custom **Integration**, open its entry, choose Redownload/version selection and enable **Show beta versions** before choosing `v0.6.0b1`; then restart HA. If the beta isn't selectable, use the manual ZIP from the release page. Users must back up before changing a major controller branch and may choose stable `v0.5.1` again. Experimental power and compressor-mode controls require independently commissioned real hardware; CI alone cannot grant hardware approval.
 
@@ -108,7 +108,7 @@ For HACS beta testers: Add this repository as a custom **Integration**, open its
 
 ## v0.2.4 complete configuration localization audit
 
-- Generate translations with `python generate_translations.py`, then ensure `git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations` reports no generated changes.
+- Generate translations with `python generate_translations.py`, then ensure `git diff --exit-code -- custom_components/environment_manager/strings.json custom_components/environment_manager/translations` reports no generated changes.
 - Run `python -m pytest -q tests/test_config_i18n_audit.py`. All 38 languages must contain identical keys and no remaining English-identical config/option prose or errors.
 - Verify the Greek Weather/warnings screen and the 18 translated Greek threshold labels visually, along with samples in German, French, Spanish and extra languages.
 - Verify the `SelectSelector` `translation_key="output_language"` and localized `selector.output_language.options.auto` work for each HA frontend user language, independent of the server default.
@@ -121,7 +121,7 @@ For HACS beta testers: Add this repository as a custom **Integration**, open its
 A completed push to `main` automatically starts `.github/workflows/validate.yml`. The workflow also supports `workflow_dispatch` for optional manual validation, with manual publishing off by default. Every push-triggered run automatically publishes a **new, unreleased** manifest version only after all gates succeed:
 
 1. `python -m pytest -q tests` and `python -m compileall -q custom_components`.
-2. `node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js` and `node tests/card_test.cjs`.
+2. `node --check custom_components/environment_manager/frontend/air-quality-advisor-card.js` and `node tests/card_test.cjs`.
 3. Regenerate translations and compare them with checked-in JSON; validate all JSON.
 4. HACS Action (`hacs/action@main`) and Hassfest (`home-assistant/actions/hassfest@master`).
 

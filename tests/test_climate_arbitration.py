@@ -6,7 +6,7 @@ from test_discovery import FakeHass, MockState, adapter
 
 @pytest.fixture
 def arbi(adapter):
-    from custom_components.air_quality_advisor import climate_arbitration
+    from custom_components.environment_manager import climate_arbitration
     return climate_arbitration
 
 

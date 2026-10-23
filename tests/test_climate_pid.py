@@ -5,8 +5,8 @@ import types
 from types import SimpleNamespace
 
 import pytest
-from custom_components.air_quality_advisor.pid_math import DEFAULT_PID
-from custom_components.air_quality_advisor.logic import Room, Window
+from custom_components.environment_manager.pid_math import DEFAULT_PID
+from custom_components.environment_manager.logic import Room, Window
 from test_discovery import MockState, FakeHass, adapter
 
 
@@ -61,7 +61,7 @@ def pid_store(monkeypatch):
     store.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",store)
     import importlib
-    controller=importlib.import_module("custom_components.air_quality_advisor.climate_pid")
+    controller=importlib.import_module("custom_components.environment_manager.climate_pid")
     store.Coordinator=controller.ClimatePidCoordinator
     return store
 

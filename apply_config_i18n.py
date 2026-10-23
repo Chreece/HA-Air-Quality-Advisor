@@ -11,7 +11,7 @@ import json
 import runpy
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent / "custom_components" / "air_quality_advisor"
+ROOT = Path(__file__).resolve().parent / "custom_components" / "environment_manager"
 PACKAGE = ROOT / "translations"
 OVERRIDE_FILE = ROOT / "config_i18n_overrides.json"
 

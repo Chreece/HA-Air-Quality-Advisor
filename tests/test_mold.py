@@ -4,11 +4,11 @@ from __future__ import annotations
 from test_discovery import adapter
 from test_hub_manager import delivery_module
 
-from custom_components.air_quality_advisor.mold import (
+from custom_components.environment_manager.mold import (
     calibration_factor, estimate_mold, estimate_mold_for_room,
     mean_valid_humidity, rh_fallback_for_room,
 )
-from custom_components.air_quality_advisor.logic import (
+from custom_components.environment_manager.logic import (
     Reading, Room, Weather, Window, evaluate,
 )
 
@@ -431,7 +431,7 @@ def test_calibrated_mold_below_limit_does_not_fallback_to_high_raw_rh():
 
 
 def test_rh_fallback_comparison_keeps_full_sensor_precision():
-    from custom_components.air_quality_advisor.logic import evaluate
+    from custom_components.environment_manager.logic import evaluate
     room=Room("living","Living",(
         Window("binary_sensor.window","Window",False),
     ),(rh(64.97,"one"),rh(65.01,"two")))

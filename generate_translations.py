@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-root = Path(__file__).parent / 'custom_components' / 'air_quality_advisor'
+root = Path(__file__).parent / 'custom_components' / 'environment_manager'
 lang = {
 'en': {
  'title':'Home Environment Manager',
@@ -404,3 +404,6 @@ apply_room_setup_i18n(root)
 # General-source defaults, Task AI/TTS provider labels and Home away cooldown.
 from apply_beta16_i18n import apply_beta16_i18n
 apply_beta16_i18n(root)
+
+from apply_beta19_i18n import apply_beta19_i18n
+apply_beta19_i18n(root)

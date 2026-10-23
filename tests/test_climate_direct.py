@@ -56,7 +56,7 @@ def runtime(adapter,monkeypatch):
     storage=types.ModuleType("homeassistant.helpers.storage")
     storage.Store=MemoryStore
     monkeypatch.setitem(sys.modules,storage.__name__,storage)
-    return importlib.import_module("custom_components.air_quality_advisor.climate_direct")
+    return importlib.import_module("custom_components.environment_manager.climate_direct")
 
 
 def home(*,include_cool=False,proportional=False):
@@ -455,7 +455,7 @@ def test_missing_continuous_runtime_history_is_fail_safe_even_with_valid_ack(run
 
 def test_direct_noncompressor_heat_off_holds_when_opposing_ac_arms(runtime):
     async def case():
-        from custom_components.air_quality_advisor.climate_arbitration import (
+        from custom_components.environment_manager.climate_arbitration import (
             room_coordination,
         )
         hass=home()

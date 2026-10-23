@@ -1,0 +1,1821 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Rum",
+        "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "indstillinger · kilde",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Vælg: indstillinger · kilde · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Udeluk vinduessensorer",
+        "description": "2 · Udeluk vinduessensorer. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Udeluk vinduessensorer"
+        },
+        "data_description": {
+          "excluded_window_entities": "Vælg: Udeluk vinduessensorer · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Rum · Skimmelindikator",
+        "description": "Rum: {area_name} ({position}/{total}). 🌡️ 🧊 Skimmelindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer",
+          "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Skimmelindikator · 🧊 °C",
+          "mold_recalibrate": "Skimmelindikator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Udendørs · Temperatur · kilde · Skimmelindikator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Indstil »Rum · 🌡️ (°C/°F)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "mold_critical_temperature_c": "🧊 Skimmelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Brug en reel passende måling til »Skimmelindikator · ↻ 🌡️«. Skøn erstatter ikke kalibreret sensor.",
+          "mold_outdoor_weather_entity": "Vælg weather.* · Udendørs Temperatur (temperature, °C/°F) → Skimmelindikator. Påkrævet: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Udendørs luftkvalitet",
+        "description": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Udendørs luftkvalitet"
+        },
+        "data_description": {
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Vejr og advarsler",
+        "description": "Vejr og advarsler. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "weather_warnings": "Vejradvarsler"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Meddelelser (valgfrit)",
+        "description": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+        "data": {
+          "language": "Sprog",
+          "automatic_tts": "Automatisk",
+          "automatic_notifications": "Automatisk · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Meddelelser (valgfrit) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "indstillinger · kilde",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Meddelelser (valgfrit)",
+          "ai_conversation_agent": "AI · Sprog"
+        },
+        "data_description": {
+          "language": "Indstil »Sprog« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "automatic_tts": "Standard: ⛔ · Automatisk · 🪟 90 s. Denne indstilling styrer »Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "automatic_notifications": "Standard: ⛔ · Automatisk · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Standard: 10 min · 0 = aldrig · Så længe samme årsag fortsætter · Rum.",
+          "use_announcement_hub": "Announcement Hub · Ikke tilgængelig → Home Assistant.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Meddelelser (valgfrit) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Vælg: conversation.* (Home Assistant · Standard)."
+        }
+      },
+      "thresholds": {
+        "title": "Avancerede grænser",
+        "description": "Avancerede grænser. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Udenfor · AQI (≤)",
+          "outdoor_co2": "Udenfor · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Udenfor · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Udenfor · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Udenfor · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Udenfor · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Udendørs (µg/m³)",
+          "outdoor_o3": "O₃ · Udendørs (µg/m³)",
+          "outdoor_so2": "SO₂ · Udendørs (µg/m³)",
+          "indoor_aqi": "Luftkvalitet · AQI (≥)",
+          "indoor_co2": "Luftkvalitet · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luftkvalitet · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luftkvalitet · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luftkvalitet · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luftkvalitet · VOC (ppb) (≥)",
+          "indoor_humidity": "Luftkvalitet · RH (%) (≥)",
+          "min_outdoor_temp": "Udenfor · °C (≥)",
+          "max_outdoor_temp": "Udenfor · °C (≤)",
+          "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
+          "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
+          "max_age_minutes": "⏱ · Åbn (min, ≤)",
+          "indoor_mold": "Skimmelindikator · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Beslutningsgrænse for »Udenfor · AQI (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_co2": "Beslutningsgrænse for »Udenfor · CO₂ (ppm) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_pm25": "Beslutningsgrænse for »Udenfor · PM2.5 (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_pm10": "Beslutningsgrænse for »Udenfor · PM10 (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_voc": "Beslutningsgrænse for »Udenfor · VOC (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_voc_parts": "Beslutningsgrænse for »Udenfor · VOC (ppb) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_no2": "Beslutningsgrænse for »NO₂ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_o3": "Beslutningsgrænse for »O₃ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_so2": "Beslutningsgrænse for »SO₂ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_aqi": "Beslutningsgrænse for »Luftkvalitet · AQI (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_co2": "Beslutningsgrænse for »Luftkvalitet · CO₂ (ppm) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_pm25": "Beslutningsgrænse for »Luftkvalitet · PM2.5 (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_pm10": "Beslutningsgrænse for »Luftkvalitet · PM10 (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_voc": "Beslutningsgrænse for »Luftkvalitet · VOC (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_voc_parts": "Beslutningsgrænse for »Luftkvalitet · VOC (ppb) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_humidity": "Beslutningsgrænse for »Luftkvalitet · RH (%) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "min_outdoor_temp": "Beslutningsgrænse for »Udenfor · °C (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_outdoor_temp": "Beslutningsgrænse for »Udenfor · °C (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_outdoor_humidity": "Beslutningsgrænse for »Udenfor · RH (%) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_wind_kmh": "Beslutningsgrænse for »Vejr og advarsler · km/h (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_age_minutes": "Beslutningsgrænse for »⏱ · Åbn (min, ≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_mold": "Beslutningsgrænse for »Skimmelindikator · ≥ 70%«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "setup_rooms": {
+        "title": "Rum der skal overvåges",
+        "description": "Rum der skal overvåges → kilde → Generelle indstillinger",
+        "data": {
+          "areas": "Rum der skal overvåges"
+        },
+        "data_description": {
+          "areas": "Rum der skal overvåges. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+        "data": {
+          "windows": "Vinduer",
+          "air_quality": "Luftkvalitets- og miljøsensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfugtighed",
+          "pressure": "Tryksensorer",
+          "climate_devices": "Enheder"
+        },
+        "data_description": {
+          "windows": "Vinduer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "air_quality": "Luftkvalitets- og miljøsensorer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "temperature": "Temperatur. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "humidity": "Luftfugtighed. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "pressure": "Tryksensorer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "climate_devices": "Enheder. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_general": {
+        "title": "Generelle indstillinger",
+        "description": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder.",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "outdoor_sensors": "Udendørs luftkvalitet",
+          "weather_warnings": "Vejradvarsler",
+          "general_room_occupancy_sensors": "Rum · Tilstedeværelse · sensor",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheder",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rum · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rum · kilde (attribute)",
+          "general_sleep_rooms_entity": "Søvn · Rum · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rum · kilde (attribute)",
+          "notify_entities": "indstillinger · kilde",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Vælg · kilde",
+          "language": "TTS · Vælg · kilde",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%",
+          "pollen_entities": "Pollen · kilde · Vælg",
+          "use_announcement_hub": "Automatisk · Announcement Hub",
+          "general_away_cooldown_minutes": "Hjem · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Rum · Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "general_home_trackers": "Vælg en reel Home Assistant-kilde til »Hjem · Tilstedeværelse · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_entity": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_attribute": "Indstil »Tilstedeværelse · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_sleep_rooms_entity": "Vælg en reel Home Assistant-kilde til »Søvn · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_sleep_rooms_attribute": "Indstil »Søvn · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "ai_conversation_agent": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · AI · Vælg · kilde · conversation.* / ai_task.*.",
+          "language": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · TTS · Vælg · kilde · provider capabilities.",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Pollen · kilde · Vælg.",
+          "use_announcement_hub": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Automatisk · Announcement Hub.",
+          "general_away_cooldown_minutes": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Hjem · Away · cooldown (min) · occupancy transition delay."
+        }
+      },
+      "migrate_legacy": {
+        "title": "Home Environment Manager · indstillinger",
+        "description": "Home Environment Manager · environment_manager · indstillinger",
+        "data": {
+          "confirm": "Vælg · environment_manager"
+        },
+        "data_description": {
+          "confirm": "Home Environment Manager · environment_manager · indstillinger"
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Ugyldigt valg: Udendørs luftkvalitet (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Ikke tilgængelig: Udendørs luftkvalitet (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Ugyldigt valg: Vejr og advarsler (weather.*).",
+      "invalid_warning": "Ugyldigt valg: Vejr og advarsler ⚠.",
+      "missing_notify": "Vælg: Announcement Hub / notify.*.",
+      "missing_tts": "Vælg: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Ugyldigt valg: °C min < max.",
+      "no_areas": "Vælg: Rum.",
+      "no_window_areas": "Ikke tilgængelig: Målinger (binary_sensor, window).",
+      "invalid_areas": "Ugyldigt valg: Rum.",
+      "invalid_window_exclusions": "Ugyldigt valg: Udeluk vinduessensorer.",
+      "invalid_indoor_exclusions": "Ugyldigt valg: Udeluk indeklimasensorer.",
+      "no_windows_after_exclusions": "Behold mindst én vinduessensor.",
+      "review_areas_after_exclusions": "Kontrollér: Rum · Målinger (0).",
+      "invalid_repeat_minutes": "Ugyldigt valg: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Ikke tilgængelig: conversation.process.",
+      "invalid_ai_agent": "Ugyldigt valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rum · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Skimmelindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Skimmelindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Ugyldig: Rum der skal overvåges",
+      "invalid_room_source": "Ugyldig: Rum · kilde"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — allerede konfigureret.",
+      "setup_area_removed": "Ugyldig: Rum der skal overvåges",
+      "setup_changed": "indstillinger ↻ Rum der skal overvåges",
+      "legacy_migration_ambiguous": "indstillinger · environment_manager · 2+",
+      "legacy_migration_missing": "indstillinger · environment_manager · ?",
+      "legacy_migration_cancelled": "indstillinger · environment_manager · ×"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Vælg",
+        "description": "Vælg: Rum / Vejr og advarsler / Meddelelser (valgfrit) / Avancerede grænser",
+        "menu_options": {
+          "outside_data": "Udendørs · kilde",
+          "general_settings": "Generelle · indstillinger",
+          "area_settings": "Område · indstillinger",
+          "delivery": "Meddelelser (valgfrit)",
+          "thresholds": "Avancerede grænser"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Udeluk vinduessensorer",
+        "description": "2 · Udeluk vinduessensorer. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Udeluk vinduessensorer"
+        },
+        "data_description": {
+          "excluded_window_entities": "Vælg: Udeluk vinduessensorer · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Rum",
+        "description": "1 · 🪟 Rum. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "indstillinger · kilde",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Vælg: indstillinger · kilde · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Rum · Skimmelindikator",
+        "description": "Rum: {area_name} ({position}/{total}). 🌡️ 🧊 Skimmelindikator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Udeluk indeklimasensorer",
+          "mold_indoor_temperature": "Rum · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Skimmelindikator · 🧊 °C",
+          "mold_recalibrate": "Skimmelindikator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Udendørs · Temperatur · kilde · Skimmelindikator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Vælg: Udeluk indeklimasensorer · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Indstil »Rum · 🌡️ (°C/°F)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "mold_critical_temperature_c": "🧊 Skimmelindikator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Brug en reel passende måling til »Skimmelindikator · ↻ 🌡️«. Skøn erstatter ikke kalibreret sensor.",
+          "mold_outdoor_weather_entity": "Vælg weather.* · Udendørs Temperatur (temperature, °C/°F) → Skimmelindikator. Påkrævet: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Udendørs luftkvalitet",
+        "description": "Udendørs luftkvalitet. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Udendørs luftkvalitet"
+        },
+        "data_description": {
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Vejr og advarsler",
+        "description": "Vejr og advarsler. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "weather_warnings": "Vejradvarsler"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Meddelelser (valgfrit)",
+        "description": "Meddelelser (valgfrit). Automatiske notifikationer · Automatiske talemeddelelser. Announcement Hub.",
+        "data": {
+          "language": "Sprog",
+          "automatic_tts": "Automatisk",
+          "automatic_notifications": "Automatisk · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Meddelelser (valgfrit) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "indstillinger · kilde",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Meddelelser (valgfrit)",
+          "ai_conversation_agent": "AI · Sprog"
+        },
+        "data_description": {
+          "language": "Indstil »Sprog« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "automatic_tts": "Standard: ⛔ · Automatisk · 🪟 90 s. Denne indstilling styrer »Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "automatic_notifications": "Standard: ⛔ · Automatisk · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Standard: 10 min · 0 = aldrig · Så længe samme årsag fortsætter · Rum.",
+          "use_announcement_hub": "Announcement Hub · Ikke tilgængelig → Home Assistant.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Meddelelser (valgfrit) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Vælg: conversation.* (Home Assistant · Standard)."
+        }
+      },
+      "thresholds": {
+        "title": "Avancerede grænser",
+        "description": "Avancerede grænser. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Udenfor · AQI (≤)",
+          "outdoor_co2": "Udenfor · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Udenfor · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Udenfor · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Udenfor · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Udenfor · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Udendørs (µg/m³)",
+          "outdoor_o3": "O₃ · Udendørs (µg/m³)",
+          "outdoor_so2": "SO₂ · Udendørs (µg/m³)",
+          "indoor_aqi": "Luftkvalitet · AQI (≥)",
+          "indoor_co2": "Luftkvalitet · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luftkvalitet · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luftkvalitet · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luftkvalitet · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luftkvalitet · VOC (ppb) (≥)",
+          "indoor_humidity": "Luftkvalitet · RH (%) (≥)",
+          "min_outdoor_temp": "Udenfor · °C (≥)",
+          "max_outdoor_temp": "Udenfor · °C (≤)",
+          "max_outdoor_humidity": "Udenfor · RH (%) (≤)",
+          "max_wind_kmh": "Vejr og advarsler · km/h (≤)",
+          "max_age_minutes": "⏱ · Åbn (min, ≤)",
+          "indoor_mold": "Skimmelindikator · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Beslutningsgrænse for »Udenfor · AQI (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_co2": "Beslutningsgrænse for »Udenfor · CO₂ (ppm) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_pm25": "Beslutningsgrænse for »Udenfor · PM2.5 (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_pm10": "Beslutningsgrænse for »Udenfor · PM10 (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_voc": "Beslutningsgrænse for »Udenfor · VOC (µg/m³) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_voc_parts": "Beslutningsgrænse for »Udenfor · VOC (ppb) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_no2": "Beslutningsgrænse for »NO₂ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_o3": "Beslutningsgrænse for »O₃ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outdoor_so2": "Beslutningsgrænse for »SO₂ · Udendørs (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_aqi": "Beslutningsgrænse for »Luftkvalitet · AQI (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_co2": "Beslutningsgrænse for »Luftkvalitet · CO₂ (ppm) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_pm25": "Beslutningsgrænse for »Luftkvalitet · PM2.5 (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_pm10": "Beslutningsgrænse for »Luftkvalitet · PM10 (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_voc": "Beslutningsgrænse for »Luftkvalitet · VOC (µg/m³) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_voc_parts": "Beslutningsgrænse for »Luftkvalitet · VOC (ppb) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_humidity": "Beslutningsgrænse for »Luftkvalitet · RH (%) (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "min_outdoor_temp": "Beslutningsgrænse for »Udenfor · °C (≥)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_outdoor_temp": "Beslutningsgrænse for »Udenfor · °C (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_outdoor_humidity": "Beslutningsgrænse for »Udenfor · RH (%) (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_wind_kmh": "Beslutningsgrænse for »Vejr og advarsler · km/h (≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "max_age_minutes": "Beslutningsgrænse for »⏱ · Åbn (min, ≤)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "indoor_mold": "Beslutningsgrænse for »Skimmelindikator · ≥ 70%«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "environment": {
+        "title": "indstillinger · indstillinger · kilde",
+        "description": "Indstil »indstillinger · indstillinger · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "pollen_entity": "Pollen · kilde",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT",
+          "aqi_scale_0": "AQI #1 · kilde",
+          "aqi_custom_limit_0": "AQI #1 · mål",
+          "aqi_scale_1": "AQI #2 · kilde",
+          "aqi_custom_limit_1": "AQI #2 · mål",
+          "aqi_scale_2": "AQI #3 · kilde",
+          "aqi_custom_limit_2": "AQI #3 · mål",
+          "aqi_scale_3": "AQI #4 · kilde",
+          "aqi_custom_limit_3": "AQI #4 · mål",
+          "aqi_scale_4": "AQI #5 · kilde",
+          "aqi_custom_limit_4": "AQI #5 · mål",
+          "aqi_scale_5": "AQI #6 · kilde",
+          "aqi_custom_limit_5": "AQI #6 · mål",
+          "aqi_scale_6": "AQI #7 · kilde",
+          "aqi_custom_limit_6": "AQI #7 · mål",
+          "aqi_scale_7": "AQI #8 · kilde",
+          "aqi_custom_limit_7": "AQI #8 · mål",
+          "aqi_scale_8": "AQI #9 · kilde",
+          "aqi_custom_limit_8": "AQI #9 · mål",
+          "aqi_scale_9": "AQI #10 · kilde",
+          "aqi_custom_limit_9": "AQI #10 · mål",
+          "aqi_scale_10": "AQI #11 · kilde",
+          "aqi_custom_limit_10": "AQI #11 · mål",
+          "aqi_scale_11": "AQI #12 · kilde",
+          "aqi_custom_limit_11": "AQI #12 · mål",
+          "aqi_scale_12": "AQI #13 · kilde",
+          "aqi_custom_limit_12": "AQI #13 · mål",
+          "aqi_scale_13": "AQI #14 · kilde",
+          "aqi_custom_limit_13": "AQI #14 · mål",
+          "aqi_scale_14": "AQI #15 · kilde",
+          "aqi_custom_limit_14": "AQI #15 · mål",
+          "aqi_scale_15": "AQI #16 · kilde",
+          "aqi_custom_limit_15": "AQI #16 · mål",
+          "aqi_scale_16": "AQI #17 · kilde",
+          "aqi_custom_limit_16": "AQI #17 · mål",
+          "aqi_scale_17": "AQI #18 · kilde",
+          "aqi_custom_limit_17": "AQI #18 · mål",
+          "aqi_scale_18": "AQI #19 · kilde",
+          "aqi_custom_limit_18": "AQI #19 · mål",
+          "aqi_scale_19": "AQI #20 · kilde",
+          "aqi_custom_limit_19": "AQI #20 · mål",
+          "aqi_scale_20": "AQI #21 · kilde",
+          "aqi_custom_limit_20": "AQI #21 · mål",
+          "aqi_scale_21": "AQI #22 · kilde",
+          "aqi_custom_limit_21": "AQI #22 · mål",
+          "aqi_scale_22": "AQI #23 · kilde",
+          "aqi_custom_limit_22": "AQI #23 · mål",
+          "aqi_scale_23": "AQI #24 · kilde",
+          "aqi_custom_limit_23": "AQI #24 · mål",
+          "aqi_scale_24": "AQI #25 · kilde",
+          "aqi_custom_limit_24": "AQI #25 · mål",
+          "aqi_scale_25": "AQI #26 · kilde",
+          "aqi_custom_limit_25": "AQI #26 · mål",
+          "aqi_scale_26": "AQI #27 · kilde",
+          "aqi_custom_limit_26": "AQI #27 · mål",
+          "aqi_scale_27": "AQI #28 · kilde",
+          "aqi_custom_limit_27": "AQI #28 · mål",
+          "aqi_scale_28": "AQI #29 · kilde",
+          "aqi_custom_limit_28": "AQI #29 · mål",
+          "aqi_scale_29": "AQI #30 · kilde",
+          "aqi_custom_limit_29": "AQI #30 · mål",
+          "aqi_scale_30": "AQI #31 · kilde",
+          "aqi_custom_limit_30": "AQI #31 · mål",
+          "aqi_scale_31": "AQI #32 · kilde",
+          "aqi_custom_limit_31": "AQI #32 · mål"
+        },
+        "data_description": {
+          "pollen_entity": "Vælg en reel Home Assistant-kilde til »Pollen · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "pollen_high_from": "Indstil »POLLEN · Pollen · HIGH« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_max_scale": "Indstil »POLLEN · Pollen · SCALE« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_avoid_ventilation": "Indstil »POLLEN · Pollen · NO VENT« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_scale_0": "Indstil »AQI #1 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_0": "Beslutningsgrænse for »AQI #1 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_1": "Indstil »AQI #2 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_1": "Beslutningsgrænse for »AQI #2 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_2": "Indstil »AQI #3 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_2": "Beslutningsgrænse for »AQI #3 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_3": "Indstil »AQI #4 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_3": "Beslutningsgrænse for »AQI #4 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_4": "Indstil »AQI #5 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_4": "Beslutningsgrænse for »AQI #5 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_5": "Indstil »AQI #6 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_5": "Beslutningsgrænse for »AQI #6 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_6": "Indstil »AQI #7 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_6": "Beslutningsgrænse for »AQI #7 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_7": "Indstil »AQI #8 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_7": "Beslutningsgrænse for »AQI #8 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_8": "Indstil »AQI #9 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_8": "Beslutningsgrænse for »AQI #9 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_9": "Indstil »AQI #10 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_9": "Beslutningsgrænse for »AQI #10 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_10": "Indstil »AQI #11 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_10": "Beslutningsgrænse for »AQI #11 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_11": "Indstil »AQI #12 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_11": "Beslutningsgrænse for »AQI #12 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_12": "Indstil »AQI #13 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_12": "Beslutningsgrænse for »AQI #13 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_13": "Indstil »AQI #14 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_13": "Beslutningsgrænse for »AQI #14 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_14": "Indstil »AQI #15 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_14": "Beslutningsgrænse for »AQI #15 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_15": "Indstil »AQI #16 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_15": "Beslutningsgrænse for »AQI #16 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_16": "Indstil »AQI #17 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_16": "Beslutningsgrænse for »AQI #17 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_17": "Indstil »AQI #18 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_17": "Beslutningsgrænse for »AQI #18 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_18": "Indstil »AQI #19 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_18": "Beslutningsgrænse for »AQI #19 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_19": "Indstil »AQI #20 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_19": "Beslutningsgrænse for »AQI #20 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_20": "Indstil »AQI #21 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_20": "Beslutningsgrænse for »AQI #21 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_21": "Indstil »AQI #22 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_21": "Beslutningsgrænse for »AQI #22 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_22": "Indstil »AQI #23 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_22": "Beslutningsgrænse for »AQI #23 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_23": "Indstil »AQI #24 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_23": "Beslutningsgrænse for »AQI #24 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_24": "Indstil »AQI #25 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_24": "Beslutningsgrænse for »AQI #25 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_25": "Indstil »AQI #26 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_25": "Beslutningsgrænse for »AQI #26 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_26": "Indstil »AQI #27 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_26": "Beslutningsgrænse for »AQI #27 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_27": "Indstil »AQI #28 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_27": "Beslutningsgrænse for »AQI #28 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_28": "Indstil »AQI #29 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_28": "Beslutningsgrænse for »AQI #29 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_29": "Indstil »AQI #30 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_29": "Beslutningsgrænse for »AQI #30 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_30": "Indstil »AQI #31 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_30": "Beslutningsgrænse for »AQI #31 · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "aqi_scale_31": "Indstil »AQI #32 · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "aqi_custom_limit_31": "Beslutningsgrænse for »AQI #32 · mål«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "environment_room": {
+        "title": "indstillinger · indstillinger · kilde",
+        "description": "Indstil »indstillinger · indstillinger · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "environment_area": "indstillinger · kilde"
+        },
+        "data_description": {
+          "environment_area": "Indstil »indstillinger · kilde« kun for valgt rum. Ugyldige data blokerer handlingen."
+        }
+      },
+      "environment_room_air": {
+        "title": "indstillinger · Udendørs",
+        "description": "Indstil »indstillinger · Udendørs« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "temperature_entity": "Temperatur · kilde",
+          "room_volume_m3": "indstillinger · kilde (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Luftrenser · kilde",
+          "extractor_entity": "Udsugningsventilator · kilde",
+          "co2_ndir_verified": "CO₂ · Påkrævet",
+          "co2_target_ppm": "CO₂ · CO₂ · mål (ppm)",
+          "sleep_room": "Søvn"
+        },
+        "data_description": {
+          "temperature_entity": "Vælg en reel Home Assistant-kilde til »Temperatur · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "room_volume_m3": "Brug en reel passende måling til »indstillinger · kilde (m³)«. Skøn erstatter ikke kalibreret sensor.",
+          "particle_cadr_m3h": "Brug en reel passende måling til »CADR (m³/h)«. Skøn erstatter ikke kalibreret sensor.",
+          "purifier_entity": "Vælg en reel Home Assistant-Luftrenser · kilde til »Luftrenser · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "extractor_entity": "Vælg en reel Home Assistant-Udsugningsventilator · kilde til »Udsugningsventilator · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "co2_ndir_verified": "Brug en reel passende måling til »CO₂ · Påkrævet«. Skøn erstatter ikke kalibreret sensor.",
+          "co2_target_ppm": "Beslutningsgrænse for »CO₂ · CO₂ · mål (ppm)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "sleep_room": "Indstil »Søvn« kun for valgt rum. Ugyldige data blokerer handlingen."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "indstillinger · indstillinger · kilde",
+        "description": "Indstil »indstillinger · indstillinger · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "radon_entity": "RADON · Rn · kilde",
+          "radon_sensor_verified": "RADON · Rn · sensor · Påkrævet · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · kilde",
+          "formaldehyde_sensor_verified": "HCHO · sensor · Påkrævet · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · kilde · sensor (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · sensor · Påkrævet",
+          "illuminance_entity": "LUX · kilde (lux)",
+          "melanopic_edi_entity": "EDI · EDI · kilde (lx)",
+          "melanopic_spectral_verified": "EDI · Påkrævet"
+        },
+        "data_description": {
+          "radon_entity": "Vælg en reel Home Assistant-RADON · Rn · kilde til »RADON · Rn · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "radon_sensor_verified": "Brug en reel passende måling til »RADON · Rn · sensor · Påkrævet · SENSOR ✓ · VERIFIED«. Skøn erstatter ikke kalibreret RADON · Rn · sensor · Påkrævet · SENSOR ✓ · VERIFIED.",
+          "radon_reference_bq_m3": "Indstil »Rn (Bq/m³)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "formaldehyde_entity": "Vælg en reel Home Assistant-HCHO · kilde til »HCHO · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "formaldehyde_sensor_verified": "Brug en reel passende måling til »HCHO · sensor · Påkrævet · SENSOR ✓ · VERIFIED«. Skøn erstatter ikke kalibreret HCHO · sensor · Påkrævet · SENSOR ✓ · VERIFIED.",
+          "noise_entity": "Vælg en reel Home Assistant-dB(A) · kilde · sensor (dB(A)) til »dB(A) · kilde · sensor (dB(A))«. Manglende eller gamle værdier standser handlingen.",
+          "noise_sensor_calibrated": "Brug en reel passende måling til »dB(A) · sensor · Påkrævet«. Skøn erstatter ikke kalibreret dB(A) · sensor · Påkrævet.",
+          "illuminance_entity": "Vælg en reel Home Assistant-LUX · kilde (lux) til »LUX · kilde (lux)«. Manglende eller gamle værdier standser handlingen.",
+          "melanopic_edi_entity": "Vælg en reel Home Assistant-EDI · EDI · kilde (lx) til »EDI · EDI · kilde (lx)«. Manglende eller gamle værdier standser handlingen.",
+          "melanopic_spectral_verified": "Brug en reel passende måling til »EDI · Påkrævet«. Skøn erstatter ikke kalibreret sensor."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "indstillinger · indstillinger · kilde",
+        "description": "Indstil »indstillinger · indstillinger · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automatisk",
+          "radiant_temperature_entity": "Temperatur · kilde",
+          "air_speed_entity": "kilde · Hastighed · Udendørs (m/s)",
+          "air_speed_m_s": "Hastighed · Udendørs (m/s)",
+          "met": "indstillinger · kilde (met)",
+          "clo": "indstillinger · kilde (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Indstil »PMV / PPD · Automatisk« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "radiant_temperature_entity": "Vælg en reel Home Assistant-kilde til »Temperatur · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "air_speed_entity": "Vælg en reel Home Assistant-kilde · Hastighed · Udendørs (m/s) til »kilde · Hastighed · Udendørs (m/s)«. Manglende eller gamle værdier standser handlingen.",
+          "air_speed_m_s": "Brug en reel passende måling til »Hastighed · Udendørs (m/s)«. Skøn erstatter ikke kalibreret sensor.",
+          "met": "Brug en reel passende måling til »indstillinger · kilde (met)«. Skøn erstatter ikke kalibreret sensor.",
+          "clo": "Brug en reel passende måling til »indstillinger · kilde (clo)«. Skøn erstatter ikke kalibreret sensor."
+        }
+      },
+      "pid": {
+        "title": "indstillinger · PID",
+        "description": "Indstil »indstillinger · PID« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Denne indstilling styrer »PID«. Fysiske kommandoer kræver særskilt samtykke og sikring."
+        }
+      },
+      "pid_room": {
+        "title": "indstillinger · PID",
+        "description": "Indstil »indstillinger · PID« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "pid_enabled": "PID · Automatisk · AUTO",
+          "pid_climate_entities": "PID · Enheder",
+          "pid_temperature_entity": "Temperatur · kilde",
+          "pid_mode": "PID",
+          "pid_target_c": "mål (°C)",
+          "pid_pause_on_window_open": "PID · Udendørs"
+        },
+        "data_description": {
+          "pid_enabled": "Denne indstilling styrer »PID · Automatisk · AUTO«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "pid_climate_entities": "Vælg en reel Home Assistant-kilde til »PID · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "pid_temperature_entity": "Vælg en reel Home Assistant-kilde til »Temperatur · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "pid_mode": "Denne indstilling styrer »PID«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "pid_target_c": "Beslutningsgrænse for »mål (°C)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "pid_pause_on_window_open": "Denne indstilling styrer »PID · Udendørs«. Fysiske kommandoer kræver særskilt samtykke og sikring."
+        }
+      },
+      "pid_tuning": {
+        "title": "indstillinger · PID",
+        "description": "Indstil »indstillinger · PID« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "pid_kp": "PID Kp · styring (% per °C)",
+          "pid_ki": "PID Ki · styring (% per °C-minute)",
+          "pid_kd": "PID Kd · styring (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Denne indstilling styrer »PID Kp · styring (% per °C)«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "pid_ki": "Denne indstilling styrer »PID Ki · styring (% per °C-minute)«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "pid_kd": "Denne indstilling styrer »PID Kd · styring (%·minute per °C)«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "pid_offset_c": "Beslutningsgrænse for »PID (°C) · PID_OFFSET_C«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "pid_min_setpoint_c": "Beslutningsgrænse for »PID (°C) · MIN TARGET«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "pid_max_setpoint_c": "Beslutningsgrænse for »PID (°C) · MAX TARGET«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "pid_sample_seconds": "Denne tid regulerer »PID (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "pid_max_change_c": "Beslutningsgrænse for »PID (°C) · MAX Δ«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "pid_min_change_c": "Beslutningsgrænse for »PID (°C) · MIN Δ«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "climate": {
+        "title": "indstillinger · Enheder",
+        "description": "Indstil »indstillinger · Enheder« kun for valgt rum. Ugyldige data blokerer handlingen.",
+        "data": {
+          "climate_area": "Enheder"
+        },
+        "data_description": {
+          "climate_area": "Denne indstilling styrer »Enheder«. Fysiske kommandoer kræver særskilt samtykke og sikring."
+        }
+      },
+      "climate_room": {
+        "title": "indstillinger · Enheder",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "climate_enabled": "Enheder · Automatisk · AUTO",
+          "climate_allow_actuation": "Enheder · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Enheder · Automatisk · MODE SWITCH",
+          "climate_prefer_native_auto": "Enheder · Automatisk · NATIVE",
+          "climate_controller": "Enheder · styring",
+          "climate_mode": "Enheder · MODE",
+          "climate_entity": "Enheder · kilde",
+          "climate_temperature_entity": "Temperatur · kilde",
+          "climate_hysteresis_c": "Enheder (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Denne indstilling styrer »Enheder · Automatisk · AUTO«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_allow_actuation": "Denne indstilling styrer »Enheder · CLIMATE_ALLOW_ACTUATION«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_auto_switch_hvac": "Denne indstilling styrer »Enheder · Automatisk · MODE SWITCH«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_prefer_native_auto": "Denne indstilling styrer »Enheder · Automatisk · NATIVE«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_controller": "Denne indstilling styrer »Enheder · styring«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_mode": "Denne indstilling styrer »Enheder · MODE«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_entity": "Vælg en reel Home Assistant-Enheder · kilde til »Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_temperature_entity": "Vælg en reel Home Assistant-kilde til »Temperatur · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_hysteresis_c": "Beslutningsgrænse for »Enheder (°C)«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "climate_presence": {
+        "title": "indstillinger · Tilstedeværelse · Enheder",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "climate_occupancy_sensors": "Tilstedeværelse · sensor",
+          "climate_away_entities": "Hjem · Enheder",
+          "climate_unknown_occupancy": "Tilstedeværelse · Enheder",
+          "climate_unoccupied_delay_minutes": "Enheder · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Tilstedeværelse · Enheder · sensor · Påkrævet",
+          "climate_away_policy": "Hjem · Enheder · POLICY",
+          "climate_manual_profile": "Enheder · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Søvn · Enheder",
+          "climate_sleep_schedule_enabled": "Søvn · Automatisk",
+          "climate_sleep_start": "Søvn · Enheder · START",
+          "climate_sleep_end": "Søvn · Enheder · END",
+          "climate_target_source": "Enheder · kilde · mål",
+          "climate_comfort_adjustment_max_c": "Enheder (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "climate_away_entities": "Vælg en reel Home Assistant-kilde til »Hjem · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "climate_unknown_occupancy": "Denne indstilling styrer »Tilstedeværelse · Enheder«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_unoccupied_delay_minutes": "Denne tid regulerer »Enheder · CLIMATE_UNOCCUPIED_DELAY_MINUTES«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_occupancy_stale_minutes": "Denne tid regulerer »Tilstedeværelse · Enheder · sensor · Påkrævet«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_away_policy": "Denne indstilling styrer »Hjem · Enheder · POLICY«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_manual_profile": "Denne indstilling styrer »Enheder · CLIMATE_MANUAL_PROFILE«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_sleep_active": "Denne indstilling styrer »Søvn · Enheder«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_sleep_schedule_enabled": "Denne indstilling styrer »Søvn · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_sleep_start": "Denne tid regulerer »Søvn · Enheder · START«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_sleep_end": "Denne tid regulerer »Søvn · Enheder · END«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_target_source": "Beslutningsgrænse for »Enheder · kilde · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_comfort_adjustment_max_c": "Beslutningsgrænse for »Enheder (°C)«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "climate_equipment": {
+        "title": "indstillinger · Enheder",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Enheder · kilde · Temperatur +",
+          "climate_cool_climate_entity": "COOL · Enheder · kilde · Temperatur −",
+          "climate_dry_climate_entity": "DRY · Enheder · kilde",
+          "climate_fan_climate_entity": "FAN_ONLY · Hastighed · Enheder · kilde",
+          "climate_humidifier_entity": "HUMIDIFIER · Enheder · kilde",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Enheder · kilde",
+          "climate_extraction_fan_entity": "EXTRACT · Hastighed · Enheder · kilde",
+          "climate_purifier_fan_entity": "Luftrenser · kilde",
+          "climate_humidity_entity": "Luftfugtighed · kilde",
+          "climate_humidity_low_rh": "RH · Luftfugtighed · Enheder (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Luftfugtighed · Enheder (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Luftfugtighed · Enheder · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Enheder · Temperatur −",
+          "climate_humidity_setpoint_auto": "Luftfugtighed · Automatisk",
+          "climate_window_efficiency_notify": "Enheder · Udendørs",
+          "climate_dry_fan_mode_auto": "Hastighed · Automatisk",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Hastighed · Enheder · Påkrævet · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Hastighed · Enheder · Udendørs · Påkrævet · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Hastighed · Enheder (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Luftfugtighed · Effekt · Automatisk",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Luftfugtighed · Enheder · Effekt · Påkrævet · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Luftfugtighed · Enheder · Effekt · Udendørs · Påkrævet · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Luftfugtighed · Enheder · Effekt · Automatisk (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Luftfugtighed · Enheder · Effekt · Sluk (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Luftfugtighed · Enheder · Effekt · Automatisk (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Enheder · Automatisk · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Vælg en reel Home Assistant-HEAT · Enheder · kilde · Temperatur + til »HEAT · Enheder · kilde · Temperatur +«. Manglende eller gamle værdier standser handlingen.",
+          "climate_cool_climate_entity": "Vælg en reel Home Assistant-COOL · Enheder · kilde · Temperatur − til »COOL · Enheder · kilde · Temperatur −«. Manglende eller gamle værdier standser handlingen.",
+          "climate_dry_climate_entity": "Vælg en reel Home Assistant-DRY · Enheder · kilde til »DRY · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_fan_climate_entity": "Vælg en reel Home Assistant-kilde til »FAN_ONLY · Hastighed · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_humidifier_entity": "Vælg en reel Home Assistant-HUMIDIFIER · Enheder · kilde til »HUMIDIFIER · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_dehumidifier_entity": "Vælg en reel Home Assistant-DEHUMIDIFIER · Enheder · kilde til »DEHUMIDIFIER · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_extraction_fan_entity": "Vælg en reel Home Assistant-kilde til »EXTRACT · Hastighed · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_purifier_fan_entity": "Vælg en reel Home Assistant-kilde til »Luftrenser · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_humidity_entity": "Vælg en reel Home Assistant-kilde til »Luftfugtighed · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_humidity_low_rh": "Beslutningsgrænse for »RH · Luftfugtighed · Enheder (%) · RH MIN«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_humidity_high_rh": "Beslutningsgrænse for »RH · Luftfugtighed · Enheder (%) · RH MAX«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_humidity_hysteresis_rh": "Beslutningsgrænse for »RH · Luftfugtighed · Enheder · ± RH«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_cooling_dry_deferral_rh_points": "Denne indstilling styrer »Enheder · Temperatur −«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_humidity_setpoint_auto": "Denne indstilling styrer »Luftfugtighed · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_window_efficiency_notify": "Denne indstilling styrer »Enheder · Udendørs«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_dry_fan_mode_auto": "Denne indstilling styrer »Hastighed · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_dry_fan_hardware_confirmed": "Brug en reel passende måling til »DRY/FAN_ONLY · Hastighed · Enheder · Påkrævet · HW ✓«. Skøn erstatter ikke kalibreret sensor.",
+          "climate_dry_fan_windowless_confirmed": "Brug en reel passende måling til »DRY/FAN_ONLY · Hastighed · Enheder · Udendørs · Påkrævet · NO WINDOW«. Skøn erstatter ikke kalibreret sensor.",
+          "climate_dry_fan_mode_dwell_s": "Denne tid regulerer »DRY/FAN_ONLY · Hastighed · Enheder (s) · MODE DWELL«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_humidity_power_auto": "Denne indstilling styrer »Luftfugtighed · Effekt · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_humidity_power_hardware_confirmed": "Brug en reel passende måling til »RH POWER · Luftfugtighed · Enheder · Effekt · Påkrævet · HW ✓«. Skøn erstatter ikke kalibreret sensor.",
+          "climate_humidity_power_windowless_confirmed": "Brug en reel passende måling til »RH POWER · Luftfugtighed · Enheder · Effekt · Udendørs · Påkrævet · NO WINDOW«. Skøn erstatter ikke kalibreret sensor.",
+          "climate_humidity_power_min_on_s": "Denne tid regulerer »RH POWER · Luftfugtighed · Enheder · Effekt · Automatisk (s) · MIN ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_humidity_power_min_off_s": "Denne tid regulerer »RH POWER · Luftfugtighed · Enheder · Effekt · Sluk (s) · MIN OFF«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_humidity_power_max_on_s": "Denne tid regulerer »RH POWER · Luftfugtighed · Enheder · Effekt · Automatisk (s) · MAX ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_secondary_climate_setpoint_auto": "Denne indstilling styrer »Enheder · Automatisk · TARGET AUTO«. Fysiske kommandoer kræver særskilt samtykke og sikring."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "indstillinger · Enheder · Udendørs",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "climate_fan_speed_auto": "Hastighed · Automatisk",
+          "climate_fan_power_auto": "Hastighed · Effekt · Automatisk",
+          "climate_fan_power_hardware_confirmed": "FAN · Hastighed · Enheder · Effekt · Påkrævet · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Hastighed · Enheder · Effekt · Automatisk (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Hastighed · Enheder · Effekt · Sluk (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Hastighed · Enheder · Effekt · Automatisk (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Enheder · sensor · Påkrævet · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Enheder · kilde",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Enheder · kilde",
+          "climate_pm25_action_ug_m3": "PM2.5 · Enheder (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Enheder · Hastighed (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Enheder · Hastighed (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Denne indstilling styrer »Hastighed · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_fan_power_auto": "Denne indstilling styrer »Hastighed · Effekt · Automatisk«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "climate_fan_power_hardware_confirmed": "Brug en reel passende måling til »FAN · Hastighed · Enheder · Effekt · Påkrævet · HW ✓«. Skøn erstatter ikke kalibreret sensor.",
+          "climate_fan_power_min_on_s": "Denne tid regulerer »FAN · Hastighed · Enheder · Effekt · Automatisk (s) · MIN ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_fan_power_min_off_s": "Denne tid regulerer »FAN · Hastighed · Enheder · Effekt · Sluk (s) · MIN OFF«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_fan_power_max_on_s": "Denne tid regulerer »FAN · Hastighed · Enheder · Effekt · Automatisk (s) · MAX ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "climate_pm25_sensor_verified": "Brug en reel passende måling til »PM2.5 · PM2.5 · Enheder · sensor · Påkrævet · SENSOR ✓ · VERIFIED«. Skøn erstatter ikke kalibreret PM2.5 · PM2.5 · Enheder · sensor · Påkrævet · SENSOR ✓ · VERIFIED.",
+          "climate_co2_entity": "Vælg en reel Home Assistant-CO₂ · CO₂ · Enheder · kilde til »CO₂ · CO₂ · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_pm25_entity": "Vælg en reel Home Assistant-PM2.5 · PM2.5 · Enheder · kilde til »PM2.5 · PM2.5 · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "climate_pm25_action_ug_m3": "Beslutningsgrænse for »PM2.5 · Enheder (µg/m³)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_extraction_speed_percent": "Beslutningsgrænse for »EXTRACT · Enheder · Hastighed (%) · SPEED %«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "climate_purifier_speed_percent": "Beslutningsgrænse for »PURIFIER · Enheder · Hastighed (%) · SPEED %«. Den påvirker råd, men er ikke en medicinsk grænse."
+        }
+      },
+      "climate_profiles": {
+        "title": "indstillinger · Enheder",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "home_heat": "Opvarmning · Hjemme (°C)",
+          "home_cool": "Køling · Hjemme (°C)",
+          "unoccupied_heat": "Opvarmning · Tomt rum (°C)",
+          "unoccupied_cool": "Køling · Tomt rum (°C)",
+          "away_heat": "Opvarmning · Fravær (°C)",
+          "away_cool": "Køling · Fravær (°C)",
+          "sleep_heat": "Opvarmning · Søvn (°C)",
+          "sleep_cool": "Køling · Søvn (°C)"
+        },
+        "data_description": {
+          "home_heat": "Mål for »Opvarmning · Hjemme (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "home_cool": "Mål for »Køling · Hjemme (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "unoccupied_heat": "Mål for »Opvarmning · Tomt rum (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "unoccupied_cool": "Mål for »Køling · Tomt rum (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "away_heat": "Mål for »Opvarmning · Fravær (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "away_cool": "Mål for »Køling · Fravær (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "sleep_heat": "Mål for »Opvarmning · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "sleep_cool": "Mål for »Køling · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum."
+        }
+      },
+      "climate_actuators": {
+        "title": "indstillinger · Enheder",
+        "description": "Område · indstillinger · Enheder · styring. Tilstedeværelse · sensor · Påkrævet.",
+        "data": {
+          "direct_hardware_confirmed": "Påkrævet",
+          "heat_actuator": "Opvarmning · Enheder",
+          "cool_actuator": "Køling · Enheder",
+          "min_on_s": "Effekt · Automatisk (s) · MIN ON",
+          "min_off_s": "Effekt · Sluk (s)",
+          "max_on_s": "Effekt · Automatisk (s) · MAX ON",
+          "mode_dwell_s": "indstillinger · kilde (s) · MODE DWELL",
+          "kp": "PID Kp · styring (percentage points/°C)",
+          "ki": "PID Ki · styring (percentage points/(°C·minute))",
+          "kd": "PID Kd · styring (percentage points·minute/°C)",
+          "sample_seconds": "indstillinger · kilde (s) · SAMPLE",
+          "pwm_period_s": "indstillinger · kilde (s) · PWM PERIOD",
+          "max_demand_change": "indstillinger · kilde · MAX Δ",
+          "min_demand_change": "indstillinger · kilde · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Brug en reel passende måling til »Påkrævet«. Skøn erstatter ikke kalibreret sensor.",
+          "heat_actuator": "Indstil »Opvarmning · Enheder« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "cool_actuator": "Indstil »Køling · Enheder« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "min_on_s": "Denne tid regulerer »Effekt · Automatisk (s) · MIN ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "min_off_s": "Denne tid regulerer »Effekt · Sluk (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "max_on_s": "Denne tid regulerer »Effekt · Automatisk (s) · MAX ON«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "mode_dwell_s": "Denne tid regulerer »indstillinger · kilde (s) · MODE DWELL«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "kp": "Indstil »PID Kp · styring (percentage points/°C)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "ki": "Indstil »PID Ki · styring (percentage points/(°C·minute))« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "kd": "Indstil »PID Kd · styring (percentage points·minute/°C)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "sample_seconds": "Denne tid regulerer »indstillinger · kilde (s) · SAMPLE«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "pwm_period_s": "Denne tid regulerer »indstillinger · kilde (s) · PWM PERIOD«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "max_demand_change": "Indstil »indstillinger · kilde · MAX Δ« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "min_demand_change": "Indstil »indstillinger · kilde · MIN Δ« kun for valgt rum. Ugyldige data blokerer handlingen."
+        }
+      },
+      "outside_data": {
+        "title": "Udendørs · kilde",
+        "description": "Udendørs · kilde: Vælg kilde, sensor / Enheder · styring.",
+        "menu_options": {
+          "weather": "Vejr og advarsler",
+          "outdoor": "Udendørs luftkvalitet",
+          "outside_aqi": "Udendørs · AQI",
+          "pollen": "Pollen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Område · indstillinger",
+        "description": "Område · indstillinger: Vælg kilde, sensor / Enheder · styring.",
+        "menu_options": {
+          "areas": "Rum",
+          "indoor_sensors": "Rum · Skimmelindikator",
+          "window_sensors": "Udeluk vinduessensorer",
+          "environment_room": "indstillinger · indstillinger · kilde",
+          "area_devices": "Klimaenheder"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Enheder · indstillinger",
+        "description": "Valgfrit: fortsæt til sensorer og enhedens sikkerhedstilladelser. Lad være slået fra for at gemme listen straks.",
+        "menu_options": {
+          "device_settings": "Enheder · styring",
+          "device_choice": "Vælg · Enheder",
+          "device_done": "indstillinger · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Generelle · indstillinger",
+        "description": "Generelle · indstillinger: Vælg kilde, sensor / Enheder · styring.",
+        "data": {
+          "general_room_occupancy_sensors": "Rum · Tilstedeværelse · sensor",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rum · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rum · kilde (attribute)",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheder",
+          "general_home_policy": "Hjem · Tilstedeværelse · styring",
+          "general_sleep_rooms_entity": "Søvn · Rum · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rum · kilde (attribute)",
+          "general_source_stale_minutes": "kilde · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Rum · Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_entity": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_attribute": "Indstil »Tilstedeværelse · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_home_trackers": "Vælg en reel Home Assistant-kilde til »Hjem · Tilstedeværelse · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "general_home_policy": "Denne indstilling styrer »Hjem · Tilstedeværelse · styring«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "general_sleep_rooms_entity": "Vælg en reel Home Assistant-kilde til »Søvn · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_sleep_rooms_attribute": "Indstil »Søvn · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_source_stale_minutes": "kilde · Søvn / Tilstedeværelse · max 240 min. Ugyldig · Sluk."
+        }
+      },
+      "pollen": {
+        "title": "indstillinger · Pollen",
+        "description": "Pollen: Vælg kilde, sensor / Enheder · styring.",
+        "data": {
+          "pollen_entity": "Pollen · kilde",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Vælg en reel Home Assistant-kilde til »Pollen · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "pollen_high_from": "Indstil »POLLEN · Pollen · HIGH« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_max_scale": "Indstil »POLLEN · Pollen · SCALE« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "pollen_avoid_ventilation": "Indstil »POLLEN · Pollen · NO VENT« kun for valgt rum. Ugyldige data blokerer handlingen."
+        }
+      },
+      "outside_aqi": {
+        "title": "Udendørs · AQI",
+        "description": "Udendørs · AQI: Vælg kilde, sensor / Enheder · styring.",
+        "data": {
+          "outside_aqi_entity": "AQI · kilde · Udendørs",
+          "outside_aqi_scale": "AQI · kilde",
+          "outside_aqi_limit": "AQI · mål",
+          "outside_aqi_no_sources": "AQI · sensor · Påkrævet"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Vælg en reel Home Assistant-kilde til »AQI · kilde · Udendørs«. Manglende eller gamle værdier standser handlingen.",
+          "outside_aqi_scale": "Indstil »AQI · kilde« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "outside_aqi_limit": "Beslutningsgrænse for »AQI · mål«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "outside_aqi_no_sources": "Indstil »AQI · sensor · Påkrævet« kun for valgt rum. Ugyldige data blokerer handlingen."
+        }
+      },
+      "area_devices": {
+        "title": "Klimaenheder",
+        "description": "Vælg · Område",
+        "data": {
+          "area_devices_area": "Vælg · Område"
+        },
+        "data_description": {
+          "area_devices_area": "Vælg en reel Home Assistant-kilde til »Vælg · Område«. Manglende eller gamle værdier standser handlingen."
+        }
+      },
+      "select_devices": {
+        "title": "Klimaenheder",
+        "description": "Vælg enheder til {area_name}. Gem opretter én styreenhed pr. fysisk produkt i rummets hub. Indstil mål, profiler, automatisk/manuel/fra/PID og stille drift på enhederne. Valget aktiverer ikke automatisk styring.",
+        "data": {
+          "selected_devices": "Vælg · Enheder",
+          "configure_device_sources": "Konfigurer sensorer og tilladelser nu"
+        },
+        "data_description": {
+          "selected_devices": "Vælg enheder til {area_name}. Gem opretter én styreenhed pr. fysisk produkt i rummets hub. Indstil mål, profiler, automatisk/manuel/fra/PID og stille drift på enhederne. Valget aktiverer ikke automatisk styring.",
+          "configure_device_sources": "Valgfrit: fortsæt til sensorer og enhedens sikkerhedstilladelser. Lad være slået fra for at gemme listen straks."
+        }
+      },
+      "device_choice": {
+        "title": "Vælg · Enheder",
+        "description": "Vælg · Enheder: Vælg kilde, sensor / Enheder · styring.",
+        "data": {
+          "device_choice": "Vælg · Enheder"
+        },
+        "data_description": {
+          "device_choice": "Vælg en reel Home Assistant-kilde til »Vælg · Enheder«. Manglende eller gamle værdier standser handlingen."
+        }
+      },
+      "device_settings": {
+        "title": "Enheder · styring",
+        "description": "Denne indstilling styrer »styring · kilde«. Fysiske kommandoer kræver særskilt samtykke og sikring. Brug en reel passende måling til »Påkrævet · Enheder · Effekt«. Skøn erstatter ikke kalibreret sensor. Denne tid regulerer »Effekt · min ON (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring. Denne tid regulerer »Effekt · min OFF (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring. Indstil »Søvn · styring« kun for valgt rum. Ugyldige data blokerer handlingen. Beslutningsgrænse for »Hastighed (%)«. Den påvirker råd, men er ikke en medicinsk grænse.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatisk styring",
+          "device_method": "styring · kilde",
+          "device_presence_requirement": "styring · Tilstedeværelse",
+          "device_absence_action": "Sluk · Tilstedeværelse",
+          "device_sleep_behavior": "Søvn · styring",
+          "device_hardware_confirmed": "Påkrævet · Enheder · Effekt",
+          "device_temperature_entity": "Temperatur · sensor",
+          "device_humidity_entity": "Luftfugtighed · sensor",
+          "device_co2_entity": "CO₂ · Enheder · kilde",
+          "device_pm25_entity": "PM2.5 · Enheder · kilde",
+          "device_fan_purpose": "styring · Enheder",
+          "device_sensor_verified": "sensor · Påkrævet",
+          "device_fan_speed_percent": "Hastighed (%)",
+          "device_humidity_target": "Luftfugtighed · mål (%)",
+          "device_sleep_humidity_target": "Søvn · Luftfugtighed · mål (%)",
+          "device_min_on_s": "Effekt · min ON (s)",
+          "device_min_off_s": "Effekt · min OFF (s)",
+          "device_max_on_s": "Effekt · max ON (s)",
+          "device_home_heat_c": "Opvarmning · Hjemme (°C)",
+          "device_home_cool_c": "Køling · Hjemme (°C)",
+          "device_unoccupied_heat_c": "Opvarmning · Tomt rum (°C)",
+          "device_unoccupied_cool_c": "Køling · Tomt rum (°C)",
+          "device_away_heat_c": "Opvarmning · Fravær (°C)",
+          "device_away_cool_c": "Køling · Fravær (°C)",
+          "device_sleep_heat_c": "Opvarmning · Søvn (°C)",
+          "device_sleep_cool_c": "Køling · Søvn (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Denne indstilling styrer »Automatisk styring«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "device_method": "Denne indstilling styrer »styring · kilde«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "device_presence_requirement": "Indstil »styring · Tilstedeværelse« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "device_absence_action": "Denne indstilling styrer »Sluk · Tilstedeværelse«. Fysiske kommandoer kræver særskilt samtykke og sikring.",
+          "device_sleep_behavior": "Indstil »Søvn · styring« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "device_hardware_confirmed": "Brug en reel passende måling til »Påkrævet · Enheder · Effekt«. Skøn erstatter ikke kalibreret sensor.",
+          "device_temperature_entity": "Vælg en reel Home Assistant-kilde til »Temperatur · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "device_humidity_entity": "Vælg en reel Home Assistant-kilde til »Luftfugtighed · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "device_co2_entity": "Vælg en reel Home Assistant-kilde til »CO₂ · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "device_pm25_entity": "Vælg en reel Home Assistant-kilde til »PM2.5 · Enheder · kilde«. Manglende eller gamle værdier standser handlingen.",
+          "device_fan_purpose": "Indstil »styring · Enheder« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "device_sensor_verified": "Brug en reel passende måling til »sensor · Påkrævet«. Skøn erstatter ikke kalibreret sensor.",
+          "device_fan_speed_percent": "Beslutningsgrænse for »Hastighed (%)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "device_humidity_target": "Beslutningsgrænse for »Luftfugtighed · mål (%)«. Den påvirker råd, men er ikke en medicinsk grænse.",
+          "device_sleep_humidity_target": "Mål for »Søvn · Luftfugtighed · mål (%)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_min_on_s": "Denne tid regulerer »Effekt · min ON (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "device_min_off_s": "Denne tid regulerer »Effekt · min OFF (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "device_max_on_s": "Denne tid regulerer »Effekt · max ON (s)«. Den begrænser hyppige skift og erstatter ikke hardwaresikring.",
+          "device_home_heat_c": "Mål for »Opvarmning · Hjemme (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_home_cool_c": "Mål for »Køling · Hjemme (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_unoccupied_heat_c": "Mål for »Opvarmning · Tomt rum (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_unoccupied_cool_c": "Mål for »Køling · Tomt rum (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_away_heat_c": "Mål for »Opvarmning · Fravær (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_away_cool_c": "Mål for »Køling · Fravær (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_sleep_heat_c": "Mål for »Opvarmning · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum.",
+          "device_sleep_cool_c": "Mål for »Køling · Søvn (°C)« gælder ved bekræftet tilstedeværelse eller søvn. Ukendt betyder ikke tomt rum."
+        }
+      },
+      "setup_rooms": {
+        "title": "Rum der skal overvåges",
+        "description": "Rum der skal overvåges → kilde → Generelle indstillinger",
+        "data": {
+          "areas": "Rum der skal overvåges"
+        },
+        "data_description": {
+          "areas": "Rum der skal overvåges. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Rum · {area_name} · {room_index}/{room_count}",
+        "description": "Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+        "data": {
+          "windows": "Vinduer",
+          "air_quality": "Luftkvalitets- og miljøsensorer",
+          "temperature": "Temperatur",
+          "humidity": "Luftfugtighed",
+          "pressure": "Tryksensorer",
+          "climate_devices": "Enheder"
+        },
+        "data_description": {
+          "windows": "Vinduer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "air_quality": "Luftkvalitets- og miljøsensorer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "temperature": "Temperatur. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "humidity": "Luftfugtighed. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "pressure": "Tryksensorer. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring.",
+          "climate_devices": "Enheder. Vælg rummets indgange: enhedsnavn - entitetsnavn. Tomme grupper bruges ikke og aktiverer ikke automatisk registrering eller styring."
+        }
+      },
+      "setup_general": {
+        "title": "Generelle indstillinger",
+        "description": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder.",
+        "data": {
+          "weather_entities": "Vejr og advarsler",
+          "outdoor_sensors": "Udendørs luftkvalitet",
+          "weather_warnings": "Vejradvarsler",
+          "general_room_occupancy_sensors": "Rum · Tilstedeværelse · sensor",
+          "general_home_trackers": "Hjem · Tilstedeværelse · Enheder",
+          "general_occupied_rooms_entity": "Tilstedeværelse · Rum · kilde (state)",
+          "general_occupied_rooms_attribute": "Tilstedeværelse · Rum · kilde (attribute)",
+          "general_sleep_rooms_entity": "Søvn · Rum · kilde (state)",
+          "general_sleep_rooms_attribute": "Søvn · Rum · kilde (attribute)",
+          "notify_entities": "indstillinger · kilde",
+          "media_players": "indstillinger · kilde · MEDIA_PLAYERS",
+          "tts_engine": "indstillinger · kilde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Vælg · kilde",
+          "language": "TTS · Vælg · kilde",
+          "use_mold_indicator": "Skimmelindikator · RH (%) → 70%",
+          "pollen_entities": "Pollen · kilde · Vælg",
+          "use_announcement_hub": "Automatisk · Announcement Hub",
+          "general_away_cooldown_minutes": "Hjem · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Vælg: Vejr og advarsler · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Vælg: Udendørs luftkvalitet · AQI, CO₂, PM2.5, PM10, VOC. Ikke tilgængelig: ⚠",
+          "weather_warnings": "Vejr og advarsler · ⚠ (Ikke tilgængelig) → 🪟🔒",
+          "general_room_occupancy_sensors": "Vælg en reel Home Assistant-kilde til »Rum · Tilstedeværelse · sensor«. Manglende eller gamle værdier standser handlingen.",
+          "general_home_trackers": "Vælg en reel Home Assistant-kilde til »Hjem · Tilstedeværelse · Enheder«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_entity": "Vælg en reel Home Assistant-kilde til »Tilstedeværelse · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_occupied_rooms_attribute": "Indstil »Tilstedeværelse · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "general_sleep_rooms_entity": "Vælg en reel Home Assistant-kilde til »Søvn · Rum · kilde (state)«. Manglende eller gamle værdier standser handlingen.",
+          "general_sleep_rooms_attribute": "Indstil »Søvn · Rum · kilde (attribute)« kun for valgt rum. Ugyldige data blokerer handlingen.",
+          "notify_entities": "Vælg: notify.* · indstillinger · kilde.",
+          "media_players": "Vælg: media_player.* · indstillinger · kilde · MEDIA_PLAYERS.",
+          "tts_engine": "Vælg: tts.* · indstillinger · kilde · TTS_ENGINE.",
+          "ai_conversation_agent": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · AI · Vælg · kilde · conversation.* / ai_task.*.",
+          "language": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · TTS · Vælg · kilde · provider capabilities.",
+          "use_mold_indicator": "🧱 Skimmelindikator · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Pollen · kilde · Vælg.",
+          "use_announcement_hub": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Automatisk · Announcement Hub.",
+          "general_away_cooldown_minutes": "Vælg fælles kilder og notifikationsudgange. Gem afslutter opsætningen. Driftsindstillinger forbliver på husets og rummenes enheder. · Hjem · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Ugyldigt valg: Udendørs luftkvalitet (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Ikke tilgængelig: Udendørs luftkvalitet (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Ugyldigt valg: Vejr og advarsler (weather.*).",
+      "invalid_warning": "Ugyldigt valg: Vejr og advarsler ⚠.",
+      "missing_notify": "Vælg: Announcement Hub / notify.*.",
+      "missing_tts": "Vælg: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Ugyldigt valg: °C min < max.",
+      "no_areas": "Vælg: Rum.",
+      "no_window_areas": "Ikke tilgængelig: Målinger (binary_sensor, window).",
+      "invalid_areas": "Ugyldigt valg: Rum.",
+      "invalid_window_exclusions": "Ugyldigt valg: Udeluk vinduessensorer.",
+      "invalid_indoor_exclusions": "Ugyldigt valg: Udeluk indeklimasensorer.",
+      "no_windows_after_exclusions": "Behold mindst én vinduessensor.",
+      "review_areas_after_exclusions": "Kontrollér: Rum · Målinger (0).",
+      "invalid_repeat_minutes": "Ugyldigt valg: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Ikke tilgængelig: conversation.process.",
+      "invalid_ai_agent": "Ugyldigt valg: conversation.*.",
+      "invalid_mold_temperature_sensor": "Rum · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Rum · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Skimmelindikator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Skimmelindikator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Skimmelindikator · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Ugyldig indstilling for »indstillinger · kilde«. Kontrollér kilde, enhed og sikkerhed.",
+      "invalid_environment_measurement": "Ugyldig indstilling for »indstillinger · kilde«. Kontrollér kilde, enhed og sikkerhed.",
+      "pmv_requires_explicit_inputs": "Ugyldig indstilling for »PMV / PPD«. Kontrollér kilde, enhed og sikkerhed.",
+      "pid_climate_required": "Ugyldig indstilling for »PID · Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "pid_temperature_required": "Ugyldig indstilling for »PID · Temperatur«. Kontrollér kilde, enhed og sikkerhed.",
+      "pid_invalid_target": "Ugyldig indstilling for »PID · mål«. Kontrollér kilde, enhed og sikkerhed.",
+      "pid_duplicate_climate": "Ugyldig indstilling for »PID · Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "pid_invalid_parameters": "Ugyldig indstilling for »PID«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_dry_fan_control_inputs_missing": "Ugyldig indstilling for »Hastighed · Enheder · styring«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_humidity_power_inputs_missing": "Ugyldig indstilling for »Luftfugtighed · Enheder · Effekt«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_secondary_control_inputs_missing": "Ugyldig indstilling for »Enheder · styring«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_fan_power_inputs_missing": "Ugyldig indstilling for »Hastighed · Enheder · Effekt«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_fan_control_inputs_missing": "Ugyldig indstilling for »Hastighed · Enheder · styring«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_fan_sensor_invalid": "Ugyldig indstilling for »Hastighed · Enheder · sensor«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_humidity_control_inputs_missing": "Ugyldig indstilling for »Luftfugtighed · Enheder · styring«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_temperature_required": "Ugyldig indstilling for »Temperatur · Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_target_required": "Ugyldig indstilling for »Enheder · mål«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_direct_actuator_not_ready": "Ugyldig indstilling for »Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_controller_invalid": "Ugyldig indstilling for »Enheder · styring«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_mode_invalid": "Ugyldig indstilling for »Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_occupancy_invalid": "Ugyldig indstilling for »Tilstedeværelse · Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_away_invalid": "Ugyldig indstilling for »Hjem · Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_deadband_invalid": "Ugyldig indstilling for »Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_attestation_required": "Ugyldig indstilling for »Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_direct_targets_invalid": "Ugyldig indstilling for »Enheder · mål«. Kontrollér kilde, enhed og sikkerhed.",
+      "climate_direct_timing_invalid": "Ugyldig indstilling for »Enheder«. Kontrollér kilde, enhed og sikkerhed.",
+      "general_invalid_presence": "Ugyldig · Tilstedeværelse · indstillinger",
+      "general_invalid_trackers": "Ugyldig · Hjem · indstillinger",
+      "general_invalid_rooms_entity": "Ugyldig · Rum · indstillinger",
+      "general_invalid_attribute": "Ugyldig · kilde · indstillinger",
+      "general_invalid_source_age": "Ugyldig · kilde · indstillinger",
+      "invalid_selected_devices": "Ugyldig · Enheder · indstillinger",
+      "device_policy_invalid": "Ugyldig · Tilstedeværelse · indstillinger",
+      "device_method_invalid": "Ugyldig · styring · indstillinger",
+      "device_hardware_required": "Ugyldig · Påkrævet · indstillinger",
+      "device_power_required_for_off": "Ugyldig · Effekt · indstillinger",
+      "device_temperature_required": "Ugyldig · Temperatur · indstillinger",
+      "device_humidity_required": "Ugyldig · Luftfugtighed · indstillinger",
+      "device_air_sensor_required": "Ugyldig · sensor · indstillinger",
+      "device_temperature_band_invalid": "Ugyldig · Temperatur · indstillinger",
+      "device_humidity_invalid": "Ugyldig · Luftfugtighed · indstillinger",
+      "device_runtime_invalid": "Ugyldig · Effekt · indstillinger",
+      "invalid_setup_rooms": "Ugyldig: Rum der skal overvåges",
+      "invalid_room_source": "Ugyldig: Rum · kilde"
+    },
+    "abort": {
+      "setup_area_removed": "Ugyldig: Rum der skal overvåges",
+      "setup_changed": "indstillinger ↻ Rum der skal overvåges"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Luftkvalitet",
+        "state": {
+          "open": "Luk · Målinger",
+          "close": "Automatiske notifikationer · Målinger",
+          "idle": "God",
+          "blocked": "Hold vinduerne lukkede"
+        }
+      },
+      "area_overview": {
+        "name": "Miljøoversigt"
+      },
+      "area_surface_humidity": {
+        "name": "Overfladefugtighed (beregnet)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Udenfor · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Udenfor · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Udenfor · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Udenfor · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Udenfor · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Udenfor · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Udendørs (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Udendørs (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Udendørs (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Luftkvalitet · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Luftkvalitet · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Luftkvalitet · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Luftkvalitet · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Luftkvalitet · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Luftkvalitet · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Luftkvalitet · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Skimmelindikator · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Udenfor · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Udenfor · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Udenfor · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Vejr og advarsler · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Åbn (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Meddelelser (valgfrit) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "mål (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · styring (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · styring (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · styring (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Opvarmning · Rum · Tilstedeværelse"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Køling · Rum · Tilstedeværelse"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Opvarmning · Hjem · Rum"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Køling · Hjem · Rum"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Opvarmning · Rum · Søvn"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Køling · Rum · Søvn"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Opvarmning · Hjem · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Køling · Hjem · ECO"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Pollen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Pollen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "kilde · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "indstillinger · kilde (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · mål (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Hastighed · Udendørs (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "indstillinger · kilde (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "indstillinger · kilde (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Enheder · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Tilstedeværelse · Enheder · sensor · Påkrævet"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Enheder (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Luftfugtighed · Enheder (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Luftfugtighed · Enheder (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Luftfugtighed · Enheder · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Enheder · Temperatur −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Enheder (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Enheder · Hastighed (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Enheder · Hastighed (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · styring (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · styring (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · styring (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "indstillinger · kilde (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "indstillinger · kilde · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "indstillinger · kilde · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Skimmelindikator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · styring (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · styring (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · styring (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}indstillinger · kilde (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ventilatorgrænse for støjsvag drift (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Effekt · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Effekt · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Effekt · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Rum · Temperatur · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Rum · Temperatur · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Rum · Luftfugtighed · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Rum · Luftfugtighed · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Rum · Hastighed · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Rum · Hastighed · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Hjem · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automatisk · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automatisk"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Meddelelser (valgfrit)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Pollen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Søvn"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automatisk"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Søvn · Enheder"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Søvn · Automatisk"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Enheder · Udendørs"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lavere støj under søvn"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lavere støj ved tilstedeværelse"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}Effekt · styring"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}sensor · Påkrævet"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Sprog"
+      },
+      "area_manual_profile": {
+        "name": "Enheder · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Hjem · Tilstedeværelse · styring"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Tilstedeværelse · Enheder"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Hjem · Enheder · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Enheder · kilde · mål"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Reguleringsmetode",
+        "state": {
+          "existing": "Eksisterende rumregulering",
+          "automatic": "Automatisk",
+          "manual": "Manuel",
+          "off": "Sluk",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Indbygget støjsvagt ventilatortrin"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}styring · Tilstedeværelse",
+        "state": {
+          "always": "Automatisk",
+          "occupied": "Rum · Tilstedeværelse",
+          "absent": "Rum · Tilstedeværelse · Sluk"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Søvn · styring",
+        "state": {
+          "normal": "Automatisk",
+          "pause": "Pause",
+          "sleep_targets": "Søvn · mål"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}styring · Enheder",
+        "state": {
+          "extraction": "Udendørs · styring",
+          "filtration": "PM2.5 · styring",
+          "auto": "Automatisk"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Temperatur · kilde"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "kilde · Hastighed · Udendørs (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Søvn · Enheder · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Søvn · Enheder · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Skimmelindikator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Kontrollér og genoptag"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaregulator"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Meddelelser (valgfrit) — Home Environment Manager",
+      "description": "Meddelelser (valgfrit) · Rum",
+      "fields": {
+        "language": {
+          "name": "Sprog",
+          "description": "Sprog"
+        },
+        "channels": {
+          "name": "Meddelelser (valgfrit)",
+          "description": "Meddelelser (valgfrit)"
+        },
+        "areas": {
+          "name": "Rum",
+          "description": "Rum"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Standard",
+        "en": "indstillinger · kilde",
+        "de": "indstillinger · kilde",
+        "el": "indstillinger · kilde",
+        "fr": "indstillinger · kilde",
+        "es": "indstillinger · kilde",
+        "it": "indstillinger · kilde",
+        "nl": "indstillinger · kilde",
+        "pt": "indstillinger · kilde",
+        "pt-br": "indstillinger · kilde",
+        "pl": "indstillinger · kilde",
+        "ru": "indstillinger · kilde",
+        "uk": "indstillinger · kilde",
+        "tr": "indstillinger · kilde",
+        "cs": "indstillinger · kilde",
+        "sk": "indstillinger · kilde",
+        "hu": "indstillinger · kilde",
+        "ro": "indstillinger · kilde",
+        "bg": "indstillinger · kilde",
+        "hr": "indstillinger · kilde",
+        "sr": "indstillinger · kilde",
+        "sv": "indstillinger · kilde",
+        "nb": "indstillinger · kilde",
+        "da": "indstillinger · kilde",
+        "fi": "indstillinger · kilde",
+        "id": "indstillinger · kilde",
+        "vi": "indstillinger · kilde",
+        "th": "indstillinger · kilde",
+        "hi": "indstillinger · kilde",
+        "zh-hans": "indstillinger · kilde",
+        "zh-hant": "indstillinger · kilde",
+        "ja": "indstillinger · kilde",
+        "ko": "indstillinger · kilde",
+        "ar": "indstillinger · kilde",
+        "he": "indstillinger · kilde",
+        "fa": "indstillinger · kilde",
+        "bn": "indstillinger · kilde",
+        "ur": "indstillinger · kilde",
+        "ta": "indstillinger · kilde"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Hjem · Tilstedeværelse",
+        "all_home": "Hjem · Enheder · Tilstedeværelse"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "mål · styring",
+        "native": "Enheder · styring",
+        "power": "Effekt",
+        "speed": "Hastighed"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatisk",
+        "room": "Rum · Tilstedeværelse",
+        "home": "Hjem · Tilstedeværelse"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pause",
+        "off": "Sluk"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatisk",
+        "pause": "Pause",
+        "sleep_targets": "Søvn · mål"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Udendørs · styring",
+        "filtration": "PM2.5 · styring"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "kilde · Ugyldig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "mål · indstillinger"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Rumhub",
+      "initiate_flow": {
+        "user": "Rumhub"
+      },
+      "step": {
+        "user": {
+          "title": "Rumhub",
+          "description": "Vælg et område i Home Assistant. Gruppen indeholder generelle rumindstillinger og én styreenhed pr. valgt fysisk enhed. Tilføjelse af et rum aktiverer ikke automatisk styring af udstyr.",
+          "data": {
+            "area_id": "Rum"
+          },
+          "data_description": {
+            "area_id": "Vælg et område i Home Assistant. Gruppen indeholder generelle rumindstillinger og én styreenhed pr. valgt fysisk enhed. Tilføjelse af et rum aktiverer ikke automatisk styring af udstyr."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ugyldig: Område."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

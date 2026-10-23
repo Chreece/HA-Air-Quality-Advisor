@@ -1,7 +1,7 @@
-from custom_components.air_quality_advisor.logic import (
+from custom_components.environment_manager.logic import (
     Reading, Room, Warning, Weather, Window, evaluate,
 )
-from custom_components.air_quality_advisor.messages import announcement, explain
+from custom_components.environment_manager.messages import announcement, explain
 
 
 GOOD = (Reading("sensor.outside_pm25", "Outside PM2.5", "pm25", 8),)
@@ -262,11 +262,11 @@ def test_existing_high_co2_preserves_priority_over_energy_hint():
 
 def test_climate_only_recommendations_do_not_change_air_quality_counts():
     from dataclasses import replace
-    rec=__import__("custom_components.air_quality_advisor.logic",
+    rec=__import__("custom_components.environment_manager.logic",
                    fromlist=["Recommendation"]).Recommendation(
         "open","bedroom","Bedroom",
         (Window("binary_sensor.bedroom_window","Bedroom window",False),),
-        (__import__("custom_components.air_quality_advisor.logic",
+        (__import__("custom_components.environment_manager.logic",
                     fromlist=["Reason"]).Reason("climate_window_cool",
                     "climate.bedroom_ac","4 °C"),),
     )
