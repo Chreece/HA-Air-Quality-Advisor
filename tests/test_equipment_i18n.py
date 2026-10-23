@@ -20,9 +20,9 @@ def test_all_38_device_controller_catalogs_have_native_labels_and_explanations()
         entities = doc["entity"]
         for domain, names in {
             "climate": ("climate",), "button": ("resume",),
-            "select": ("control_mode", "quiet_fan_mode"),
-            "switch": ("quiet_sleep", "quiet_occupied"),
-            "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage"),
+            "select": ("control_mode", "quiet_fan_mode", "fan_purpose", "presence_requirement", "sleep_behavior"),
+            "switch": ("quiet_sleep", "quiet_occupied", "allow_power", "sensor_verified"),
+            "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage", "min_on_seconds", "min_off_seconds", "max_on_seconds"),
         }.items():
             for key in names:
                 name = entities[domain]["equipment_" + key]["name"]

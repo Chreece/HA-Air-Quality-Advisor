@@ -5,7 +5,7 @@ an explicit empty list means no input, never 'discover all again'.
 """
 from __future__ import annotations
 
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 import math
 from typing import Any
 
@@ -33,15 +33,25 @@ def native(hass: Any, entity: str) -> bool:
 
 
 def label(hass: Any, entity: str) -> str:
+    """Device name - entity name (state), with no empty or invented components."""
     from homeassistant.helpers import device_registry as dr, entity_registry as er
     entry = er.async_get(hass).async_get(entity)
-    device = dr.async_get(hass).async_get(entry.device_id) if entry and entry.device_id else None
+    device_id = getattr(entry, "device_id", None)
+    device = dr.async_get(hass).async_get(device_id) if device_id else None
     state = hass.states.get(entity)
-    device_name = ((getattr(device, "name_by_user", None) or getattr(device, "name", None))
-                   if device else None) or "—"
-    entity_name = (getattr(entry, "name", None) if entry else None) or (
-        getattr(state, "name", None) or (getattr(entry, "original_name", None) if entry else None) or entity)
-    return f"{device_name} — {entity_name} · {entity}"
+    clean = lambda value: str(value).strip() if value is not None else ""
+    device_name = clean(getattr(device, "name_by_user", None) or getattr(device, "name", None))
+    entity_name = clean(getattr(entry, "name", None) or getattr(entry, "original_name", None)
+                        or getattr(state, "name", None))
+    if device_name and entity_name.startswith(device_name + " "):
+        entity_name = entity_name[len(device_name):].lstrip(" -")
+    text = " - ".join(part for part in (device_name, entity_name) if part)
+    if not text:
+        text = entity  # Registry-less unnamed template: still identifiable.
+    value = clean(getattr(state, "state", None))
+    if value.casefold() not in ("", "none", "null"):
+        text += " (" + value + ")"
+    return text
 
 
 def category(hass: Any, state: Any) -> str | None:
@@ -131,6 +141,13 @@ def store_selection(hass: Any, settings: dict, area: str, inputs: dict) -> None:
     room = deepcopy(previous)
     devices = inputs["climate_devices"]
     profiles = room.setdefault("device_settings", {})
+    previous_inputs = settings.get(CONF_ROOM_SOURCES, {}).get(area)
+    if isinstance(previous_inputs, dict) and any(previous_inputs.get(key) != inputs.get(key)
+            for key in ("windows", "temperature", "humidity", "air_quality")):
+        room["source_revision"] = int(room.get("source_revision", 0)) + 1
+    for entity in prior_sources.symmetric_difference(devices):
+        old_profile = profiles.get(entity, {})
+        profiles[entity] = {**old_profile, "selection_generation": int(old_profile.get("selection_generation", 0)) + 1}
     for entity in devices:
         if entity not in prior_sources:
             profiles[entity] = {**profiles.get(entity, {}), "auto_control": False}

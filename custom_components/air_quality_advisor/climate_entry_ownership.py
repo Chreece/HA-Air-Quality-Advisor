@@ -61,6 +61,21 @@ def _configured_owners(config: Mapping) -> dict[str,set[str]]:
             for entity in selected:
                 if isinstance(entity,str) and entity.startswith("climate."):
                     outputs[entity].add(area)
+    # New controller-local approvals do not set legacy room-wide grants.
+    # Reserve their exact selected endpoints across other config entries too.
+    controllers = config.get("equipment_controllers", {})
+    for cfg in controllers.values() if isinstance(controllers, Mapping) else ():
+        if not isinstance(cfg, Mapping) or cfg.get("control_mode") not in ("automatic", "pid", "manual"):
+            continue
+        grant = cfg.get("_native_authorization")
+        if not isinstance(grant, Mapping) or not isinstance(grant.get("area"), str):
+            continue
+        area = grant["area"]
+        room = rooms.get(area, {}) if isinstance(rooms, Mapping) else {}
+        selected = room.get("selected_devices", []) if isinstance(room, Mapping) else []
+        for source in grant.get("sources", []):
+            if isinstance(source, (list, tuple)) and source and source[0] in selected:
+                outputs[source[0]].add(area)
     return outputs
 
 

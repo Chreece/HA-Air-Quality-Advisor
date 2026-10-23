@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0b15 - Direct device methods, settings writes and template selectors (beta)
+
+- Authorize exact native controller sources by explicit method selection; remove hidden Configure prerequisites without enabling old room drivers.
+- Add device-page power/mode permission, timing, presence/sleep and applicable fan-purpose/verification controls.
+- Make all shared configuration writers handle read-only mappings without pickle/deepcopy failures.
+- Allow Sleep/ISO PMV preferences to save; expose scoped scientific input selectors and retain incomplete-data diagnostics.
+- Include empty/unavailable room-list template sources with state/attribute choices and conservative runtime parsing.
+- Use Device name - Entity name (state) captions and omit empty components.
+- Guard source/identity changes, removal/reselection, post-await approval changes and competing configuration entries.
+- Preserve the rooms-first flow, room hubs, stable v0.5.1 and prior tags.
+
 ## 0.6.0b14 — Rooms-first setup and explicit input lists (beta)
 
 - Replace the public initial/options menu with rooms → per-room six-category multi-selects → general settings → finish.

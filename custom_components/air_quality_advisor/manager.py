@@ -241,7 +241,8 @@ class AirQualityManager:
             outside_safe=base_plan.outdoor_safe,
         )
         environment["__outside__"] = {"pollen": pollen}
-        room_climate_configs=config.get(CONF_CLIMATE_ROOMS,{})
+        from .device_activation import planning_rooms
+        room_climate_configs=planning_rooms(self)
         shared_presence=config.get(CONF_OCCUPANCY_GLOBAL,{})
         if not isinstance(shared_presence,dict):
             shared_presence={}

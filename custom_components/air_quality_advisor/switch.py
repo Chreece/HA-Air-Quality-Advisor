@@ -41,6 +41,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     for spec in equipment.specs(manager)
                     if (cap := equipment.capabilities(manager, spec)) is not None and cap.fan_modes
                     for key in equipment.QUIET_FLAGS)
+    entities.extend(EquipmentQuietSwitch(manager, spec, "allow_power")
+                    for spec in equipment.specs(manager)
+                    if (cap := equipment.capabilities(manager, spec)) is not None
+                    and cap.domain in ("climate", "fan", "humidifier") and "off" in cap.modes)
+    entities.extend(EquipmentQuietSwitch(manager, spec, "sensor_verified")
+                    for spec in equipment.specs(manager)
+                    if (cap := equipment.capabilities(manager, spec)) is not None
+                    and (cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
 
 
@@ -92,6 +100,17 @@ class HomeSettingSwitch(SwitchEntity):
             cfg = cfg.get(self._area, {}) if isinstance(cfg, dict) else {}
         return isinstance(cfg, dict) and cfg.get(self._key, False) is True
 
+    @property
+    def extra_state_attributes(self):
+        if self._key != "enable_pmv" or not self._area:
+            return None
+        room = self._manager.settings.get("environment_rooms", {}).get(self._area, {})
+        needed = [key for key in ("radiant_temperature_entity", "met", "clo") if room.get(key) is None]
+        if not room.get("air_speed_entity") and room.get("air_speed_m_s") is None:
+            needed.append("air_speed")
+        return {"missing_configured_inputs": needed,
+                "input_validation": "pending_inputs" if needed else "live_measurements_required"}
+
     async def async_turn_on(self, **kwargs):
         await update_device_setting(self._manager, self._kind, self._key, True, area=self._area)
         self.async_write_ha_state()
@@ -121,10 +140,15 @@ class EquipmentQuietSwitch(EquipmentEntity, SwitchEntity):
 
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
+        self._attr_icon = {"allow_power": "mdi:power-settings", "sensor_verified": "mdi:check-decagram-outline"}.get(key, "mdi:fan-speed-1")
 
     @property
     def is_on(self):
-        return self.controller_settings[self._key] is True
+        if self._key == "allow_power" and self._key not in self.controller_settings:
+            from . import equipment_model as equipment
+            cap = equipment.capabilities(self._manager, self._spec)
+            return bool(cap and equipment.permission(self._manager, self._spec, cap)[1])
+        return self.controller_settings.get(self._key) is True
 
     async def async_turn_on(self, **kwargs):
         await self._manager.equipment.async_update(self._spec, {self._key: True})

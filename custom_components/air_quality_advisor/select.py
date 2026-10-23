@@ -70,6 +70,15 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     for spec in equipment.specs(manager)
                     if (cap := equipment.capabilities(manager, spec)) is not None
                     and cap.fan_modes and not cap.fan_percentage)
+    from .const import CONF_AREAS
+    entities.extend(AreaScienceSource(manager, entry.entry_id, area, key)
+                    for area in manager.settings.get(CONF_AREAS, [])
+                    for key in ("radiant_temperature_entity", "air_speed_entity"))
+    entities.extend(EquipmentSelect(manager, spec, key)
+                    for spec in equipment.specs(manager)
+                    for key in equipment.DEVICE_SELECTS
+                    if key != "fan_purpose" or (cap := equipment.capabilities(manager, spec)) is not None
+                    and (cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
 
 
@@ -192,6 +201,8 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
     def options(self):
         if self._key == "control_mode":
             return list(equipment.control_modes(self._manager, self._spec))
+        if self._key in equipment.DEVICE_SELECTS:
+            return list(equipment.DEVICE_SELECTS[self._key])
         cap = equipment.capabilities(self._manager, self._spec)
         return list(cap.fan_modes) if cap else []
 
@@ -204,3 +215,23 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
 
     async def async_select_option(self, option):
         await self._manager.equipment.async_update(self._spec, {self._key: option})
+
+
+class AreaScienceSource(ConfigSelect):
+    """Optional measured radiant/air-speed pins; never invent PMV inputs."""
+
+    def __init__(self, manager, entry_id, area, key):
+        super().__init__(manager, entry_id, area, "area_science", (), setting_key=key)
+
+    @property
+    def options(self):
+        from .device_controls import science_source_options
+        return list(science_source_options(self._manager, self._area_id, self._setting_key))
+
+    @property
+    def current_option(self):
+        return self._manager.settings.get("environment_rooms", {}).get(self._area_id, {}).get(self._setting_key) or "none"
+
+    async def async_select_option(self, option):
+        await update_device_setting(self._manager, "area_science", self._setting_key, option, area=self._area_id)
+        self.async_write_ha_state()

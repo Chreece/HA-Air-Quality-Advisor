@@ -151,12 +151,12 @@
           "areas": "Zu überwachende Räume"
         },
         "data_description": {
-          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
         }
       },
       "setup_room_sources": {
         "title": "Raum · {area_name} · {room_index}/{room_count}",
-        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
         "data": {
           "windows": "Fenster",
           "air_quality": "Luftqualitäts- und Umgebungssensoren",
@@ -166,12 +166,12 @@
           "climate_devices": "Geräte"
         },
         "data_description": {
-          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
         }
       },
       "setup_general": {
@@ -1034,7 +1034,7 @@
       },
       "device_settings": {
         "title": "Geräte · Steuerung",
-        "description": "Die bisherige Einstellung behält die Raumregelung bei. Manuell folgt nur ausdrücklich gesetzten Sollwerten und Geräteoptionen, nicht wechselnder Anwesenheit. Automatik nutzt Raumprofile; PID verwendet geprüfte Messwerte und langsame Taktung für freigegebene Ein/Aus-Geräte. Aus fordert für selbst eingeschaltete Geräte erst nach der Mindestlaufzeit ein Abschalten an. Leistungsschaltungen erfordern die Inbetriebnahme genau dieses Geräts; ein manuell laufendes Gerät muss vor der automatischen Leistungsübernahme ausgeschaltet werden. Leiser Betrieb begrenzt eine unterstützte Lüfterstufe, keine gemessenen Dezibel, und schaltet Geräte niemals ein. Neustart- oder Eingriffspausen benötigen einen ausdrücklichen Abgleich; ein Profilwechsel hebt sie nicht auf.\n\n{device_name} · {device_entity} · {area_name}",
+        "description": "Automatik, Manuell oder PID direkt an diesem Steuergerät wählen; eine Freigabe im Konfigurationsdialog ist nicht erforderlich. Die Auswahl erlaubt nur die nativen Sollwert-/Drehzahlbefehle dieses Geräts. Leistung und HLK-Moduswechsel werden hier separat freigegeben, nachdem die realen Geräteschutzfunktionen geprüft wurden. Mindest-Ein-/Auszeiten und maximale Laufzeit bleiben wirksam. Geänderte Messquellen oder Geräteidentität erfordern eine erneute Verfahrenswahl. Manuell laufende Geräte werden nicht automatisch übernommen. Lüfterzweck und bestätigte Messquelle sind ebenfalls hier einstellbar. Profile lösen keine Neustart- oder Eingriffspause auf.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatische Steuerung",
           "device_method": "Steuerung · Quelle",
@@ -1099,12 +1099,12 @@
           "areas": "Zu überwachende Räume"
         },
         "data_description": {
-          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+          "areas": "Zu überwachende Räume. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
         }
       },
       "setup_room_sources": {
         "title": "Raum · {area_name} · {room_index}/{room_count}",
-        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+        "description": "Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
         "data": {
           "windows": "Fenster",
           "air_quality": "Luftqualitäts- und Umgebungssensoren",
@@ -1114,12 +1114,12 @@
           "climate_devices": "Geräte"
         },
         "data_description": {
-          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
-          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename — Entitätsname. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
+          "windows": "Fenster. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "air_quality": "Luftqualitäts- und Umgebungssensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "temperature": "Temperatur. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "humidity": "Luftfeuchtigkeit. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "pressure": "Drucksensoren. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung.",
+          "climate_devices": "Geräte. Eingänge für diesen Raum auswählen. Jede Auswahl zeigt Gerätename - Entitätsname (Zustand), ohne leere Bestandteile. Leere Gruppen bleiben ungenutzt; sie aktivieren weder automatische Erkennung noch Gerätesteuerung."
         }
       },
       "setup_general": {
@@ -1476,6 +1476,15 @@
       },
       "equipment_quiet_percentage": {
         "name": "{channel}Lüftergrenze für leisen Betrieb (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Leistung · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Leistung · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Leistung · max ON (s)"
       }
     },
     "switch": {
@@ -1514,6 +1523,12 @@
       },
       "equipment_quiet_occupied": {
         "name": "{channel}Leiser Betrieb bei Anwesenheit"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}Leistung und HLK-Moduswechsel erlauben"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}Sensor · Erforderlich"
       }
     },
     "select": {
@@ -1554,6 +1569,36 @@
       },
       "equipment_quiet_fan_mode": {
         "name": "{channel}Native leise Lüfterstufe"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}Steuerung · Belegung",
+        "state": {
+          "always": "Automatische",
+          "room": "Raum · Belegung",
+          "home": "Zuhause · Belegung"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Schlaf · Steuerung",
+        "state": {
+          "normal": "Automatische",
+          "pause": "Pausieren",
+          "sleep_targets": "Schlaf · Sollwert"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}Steuerung · Geräte",
+        "state": {
+          "extraction": "Außen · Steuerung",
+          "filtration": "PM2.5 · Steuerung",
+          "auto": "Automatische"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Mittlere Strahlungstemperatur (°C)"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "Gemessene Luftgeschwindigkeit (m/s)"
       }
     },
     "time": {

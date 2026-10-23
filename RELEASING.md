@@ -1,5 +1,13 @@
 # Releasing Home Environment Manager
 
+## v0.6.0b15 - Device settings and selector fixes
+
+Publish only from `beta/v0.6.0b15` after the beta15 workflow validates Python
+3.13/3.14, generated catalogs, frontend, Hassfest, HACS and three actual-HA
+API checks (registry migration, wizard selectors, read-only settings/device
+methods). Exact source SHA, prerelease and `--latest=false` are mandatory.
+No prior release tag or main branch is updated.
+
 ## v0.6.0b12 — Native room grouping and registry migration
 
 Publish the exact validated commit from `beta/v0.6.0b12`, marked prerelease and not Latest. Validate both Python versions, regenerated catalogs, frontend, pinned real Home Assistant registry migration, Hassfest/HACS and ZIP integrity. Preserve main, stable v0.5.1 and earlier tags. Installation migrates the service flags and room memberships in place; no user-run migration script or integration deletion is needed.

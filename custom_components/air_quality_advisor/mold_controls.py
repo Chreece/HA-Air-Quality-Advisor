@@ -8,7 +8,7 @@ Never infer a surface temperature from an unrelated room sensor.
 from __future__ import annotations
 
 import asyncio
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 from datetime import datetime, timezone
 import math
 from typing import Any

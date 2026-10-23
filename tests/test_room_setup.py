@@ -74,7 +74,7 @@ def test_six_separate_multiselects_correct_type_and_labels(monkeypatch, adapter)
     for value in form["data_schema"].values():
         assert value.config.multiple is True and value.config.custom_value is False
     choices = lambda group: {v["value"]: v["label"] for v in form["data_schema"][group].config.options}
-    assert choices("temperature")["sensor.temp1"] == "Room monitor — Temperature · sensor.temp1"
+    assert choices("temperature")["sensor.temp1"] == "Room monitor - Temperature (20)"
     assert "sensor.manager" not in choices("temperature")
     assert "cover.window" not in choices("windows")
     assert set(choices("pressure")) == {"sensor.pressure"}

@@ -1,15 +1,17 @@
 {
-  "version": "0.6.0b14",
+  "version": "0.6.0b15",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Rooms first, six explicit per-room multi-selects, general settings last; stable and physical hardware unchanged",
+  "note": "Direct device control-method activation, mappingproxy-safe writes, room-list templates and compact selector labels",
   "validation_attempt": 0,
   "changes": [
-    "One ordered initial/options flow ending with General settings",
-    "Per-room windows, air/environment, temperature, humidity, pressure and device selections with device/entity labels",
-    "Positive source filters govern monitoring and control feedback; explicit empty lists never rediscover inputs",
-    "Preserve Home/room/controller identities and operating entities; no implicit actuation permission",
-    "Final-submit-only persistence with concurrent change protection and all 38 language catalogs"
+    "Select Automatic/PID directly on managed native devices, with exact-endpoint approval and separate device-page power/mode switch",
+    "Preserve ownership, manual-override, minimum-runtime and stale-source safeguards without a hidden Configure requirement",
+    "Use recursively mutable configuration copies for read-only HA options; allow PMV and sleep-room preference changes",
+    "Expose selected radiant-temperature and air-speed sources on room devices; incomplete PMV inputs remain unavailable",
+    "Include room-list template sensors in selectors even when empty or temporarily unavailable; parse supported list, dictionary and delimited state formats",
+    "Show Device name - Entity name (state), omitting empty components and duplicate device prefixes",
+    "Validate both Python versions, 38-language regeneration, real HA settings/selector/registry APIs, frontend, Hassfest and HACS"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b14"
+  "release_branch": "beta/v0.6.0b15"
 }

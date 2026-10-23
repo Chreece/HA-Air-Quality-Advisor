@@ -8,7 +8,7 @@ explicitly chooses a new per-device owner.
 """
 from __future__ import annotations
 
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 from dataclasses import dataclass
 import math
 import hashlib
@@ -31,8 +31,15 @@ NUMBER_FIELDS = {
     "sample_seconds": (120.0, 3600.0, 30.0, "s", 300.0),
     "cycle_seconds": (600.0, 86400.0, 60.0, "s", 3600.0),
     "quiet_percentage": (1.0, 100.0, 1.0, "%", 30.0),
+    "min_on_seconds": (120.0, 7200.0, 60.0, "s", 600.0),
+    "min_off_seconds": (120.0, 14400.0, 60.0, "s", 600.0),
+    "max_on_seconds": (900.0, 86400.0, 60.0, "s", 7200.0),
 }
 QUIET_FLAGS = ("quiet_sleep", "quiet_occupied")
+POWER_FIELDS = ("min_on_seconds", "min_off_seconds", "max_on_seconds")
+DEVICE_SELECTS = {"presence_requirement": ("always", "room", "home"),
+                  "sleep_behavior": ("normal", "pause", "sleep_targets"),
+                  "fan_purpose": ("auto", "extraction", "filtration")}
 DEFAULTS = {"control_mode": "existing", "preset": "none", "requested_mode": None,
             "quiet_sleep": False, "quiet_occupied": False,
             "quiet_fan_mode": None, "profile_targets": {}, "profile_fans": {},
@@ -80,6 +87,15 @@ def settings(manager: Any, spec: ManagedDevice) -> dict:
     raw = profiles.get(spec.identifier, {}) if isinstance(profiles, dict) else {}
     raw = raw if isinstance(raw, dict) else {}
     result = {**DEFAULTS, **raw}
+    # Keep previous commissioning values when these controls first appear.
+    primary = next((e for e in spec.source_entities if not e.startswith("fan.")), spec.source_entities[0])
+    dev = device_config(manager, spec, primary)
+    for key, fallback in (("presence_requirement", "always"), ("sleep_behavior", "normal"),
+                          ("fan_purpose", "auto"), ("sensor_verified", False)):
+        result.setdefault(key, dev.get(key, fallback))
+    for key, legacy in zip(POWER_FIELDS, ("min_on_s", "min_off_s", "max_on_s")):
+        if key not in raw and legacy in dev:
+            result[key] = dev[legacy]
     if "kp" not in raw and all(e.startswith("fan.") for e in spec.source_entities):
         result["kp"], result["ki"] = 0.05, 0.001
     return result
@@ -216,6 +232,11 @@ def permission(manager: Any, spec: ManagedDevice, cap: Capabilities) -> tuple[bo
     room = room_config(manager, spec)
     device = device_config(manager, spec, cap.primary)
     enabled = room.get("enabled") is True and room.get("allow_actuation") is True
+    cfg = settings(manager, spec)
+    if "_native_authorization" in cfg:
+        from .device_activation import authorized
+        valid = cap.domain in ("climate", "fan", "humidifier") and authorized(manager, spec)
+        return valid, valid and cfg.get("allow_power") is True and "off" in cap.modes
     if device:
         enabled = enabled and device.get("auto_control") is True
         power = enabled and device.get("hardware_confirmed") is True and device.get("method") in ("power", "native")
@@ -235,14 +256,23 @@ def permission(manager: Any, spec: ManagedDevice, cap: Capabilities) -> tuple[bo
     return direct, direct
 
 
-def timing(manager: Any, spec: ManagedDevice, cap: Capabilities) -> tuple[float, float, float]:
+def timing(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict | None = None) -> tuple[float, float, float]:
     """Hardware minimums cannot be shortened by switching control strategies."""
     room, dev = room_config(manager, spec), device_config(manager, spec, cap.primary)
     prefix = "fan_power_" if cap.domain == "fan" else "humidity_power_" if cap.domain == "humidifier" else ""
     minimum = 120 if cap.domain == "fan" else 600
     values = []
-    for key, fallback in (("min_on_s", 600), ("min_off_s", 600), ("max_on_s", 7200)):
+    cfg = config if config is not None else settings(manager, spec)
+    raw_saved = manager.settings.get(SETTINGS, {}).get(spec.identifier, {})
+    for key, new_key, fallback in (("min_on_s", "min_on_seconds", 600),
+                                   ("min_off_s", "min_off_seconds", 600),
+                                   ("max_on_s", "max_on_seconds", 7200)):
         raw = dev.get(key, room.get(prefix + key, fallback))
+        if config is not None or new_key in raw_saved:
+            proposed = cfg[new_key]
+            # Preserve previously commissioned minimum dwell; runtime tuning
+            # cannot shorten the original physical protection.
+            raw = max(float(raw), proposed) if key != "max_on_s" else proposed
         n = finite(raw, 120 if key != "max_on_s" else 900, 86400)
         if n is None:
             raise ValueError("invalid_hardware_timing")

@@ -8,7 +8,7 @@ module changes registry/configuration metadata only, never physical hardware.
 from __future__ import annotations
 
 from collections.abc import Iterable
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 from types import MappingProxyType
 from typing import Any
 

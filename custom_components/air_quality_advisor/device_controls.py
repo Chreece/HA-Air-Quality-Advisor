@@ -1,14 +1,13 @@
 """Guarded writes from Home Environment Manager device configuration entities.
 
-Only soft supervisor settings may change here. Physical equipment selections,
-automated relay permissions, safety attestation and controller enablement stay
-in the config flow. Every write is validated and stored through HA's config
+Shared scientific/policy preferences are edited here. Device-native control
+permissions live on each managed controller, never in a hidden setup form. Every write is validated and stored through HA's config
 entry API; no direct hardware service call is made by these entities.
 """
 from __future__ import annotations
 
 import asyncio
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 import math
 from typing import Any
 
@@ -189,6 +188,20 @@ def climate_settings(settings: dict, area: str) -> dict | None:
     return room if isinstance(room, dict) and room.get("enabled") is True else None
 
 
+def science_source_options(manager: Any, area: str, key: str) -> tuple[str, ...]:
+    """Scientific source pinning only within the user's selected room inputs."""
+    from .room_sources import selected, choices
+    group = "temperature" if key == "radiant_temperature_entity" else "air_quality"
+    ids = selected(manager.settings, area, group)
+    if ids is None:
+        ids = tuple(item["value"] for item in choices(manager.hass, area)[group])
+    if key == "air_speed_entity":
+        ids = tuple(e for e in ids if (state := manager.hass.states.get(e)) is not None
+                    and str(state.attributes.get("unit_of_measurement", "")).lower() in ("m/s", "mps")
+                    and e.endswith("_air_speed"))
+    return ("none", *ids)
+
+
 async def update_device_setting(manager: Any, kind: str, key: str,
                                 value: Any, *, area: str | None = None,
                                 entity_id: str | None = None) -> None:
@@ -198,13 +211,13 @@ async def update_device_setting(manager: Any, kind: str, key: str,
         "pid_gain_source", "global_environment", "global_occupancy",
         "area_environment", "climate_operating", "global_policy", "climate_policy",
         "device_target", "device_policy", "aqi_scale", "aqi_limit",
-        "climate_schedule", "direct_tuning",
+        "climate_schedule", "direct_tuning", "area_science",
     ):
         raise HomeAssistantError("Unsupported settings editor")
     if kind in (
         "pid", "profile", "climate_profile", "pid_gain_source",
         "area_environment", "climate_operating", "climate_policy",
-        "device_target", "device_policy", "climate_schedule", "direct_tuning",
+        "device_target", "device_policy", "climate_schedule", "direct_tuning", "area_science",
     ) and not area:
         raise HomeAssistantError("A configured Home Assistant area is required")
 
@@ -322,13 +335,9 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 room[key] = value
             else:
                 room[key] = _finite(value, fields[key])
-            if kind == "area_environment" and room.get("enable_pmv") is True:
-                if not (room.get("radiant_temperature_entity") and
-                        (room.get("air_speed_entity") or room.get("air_speed_m_s") is not None)
-                        and room.get("met") is not None and room.get("clo") is not None):
-                    raise HomeAssistantError(
-                        "PMV requires verified radiant temperature, air speed, MET and CLO inputs"
-                    )
+            # Enabling a calculation is a preference, not evidence that its
+            # scientific inputs exist. room_science reports insufficient inputs
+            # until radiant temperature, air speed, MET and CLO are supplied.
             if kind == "global_environment":
                 if not room.get("pollen_high_from", 3) <= room.get("pollen_max_scale", 5):
                     raise HomeAssistantError("Pollen high threshold exceeds its declared scale")
@@ -341,6 +350,16 @@ async def update_device_setting(manager: Any, kind: str, key: str,
             if area is not None:
                 data[area] = room
             options[section] = data
+
+        elif kind == "area_science":
+            if area not in current.get(CONF_AREAS, []) or key not in ("radiant_temperature_entity", "air_speed_entity"):
+                raise HomeAssistantError("Unknown room science input")
+            if value not in science_source_options(manager, area, key):
+                raise HomeAssistantError("Select a sensor from this room's configured inputs")
+            rooms = deepcopy(current.get("environment_rooms", {}))
+            room = rooms.setdefault(area, {})
+            room[key] = None if value == "none" else value
+            options["environment_rooms"] = rooms
 
         elif kind in ("aqi_scale", "aqi_limit"):
             from .const import CONF_ENVIRONMENT_GLOBAL

@@ -5,7 +5,7 @@ setup and Options; operating parameters remain on Home/Room/controller devices.
 """
 from __future__ import annotations
 
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 from typing import Any
 
 import probatio
@@ -142,12 +142,12 @@ class RoomSetupMixin:
         pres = [{"value": s.entity_id, "label": sources.label(self.hass, s.entity_id)}
                 for s in self.hass.states.async_all("binary_sensor")
                 if _device_class(self.hass, s) in ("occupancy", "presence")]
-        room_entities = [{"value": "none", "label": "—"}, *self._room_source_options(self.hass)]
+        room_entities = [{"value": "none", "label": "-"}, *self._room_source_options(self.hass)]
         pollen = [{"value": s.entity_id, "label": sources.label(self.hass, s.entity_id)}
                   for s in self.hass.states.async_all("sensor")
                   if "pollen" in s.entity_id.casefold() or s.entity_id == self._values.get(
                       CONF_ENVIRONMENT_GLOBAL, {}).get("pollen_entity")]
-        return {
+        result = {
             CONF_WEATHER: state_options("weather"),
             CONF_OUTDOOR: outdoor_choices(self.hass, self._values.get(CONF_AREAS, [])),
             CONF_WARNINGS: warning_choices(self.hass),
@@ -155,12 +155,18 @@ class RoomSetupMixin:
             "general_home_trackers": [*state_options("person"), *state_options("device_tracker"), *pres],
             "general_occupied_rooms_entity": room_entities,
             "general_sleep_rooms_entity": room_entities,
-            "pollen_entity": [{"value": "none", "label": "—"}, *pollen],
+            "pollen_entity": [{"value": "none", "label": "-"}, *pollen],
             CONF_NOTIFY_TARGETS: state_options("notify"),
             CONF_MEDIA_PLAYERS: _tts_player_options(self.hass),
-            CONF_TTS_ENGINE: [{"value": "none", "label": "—"}, *state_options("tts")],
+            CONF_TTS_ENGINE: [{"value": "none", "label": "-"}, *state_options("tts")],
             CONF_AI_AGENT: conversation_agent_choices(self.hass, self._values.get(CONF_AI_AGENT)),
         }
+        for items in result.values():
+            for item in items:
+                entity = item["value"]
+                if self.hass.states.get(entity) is not None:
+                    item["label"] = sources.label(self.hass, entity)
+        return result
 
     async def async_step_setup_general(self, user_input=None):
         from .languages import SUPPORTED_LANGUAGE_TAGS, resolve_language

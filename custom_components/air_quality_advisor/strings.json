@@ -151,12 +151,12 @@
           "areas": "Rooms to monitor"
         },
         "data_description": {
-          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control."
         }
       },
       "setup_room_sources": {
         "title": "Room · {area_name} · {room_index}/{room_count}",
-        "description": "Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+        "description": "Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
         "data": {
           "windows": "Windows",
           "air_quality": "Air quality and environmental sensors",
@@ -166,12 +166,12 @@
           "climate_devices": "Devices"
         },
         "data_description": {
-          "windows": "Windows. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "temperature": "Temperature. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "humidity": "Humidity. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+          "windows": "Windows. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "temperature": "Temperature. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "humidity": "Humidity. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control."
         }
       },
       "setup_general": {
@@ -1034,7 +1034,7 @@
       },
       "device_settings": {
         "title": "Devices · control",
-        "description": "Existing keeps the previous room controller. Manual follows only your explicit targets and native choices, not occupancy changes. Automatic follows room/preset policy; PID uses verified feedback and slow duty cycles for commissioned on/off equipment. Off stops this controller and requests owned equipment OFF after its minimum run time. Power changes require the exact device's hardware commissioning; a running manual device must first be turned off before automatic power ownership. Low-noise switches limit a supported native fan, not measured sound pressure, and never start an appliance. Restart or manual-override pauses require explicit reconciliation; changing a preset cannot clear them.\n\n{device_name} · {device_entity} · {area_name}",
+        "description": "Choose Automatic, Manual or PID on this controller device; no Configure approval is required. Selecting a method authorizes only this device's native setpoint/speed path. Allow power and HVAC mode control is a separate switch here: enable it only after checking the actual equipment protections. Minimum ON/OFF times and maximum runtime remain enforced. Sensor/identity changes require a new method selection. A running manually controlled appliance is not silently adopted; verify OFF before automatic power ownership. Fan purpose and verified feedback are also configured here. No preset clears a restart or manual-override pause.\n\n{device_name} · {device_entity} · {area_name}",
         "data": {
           "device_auto_control": "Automatic control",
           "device_method": "control · source",
@@ -1099,12 +1099,12 @@
           "areas": "Rooms to monitor"
         },
         "data_description": {
-          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+          "areas": "Rooms to monitor. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control."
         }
       },
       "setup_room_sources": {
         "title": "Room · {area_name} · {room_index}/{room_count}",
-        "description": "Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+        "description": "Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
         "data": {
           "windows": "Windows",
           "air_quality": "Air quality and environmental sensors",
@@ -1114,12 +1114,12 @@
           "climate_devices": "Devices"
         },
         "data_description": {
-          "windows": "Windows. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "temperature": "Temperature. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "humidity": "Humidity. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control.",
-          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name — entity name. Empty groups stay unused; they never enable automatic discovery or equipment control."
+          "windows": "Windows. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "air_quality": "Air quality and environmental sensors. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "temperature": "Temperature. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "humidity": "Humidity. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "pressure": "Pressure sensors. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control.",
+          "climate_devices": "Devices. Select inputs for this room. Each choice shows device name - entity name (state), omitting empty parts. Empty groups stay unused; they never enable automatic discovery or equipment control."
         }
       },
       "setup_general": {
@@ -1476,6 +1476,15 @@
       },
       "equipment_quiet_percentage": {
         "name": "{channel}Low-noise fan limit (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Power · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Power · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Power · max ON (s)"
       }
     },
     "switch": {
@@ -1514,6 +1523,12 @@
       },
       "equipment_quiet_occupied": {
         "name": "{channel}Low noise while occupied"
+      },
+      "equipment_allow_power": {
+        "name": "{channel}Allow power and HVAC mode control"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}sensor · Required"
       }
     },
     "select": {
@@ -1554,6 +1569,36 @@
       },
       "equipment_quiet_fan_mode": {
         "name": "{channel}Native low-noise fan mode"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}control · Occupancy",
+        "state": {
+          "always": "Automatic",
+          "room": "Room · Occupancy",
+          "home": "Home · Occupancy"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Sleep · control",
+        "state": {
+          "normal": "Automatic",
+          "pause": "Hold",
+          "sleep_targets": "Sleep · target"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}control · Devices",
+        "state": {
+          "extraction": "Outside · control",
+          "filtration": "PM2.5 · control",
+          "auto": "Automatic"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Mean radiant temperature sensor (°C)"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "Measured local air-speed sensor (m/s)"
       }
     },
     "time": {

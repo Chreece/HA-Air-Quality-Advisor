@@ -242,13 +242,15 @@ def test_uncommissioned_power_never_starts_a_device(runtime_module):
     asyncio.run(run())
 
 
-def test_mode_selector_cannot_create_automatic_authorization(runtime_module):
+def test_mode_selector_is_explicit_exact_device_authorization(runtime_module):
     async def run():
         h = home(runtime_module, mode="existing")
         h.dev["auto_control"] = False
-        with pytest.raises(Exception, match="commission"):
-            await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
-        assert h.manager.entry.options == {}
+        await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
+        assert m.settings(h.manager, h.spec)["control_mode"] == "automatic"
+        assert m.permission(h.manager, h.spec, h.cap) == (True, False)
+        assert h.dev["auto_control"] is False
+        assert not h.hass.services.calls
     asyncio.run(run())
 
 
@@ -620,7 +622,7 @@ def test_manual_fan_selection_does_not_apply_unrequested_temperature(runtime_mod
 def test_target_and_mode_edit_is_atomic_and_fails_without_power_authorization(runtime_module):
     async def run():
         h = home(runtime_module, domain="climate", state="heat", mode="existing", power=False)
-        with pytest.raises(Exception, match="commissioned"):
+        with pytest.raises(Exception, match="Allow power"):
             await h.runtime.async_set_targets(h.spec, {"cool": 23}, mode="cool")
         assert h.manager.entry.options == {}
         await h.runtime.async_set_targets(h.spec, {"heat": 22}, mode="heat")
@@ -717,9 +719,8 @@ def test_shared_runtime_different_physical_devices_do_not_block(runtime_module):
 def test_automatic_power_does_not_adopt_unowned_running_device(runtime_module):
     async def run():
         h = home(runtime_module, state="on", mode="existing")
-        with pytest.raises(Exception, match="OFF before"):
-            await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
-        h.cfg["control_mode"]="automatic"
+        await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
+        assert m.settings(h.manager, h.spec)["control_mode"] == "automatic"
         await tick(h)
         assert not h.hass.services.calls
         assert not h.runtime.records[h.spec.identifier]["power"]

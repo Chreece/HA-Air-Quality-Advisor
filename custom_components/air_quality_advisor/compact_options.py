@@ -6,7 +6,7 @@ The legacy advanced controllers and their persisted keys stay compatible.
 """
 from __future__ import annotations
 
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 import math
 from typing import Any
 
@@ -205,67 +205,58 @@ class CompactOptionsMixin:
 
     @staticmethod
     def _room_source_options(hass):
-        """Only states/attributes that can represent explicit room collections.
-
-        Unknown and stale sources may remain selectable for diagnostics but
-        never turn into an empty occupied/sleep-room list.
-        """
-        from .occupancy_policy import _tokens, _area_aliases
+        from homeassistant.helpers import entity_registry as er
+        from .room_sources import label, native
+        from .occupancy_policy import _tokens, _area_aliases, _room_key
         from homeassistant.helpers import area_registry
-        registry=area_registry.async_get(hass)
-        known={area.id for area in registry.async_list_areas()} if hasattr(
-            registry,"async_list_areas") else {
-                entity_area(hass,e.entity_id) for e in hass.states.async_all()
-                if entity_area(hass,e.entity_id)
-            }
-        names=_area_aliases(hass,known)
+        registry = area_registry.async_get(hass)
+        known = set(getattr(registry, "areas", {})) or {
+            entity_area(hass, s.entity_id) for s in hass.states.async_all()
+            if entity_area(hass, s.entity_id)}
+        aliases = _area_aliases(hass, known)
         def usable(value):
-            if isinstance(value,str) and value.strip().casefold()=="none":
-                return False
-            parsed=_tokens(value)
-            return parsed is not None and (
-                not parsed or all(isinstance(v,str) and v.strip().casefold() in names
-                                  for v in parsed)
-            )
-        result=[]
+            parsed = _tokens(value)
+            return parsed is not None and all(_room_key(v) in aliases for v in parsed)
+        result = []
         for state in hass.states.async_all():
-            if state.domain not in ("sensor","binary_sensor","input_text","input_select"):
+            if state.domain not in ("sensor", "binary_sensor", "input_text", "input_select") or not native(hass, state.entity_id):
                 continue
-            values=[state.state,*state.attributes.values()]
-            if not any(usable(v) for v in values):
+            entry = er.async_get(hass).async_get(state.entity_id)
+            template = getattr(entry, "platform", None) == "template"
+            room_attribute = any(key in state.attributes for key in (
+                "rooms", "areas", "occupied_rooms", "sleep_rooms", "sleeping_areas"))
+            if not (template or room_attribute or state.domain in ("input_text", "input_select")
+                    or any(usable(v) for v in (state.state, *state.attributes.values()))):
                 continue
-            result.append({"value":state.entity_id,
-                           "label":(state.name or state.entity_id)+" · "+state.entity_id})
-        return sorted(result,key=lambda e:e["label"].casefold())
+            result.append({"value": state.entity_id, "label": label(hass, state.entity_id)})
+        return sorted(result, key=lambda item: (item["label"].casefold(), item["value"]))
 
     @staticmethod
     def _room_attribute_options(hass, entity):
-        from .occupancy_policy import _tokens, _area_aliases
-        from homeassistant.helpers import area_registry
-        state=hass.states.get(entity) if isinstance(entity,str) else None
-        if state is None:
-            return [{"value":"__state__","label":"State / Κατάσταση"}]
-        registry=area_registry.async_get(hass)
-        known=({area.id for area in registry.async_list_areas()}
-               if hasattr(registry,"async_list_areas") else
-               {entity_area(hass,s.entity_id) for s in hass.states.async_all()
-                if entity_area(hass,s.entity_id)})
-        names=_area_aliases(hass,known)
-        def has_rooms(value):
-            values=_tokens(value)
-            return values is not None and (
-                not values or all(isinstance(v,str) and v.strip().casefold() in names
-                                  for v in values)
-            )
-        values=[]
-        if has_rooms(state.state):
-            values.append({"value":"__state__","label":"State / Κατάσταση"})
-        for key,value in state.attributes.items():
-            if not isinstance(key,str) or key.startswith("_"):
+        from homeassistant.helpers import area_registry, entity_registry as er
+        from .occupancy_policy import _tokens, _area_aliases, _room_key
+        state = hass.states.get(entity) if isinstance(entity, str) else None
+        entry = er.async_get(hass).async_get(entity) if isinstance(entity, str) and "." in entity else None
+        template = getattr(entry, "platform", None) == "template"
+        registry = area_registry.async_get(hass)
+        known = set(getattr(registry, "areas", {})) or {
+            entity_area(hass, s.entity_id) for s in hass.states.async_all() if entity_area(hass, s.entity_id)}
+        aliases = _area_aliases(hass, known)
+        def usable(value):
+            parsed = _tokens(value)
+            return parsed is not None and all(_room_key(v) in aliases for v in parsed)
+        language = str(getattr(getattr(hass, "config", None), "language", "en")).split("-")[0]
+        state_name = {"el": "Κατάσταση", "de": "Zustand", "fr": "État", "es": "Estado"}.get(language, "State")
+        values = []
+        if state is None or template or usable(state.state):
+            values.append({"value": "__state__", "label": state_name})
+        ignored = {"friendly_name", "icon", "device_class", "unit_of_measurement", "state_class", "attribution"}
+        for key, value in state.attributes.items() if state else ():
+            if key.startswith("_") or key in ignored:
                 continue
-            if has_rooms(value):
-                values.append({"value":key,"label":key})
-        return values or [{"value":"__state__","label":"State / Κατάσταση"}]
+            if usable(value) or template or key in ("rooms", "areas", "occupied_rooms", "sleep_rooms", "sleeping_areas"):
+                values.append({"value": key, "label": key})
+        return values or [{"value": "__state__", "label": state_name}]
 
     async def async_step_general_settings(self, user_input=None):
         """Shared presence and sleep sources, independent of any HVAC device."""

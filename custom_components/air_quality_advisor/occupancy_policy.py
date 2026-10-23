@@ -6,7 +6,10 @@ empty JSON array from a fresh source does mean no rooms are occupied.
 """
 from __future__ import annotations
 
+import ast
 import json
+import re
+import unicodedata
 from datetime import datetime, timezone
 from collections.abc import Mapping
 from typing import Any
@@ -14,10 +17,11 @@ from typing import Any
 from .discovery import entity_area
 
 
-def _fresh(state: Any, max_age_minutes: float = 240) -> bool:
-    if state is None or str(getattr(state, "state", "")).lower() in (
-        "unknown", "unavailable", "none", ""
-    ):
+def _fresh(state: Any, max_age_minutes: float = 240, *, allow_empty: bool = False) -> bool:
+    if state is None:
+        return False
+    value = str(getattr(state, "state", "")).strip().casefold()
+    if value in ("unknown", "unavailable") or not allow_empty and value in ("none", ""):
         return False
     stamp = getattr(state, "last_reported", None) or getattr(state, "last_updated", None)
     if not isinstance(stamp, datetime) or stamp.tzinfo is None:
@@ -26,53 +30,67 @@ def _fresh(state: Any, max_age_minutes: float = 240) -> bool:
     return 0 <= age <= max_age_minutes * 60
 
 
+def _room_key(value: str) -> str:
+    return unicodedata.normalize("NFKC", value).strip().casefold()
+
+
 def _area_aliases(hass: Any, identifiers: set[str]) -> dict[str, str]:
     from homeassistant.helpers import area_registry
     registry = area_registry.async_get(hass)
-    aliases: dict[str, str] = {}
     available = set(identifiers)
     if hasattr(registry, "async_list_areas"):
-        available.update(
-            item.id for item in registry.async_list_areas()
-            if isinstance(getattr(item, "id", None), str)
-        )
+        available.update(item.id for item in registry.async_list_areas())
+    elif hasattr(registry, "areas"):
+        available.update(registry.areas)
+    candidates: dict[str, set[str]] = {}
     for area in available:
         if not isinstance(area, str) or not area:
             continue
-        aliases[area.strip().casefold()] = area
         actual = registry.async_get_area(area)
-        name = getattr(actual, "name", None)
-        if isinstance(name, str) and name.strip():
-            aliases[name.strip().casefold()] = area
-    return aliases
+        names = (area, getattr(actual, "name", None), *(getattr(actual, "aliases", ()) or ()))
+        for name in names:
+            if isinstance(name, str) and name.strip():
+                candidates.setdefault(_room_key(name), set()).add(area)
+    # Ambiguous names cannot identify a safe room. Exact IDs still work.
+    return {key: next(iter(values)) for key, values in candidates.items() if len(values) == 1}
 
 
-def _tokens(raw: Any) -> list[str] | None:
-    """Parse explicit room lists; reject ambiguous free-text statuses."""
+def _tokens(raw: Any, _depth: int = 0) -> list[str] | None:
+    """Read explicit template lists/CSV, without executing template content."""
+    if _depth > 5:
+        return None
     if isinstance(raw, Mapping):
-        for key in ("occupied_rooms", "sleep_rooms", "areas", "rooms"):
+        for key in ("occupied_rooms", "sleep_rooms", "sleeping_areas", "areas", "rooms"):
             if key in raw:
-                return _tokens(raw[key])
-        if all(isinstance(k, str) and type(v) is bool for k, v in raw.items()):
+                return _tokens(raw[key], _depth + 1)
+        if all(isinstance(k, str) and (type(v) is bool or type(v) is int and v >= 0)
+               for k, v in raw.items()):
             return [k for k, v in raw.items() if v]
         return None
-    if isinstance(raw, (list, tuple, set)):
-        return list(raw) if all(isinstance(v, str) for v in raw) else None
-    if not isinstance(raw, str):
+    if isinstance(raw, (list, tuple, set, frozenset)):
+        return list(raw) if all(isinstance(v, str) and v.strip() for v in raw) else None
+    if not isinstance(raw, str) or len(raw) > 8192:
         return None
     value = raw.strip()
-    if value == "[]":
+    if value.casefold() in ("", "none", "no_rooms"):
         return []
-    if value.startswith("[") or value.startswith("{"):
+    if value.startswith(("[", "{", "(")):
         try:
-            return _tokens(json.loads(value))
+            decoded = json.loads(value)
         except (TypeError, ValueError):
-            return None
-    if value.casefold() in ("none", "no_rooms"):
-        return []
-    if "," in value:
-        return [part.strip() for part in value.split(",") if part.strip()]
-    return [value] if value else None
+            # Jinja/Python-rendered lists commonly use single quotes. Limit
+            # AST size first; literal_eval does not execute calls or names.
+            try:
+                tree = ast.parse(value, mode="eval")
+                if sum(1 for _ in ast.walk(tree)) > 512:
+                    return None
+                decoded = ast.literal_eval(tree)
+            except (ValueError, SyntaxError, TypeError, RecursionError):
+                return None
+        return _tokens(decoded, _depth + 1)
+    if any(separator in value for separator in (",", ";", "\n")):
+        return [part.strip() for part in re.split(r"[,;\n]", value) if part.strip()]
+    return [value]
 
 
 def configured_rooms(hass: Any, entity_id: str | None, attribute: str | None,
@@ -82,9 +100,9 @@ def configured_rooms(hass: Any, entity_id: str | None, attribute: str | None,
     if not isinstance(entity_id, str) or not entity_id:
         return None, "not_configured"
     state = hass.states.get(entity_id)
-    if not _fresh(state, max_age_minutes):
+    if not _fresh(state, max_age_minutes, allow_empty=True):
         return None, "missing_or_stale_rooms_source"
-    if isinstance(attribute, str) and attribute.strip():
+    if isinstance(attribute, str) and attribute.strip() not in ("", "__state__"):
         raw = state.attributes.get(attribute.strip())
     else:
         raw = state.state
@@ -94,7 +112,7 @@ def configured_rooms(hass: Any, entity_id: str | None, attribute: str | None,
     aliases = _area_aliases(hass, known_areas)
     resolved: set[str] = set()
     for name in parsed:
-        area = aliases.get(name.strip().casefold())
+        area = aliases.get(_room_key(name))
         if area is None:
             return None, "unrecognized_room_in_occupancy_source"
         resolved.add(area)

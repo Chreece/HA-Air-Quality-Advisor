@@ -9,7 +9,7 @@ outputs, or bounded native setpoint trim when only setpoint control is granted.
 from __future__ import annotations
 
 import asyncio
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 from dataclasses import asdict
 import logging
 import time
@@ -223,7 +223,8 @@ class EquipmentRuntime:
                 raise HomeAssistantError("Device capabilities are unavailable")
             old = model.settings(self.manager, spec)
             new = {**old, **deepcopy(changes)}
-            allowed = set(model.DEFAULTS) | {"fan_mode", "swing_mode", "swing_horizontal_mode"}
+            allowed = set(model.DEFAULTS) | {"fan_mode", "swing_mode", "swing_horizontal_mode",
+                "allow_power", "sensor_verified", *model.DEVICE_SELECTS}
             if set(changes) - allowed:
                 raise HomeAssistantError("Unsupported controller setting")
             if new["control_mode"] not in model.control_modes(self.manager, spec):
@@ -268,16 +269,42 @@ class EquipmentRuntime:
                 raise HomeAssistantError("Invalid fan profile table")
             if any(str(v) not in cap.fan_modes for v in fan_table.values()):
                 raise HomeAssistantError("Unsupported native fan choice for profile")
+            from .device_activation import authority_context
             soft, power = model.permission(self.manager, spec, cap)
+            for key, choices in model.DEVICE_SELECTS.items():
+                if new.get(key) not in choices:
+                    raise HomeAssistantError(f"Unsupported device policy: {key}")
+            for key in ("allow_power", "sensor_verified"):
+                if key in changes and type(changes[key]) is not bool:
+                    raise HomeAssistantError("Device permission must be a boolean")
+            if "allow_power" in changes and cap.domain not in ("climate", "fan", "humidifier"):
+                raise HomeAssistantError("Raw relay/proportional hardware needs its existing explicit commissioning")
+            # The selector itself authorizes only this selected native endpoint.
+            # No old room-wide driver or sibling device acquires permission.
+            authorizing = ("control_mode" in changes and new["control_mode"] in ("automatic", "pid", "manual")
+                           and cap.domain in ("climate", "fan", "humidifier"))
+            if authorizing:
+                new["_native_authorization"] = authority_context(self.manager, spec)
+                new.setdefault("allow_power", power)
+                soft = True
+                power = new["allow_power"] is True
+            elif "_native_authorization" in new:
+                soft = new["_native_authorization"] == authority_context(self.manager, spec)
+                power = soft and new.get("allow_power") is True
+            if "allow_power" in changes and new["allow_power"] and "off" not in cap.modes:
+                raise HomeAssistantError("The physical device has no supported OFF mode")
+            on, off, maximum = model.timing(self.manager, spec, cap, config=new)
+            if cap.domain != "fan" and maximum > 28800:
+                raise HomeAssistantError("Maximum continuous runtime for this device cannot exceed 28800 seconds")
             if "requested_mode" in changes and new["requested_mode"] is not None:
                 state = self.hass.states.get(cap.primary)
                 requested = new["requested_mode"]
                 change_power = state is not None and ((cap.domain == "climate" and state.state != requested)
                     or cap.domain != "climate" and output_off(state) != (requested == "off"))
                 if change_power and not power and not (requested == "off" and self._record(spec).get("power")):
-                    raise HomeAssistantError("Physical power/mode control must first be commissioned in Configure")
-            if new["control_mode"] in ("automatic", "pid") and not soft:
-                raise HomeAssistantError("Enable and commission this device in Configure before automatic control")
+                    raise HomeAssistantError("Enable Allow power and HVAC mode control on this controller device before changing its physical mode")
+            # Methods remain selectable with incomplete feedback. Execution,
+            # rather than this preference edit, reports the exact missing input.
             if new["control_mode"] == "pid":
                 if cap.domain == "climate" and new.get("requested_mode") in ("auto", "heat_cool"):
                     raise HomeAssistantError("PID requires an explicit single thermal, drying or fan direction")
@@ -285,17 +312,14 @@ class EquipmentRuntime:
                         or set(cap.modes) == {"off", "fan_only"}):
                     raise HomeAssistantError("No qualified feedback loop exists for this device")
                 if power:
-                    on, off, _ = model.timing(self.manager, spec, cap)
                     if new["cycle_seconds"] < on+off:
                         raise HomeAssistantError("PID cycle must include the full minimum ON and OFF intervals")
-                elif cap.domain == "fan" and not cap.fan_percentage:
-                    raise HomeAssistantError("On/off fan PID requires commissioned power control")
             if old["control_mode"] == "existing" and new["control_mode"] != "existing":
                 if why := self._legacy_busy(spec):
                     raise HomeAssistantError(why)
-                if (new["control_mode"] in ("automatic", "pid") and power
-                        and not output_off(self.hass.states.get(cap.primary))):
-                    raise HomeAssistantError("Turn the physical device OFF before transferring automatic power ownership")
+                # Already-running manual equipment is not adopted here. The
+                # runtime retains its OFF/reconciliation hold without rejecting
+                # the requested method or resetting its ownership protection.
             record = self._record(spec)
             if record.get("pending") and not record.get("paused"):
                 await self._reconcile(spec)
@@ -318,6 +342,11 @@ class EquipmentRuntime:
                 saved = saved if isinstance(saved, dict) else {}
                 saved[spec.identifier] = new
                 options[model.SETTINGS] = saved
+                # Storage awaited above: refuse a stale approval if the source
+                # selection or identity changed while the preference was saved.
+                if authorizing and (not self._current_spec(spec) or
+                        new["_native_authorization"] != authority_context(self.manager, spec)):
+                    raise HomeAssistantError("Device sources changed; select the control method again")
                 self.hass.config_entries.async_update_entry(self.manager.entry, options=options)
             self._memory.pop(spec.identifier, None)
             self._status(spec, "settings_updated", control_mode=new["control_mode"])
@@ -561,17 +590,20 @@ class EquipmentRuntime:
         if automatic:
             soft, _ = model.permission(self.manager, spec, cap)
             if not soft:
-                return "automatic_control_not_commissioned"
+                return "select_control_method_to_authorize_current_device_sources"
             if self.clock()-self._started < STARTUP_SECONDS:
                 return "startup_warmup"
-            device = model.device_config(self.manager, spec, cap.primary)
+            from .device_activation import effective_device
+            device = effective_device(self.manager, spec, cap.primary)
             if device:
                 allowed, reason = live_device_permission(self.hass, spec.area_id, room, plan, device)
                 if allowed != "eligible":
                     return reason
             if cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}:
-                dev = model.device_config(self.manager, spec, cap.primary)
-                purpose = dev.get("fan_purpose") or ("extraction" if room.get("extraction_fan_entity") == cap.primary else "filtration")
+                dev = effective_device(self.manager, spec, cap.primary)
+                purpose = dev.get("fan_purpose") or ("extraction" if room.get("extraction_fan_entity") == cap.primary else None)
+                if purpose not in ("extraction", "filtration"):
+                    return "select_fan_purpose_on_controller_device"
                 stamp = finite(plan.get("air_evidence_at"), 0, 1e13)
                 if stamp is None or not 0 <= self.clock()-stamp <= 120:
                     return "air_quality_decision_expired"
@@ -937,6 +969,9 @@ class EquipmentRuntime:
         if auto and power and not owned and not output_off(state):
             self._status(spec, "running_device_requires_off_before_automatic_power_ownership")
             return
+        if owned and not power:
+            await self._power(spec, cap, "off", automatic=auto, shutdown=True)
+            return
         if owned and self.clock()-owned["since"] >= owned["max_on"]:
             await self._power(spec, cap, "off", automatic=auto, shutdown=True)
             return
@@ -987,7 +1022,8 @@ class EquipmentRuntime:
             return
         demand, metric, increasing, goal = None, None, False, None
         if cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}:
-            dev = model.device_config(self.manager, spec, cap.primary)
+            from .device_activation import effective_device
+            dev = effective_device(self.manager, spec, cap.primary)
             room = model.room_config(self.manager, spec)
             extraction = dev.get("fan_purpose") == "extraction" or room.get("extraction_fan_entity") == cap.primary
             metric = "co2" if extraction else "pm25"

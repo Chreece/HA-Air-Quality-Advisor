@@ -118,7 +118,9 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
         for key in equipment.NUMBER_FIELDS:
             if key == "quiet_percentage" and not cap.fan_percentage:
                 continue
-            if key != "quiet_percentage" and "pid" not in equipment.control_modes(manager, spec):
+            if key in equipment.POWER_FIELDS and cap.domain not in ("climate", "fan", "humidifier"):
+                continue
+            if key != "quiet_percentage" and key not in equipment.POWER_FIELDS and "pid" not in equipment.control_modes(manager, spec):
                 continue
             numbers.append(EquipmentNumber(manager, spec, key))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, numbers)
@@ -265,6 +267,11 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
         bounds = equipment.NUMBER_FIELDS[key]
         self._attr_native_min_value, self._attr_native_max_value = bounds[:2]
         self._attr_native_step, self._attr_native_unit_of_measurement = bounds[2:4]
+        cap = equipment.capabilities(manager, spec)
+        if key in ("min_on_seconds", "min_off_seconds") and cap and cap.domain != "fan":
+            self._attr_native_min_value = 600
+        if key == "max_on_seconds" and cap and cap.domain != "fan":
+            self._attr_native_max_value = 28800
 
     @property
     def native_value(self):

@@ -89,7 +89,7 @@ async def check(config_dir):
     room["data_schema"](inputs)
     for selector in room["data_schema"].schema.values():
         labels = [option["label"] for option in selector.config["options"]]
-        assert any("Multisensor and HVAC — Source " in text for text in labels)
+        assert any("Multisensor and HVAC - Source " in text for text in labels)
     empty = await wizard.async_step_setup_room_sources(inputs)
     assert empty["step_id"] == "setup_room_sources"
     assert empty["description_placeholders"]["area_name"] == "Office"

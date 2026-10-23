@@ -1,7 +1,7 @@
 """Add an HA area group without granting equipment-control permissions."""
 from __future__ import annotations
 
-from copy import deepcopy
+from .config_data import mutable_copy as deepcopy
 
 import probatio
 from homeassistant.config_entries import ConfigSubentryFlow

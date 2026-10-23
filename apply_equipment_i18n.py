@@ -13,6 +13,18 @@ HELP = {
 }
 
 
+DEVICE_APPROVAL_HELP = {
+    "en": "Choose Automatic, Manual or PID on this controller device; no Configure approval is required. Selecting a method authorizes only this device's native setpoint/speed path. Allow power and HVAC mode control is a separate switch here: enable it only after checking the actual equipment protections. Minimum ON/OFF times and maximum runtime remain enforced. Sensor/identity changes require a new method selection. A running manually controlled appliance is not silently adopted; verify OFF before automatic power ownership. Fan purpose and verified feedback are also configured here. No preset clears a restart or manual-override pause.",
+    "el": "Επίλεξε Αυτόματο, Χειροκίνητο ή PID σε αυτή τη συσκευή ελέγχου, χωρίς έγκριση από τη Ρύθμιση της ενσωμάτωσης. Η επιλογή μεθόδου επιτρέπει μόνο τους εγγενείς στόχους και την ταχύτητα αυτής της συσκευής. Ο ξεχωριστός διακόπτης εδώ επιτρέπει έλεγχο ισχύος και λειτουργίας κλιματισμού, αφού ελέγξεις τις προστασίες του εξοπλισμού. Διατηρούνται οι ελάχιστοι χρόνοι ON/OFF και η μέγιστη συνεχής λειτουργία. Αλλαγή αισθητήρων ή ταυτότητας απαιτεί νέα επιλογή μεθόδου. Συσκευή που λειτουργεί χειροκίνητα δεν αναλαμβάνεται αυτόματα. Ο σκοπός ανεμιστήρα και η επαλήθευση μέτρησης ρυθμίζονται επίσης εδώ. Τα προφίλ δεν αναιρούν παύση λόγω επανεκκίνησης ή χειροκίνητης παρέμβασης.",
+    "de": "Automatik, Manuell oder PID direkt an diesem Steuergerät wählen; eine Freigabe im Konfigurationsdialog ist nicht erforderlich. Die Auswahl erlaubt nur die nativen Sollwert-/Drehzahlbefehle dieses Geräts. Leistung und HLK-Moduswechsel werden hier separat freigegeben, nachdem die realen Geräteschutzfunktionen geprüft wurden. Mindest-Ein-/Auszeiten und maximale Laufzeit bleiben wirksam. Geänderte Messquellen oder Geräteidentität erfordern eine erneute Verfahrenswahl. Manuell laufende Geräte werden nicht automatisch übernommen. Lüfterzweck und bestätigte Messquelle sind ebenfalls hier einstellbar. Profile lösen keine Neustart- oder Eingriffspause auf.",
+    "fr": "Choisissez Automatique, Manuel ou PID sur ce contrôleur sans passer par Configurer. Le choix autorise uniquement ses consignes et vitesses natives. Un interrupteur séparé permet les changements de puissance et de mode après vérification des protections réelles. Les durées minimales marche/arrêt et la durée maximale restent actives. Un changement de capteur ou d'identité exige une nouvelle sélection de méthode. Un appareil actif manuellement n'est pas adopté automatiquement. Le rôle du ventilateur et la vérification du capteur se règlent ici. Les profils n'annulent pas les pauses de sécurité.",
+    "es": "Elige Automático, Manual o PID en este controlador sin pasar por Configurar. La elección autoriza solo sus consignas y velocidades nativas. Un interruptor separado permite cambios de potencia y modo tras comprobar las protecciones reales. Se conservan los tiempos mínimos de encendido/apagado y el máximo de funcionamiento. Cambiar sensores o identidad requiere volver a elegir el método. No se toma el control de un aparato activado manualmente. La función del ventilador y la verificación del sensor se ajustan aquí. Los perfiles no cancelan las pausas de seguridad.",
+}
+POWER_NAMES = {"en": "Allow power and HVAC mode control", "el": "Να επιτρέπεται έλεγχος ισχύος και λειτουργίας",
+    "de": "Leistung und HLK-Moduswechsel erlauben", "fr": "Autoriser puissance et modes climatiques",
+    "es": "Permitir control de potencia y modos"}
+
+
 def apply_equipment_i18n(root: Path) -> None:
     labels = json.loads((root / "equipment_labels.json").read_text(encoding="utf-8"))
     vocabulary = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
@@ -28,7 +40,7 @@ def apply_equipment_i18n(root: Path) -> None:
         pid = steps["pid_tuning"]["data"]
         actuator = steps["climate_actuators"]["data"]
         previous_help = steps["device_settings"]["data_description"]
-        help_text = HELP.get(lang) or " ".join(previous_help[key] for key in (
+        help_text = DEVICE_APPROVAL_HELP.get(lang) or " ".join(previous_help[key] for key in (
             "device_method", "device_hardware_confirmed", "device_min_on_s", "device_min_off_s",
             "device_sleep_behavior", "device_fan_speed_percent"))
         help_by_locale[lang] = help_text
@@ -51,6 +63,19 @@ def apply_equipment_i18n(root: Path) -> None:
         add("number", "cycle_seconds", actuator.get("pwm_period_s") or
             (v["power"] + " · PID · " + pid["pid_sample_seconds"]))
         add("number", "quiet_percentage", words["quiet_percentage"] + " (%)")
+        data = steps["device_settings"]["data"]
+        add("switch", "allow_power", POWER_NAMES.get(lang) or (v["power"] + " · " + v["control"]))
+        add("switch", "sensor_verified", data["device_sensor_verified"])
+        for key in ("presence_requirement", "sleep_behavior", "fan_purpose"):
+            states = dict(doc["selector"]["device_" + key]["options"])
+            if key == "fan_purpose":
+                states["auto"] = v["automatic"]
+            add("select", key, data["device_" + key], state=states)
+        for key, old in (("min_on_seconds", "min_on_s"), ("min_off_seconds", "min_off_s"), ("max_on_seconds", "max_on_s")):
+            add("number", key, data["device_" + old])
+        comfort = steps["environment_room_comfort"]["data"]
+        for key in ("radiant_temperature_entity", "air_speed_entity"):
+            entities.setdefault("select", {})["area_area_science_" + key] = {"name": comfort[key]}
         from apply_device_picker_i18n import apply_device_picker_document
         apply_device_picker_document(doc, lang)
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
