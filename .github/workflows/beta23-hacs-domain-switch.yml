@@ -96,6 +96,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Remove HACS-only root discovery shim for Home Assistant validation
+        run: |
+          rm manifest.json
+          rm -rf brand
       - uses: home-assistant/actions/hassfest@master
 
   hacs:
