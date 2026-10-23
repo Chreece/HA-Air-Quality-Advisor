@@ -283,15 +283,14 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry:
         entry_expr="self.manager.entry" if "manager" in text and hasattr(object,"x") else None
         # These legacy coordinators have entry_id only; migration marker is looked
         # up from the actual config entry.
+        result_name = "data" if filename=="climate_pid.py" else "saved" if filename=="climate_fan_power.py" else "loaded"
         replacement=f'''from .domain_migration import async_open_migrated_store
             entry = self.hass.config_entries.async_get_entry(self.entry_id)
             if entry is None:
                 raise RuntimeError("Missing Environment Manager config entry")
-            self._store, loaded = await async_open_migrated_store(
+            self._store, {result_name} = await async_open_migrated_store(
                 self.hass, 1, "{suffix}", entry
             )'''
-        if filename=="climate_fan_power.py":
-            replacement=replacement.replace("loaded","saved")
         text=text.replace(old_snippet,replacement)
         path.write_text(text,encoding="utf-8")
 
