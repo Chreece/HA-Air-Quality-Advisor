@@ -81,9 +81,9 @@ async def check(directory):
     assert cfg.options.get('climate_rooms', {}).get(area.id, {}).get('allow_actuation') is not True
     await runtime.async_update(spec, {'control_mode': 'automatic'})
     assert model.permission(manager, spec, model.capabilities(manager, spec)) == (True, True)
-    # Automatic/PID is explicit power/mode consent for this exact native
-    # climate/fan/humidifier controller; the device switch can still revoke it.
-    await runtime.async_update(spec, {'allow_power': False})
+    # The selected method itself is the exact native power/mode consent.
+    # There is no secondary allow_power switch/backend setting.
+    assert 'allow_power' not in model.settings(manager, spec)
     templates = entry('template', 'template-test-entry', {})
     hass.config_entries._entries[templates.entry_id] = templates
     template = entities.async_get_or_create('sensor', 'template', 'beta15-presence',
