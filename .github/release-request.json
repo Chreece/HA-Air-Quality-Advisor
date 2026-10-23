@@ -1,16 +1,17 @@
 {
-  "version": "0.6.0b21",
-  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, HACS and Home Assistant 2026.10 migration checks; never update main or stable latest",
-  "note": "Repair canonical environment_manager domain spelling and support migration from both air_quality_advisor and beta20 enviroment_manager",
+  "version": "0.6.0b22",
+  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, HACS and installed Home Assistant 2026.10 identity-migration checks; never update main or stable latest",
+  "note": "Preserve the exact Home Assistant config-entry ID while migrating air_quality_advisor or beta20 enviroment_manager to canonical environment_manager",
   "validation_attempt": 0,
   "changes": [
-    "Use custom_components/environment_manager and Home Assistant domain environment_manager as the only canonical package/runtime domain",
-    "Treat both air_quality_advisor and beta20 enviroment_manager as legacy migration sources while preserving entity IDs, unique IDs, device IDs, subentries, customizations and controller settings",
-    "Carry storage migration markers across chained beta19 -> beta20 -> beta21 upgrades and direct beta19 -> beta21 upgrades",
-    "Retain temporary compatibility service/card aliases for air_quality_advisor, beta20 enviroment_manager and home_environment_manager",
-    "Keep beta20 room-owned Comfort/Home/Sleep/Eco setpoints, verified Away behavior, selected-room sensor feedback, room-wide limits and native controller automatic/PID power semantics unchanged",
-    "Validate both old domains against installed Home Assistant 2026.10 before publication; stable v0.5.1 remains unchanged"
+    "Re-home the existing ConfigEntry in place from air_quality_advisor or beta20 enviroment_manager to environment_manager instead of creating a replacement entry",
+    "Preserve the exact config entry ID, config subentry objects/IDs, entity IDs and unique IDs, device IDs, disabled states, custom names, options and stored controller settings",
+    "Reindex Home Assistant 2026.10 ConfigEntryItems only after validating the private API shape; fail closed on unsupported HA internals or unsafe entry states",
+    "Change only entity platform ownership and Manager-owned device identifier namespaces; keep config_entry_id and config_subentry_id associations unchanged",
+    "Retain legacy storage ancestry for direct beta19 -> beta22 and chained beta19 -> beta20 -> beta22 upgrades",
+    "Keep canonical environment_manager services plus temporary air_quality_advisor, enviroment_manager and home_environment_manager compatibility aliases",
+    "Preserve beta21 room presets, room-wide limits, room sensor precedence and controller safety semantics; stable v0.5.1 remains unchanged"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b21"
+  "release_branch": "beta/v0.6.0b22"
 }
