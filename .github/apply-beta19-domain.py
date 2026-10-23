@@ -189,7 +189,8 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry_
     new='''    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if self._async_current_entries():
             return self.async_abort(reason="already_configured")
-        legacy = self.hass.config_entries.async_entries(LEGACY_DOMAIN)
+        entries = getattr(self.hass, "config_entries", None)
+        legacy = entries.async_entries(LEGACY_DOMAIN) if entries is not None else []
         if len(legacy) > 1:
             return self.async_abort(reason="legacy_migration_ambiguous")
         if len(legacy) == 1:

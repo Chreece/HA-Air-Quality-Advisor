@@ -10,6 +10,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 from homeassistant.config_entries import ConfigEntries,ConfigEntry,ConfigSubentryDataWithId,SOURCE_USER
 from homeassistant.core import HomeAssistant
+from homeassistant import loader
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 from custom_components.environment_manager.const import DOMAIN,LEGACY_DOMAIN
 from custom_components.environment_manager.domain_migration import async_migrate_legacy_registry
@@ -17,6 +18,7 @@ from custom_components.environment_manager.domain_migration import async_migrate
 
 async def check(config_dir:str)->None:
     hass=HomeAssistant(config_dir)
+    loader.async_setup(hass)
     hass.config_entries=ConfigEntries(hass,{})
     dr.async_setup(hass)
     await dr.async_load(hass); await er.async_load(hass)
