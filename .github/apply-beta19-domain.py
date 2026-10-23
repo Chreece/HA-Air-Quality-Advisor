@@ -379,10 +379,35 @@ def apply_beta19_i18n(root:Path)->None:
         step=doc.setdefault("config",{}).setdefault("step",{}).setdefault("migrate_legacy",{})
         step["title"]=title; step["description"]=desc
         step.setdefault("data",{})["confirm"]=label
+        step.setdefault("data_description",{})["confirm"]=desc
         abort=doc["config"].setdefault("abort",{})
-        abort["legacy_migration_ambiguous"]="Multiple legacy entries were found; migration is blocked to avoid merging homes."
-        abort["legacy_migration_missing"]="The legacy entry disappeared before migration."
-        abort["legacy_migration_cancelled"]="Migration was cancelled."
+        if lang=="en":
+            abort["legacy_migration_ambiguous"]="Multiple legacy entries were found; migration is blocked to avoid merging homes."
+            abort["legacy_migration_missing"]="The legacy entry disappeared before migration."
+            abort["legacy_migration_cancelled"]="Migration was cancelled."
+        else:
+            base=f"{vocab[lang]['settings']} · environment_manager"
+            abort["legacy_migration_ambiguous"]=base+" · 2+"
+            abort["legacy_migration_missing"]=base+" · ?"
+            abort["legacy_migration_cancelled"]=base+" · ×"
+
+        number=doc.setdefault("entity",{}).setdefault("number",{})
+        old_profiles=doc.get("options",{}).get("step",{}).get("climate_profiles",{}).get("data",{})
+        heat_old=str(old_profiles.get("home_heat","Heating"))
+        cool_old=str(old_profiles.get("home_cool","Cooling"))
+        heat_prefix=heat_old.split("·",1)[0].strip()
+        cool_prefix=cool_old.split("·",1)[0].strip()
+        profile_names={
+            "comfort": f"{vocab[lang]['room']} · {vocab[lang].get('presence','Comfort')}",
+            "home": f"{vocab[lang].get('house','Home')} · {vocab[lang]['room']}",
+            "sleep": f"{vocab[lang]['room']} · {vocab[lang]['sleep']}",
+            "eco": f"{vocab[lang].get('house','Home')} · ECO",
+        }
+        for profile,pname in profile_names.items():
+            number[f"area_climate_profile_{profile}_heat"]={"name":f"{heat_prefix} · {pname}"}
+            number[f"area_climate_profile_{profile}_cool"]={"name":f"{cool_prefix} · {pname}"}
+        for old_key in ("unoccupied_heat","unoccupied_cool","away_heat","away_cool"):
+            number.pop("area_climate_profile_"+old_key,None)
         path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 ''',encoding="utf-8")
     gen=ROOT/"generate_translations.py"
