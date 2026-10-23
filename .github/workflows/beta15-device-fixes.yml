@@ -1,0 +1,20 @@
+name: Device settings and selectors regression work
+on:
+  push:
+    branches: ['fix/device-settings-beta15-20261023']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive exact tracked development source
+        run: git archive --format=tar.gz -o source.tar.gz HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta15-development-source
+          path: source.tar.gz
+          retention-days: 3
