@@ -1843,39 +1843,18 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
             )
         if user_input.get("confirm") is not True:
             return self.async_abort(reason="legacy_migration_cancelled")
-        await self.async_set_unique_id("home", raise_on_progress=False)
-        self._abort_if_unique_id_configured()
-        self._migrating_legacy_entry_id=legacy.entry_id
-        data=dict(legacy.data)
-        previous_id=data.get("_legacy_entry_id")
-        previous_domain=data.get("_legacy_domain")
-        chain=list(data.get("_legacy_entry_chain") or [])
-        if isinstance(previous_id,str) and previous_id:
-            chain.insert(0,{
-                "domain": previous_domain if previous_domain in LEGACY_DOMAINS else LEGACY_DOMAIN,
-                "entry_id": previous_id,
-            })
-        data["_legacy_entry_id"]=legacy.entry_id
-        data["_legacy_domain"]=legacy.domain
-        if chain:
-            data["_legacy_entry_chain"]=chain
-        subentries=[sub.as_dict() for sub in legacy.subentries.values()]
-        return self.async_create_entry(
-            title="Home Environment Manager",
-            data=data,
-            options=dict(legacy.options),
-            subentries=subentries,
-        )
-
-    async def async_on_create_entry(self, result: ConfigFlowResult) -> ConfigFlowResult:
-        legacy_id=getattr(self,"_migrating_legacy_entry_id",None)
-        if legacy_id:
-            legacy=self.hass.config_entries.async_get_entry(legacy_id)
-            if legacy is None:
-                raise RuntimeError("Legacy entry vanished during domain migration")
-            from .domain_migration import async_migrate_legacy_registry
-            await async_migrate_legacy_registry(self.hass,legacy,result["result"])
-        return result
+        # Preserve the exact ConfigEntry identity. Home Assistant freezes
+        # ConfigEntry.domain and offers no public cross-domain setter, so the
+        # migration helper performs a validated in-place reindex with rollback.
+        from .domain_migration import async_migrate_legacy_registry
+        migrated = await async_migrate_legacy_registry(self.hass, legacy)
+        if not getattr(migrated, "disabled_by", None):
+            if not await self.hass.config_entries.async_setup(migrated.entry_id):
+                raise RuntimeError(
+                    "Environment Manager domain migration completed but setup failed"
+                )
+        # The existing entry now belongs to DOMAIN; no second entry is created.
+        return self.async_abort(reason="already_configured")
 
     async def _finish(self) -> ConfigFlowResult:
         # A stale, unfinished setup flow must not prevent a fresh attempt
