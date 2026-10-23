@@ -1,17 +1,17 @@
 {
-  "version": "0.6.0b15",
+  "version": "0.6.0b16",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Direct device control-method activation, mappingproxy-safe writes, room-list templates and compact selector labels",
+  "note": "General-source defaults, Announcement Hub availability, Task AI, provider-aware TTS languages, Home hub grouping and away cooldown",
   "validation_attempt": 0,
   "changes": [
-    "Select Automatic/PID directly on managed native devices, with exact-endpoint approval and separate device-page power/mode switch",
-    "Preserve ownership, manual-override, minimum-runtime and stale-source safeguards without a hidden Configure requirement",
-    "Use recursively mutable configuration copies for read-only HA options; allow PMV and sleep-room preference changes",
-    "Expose selected radiant-temperature and air-speed sources on room devices; incomplete PMV inputs remain unavailable",
-    "Include room-list template sensors in selectors even when empty or temporarily unavailable; parse supported list, dictionary and delimited state formats",
-    "Show Device name - Entity name (state), omitting empty components and duplicate device prefixes",
-    "Validate both Python versions, 38-language regeneration, real HA settings/selector/registry APIs, frontend, Hassfest and HACS"
+    "Preselect all discovered weather and outdoor air-quality sources on first setup; preselect all pollen providers while preserving later explicit empty choices",
+    "Show Announcement Hub only when configured and keep Hub delivery authoritative when enabled",
+    "Offer data-capable ai_task entities beside conversation agents; direct Task AI rewrites call ai_task.generate_data with safe validation/fallback",
+    "Use selected TTS provider capabilities for human-readable language choices, adding region codes only for multiple supported variants",
+    "Create a native Home subentry/group and place all home-wide settings/input/output entities on the Home hub while preserving IDs",
+    "Treat a fresh empty occupied-room list as nobody home only after a configurable Home away cooldown; stale/unknown occupancy remains unknown",
+    "Retain rooms-first setup, exact controller ownership, physical equipment safety gates, 38 localized catalogs and stable v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b15"
+  "release_branch": "beta/v0.6.0b16"
 }

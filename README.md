@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b15/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b16/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 15 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b15) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 16 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b16) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+
+## Beta 16 - General sources, Home hub, Task AI and away cooldown
+
+On the first General settings pass, Home Environment Manager now preselects all discovered weather and outdoor air-quality sources and every discovered pollen provider. Later explicit empty selections remain empty. **Enable Announcement Hub** is shown only when the Hub is actually configured; enabling it keeps Hub routing authoritative.
+
+The AI selector now includes both Home Assistant conversation agents and data-capable **Task AI** entities. Direct Task AI rewrites use `ai_task.generate_data`; the same output-safety validation and original-message fallback remain in place. TTS language choices come from the selected TTS entity's advertised capabilities and display readable language names. Region labels such as **English (US)** and **English (UK)** appear only when that provider advertises multiple variants.
+
+Home-wide controls and diagnostics now belong to a native **Home** group/device instead of appearing unassigned. Room groups and managed physical-device controllers remain unchanged. A fresh, explicitly empty occupied-room source means nobody is home, but **Away** is applied only after the configurable Home away cooldown. Unknown, unavailable or stale occupancy never starts that timer or authorizes Away.
 
 ## Beta 15 - Device methods, editable preferences and template selectors
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b16 - General sources, Home hub, Task AI, TTS languages and away cooldown (beta)
+
+- Preselect discovered weather, outdoor air-quality and pollen sources on first General setup while preserving later explicit empty selections.
+- Show Announcement Hub enablement only when configured; retain Hub-owned routing and recovery semantics.
+- Add data-capable Task AI entities beside conversation agents and send direct Task AI rewrites through `ai_task.generate_data`.
+- Build TTS language choices from the selected provider's real capabilities with readable names and conditional region labels.
+- Place global settings, inputs, outputs and recommendation diagnostics on a native Home group/device; preserve existing Home/room/controller identities.
+- Treat fresh empty occupied-room evidence as nobody home only after a configurable Home away cooldown; unknown/stale evidence stays unknown.
+- Preserve rooms-first configuration, controller safety/ownership gates, all 38 localized catalogs and stable v0.5.1.
+
 ## 0.6.0b15 - Direct device methods, settings writes and template selectors (beta)
 
 - Authorize exact native controller sources by explicit method selection; remove hidden Configure prerequisites without enabling old room drivers.
