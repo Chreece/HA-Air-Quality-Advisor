@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b17/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b18/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,17 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 17 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b17) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 18 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b18) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+
+## Beta 18 - Room Environment limits and room-sensor control feedback
+
+The temperature, humidity and percentage-fan min/max controls now live **once on the Room Environment device**, not on every managed physical-device controller. A room shows only limits supported by at least one selected physical device. The editable range is the common safe intersection of the available selected devices; each controller still enforces its own stricter native limits when issuing commands.
+
+Beta 17 per-device limit values are migrated conservatively: room minimums inherit the highest saved minimum and room maximums inherit the lowest saved maximum when valid. The obsolete b17 per-device limit registry entities are removed so they do not remain as unavailable controls on physical-controller devices.
+
+Controllers now treat the room's explicitly selected **temperature, humidity and air-quality sensors** as the authoritative default feedback. Multiple selected room sensors are averaged only when all selected sources are valid/fresh. A climate device's built-in current-temperature/current-humidity reading no longer overrides explicitly selected room measurements. Legacy source fallback remains only for installations that have never made an explicit room-source selection.
+
+Per-device **Quiet when in room / Quiet when sleeping** and **Always / Room occupied / Room absent** control policies remain on each physical controller. Availability-first calculation and all ownership/safety gates remain unchanged.
 
 ## Beta 17 - Per-device quiet, occupancy and hard control bounds
 

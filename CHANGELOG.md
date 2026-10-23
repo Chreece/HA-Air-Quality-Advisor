@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b18 - Room Environment limits and room feedback precedence (beta)
+
+- Move temperature/humidity/fan percentage min/max controls from physical controllers to the Room Environment device.
+- Derive editable room ranges from the common native range of selected available physical devices and apply the room limits to every compatible managed controller.
+- Preserve stricter device-native ranges at command time and conservatively migrate beta17 per-device limit values into room defaults.
+- Remove obsolete beta17 per-device limit registry entities without deleting their saved migration values.
+- Make explicitly selected room temperature/humidity/air-quality sources authoritative controller feedback; average multiple selected room sensors when valid.
+- Prevent climate-device built-in measurements from overriding explicit room sensor selection.
+- Preserve per-device quiet/presence controls, availability-first execution, ownership/interlocks and stable v0.5.1.
+
 ## 0.6.0b17 - Per-device quiet, occupancy, limits and availability gating (beta)
 
 - Add per-controller Quiet when in room / Quiet when sleeping switches for devices with adjustable native fan support.
