@@ -5,14 +5,14 @@ import math
 
 import pytest
 
-from custom_components.environment_manager.building_physics import (
+from custom_components.enviroment_manager.building_physics import (
     DAY_S, WEEK_S, absolute_humidity_g_m3, adaptive_comfort, co2_decay_ach,
     co2_trend, dew_point_c, heat_per_air_exchange_wh_m3,
     humidity_ratio_g_kg, moisture_potential, passive_cooling,
     surface_condensation, threshold_exposure_hours, weighted_window,
     nighttime_overheating_exposure,
 )
-from custom_components.environment_manager.environment_history import EnvironmentHistory
+from custom_components.enviroment_manager.environment_history import EnvironmentHistory
 
 
 def test_winter_air_90_percent_outside_can_dry_warm_indoor_air():

@@ -8,7 +8,7 @@ import shutil
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "custom_components/environment_manager"
+COMPONENT = ROOT / "custom_components/enviroment_manager"
 
 
 def test_all_38_device_controller_catalogs_have_native_labels_and_explanations():
@@ -21,7 +21,7 @@ def test_all_38_device_controller_catalogs_have_native_labels_and_explanations()
         for domain, names in {
             "climate": ("climate",), "button": ("resume",),
             "select": ("control_mode", "quiet_fan_mode", "fan_purpose", "presence_requirement", "sleep_behavior"),
-            "switch": ("quiet_sleep", "quiet_occupied", "allow_power", "sensor_verified"),
+            "switch": ("quiet_sleep", "quiet_occupied", "sensor_verified"),
             "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage",
                        "min_on_seconds", "min_off_seconds", "max_on_seconds"),
         }.items():

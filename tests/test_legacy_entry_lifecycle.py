@@ -18,8 +18,8 @@ import pytest
 from test_discovery import adapter
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "custom_components" / "environment_manager"
-CANONICAL_DOMAIN = "environment_manager"
+COMPONENT = ROOT / "custom_components" / "enviroment_manager"
+CANONICAL_DOMAIN = "enviroment_manager"
 LEGACY_DOMAIN = "air" + "_quality_advisor"
 PUBLIC_ACTION_DOMAIN = "home_environment_manager"
 
@@ -126,7 +126,7 @@ def integration(adapter,monkeypatch):
     entries=types.ModuleType(pkg+".config_entries")
     helpers=types.ModuleType(pkg+".helpers.config_validation")
     probatio=types.ModuleType("probatio")
-    native=types.ModuleType("custom_components.environment_manager.manager")
+    native=types.ModuleType("custom_components.enviroment_manager.manager")
     extras=[]
     frontend.add_extra_js_url=lambda hass,url: extras.append((hass,url))
     http.StaticPathConfig=lambda url,path,cache: SimpleNamespace(
@@ -150,7 +150,7 @@ def integration(adapter,monkeypatch):
     native.AirQualityManager=FakeManager
     # Earlier tests may have cached the concrete manager as a package
     # attribute even after its sys.modules entry was temporarily replaced.
-    parent=sys.modules["custom_components.environment_manager"]
+    parent=sys.modules["custom_components.enviroment_manager"]
     monkeypatch.setattr(parent,"manager",native,raising=False)
     for name,obj in {
         pkg+".components":comps,
@@ -159,7 +159,7 @@ def integration(adapter,monkeypatch):
         pkg+".config_entries":entries,
         pkg+".helpers.config_validation":helpers,
         "probatio":probatio,
-        "custom_components.environment_manager.manager":native,
+        "custom_components.enviroment_manager.manager":native,
     }.items():
         monkeypatch.setitem(sys.modules,name,obj)
     from homeassistant import core
@@ -175,13 +175,13 @@ def integration(adapter,monkeypatch):
     monkeypatch.setattr(dr, "async_get", lambda hass: registry)
     FakeManager.instances=[]
     FakeManager.fail_start=False
-    name="custom_components.environment_manager._lifecycle_under_test"
+    name="custom_components.enviroment_manager._lifecycle_under_test"
     spec=importlib.util.spec_from_file_location(name,COMPONENT/"__init__.py")
     module=importlib.util.module_from_spec(spec)
     # spec_from_file_location sees "__init__.py" and otherwise treats the
     # test alias as a brand-new nested package. Preserve the real parent
     # for relative imports without altering the installed HA package.
-    module.__package__="custom_components.environment_manager"
+    module.__package__="custom_components.enviroment_manager"
     monkeypatch.setitem(sys.modules,name,module)
     spec.loader.exec_module(module)
     return module,extras
@@ -224,7 +224,7 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     assert json.dumps(entry.data,sort_keys=True)==before
     assert set(entry.options)=={"room_hub_subentry_ids"}
     assert set(entry.options["room_hub_subentry_ids"])=={"living"}
-    from custom_components.environment_manager.const import PLATFORMS
+    from custom_components.enviroment_manager.const import PLATFORMS
     assert h.config_entries.forwarded==[("legacy-1", PLATFORMS)]
     assert set(h.services.callbacks)=={
         (domain,action)
@@ -339,7 +339,7 @@ def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
         ("climate",{"area":"kitchen","action":"pause"}),
     ]
     pid=asyncio.run(
-        hass.services.callbacks[("environment_manager","pid_control")](
+        hass.services.callbacks[("enviroment_manager","pid_control")](
             request("bedroom","resume")
         )
     )
@@ -351,7 +351,7 @@ def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
     # A second entry that gains the same room must never be a broadcast.
     first.data["climate_rooms"]["kitchen"]={"enabled":True}
     unsafe=asyncio.run(
-        hass.services.callbacks[("environment_manager","climate_control")](
+        hass.services.callbacks[("enviroment_manager","climate_control")](
             request("kitchen")
         )
     )
@@ -388,7 +388,7 @@ def test_announce_routes_only_actionable_rooms_to_exact_entries(integration):
     def req(areas=None):
         return SimpleNamespace(data=({} if areas is None else {"areas":areas}),
                                return_response=True)
-    service=hass.services.callbacks[("environment_manager","announce")]
+    service=hass.services.callbacks[("enviroment_manager","announce")]
     assert asyncio.run(service(req(["kitchen"])))["submitted"]==1
     assert a.calls==[]
     assert b.calls==[("announce",{

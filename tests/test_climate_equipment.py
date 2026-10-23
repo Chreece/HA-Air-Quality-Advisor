@@ -1,8 +1,8 @@
 """Regression coverage for capability-aware HVAC without unsafe actuation."""
-from custom_components.environment_manager.climate_equipment import (
+from custom_components.enviroment_manager.climate_equipment import (
     classify_hvac, humidity_advice,
 )
-from custom_components.environment_manager.climate_strategy import capabilities
+from custom_components.enviroment_manager.climate_strategy import capabilities
 
 
 def test_radiator_only_heats():

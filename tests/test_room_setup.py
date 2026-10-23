@@ -34,7 +34,7 @@ def build(monkeypatch, adapter):
     flow.hass._entity_devices.update({"sensor.temp1": "monitor", "climate.aircon": "aircon", "fan.aircon": "aircon"})
     flow.hass._device_areas.update({"monitor": "living", "aircon": "living"})
     flow.hass._device_details.update({"monitor": {"name": "Room monitor"}, "aircon": {"name": "Air conditioner"}})
-    flow.hass._entity_details["sensor.manager"] = {"platform": "environment_manager"}
+    flow.hass._entity_details["sensor.manager"] = {"platform": "enviroment_manager"}
     return flow
 
 
@@ -144,7 +144,7 @@ def test_conflicting_concurrent_selection_aborts_without_overwrite(monkeypatch, 
 
 def test_empty_lists_are_authoritative_not_autodiscovery(monkeypatch, adapter):
     flow = build(monkeypatch, adapter)
-    from custom_components.environment_manager.room_sources import GROUPS
+    from custom_components.enviroment_manager.room_sources import GROUPS
     explicit = {"living": {g: [] for g in GROUPS}}
     room = adapter.rooms(flow.hass, ["living"], 90, source_selections=explicit)[0]
     assert room.windows == () and room.readings == ()
@@ -165,7 +165,7 @@ def test_missing_selected_window_remains_unknown(monkeypatch, adapter):
 
 def test_selected_temperatures_average_after_unit_conversion_and_no_fallback(monkeypatch, adapter):
     flow = build(monkeypatch, adapter)
-    from custom_components.environment_manager.environment import _room_temperature
+    from custom_components.enviroment_manager.environment import _room_temperature
     result = _room_temperature(flow.hass, "living", {}, 90, selected_entities=["sensor.temp1", "sensor.temp2"])
     assert result[0] == pytest.approx((20+(72-32)*5/9)/2)
     assert result[2] == "selected_mean"
@@ -176,7 +176,7 @@ def test_selected_temperatures_average_after_unit_conversion_and_no_fallback(mon
 
 def test_pressure_is_normalized_and_retained_as_room_input(monkeypatch, adapter):
     flow = build(monkeypatch, adapter)
-    from custom_components.environment_manager.room_sources import numeric, source_overview
+    from custom_components.enviroment_manager.room_sources import numeric, source_overview
     assert numeric(flow.hass, "sensor.pressure", "living", "pressure", 90) == 1008
     manager = SimpleNamespace(hass=flow.hass, settings={"room_sources": {"living": {"pressure": ["sensor.pressure"]}}})
     summary = source_overview(manager, "living")
@@ -186,7 +186,7 @@ def test_pressure_is_normalized_and_retained_as_room_input(monkeypatch, adapter)
 
 def test_selected_source_removal_withdraws_existing_feedback_grants(monkeypatch, adapter):
     flow = build(monkeypatch, adapter)
-    from custom_components.environment_manager.room_sources import store_selection, GROUPS
+    from custom_components.enviroment_manager.room_sources import store_selection, GROUPS
     data = {"climate_rooms": {"living": {"enabled": True, "allow_actuation": True,
         "selected_devices": ["climate.aircon"], "temperature_entity": "sensor.temp1",
         "device_settings": {"climate.aircon": {"auto_control": True, "temperature_entity": "sensor.temp1"}}}},
@@ -201,8 +201,8 @@ def test_selected_source_removal_withdraws_existing_feedback_grants(monkeypatch,
 def test_room_setup_catalogs_have_all_six_groups_and_specific_general_fields():
     import json
     from pathlib import Path
-    from custom_components.environment_manager.room_sources import GROUPS
-    component = Path(__file__).parents[1] / "custom_components/environment_manager"
+    from custom_components.enviroment_manager.room_sources import GROUPS
+    component = Path(__file__).parents[1] / "custom_components/enviroment_manager"
     docs = list((component / "translations").glob("*.json"))
     assert len(docs) == 38
     for path in docs:
@@ -223,7 +223,7 @@ def test_room_setup_translation_generator_reproduces_every_catalog(tmp_path, mon
     monkeypatch.syspath_prepend(str(root))
     from apply_room_setup_i18n import apply_room_setup_i18n
     from apply_beta16_i18n import apply_beta16_i18n
-    component = root / "custom_components/environment_manager"
+    component = root / "custom_components/enviroment_manager"
     for name in ("strings.json", "compact_locales.json"):
         shutil.copy(component / name, tmp_path / name)
     shutil.copytree(component / "translations", tmp_path / "translations")

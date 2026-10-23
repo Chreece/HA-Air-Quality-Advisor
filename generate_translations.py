@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-root = Path(__file__).parent / 'custom_components' / 'environment_manager'
+root = Path(__file__).parent / 'custom_components' / 'enviroment_manager'
 lang = {
 'en': {
  'title':'Home Environment Manager',

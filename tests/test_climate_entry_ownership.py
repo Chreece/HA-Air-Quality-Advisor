@@ -11,7 +11,7 @@ from test_discovery import FakeHass,MockState,adapter
 
 @pytest.fixture
 def guard(adapter):
-    from custom_components.environment_manager import climate_entry_ownership
+    from custom_components.enviroment_manager import climate_entry_ownership
     return climate_entry_ownership
 
 
@@ -99,7 +99,7 @@ def test_cross_entry_direct_output_is_never_owned_twice(guard):
 
 
 def test_live_gate_revokes_cached_thermal_permission_after_new_entry_claim(guard):
-    from custom_components.environment_manager.climate_arbitration import (
+    from custom_components.enviroment_manager.climate_arbitration import (
         new_command_gate,room_coordination,
     )
     from test_climate_arbitration import report,config

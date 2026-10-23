@@ -12,8 +12,8 @@ from homeassistant.config_entries import ConfigEntries,ConfigEntry,ConfigSubentr
 from homeassistant.core import HomeAssistant
 from homeassistant import loader
 from homeassistant.helpers import device_registry as dr, entity_registry as er
-from custom_components.environment_manager.const import DOMAIN,LEGACY_DOMAIN
-from custom_components.environment_manager.domain_migration import async_migrate_legacy_registry
+from custom_components.enviroment_manager.const import DOMAIN,LEGACY_DOMAIN
+from custom_components.enviroment_manager.domain_migration import async_migrate_legacy_registry
 
 
 async def check(config_dir:str)->None:

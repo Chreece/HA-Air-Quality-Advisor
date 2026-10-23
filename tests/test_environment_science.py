@@ -3,12 +3,12 @@ import math
 
 import pytest
 
-from custom_components.environment_manager.environment_science import (
+from custom_components.enviroment_manager.environment_science import (
     aqi_category, eea_hourly_category, ventilation_learning, particle_filtration,
     moisture_event, pollen_reading, radon_long_term, laeq_db_a,
     hcho_30min, daylight_exposure, overheating_degree_hours, pmv_iso7730,
 )
-from custom_components.environment_manager.building_physics import DAY_S
+from custom_components.enviroment_manager.building_physics import DAY_S
 
 
 def test_aqi_unknown_not_misclassified_and_us_not_confused_with_europe():

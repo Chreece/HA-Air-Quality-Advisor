@@ -29,7 +29,7 @@ def build(monkeypatch, adapter):
         opt.hass._entity_devices[entity_id] = device
         opt.hass._device_areas[device] = area
         opt.hass._device_details[device] = {"name": "Product " + device}
-    opt.hass._entity_details["climate.manager"] = {"platform": "environment_manager"}
+    opt.hass._entity_details["climate.manager"] = {"platform": "enviroment_manager"}
     return opt
 
 
@@ -143,7 +143,7 @@ def test_cancelling_optional_setup_cannot_mutate_saved_configuration(monkeypatch
 
 def test_unavailable_selected_endpoint_is_not_silently_dropped(monkeypatch, adapter):
     opt = build(monkeypatch, adapter)
-    from custom_components.environment_manager.room_device_picker import physical_device_choices
+    from custom_components.enviroment_manager.room_device_picker import physical_device_choices
     opt.hass._values.pop("climate.ac")
     opt.hass._values.pop("fan.ac")
     options, mapping = physical_device_choices(opt.hass, "living", ("climate.ac", "fan.ac"))
@@ -159,7 +159,7 @@ def test_clear_selection_finishes_without_any_mandatory_followup(monkeypatch, ad
 
 
 def test_all_locales_have_one_device_menu_and_specific_instructions():
-    root = Path(__file__).resolve().parents[1] / "custom_components/environment_manager"
+    root = Path(__file__).resolve().parents[1] / "custom_components/enviroment_manager"
     docs = list((root / "translations").glob("*.json"))
     assert len(docs) == 38
     for path in docs:

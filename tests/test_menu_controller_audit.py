@@ -396,15 +396,15 @@ def test_native_climate_cycle_commissioning_minimum_is_not_a_tuning_preference(m
 
 
 def test_manager_climate_entities_are_never_offered_as_native_targets(monkeypatch, adapter):
-    from custom_components.environment_manager.compact_options import _device_choices
-    from custom_components.environment_manager.climate_entry_ownership import foreign_owner_hold
+    from custom_components.enviroment_manager.compact_options import _device_choices
+    from custom_components.enviroment_manager.climate_entry_ownership import foreign_owner_hold
     opt = _make_options(monkeypatch, adapter)
     proxy = MockState("climate.manager_controller", "heat")
     proxy.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
     native = MockState("climate.native", "heat")
     native.attributes.update(hvac_modes=["off", "heat"], supported_features=1)
     _add(opt, proxy, native)
-    opt.hass._entity_details[proxy.entity_id] = {"platform": "environment_manager"}
+    opt.hass._entity_details[proxy.entity_id] = {"platform": "enviroment_manager"}
     ids = {v["value"] for v in _device_choices(opt.hass, "living")}
     assert native.entity_id in ids and proxy.entity_id not in ids
     opt._pid_area = "living"
@@ -414,7 +414,7 @@ def test_manager_climate_entities_are_never_offered_as_native_targets(monkeypatc
 
 def test_removing_unrelated_fan_preserves_commissioned_native_dry_controller(monkeypatch, adapter):
     _make_options(monkeypatch, adapter)
-    from custom_components.environment_manager.compact_options import _reconcile_device_selection
+    from custom_components.enviroment_manager.compact_options import _reconcile_device_selection
     previous = {
         "enabled": True, "allow_actuation": True, "controller": "environment",
         "selected_devices": ["climate.dry", "fan.filter"],

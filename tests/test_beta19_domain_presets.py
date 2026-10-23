@@ -1,7 +1,7 @@
 """Beta19 domain migration and room preset semantics."""
 from types import SimpleNamespace
-from custom_components.environment_manager import equipment_model as model
-from custom_components.environment_manager.climate_strategy import select_profile, profiles
+from custom_components.enviroment_manager import equipment_model as model
+from custom_components.enviroment_manager.climate_strategy import select_profile, profiles
 
 def test_automatic_profile_semantics():
     assert select_profile({},at_home="home",occupied="occupied")[0]=="comfort"
@@ -22,6 +22,6 @@ def test_room_profile_migration_and_eco():
     assert parsed["eco"].heat_c==17
 
 def test_new_domain_and_legacy_constant():
-    from custom_components.environment_manager.const import DOMAIN,LEGACY_DOMAIN
-    assert DOMAIN=="environment_manager"
+    from custom_components.enviroment_manager.const import DOMAIN,LEGACY_DOMAIN
+    assert DOMAIN=="enviroment_manager"
     assert LEGACY_DOMAIN=="air_quality_advisor"

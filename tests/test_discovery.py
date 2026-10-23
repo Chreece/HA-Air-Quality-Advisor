@@ -92,7 +92,7 @@ def adapter(monkeypatch):
             reg.async_get = area_registry
         setattr(helpers, name, reg)
         monkeypatch.setitem(sys.modules, f"homeassistant.helpers.{name}", reg)
-    name = "custom_components.environment_manager.discovery"
+    name = "custom_components.enviroment_manager.discovery"
     monkeypatch.delitem(sys.modules, name, raising=False)
     module = importlib.import_module(name)
     yield module
@@ -262,9 +262,9 @@ def test_thermostat_model_suggested_even_without_climate_entity(adapter):
 
 
 def test_excluded_window_is_removed_from_area_count_rooms_and_recommendation(adapter):
-    from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
-    from custom_components.environment_manager.dashboard import dashboard_snapshot
-    from custom_components.environment_manager.logic import Reading, Weather, evaluate
+    from custom_components.enviroment_manager.const import DEFAULT_THRESHOLDS
+    from custom_components.enviroment_manager.dashboard import dashboard_snapshot
+    from custom_components.enviroment_manager.logic import Reading, Weather, evaluate
 
     fake = "binary_sensor.bathroom_window_detection"
     real = "binary_sensor.living_real_window"
@@ -313,9 +313,9 @@ def test_supported_indoor_exclusions_include_humidity_and_all_supported_air_metr
 
 
 def test_indoor_exclusions_change_recommendations_and_card_without_disabling_sensors(adapter):
-    from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
-    from custom_components.environment_manager.dashboard import dashboard_snapshot
-    from custom_components.environment_manager.logic import Reading, Weather, evaluate
+    from custom_components.enviroment_manager.const import DEFAULT_THRESHOLDS
+    from custom_components.enviroment_manager.dashboard import dashboard_snapshot
+    from custom_components.enviroment_manager.logic import Reading, Weather, evaluate
 
     window = "binary_sensor.office_window"
     co2 = "sensor.office_co2"
@@ -358,7 +358,7 @@ def test_device_area_inheritance_for_indoor_selector(adapter):
 
 
 def test_mold_temperature_sensor_fahrenheit_conversion_and_staleness(adapter):
-    from custom_components.environment_manager.discovery import (
+    from custom_components.enviroment_manager.discovery import (
         indoor_temperature_choices, temperature_sensor_c,
     )
     ha = FakeHass([

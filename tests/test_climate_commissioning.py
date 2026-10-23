@@ -34,7 +34,7 @@ def sample():
 
 
 def test_one_room_snapshot_is_read_only_and_reports_exact_native_modes(adapter):
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     class NoServices:
         def __getattr__(self,name):
@@ -58,7 +58,7 @@ def test_one_room_snapshot_is_read_only_and_reports_exact_native_modes(adapter):
 
 
 def test_missing_or_wrong_room_sensors_and_unknown_dry_capability_are_blocked(adapter):
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     hass._entity_areas["sensor.bathroom_humidity"]="office"
     hass.states.get("climate.bathroom_ac").attributes["hvac_modes"]=["dry"]
@@ -74,7 +74,7 @@ def test_missing_or_wrong_room_sensors_and_unknown_dry_capability_are_blocked(ad
 
 
 def test_commissioning_scope_never_returns_unconfigured_areas(adapter):
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     absent=report(hass,{"bathroom":cfg},area="office",now=5000)
     assert absent=={
@@ -88,7 +88,7 @@ def test_commissioning_scope_never_returns_unconfigured_areas(adapter):
 
 
 def test_duplicate_configured_native_device_is_flagged_for_hardware_testing(adapter):
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     duplicate={
         "bedroom":{"enabled":True,
@@ -102,7 +102,7 @@ def test_duplicate_configured_native_device_is_flagged_for_hardware_testing(adap
 
 
 def test_default_legacy_climate_configuration_never_attests_hardware(adapter):
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     result=report(hass,{"bathroom":{
         "enabled":True,"controller":"environment",
@@ -121,7 +121,7 @@ def test_commissioning_flags_device_shared_by_separate_entry_without_exposing_id
     adapter,
 ):
     from types import SimpleNamespace
-    from custom_components.environment_manager.climate_commissioning import report
+    from custom_components.enviroment_manager.climate_commissioning import report
     hass,cfg=sample()
     foreign=SimpleNamespace(
         entry_id="another-private-config-id",disabled_by=None,

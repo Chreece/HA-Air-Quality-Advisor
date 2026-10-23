@@ -1,7 +1,7 @@
 """Window alternatives require actual device activity and measured outdoor benefit."""
 import pytest
 
-from custom_components.environment_manager.logic import Reading, Room, Window, Weather
+from custom_components.enviroment_manager.logic import Reading, Room, Window, Weather
 from test_discovery import FakeHass, MockState, adapter
 
 
@@ -11,7 +11,7 @@ OUTDOOR=(Reading("sensor.out_pm25","PM2.5","pm25",8),)
 
 @pytest.fixture
 def model(adapter):
-    from custom_components.environment_manager import climate_window
+    from custom_components.enviroment_manager import climate_window
     return climate_window
 
 
@@ -62,7 +62,7 @@ def test_heating_only_needs_outdoor_air_to_reach_target(model):
 
 
 def test_dry_only_without_fan_only_is_recognized(model):
-    from custom_components.environment_manager.building_physics import moisture_potential
+    from custom_components.enviroment_manager.building_physics import moisture_potential
     h,room=home("dry","drying")
     condition=moisture_potential(23,75,14,45)
     assert condition["status"]=="drying"
@@ -79,7 +79,7 @@ def test_dry_only_without_fan_only_is_recognized(model):
 
 
 def test_dedicated_dehumidifier_window_airing_is_measured(model):
-    from custom_components.environment_manager.building_physics import moisture_potential
+    from custom_components.enviroment_manager.building_physics import moisture_potential
     dryer=MockState("humidifier.dehum","on",device_class="dehumidifier")
     contact=MockState("binary_sensor.room_window","off",device_class="window")
     h=FakeHass([dryer,contact],{dryer.entity_id:"room",contact.entity_id:"room"})
@@ -139,7 +139,7 @@ def test_not_present_and_simultaneous_competing_needs_do_not_advise(model):
 
 
 def test_drying_not_equivalent_when_outdoor_moisture_inadequate_or_heating_loss_large(model):
-    from custom_components.environment_manager.building_physics import moisture_potential
+    from custom_components.enviroment_manager.building_physics import moisture_potential
     h,room=home("dry","drying")
     cfg={"enabled":True,"dry_climate_entity":"climate.one_mode"}
     args=dict(hass=h,room=room,settings=cfg,plan=plan(temperature=23),

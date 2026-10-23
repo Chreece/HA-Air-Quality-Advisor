@@ -3,14 +3,14 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-DOMAIN = ROOT / "custom_components" / "environment_manager"
+DOMAIN = ROOT / "custom_components" / "enviroment_manager"
 
 
 def test_is_visible_in_home_assistant_integrations_not_helpers():
     manifest = json.loads((DOMAIN / "manifest.json").read_text())
     assert manifest["integration_type"] == "hub"
     assert manifest["config_flow"] is True
-    assert manifest["domain"] == "environment_manager"
+    assert manifest["domain"] == "enviroment_manager"
 
 
 def test_all_languages_have_usable_area_picker_error_messages():
@@ -45,7 +45,7 @@ def test_exclusion_selector_is_translated_for_setup_and_options():
 
 
 def test_runtime_exclusions_are_applied_before_window_recommendations():
-    from custom_components.environment_manager.const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR
+    from custom_components.enviroment_manager.const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR
     source = (DOMAIN / "manager.py").read_text()
     assert "set(config.get(CONF_EXCLUDED_WINDOWS, []))" in source
     assert "config.get(CONF_EXCLUDED_INDOOR, {})" in source

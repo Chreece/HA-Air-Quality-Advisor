@@ -1,9 +1,9 @@
 """Air quality treatment evidence and conservative fan supervision eligibility."""
-from custom_components.environment_manager.climate_air_actions import (
+from custom_components.enviroment_manager.climate_air_actions import (
     unique_measurement, air_treatment_plan,
 )
-from custom_components.environment_manager.building_physics import moisture_potential
-from custom_components.environment_manager.logic import Reading
+from custom_components.enviroment_manager.building_physics import moisture_potential
+from custom_components.enviroment_manager.logic import Reading
 
 
 def sample(metric,value,entity=None):

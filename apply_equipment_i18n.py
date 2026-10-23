@@ -64,7 +64,6 @@ def apply_equipment_i18n(root: Path) -> None:
             (v["power"] + " · PID · " + pid["pid_sample_seconds"]))
         add("number", "quiet_percentage", words["quiet_percentage"] + " (%)")
         data = steps["device_settings"]["data"]
-        add("switch", "allow_power", POWER_NAMES.get(lang) or (v["power"] + " · " + v["control"]))
         add("switch", "sensor_verified", data["device_sensor_verified"])
         for key in ("presence_requirement", "sleep_behavior", "fan_purpose"):
             states = dict(doc["selector"]["device_" + key]["options"])

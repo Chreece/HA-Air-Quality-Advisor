@@ -13,14 +13,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntries
 from homeassistant.helpers import area_registry as ar, device_registry as dr, entity_registry as er
-from custom_components.environment_manager.device_controls import update_device_setting
-from custom_components.environment_manager.equipment_runtime import EquipmentRuntime
-from custom_components.environment_manager import equipment_model as model
-from custom_components.environment_manager.compact_options import CompactOptionsMixin
-from custom_components.environment_manager.occupancy_policy import configured_rooms
-from custom_components.environment_manager.room_sources import label
-from custom_components.environment_manager.device_hierarchy import async_register_hierarchy
-from custom_components.environment_manager.room_hubs import async_sync_room_hubs
+from custom_components.enviroment_manager.device_controls import update_device_setting
+from custom_components.enviroment_manager.equipment_runtime import EquipmentRuntime
+from custom_components.enviroment_manager import equipment_model as model
+from custom_components.enviroment_manager.compact_options import CompactOptionsMixin
+from custom_components.enviroment_manager.occupancy_policy import configured_rooms
+from custom_components.enviroment_manager.room_sources import label
+from custom_components.enviroment_manager.device_hierarchy import async_register_hierarchy
+from custom_components.enviroment_manager.room_hubs import async_sync_room_hubs
 from verify_room_setup_ha import entry
 
 
@@ -56,7 +56,7 @@ async def check(directory):
     hass.states.async_set(climate.entity_id, 'off', {'friendly_name': 'Climate',
         'hvac_modes': ['off', 'heat'], 'supported_features': 1,
         'temperature_unit': '°C', 'temperature': 20, 'min_temp': 5, 'max_temp': 35})
-    cfg = entry('environment_manager', 'beta15-settings-test', {
+    cfg = entry('enviroment_manager', 'beta15-settings-test', {
         'areas': [area.id], 'climate_rooms': {area.id: {'selected_devices': [climate.entity_id],
             'device_settings': {climate.entity_id: {'auto_control': False}}}}})
     hass.config_entries._entries[cfg.entry_id] = cfg

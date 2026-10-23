@@ -13,8 +13,8 @@ from types import SimpleNamespace
 import pytest
 
 from test_discovery import FakeHass, MockState, adapter
-from custom_components.environment_manager.device_hierarchy import ManagedDevice
-from custom_components.environment_manager import equipment_model as m
+from custom_components.enviroment_manager.device_hierarchy import ManagedDevice
+from custom_components.enviroment_manager import equipment_model as m
 
 
 class Store:
@@ -80,8 +80,8 @@ def runtime_module(adapter, monkeypatch):
     dispatcher.async_dispatcher_send = lambda *a: None
     dispatcher.async_dispatcher_connect = lambda *a: lambda: None
     monkeypatch.setitem(sys.modules, dispatcher.__name__, dispatcher)
-    monkeypatch.delitem(sys.modules, "custom_components.environment_manager.equipment_runtime", raising=False)
-    return importlib.import_module("custom_components.environment_manager.equipment_runtime")
+    monkeypatch.delitem(sys.modules, "custom_components.enviroment_manager.equipment_runtime", raising=False)
+    return importlib.import_module("custom_components.enviroment_manager.equipment_runtime")
 
 
 def home(module, *, domain="fan", state="off", device_class=None, speed=True,
@@ -154,7 +154,7 @@ def home(module, *, domain="fan", state="off", device_class=None, speed=True,
     runtime._ready, runtime._active, runtime._started, runtime._store = True, True, 0, store
     manager.equipment = runtime
     entry.runtime_data = manager
-    hass.data = {"environment_manager": {"entry": manager}}
+    hass.data = {"enviroment_manager": {"entry": manager}}
     runtime._record(spec)["off_at"][entity] = 0
     return SimpleNamespace(manager=manager, runtime=runtime, spec=spec, cap=m.capabilities(manager, spec),
                            hass=hass, store=store, clock=clock, plan=plan, room=room, dev=dev,
@@ -404,7 +404,7 @@ def test_quiet_native_fan_uses_only_advertised_choice(runtime_module):
 
 
 def test_legacy_sources_filtered_and_runtime_gate_blocks_old_driver(runtime_module):
-    from custom_components.environment_manager.climate_arbitration import new_command_gate
+    from custom_components.enviroment_manager.climate_arbitration import new_command_gate
     h = home(runtime_module)
     h.room["purifier_fan_entity"] = "fan.other"
     h.room["selected_devices"].append("fan.other")

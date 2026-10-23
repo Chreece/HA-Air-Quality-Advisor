@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import pytest
 from test_discovery import adapter
 
-from custom_components.environment_manager.device_hierarchy import (
+from custom_components.enviroment_manager.device_hierarchy import (
     async_register_hierarchy, configured_area_ids, configured_sources,
     controller_device_info, hierarchy_attributes, managed_devices,
 )
@@ -117,9 +117,9 @@ def test_monitoring_and_climate_only_areas_are_hubs_without_hardware(hierarchy):
     async_register_hierarchy(h.hass, h.entry)
     assert len(h.registry.keys) == 4  # Home, Kitchen, Office, Bedroom.
     assert configured_area_ids(h.settings) == ("kitchen", "office", "bedroom")
-    home = h.registry.keys[("hem", ("environment_manager", "hem"))]
+    home = h.registry.keys[("hem", ("enviroment_manager", "hem"))]
     for area in configured_area_ids(h.settings):
-        hub = h.registry.keys[("hem", ("environment_manager", f"hem_area_{area}"))]
+        hub = h.registry.keys[("hem", ("enviroment_manager", f"hem_area_{area}"))]
         assert hub.model == "Area Environment Hub"
         assert hub.entry_type is None
         assert hub.area_id == area
@@ -178,7 +178,7 @@ def test_native_entity_rename_uses_registry_identity_not_display_name(hierarchy)
 def test_wrong_area_deselected_or_own_entity_does_not_get_a_controller(hierarchy):
     h = hierarchy
     h.source("climate.ac", area="bedroom")
-    h.source("fan.ac", platform="environment_manager")
+    h.source("fan.ac", platform="enviroment_manager")
     assert managed_devices(h.hass, "hem", h.settings) == ()
     h.registry.devices["physical-ac"].area_id = "kitchen"
     h.settings["climate_rooms"]["kitchen"]["selected_devices"] = []
@@ -248,7 +248,7 @@ def test_device_setting_entities_move_without_changing_unique_ids(hierarchy, mon
         vars(module).update(attributes)
         monkeypatch.setitem(sys.modules, name, module)
     monkeypatch.setattr(core, "callback", lambda fn: fn, raising=False)
-    prefix = "custom_components.environment_manager."
+    prefix = "custom_components.enviroment_manager."
     for name in ("number", "select", "device_controls"):
         monkeypatch.delitem(sys.modules, prefix + name, raising=False)
     numbers = importlib.import_module(prefix + "number")
@@ -263,7 +263,7 @@ def test_device_setting_entities_move_without_changing_unique_ids(hierarchy, mon
     assert target._attr_unique_id == "hem_area_kitchen_device_target_climate_ac_home_heat_c"
     assert policy._attr_unique_id == "hem_area_kitchen_device_policy_climate_ac_presence_requirement"
     room = numbers.ConfigNumber(h.manager, "hem", "kitchen", "pid", "kp", (0, 100, 1, None))
-    assert room._attr_device_info == {"identifiers": {("environment_manager", "hem_area_kitchen")}}
+    assert room._attr_device_info == {"identifiers": {("enviroment_manager", "hem_area_kitchen")}}
     home = selectors.ConfigSelect(h.manager, "hem", None, "aqi_scale", ("custom",),
                                   entity_id="sensor.outside_aqi", setting_key="scale")
-    assert home._attr_device_info == {"identifiers": {("environment_manager", "hem")}}
+    assert home._attr_device_info == {"identifiers": {("enviroment_manager", "hem")}}

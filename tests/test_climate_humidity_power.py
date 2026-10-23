@@ -16,7 +16,7 @@ def driver(adapter, monkeypatch):
     storage.Store = FakeStore
     monkeypatch.setitem(sys.modules, "homeassistant.helpers.storage", storage)
     return importlib.import_module(
-        "custom_components.environment_manager.climate_humidity_power"
+        "custom_components.enviroment_manager.climate_humidity_power"
     )
 
 
@@ -338,7 +338,7 @@ def test_real_ha_last_changed_blocks_recent_manual_toggle(driver):
 
 def test_power_owner_refuses_live_competing_cooling_after_shared_plan(driver):
     async def scenario():
-        from custom_components.environment_manager.climate_arbitration import (
+        from custom_components.enviroment_manager.climate_arbitration import (
             room_coordination,
         )
         hass=home(rh=66)

@@ -1,6 +1,6 @@
 """Supervisory PID math: anti-windup, quantization, units, invalid timing."""
 import pytest
-from custom_components.environment_manager.pid_math import (
+from custom_components.enviroment_manager.pid_math import (
     DEFAULT_PID, Memory, validate_settings, step, setpoint_c, bounded_command,
     target_to_unit, target_from_unit,
 )

@@ -4,13 +4,13 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOMAIN = ROOT / "custom_components" / "environment_manager"
+DOMAIN = ROOT / "custom_components" / "enviroment_manager"
 
 
 def test_public_name_and_domain_migration_is_canonical_and_backward_compatible():
     manifest = json.loads((DOMAIN / "manifest.json").read_text(encoding="utf-8"))
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
-    assert manifest["domain"] == "environment_manager"
+    assert manifest["domain"] == "enviroment_manager"
     assert manifest["name"] == "Home Environment Manager"
     assert hacs["name"] == "Home Environment Manager"
     requested = json.loads((ROOT / ".github" / "release-request.json").read_text(encoding="utf-8"))
@@ -22,7 +22,7 @@ def test_public_name_and_domain_migration_is_canonical_and_backward_compatible()
 def test_domain_migration_and_legacy_action_aliases_are_preserved():
     source = (DOMAIN / "__init__.py").read_text(encoding="utf-8")
     const = (DOMAIN / "const.py").read_text(encoding="utf-8")
-    assert 'DOMAIN = "environment_manager"' in const
+    assert 'DOMAIN = "enviroment_manager"' in const
     assert 'LEGACY_DOMAIN = "air" + "_quality_advisor"' not in const
     assert 'LEGACY_DOMAIN = "' + "air" + '_quality_advisor"' in const
     assert 'LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"' in const

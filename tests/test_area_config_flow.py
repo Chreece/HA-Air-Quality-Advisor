@@ -60,7 +60,7 @@ def _wizard(monkeypatch, adapter):
     selector.NumberSelectorMode = SimpleNamespace(BOX="box")
     monkeypatch.setitem(sys.modules, "homeassistant.helpers.selector", selector)
 
-    name = "custom_components.environment_manager.config_flow"
+    name = "custom_components.enviroment_manager.config_flow"
     monkeypatch.delitem(sys.modules, name, raising=False)
     module = importlib.import_module(name)
 
@@ -295,7 +295,7 @@ def test_missing_saved_sensor_kept_removable_invalid_selection_rejected(monkeypa
 def _make_options(monkeypatch, adapter, *, two_rooms=False):
     """Build the real options handler with the test Home Assistant doubles."""
     _wizard(monkeypatch, adapter)
-    import custom_components.environment_manager.config_flow as flows
+    import custom_components.enviroment_manager.config_flow as flows
     states = [
         MockState("binary_sensor.living_window", "off", device_class="window"),
         MockState("sensor.living_co2", 900, device_class="co2", unit="ppm"),
@@ -422,7 +422,7 @@ def test_announcement_editor_has_no_advanced_threshold_toggle(monkeypatch, adapt
 
 
 def test_advanced_thresholds_are_editable_directly_from_menu(monkeypatch, adapter):
-    from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
+    from custom_components.enviroment_manager.const import DEFAULT_THRESHOLDS
     options = _make_options(monkeypatch, adapter)
     asyncio.run(options.async_step_init())
     form = asyncio.run(options.async_step_thresholds())
@@ -445,7 +445,7 @@ def test_reconfigure_when_no_supported_air_sensors_skips_empty_room_page(monkeyp
 
 def test_initial_config_entry_starts_with_rooms(monkeypatch, adapter):
     _wizard(monkeypatch, adapter)
-    import custom_components.environment_manager.config_flow as flows
+    import custom_components.enviroment_manager.config_flow as flows
     home = FakeHass([
         MockState("binary_sensor.living_window", "off", device_class="window"),
     ], {"binary_sensor.living_window": "living"})
@@ -582,7 +582,7 @@ def test_repeat_interval_defaults_to_ten_minutes_and_uses_number_selector(monkey
     form = asyncio.run(options.async_step_delivery())
     assert "announcement_repeat_minutes" not in form["data_schema"]
     # The home device now owns the writable announcement interval entity.
-    from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
+    from custom_components.enviroment_manager.const import DEFAULT_THRESHOLDS
     assert len(DEFAULT_THRESHOLDS) == 22
 
 
@@ -1506,7 +1506,7 @@ def test_room_source_picker_excludes_irrelevant_entities_and_only_valid_attribut
 def test_abandoned_initial_flow_does_not_block_retry_before_first_form(monkeypatch,adapter):
     """Starting a second attempt need not wait for HA's ghost flow cleanup."""
     _wizard(monkeypatch,adapter)
-    import custom_components.environment_manager.config_flow as flows
+    import custom_components.enviroment_manager.config_flow as flows
     home=FakeHass([MockState("binary_sensor.living_window","off",device_class="window")],
                   {"binary_sensor.living_window":"living"})
     reserved=[]
@@ -1536,7 +1536,7 @@ def test_abandoned_initial_flow_does_not_block_retry_before_first_form(monkeypat
 
 def test_initial_setup_blocks_existing_entries_even_without_unique_id(monkeypatch,adapter):
     _wizard(monkeypatch,adapter)
-    import custom_components.environment_manager.config_flow as flows
+    import custom_components.enviroment_manager.config_flow as flows
     flow=flows.AirQualityConfigFlow()
     flow.hass=FakeHass([])
     flow._async_current_entries=lambda:[SimpleNamespace(unique_id=None)]
@@ -1551,7 +1551,7 @@ def test_initial_setup_blocks_existing_entries_even_without_unique_id(monkeypatc
 
 def test_initial_setup_rechecks_entry_created_while_first_form_open(monkeypatch,adapter):
     _wizard(monkeypatch,adapter)
-    import custom_components.environment_manager.config_flow as flows
+    import custom_components.enviroment_manager.config_flow as flows
     home=FakeHass([MockState("binary_sensor.living_window","off",device_class="window")],
                   {"binary_sensor.living_window":"living"})
     registered=[]

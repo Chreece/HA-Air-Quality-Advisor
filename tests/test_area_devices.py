@@ -11,13 +11,13 @@ from types import SimpleNamespace
 
 import pytest
 
-from custom_components.environment_manager.const import DEFAULT_THRESHOLDS
-from custom_components.environment_manager.logic import (
+from custom_components.enviroment_manager.const import DEFAULT_THRESHOLDS
+from custom_components.enviroment_manager.logic import (
     Reading, Room, Weather, Window, evaluate,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULE = ROOT / "custom_components" / "environment_manager" / "area_entities.py"
+MODULE = ROOT / "custom_components" / "enviroment_manager" / "area_entities.py"
 
 
 @pytest.fixture
@@ -80,10 +80,10 @@ def area_module(monkeypatch):
     }.items():
         monkeypatch.setitem(sys.modules, name, value)
 
-    name = "custom_components.environment_manager._area_devices_under_test"
+    name = "custom_components.enviroment_manager._area_devices_under_test"
     spec = importlib.util.spec_from_file_location(name, MODULE)
     module = importlib.util.module_from_spec(spec)
-    module.__package__ = "custom_components.environment_manager"
+    module.__package__ = "custom_components.enviroment_manager"
     monkeypatch.setitem(sys.modules, name, module)
     spec.loader.exec_module(module)
     return module, registry
@@ -138,7 +138,7 @@ def test_one_device_per_selected_area_and_only_calculated_optional_sensor(area_m
                             data=manager.settings, options={})
     entities = asyncio.run(module.async_area_entities(manager.hass, entry))
     assert len(registry.created) == 3  # Parent home device + two rooms
-    assert registry.created[0]["identifiers"] == {("environment_manager", "entry-42")}
+    assert registry.created[0]["identifiers"] == {("enviroment_manager", "entry-42")}
     assert [row[1]["area_id"] for row in registry.assigned] == [
         "kitchen", "bedroom",
     ]

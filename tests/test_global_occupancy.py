@@ -6,7 +6,7 @@ from test_discovery import FakeHass,MockState,adapter
 
 
 def test_room_list_in_state_attribute_and_unknown_names(adapter):
-    from custom_components.environment_manager.occupancy_policy import configured_rooms
+    from custom_components.enviroment_manager.occupancy_policy import configured_rooms
     state=MockState("sensor.rooms",'["living","kitchen"]')
     attr=MockState("sensor.sleep","ready")
     attr.attributes["sleeping_rooms"]=["kitchen"]
@@ -28,7 +28,7 @@ def test_room_list_in_state_attribute_and_unknown_names(adapter):
 
 
 def test_global_room_occupancy_positive_wins_unknown_never_off(adapter):
-    from custom_components.environment_manager.occupancy_policy import room_presence
+    from custom_components.enviroment_manager.occupancy_policy import room_presence
     sensor=MockState("binary_sensor.kitchen_presence","on",device_class="presence")
     roomlist=MockState("sensor.occupied_rooms","[]")
     h=FakeHass([sensor,roomlist],{sensor.entity_id:"kitchen"})
@@ -46,7 +46,7 @@ def test_global_room_occupancy_positive_wins_unknown_never_off(adapter):
 
 
 def test_shared_home_trackers_sleep_room_list_and_device_policy(adapter):
-    from custom_components.environment_manager.occupancy_policy import (
+    from custom_components.enviroment_manager.occupancy_policy import (
         home_presence,sleep_presence,device_permission
     )
     resident=MockState("person.resident","not_home")
@@ -72,8 +72,8 @@ def test_shared_home_trackers_sleep_room_list_and_device_policy(adapter):
 
 
 def test_gather_global_occupied_rooms_and_sleep_profile(adapter):
-    from custom_components.environment_manager.climate_rooms import gather
-    from custom_components.environment_manager.logic import Room, Window
+    from custom_components.enviroment_manager.climate_rooms import gather
+    from custom_components.enviroment_manager.logic import Room, Window
     co2=MockState("sensor.kitchen_temperature",19,device_class="temperature",unit="°C")
     thermo=MockState("climate.kitchen","heat")
     thermo.attributes.update({"hvac_modes":["off","heat"],"supported_features":1})
@@ -95,7 +95,7 @@ def test_gather_global_occupied_rooms_and_sleep_profile(adapter):
 
 
 def test_device_policy_blocks_new_thermal_commands_when_unoccupied(adapter):
-    from custom_components.environment_manager.climate_arbitration import new_command_gate
+    from custom_components.enviroment_manager.climate_arbitration import new_command_gate
     cfg={"selected_devices":["climate.kitchen"],"device_settings":{
         "climate.kitchen":{"auto_control":True,"presence_requirement":"room"}}}
     plan={"occupancy":"unoccupied","away":"home","sleeping":False}
@@ -111,7 +111,7 @@ def test_device_policy_blocks_new_thermal_commands_when_unoccupied(adapter):
 
 
 def test_live_gate_rejects_entered_room_and_invalidated_sleep_after_planning(adapter):
-    from custom_components.environment_manager.occupancy_policy import (
+    from custom_components.enviroment_manager.occupancy_policy import (
         live_device_permission,
     )
     sensor=MockState("binary_sensor.living_presence","off",device_class="presence")
@@ -138,7 +138,7 @@ def test_live_gate_rejects_entered_room_and_invalidated_sleep_after_planning(ada
 
 
 def test_sleep_pause_takes_priority_over_absence_off(adapter):
-    from custom_components.environment_manager.occupancy_policy import device_permission
+    from custom_components.enviroment_manager.occupancy_policy import device_permission
     device={"auto_control":True,"presence_requirement":"home",
             "absence_action":"off","sleep_behavior":"pause"}
     assert device_permission(device,"unoccupied","away",True)==(
@@ -153,7 +153,7 @@ def test_sleep_pause_takes_priority_over_absence_off(adapter):
 
 
 def test_empty_occupied_rooms_means_away_only_after_cooldown(adapter):
-    from custom_components.environment_manager.occupancy_policy import home_presence
+    from custom_components.enviroment_manager.occupancy_policy import home_presence
     empty = MockState("sensor.occupied_rooms", "[]")
     empty.last_changed = datetime.now(timezone.utc) - timedelta(minutes=5)
     empty.last_updated = empty.last_changed
@@ -173,7 +173,7 @@ def test_empty_occupied_rooms_means_away_only_after_cooldown(adapter):
 
 
 def test_all_room_presence_sensors_empty_override_home_tracker_after_cooldown(adapter):
-    from custom_components.environment_manager.occupancy_policy import home_presence
+    from custom_components.enviroment_manager.occupancy_policy import home_presence
     a = MockState("binary_sensor.a_presence", "off", device_class="presence")
     b = MockState("binary_sensor.b_presence", "off", device_class="presence")
     resident = MockState("person.resident", "home")

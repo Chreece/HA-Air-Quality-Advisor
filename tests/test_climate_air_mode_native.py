@@ -17,7 +17,7 @@ def mode_module(adapter,monkeypatch):
     storage.Store=FakeStore
     monkeypatch.setitem(sys.modules,"homeassistant.helpers.storage",storage)
     return importlib.import_module(
-        "custom_components.environment_manager.climate_air_mode_native"
+        "custom_components.enviroment_manager.climate_air_mode_native"
     )
 
 
@@ -83,10 +83,10 @@ def cfg(**overrides):
 
 
 def plan(hass,settings,*,include_window=True):
-    from custom_components.environment_manager.climate_coordination import (
+    from custom_components.enviroment_manager.climate_coordination import (
         room_equipment_plan,
     )
-    from custom_components.environment_manager.logic import Reading
+    from custom_components.enviroment_manager.logic import Reading
     rh=float(hass.states.get("sensor.bedroom_rh").state)
     base={"status":"advisory","mode":None,"window_safe":True,
           "window_contacts":(["binary_sensor.bedroom_window"]
