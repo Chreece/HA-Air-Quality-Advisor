@@ -282,14 +282,19 @@ def device_permission(device: Mapping, room_status: str, home_status: str,
     elif sleep != "normal":
         return "held", "invalid_sleep_policy"
     source = device.get("presence_requirement", "always")
-    if source == "room":
+    if source in ("room", "occupied"):
         if room_status == "unoccupied":
-            return "absent", "room_unoccupied"
+            return "held", "room_not_occupied"
         if room_status != "occupied":
             return "held", "room_occupancy_unknown"
-    elif source == "home":
+    elif source == "absent":
+        if room_status == "occupied":
+            return "held", "room_not_absent"
+        if room_status != "unoccupied":
+            return "held", "room_occupancy_unknown"
+    elif source == "home":  # Legacy only; new UI no longer offers this policy.
         if home_status == "away":
-            return "absent", "house_unoccupied"
+            return "held", "house_unoccupied"
         if home_status != "home":
             return "held", "house_occupancy_unknown"
     elif source != "always":

@@ -22,13 +22,19 @@ def test_all_38_device_controller_catalogs_have_native_labels_and_explanations()
             "climate": ("climate",), "button": ("resume",),
             "select": ("control_mode", "quiet_fan_mode", "fan_purpose", "presence_requirement", "sleep_behavior"),
             "switch": ("quiet_sleep", "quiet_occupied", "allow_power", "sensor_verified"),
-            "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage", "min_on_seconds", "min_off_seconds", "max_on_seconds"),
+            "number": ("kp", "ki", "kd", "sample_seconds", "cycle_seconds", "quiet_percentage",
+                       "min_on_seconds", "min_off_seconds", "max_on_seconds",
+                       "temperature_min_limit", "temperature_max_limit",
+                       "humidity_min_limit", "humidity_max_limit",
+                       "fan_min_percentage", "fan_max_percentage"),
         }.items():
             for key in names:
                 name = entities[domain]["equipment_" + key]["name"]
                 assert name.startswith("{channel}") and len(name) > len("{channel}"), (lang, domain, key)
         assert set(entities["select"]["equipment_control_mode"]["state"]) == {
             "existing", "automatic", "manual", "off", "pid"}
+        assert set(entities["select"]["equipment_presence_requirement"]["state"]) == {
+            "always", "occupied", "absent"}
         assert len(help_text[lang]) > 150, lang
         if lang != "en":
             assert labels[lang]["quiet_sleep"] != labels["en"]["quiet_sleep"]

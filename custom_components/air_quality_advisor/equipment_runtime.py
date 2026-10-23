@@ -238,6 +238,27 @@ class EquipmentRuntime:
                 if number is None:
                     raise HomeAssistantError(f"Invalid controller value: {key}")
                 new[key] = number
+            applicable_limits = set(model.applicable_limit_fields(cap))
+            for key in model.LIMIT_FIELDS:
+                value = new.get(key)
+                if value is None:
+                    continue
+                if key not in applicable_limits:
+                    raise HomeAssistantError(f"This physical device does not support {key}")
+                bounds = model.number_bounds(cap, key)
+                number = finite(value, bounds[0], bounds[1])
+                if number is None:
+                    raise HomeAssistantError(f"Invalid controller limit: {key}")
+                new[key] = number
+            limits = model.device_limits(cap, new)
+            if (cap.temperature or cap.temperature_range) and (
+                    limits["temperature_max_limit"] - limits["temperature_min_limit"]
+                    < max(cap.temp_step, 0.1)):
+                raise HomeAssistantError("Maximum temperature limit must exceed minimum temperature limit")
+            if cap.humidity and limits["humidity_max_limit"] <= limits["humidity_min_limit"]:
+                raise HomeAssistantError("Maximum humidity limit must exceed minimum humidity limit")
+            if cap.fan_percentage and limits["fan_max_percentage"] < limits["fan_min_percentage"]:
+                raise HomeAssistantError("Maximum fan percentage must not be below minimum fan percentage")
             for key in model.QUIET_FLAGS:
                 if type(new[key]) is not bool or new[key] and not cap.fan_modes:
                     raise HomeAssistantError("Quiet control requires an adjustable native fan")
@@ -495,8 +516,8 @@ class EquipmentRuntime:
                                             known_areas=known or {spec.area_id})
             if shared.get("sleep_rooms_entity"):
                 value, _ = sleep_presence(self.hass, spec.area_id, shared, known or {spec.area_id})
-                # A live true/unknown value cannot be overridden by an old plan.
-                sleeping = value if value is not False else sleeping
+                # The configured live sleep-room source is authoritative.
+                sleeping = value
         else:
             sensors = plan.get("presence_entities", [])
             if sensors:
@@ -507,8 +528,21 @@ class EquipmentRuntime:
                     occupied = "unknown"
                 else:
                     occupied = "unoccupied"
-        return bool(cfg["quiet_sleep"] and (cfg["preset"] == "sleep" or sleeping is not False)
-                    or cfg["quiet_occupied"] and occupied != "unoccupied")
+        # Quiet automation is tri-state. Positive evidence enables it,
+        # negative evidence disables it, and unknown evidence must not cause
+        # either a speed reduction or a speed restoration.
+        uncertain = False
+        if cfg["quiet_sleep"]:
+            if sleeping is True:
+                return True
+            if sleeping is None:
+                uncertain = True
+        if cfg["quiet_occupied"]:
+            if occupied == "occupied":
+                return True
+            if occupied not in ("occupied", "unoccupied"):
+                uncertain = True
+        return None if uncertain else False
 
     def _shutdown_allowed(self, spec: model.ManagedDevice, entity: str, expected: dict) -> bool:
         """Only an already-owned OFF can survive deselection or removed rooms."""
@@ -825,17 +859,23 @@ class EquipmentRuntime:
         if state is None or state.state == "off":
             return False
         config = model.settings(self.manager, spec)
+        limits = model.device_limits(cap, config)
         profile = model.profile_name(config, model.plan_for(self.manager, spec))
         manual_humidity = not automatic and "humidity" in config.get("profile_targets", {}).get(profile, {})
         if cap.domain == "humidifier" or cap.humidity and (mode == "dry" or manual_humidity):
             if cap.domain == "climate" and not (model.features(state) & model.HUMIDITY):
                 return False
-            value = round(targets["humidity"])
+            value = round(max(limits["humidity_min_limit"],
+                              min(limits["humidity_max_limit"], targets["humidity"])))
             if automatic:
                 actual = finite(state.attributes.get("humidity"), 0, 100)
                 if actual is None:
                     return False
-                value = round(max(actual-5, min(actual+5, value)))
+                outside_soft_limit = not limits["humidity_min_limit"] <= actual <= limits["humidity_max_limit"]
+                if not outside_soft_limit:
+                    value = round(max(actual-5, min(actual+5, value)))
+                value = round(max(limits["humidity_min_limit"],
+                                  min(limits["humidity_max_limit"], value)))
                 if self.clock()-self._record(spec).get("target_at", 0) < model.settings(self.manager, spec)["sample_seconds"]:
                     return False
             if not cap.min_humidity <= value <= cap.max_humidity:
@@ -859,6 +899,8 @@ class EquipmentRuntime:
             if demand is not None:
                 # Setpoint-only PID never gains compressor-cycle permissions.
                 target += (1 if mode == "heat" else -1) * 1.5 * demand / 100
+            target = max(limits["temperature_min_limit"],
+                         min(limits["temperature_max_limit"], target))
             data = {"temperature": target_to_unit(target, unit)}
         else:
             return False
@@ -870,17 +912,37 @@ class EquipmentRuntime:
             if actual is None:
                 self._status(spec, "native_setpoint_unavailable")
                 return False
-            if not cap.min_temp <= target_from_unit(value, unit) <= cap.max_temp:
-                self._status(spec, "target_outside_native_limits")
+            desired_c = target_from_unit(value, unit)
+            actual_c = target_from_unit(actual, unit)
+            if desired_c is None or actual_c is None:
+                self._status(spec, "unsupported_temperature_unit")
                 return False
-            if automatic:
+            soft_min, soft_max = limits["temperature_min_limit"], limits["temperature_max_limit"]
+            desired_c = max(soft_min, min(soft_max, desired_c))
+            value = target_to_unit(desired_c, unit)
+            outside_soft_limit = not soft_min <= actual_c <= soft_max
+            if automatic and not outside_soft_limit:
                 delta = .5 if unit in ("°C", "C") else .9
                 value = max(actual-delta, min(actual+delta, value))
-            value = quantize_target(value, state.attributes.get("target_temp_step", .5),
-                                    state.attributes.get("min_temp", 5), state.attributes.get("max_temp", 35))
+            native_min = target_to_unit(soft_min, unit)
+            native_max = target_to_unit(soft_max, unit)
+            if native_min is None or native_max is None:
+                return False
+            try:
+                physical_min = float(state.attributes.get("min_temp", native_min))
+                physical_max = float(state.attributes.get("max_temp", native_max))
+            except (TypeError, ValueError):
+                physical_min, physical_max = native_min, native_max
+            value = quantize_target(
+                value, state.attributes.get("target_temp_step", .5),
+                max(physical_min, native_min), min(physical_max, native_max))
             if value is None:
                 return False
-            if automatic and abs(target_from_unit(value, unit)-target_from_unit(actual, unit)) > .500001:
+            final_c = target_from_unit(value, unit)
+            if final_c is None or not soft_min-1e-6 <= final_c <= soft_max+1e-6:
+                self._status(spec, "target_outside_device_limits")
+                return False
+            if automatic and not outside_soft_limit and abs(final_c-actual_c) > .500001:
                 self._status(spec, "native_step_exceeds_setpoint_rate_limit")
                 return False
             data[key] = value
@@ -916,11 +978,23 @@ class EquipmentRuntime:
             normal = selected_fan or dev.get("fan_speed_percent") or normal
             if demand is not None:
                 normal = max(1., demand)
-            quiet = automatic and self._quiet_context(spec, cfg, plan)
-            value = float(normal)
+            quiet_state = self._quiet_context(spec, cfg, plan) if automatic else False
+            if quiet_state is None:
+                self._status(spec, "quiet_context_unknown")
+                return False
+            quiet = quiet_state is True
+            limits = model.device_limits(cap, cfg)
+            value = max(limits["fan_min_percentage"],
+                        min(limits["fan_max_percentage"], float(normal)))
             if quiet:
-                value = min(value, cfg["quiet_percentage"])
-            valid = [int(v) for v in cap.fan_modes]
+                quiet_value = max(limits["fan_min_percentage"],
+                                  min(limits["fan_max_percentage"], cfg["quiet_percentage"]))
+                value = min(value, quiet_value)
+            valid = [int(v) for v in cap.fan_modes
+                     if limits["fan_min_percentage"] <= int(v) <= limits["fan_max_percentage"]]
+            if not valid:
+                self._status(spec, "fan_limits_have_no_supported_step")
+                return False
             if quiet:
                 lower = [v for v in valid if v <= value]
                 value = max(lower) if lower else min(valid)
@@ -928,7 +1002,11 @@ class EquipmentRuntime:
                 value = min(valid, key=lambda v: abs(v-value))
             service, data, expected = "set_percentage", {"percentage": value}, {"attributes": {attribute: value}}
         else:
-            quiet = automatic and self._quiet_context(spec, cfg, plan)
+            quiet_state = self._quiet_context(spec, cfg, plan) if automatic else False
+            if quiet_state is None:
+                self._status(spec, "quiet_context_unknown")
+                return False
+            quiet = quiet_state is True
             low = cfg.get("quiet_fan_mode") or ("low" if "low" in cap.fan_modes else None)
             value = low if quiet and low is not None else normal
             if value not in cap.fan_modes:
@@ -944,19 +1022,28 @@ class EquipmentRuntime:
         if not self._active or not self._ready:
             return
         self._invalidated.discard(spec.identifier)
-        cfg, record = model.settings(self.manager, spec), self._record(spec)
+        record = self._record(spec)
         if record.get("paused"):
             self._status(spec, "paused", reason=record["paused"])
             return
-        cap = model.capabilities(self.manager, spec)
-        if cap is None or not self._current_spec(spec):
+        if not self._current_spec(spec):
             await self._retired(spec)
+            return
+        # The physical device must be available before ANY capability,
+        # occupancy, target, measurement or PID calculation is performed.
+        if not model.sources_available(self.manager, spec):
+            self._status(spec, "waiting_for_physical_device")
+            return
+        cfg = model.settings(self.manager, spec)
+        cap = model.capabilities(self.manager, spec)
+        if cap is None:
+            self._status(spec, "physical_capabilities_unavailable")
             return
         if not await self._reconcile(spec):
             return
         state = self.hass.states.get(cap.primary)
         if state is None or state.state in ("unknown", "unavailable"):
-            self._status(spec, "source_unavailable")
+            self._status(spec, "waiting_for_physical_device")
             return
         record["baseline"].setdefault(cap.primary, snapshot(state))
         plan = model.plan_for(self.manager, spec)

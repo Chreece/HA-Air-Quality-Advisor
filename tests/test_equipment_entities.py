@@ -219,3 +219,43 @@ def test_native_choices_without_preset_preserve_selected_algorithm(
         )
         assert h.hass.services.calls == []
     asyncio.run(run())
+
+
+
+def test_presence_selector_is_per_controller_and_has_only_requested_modes(platforms):
+    h=home(platforms.runtime,state="on",power=False)
+    entity=platforms.select.EquipmentSelect(h.manager,h.spec,"presence_requirement")
+    assert entity.options==["always","occupied","absent"]
+    assert entity.current_option=="always"
+
+
+def test_capability_specific_limit_numbers_use_native_ranges(platforms):
+    climate=home(platforms.runtime,domain="climate",state="heat",power=False)
+    tmin=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_min_limit")
+    tmax=platforms.number.EquipmentNumber(climate.manager,climate.spec,"temperature_max_limit")
+    assert (tmin.native_min_value,tmin.native_max_value)==(5,35)
+    assert (tmax.native_min_value,tmax.native_max_value)==(5,35)
+    assert tmin.native_value==5 and tmax.native_value==35
+
+    fan=home(platforms.runtime,state="on",power=False)
+    fmin=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_min_percentage")
+    fmax=platforms.number.EquipmentNumber(fan.manager,fan.spec,"fan_max_percentage")
+    assert fmin.native_value==10 and fmax.native_value==100
+    assert fmin.native_step==10
+
+    humidity=home(platforms.runtime,domain="humidifier",state="on",power=False)
+    hmin=platforms.number.EquipmentNumber(humidity.manager,humidity.spec,"humidity_min_limit")
+    hmax=platforms.number.EquipmentNumber(humidity.manager,humidity.spec,"humidity_max_limit")
+    assert hmin.native_value==20 and hmax.native_value==80
+
+
+def test_climate_facade_exposes_soft_device_limits(platforms):
+    h=home(platforms.runtime,domain="climate",state="heat",power=False,controls={
+        "temperature_min_limit":18,"temperature_max_limit":24})
+    entity=platforms.climate.ManagedClimate(h.manager,h.spec)
+    assert entity.min_temp==18 and entity.max_temp==24
+
+    humidity=home(platforms.runtime,domain="humidifier",state="on",power=False,controls={
+        "humidity_min_limit":35,"humidity_max_limit":60})
+    hentity=platforms.climate.ManagedClimate(humidity.manager,humidity.spec)
+    assert hentity.min_humidity==35 and hentity.max_humidity==60

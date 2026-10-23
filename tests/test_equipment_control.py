@@ -763,3 +763,131 @@ def test_fan_choices_are_saved_per_preset_not_one_global_setting(runtime_module)
         await tick(h)
         assert h.state.attributes["percentage"]==70
     asyncio.run(run())
+
+
+
+def test_unavailable_physical_device_blocks_all_control_calculations(runtime_module, monkeypatch):
+    """No capability/policy/target/measurement/PID work runs before availability."""
+    async def run():
+        h = home(runtime_module, domain="climate", mode="pid")
+        h.state.state = "unavailable"
+        def forbidden(*args, **kwargs):
+            raise AssertionError("control calculation ran before physical availability")
+        for name in ("capabilities", "plan_for", "targets", "pid_step"):
+            monkeypatch.setattr(m, name, forbidden)
+        monkeypatch.setattr(h.runtime, "measurements", forbidden)
+        await tick(h)
+        assert h.runtime.statuses[h.spec.identifier]["status"] == "waiting_for_physical_device"
+        assert h.hass.services.calls == []
+        assert h.runtime._memory == {}
+    asyncio.run(run())
+
+
+@pytest.mark.parametrize(
+    "policy,allowed_state,blocked_state",
+    [("occupied", "occupied", "unoccupied"), ("absent", "unoccupied", "occupied")],
+)
+def test_per_device_presence_policy_drives_only_in_selected_room_state(
+    runtime_module, policy, allowed_state, blocked_state
+):
+    async def run():
+        h = home(runtime_module, controls={"presence_requirement": policy})
+        h.plan["occupancy"] = blocked_state
+        await tick(h)
+        assert h.hass.services.calls == []
+        h.plan["occupancy"] = allowed_state
+        await tick(h, advance=1)
+        assert h.hass.services.calls and h.hass.services.calls[-1][1] == "turn_on"
+        await tick(h, advance=1)  # acknowledge ownership
+        h.plan["occupancy"] = blocked_state
+        await tick(h, advance=600)
+        assert h.hass.services.calls[-1][1] == "turn_off"
+    asyncio.run(run())
+
+
+def test_per_device_presence_always_ignores_unknown_occupancy(runtime_module):
+    async def run():
+        h = home(runtime_module, controls={"presence_requirement": "always"})
+        h.plan["occupancy"] = "unknown"
+        await tick(h)
+        assert h.hass.services.calls and h.hass.services.calls[-1][1] == "turn_on"
+    asyncio.run(run())
+
+
+def test_legacy_room_and_home_presence_settings_migrate_to_strict_occupied(runtime_module):
+    for old in ("room", "home"):
+        h = home(runtime_module, controls={"presence_requirement": old})
+        assert m.settings(h.manager, h.spec)["presence_requirement"] == "occupied"
+
+
+def test_percentage_fan_limits_override_normal_and_quiet_demands(runtime_module):
+    async def run():
+        h = home(runtime_module, state="on", power=False, controls={
+            "fan_min_percentage": 40, "fan_max_percentage": 50,
+            "quiet_occupied": True, "quiet_percentage": 20,
+        })
+        h.plan["occupancy"] = "occupied"
+        await tick(h)
+        # Quiet request 20% is below the device minimum, so the minimum wins.
+        assert h.hass.services.calls[-1][1:3] == ("set_percentage", {"percentage": 40})
+        await tick(h, advance=1)
+        h.plan["occupancy"] = "unoccupied"
+        await tick(h, advance=30)
+        # Normal configured 60% is above the device maximum, so 50% wins.
+        assert h.hass.services.calls[-1][1:3] == ("set_percentage", {"percentage": 50})
+    asyncio.run(run())
+
+
+def test_unknown_quiet_context_holds_current_fan_speed_without_command(runtime_module):
+    async def run():
+        h = home(runtime_module, state="on", power=False, controls={"quiet_occupied": True})
+        h.plan["occupancy"] = "unknown"
+        before = h.state.attributes["percentage"]
+        await tick(h)
+        assert h.hass.services.calls == []
+        assert h.state.attributes["percentage"] == before
+        assert h.runtime.statuses[h.spec.identifier]["status"] == "quiet_context_unknown"
+    asyncio.run(run())
+
+
+def test_temperature_limits_clamp_profile_and_native_write(runtime_module):
+    async def run():
+        h = home(runtime_module, domain="climate", state="heat", power=False, controls={
+            "temperature_min_limit": 19,
+            "temperature_max_limit": 21,
+            "profile_targets": {"home": {"heat": 10, "cool": 30}},
+        })
+        h.state.attributes["temperature"] = 30  # native target is already above max
+        cap = m.capabilities(h.manager, h.spec)
+        values = m.targets(h.manager, h.spec, cap, m.settings(h.manager, h.spec), h.plan)
+        assert values["heat"] == 19 and values["cool"] == 21
+        await tick(h)
+        assert h.hass.services.calls[-1][1] == "set_temperature"
+        assert 19 <= h.hass.services.calls[-1][2]["temperature"] <= 21
+    asyncio.run(run())
+
+
+def test_humidity_limits_override_target_and_rate_limit(runtime_module):
+    async def run():
+        h = home(runtime_module, domain="humidifier", state="on", power=False, controls={
+            "humidity_min_limit": 40, "humidity_max_limit": 55,
+        })
+        h.state.attributes["humidity"] = 70
+        await tick(h)
+        assert h.hass.services.calls[-1][1:3] == ("set_humidity", {"humidity": 55})
+    asyncio.run(run())
+
+
+def test_invalid_per_device_limit_pairs_are_rejected_atomically(runtime_module):
+    async def run():
+        h = home(runtime_module, domain="climate", state="heat", power=False)
+        with pytest.raises(Exception, match="Maximum temperature"):
+            await h.runtime.async_update(h.spec, {
+                "temperature_min_limit": 24, "temperature_max_limit": 20})
+        assert h.manager.entry.options == {}
+        fan = home(runtime_module, state="on", power=False)
+        with pytest.raises(Exception, match="Maximum fan"):
+            await fan.runtime.async_update(fan.spec, {
+                "fan_min_percentage": 80, "fan_max_percentage": 20})
+        assert fan.manager.entry.options == {}
+    asyncio.run(run())

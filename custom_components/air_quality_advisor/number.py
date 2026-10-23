@@ -115,6 +115,9 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
         cap = equipment.capabilities(manager, spec)
         if cap is None:
             continue
+        # Limits exist only where the physical device exposes that capability.
+        for key in equipment.applicable_limit_fields(cap):
+            numbers.append(EquipmentNumber(manager, spec, key))
         for key in equipment.NUMBER_FIELDS:
             if key == "quiet_percentage" and not cap.fan_percentage:
                 continue
@@ -264,10 +267,17 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
 
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
-        bounds = equipment.NUMBER_FIELDS[key]
+        cap = equipment.capabilities(manager, spec)
+        if cap is None:
+            bounds = equipment.NUMBER_FIELDS[key][:4]
+        else:
+            bounds = equipment.number_bounds(cap, key)
         self._attr_native_min_value, self._attr_native_max_value = bounds[:2]
         self._attr_native_step, self._attr_native_unit_of_measurement = bounds[2:4]
-        cap = equipment.capabilities(manager, spec)
+        if key == "quiet_percentage" and cap and cap.fan_percentage:
+            fan_bounds = equipment.number_bounds(cap, "fan_min_percentage")
+            self._attr_native_min_value, self._attr_native_max_value = fan_bounds[:2]
+            self._attr_native_step = fan_bounds[2]
         if key in ("min_on_seconds", "min_off_seconds") and cap and cap.domain != "fan":
             self._attr_native_min_value = 600
         if key == "max_on_seconds" and cap and cap.domain != "fan":
@@ -275,6 +285,11 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
 
     @property
     def native_value(self):
+        if self._key in equipment.LIMIT_FIELDS:
+            cap = equipment.capabilities(self._manager, self._spec)
+            if cap is None:
+                return None
+            return equipment.device_limits(cap, self.controller_settings)[self._key]
         return self.controller_settings[self._key]
 
     async def async_set_native_value(self, value):

@@ -141,11 +141,27 @@ class ManagedClimate(EquipmentEntity, ClimateEntity):
     target_temperature_low = property(lambda self: self.native_target_temperature_low)
     target_temperature_high = property(lambda self: self.native_target_temperature_high)
     target_humidity = property(lambda self: self._target("humidity") if self._caps and self._caps.humidity else None)
-    min_temp = property(lambda self: self._caps.min_temp if self._caps else 5)
-    max_temp = property(lambda self: self._caps.max_temp if self._caps else 35)
+    @property
+    def min_temp(self):
+        cap = self._caps
+        return model.device_limits(cap, self.controller_settings)["temperature_min_limit"] if cap else 5
+
+    @property
+    def max_temp(self):
+        cap = self._caps
+        return model.device_limits(cap, self.controller_settings)["temperature_max_limit"] if cap else 35
+
     target_temperature_step = property(lambda self: self._caps.temp_step if self._caps else .5)
-    min_humidity = property(lambda self: self._caps.min_humidity if self._caps else 20)
-    max_humidity = property(lambda self: self._caps.max_humidity if self._caps else 80)
+
+    @property
+    def min_humidity(self):
+        cap = self._caps
+        return model.device_limits(cap, self.controller_settings)["humidity_min_limit"] if cap else 20
+
+    @property
+    def max_humidity(self):
+        cap = self._caps
+        return model.device_limits(cap, self.controller_settings)["humidity_max_limit"] if cap else 80
     preset_modes = property(lambda self: list(model.PRESETS))
     preset_mode = property(lambda self: self.controller_settings["preset"])
     fan_modes = property(lambda self: list(self._caps.fan_modes) if self._caps else [])

@@ -37,13 +37,19 @@ NUMBER_FIELDS = {
 }
 QUIET_FLAGS = ("quiet_sleep", "quiet_occupied")
 POWER_FIELDS = ("min_on_seconds", "min_off_seconds", "max_on_seconds")
-DEVICE_SELECTS = {"presence_requirement": ("always", "room", "home"),
+LIMIT_FIELDS = (
+    "temperature_min_limit", "temperature_max_limit",
+    "humidity_min_limit", "humidity_max_limit",
+    "fan_min_percentage", "fan_max_percentage",
+)
+DEVICE_SELECTS = {"presence_requirement": ("always", "occupied", "absent"),
                   "sleep_behavior": ("normal", "pause", "sleep_targets"),
                   "fan_purpose": ("auto", "extraction", "filtration")}
 DEFAULTS = {"control_mode": "existing", "preset": "none", "requested_mode": None,
             "quiet_sleep": False, "quiet_occupied": False,
             "quiet_fan_mode": None, "profile_targets": {}, "profile_fans": {},
-            **{key: item[4] for key, item in NUMBER_FIELDS.items()}}
+            **{key: item[4] for key, item in NUMBER_FIELDS.items()},
+            **{key: None for key in LIMIT_FIELDS}}
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,6 +99,13 @@ def settings(manager: Any, spec: ManagedDevice) -> dict:
     for key, fallback in (("presence_requirement", "always"), ("sleep_behavior", "normal"),
                           ("fan_purpose", "auto"), ("sensor_verified", False)):
         result.setdefault(key, dev.get(key, fallback))
+    # Beta17 exposes one strict room-state selector per managed controller.
+    # Old "room" means occupied; old "home" is narrowed to occupied rather
+    # than broadening an existing installation's physical-control window.
+    if result.get("presence_requirement") in ("room", "home"):
+        result["presence_requirement"] = "occupied"
+    elif result.get("presence_requirement") not in DEVICE_SELECTS["presence_requirement"]:
+        result["presence_requirement"] = "always"
     for key, legacy in zip(POWER_FIELDS, ("min_on_s", "min_off_s", "max_on_s")):
         if key not in raw and legacy in dev:
             result[key] = dev[legacy]
@@ -227,6 +240,69 @@ def capabilities(manager: Any, spec: ManagedDevice) -> Capabilities | None:
     )
 
 
+def sources_available(manager: Any, spec: ManagedDevice) -> bool:
+    """Pure readiness gate: no policy, target, PID or environmental calculation."""
+    configured = set(configured_sources(manager.settings, spec.area_id))
+    sources = [entity for entity in spec.source_entities if entity in configured]
+    if not sources:
+        return False
+    return all((state := manager.hass.states.get(entity)) is not None
+               and state.state not in ("unknown", "unavailable")
+               for entity in sources)
+
+
+def _fan_bounds(cap: Capabilities) -> tuple[float, float, float]:
+    values = sorted({float(value) for value in cap.fan_modes
+                     if cap.fan_percentage and finite(value, 0, 100) is not None})
+    if not values:
+        return 1.0, 100.0, 1.0
+    step = min((b-a for a,b in zip(values, values[1:]) if b > a), default=1.0)
+    return values[0], values[-1], step
+
+
+def device_limits(cap: Capabilities, config: dict) -> dict[str, float]:
+    """Effective per-controller limits, always inside the native capabilities."""
+    fan_lo, fan_hi, _ = _fan_bounds(cap)
+    def bound(key: str, low: float, high: float, fallback: float) -> float:
+        value = config.get(key)
+        parsed = finite(value, low, high) if value is not None else None
+        return fallback if parsed is None else float(parsed)
+    result = {
+        "temperature_min_limit": bound("temperature_min_limit", cap.min_temp, cap.max_temp, cap.min_temp),
+        "temperature_max_limit": bound("temperature_max_limit", cap.min_temp, cap.max_temp, cap.max_temp),
+        "humidity_min_limit": bound("humidity_min_limit", cap.min_humidity, cap.max_humidity, cap.min_humidity),
+        "humidity_max_limit": bound("humidity_max_limit", cap.min_humidity, cap.max_humidity, cap.max_humidity),
+        "fan_min_percentage": bound("fan_min_percentage", fan_lo, fan_hi, fan_lo),
+        "fan_max_percentage": bound("fan_max_percentage", fan_lo, fan_hi, fan_hi),
+    }
+    return result
+
+
+def number_bounds(cap: Capabilities, key: str) -> tuple[float, float, float, str | None]:
+    """HA Number bounds that reflect the physical device, never a generic range."""
+    if key in NUMBER_FIELDS:
+        return NUMBER_FIELDS[key][:4]
+    if key in ("temperature_min_limit", "temperature_max_limit"):
+        return cap.min_temp, cap.max_temp, cap.temp_step, "°C"
+    if key in ("humidity_min_limit", "humidity_max_limit"):
+        return cap.min_humidity, cap.max_humidity, 1.0, "%"
+    if key in ("fan_min_percentage", "fan_max_percentage"):
+        low, high, step = _fan_bounds(cap)
+        return low, high, step, "%"
+    raise KeyError(key)
+
+
+def applicable_limit_fields(cap: Capabilities) -> tuple[str, ...]:
+    result = []
+    if cap.temperature or cap.temperature_range:
+        result.extend(("temperature_min_limit", "temperature_max_limit"))
+    if cap.humidity:
+        result.extend(("humidity_min_limit", "humidity_max_limit"))
+    if cap.fan_percentage:
+        result.extend(("fan_min_percentage", "fan_max_percentage"))
+    return tuple(result)
+
+
 def permission(manager: Any, spec: ManagedDevice, cap: Capabilities) -> tuple[bool, bool]:
     """Independent grants for ongoing setpoint/speed and power/mode changes."""
     room = room_config(manager, spec)
@@ -358,6 +434,13 @@ def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
     override = config.get("profile_targets", {}).get(profile, {})
     if isinstance(override, dict):
         result.update({k: v for k, v in override.items() if k in result})
+    limits = device_limits(cap, config)
+    result["heat"] = max(limits["temperature_min_limit"],
+                         min(limits["temperature_max_limit"], float(result["heat"])))
+    result["cool"] = max(limits["temperature_min_limit"],
+                         min(limits["temperature_max_limit"], float(result["cool"])))
+    result["humidity"] = max(limits["humidity_min_limit"],
+                             min(limits["humidity_max_limit"], float(result["humidity"])))
     return result
 
 

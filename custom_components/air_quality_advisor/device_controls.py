@@ -127,7 +127,7 @@ CLIMATE_POLICY_OPTIONS = {
     "target_source": ("temperature", "pmv"),
 }
 DEVICE_POLICY_OPTIONS = {
-    "presence_requirement": ("always", "room", "home"),
+    "presence_requirement": ("always", "occupied", "absent"),
     "sleep_behavior": ("normal", "pause", "sleep_targets"),
 }
 GLOBAL_POLICY_OPTIONS = {"home_policy": ("any_home", "all_home")}

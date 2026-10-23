@@ -1,0 +1,106 @@
+name: Per-device quiet, presence, limits and availability guards
+on:
+  push:
+    branches: ['fix/per-device-quiet-presence-limits-beta17-20261023', 'beta/v0.6.0b17']
+permissions:
+  contents: read
+concurrency:
+  group: beta17-device-guards-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest
+      - name: Generate translations
+        run: python generate_translations.py
+      - name: Full regressions
+        run: |
+          python -m pytest -q tests
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend
+        run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: Require reproducible catalogs on beta branch
+        if: github.ref == 'refs/heads/beta/v0.6.0b17'
+        run: git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  home_assistant:
+    name: Actual HA registries and setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python generate_translations.py
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: |
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+
+  save_catalogs:
+    if: github.ref == 'refs/heads/fix/per-device-quiet-presence-limits-beta17-20261023'
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Save generated controller catalogs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python generate_translations.py
+          if git diff --quiet -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py; then
+            echo 'Catalogs already reproducible'
+            exit 0
+          fi
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/fix/per-device-quiet-presence-limits-beta17-20261023" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+          git commit -m 'i18n(beta17): regenerate per-device guard catalogs'
+          git push origin HEAD:refs/heads/fix/per-device-quiet-presence-limits-beta17-20261023

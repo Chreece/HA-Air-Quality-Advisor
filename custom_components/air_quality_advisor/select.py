@@ -48,20 +48,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
             entities.append(ConfigSelect(
                 manager, entry.entry_id, area, "climate_policy", values, setting_key=key
             ))
-        cfg = manager.settings.get("climate_rooms", {}).get(area, {})
-        selected = cfg.get("selected_devices", []) if isinstance(cfg, dict) else []
-        active = cfg.get("device_settings", {}) if isinstance(cfg, dict) else {}
-        for entity_id in selected:
-            if controller_device_info(manager, area, entity_id) is None:
-                continue
-            device = active.get(entity_id) if isinstance(active, dict) else None
-            if not isinstance(device, dict) or device.get("auto_control") is not True:
-                continue
-            for key, choices in DEVICE_POLICY_OPTIONS.items():
-                entities.append(ConfigSelect(
-                    manager, entry.entry_id, area, "device_policy", choices,
-                    setting_key=key, entity_id=entity_id
-                ))
     from . import equipment_model as equipment
     entities.extend(EquipmentSelect(manager, spec, "control_mode")
                     for spec in equipment.specs(manager))
