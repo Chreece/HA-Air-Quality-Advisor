@@ -185,8 +185,19 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
             sleep_evidence=global_reason
         else:
             sleep_verified=True
+    # The legacy diagnostic occupancy helper may conservatively report
+    # "occupied" when evidence is missing/partial. That is safe for hold logic,
+    # but Comfort must mean VERIFIED room presence. Feed unknown into profile
+    # selection for those conservative cases, so it resolves to Home, never Away.
+    profile_occupied = (
+        "unknown"
+        if occ_reason in ("no_sensor_conservative", "unknown_sensor_conservative",
+                          "off_duration_unverified", "awaiting_stable_unoccupied_period")
+        and occupied == "occupied"
+        else occupied
+    )
     result=policy(settings,temp_c=temp,capability=cap,at_home=at_home,
-                  occupied=occupied,sleeping=sleeping,
+                  occupied=profile_occupied,sleeping=sleeping,
                   manual_profile=settings.get("manual_profile"),prior_mode=prior_mode,
                   window_safe=window_safe,comfort_target_c=comfort_target_c)
 
