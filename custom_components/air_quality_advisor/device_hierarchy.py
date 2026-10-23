@@ -199,7 +199,9 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
     manager = entry.runtime_data
     settings = {**entry.data, **entry.options}
     registry, areas = dr.async_get(hass), ar.async_get(hass)
-    home_subentry = getattr(manager, "_home_subentry", None)
+    from .room_hubs import home_subentry_id
+    home_subentry = getattr(manager, "_home_subentry", None) or home_subentry_id(entry)
+    manager._home_subentry = home_subentry
     home = _register(registry, entry.entry_id, {
         "identifiers": {(DOMAIN, entry.entry_id)},
         "name": "Home",

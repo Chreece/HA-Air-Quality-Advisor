@@ -124,7 +124,8 @@ def test_home_language_selector_reuses_canonical_bcp47_codes_without_duplicates(
     assert set(LANGUAGES[1:]) == set(SUPPORTED_LANGUAGE_TAGS)
     assert {"pt-BR", "zh-Hans", "zh-Hant", "el", "de"}.issubset(LANGUAGES)
     code = (ROOT / "custom_components" / "air_quality_advisor" / "select.py").read_text()
-    assert 'ConfigSelect(manager, entry.entry_id, None, "language"' in code
+    assert 'TTSLanguageSelect(manager, entry.entry_id)' in code
+    assert 'language_options' in code and 'preferred_language' in code
     for file in ("en.json", "el.json", "de.json"):
         translations = json.loads((ROOT / "custom_components" /
                         "air_quality_advisor" / "translations" / file).read_text())

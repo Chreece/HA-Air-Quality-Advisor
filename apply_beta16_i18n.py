@@ -55,32 +55,40 @@ def apply_beta16_i18n(root: Path) -> None:
         pollen_block = legacy.get("pollen", {})
         delivery = legacy.get("delivery", {})
         specifics = DETAIL.get(lang)
-        generic = {
-            "pollen": f"{words['select']} · {words['pollen']} · {words['source']}",
-            "hub": f"Announcement Hub · {words['automatic']} {words['control']}",
-            "ai": f"AI · conversation.* / ai_task.* · {words['select']}",
+        labels = {
+            "pollen": f"{words['pollen']} · {words['source']} · {words['select']}",
+            "hub": f"{words['automatic']} · Announcement Hub",
+            "ai": f"AI · {words['source']}",
             "language": f"TTS · {words['source']} · language",
             "cooldown": f"{words['house']} · Away · cooldown (min)",
         }
-        detail = specifics or generic
         for scope in ("config", "options"):
             setup = doc.setdefault(scope, {}).setdefault("step", {}).setdefault("setup_general", {})
             data = setup.setdefault("data", {})
             desc = setup.setdefault("data_description", {})
-            data["pollen_entities"] = pollen_block.get("data", {}).get(
-                "pollen_entity", f"{words['pollen']} · {words['source']}")
-            data["use_announcement_hub"] = delivery.get("data", {}).get(
-                "use_announcement_hub", "Announcement Hub")
-            data["general_away_cooldown_minutes"] = generic["cooldown"]
-            data["language"] = delivery.get("data", {}).get("language", "TTS language")
-            data["ai_conversation_agent"] = delivery.get("data", {}).get(
-                "ai_conversation_agent", "AI provider")
-            desc["pollen_entities"] = detail["pollen"]
-            desc["use_announcement_hub"] = detail["hub"]
-            desc["general_away_cooldown_minutes"] = detail["cooldown"]
-            desc["language"] = detail["language"]
-            desc["ai_conversation_agent"] = detail["ai"]
+            # The ordered wizard uses the multi-provider pollen field only.
+            data.pop("pollen_entity", None)
+            desc.pop("pollen_entity", None)
+            base_help = str(setup.get("description") or f"{words['general']} {words['settings']}")
+            generic = {
+                "pollen": f"{base_help} · {labels['pollen']}.",
+                "hub": f"{base_help} · {labels['hub']}.",
+                "ai": f"{base_help} · {labels['ai']} · conversation.* / ai_task.*.",
+                "language": f"{base_help} · {labels['language']} · provider capabilities.",
+                "cooldown": f"{base_help} · {labels['cooldown']} · occupancy transition delay.",
+            }
+            detail = specifics or generic
+            data["pollen_entities"] = labels["pollen"]
+            data["use_announcement_hub"] = labels["hub"]
+            data["general_away_cooldown_minutes"] = labels["cooldown"]
+            data["language"] = labels["language"]
+            data["ai_conversation_agent"] = labels["ai"]
+            desc["pollen_entities"] = detail["pollen"] if specifics else generic["pollen"]
+            desc["use_announcement_hub"] = detail["hub"] if specifics else generic["hub"]
+            desc["general_away_cooldown_minutes"] = detail["cooldown"] if specifics else generic["cooldown"]
+            desc["language"] = detail["language"] if specifics else generic["language"]
+            desc["ai_conversation_agent"] = detail["ai"] if specifics else generic["ai"]
         doc.setdefault("entity", {}).setdefault("number", {})[
             "home_global_occupancy_away_cooldown_minutes"
-        ] = {"name": generic["cooldown"]}
+        ] = {"name": labels["cooldown"]}
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

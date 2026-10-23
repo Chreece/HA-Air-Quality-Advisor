@@ -130,7 +130,7 @@ def test_beta11_services_migrate_in_place_to_real_room_groups(grouped):
     h.entity_registry.entries[entity.entity_id] = entity
     sync(h)
     assert {key: d.id for key, d in h.registry.keys.items()} == originals
-    assert len(h.entry.subentries) == 3
+    assert len(h.entry.subentries) == 4  # Home + three configured room groups.
     for key, device in h.registry.keys.items():
         assert device.entry_type is None
         assert device.labels == {"custom-label"} and device.disabled_by == "user"

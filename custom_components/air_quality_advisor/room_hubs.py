@@ -17,13 +17,10 @@ from .const import CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, DOMAIN
 ROOM_TYPE = "room"
 ROOM_IDS = "room_hub_subentry_ids"
 HOME_TYPE = "home"
-HOME_ID = "home_hub_subentry_id"
 
 
 def home_subentry_id(entry: Any) -> str | None:
-    saved = entry.options.get(HOME_ID)
-    if isinstance(saved, str) and saved in entry.subentries:
-        return saved
+    """Resolve the single native Home group without persisting a private ID."""
     matches = [sub.subentry_id for sub in entry.subentries.values()
                if sub.subentry_type == HOME_TYPE]
     return matches[0] if len(matches) == 1 else None
@@ -122,10 +119,9 @@ def async_sync_room_hubs(hass: Any, entry: Any) -> dict[str, str]:
     for area_id, sub in existing.items():
         if area_id not in selected:
             hass.config_entries.async_remove_subentry(entry, sub.subentry_id)
-    if _saved_ids(entry) != result or entry.options.get(HOME_ID) != home.subentry_id:
+    if _saved_ids(entry) != result:
         options = deepcopy(dict(entry.options))
         options[ROOM_IDS] = result
-        options[HOME_ID] = home.subentry_id
         hass.config_entries.async_update_entry(entry, options=options)
     return result
 
