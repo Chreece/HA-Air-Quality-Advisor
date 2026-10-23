@@ -144,14 +144,27 @@ async def async_migrate_legacy_registry(
         raise
 
 
-async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry: ConfigEntry):
-    """Open canonical store, importing the matching legacy-entry store once."""
+async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry_or_id: Any):
+    """Open canonical store and import legacy state when a migration marker exists.
+
+    Lightweight unit runtimes often expose only entry_id; that must continue
+    using the canonical store without requiring a full ConfigEntries object.
+    """
     from homeassistant.helpers.storage import Store
-    store=Store(hass,version,f"{DOMAIN}.{suffix}_{entry.entry_id}")
+    entry = entry_or_id if hasattr(entry_or_id, "entry_id") else None
+    entry_id = getattr(entry_or_id, "entry_id", entry_or_id)
+    if not isinstance(entry_id, str) or not entry_id:
+        raise HomeAssistantError("Missing Environment Manager config entry identity")
+    store=Store(hass,version,f"{DOMAIN}.{suffix}_{entry_id}")
     loaded=await store.async_load()
     if loaded is not None:
         return store,loaded
-    legacy_id=entry.data.get("_legacy_entry_id")
+    if entry is None:
+        entries=getattr(hass,"config_entries",None)
+        getter=getattr(entries,"async_get_entry",None)
+        if getter is not None:
+            entry=getter(entry_id)
+    legacy_id=getattr(entry,"data",{}).get("_legacy_entry_id") if entry is not None else None
     if not isinstance(legacy_id,str) or not legacy_id:
         return store,None
     legacy=Store(hass,version,f"{LEGACY_DOMAIN}.{suffix}_{legacy_id}")
@@ -282,11 +295,8 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry:
         # up from the actual config entry.
         result_name = "data" if filename=="climate_pid.py" else "saved" if filename=="climate_fan_power.py" else "loaded"
         replacement=f'''from .domain_migration import async_open_migrated_store
-            entry = self.hass.config_entries.async_get_entry(self.entry_id)
-            if entry is None:
-                raise RuntimeError("Missing Environment Manager config entry")
             self._store, {result_name} = await async_open_migrated_store(
-                self.hass, 1, "{suffix}", entry
+                self.hass, 1, "{suffix}", self.entry_id
             )'''
         text=text.replace(old_snippet,replacement)
         path.write_text(text,encoding="utf-8")
