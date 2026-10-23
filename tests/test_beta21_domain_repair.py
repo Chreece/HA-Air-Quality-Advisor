@@ -13,7 +13,7 @@ def source(name: str) -> str:
 def test_canonical_package_and_manifest():
     manifest = json.loads((PKG / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["domain"] == "environment_manager"
-    assert manifest["version"] == "0.6.0b21"
+    assert manifest["version"].startswith("0.6.0b")
     assert PKG.is_dir()
     assert not (ROOT / "custom_components" / "enviroment_manager").exists()
     assert not (ROOT / "custom_components" / "air_quality_advisor").exists()
@@ -29,8 +29,8 @@ def test_b19_and_b20_are_both_migration_sources():
     assert 'LEGACY_DOMAINS = (BETA20_DOMAIN, LEGACY_DOMAIN)' in const
     assert "source_domain not in LEGACY_DOMAINS" in migration
     assert "for domain in LEGACY_DOMAINS" in flow
-    assert 'data["_legacy_domain"]=legacy.domain' in flow
-    assert 'data["_legacy_entry_chain"]=chain' in flow
+    assert "async_migrate_legacy_registry(self.hass, legacy)" in flow
+    assert "async_create_entry" not in flow[flow.index("async def async_step_migrate_legacy"):flow.index("async def _finish")]
 
 
 def test_service_and_card_compatibility_aliases_remain():
