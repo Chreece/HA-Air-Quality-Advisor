@@ -59,14 +59,12 @@ def main():
 from __future__ import annotations
 from typing import Any
 
-from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers import device_registry as dr, entity_registry as er
 
 from .const import DOMAIN, LEGACY_DOMAIN
 
 
-def legacy_entries(hass: Any) -> list[ConfigEntry]:
+def legacy_entries(hass: Any) -> list[Any]:
     return list(hass.config_entries.async_entries(LEGACY_DOMAIN))
 
 
@@ -76,9 +74,11 @@ def _new_identifiers(identifiers):
 
 
 async def async_migrate_legacy_registry(
-    hass: Any, legacy: ConfigEntry, new: ConfigEntry
+    hass: Any, legacy: Any, new: Any
 ) -> None:
     """Move registry ownership first; remove legacy entry only after success."""
+    from homeassistant.config_entries import ConfigEntryState
+    from homeassistant.helpers import device_registry as dr, entity_registry as er
     if legacy.domain != LEGACY_DOMAIN or new.domain != DOMAIN:
         raise HomeAssistantError("Unexpected domain migration endpoints")
     if legacy.entry_id == new.entry_id:
@@ -93,11 +93,22 @@ async def async_migrate_legacy_registry(
     devices=list(dr.async_entries_for_config_entry(dev_reg, legacy.entry_id))
     entities=list(er.async_entries_for_config_entry(ent_reg, legacy.entry_id))
 
-    # Parent/main devices first so child references remain valid.
+    # Move entities before their devices. HA 2026.10 device reassignment can
+    # reconcile registry relationships; platform ownership first preserves
+    # entity_id/unique_id/device_id deterministically.
     devices.sort(key=lambda d: bool(getattr(d,"parent_device_id",None)))
     moved_devices=[]
     moved_entities=[]
     try:
+        for entity in entities:
+            ent_reg.async_update_entity_platform(
+                entity.entity_id,
+                DOMAIN,
+                new_config_entry_id=new.entry_id,
+                new_config_subentry_id=entity.config_subentry_id,
+            )
+            moved_entities.append((entity.entity_id,entity.config_subentry_id))
+
         for device in devices:
             old_ids=set(device.identifiers)
             dev_reg.async_update_device(
@@ -108,29 +119,11 @@ async def async_migrate_legacy_registry(
             )
             moved_devices.append((device.id,old_ids,device.config_subentry_id))
 
-        for entity in entities:
-            ent_reg.async_update_entity_platform(
-                entity.entity_id,
-                DOMAIN,
-                new_config_entry_id=new.entry_id,
-                new_config_subentry_id=entity.config_subentry_id,
-            )
-            moved_entities.append((entity.entity_id,entity.config_subentry_id))
-
         # Cleanup no longer touches migrated registries because ownership moved.
         await hass.config_entries.async_remove(legacy.entry_id)
     except Exception:
         # Best-effort rollback while the legacy entry still exists.
         if hass.config_entries.async_get_entry(legacy.entry_id) is not None:
-            for entity_id,subentry_id in reversed(moved_entities):
-                try:
-                    ent_reg.async_update_entity_platform(
-                        entity_id, LEGACY_DOMAIN,
-                        new_config_entry_id=legacy.entry_id,
-                        new_config_subentry_id=subentry_id,
-                    )
-                except Exception:
-                    pass
             for device_id,old_ids,subentry_id in reversed(moved_devices):
                 try:
                     dev_reg.async_update_device(
@@ -138,6 +131,15 @@ async def async_migrate_legacy_registry(
                         new_config_entry_id=legacy.entry_id,
                         new_config_subentry_id=subentry_id,
                         new_identifiers=old_ids,
+                    )
+                except Exception:
+                    pass
+            for entity_id,subentry_id in reversed(moved_entities):
+                try:
+                    ent_reg.async_update_entity_platform(
+                        entity_id, LEGACY_DOMAIN,
+                        new_config_entry_id=legacy.entry_id,
+                        new_config_subentry_id=subentry_id,
                     )
                 except Exception:
                     pass
@@ -306,8 +308,7 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry_
     text=init.read_text(encoding="utf-8")
     text=text.replace("from .const import DOMAIN, PLATFORMS, LANGUAGES",
                       "from .const import DOMAIN, LEGACY_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES")
-    text=text.replace('PUBLIC_ACTION_DOMAIN = "home_environment_manager"  # Alias only; existing domain remains.',
-                      'PUBLIC_ACTION_DOMAIN = LEGACY_PUBLIC_ACTION_DOMAIN  # compatibility alias')
+    # PUBLIC_ACTION_DOMAIN remains the literal home_environment_manager alias.
     text=text.replace(
         '''    await hass.http.async_register_static_paths([
         StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
@@ -323,6 +324,14 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry_
                       "for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):")
     text=text.replace("for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN):",
                       "for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):")
+    text=text.replace(
+        'for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN):',
+        'for service_domain in (PUBLIC_ACTION_DOMAIN, DOMAIN, LEGACY_DOMAIN):'
+    )
+    text=text.replace(
+        'if hass.services.has_service(PUBLIC_ACTION_DOMAIN, "announce"):\n            hass.services.async_remove(PUBLIC_ACTION_DOMAIN, "announce")',
+        'for alias in (PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):\n            if hass.services.has_service(alias, "announce"):\n                hass.services.async_remove(alias, "announce")'
+    )
     # announce has explicit registrations.
     text=text.replace('''        if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "announce"):
             hass.services.async_register(
