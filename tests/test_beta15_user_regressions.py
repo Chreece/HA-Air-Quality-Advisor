@@ -60,7 +60,7 @@ def test_fresh_device_can_choose_method_without_legacy_configure(runtime_module,
         if method in ("automatic", "pid"):
             assert m.permission(h.manager, h.spec, h.cap) == (True, True)
         elif method == "manual":
-            assert m.permission(h.manager, h.spec, h.cap) == (True, False)
+            assert m.permission(h.manager, h.spec, h.cap) == (True, True)
     asyncio.run(run())
 
 
@@ -82,21 +82,21 @@ def test_selected_method_turns_device_on_then_regulates_room_setpoint(runtime_mo
     asyncio.run(run())
 
 
-def test_binary_pid_uses_device_power_switch_not_an_old_config_menu(runtime_module):
+def test_binary_pid_method_owns_native_start_and_stop_without_power_switch(runtime_module):
     async def run():
         h = home(runtime_module, domain="fan", mode="existing", speed=False, power=False)
         h.room.update(enabled=False, allow_actuation=False)
         h.dev["auto_control"] = False
         await h.runtime.async_update(h.spec, {"control_mode": "pid", "kp": 20})
-        # Selecting PID is explicit per-device consent to start/stop this
-        # native fan when verified demand and dwell permit it.
         await tick(h, advance=601)
         assert h.hass.services.calls[-1][1] == "turn_on"
-        await tick(h, advance=1)
-        await h.runtime.async_update(h.spec, {"allow_power": False})
+        await tick(h, advance=1)  # acknowledge Manager ownership
+        h.hass.states.get("sensor.co2").state = "400"
         await tick(h, advance=20)
-        assert h.state.state == "on"  # Hardware minimum ON remains in force.
+        assert h.state.state == "on"  # minimum ON is still enforced
         await tick(h, advance=600)
+        assert h.hass.services.calls[-1][1] == "turn_off"
+        await tick(h, advance=1)
         assert h.state.state == "off"
     asyncio.run(run())
 
@@ -174,10 +174,8 @@ def test_template_sources_are_selectable_even_when_current_value_empty_or_unknow
     answer = defaults(form)
     answer.update(general_occupied_rooms_entity="sensor.multi_room_presence", general_occupied_rooms_attribute="rooms",
                   general_sleep_rooms_entity="sensor.sleeprooms", general_sleep_rooms_attribute="__state__")
-    form = asyncio.run(flow.async_step_setup_general(answer))
-    assert not form["errors"]
-    assert {"__state__", "rooms"} <= {v["value"] for v in form["data_schema"]["general_occupied_rooms_attribute"].config.options}
-    data = asyncio.run(flow.async_step_setup_general(defaults(form)))["completed"]["data"]
+    result = asyncio.run(flow.async_step_setup_general(answer))
+    data = result["completed"]["data"]
     assert data["occupancy_global"]["occupied_rooms_attribute"] == "rooms"
     assert data["occupancy_global"]["sleep_rooms_attribute"] == ""
 

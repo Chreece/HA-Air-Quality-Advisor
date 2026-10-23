@@ -180,6 +180,9 @@ def main():
     text=text.replace(
         'raise HomeAssistantError("Enable Allow power and HVAC mode control on this controller device before changing its physical mode")',
         'raise HomeAssistantError("This controller is not authorized to change the physical mode")')
+    if "allow_power" in text:
+        leftovers=[f"{i+1}: {line}" for i,line in enumerate(text.splitlines()) if "allow_power" in line]
+        raise RuntimeError("Residual allow_power in runtime after transform: " + " | ".join(leftovers))
     runtime.write_text(text,encoding="utf-8")
 
     activation=NEWPKG/"device_activation.py"
