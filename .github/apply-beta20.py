@@ -139,6 +139,8 @@ def main():
 ''','''                "fan_mode", "swing_mode", "swing_horizontal_mode",
                 "sensor_verified", *model.DEVICE_SELECTS}
 ''')
+    text=text.replace('"allow_power", "sensor_verified", *model.DEVICE_SELECTS}',
+                      '"sensor_verified", *model.DEVICE_SELECTS}')
     old='''            for key in ("allow_power", "sensor_verified"):
                 if key in changes and type(changes[key]) is not bool:
                     raise HomeAssistantError("Device permission must be a boolean")
