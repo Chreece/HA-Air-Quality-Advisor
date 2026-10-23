@@ -100,7 +100,9 @@ def _migrate_registries(hass: HomeAssistant, entry_id: str) -> None:
             NEW_DOMAIN,
             new_config_entry_id=entry_id,
             new_config_subentry_id=entity.config_subentry_id,
-            new_unique_id=entity.unique_id,
+            # Keep the existing unique ID. Passing the same value as
+            # new_unique_id makes HA 2026.10 detect the entity itself as a
+            # conflict before the platform field is updated.
             new_device_id=entity.device_id,
         )
 
