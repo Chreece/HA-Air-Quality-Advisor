@@ -261,22 +261,6 @@ on/off as needed. Raw relay commissioning is never inferred.''')
                       '("auto", "comfort", "home", "away", "sleep", "eco")')
     flow.write_text(text,encoding="utf-8")
 
-    # ---- Exact requested canonical domain: enviroment_manager. ----
-    # Move the integration directory first; only then rewrite text references.
-    subprocess.run(["git","mv","custom_components/environment_manager","custom_components/enviroment_manager"],
-                   cwd=ROOT,check=True)
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or ".git" in path.parts:
-            continue
-        if path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".md"}:
-            continue
-        text=path.read_text(encoding="utf-8")
-        text=text.replace("custom_components.environment_manager","custom_components.enviroment_manager")
-        text=text.replace("custom_components/environment_manager","custom_components/enviroment_manager")
-        text=text.replace('"environment_manager"','"enviroment_manager"')
-        text=text.replace("'environment_manager'","'enviroment_manager'")
-        path.write_text(text,encoding="utf-8")
-
     pkg=ROOT/"custom_components"/"enviroment_manager"
     manifest=json.loads((pkg/"manifest.json").read_text(encoding="utf-8"))
     manifest["domain"]="enviroment_manager"
