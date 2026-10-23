@@ -1,5 +1,6 @@
-"""Actual Home Assistant 2026.10 registry migration verification for both legacy domains."""
+"""Actual HA 2026.10 identity-preserving domain migration verification."""
 from __future__ import annotations
+
 import asyncio
 from pathlib import Path
 import sys
@@ -8,12 +9,24 @@ from types import MappingProxyType
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from homeassistant.config_entries import ConfigEntries, ConfigEntry, SOURCE_USER
-from homeassistant.core import HomeAssistant
 from homeassistant import loader
+from homeassistant.config_entries import (
+    ConfigEntries,
+    ConfigEntry,
+    ConfigEntryState,
+    SOURCE_USER,
+)
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr, entity_registry as er
-from custom_components.environment_manager.const import DOMAIN, LEGACY_DOMAIN, BETA20_DOMAIN
-from custom_components.environment_manager.domain_migration import async_migrate_legacy_registry
+
+from custom_components.environment_manager.const import (
+    BETA20_DOMAIN,
+    DOMAIN,
+    LEGACY_DOMAIN,
+)
+from custom_components.environment_manager.domain_migration import (
+    async_migrate_legacy_registry,
+)
 
 
 async def check(config_dir: str, source_domain: str) -> None:
@@ -27,6 +40,7 @@ async def check(config_dir: str, source_domain: str) -> None:
     entities = er.async_get(hass)
 
     sub_id = "room-subentry-unchanged"
+    entry_id = f"same-entry-{source_domain}"
     sub = [{
         "subentry_id": sub_id,
         "data": {"area_id": "living"},
@@ -34,38 +48,30 @@ async def check(config_dir: str, source_domain: str) -> None:
         "title": "Living",
         "unique_id": "living",
     }]
+    old_data = {"areas": ["living"]}
+    if source_domain == BETA20_DOMAIN:
+        # Simulate a real chained beta19 -> beta20 installation. Beta22 must
+        # preserve this ancestry while keeping the beta20 config-entry ID.
+        old_data.update({
+            "_legacy_entry_id": "older-beta19-entry",
+            "_legacy_domain": LEGACY_DOMAIN,
+        })
+
     old = ConfigEntry(
-        data={"areas": ["living"]},
+        data=old_data,
         options={"saved": True},
         domain=source_domain,
-        entry_id=f"legacy-entry-{source_domain}",
-        title="Home Environment Manager",
+        entry_id=entry_id,
+        title="Home Environment Advisor",
         source=SOURCE_USER,
         unique_id="home",
         version=1,
         minor_version=1,
         discovery_keys=MappingProxyType({}),
         subentries_data=sub,
-    )
-    new = ConfigEntry(
-        data={
-            "areas": ["living"],
-            "_legacy_entry_id": old.entry_id,
-            "_legacy_domain": source_domain,
-        },
-        options={"saved": True},
-        domain=DOMAIN,
-        entry_id=f"new-entry-{source_domain}",
-        title="Home Environment Manager",
-        source=SOURCE_USER,
-        unique_id="home",
-        version=1,
-        minor_version=1,
-        discovery_keys=MappingProxyType({}),
-        subentries_data=sub,
+        state=ConfigEntryState.SETUP_ERROR,
     )
     hass.config_entries._entries[old.entry_id] = old
-    hass.config_entries._entries[new.entry_id] = new
 
     device = devices.async_get_or_create(
         config_entry_id=old.entry_id,
@@ -86,23 +92,43 @@ async def check(config_dir: str, source_domain: str) -> None:
     )
     old_entity_id = entity.entity_id
     old_device_id = device.id
+    old_subentry = old.subentries[sub_id]
 
-    await async_migrate_legacy_registry(hass, old, new)
+    migrated = await async_migrate_legacy_registry(hass, old)
 
-    assert hass.config_entries.async_get_entry(old.entry_id) is None
-    migrated = entities.async_get(old_entity_id)
-    assert migrated is not None
-    assert migrated.entity_id == old_entity_id
-    assert migrated.unique_id == "stable-unique"
-    assert migrated.platform == DOMAIN
-    assert migrated.config_entry_id == new.entry_id
-    assert migrated.config_subentry_id == sub_id
-    assert migrated.device_id == old_device_id
-    assert migrated.disabled_by is er.RegistryEntryDisabler.USER
+    # The contract: exact same ConfigEntry object and exact same entry_id.
+    assert migrated is old
+    assert migrated.entry_id == entry_id
+    assert hass.config_entries.async_get_entry(entry_id) is old
+    assert old.domain == DOMAIN
+    assert old.state is ConfigEntryState.NOT_LOADED
+    assert hass.config_entries.async_entries(source_domain) == []
+    assert hass.config_entries.async_entries(DOMAIN) == [old]
+    assert old.subentries[sub_id] is old_subentry
+    assert old.options["saved"] is True
+    assert old.title == "Home Environment Manager"
+    assert old.data["_legacy_entry_id"] == entry_id
+    assert old.data["_legacy_domain"] == source_domain
+    if source_domain == BETA20_DOMAIN:
+        assert {
+            "domain": LEGACY_DOMAIN,
+            "entry_id": "older-beta19-entry",
+        } in old.data["_legacy_entry_chain"]
+
+    migrated_entity = entities.async_get(old_entity_id)
+    assert migrated_entity is not None
+    assert migrated_entity.entity_id == old_entity_id
+    assert migrated_entity.unique_id == "stable-unique"
+    assert migrated_entity.platform == DOMAIN
+    assert migrated_entity.config_entry_id == entry_id
+    assert migrated_entity.config_subentry_id == sub_id
+    assert migrated_entity.device_id == old_device_id
+    assert migrated_entity.disabled_by is er.RegistryEntryDisabler.USER
+
     moved = devices.async_get(old_device_id)
     assert moved is not None
     assert moved.id == old_device_id
-    assert moved.config_entry_id == new.entry_id
+    assert moved.config_entry_id == entry_id
     assert moved.config_subentry_id == sub_id
     assert moved.name_by_user == "My custom device"
     assert (DOMAIN, "managed-device") in moved.identifiers
@@ -116,4 +142,7 @@ if __name__ == "__main__":
     for domain in (LEGACY_DOMAIN, BETA20_DOMAIN):
         with TemporaryDirectory(prefix=f"hem-domain-{domain}-") as directory:
             asyncio.run(check(directory, domain))
-    print("Home Assistant 2026.10 b19/b20 -> environment_manager migration: PASS")
+    print(
+        "Home Assistant 2026.10 b19/b20 -> environment_manager "
+        "identity-preserving migration: PASS"
+    )
