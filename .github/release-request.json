@@ -1,19 +1,16 @@
 {
-  "version": "0.6.0b20",
-  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Actual enviroment_manager domain; single General settings page; no allow_power; room-owned automatic presets",
+  "version": "0.6.0b21",
+  "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, HACS and Home Assistant 2026.10 migration checks; never update main or stable latest",
+  "note": "Repair canonical environment_manager domain spelling and support migration from both air_quality_advisor and beta20 enviroment_manager",
   "validation_attempt": 0,
   "changes": [
-    "Rename the canonical Home Assistant custom integration domain and package from air_quality_advisor to enviroment_manager",
-    "Provide one-click migration from the frozen legacy config-entry domain, preserving data/options/subentries, entity IDs/unique IDs, device IDs/custom names and registry ownership",
-    "Retain legacy air_quality_advisor and home_enviroment_manager service aliases plus the legacy dashboard-card URL after migration",
-    "Migrate persisted equipment, environment-history, PID, fan-power and humidity-power safety stores from the old entry/domain on first use",
-    "Define Comfort as verified room occupied, Home as someone home but room not occupied/unknown, Away as verified nobody home, Sleep as sleeping room and Eco as explicit-only energy-saving override",
-    "Place editable Comfort/Home/Sleep/Eco heating and cooling setpoints on the Room Environment device; Away uses the Room Environment temperature minimum/maximum bounds",
-    "Map beta18 Home profile to Comfort and beta18 Unoccupied profile to Home without duplicating device-level automatic setpoints",
-    "Selecting Automatic or PID on a native climate/fan/humidifier explicitly authorizes this exact controller to start/stop and switch supported native modes when demand and policy require it; raw relay/proportional hardware keeps separate commissioning",
-    "Preserve availability-first calculations, room-selected feedback, device ownership, acknowledgement, dwell/runtime/interlock protections and stable v0.5.1"
+    "Use custom_components/environment_manager and Home Assistant domain environment_manager as the only canonical package/runtime domain",
+    "Treat both air_quality_advisor and beta20 enviroment_manager as legacy migration sources while preserving entity IDs, unique IDs, device IDs, subentries, customizations and controller settings",
+    "Carry storage migration markers across chained beta19 -> beta20 -> beta21 upgrades and direct beta19 -> beta21 upgrades",
+    "Retain temporary compatibility service/card aliases for air_quality_advisor, enviroment_manager, home_environment_manager and beta20 documentation's home_enviroment_manager spelling",
+    "Keep beta20 room-owned Comfort/Home/Sleep/Eco setpoints, verified Away behavior, selected-room sensor feedback, room-wide limits and native controller automatic/PID power semantics unchanged",
+    "Validate both old domains against installed Home Assistant 2026.10 before publication; stable v0.5.1 remains unchanged"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b20"
+  "release_branch": "beta/v0.6.0b21"
 }
