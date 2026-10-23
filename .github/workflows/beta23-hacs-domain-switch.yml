@@ -70,7 +70,7 @@ jobs:
           mkdir -p dist
           (
             cd custom_components/environment_manager
-            zip -q -r ../../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
+            zip -q -r ../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
           )
           python - <<'PY'
           import json, zipfile
@@ -160,7 +160,7 @@ jobs:
           mkdir -p dist
           (
             cd custom_components/environment_manager
-            zip -q -r ../../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
+            zip -q -r ../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
           )
           zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b23.zip custom_components/environment_manager -x '*__pycache__*' '*.pyc' '*.pyo'
           python - <<'PY'
