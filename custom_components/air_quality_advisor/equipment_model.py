@@ -506,48 +506,54 @@ def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
     profile = profile_name(config, plan)
     limits = device_limits(manager, spec, cap)
 
-    # Room Environment owns automatic preset setpoints. Beta18 migration:
-    # old home -> Comfort; old unoccupied -> Home.
     raw_profiles = room.get("profiles", {}) if isinstance(room, dict) else {}
     raw_profiles = raw_profiles if isinstance(raw_profiles, dict) else {}
-    fallbacks = {
-        "comfort": raw_profiles.get("home", {"heat_c": 21.0, "cool_c": 25.0}),
-        "home": raw_profiles.get("unoccupied", {"heat_c": 18.0, "cool_c": 28.0}),
-        "sleep": raw_profiles.get("sleep", {"heat_c": 18.0, "cool_c": 26.0}),
-        "eco": {"heat_c": 17.0, "cool_c": 29.0},
+    modern=any(name in raw_profiles for name in ("comfort","eco"))
+    if modern:
+        bands=raw_profiles
+    else:
+        bands={
+            "comfort": raw_profiles.get("home", {"heat_c":20.0,"cool_c":26.0}),
+            "home": raw_profiles.get("unoccupied", {"heat_c":18.0,"cool_c":28.0}),
+            "sleep": raw_profiles.get("sleep", {"heat_c":18.0,"cool_c":26.0}),
+            "eco": {"heat_c":17.0,"cool_c":29.0},
+        }
+    defaults={
+        "comfort":{"heat_c":20.0,"cool_c":26.0},
+        "home":{"heat_c":18.0,"cool_c":28.0},
+        "sleep":{"heat_c":18.0,"cool_c":26.0},
+        "eco":{"heat_c":17.0,"cool_c":29.0},
     }
 
     if profile == "away":
         heat = limits["temperature_min_limit"]
         cool = limits["temperature_max_limit"]
     elif profile == "manual":
-        base = fallbacks["comfort"]
-        heat, cool = float(base["heat_c"]), float(base["cool_c"])
+        band=bands.get("comfort",defaults["comfort"])
+        heat,cool=float(band.get("heat_c",20.0)),float(band.get("cool_c",26.0))
     else:
-        band = raw_profiles.get(profile, fallbacks.get(profile, fallbacks["home"]))
-        heat = float(band.get("heat_c", fallbacks.get(profile, fallbacks["home"])["heat_c"]))
-        cool = float(band.get("cool_c", fallbacks.get(profile, fallbacks["home"])["cool_c"]))
+        band=bands.get(profile,defaults.get(profile,defaults["home"]))
+        fallback=defaults.get(profile,defaults["home"])
+        heat=float(band.get("heat_c",fallback["heat_c"]))
+        cool=float(band.get("cool_c",fallback["cool_c"]))
 
     humidity = room.get(
         "sleep_humidity_target" if profile == "sleep" else "humidity_target",
         room.get("humidity_low_rh", 40) if cap.humidifying else room.get("humidity_high_rh", 60),
     )
+    result={"heat":float(heat),"cool":float(cool),"humidity":float(humidity)}
 
-    result = {"heat": float(heat), "cool": float(cool), "humidity": float(humidity)}
-
-    # Per-device target overrides are retained only for Manual None. Automatic
-    # presets are room-owned and cannot silently diverge across devices.
     if profile == "manual":
-        override = config.get("profile_targets", {}).get("manual", {})
-        if isinstance(override, dict):
-            result.update({k: v for k, v in override.items() if k in result})
+        override=config.get("profile_targets",{}).get("manual",{})
+        if isinstance(override,dict):
+            result.update({k:v for k,v in override.items() if k in result})
 
-    result["heat"] = max(limits["temperature_min_limit"],
-                         min(limits["temperature_max_limit"], float(result["heat"])))
-    result["cool"] = max(limits["temperature_min_limit"],
-                         min(limits["temperature_max_limit"], float(result["cool"])))
-    result["humidity"] = max(limits["humidity_min_limit"],
-                             min(limits["humidity_max_limit"], float(result["humidity"])))
+    result["heat"]=max(limits["temperature_min_limit"],
+                       min(limits["temperature_max_limit"],float(result["heat"])))
+    result["cool"]=max(limits["temperature_min_limit"],
+                       min(limits["temperature_max_limit"],float(result["cool"])))
+    result["humidity"]=max(limits["humidity_min_limit"],
+                           min(limits["humidity_max_limit"],float(result["humidity"])))
     return result
 
 

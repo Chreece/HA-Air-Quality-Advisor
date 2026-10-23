@@ -369,62 +369,73 @@ class EquipmentRuntime:
         changes = {}
         if cfg["control_mode"] == "existing" or mode is not None:
             changes["control_mode"] = "off" if mode == "off" else "manual"
-        effective = {**cfg, **changes}
-        profile = model.profile_name(effective, model.plan_for(self.manager, spec))
+        effective={**cfg,**changes}
+        profile=model.profile_name(effective,model.plan_for(self.manager,spec))
 
-        if effective["control_mode"] == "manual" and effective.get("preset", "none") == "none":
-            table = deepcopy(cfg["profile_targets"])
-            table["manual"] = {**table.get("manual", {}), **values}
-            changes["profile_targets"] = table
+        if effective["control_mode"]=="manual" and effective.get("preset","none")=="none":
+            table=deepcopy(cfg["profile_targets"])
+            table["manual"]={**table.get("manual",{}),**values}
+            changes["profile_targets"]=table
             if mode is not None:
-                changes["requested_mode"] = mode
-            await self.async_update(spec, changes)
+                changes["requested_mode"]=mode
+            await self.async_update(spec,changes)
             return
 
-        if profile == "away":
-            raise HomeAssistantError(
-                "Away targets are the Room Environment minimum/maximum temperature limits"
-            )
-        if profile not in ("comfort", "home", "sleep", "eco"):
-            raise HomeAssistantError("Select a room preset before editing its setpoint")
+        if set(values)-{"heat","cool","humidity"}:
+            raise HomeAssistantError("Unsupported room target")
+        if not values:
+            raise HomeAssistantError("No supported room target supplied")
 
-        limits = model.device_limits(self.manager, spec, cap)
-        requested = {}
-        for key, value in values.items():
-            if key not in ("heat", "cool"):
-                continue
-            number = finite(value, limits["temperature_min_limit"], limits["temperature_max_limit"])
-            if number is None:
-                raise HomeAssistantError("Target outside Room Environment limits")
-            requested[key] = number
-        if not requested:
-            raise HomeAssistantError("No supported room temperature target supplied")
-
-        lock = getattr(self.manager, "_device_settings_write_lock", None)
+        limits=model.device_limits(self.manager,spec,cap)
+        lock=getattr(self.manager,"_device_settings_write_lock",None)
         if lock is None:
-            lock = self.manager._device_settings_write_lock = asyncio.Lock()
+            lock=self.manager._device_settings_write_lock=asyncio.Lock()
         async with lock:
-            options = deepcopy(self.manager.entry.options)
-            rooms = deepcopy(self.manager.settings.get("climate_rooms", {}))
-            room = deepcopy(rooms.get(spec.area_id, {}))
-            profiles = deepcopy(room.get("profiles", {}))
-            band = deepcopy(profiles.get(profile, {}))
-            if "heat" in requested:
-                band["heat_c"] = requested["heat"]
-            if "cool" in requested:
-                band["cool_c"] = requested["cool"]
-            heat = float(band.get("heat_c", model.targets(
-                self.manager, spec, cap, {**cfg, "preset": profile}, {})["heat"]))
-            cool = float(band.get("cool_c", model.targets(
-                self.manager, spec, cap, {**cfg, "preset": profile}, {})["cool"]))
-            if cool - heat < 1.0:
-                raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
-            profiles[profile] = band
-            room["profiles"] = profiles
-            rooms[spec.area_id] = room
-            options["climate_rooms"] = rooms
-            self.hass.config_entries.async_update_entry(self.manager.entry, options=options)
-        if getattr(self.manager, "_active", False):
+            options=deepcopy(self.manager.entry.options)
+            rooms=deepcopy(self.manager.settings.get("climate_rooms",{}))
+            room=deepcopy(rooms.get(spec.area_id,{}))
+
+            if "humidity" in values:
+                humidity=finite(values["humidity"],limits["humidity_min_limit"],limits["humidity_max_limit"])
+                if humidity is None:
+                    raise HomeAssistantError("Humidity target outside Room Environment limits")
+                room["sleep_humidity_target" if profile=="sleep" else "humidity_target"]=humidity
+
+            thermal={k:v for k,v in values.items() if k in ("heat","cool")}
+            if thermal:
+                if profile=="away":
+                    raise HomeAssistantError(
+                        "Away targets are the Room Environment minimum/maximum temperature limits"
+                    )
+                if profile not in ("comfort","home","sleep","eco"):
+                    raise HomeAssistantError("Select a room preset before editing its setpoint")
+                raw_profiles=deepcopy(room.get("profiles",{}))
+                modern=any(name in raw_profiles for name in ("comfort","eco"))
+                if not modern:
+                    raw_profiles={
+                        "comfort": deepcopy(raw_profiles.get("home",{"heat_c":20.0,"cool_c":26.0})),
+                        "home": deepcopy(raw_profiles.get("unoccupied",{"heat_c":18.0,"cool_c":28.0})),
+                        "sleep": deepcopy(raw_profiles.get("sleep",{"heat_c":18.0,"cool_c":26.0})),
+                        "eco": {"heat_c":17.0,"cool_c":29.0},
+                    }
+                band=deepcopy(raw_profiles.get(profile,{}))
+                for key,value in thermal.items():
+                    number=finite(value,limits["temperature_min_limit"],limits["temperature_max_limit"])
+                    if number is None:
+                        raise HomeAssistantError("Target outside Room Environment limits")
+                    band["heat_c" if key=="heat" else "cool_c"]=number
+                defaults={"comfort":(20.,26.),"home":(18.,28.),"sleep":(18.,26.),"eco":(17.,29.)}
+                heat=float(band.get("heat_c",defaults[profile][0]))
+                cool=float(band.get("cool_c",defaults[profile][1]))
+                if cool-heat<1.0:
+                    raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
+                raw_profiles[profile]=band
+                room["profiles"]=raw_profiles
+
+            rooms[spec.area_id]=room
+            options["climate_rooms"]=rooms
+            self.hass.config_entries.async_update_entry(self.manager.entry,options=options)
+        if getattr(self.manager,"_active",False):
             self.manager._recalculate(initial=True)
 
 
