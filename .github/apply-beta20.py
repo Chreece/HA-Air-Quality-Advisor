@@ -265,7 +265,7 @@ on/off as needed. Raw relay commissioning is never inferred.''')
     manifest=json.loads((pkg/"manifest.json").read_text(encoding="utf-8"))
     manifest["domain"]="enviroment_manager"
     manifest["version"]="0.6.0b20"
-    (pkg/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\\n",encoding="utf-8")
+    (pkg/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
 
     # Tests for the exact regressions.
     (ROOT/"tests"/"test_beta20_regressions.py").write_text(r'''"""b20 user-reported regressions without requiring HA at import time."""
@@ -319,7 +319,7 @@ def test_eco_is_explicit_only_in_profile_selector():
     req=json.loads((ROOT/".github/release-request.json").read_text())
     req.update(version="0.6.0b20",channel="beta",release_branch="beta/v0.6.0b20",
                note="Actual enviroment_manager domain; single General settings page; no allow_power; room-owned automatic presets")
-    (ROOT/".github/release-request.json").write_text(json.dumps(req,indent=2)+"\\n")
+    (ROOT/".github/release-request.json").write_text(json.dumps(req,indent=2)+"\n")
 
     readme=ROOT/"README.md"
     text=readme.read_text()

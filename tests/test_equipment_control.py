@@ -625,15 +625,16 @@ def test_manual_fan_selection_does_not_apply_unrequested_temperature(runtime_mod
     asyncio.run(run())
 
 
-def test_target_and_mode_edit_is_atomic_and_fails_without_power_authorization(runtime_module):
+def test_target_and_mode_edit_atomically_authorizes_native_manual_control(runtime_module):
     async def run():
         h = home(runtime_module, domain="climate", state="heat", mode="existing", power=False)
-        with pytest.raises(Exception, match="Allow power"):
-            await h.runtime.async_set_targets(h.spec, {"cool": 23}, mode="cool")
-        assert h.manager.entry.options == {}
-        await h.runtime.async_set_targets(h.spec, {"heat": 22}, mode="heat")
+        await h.runtime.async_set_targets(h.spec, {"cool": 23}, mode="cool")
         saved = h.manager.settings[m.SETTINGS][h.spec.identifier]
-        assert saved["control_mode"] == "manual" and saved["profile_targets"]["manual"]["heat"] == 22
+        assert saved["control_mode"] == "manual"
+        assert saved["requested_mode"] == "cool"
+        assert saved["profile_targets"]["manual"]["cool"] == 23
+        assert saved.get("_native_authorization")
+        assert "allow_power" not in saved
     asyncio.run(run())
 
 
