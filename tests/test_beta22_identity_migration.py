@@ -16,7 +16,8 @@ def test_migration_preserves_config_entry_identity_in_source_contract():
     assert "items._unindex_entry(entry.entry_id)" in migration
     assert 'object.__setattr__(entry, "domain", new_domain)' in migration
     assert "async_remove(legacy.entry_id)" not in migration
-    assert "new_config_entry_id=" not in migration
+    assert "new_config_entry_id=legacy.entry_id" in migration
+    assert "new_config_subentry_id=entity.config_subentry_id" in migration
 
 
 def test_config_flow_migrates_existing_entry_without_creating_replacement():
