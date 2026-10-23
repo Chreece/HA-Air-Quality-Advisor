@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b22 - Preserve exact config-entry identity during domain migration (beta)
+
+- Migrate legacy `air_quality_advisor` and beta20 `enviroment_manager` config entries in place so the exact Home Assistant config-entry ID survives.
+- Preserve room subentry IDs/objects, entity IDs and unique IDs, device IDs, custom names, disabled states, options and stored controller settings.
+- Reindex only after validating the Home Assistant 2026.10 ConfigEntryItems API shape; fail closed on unsupported internals, duplicate canonical homes or unsafe transitional states.
+- Keep entity/device registry associations on the same config-entry/subentry IDs while changing only platform ownership and Manager-owned identifier namespaces.
+- Preserve legacy storage ancestry for direct beta19 -> beta22 and chained beta19 -> beta20 -> beta22 upgrades.
+- Verify both source domains on installed Home Assistant 2026.10 and retain all beta21 controller/safety semantics.
+
 ## 0.6.0b21 - Canonical environment_manager domain repair (beta)
 
 - Correct the beta20 `enviroment_manager` package/domain typo to canonical `environment_manager`.
