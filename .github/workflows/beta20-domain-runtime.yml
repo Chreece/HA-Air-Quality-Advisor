@@ -111,7 +111,9 @@ jobs:
           set -euo pipefail
           test -f .github/apply-beta20.py
           python .github/apply-beta20.py
-          git rm .github/apply-beta20.py
+          git restore --staged .github/apply-beta20.py || true
+          rm .github/apply-beta20.py
+          git add -A
           current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/fix/beta20-enviroment-domain-runtime-20261023" --jq '.object.sha')"
           test "$current" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
