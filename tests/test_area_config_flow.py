@@ -833,7 +833,11 @@ def test_climate_room_profiles_are_optional_and_keep_existing_settings(monkeypat
     saved = asyncio.run(options.async_step_climate_profiles({}))
     data = saved["completed"]["data"]
     assert data["climate_rooms"]["living"]["enabled"] is False
-    assert data["climate_rooms"]["living"]["profiles"]["home"] == {"heat_c":20.0,"cool_c":26.0}
+    profiles=data["climate_rooms"]["living"]["profiles"]
+    assert profiles["comfort"] == {"heat_c":20.0,"cool_c":26.0}
+    assert profiles["home"] == {"heat_c":18.0,"cool_c":28.0}
+    assert profiles["sleep"] == {"heat_c":18.0,"cool_c":26.0}
+    assert profiles["eco"] == {"heat_c":17.0,"cool_c":29.0}
     assert data["thresholds"]["indoor_co2"] == 1200
 
 

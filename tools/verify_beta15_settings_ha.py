@@ -80,9 +80,9 @@ async def check(directory):
         assert model.settings(manager, spec)['control_mode'] == method
     assert cfg.options.get('climate_rooms', {}).get(area.id, {}).get('allow_actuation') is not True
     await runtime.async_update(spec, {'control_mode': 'automatic'})
-    assert model.permission(manager, spec, model.capabilities(manager, spec)) == (True, False)
-    await runtime.async_update(spec, {'allow_power': True})
     assert model.permission(manager, spec, model.capabilities(manager, spec)) == (True, True)
+    # Automatic/PID is explicit power/mode consent for this exact native
+    # climate/fan/humidifier controller; the device switch can still revoke it.
     await runtime.async_update(spec, {'allow_power': False})
     templates = entry('template', 'template-test-entry', {})
     hass.config_entries._entries[templates.entry_id] = templates

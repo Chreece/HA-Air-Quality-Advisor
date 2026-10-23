@@ -19,6 +19,9 @@ from test_discovery import adapter
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPONENT = ROOT / "custom_components" / "air_quality_advisor"
+CANONICAL_DOMAIN = "environment_manager"
+LEGACY_DOMAIN = "air" + "_quality_advisor"
+PUBLIC_ACTION_DOMAIN = "home_environment_manager"
 
 
 class ServiceRegistry:
@@ -212,7 +215,10 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     assert asyncio.run(module.async_setup(h,{})) is True
     manifest=json.loads((COMPONENT/"manifest.json").read_text())
     assert js[0][1].endswith("?v="+manifest["version"])
-    assert h.http.static_paths[0].url.startswith("/air_quality_advisor/")
+    assert {item.url for item in h.http.static_paths} == {
+        f"/{CANONICAL_DOMAIN}/air-quality-advisor-card.js",
+        f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js",
+    }
     assert asyncio.run(module.async_setup_entry(h,entry)) is True
     assert entry.title=="Home Environment Manager"
     assert json.dumps(entry.data,sort_keys=True)==before
@@ -221,14 +227,9 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     from custom_components.air_quality_advisor.const import PLATFORMS
     assert h.config_entries.forwarded==[("legacy-1", PLATFORMS)]
     assert set(h.services.callbacks)=={
-        ("air_quality_advisor","announce"),
-        ("home_environment_manager","announce"),
-        ("air_quality_advisor","pid_control"),
-        ("home_environment_manager","pid_control"),
-        ("air_quality_advisor","climate_control"),
-        ("home_environment_manager","climate_control"),
-        ("air_quality_advisor","climate_diagnostics"),
-        ("home_environment_manager","climate_diagnostics"),
+        (domain,action)
+        for domain in (CANONICAL_DOMAIN,PUBLIC_ACTION_DOMAIN,LEGACY_DOMAIN)
+        for action in ("announce","pid_control","climate_control","climate_diagnostics")
     }
     # No climate permission is implicitly created for a legacy entry.
     assert "climate_rooms" not in entry.data
@@ -246,10 +247,10 @@ def test_multiple_config_entries_register_once_and_unload_cleanly(integration):
     second=legacy_entry(number=2,title="Home Environment Advisor")
     asyncio.run(module.async_setup_entry(h,first))
     asyncio.run(module.async_setup_entry(h,second))
-    assert len(h.services.registered)==8
-    assert sorted(h.data["air_quality_advisor"])==["legacy-1","legacy-2"]
+    assert len(h.services.registered)==12
+    assert sorted(h.data[CANONICAL_DOMAIN])==["legacy-1","legacy-2"]
     assert asyncio.run(module.async_unload_entry(h,first))
-    assert len(h.services.callbacks)==8
+    assert len(h.services.callbacks)==12
     assert not FakeManager.instances[1].stopped
     assert asyncio.run(module.async_unload_entry(h,second))
     assert len(h.services.callbacks)==0
@@ -264,7 +265,7 @@ def test_setup_forwarding_and_partial_controller_start_failures_stop_manager(int
     with pytest.raises(RuntimeError,match="platform setup"):
         asyncio.run(module.async_setup_entry(h,entry))
     assert FakeManager.instances[0].stopped
-    assert "air_quality_advisor" not in h.data
+    assert CANONICAL_DOMAIN not in h.data
     assert h.services.registered==[]
     h.config_entries.fail_forward=False
     FakeManager.fail_start=True

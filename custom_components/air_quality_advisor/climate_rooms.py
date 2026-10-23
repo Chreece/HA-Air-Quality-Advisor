@@ -70,18 +70,19 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         try: delay=float(settings.get("unoccupied_delay_minutes",10))
         except (ValueError,TypeError,OverflowError): delay=10
         if not 0<=delay<=240: delay=10
-        clock=time.time() if now is None else now
-        for entity in sensors:
-            state=hass.states.get(entity)
-            changed=(getattr(state,"last_changed",None) or
-                     getattr(state,"last_updated",None))
-            if not isinstance(changed,datetime) or changed.tzinfo is None:
-                occupied,occ_reason="occupied","off_duration_unverified"
-                break
-            seconds=clock-changed.timestamp()
-            if seconds<0 or seconds<delay*60:
-                occupied,occ_reason="occupied","awaiting_stable_unoccupied_period"
-                break
+        if delay > 0:
+            clock=time.time() if now is None else now
+            for entity in sensors:
+                state=hass.states.get(entity)
+                changed=(getattr(state,"last_changed",None) or
+                         getattr(state,"last_updated",None))
+                if not isinstance(changed,datetime) or changed.tzinfo is None:
+                    occupied,occ_reason="occupied","off_duration_unverified"
+                    break
+                seconds=clock-changed.timestamp()
+                if seconds<0 or seconds<delay*60:
+                    occupied,occ_reason="occupied","awaiting_stable_unoccupied_period"
+                    break
     # The shared configuration may supply an authoritative occupied-rooms
     # list in an entity state/attribute, global area sensors and trackers.
     # Missing evidence never becomes a negative/off signal.

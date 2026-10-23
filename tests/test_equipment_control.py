@@ -860,9 +860,8 @@ def test_unknown_quiet_context_holds_current_fan_speed_without_command(runtime_m
 
 def test_temperature_limits_clamp_profile_and_native_write(runtime_module):
     async def run():
-        h = home(runtime_module, domain="climate", state="heat", power=False, controls={
-            "profile_targets": {"home": {"heat": 10, "cool": 30}},
-        })
+        h = home(runtime_module, domain="climate", state="heat", power=False)
+        h.room["profiles"] = {"comfort": {"heat_c": 10, "cool_c": 30}}
         h.manager.entry.data["environment_rooms"] = {
             "room": {"equipment_limits": {
                 "temperature_min_limit": 19, "temperature_max_limit": 21}}

@@ -215,17 +215,23 @@ def test_every_locale_distinguishes_room_and_device_operating_profiles():
 
 
 
-def test_home_assistant_area_profile_entities_use_localized_unique_profile_names():
-    """Native room device values must match translated config-flow names."""
+def test_home_assistant_area_profile_entities_use_new_room_owned_profiles():
+    """Room Environment exposes exactly the editable automatic preset bands."""
     docs=_docs()
     for lang,doc in docs.items():
-        options=doc["options"]["step"]["climate_profiles"]["data"]
         numbers=doc["entity"]["number"]
-        for profile in ("home","unoccupied","away","sleep"):
+        labels=[]
+        for profile in ("comfort","home","sleep","eco"):
             for mode in ("heat","cool"):
-                key=f"{profile}_{mode}"
-                actual=numbers[f"area_climate_profile_{key}"]["name"]
-                assert actual==options[key],(lang,key,actual,options[key])
+                key=f"area_climate_profile_{profile}_{mode}"
+                assert key in numbers,(lang,key)
+                label=numbers[key]["name"]
+                assert label,(lang,key)
+                labels.append(label)
+        assert len(labels)==len(set(labels)),lang
+        for old in ("unoccupied","away"):
+            for mode in ("heat","cool"):
+                assert f"area_climate_profile_{old}_{mode}" not in numbers
 
 
 def test_mold_outdoor_weather_source_is_localized_and_has_explanation():

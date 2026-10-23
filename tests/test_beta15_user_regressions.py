@@ -64,15 +64,20 @@ def test_fresh_device_can_choose_method_without_legacy_configure(runtime_module,
     asyncio.run(run())
 
 
-def test_selected_method_actually_regulates_native_setpoint_not_only_saves(runtime_module):
+def test_selected_method_turns_device_on_then_regulates_room_setpoint(runtime_module):
     async def run():
-        h = home(runtime_module, domain="climate", state="heat", mode="existing", power=False)
+        h = home(runtime_module, domain="climate", state="off", mode="existing", power=False)
         h.room.update(enabled=False, allow_actuation=False)
         h.dev["auto_control"] = False
         h.state.attributes["temperature"] = 18
         await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
+        assert m.permission(h.manager,h.spec,h.cap)==(True,True)
         await tick(h, advance=601)
-        assert h.hass.services.calls == [("climate", "set_temperature", {"temperature": 18.5}, h.entity)]
+        assert h.hass.services.calls[0] == (
+            "climate","set_hvac_mode",{"hvac_mode":"heat"},h.entity)
+        await tick(h, advance=1)  # acknowledge Manager ownership
+        assert h.hass.services.calls[-1] == (
+            "climate","set_temperature",{"temperature":18.5},h.entity)
         assert not h.room["enabled"] and not h.room["allow_actuation"]
     asyncio.run(run())
 

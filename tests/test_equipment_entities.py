@@ -117,13 +117,15 @@ def test_climate_reports_observed_state_not_optimistic_desired_state(platforms):
 def test_facade_temperature_and_preset_edit_effective_targets(platforms):
     async def run():
         h=home(platforms.runtime,domain="climate",state="heat",mode="existing",power=False)
+        h.manager.entry.data["environment_rooms"]={"room":{"equipment_limits":{
+            "temperature_min_limit":16,"temperature_max_limit":30}}}
         entity=platforms.climate.ManagedClimate(h.manager,h.spec)
         await entity.async_set_preset_mode("sleep")
         assert entity.target_temperature==18
         await entity.async_set_temperature(temperature=19, hvac_mode="heat")
         assert entity.target_temperature==19
         await entity.async_set_preset_mode("away")
-        assert entity.target_temperature==16
+        assert entity.target_temperature==16  # Room Environment minimum.
         await entity.async_set_preset_mode("sleep")
         assert entity.target_temperature==19
     asyncio.run(run())
