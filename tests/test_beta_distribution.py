@@ -60,6 +60,7 @@ def test_beta_workflow_uses_prerelease_and_never_changes_latest():
         '"version": "0.6.0b24"'
     ) < 0:
         return
-    assert "github.ref == 'refs/heads/beta/v0.6.0b24'" in workflow
+    assert "git push origin HEAD:refs/heads/beta/v0.6.0b24" in workflow
     assert "--prerelease --latest=false" in workflow
     assert "gh release create v0.6.0b24" in workflow
+    assert "beta24-payload" in workflow
