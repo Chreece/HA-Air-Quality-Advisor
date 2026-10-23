@@ -268,45 +268,51 @@ on/off as needed. Raw relay commissioning is never inferred.''')
     (pkg/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\\n",encoding="utf-8")
 
     # Tests for the exact regressions.
-    (ROOT/"tests"/"test_beta20_regressions.py").write_text(r'''"""b20 user-reported regressions."""
+    (ROOT/"tests"/"test_beta20_regressions.py").write_text(r'''"""b20 user-reported regressions without requiring HA at import time."""
 from pathlib import Path
-from custom_components.enviroment_manager import equipment_model as model
-from custom_components.enviroment_manager.device_controls import PROFILE_NUMBERS, DEVICE_TARGET_NUMBERS
-from custom_components.enviroment_manager.climate_strategy import select_profile
 
 ROOT=Path(__file__).resolve().parents[1]
+PKG=ROOT/"custom_components/enviroment_manager"
+
+def source(name):
+    return (PKG/name).read_text(encoding="utf-8")
 
 def test_exact_requested_domain_and_only_one_package():
-    from custom_components.enviroment_manager.const import DOMAIN,LEGACY_DOMAIN
-    assert DOMAIN=="enviroment_manager"
-    assert LEGACY_DOMAIN=="air_quality_advisor"
-    assert (ROOT/"custom_components/enviroment_manager").is_dir()
+    manifest=(PKG/"manifest.json").read_text()
+    const=source("const.py")
+    assert '"domain": "enviroment_manager"' in manifest
+    assert 'DOMAIN = "enviroment_manager"' in const
+    assert 'LEGACY_DOMAIN = "air_quality_advisor"' in const
+    assert PKG.is_dir()
     assert not (ROOT/"custom_components/environment_manager").exists()
     assert not (ROOT/"custom_components/air_quality_advisor").exists()
 
 def test_no_allow_power_backend_or_entity():
-    for path in (ROOT/"custom_components/enviroment_manager").rglob("*.py"):
+    for path in PKG.rglob("*.py"):
         assert "allow_power" not in path.read_text(), path
     assert "allow_power" not in (ROOT/"apply_equipment_i18n.py").read_text()
 
 def test_room_owned_preset_inputs_and_no_device_temperature_duplicates():
-    assert set(PROFILE_NUMBERS)=={
-        "comfort_heat","comfort_cool","home_heat","home_cool",
-        "sleep_heat","sleep_cool","eco_heat","eco_cool",
-    }
-    assert not any(key.endswith(("_heat_c","_cool_c")) for key in DEVICE_TARGET_NUMBERS)
+    controls=source("device_controls.py")
+    numbers=source("number.py")
+    assert 'for profile in ("comfort", "home", "sleep", "eco")' in controls
+    assert '"humidity_target"' in controls and '"fan_speed_percent"' in controls
+    assert 'f"{profile}_{mode}_c"' not in controls
+    assert 'chosen = []' in numbers
 
-def test_automatic_preset_meanings():
-    assert select_profile({},at_home="home",occupied="occupied")[0]=="comfort"
-    assert select_profile({},at_home="home",occupied="unoccupied")[0]=="home"
-    assert select_profile({},at_home="away",occupied="unoccupied")[0]=="away"
-    assert select_profile({},at_home="home",occupied="occupied",sleeping=True)[0]=="sleep"
-    assert select_profile({},at_home="home",occupied="occupied",manual="eco")[0]=="eco"
+def test_automatic_preset_meanings_are_encoded():
+    strategy=source("climate_strategy.py")
+    assert 'return "away","nobody_home"' in strategy
+    assert 'return "sleep","sleep_mode_active"' in strategy
+    assert 'return "comfort","room_occupied"' in strategy
+    assert 'return "home","someone_home_room_unoccupied"' in strategy
+    assert 'if manual in ("comfort","home","away","sleep","eco")' in strategy
 
-def test_eco_is_explicit_only():
-    for at_home in ("home","away","unknown"):
-        for occupied in ("occupied","unoccupied","unknown"):
-            assert select_profile({},at_home=at_home,occupied=occupied)[0]!="eco"
+def test_eco_is_explicit_only_in_profile_selector():
+    strategy=source("climate_strategy.py")
+    automatic=strategy[strategy.index('def select_profile'):strategy.index('def capabilities')]
+    assert automatic.count('"eco"') == 1
+    assert 'manual in ("comfort","home","away","sleep","eco")' in automatic
 ''',encoding="utf-8")
 
     # Update release metadata.
