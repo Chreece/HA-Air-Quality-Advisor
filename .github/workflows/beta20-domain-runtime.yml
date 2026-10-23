@@ -1,0 +1,182 @@
+name: Beta20 actual domain, room presets and automatic controller power
+on:
+  push:
+    branches: ['fix/beta20-enviroment-domain-runtime-20261023','beta/v0.6.0b20']
+permissions:
+  contents: read
+concurrency:
+  group: beta20-enviroment-runtime-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13','3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Build beta20 source when staging helper exists
+        run: |
+          if [ -f .github/apply-beta20.py ]; then python .github/apply-beta20.py; fi
+      - run: python -m pip install pytest
+      - name: Full regression suite
+        run: |
+          python -m pytest -q tests
+          python generate_translations.py
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend checks
+        run: |
+          node --check custom_components/enviroment_manager/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: Canonical package and removed-backend assertions
+        shell: bash
+        run: |
+          test -d custom_components/enviroment_manager
+          test ! -d custom_components/environment_manager
+          test ! -d custom_components/air_quality_advisor
+          ! grep -R --line-number --fixed-string 'allow_power' custom_components/enviroment_manager apply_equipment_i18n.py tests/test_equipment_i18n.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('custom_components/enviroment_manager')
+          m=json.loads((p/'manifest.json').read_text())
+          assert m['domain']=='enviroment_manager'
+          assert m['version']=='0.6.0b20'
+          PY
+      - name: Require reproducible generated catalogs on release branch
+        if: github.ref == 'refs/heads/beta/v0.6.0b20'
+        run: git diff --exit-code -- custom_components/enviroment_manager/strings.json custom_components/enviroment_manager/translations custom_components/enviroment_manager/equipment_text.py
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - run: |
+          if [ -f .github/apply-beta20.py ]; then python .github/apply-beta20.py; fi
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - run: |
+          if [ -f .github/apply-beta20.py ]; then python .github/apply-beta20.py; fi
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  home_assistant:
+    name: Actual HA 2026.10 migration and registry setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.14'}
+      - run: |
+          if [ -f .github/apply-beta20.py ]; then python .github/apply-beta20.py; fi
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: |
+          python tools/verify_domain_migration_ha.py
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+
+  save_source:
+    if: github.ref == 'refs/heads/fix/beta20-enviroment-domain-runtime-20261023'
+    needs: [test,hassfest,hacs,home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - name: Save exact validated beta20 source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -f .github/apply-beta20.py
+          python .github/apply-beta20.py
+          git rm .github/apply-beta20.py
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/fix/beta20-enviroment-domain-runtime-20261023" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'release(beta20): actual enviroment_manager domain, room presets and automatic native control'
+          git push origin HEAD:refs/heads/fix/beta20-enviroment-domain-runtime-20261023
+          echo "VALIDATED_SOURCE_SHA=$(git rev-parse HEAD)"
+          echo "VALIDATED_SOURCE_TREE=$(git rev-parse HEAD^{tree})"
+
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b20'
+    needs: [test,hassfest,hacs,home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify final source metadata
+        run: |
+          test ! -e .github/apply-beta20.py
+          python generate_translations.py
+          git diff --exit-code -- custom_components/enviroment_manager/strings.json custom_components/enviroment_manager/translations custom_components/enviroment_manager/equipment_text.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('custom_components/enviroment_manager/manifest.json').read_text())
+          r=json.loads(Path('.github/release-request.json').read_text())
+          assert m['domain']=='enviroment_manager'
+          assert m['version']==r['version']=='0.6.0b20'
+          assert r['channel']=='beta'
+          assert r['release_branch']=='beta/v0.6.0b20'
+          assert Path('.github/releases/v0.6.0b20.md').stat().st_size > 1800
+          PY
+      - name: Package and verify manual ZIP
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b20.zip custom_components/enviroment_manager -x '*__pycache__*' '*.pyc' '*.pyo'
+          python - <<'PY'
+          import json,zipfile
+          p='dist/HA-Home-Environment-Manager-v0.6.0b20.zip'
+          prefix='custom_components/enviroment_manager/'
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              assert all(n.startswith(prefix) for n in z.namelist())
+              assert not any('air_quality_advisor/' in n or 'environment_manager/' in n for n in z.namelist())
+              assert json.loads(z.read(prefix+'manifest.json'))['domain']=='enviroment_manager'
+              assert json.loads(z.read(prefix+'manifest.json'))['version']=='0.6.0b20'
+          PY
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b20.zip > dist/HA-Home-Environment-Manager-v0.6.0b20.zip.sha256
+      - name: Publish opt-in beta, never stable Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b20" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b20 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b20" >/dev/null 2>&1; then echo 'Existing orphan tag; refusing to overwrite'; exit 1; fi
+          gh release create v0.6.0b20 \
+            dist/HA-Home-Environment-Manager-v0.6.0b20.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b20.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 20' \
+            --notes-file .github/releases/v0.6.0b20.md --prerelease --latest=false
