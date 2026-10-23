@@ -1,4 +1,4 @@
-"""The opt-in v0.6 beta 23 must not alter stable distribution guarantees."""
+"""The opt-in v0.6 beta 24 must not alter stable distribution guarantees."""
 from __future__ import annotations
 
 import json
@@ -11,25 +11,25 @@ COMPONENT = ROOT / "custom_components" / "environment_manager"
 
 def test_beta_distribution_manifest_hacs_and_readme():
     manifest = json.loads((COMPONENT / "manifest.json").read_text(encoding="utf-8"))
-    if manifest["version"] != "0.6.0b23":
+    if manifest["version"] != "0.6.0b24":
         return  # Stable and future feature branches have their own version.
     assert manifest["domain"] == "environment_manager"
     assert manifest["name"] == "Home Environment Manager"
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     assert hacs["name"] == manifest["name"]
     assert hacs["content_in_root"] is True
-    assert hacs["zip_release"] is True
-    assert hacs["filename"] == "environment_manager.zip"
+    assert hacs.get("zip_release") is not True
+    assert "filename" not in hacs
     assert hacs["hide_default_branch"] is True
     req = json.loads((ROOT / ".github/release-request.json").read_text(encoding="utf-8"))
     assert (req["version"], req["channel"], req["release_branch"]) == (
-        "0.6.0b23", "beta", "beta/v0.6.0b23"
+        "0.6.0b24", "beta", "beta/v0.6.0b24"
     )
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Show beta versions" in text and "v0.5.1" in text
     assert "home_environment_manager.climate_diagnostics" in text
     assert "disabled by default" in text.lower()
-    note = ROOT / ".github" / "releases" / "v0.6.0b23.md"
+    note = ROOT / ".github" / "releases" / "v0.6.0b24.md"
     assert note.stat().st_size > 1500
     assert "physical" in note.read_text(encoding="utf-8").lower()
 
@@ -55,11 +55,11 @@ def test_branded_icons_and_beta_action_icons_have_valid_dimensions():
 
 
 def test_beta_workflow_uses_prerelease_and_never_changes_latest():
-    workflow = (ROOT / ".github/workflows/beta23-hacs-domain-switch.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/beta24-hacs-flat-payload.yml").read_text(encoding="utf-8")
     if (COMPONENT / "manifest.json").read_text(encoding="utf-8").find(
-        '"version": "0.6.0b23"'
+        '"version": "0.6.0b24"'
     ) < 0:
         return
-    assert "github.ref == 'refs/heads/beta/v0.6.0b23'" in workflow
+    assert "github.ref == 'refs/heads/beta/v0.6.0b24'" in workflow
     assert "--prerelease --latest=false" in workflow
-    assert "gh release create v0.6.0b23" in workflow
+    assert "gh release create v0.6.0b24" in workflow
