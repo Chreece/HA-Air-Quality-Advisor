@@ -65,7 +65,9 @@ def test_new_room_absence_requires_stable_unoccupied_delay(adapter):
           "temperature_entity":"sensor.kitchen_temperature",
           "climate_entity":"climate.kitchen"}
     status,_=gather(home_hass,room,conf)
-    assert status["profile"]=="comfort"
+    # During the vacancy dwell there is no verified occupant, so Comfort is
+    # forbidden. Home is the conservative someone-home / room-not-confirmed preset.
+    assert status["profile"]=="home"
     assert status["occupancy_evidence"]=="awaiting_stable_unoccupied_period"
     # HA state can remain OFF while reporting normally; last_changed (rather
     # than last_reported) establishes the entire quiet period.
