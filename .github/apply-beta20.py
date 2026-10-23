@@ -29,7 +29,7 @@ def main():
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
-        if path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".md"}:
+        if path.suffix.lower() not in {".py",".json",".yaml",".yml",".js",".cjs",".md"}:
             continue
         text=path.read_text(encoding="utf-8")
         text=text.replace("custom_components.environment_manager","custom_components.enviroment_manager")
