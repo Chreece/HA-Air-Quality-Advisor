@@ -1483,7 +1483,7 @@
         "name": "{channel}PWM cycle duration for slow thermal loads (seconds)"
       },
       "equipment_quiet_percentage": {
-        "name": "{channel}Low-noise fan limit (%)"
+        "name": "{channel}Quiet fan percentage (%)"
       },
       "equipment_min_on_seconds": {
         "name": "{channel}Power · min ON (s)"
@@ -1493,6 +1493,24 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Power · max ON (s)"
+      },
+      "equipment_temperature_min_limit": {
+        "name": "{channel}Temperature · min"
+      },
+      "equipment_temperature_max_limit": {
+        "name": "{channel}Temperature · max"
+      },
+      "equipment_humidity_min_limit": {
+        "name": "{channel}Humidity · min"
+      },
+      "equipment_humidity_max_limit": {
+        "name": "{channel}Humidity · max"
+      },
+      "equipment_fan_min_percentage": {
+        "name": "{channel}Speed · min (%)"
+      },
+      "equipment_fan_max_percentage": {
+        "name": "{channel}Speed · max (%)"
       },
       "home_global_occupancy_away_cooldown_minutes": {
         "name": "Home · Away · cooldown (min)"
@@ -1530,10 +1548,10 @@
         "name": "Notify when a closed window could help replace active heating, cooling or dehumidification (requires trustworthy outdoor conditions)"
       },
       "equipment_quiet_sleep": {
-        "name": "{channel}Low noise while sleeping"
+        "name": "{channel}Quiet when sleeping"
       },
       "equipment_quiet_occupied": {
-        "name": "{channel}Low noise while occupied"
+        "name": "{channel}Quiet when in room"
       },
       "equipment_allow_power": {
         "name": "{channel}Allow power and HVAC mode control"
@@ -1579,14 +1597,14 @@
         }
       },
       "equipment_quiet_fan_mode": {
-        "name": "{channel}Native low-noise fan mode"
+        "name": "{channel}Quiet fan mode"
       },
       "equipment_presence_requirement": {
         "name": "{channel}control · Occupancy",
         "state": {
           "always": "Automatic",
-          "room": "Room · Occupancy",
-          "home": "Home · Occupancy"
+          "occupied": "Room · Occupancy",
+          "absent": "Room · Occupancy · Off"
         }
       },
       "equipment_sleep_behavior": {

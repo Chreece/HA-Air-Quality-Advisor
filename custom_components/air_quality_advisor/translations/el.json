@@ -1483,7 +1483,7 @@
         "name": "{channel}Περίοδος κύκλου PWM (δευτερόλεπτα)"
       },
       "equipment_quiet_percentage": {
-        "name": "{channel}Όριο ανεμιστήρα χαμηλού θορύβου (%)"
+        "name": "{channel}Ποσοστό ανεμιστήρα αθόρυβης λειτουργίας (%)"
       },
       "equipment_min_on_seconds": {
         "name": "{channel}Ισχύς · min ON (s)"
@@ -1493,6 +1493,24 @@
       },
       "equipment_max_on_seconds": {
         "name": "{channel}Ισχύς · max ON (s)"
+      },
+      "equipment_temperature_min_limit": {
+        "name": "{channel}Θερμοκρασία · min"
+      },
+      "equipment_temperature_max_limit": {
+        "name": "{channel}Θερμοκρασία · max"
+      },
+      "equipment_humidity_min_limit": {
+        "name": "{channel}Υγρασία · min"
+      },
+      "equipment_humidity_max_limit": {
+        "name": "{channel}Υγρασία · max"
+      },
+      "equipment_fan_min_percentage": {
+        "name": "{channel}Ταχύτητα · min (%)"
+      },
+      "equipment_fan_max_percentage": {
+        "name": "{channel}Ταχύτητα · max (%)"
       },
       "home_global_occupancy_away_cooldown_minutes": {
         "name": "Σπίτι · Away · cooldown (min)"
@@ -1530,10 +1548,10 @@
         "name": "Ειδοποίηση όταν ασφαλής αερισμός από παράθυρο μπορεί να βοηθήσει αντί θέρμανσης, ψύξης ή αφύγρανσης"
       },
       "equipment_quiet_sleep": {
-        "name": "{channel}Χαμηλός θόρυβος στον ύπνο"
+        "name": "{channel}Αθόρυβα όταν κοιμάται το δωμάτιο"
       },
       "equipment_quiet_occupied": {
-        "name": "{channel}Χαμηλός θόρυβος με παρουσία"
+        "name": "{channel}Αθόρυβα όταν υπάρχει παρουσία"
       },
       "equipment_allow_power": {
         "name": "{channel}Να επιτρέπεται έλεγχος ισχύος και λειτουργίας"
@@ -1579,14 +1597,14 @@
         }
       },
       "equipment_quiet_fan_mode": {
-        "name": "{channel}Εγγενής αθόρυβη ταχύτητα ανεμιστήρα"
+        "name": "{channel}Λειτουργία ανεμιστήρα αθόρυβης λειτουργίας"
       },
       "equipment_presence_requirement": {
         "name": "{channel}έλεγχος · Παρουσία",
         "state": {
           "always": "Αυτόματος",
-          "room": "Δωμάτιο · Παρουσία",
-          "home": "Σπίτι · Παρουσία"
+          "occupied": "Δωμάτιο · Παρουσία",
+          "absent": "Δωμάτιο · Παρουσία · Απενεργοποίηση"
         }
       },
       "equipment_sleep_behavior": {
