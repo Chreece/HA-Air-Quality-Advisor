@@ -6,11 +6,11 @@ from types import SimpleNamespace
 
 import pytest
 
-from custom_components.enviroment_manager.hub_delivery import (
+from custom_components.environment_manager.hub_delivery import (
     hub_installed, hub_available, make_hub_payload,
     async_submit_hub, async_system_notification,
 )
-from custom_components.enviroment_manager.logic import Recommendation, Window, Reason
+from custom_components.environment_manager.logic import Recommendation, Window, Reason
 
 
 REC = Recommendation(
@@ -141,7 +141,7 @@ def test_hub_queue_acknowledgement_is_the_only_success_criterion():
 
 
 def test_hub_allows_slow_acknowledgements_before_falling_back():
-    import custom_components.enviroment_manager.hub_delivery as delivery
+    import custom_components.environment_manager.hub_delivery as delivery
     assert delivery.HUB_RESPONSE_TIMEOUT >= 90  # Hub may rewrite before queueing.
     async def delayed_acceptance():
         await asyncio.sleep(0.025)
@@ -166,7 +166,7 @@ def test_hub_service_rejection_uses_fallback(error):
 
 
 def test_hub_timeout_falls_back_without_suppressing_main_task(monkeypatch):
-    import custom_components.enviroment_manager.hub_delivery as delivery
+    import custom_components.environment_manager.hub_delivery as delivery
 
     async def slow():
         await asyncio.sleep(1)

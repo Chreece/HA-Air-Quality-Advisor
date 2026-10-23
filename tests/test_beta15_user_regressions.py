@@ -12,8 +12,8 @@ from test_discovery import adapter, FakeHass, MockState
 from test_equipment_control import runtime_module, home, tick
 from test_device_controls import controls, manager
 from test_room_setup import build, advance_to_general, defaults
-from custom_components.enviroment_manager.config_data import mutable_copy
-from custom_components.enviroment_manager import equipment_model as m
+from custom_components.environment_manager.config_data import mutable_copy
+from custom_components.environment_manager import equipment_model as m
 
 
 def test_mutable_copy_handles_nested_readonly_options_without_mutation():
@@ -110,7 +110,7 @@ def test_authorizing_one_device_does_not_enable_other_legacy_outputs(runtime_mod
         await h.runtime.async_update(h.spec, {"control_mode": "automatic"})
         rooms, _ = m.legacy_settings(h.manager)
         assert not rooms["room"]["enabled"] and not rooms["room"]["allow_actuation"]
-        from custom_components.enviroment_manager.device_activation import planning_rooms
+        from custom_components.environment_manager.device_activation import planning_rooms
         planned = planning_rooms(h.manager)["room"]
         assert planned["enabled"] and planned["controller"] == "environment"
         assert not planned["allow_actuation"]
@@ -132,7 +132,7 @@ def test_source_changes_revoke_device_authorization_without_blocking_off(runtime
 def test_invalidated_selection_cannot_recover_permission_by_deselect_reselect(runtime_module, monkeypatch, adapter):
     build(monkeypatch, adapter)
     async def run():
-        from custom_components.enviroment_manager.room_sources import store_selection, GROUPS
+        from custom_components.environment_manager.room_sources import store_selection, GROUPS
         h = home(runtime_module, domain="climate", mode="existing", power=False)
         inputs = {key: [] for key in GROUPS}
         inputs.update(windows=["binary_sensor.window"], temperature=["sensor.temp"],
@@ -192,7 +192,7 @@ def test_template_sources_are_selectable_even_when_current_value_empty_or_unknow
     ("[__import__('os').system('bad')]", None),
 ])
 def test_template_room_states_are_parsed_without_executing_or_guessing(adapter, state, expected):
-    from custom_components.enviroment_manager.occupancy_policy import configured_rooms
+    from custom_components.environment_manager.occupancy_policy import configured_rooms
     hass = FakeHass([MockState("sensor.sleeprooms", state)])
     hass._area_entries = {key: SimpleNamespace(id=key, name=key.title(), aliases=set()) for key in ("kitchen", "bedroom")}
     value, _ = configured_rooms(hass, "sensor.sleeprooms", "", set(hass._area_entries))
@@ -200,7 +200,7 @@ def test_template_room_states_are_parsed_without_executing_or_guessing(adapter, 
 
 
 def test_room_aliases_and_attribute_count_state_resolve_without_room_assignment(adapter):
-    from custom_components.enviroment_manager.occupancy_policy import configured_rooms
+    from custom_components.environment_manager.occupancy_policy import configured_rooms
     st = MockState("sensor.multi_room_presence", "1")
     st.attributes["rooms"] = ["Κουζίνα"]
     hass = FakeHass([st])
@@ -218,7 +218,7 @@ def test_room_aliases_and_attribute_count_state_resolve_without_room_assignment(
     ("Monitor", "", "", "Monitor"),
 ])
 def test_selector_labels_skip_empty_components_and_use_plain_hyphen(adapter, device, name, value, expected):
-    from custom_components.enviroment_manager.room_sources import label
+    from custom_components.environment_manager.room_sources import label
     st = MockState("sensor.test", value, name=name)
     st.name = name
     hass = FakeHass([st], {st.entity_id: "living"})
@@ -239,7 +239,7 @@ def test_general_entity_selectors_use_the_same_requested_label(monkeypatch, adap
 
 def test_native_device_approval_is_detected_by_other_entries(runtime_module):
     async def run():
-        from custom_components.enviroment_manager.climate_entry_ownership import foreign_owner_hold
+        from custom_components.environment_manager.climate_entry_ownership import foreign_owner_hold
         h = home(runtime_module, mode="existing", power=False)
         h.room.update(enabled=False, allow_actuation=False)
         h.dev["auto_control"] = False

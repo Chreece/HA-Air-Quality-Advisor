@@ -2,7 +2,7 @@
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-PKG=ROOT/"custom_components/enviroment_manager"
+PKG=ROOT/"custom_components/environment_manager"
 
 def source(name):
     return (PKG/name).read_text(encoding="utf-8")
@@ -10,11 +10,11 @@ def source(name):
 def test_exact_requested_domain_and_only_one_package():
     manifest=(PKG/"manifest.json").read_text()
     const=source("const.py")
-    assert '"domain": "enviroment_manager"' in manifest
-    assert 'DOMAIN = "enviroment_manager"' in const
+    assert '"domain": "environment_manager"' in manifest
+    assert 'DOMAIN = "environment_manager"' in const
     assert 'LEGACY_DOMAIN = "air_quality_advisor"' in const
     assert PKG.is_dir()
-    assert not (ROOT/"custom_components/environment_manager").exists()
+    assert not (ROOT/"custom_components/enviroment_manager").exists()
     assert not (ROOT/"custom_components/air_quality_advisor").exists()
 
 def test_no_allow_power_backend_or_entity():
@@ -45,7 +45,7 @@ def test_eco_is_explicit_only_in_profile_selector():
     assert 'manual in ("comfort","home","away","sleep","eco")' in automatic
 
 def test_general_settings_has_no_submit_rerender_state():
-    source=(ROOT/"custom_components/enviroment_manager/room_setup.py").read_text()
+    source=(ROOT/"custom_components/environment_manager/room_setup.py").read_text()
     assert "_setup_general_rendered" not in source
     assert "_setup_general_draft" not in source
 

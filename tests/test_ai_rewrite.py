@@ -9,9 +9,9 @@ from types import SimpleNamespace
 import pytest
 from test_discovery import adapter  # pytest fixture shared with flow tests
 
-from custom_components.enviroment_manager import ai_rewrite as ai
-from custom_components.enviroment_manager.logic import Recommendation, Window, Reason
-from custom_components.enviroment_manager.messages import announcement
+from custom_components.environment_manager import ai_rewrite as ai
+from custom_components.environment_manager.logic import Recommendation, Window, Reason
+from custom_components.environment_manager.messages import announcement
 
 
 REC = Recommendation(
@@ -148,8 +148,8 @@ def test_unavailable_invalid_error_and_timeout_fall_back(monkeypatch):
 
 
 def test_generated_ha_translation_fields_present_for_every_language():
-    from custom_components.enviroment_manager.languages import SUPPORTED_LANGUAGE_TAGS
-    root = Path(__file__).resolve().parents[1] / "custom_components" / "enviroment_manager"
+    from custom_components.environment_manager.languages import SUPPORTED_LANGUAGE_TAGS
+    root = Path(__file__).resolve().parents[1] / "custom_components" / "environment_manager"
     for code in SUPPORTED_LANGUAGE_TAGS:
         obj = json.loads((root / "translations" / f"{code}.json").read_text(encoding="utf-8"))
         for scope in ("config", "options"):
@@ -210,7 +210,7 @@ def test_invalid_agent_and_missing_conversation_action_rejected(monkeypatch, ada
 
 
 def test_announcement_hub_owns_ai_when_accepted():
-    root = Path(__file__).resolve().parents[1] / "custom_components" / "enviroment_manager"
+    root = Path(__file__).resolve().parents[1] / "custom_components" / "environment_manager"
     manager = (root / "manager.py").read_text(encoding="utf-8")
     assert "make_hub_payload(" in manager
     assert "use_ai=use_ai" in manager

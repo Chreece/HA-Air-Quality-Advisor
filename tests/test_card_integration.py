@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-INTEGRATION = ROOT / "custom_components" / "enviroment_manager"
+INTEGRATION = ROOT / "custom_components" / "environment_manager"
 
 
 def test_frontend_card_is_bundled_inside_hacs_integration():

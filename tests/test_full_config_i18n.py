@@ -10,10 +10,10 @@ import json
 import re
 from pathlib import Path
 
-from custom_components.enviroment_manager.languages import SUPPORTED_LANGUAGE_TAGS
+from custom_components.environment_manager.languages import SUPPORTED_LANGUAGE_TAGS
 
 ROOT=Path(__file__).resolve().parents[1]
-COMP=ROOT/"custom_components"/"enviroment_manager"
+COMP=ROOT/"custom_components"/"environment_manager"
 LOCALES=COMP/"translations"
 NEUTRAL=("AQI","CO₂","PM2.5","PM10","VOC","HCHO","NO₂","SO₂","O₃")
 GENERIC=("Device/source-specific configuration.",

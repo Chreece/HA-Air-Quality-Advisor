@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b21 - Canonical environment_manager domain repair (beta)
+
+- Correct the beta20 `enviroment_manager` package/domain typo to canonical `environment_manager`.
+- Migrate registry ownership from both `air_quality_advisor` and beta20 `enviroment_manager` while preserving entity/device IDs, subentries and user customizations.
+- Preserve chained storage migration markers for beta19 -> beta20 -> beta21 and direct beta19 -> beta21 upgrades.
+- Keep temporary service/card compatibility for the historical domains while making `environment_manager` authoritative.
+- Preserve beta20 room-owned presets, room-wide limits, selected-room feedback and controller safety behavior.
+- Validate both migration paths on installed Home Assistant 2026.10 before publishing.
+
 ## 0.6.0b19 - environment_manager domain migration and room-owned presets (beta)
 
 - Rename the canonical custom-integration package/domain to `environment_manager`; keep legacy service/card aliases for existing automations and dashboards.

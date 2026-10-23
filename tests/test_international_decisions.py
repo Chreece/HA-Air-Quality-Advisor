@@ -1,8 +1,8 @@
 """Do not confuse provider-specific indices or unverified measurements."""
-from custom_components.enviroment_manager.logic import (
+from custom_components.environment_manager.logic import (
     evaluate, Reading, Weather, Room, Window, Reason,
 )
-from custom_components.enviroment_manager.dashboard import dashboard_snapshot
+from custom_components.environment_manager.dashboard import dashboard_snapshot
 
 
 OUTDOOR = (Reading("sensor.out_pm","Outdoor particles","pm25",7),)

@@ -17,9 +17,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from homeassistant.config_entries import ConfigEntries, ConfigEntry, SOURCE_USER
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import area_registry as ar, device_registry as dr, entity_registry as er
-from custom_components.enviroment_manager.const import DOMAIN
-from custom_components.enviroment_manager.device_hierarchy import async_register_hierarchy
-from custom_components.enviroment_manager.room_hubs import (
+from custom_components.environment_manager.const import DOMAIN
+from custom_components.environment_manager.device_hierarchy import async_register_hierarchy
+from custom_components.environment_manager.room_hubs import (
     HOME_TYPE, async_sync_room_hubs, home_subentry_id,
 )
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b20/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b21/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -23,9 +23,9 @@
 
 > **v0.6.0 beta 19 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. This beta changes the Home Assistant integration domain to **environment_manager**. Existing beta18 users must use the built-in migration flow described below; **do not delete the old integration entry**. Physical equipment protections remain mandatory and software tests do not certify hardware.
 
-## Beta 20 - actual enviroment_manager domain and automatic room presets
+## Beta 20 - actual environment_manager domain and automatic room presets
 
-This is the first release whose installed Home Assistant integration domain is **enviroment_manager**. The b19 release was only the old-domain migration bridge. Existing air_quality_advisor entries are migrated through the new config flow while preserving room/device/entity registry identities.
+This is the first release whose installed Home Assistant integration domain is **environment_manager**. The b19 release was only the old-domain migration bridge. Existing air_quality_advisor entries are migrated through the new config flow while preserving room/device/entity registry identities.
 
 General settings is now one page only: changing the TTS provider or occupied/sleep list source is normalized on submit instead of rendering General settings a second time.
 
@@ -266,7 +266,7 @@ interlocks.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
 5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `home_environment_manager.climate_diagnostics` (or legacy alias `air_quality_advisor.climate_diagnostics`). Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b15). Extract it into the Home Assistant configuration directory, preserving `custom_components/enviroment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b15). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
 ### Complete configuration translations and explanations — beta 9
@@ -482,7 +482,7 @@ current advice triggers an actuator directly.
 
 ### Manual
 
-Copy `custom_components/enviroment_manager/` to `<your Home Assistant config>/custom_components/enviroment_manager/`, restart HA, then add the integration from the UI. Alternatively, from the extracted repository run:
+Copy `custom_components/environment_manager/` to `<your Home Assistant config>/custom_components/environment_manager/`, restart HA, then add the integration from the UI. Alternatively, from the extracted repository run:
 
 ```bash
 HA_CONFIG=/path/to/homeassistant/config bash ./install.sh
@@ -506,7 +506,7 @@ BCP47 support distinguishes `pt-BR` from `pt-PT`, and `zh-Hans` from `zh-Hant` (
 
 **Translation audit (v0.2.4):** All 38 language files now provide localized configuration and Reconfigure field labels, help text, validation errors, the settings-selection menu, abort messages, and the language selector's **Home Assistant default** option. Greek, German, French and Spanish include fully translated advanced-threshold labels and detailed explanations. The other 33 languages use short translated safety guidance and error messages with technical terms and symbols; native-speaker review is welcome. **Dynamic weather warnings, device names, room names, geographic names, sensor readings and IDs come from the user's Home Assistant or the weather provider and are not translated by this integration.** Actual spoken language still depends on the installed TTS voice.
 
-Locale sources are in `custom_components/enviroment_manager/locale_pack_*.py` and the reviewed, centralized `config_i18n_overrides.json` file. After editing either source, run `python generate_translations.py` and `python -m pytest -q tests/test_config_i18n_audit.py`. The generator applies the localized configuration overrides, then the optional mold-room translations, **last**, so it cannot silently restore English helper text. Native-speaker improvements are welcome.
+Locale sources are in `custom_components/environment_manager/locale_pack_*.py` and the reviewed, centralized `config_i18n_overrides.json` file. After editing either source, run `python generate_translations.py` and `python -m pytest -q tests/test_config_i18n_audit.py`. The generator applies the localized configuration overrides, then the optional mold-room translations, **last**, so it cannot silently restore English helper text. Native-speaker improvements are welcome.
 
 ### Config-flow translation quality assurance
 
@@ -989,7 +989,7 @@ MIT © 2026 Chreece
 
 ## Project status, compatibility and releases
 
-- **Home Assistant 2026.10+**; modern UI config/options flow and a bundled Lovelace dashboard card. The component ships local `custom_components/enviroment_manager/brand/` assets for Home Assistant 2026.3+ as well as repository-level HACS assets.
+- **Home Assistant 2026.10+**; modern UI config/options flow and a bundled Lovelace dashboard card. The component ships local `custom_components/environment_manager/brand/` assets for Home Assistant 2026.3+ as well as repository-level HACS assets.
 - **HACS custom integration repository:** `hacs.json`, `manifest.json` and conventional `custom_components/` layout are included. Public HACS catalog inclusion is a separate community-review process.
 - **Validations:** `pytest`, static syntax checks, JSON checks, HACS action and Hassfest run automatically on each completed push to main (plus optional manual validation). Actual platform compatibility and output delivery require a Home Assistant integration test; see the [release checklist](RELEASING.md).
 - **Versions:** see [CHANGELOG.md](CHANGELOG.md). This release is a first testable version, not an independently verified stable integration. No automatic window opening/closing is performed.

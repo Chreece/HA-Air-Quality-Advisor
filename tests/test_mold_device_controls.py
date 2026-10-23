@@ -19,8 +19,8 @@ def mold_editor(monkeypatch, adapter):
         pass
     mod.HomeAssistantError = HomeAssistantError
     monkeypatch.setitem(sys.modules, "homeassistant.exceptions", mod)
-    monkeypatch.delitem(sys.modules, "custom_components.enviroment_manager.mold_controls", raising=False)
-    controls = importlib.import_module("custom_components.enviroment_manager.mold_controls")
+    monkeypatch.delitem(sys.modules, "custom_components.environment_manager.mold_controls", raising=False)
+    controls = importlib.import_module("custom_components.environment_manager.mold_controls")
     return controls, HomeAssistantError
 
 

@@ -24,7 +24,7 @@ from .const import (
     CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES, MAX_REPEAT_MINUTES,
     CONF_AI_REWRITE, CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
-    DEFAULT_THRESHOLDS, DOMAIN, LEGACY_DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
+    DEFAULT_THRESHOLDS, DOMAIN, LEGACY_DOMAIN, LEGACY_DOMAINS, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
     CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
@@ -1808,7 +1808,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         if self._async_current_entries():
             return self.async_abort(reason="already_configured")
         entries = getattr(self.hass, "config_entries", None)
-        legacy = entries.async_entries(LEGACY_DOMAIN) if entries is not None else []
+        legacy = ([entry for domain in LEGACY_DOMAINS for entry in entries.async_entries(domain)] if entries is not None else [])
         if len(legacy) > 1:
             return self.async_abort(reason="legacy_migration_ambiguous")
         if len(legacy) == 1:
@@ -1831,7 +1831,7 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
     ) -> ConfigFlowResult:
         legacy_id=getattr(self,"_legacy_entry_id",None)
         legacy=self.hass.config_entries.async_get_entry(legacy_id) if legacy_id else None
-        if legacy is None or legacy.domain != LEGACY_DOMAIN:
+        if legacy is None or legacy.domain not in LEGACY_DOMAINS:
             return self.async_abort(reason="legacy_migration_missing")
         if user_input is None:
             return self.async_show_form(
@@ -1847,7 +1847,18 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         self._abort_if_unique_id_configured()
         self._migrating_legacy_entry_id=legacy.entry_id
         data=dict(legacy.data)
+        previous_id=data.get("_legacy_entry_id")
+        previous_domain=data.get("_legacy_domain")
+        chain=list(data.get("_legacy_entry_chain") or [])
+        if isinstance(previous_id,str) and previous_id:
+            chain.insert(0,{
+                "domain": previous_domain if previous_domain in LEGACY_DOMAINS else LEGACY_DOMAIN,
+                "entry_id": previous_id,
+            })
         data["_legacy_entry_id"]=legacy.entry_id
+        data["_legacy_domain"]=legacy.domain
+        if chain:
+            data["_legacy_entry_chain"]=chain
         subentries=[sub.as_dict() for sub in legacy.subentries.values()]
         return self.async_create_entry(
             title="Home Environment Manager",

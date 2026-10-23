@@ -8,7 +8,7 @@ import pytest
 from test_discovery import adapter
 from test_hub_manager import delivery_module
 
-from custom_components.enviroment_manager.logic import (
+from custom_components.environment_manager.logic import (
     Plan, Reason, Recommendation, Window,
 )
 

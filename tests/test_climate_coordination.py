@@ -4,10 +4,10 @@ import pytest
 @pytest.fixture
 def coordinator(adapter):
     # discovery imports HA registries; the adapter must be installed first.
-    from custom_components.enviroment_manager import climate_coordination
+    from custom_components.environment_manager import climate_coordination
     return climate_coordination
 
-from custom_components.enviroment_manager.logic import Reading
+from custom_components.environment_manager.logic import Reading
 from test_discovery import MockState, FakeHass, adapter
 
 

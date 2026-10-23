@@ -1,7 +1,7 @@
 """Provider-aware TTS language labels."""
 from types import SimpleNamespace
 
-from custom_components.enviroment_manager.tts_languages import (
+from custom_components.environment_manager.tts_languages import (
     language_options, preferred_language, supports_language,
 )
 

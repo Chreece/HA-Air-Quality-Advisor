@@ -1,7 +1,9 @@
 """Constants and cautious defaults for the Air Quality Advisor integration."""
 
-DOMAIN = "enviroment_manager"
+DOMAIN = "environment_manager"
 LEGACY_DOMAIN = "air_quality_advisor"
+BETA20_DOMAIN = "enviroment_manager"
+LEGACY_DOMAINS = (BETA20_DOMAIN, LEGACY_DOMAIN)
 LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"
 NAME = "Home Environment Manager"
 PLATFORMS = ["sensor", "number", "switch", "select", "button", "time", "climate"]

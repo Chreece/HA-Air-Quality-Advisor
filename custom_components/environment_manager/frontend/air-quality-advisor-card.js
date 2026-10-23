@@ -527,7 +527,7 @@
       ).then((entries) => {
         if (!Array.isArray(entries)) throw new Error('Invalid device registry');
         const belong = (d) => safeArray(d.identifiers)
-          .filter((pair) => Array.isArray(pair) && pair[0]==='enviroment_manager')
+          .filter((pair) => Array.isArray(pair) && pair[0]==='environment_manager')
           .map((pair) => pair[1]);
         const home = entries.filter((device) => belong(device).some(
           (identifier) => typeof identifier === 'string' && !identifier.includes('_area_')

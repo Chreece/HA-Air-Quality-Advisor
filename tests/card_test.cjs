@@ -16,7 +16,7 @@ global.customElements = {
   define(name,ctor){registered.set(name,ctor);}
 };
 global.window = {customCards:[]};
-const cardPath = path.resolve(__dirname,'../custom_components/enviroment_manager/frontend/air-quality-advisor-card.js');
+const cardPath = path.resolve(__dirname,'../custom_components/environment_manager/frontend/air-quality-advisor-card.js');
 require(cardPath);
 assert.equal(registered.has('air-quality-advisor-card'),true);
 assert.equal(window.customCards.filter((c)=>c.type==='air-quality-advisor-card').length,1);
@@ -709,10 +709,10 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   window.history={pushState(_state,_title,path){navigate.push(path);}};
   window.dispatchEvent=()=>true;
   const devices=[
-    {id:'home-registered-id', identifiers:[['enviroment_manager','entry-42']]},
-    {id:'kitchen-registered-id', identifiers:[['enviroment_manager','entry-42_area_kitchen']]},
-    {id:'living-registered-id', identifiers:[['enviroment_manager','entry-42_area_living']]},
-    {id:'bedroom-registered-id', identifiers:[['enviroment_manager','entry-42_area_bedroom']]},
+    {id:'home-registered-id', identifiers:[['environment_manager','entry-42']]},
+    {id:'kitchen-registered-id', identifiers:[['environment_manager','entry-42_area_kitchen']]},
+    {id:'living-registered-id', identifiers:[['environment_manager','entry-42_area_living']]},
+    {id:'bedroom-registered-id', identifiers:[['environment_manager','entry-42_area_bedroom']]},
   ];
   const editor=new Card();
   editor.setConfig({entity:'sensor.air_quality_advisor_recommendations'});

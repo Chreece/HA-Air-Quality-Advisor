@@ -8,7 +8,7 @@ import shutil
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "custom_components/enviroment_manager"
+COMPONENT = ROOT / "custom_components/environment_manager"
 
 
 def test_all_38_device_controller_catalogs_have_native_labels_and_explanations():

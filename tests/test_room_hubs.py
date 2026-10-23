@@ -11,8 +11,8 @@ import uuid
 import pytest
 from test_device_hierarchy import hierarchy
 from test_discovery import adapter
-from custom_components.enviroment_manager import room_hubs as rooms
-from custom_components.enviroment_manager.device_hierarchy import async_register_hierarchy
+from custom_components.environment_manager import room_hubs as rooms
+from custom_components.environment_manager.device_hierarchy import async_register_hierarchy
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -123,7 +123,7 @@ def test_beta11_services_migrate_in_place_to_real_room_groups(grouped):
         device.labels = {"custom-label"}
         device.disabled_by = "user"
         device.name_by_user = "User's name"
-    area_device = h.registry.keys[("hem", ("enviroment_manager", "hem_area_kitchen"))]
+    area_device = h.registry.keys[("hem", ("environment_manager", "hem_area_kitchen"))]
     entity = SimpleNamespace(entity_id="number.original_room", unique_id="stable-id",
         device_id=area_device.id, config_entry_id="hem", config_subentry_id=None,
         disabled_by="user", name="User's setting")
@@ -244,7 +244,7 @@ def test_all_platform_entities_use_same_subentry_as_their_device(grouped):
     h.source("climate.ac")
     sync(h)
     mapping = h.manager._device_hierarchy["device_subentries"]
-    entities = [SimpleNamespace(_attr_device_info={"identifiers": {("enviroment_manager", identity)}})
+    entities = [SimpleNamespace(_attr_device_info={"identifiers": {("environment_manager", identity)}})
                 for identity in mapping]
     calls = []
     rooms.async_add_grouped_entities(h.manager, lambda batch, **kwargs: calls.append((batch, kwargs)), entities)
@@ -258,7 +258,7 @@ def test_all_platform_entities_use_same_subentry_as_their_device(grouped):
 
 def test_every_platform_uses_shared_native_grouping_not_private_entity_attributes():
     from pathlib import Path
-    root = Path(__file__).parents[1] / "custom_components/enviroment_manager"
+    root = Path(__file__).parents[1] / "custom_components/environment_manager"
     for name in ("sensor", "number", "select", "switch", "time", "button", "climate"):
         source = (root / f"{name}.py").read_text()
         assert "async_add_grouped_entities(entry.runtime_data, async_add_entities," in source, name
@@ -330,7 +330,7 @@ def room_flow(grouped, monkeypatch):
             return {"type": "create_entry", **kw}
     ce = sys.modules["homeassistant.config_entries"]
     monkeypatch.setattr(ce, "ConfigSubentryFlow", FlowBase, raising=False)
-    name = "custom_components.enviroment_manager.room_hub_flow"
+    name = "custom_components.environment_manager.room_hub_flow"
     monkeypatch.delitem(sys.modules, name, raising=False)
     cls = importlib.import_module(name).RoomHubFlow
     flow = cls()
@@ -394,7 +394,7 @@ def test_every_room_subentry_catalog_is_localized_and_reproducible(tmp_path, mon
     root = Path(__file__).resolve().parents[1]
     monkeypatch.syspath_prepend(str(root))
     from apply_room_hub_i18n import ROOM_TEXT, apply_room_hub_i18n
-    component = root / "custom_components/enviroment_manager"
+    component = root / "custom_components/environment_manager"
     for name in ("strings.json", "compact_locales.json"):
         shutil.copy(component / name, tmp_path / name)
     shutil.copytree(component / "translations", tmp_path / "translations")
@@ -416,7 +416,7 @@ def test_every_room_subentry_catalog_is_localized_and_reproducible(tmp_path, mon
 def test_home_device_and_entities_use_native_home_subentry(grouped):
     h = grouped
     sync(h)
-    from custom_components.enviroment_manager.room_hubs import HOME_TYPE, home_subentry_id
+    from custom_components.environment_manager.room_hubs import HOME_TYPE, home_subentry_id
     sid = home_subentry_id(h.entry)
     assert sid is not None
     assert h.entry.subentries[sid].subentry_type == HOME_TYPE

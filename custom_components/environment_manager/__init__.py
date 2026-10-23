@@ -14,11 +14,12 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
 
-from .const import DOMAIN, LEGACY_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES
+from .const import (DOMAIN, LEGACY_DOMAIN, BETA20_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES)
 from .manager import AirQualityManager
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
-PUBLIC_ACTION_DOMAIN = "home_environment_manager"  # Alias only; existing domain remains.
+PUBLIC_ACTION_DOMAIN = LEGACY_PUBLIC_ACTION_DOMAIN
+SERVICE_ALIAS_DOMAINS = (PUBLIC_ACTION_DOMAIN, BETA20_DOMAIN, LEGACY_DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
@@ -27,6 +28,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     card_path = Path(__file__).parent / "frontend" / "air-quality-advisor-card.js"
     await hass.http.async_register_static_paths([
         StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
+        StaticPathConfig(f"/{BETA20_DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
         StaticPathConfig(f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
@@ -181,7 +183,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
         # A user-facing service alias for the rebrand. Both service domains
         # intentionally call the same manager: no duplicate announcements.
-        for alias in (PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for alias in SERVICE_ALIAS_DOMAINS:
             if not hass.services.has_service(alias, "announce"):
                 hass.services.async_register(
                     alias, "announce", async_announce_action,
@@ -200,7 +202,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
             return result if call.return_response else None
 
-        for service_domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for service_domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
             if not hass.services.has_service(service_domain, "pid_control"):
                 hass.services.async_register(
                     service_domain, "pid_control", async_pid_action,
@@ -217,7 +219,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 call.data["area"],call.data["action"]
             )
             return result if call.return_response else None
-        for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
             if not hass.services.has_service(domain,"climate_control"):
                 hass.services.async_register(
                     domain,"climate_control",async_native_action,
@@ -248,7 +250,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             }
             return response if call.return_response else None
 
-        for domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
             if not hass.services.has_service(domain, "climate_diagnostics"):
                 hass.services.async_register(
                     domain, "climate_diagnostics", async_diagnostics,
@@ -265,10 +267,10 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
     if not hass.data.get(DOMAIN):
         hass.services.async_remove(DOMAIN, "announce")
-        for alias in (PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for alias in SERVICE_ALIAS_DOMAINS:
             if hass.services.has_service(alias, "announce"):
                 hass.services.async_remove(alias, "announce")
-        for service_domain in (DOMAIN, PUBLIC_ACTION_DOMAIN, LEGACY_DOMAIN):
+        for service_domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
             if hass.services.has_service(service_domain, "pid_control"):
                 hass.services.async_remove(service_domain, "pid_control")
             if hass.services.has_service(service_domain, "climate_control"):

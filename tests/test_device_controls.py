@@ -24,9 +24,9 @@ def controls(monkeypatch, adapter):
 
     module.HomeAssistantError = HomeAssistantError
     monkeypatch.setitem(sys.modules, "homeassistant.exceptions", module)
-    monkeypatch.delitem(sys.modules, "custom_components.enviroment_manager.device_controls",
+    monkeypatch.delitem(sys.modules, "custom_components.environment_manager.device_controls",
                         raising=False)
-    impl = importlib.import_module("custom_components.enviroment_manager.device_controls")
+    impl = importlib.import_module("custom_components.environment_manager.device_controls")
     return impl, HomeAssistantError
 
 

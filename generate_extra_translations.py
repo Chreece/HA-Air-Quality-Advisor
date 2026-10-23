@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 import runpy
 
-ROOT = Path(__file__).resolve().parent / "custom_components" / "enviroment_manager"
+ROOT = Path(__file__).resolve().parent / "custom_components" / "environment_manager"
 PACKS = ("locale_pack_europe.py", "locale_pack_europe2.py", "locale_pack_global.py")
 STEPS = ("areas", "window_sensors", "indoor_sensors", "outdoor",
          "weather", "delivery", "thresholds")

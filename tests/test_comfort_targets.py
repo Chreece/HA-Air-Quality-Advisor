@@ -3,11 +3,11 @@ from datetime import datetime
 from types import SimpleNamespace
 from zoneinfo import ZoneInfo
 
-from custom_components.enviroment_manager.comfort_targets import solve_pmv_air_temperature
-from custom_components.enviroment_manager.climate_schedule import (
+from custom_components.environment_manager.comfort_targets import solve_pmv_air_temperature
+from custom_components.environment_manager.climate_schedule import (
     local_interval_active, scheduled_sleep,
 )
-from custom_components.enviroment_manager.climate_strategy import policy
+from custom_components.environment_manager.climate_strategy import policy
 
 
 def standard_model(**kwargs):
