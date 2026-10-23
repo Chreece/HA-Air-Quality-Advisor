@@ -199,14 +199,15 @@ def async_register_hierarchy(hass: Any, entry: Any) -> None:
     manager = entry.runtime_data
     settings = {**entry.data, **entry.options}
     registry, areas = dr.async_get(hass), ar.async_get(hass)
+    home_subentry = getattr(manager, "_home_subentry", None)
     home = _register(registry, entry.entry_id, {
         "identifiers": {(DOMAIN, entry.entry_id)},
-        "name": "Home Environment Manager",
+        "name": "Home",
         "manufacturer": "Home Environment Manager",
         "model": "Home Environment Hub",
-    }, hass=hass)
+    }, hass=hass, subentry_id=home_subentry)
     subentries = getattr(manager, "_room_subentries", {})
-    device_subentries = {entry.entry_id: None}
+    device_subentries = {entry.entry_id: home_subentry}
     area_devices = {}
     for area_id in configured_area_ids(settings):
         area = areas.async_get_area(area_id)

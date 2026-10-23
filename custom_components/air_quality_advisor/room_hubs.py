@@ -16,6 +16,17 @@ from .const import CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, DOMAIN
 
 ROOM_TYPE = "room"
 ROOM_IDS = "room_hub_subentry_ids"
+HOME_TYPE = "home"
+HOME_ID = "home_hub_subentry_id"
+
+
+def home_subentry_id(entry: Any) -> str | None:
+    saved = entry.options.get(HOME_ID)
+    if isinstance(saved, str) and saved in entry.subentries:
+        return saved
+    matches = [sub.subentry_id for sub in entry.subentries.values()
+               if sub.subentry_type == HOME_TYPE]
+    return matches[0] if len(matches) == 1 else None
 
 
 def _saved_ids(entry: Any) -> dict[str, str]:
@@ -68,6 +79,18 @@ def async_sync_room_hubs(hass: Any, entry: Any) -> dict[str, str]:
     settings = {**entry.data, **entry.options}
     selected = {area: obj for area in configured_area_ids(settings)
                 if (obj := areas.async_get_area(area)) is not None}
+    home_entries = [sub for sub in tuple(entry.subentries.values())
+                    if sub.subentry_type == HOME_TYPE]
+    if len(home_entries) > 1:
+        raise ValueError("Duplicate Home Environment Manager Home hub")
+    if home_entries:
+        home = home_entries[0]
+    else:
+        home = ConfigSubentry(data=MappingProxyType({"kind": "home"}),
+                              subentry_type=HOME_TYPE, title="Home",
+                              unique_id="home")
+        hass.config_entries.async_add_subentry(entry, home)
+
     existing = {}
     for sub in tuple(entry.subentries.values()):
         if sub.subentry_type != ROOM_TYPE or not isinstance(sub.data.get("area_id"), str):
@@ -99,9 +122,10 @@ def async_sync_room_hubs(hass: Any, entry: Any) -> dict[str, str]:
     for area_id, sub in existing.items():
         if area_id not in selected:
             hass.config_entries.async_remove_subentry(entry, sub.subentry_id)
-    if _saved_ids(entry) != result:
+    if _saved_ids(entry) != result or entry.options.get(HOME_ID) != home.subentry_id:
         options = deepcopy(dict(entry.options))
         options[ROOM_IDS] = result
+        options[HOME_ID] = home.subentry_id
         hass.config_entries.async_update_entry(entry, options=options)
     return result
 

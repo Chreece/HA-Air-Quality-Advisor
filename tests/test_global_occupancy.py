@@ -150,3 +150,38 @@ def test_sleep_pause_takes_priority_over_absence_off(adapter):
     assert device_permission(device,"unoccupied","away",False)[0]=="absent"
     device["sleep_behavior"]="sleep_targets"
     assert device_permission(device,"unoccupied","away",None)[0]=="held"
+
+
+def test_empty_occupied_rooms_means_away_only_after_cooldown(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import home_presence
+    empty = MockState("sensor.occupied_rooms", "[]")
+    empty.last_changed = datetime.now(timezone.utc) - timedelta(minutes=5)
+    empty.last_updated = empty.last_changed
+    resident = MockState("person.resident", "home")
+    h = FakeHass([empty, resident])
+    cfg = {"occupied_rooms_entity": empty.entity_id,
+           "home_trackers": [resident.entity_id],
+           "away_cooldown_minutes": 10}
+    status, reason, sources = home_presence(h, cfg)
+    assert status == "home" and reason == "no_occupied_rooms_cooldown"
+    assert sources == [empty.entity_id]
+    empty.last_changed = datetime.now(timezone.utc) - timedelta(minutes=11)
+    empty.last_updated = empty.last_changed
+    assert home_presence(h, cfg)[:2] == ("away", "occupied_rooms_empty")
+    empty.state = "unavailable"
+    assert home_presence(h, cfg)[0] == "unknown"
+
+
+def test_all_room_presence_sensors_empty_override_home_tracker_after_cooldown(adapter):
+    from custom_components.air_quality_advisor.occupancy_policy import home_presence
+    a = MockState("binary_sensor.a_presence", "off", device_class="presence")
+    b = MockState("binary_sensor.b_presence", "off", device_class="presence")
+    resident = MockState("person.resident", "home")
+    stamp = datetime.now(timezone.utc) - timedelta(minutes=20)
+    a.last_changed = b.last_changed = stamp
+    h = FakeHass([a, b, resident])
+    cfg = {"room_occupancy_sensors": [a.entity_id, b.entity_id],
+           "home_trackers": [resident.entity_id], "away_cooldown_minutes": 10}
+    assert home_presence(h, cfg)[0] == "away"
+    b.state = "on"
+    assert home_presence(h, cfg)[0] == "home"

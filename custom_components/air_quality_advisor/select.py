@@ -23,8 +23,7 @@ GAIN_SOURCE_OPTIONS = ("defaults", "manual")
 
 async def async_setup_entry(hass, entry, async_add_entities):
     manager = entry.runtime_data
-    entities = [ConfigSelect(manager, entry.entry_id, None, "language",
-                             LANGUAGES)]
+    entities = [TTSLanguageSelect(manager, entry.entry_id)]
     for area in configured_area_ids(manager.settings):
         if climate_settings(manager.settings, area) is not None:
             entities.append(ConfigSelect(manager, entry.entry_id, area, "manual_profile",
@@ -80,6 +79,45 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     if key != "fan_purpose" or (cap := equipment.capabilities(manager, spec)) is not None
                     and (cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
+
+
+class TTSLanguageSelect(SelectEntity):
+    """Show human language names while persisting provider-compatible BCP47 tags."""
+
+    _attr_has_entity_name = True
+    _attr_should_poll = False
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_translation_key = "home_language"
+    _attr_icon = "mdi:translate"
+
+    def __init__(self, manager, entry_id):
+        self._manager = manager
+        self._attr_unique_id = f"{entry_id}_home_language"
+        self._attr_device_info = {"identifiers": {(DOMAIN, entry_id)}}
+
+    def _choices(self):
+        from .tts_languages import language_options
+        return language_options(self._manager.hass, self._manager.settings.get("tts_engine"))
+
+    @property
+    def options(self):
+        return [item["label"] for item in self._choices()]
+
+    @property
+    def current_option(self):
+        from .tts_languages import preferred_language
+        value = preferred_language(
+            self._manager.hass, self._manager.settings.get("tts_engine"),
+            self._manager.settings.get("language", "auto"))
+        return next((item["label"] for item in self._choices() if item["value"] == value),
+                    self.options[0] if self.options else None)
+
+    async def async_select_option(self, option: str):
+        match = next((item for item in self._choices() if item["label"] == option), None)
+        if match is None:
+            raise ValueError("Unknown TTS language")
+        await update_device_setting(self._manager, "global_setting", "language", match["value"])
+        self.async_write_ha_state()
 
 
 class ConfigSelect(SelectEntity):

@@ -198,20 +198,38 @@ def room_science(hass: Any, area_id: str, profile: dict, samples: list[dict],
 
 
 def global_pollen(hass: Any, profile: dict, max_age: float) -> tuple[dict, set[str]]:
-    """Provider-specific pollen forecast from any Home Assistant integration."""
-    entity_id = profile.get("pollen_entity")
-    if not entity_id:
+    """Combine explicitly selected provider-specific pollen indices conservatively."""
+    configured = profile.get("pollen_entities")
+    if not isinstance(configured, list):
+        legacy = profile.get("pollen_entity")
+        configured = [legacy] if isinstance(legacy, str) and legacy else []
+    entities = list(dict.fromkeys(e for e in configured if isinstance(e, str) and e))
+    if not entities:
         return {"status": "not_configured"}, set()
-    state = hass.states.get(entity_id)
-    if state is None or is_stale(state, max_age):
-        return {"status": "unavailable"}, {entity_id}
-    result = pollen_reading(
-        state.state, high_from=profile.get("pollen_high_from", 3),
-        max_scale=profile.get("pollen_max_scale", 5),
-        prevent_ventilation=bool(profile.get("pollen_avoid_ventilation", False)),
-    )
-    result["provider_entity"] = entity_id
-    return result, {entity_id}
+    readings = []
+    for entity_id in entities:
+        state = hass.states.get(entity_id)
+        if state is None or is_stale(state, max_age):
+            readings.append({"status": "unavailable", "provider_entity": entity_id})
+            continue
+        item = pollen_reading(
+            state.state, high_from=profile.get("pollen_high_from", 3),
+            max_scale=profile.get("pollen_max_scale", 5),
+            prevent_ventilation=bool(profile.get("pollen_avoid_ventilation", False)),
+        )
+        item["provider_entity"] = entity_id
+        readings.append(item)
+    valid = [item for item in readings if item.get("status") == "provider_defined"]
+    if not valid:
+        return {"status": "unavailable", "providers": readings}, set(entities)
+    worst = max(valid, key=lambda item: float(item.get("value", 0)) /
+                max(float(item.get("max_scale", 1)), 1))
+    result = dict(worst)
+    result["provider_entities"] = entities
+    result["providers"] = readings
+    result["high"] = any(bool(item.get("high")) for item in valid)
+    result["avoid_ventilation"] = any(bool(item.get("avoid_ventilation")) for item in valid)
+    return result, set(entities)
 
 
 def global_aqi(reading: Any, profile: dict) -> dict:

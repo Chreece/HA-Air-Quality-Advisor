@@ -42,20 +42,27 @@ def _agent_labels() -> dict[str, str]:
 
 
 def conversation_agent_choices(hass: Any, saved: str | None = None) -> list[dict[str, str]]:
-    """Only Home Assistant conversation entities, plus the default option."""
-    agents: dict[str, str] = {}
+    """Conversation and data-capable AI Task entities, plus HA default."""
+    agents: dict[str, tuple[str, str]] = {}
     for state in hass.states.async_all("conversation"):
         if state.entity_id.startswith("conversation."):
-            agents[state.entity_id] = str(state.name or state.entity_id)
-    if saved and saved != DEFAULT_AGENT and saved.startswith("conversation."):
-        agents.setdefault(saved, f"⚠ {saved}")
+            agents[state.entity_id] = ("Conversation", str(state.name or state.entity_id))
+    for state in hass.states.async_all("ai_task"):
+        try:
+            supported = int(getattr(state, "attributes", {}).get("supported_features", 0))
+        except (TypeError, ValueError, OverflowError):
+            supported = 0
+        if state.entity_id.startswith("ai_task.") and supported & 1:
+            agents[state.entity_id] = ("Task AI", str(state.name or state.entity_id))
+    if saved and saved != DEFAULT_AGENT and saved.startswith(("conversation.", "ai_task.")):
+        agents.setdefault(saved, ("Saved AI", f"⚠ {saved}"))
     configured_language = getattr(getattr(hass, "config", None), "language", "en")
     language = resolve_language(configured_language)
     default_label = _agent_labels().get(language, "Home Assistant default")
     return [
         {"value": DEFAULT_AGENT, "label": default_label},
-        *({"value": entity_id, "label": f"{name} · {entity_id}"}
-          for entity_id, name in sorted(agents.items(), key=lambda item: item[1].casefold())),
+        *({"value": entity_id, "label": f"{kind} - {name}"}
+          for entity_id, (kind, name) in sorted(agents.items(), key=lambda item: item[1][1].casefold())),
     ]
 
 
@@ -89,26 +96,11 @@ def make_rewrite_prompt(recommendation: Any, original: str, language: str) -> st
     )
 
 
-def validate_rewrite(response: Any, recommendation: Any, original: str) -> str | None:
-    """Accept only a bounded, grounded sentence with all factual anchors."""
-    if not isinstance(response, dict):
-        return None
-    inner = response.get("response", response)
-    if not isinstance(inner, dict):
-        return None
-    if inner.get("response_type") == "error":
-        return None
-    data = inner.get("data") or {}
-    if isinstance(data, dict) and (data.get("success") or data.get("failed")):
-        return None  # An agent attempted a HA action; do not trust its text.
-    speech = inner.get("speech") or {}
-    if not isinstance(speech, dict):
-        return None
-    plain = speech.get("plain") or {}
-    raw = plain.get("speech") if isinstance(plain, dict) else None
+def _validate_rewrite_text(raw: Any, recommendation: Any, original: str) -> str | None:
+    """Validate one raw model string, regardless of conversation/task transport."""
     if not isinstance(raw, str):
         return None
-    if "\n" in raw.strip() or "\r" in raw.strip():
+    if "\\n" in raw.strip() or "\\r" in raw.strip():
         return None
     if len(raw) > MAX_REPLY_CHARS + 8 or _CONTROL.search(raw):
         return None
@@ -128,7 +120,6 @@ def validate_rewrite(response: Any, recommendation: Any, original: str) -> str |
     lowered = rewritten.casefold()
     if any(str(anchor).casefold() not in lowered for anchor in required if anchor):
         return None
-    # Reject newly invented numeric claims, durations or sensor readings.
     valid_numbers = set(_NUMBER.findall(original))
     valid_numbers.update(
         number for name in [recommendation.area_name, *(w.name for w in recommendation.windows)]
@@ -139,20 +130,62 @@ def validate_rewrite(response: Any, recommendation: Any, original: str) -> str |
     return rewritten
 
 
+def validate_rewrite(response: Any, recommendation: Any, original: str) -> str | None:
+    """Accept only a bounded, grounded conversation response."""
+    if not isinstance(response, dict):
+        return None
+    inner = response.get("response", response)
+    if not isinstance(inner, dict):
+        return None
+    if inner.get("response_type") == "error":
+        return None
+    data = inner.get("data") or {}
+    if isinstance(data, dict) and (data.get("success") or data.get("failed")):
+        return None  # An agent attempted a HA action; do not trust its text.
+    speech = inner.get("speech") or {}
+    if not isinstance(speech, dict):
+        return None
+    plain = speech.get("plain") or {}
+    raw = plain.get("speech") if isinstance(plain, dict) else None
+    if not isinstance(raw, str):
+        return None
+    return _validate_rewrite_text(raw, recommendation, original)
+
+
 async def async_rewrite_announcement(
     hass: Any, recommendation: Any, original: str,
     language: str, agent_id: str = DEFAULT_AGENT,
 ) -> str:
-    """Use a conversation agent once, or preserve the original safely."""
-    if not hass.services.has_service("conversation", "process"):
+    """Use the selected Conversation or AI Task provider, with safe fallback."""
+    if agent_id and agent_id.startswith("ai_task."):
+        available = hass.services.has_service("ai_task", "generate_data")
+    else:
+        available = hass.services.has_service("conversation", "process")
+    if not available:
         return original
-    request: dict[str, Any] = {
-        "text": make_rewrite_prompt(recommendation, original, language),
-        "language": language,
-    }
-    if agent_id and agent_id != DEFAULT_AGENT:
-        request["agent_id"] = agent_id
+    prompt = make_rewrite_prompt(recommendation, original, language)
     try:
+        if agent_id and agent_id.startswith("ai_task."):
+            if not hass.services.has_service("ai_task", "generate_data"):
+                return original
+            result = await asyncio.wait_for(
+                hass.services.async_call(
+                    "ai_task", "generate_data",
+                    {"task_name": "Home Environment announcement rewrite",
+                     "instructions": prompt, "entity_id": agent_id},
+                    blocking=True, return_response=True,
+                ),
+                timeout=3 if recommendation.action == "close" else AI_TIMEOUT_SECONDS,
+            )
+            data = result.get("data") if isinstance(result, dict) else None
+            if isinstance(data, dict):
+                data = next((data.get(key) for key in ("text", "message", "response", "result")
+                             if isinstance(data.get(key), str)), None)
+            return _validate_rewrite_text(data, recommendation, original) or original
+
+        request: dict[str, Any] = {"text": prompt, "language": language}
+        if agent_id and agent_id != DEFAULT_AGENT:
+            request["agent_id"] = agent_id
         result = await asyncio.wait_for(
             hass.services.async_call(
                 "conversation", "process", request,

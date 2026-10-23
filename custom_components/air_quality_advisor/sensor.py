@@ -111,6 +111,14 @@ class AirQualityRecommendation(SensorEntity):
                 "outdoor_sources": list(self._manager.settings.get("outdoor_sensors", [])),
                 "weather_sources": list(self._manager.settings.get("weather_entities", [])),
                 "warning_sources": list(self._manager.settings.get("weather_warnings", [])),
+                "pollen_sources": list((self._manager.settings.get("environment_global") or {}).get(
+                    "pollen_entities", [])),
+                "announcement_hub_enabled": self._manager.settings.get("use_announcement_hub", False),
+                "ai_provider": self._manager.settings.get("ai_conversation_agent", "default"),
+                "tts_engine": self._manager.settings.get("tts_engine"),
+                "tts_language": self._manager.settings.get("language", "auto"),
+                "away_cooldown_minutes": (self._manager.settings.get("occupancy_global") or {}).get(
+                    "away_cooldown_minutes", 10),
             },
             "dashboard": dashboard_snapshot(plan, self._manager.thresholds),
         }

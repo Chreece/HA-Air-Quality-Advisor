@@ -222,6 +222,7 @@ def test_room_setup_translation_generator_reproduces_every_catalog(tmp_path, mon
     root = Path(__file__).parents[1]
     monkeypatch.syspath_prepend(str(root))
     from apply_room_setup_i18n import apply_room_setup_i18n
+    from apply_beta16_i18n import apply_beta16_i18n
     component = root / "custom_components/air_quality_advisor"
     for name in ("strings.json", "compact_locales.json"):
         shutil.copy(component / name, tmp_path / name)
@@ -229,4 +230,40 @@ def test_room_setup_translation_generator_reproduces_every_catalog(tmp_path, mon
     paths = [tmp_path / "strings.json", *sorted((tmp_path / "translations").glob("*.json"))]
     original = {p: p.read_bytes() for p in paths}
     apply_room_setup_i18n(tmp_path)
+    apply_beta16_i18n(tmp_path)
     assert {p: p.read_bytes() for p in paths} == original
+
+
+def test_general_first_setup_preselects_weather_outdoor_and_all_pollen(monkeypatch, adapter):
+    flow = build(monkeypatch, adapter)
+    weather2 = MockState("weather.backup", "cloudy")
+    aqi = MockState("sensor.outdoor_aqi", 25, device_class="aqi", unit="index")
+    pollen1 = MockState("sensor.pollen_grass", 2)
+    pollen2 = MockState("sensor.pollen_tree", 1)
+    for state in (weather2, aqi, pollen1, pollen2):
+        flow.hass._values[state.entity_id] = state
+    flow.hass._entity_areas[aqi.entity_id] = "outside"
+    # Initial setup: no prior explicit general-source lists.
+    for key in ("weather_entities", "outdoor_sensors", "environment_global"):
+        flow.config_entry.data.pop(key, None)
+    flow.hass.config_entries = SimpleNamespace(
+        async_entries=lambda domain: [SimpleNamespace(state="loaded")]
+        if domain == "announcement_hub" else [])
+    form = advance_to_general(flow)
+    values = defaults(form)
+    assert set(values["weather_entities"]) == {"weather.home", "weather.backup"}
+    assert "sensor.outdoor_aqi" in values["outdoor_sensors"]
+    assert set(values["pollen_entities"]) == {"sensor.pollen_grass", "sensor.pollen_tree"}
+    assert "use_announcement_hub" in form["data_schema"]
+
+
+def test_general_explicit_empty_sources_stay_empty_on_reopen(monkeypatch, adapter):
+    flow = build(monkeypatch, adapter)
+    flow.config_entry.data["weather_entities"] = []
+    flow.config_entry.data["outdoor_sensors"] = []
+    flow.config_entry.data["environment_global"] = {"pollen_entities": []}
+    form = advance_to_general(flow)
+    values = defaults(form)
+    assert values["weather_entities"] == []
+    assert values["outdoor_sensors"] == []
+    assert values["pollen_entities"] == []

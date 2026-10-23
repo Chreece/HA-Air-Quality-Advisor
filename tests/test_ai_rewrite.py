@@ -217,3 +217,31 @@ def test_announcement_hub_owns_ai_when_accepted():
     assert "async_submit_hub(self.hass, hub_payload)" in manager
     assert "if use_ai and (can_notify" in manager
     assert "async_rewrite_announcement" in manager
+
+
+def test_task_ai_entity_is_offered_and_uses_generate_data():
+    task = SimpleNamespace(entity_id="ai_task.writer", name="Writer",
+                           attributes={"supported_features": 1})
+    convo = SimpleNamespace(entity_id="conversation.chat", name="Chat", attributes={})
+    states = SimpleNamespace(async_all=lambda domain: [task] if domain == "ai_task" else [convo])
+    hass = SimpleNamespace(states=states, config=SimpleNamespace(language="en"))
+    choices = ai.conversation_agent_choices(hass)
+    assert {c["value"] for c in choices} == {"default", "conversation.chat", "ai_task.writer"}
+    assert next(c["label"] for c in choices if c["value"] == "ai_task.writer").startswith("Task AI - ")
+
+    class Services:
+        def __init__(self):
+            self.calls = []
+        def has_service(self, domain, action):
+            return (domain, action) == ("ai_task", "generate_data")
+        async def async_call(self, domain, action, data, **kwargs):
+            self.calls.append((domain, action, data, kwargs))
+            return {"conversation_id": "x", "data": VALID}
+    services = Services()
+    result_text = asyncio.run(ai.async_rewrite_announcement(
+        SimpleNamespace(services=services), REC, ORIGINAL, "en", "ai_task.writer"))
+    assert result_text == VALID[5:]
+    assert services.calls[0][0:2] == ("ai_task", "generate_data")
+    assert services.calls[0][2]["entity_id"] == "ai_task.writer"
+    assert services.calls[0][2]["task_name"] == "Home Environment announcement rewrite"
+    assert services.calls[0][3] == {"blocking": True, "return_response": True}

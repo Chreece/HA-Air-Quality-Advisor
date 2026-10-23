@@ -411,3 +411,15 @@ def test_every_room_subentry_catalog_is_localized_and_reproducible(tmp_path, mon
         assert "invalid_area" in sub["error"] and "already_configured" in sub["abort"]
         if lang != "en":
             assert title != ROOM_TEXT["en"][0] and explanation != ROOM_TEXT["en"][1]
+
+
+def test_home_device_and_entities_use_native_home_subentry(grouped):
+    h = grouped
+    sync(h)
+    from custom_components.air_quality_advisor.room_hubs import HOME_TYPE, home_subentry_id
+    sid = home_subentry_id(h.entry)
+    assert sid is not None
+    assert h.entry.subentries[sid].subentry_type == HOME_TYPE
+    assert h.manager._device_hierarchy["device_subentries"][h.entry.entry_id] == sid
+    home_device = h.registry.async_get(h.manager._device_hierarchy["home_device_id"])
+    assert home_device.config_subentry_id == sid

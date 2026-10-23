@@ -135,9 +135,65 @@ def _bool_presence(state: Any, minutes: float = 240) -> bool | None:
     return None
 
 
+def _after_away_cooldown(states: list[Any], minutes: Any, reason: str
+                         ) -> tuple[str, str]:
+    try:
+        cooldown = max(0.0, min(240.0, float(minutes)))
+    except (TypeError, ValueError, OverflowError):
+        cooldown = 10.0
+    if cooldown <= 0:
+        return "away", reason
+    stamps = [getattr(state, "last_changed", None) for state in states if state is not None]
+    stamps = [stamp for stamp in stamps if isinstance(stamp, datetime) and stamp.tzinfo is not None]
+    if not stamps:
+        return "unknown", "away_cooldown_start_unknown"
+    elapsed = (datetime.now(timezone.utc) - max(stamps)).total_seconds()
+    if elapsed < 0:
+        return "unknown", "away_cooldown_clock_invalid"
+    if elapsed < cooldown * 60:
+        return "home", "no_occupied_rooms_cooldown"
+    return "away", reason
+
+
 def home_presence(hass: Any, global_settings: Mapping,
                   fallback_trackers: list[str] | None = None) -> tuple[str, str, list[str]]:
-    """Require fresh, explicit away evidence; unknown trackers never mean away."""
+    """A fresh empty occupied-room source means nobody home, after cooldown."""
+    cooldown = global_settings.get("away_cooldown_minutes", 10)
+    room_entity = global_settings.get("occupied_rooms_entity")
+    if isinstance(room_entity, str) and room_entity:
+        rooms, why = configured_rooms(
+            hass, room_entity, global_settings.get("occupied_rooms_attribute"),
+            set(), max_age_minutes=global_settings.get("source_stale_minutes", 240))
+        if rooms is None:
+            return "unknown", why, [room_entity]
+        if rooms:
+            return "home", "occupied_rooms_present", [room_entity]
+        state = hass.states.get(room_entity)
+        # A list stored in an attribute may change while the state string stays
+        # constant, so use last_updated as the transition evidence in that case.
+        attr = global_settings.get("occupied_rooms_attribute")
+        if state is not None and isinstance(attr, str) and attr not in ("", "__state__"):
+            proxy = type("_Stamp", (), {"last_changed": getattr(state, "last_updated", None)})()
+            status, reason = _after_away_cooldown([proxy], cooldown, "occupied_rooms_empty")
+        else:
+            status, reason = _after_away_cooldown([state], cooldown, "occupied_rooms_empty")
+        return status, reason, [room_entity]
+
+    room_sources = global_settings.get("room_occupancy_sensors", [])
+    if isinstance(room_sources, list) and room_sources:
+        allowed_rooms = [e for e in room_sources if isinstance(e, str)
+                         and e.startswith("binary_sensor.")]
+        values = [_bool_presence(hass.states.get(e)) for e in allowed_rooms]
+        if any(v is True for v in values):
+            return "home", "room_sensor_occupied", allowed_rooms
+        if values and all(v is False for v in values):
+            status, reason = _after_away_cooldown(
+                [hass.states.get(e) for e in allowed_rooms], cooldown,
+                "all_room_sensors_unoccupied")
+            return status, reason, allowed_rooms
+        if values:
+            return "unknown", "room_presence_evidence_unknown", allowed_rooms
+
     source = global_settings.get("home_trackers") or fallback_trackers or []
     if not isinstance(source, list):
         source = []

@@ -98,10 +98,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # uncustomized legacy display title is migrated to the new product name.
     if getattr(entry, "title", None) in ("Air Quality Advisor", "Home Environment Advisor"):
         hass.config_entries.async_update_entry(entry, title="Home Environment Manager")
-    from .room_hubs import async_sync_room_hubs, async_watch_room_hubs
+    from .room_hubs import async_sync_room_hubs, async_watch_room_hubs, home_subentry_id
     room_subentries = async_sync_room_hubs(hass, entry)
     manager = AirQualityManager(hass, entry)
     manager._room_subentries = room_subentries
+    manager._home_subentry = home_subentry_id(entry)
     entry.runtime_data = manager
     # Even if an experimental device controller fails during its startup,
     # attempt to stop any earlier-started controllers. Leave the original

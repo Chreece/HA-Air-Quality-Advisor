@@ -400,3 +400,7 @@ apply_room_hub_i18n(root)
 # Ordered rooms, explicit inputs and final general-source setup.
 from apply_room_setup_i18n import apply_room_setup_i18n
 apply_room_setup_i18n(root)
+
+# General-source defaults, Task AI/TTS provider labels and Home away cooldown.
+from apply_beta16_i18n import apply_beta16_i18n
+apply_beta16_i18n(root)

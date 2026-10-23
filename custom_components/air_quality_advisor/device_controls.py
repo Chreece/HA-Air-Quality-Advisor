@@ -16,7 +16,7 @@ from homeassistant.exceptions import HomeAssistantError
 from .const import (
     CONF_AREAS, CONF_CLIMATE_ROOMS, CONF_PID_ROOMS, CONF_THRESHOLDS,
     CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_TTS_ENGINE,
-    CONF_MEDIA_PLAYERS, CONF_HUB, CONF_AI_REWRITE, CONF_REPEAT_MINUTES,
+    CONF_MEDIA_PLAYERS, CONF_HUB, CONF_AI_REWRITE, CONF_AI_AGENT, CONF_REPEAT_MINUTES,
     DEFAULT_THRESHOLDS, MAX_REPEAT_MINUTES,
 )
 from .pid_math import DEFAULT_PID, validate_settings
@@ -74,6 +74,7 @@ GLOBAL_ENV_NUMBERS = {
 }
 GLOBAL_OCCUPANCY_NUMBERS = {
     "source_stale_minutes": (10.0, 1440.0, 1.0, "min", 240.0),
+    "away_cooldown_minutes": (0.0, 240.0, 1.0, "min", 10.0),
 }
 AREA_ENV_NUMBERS = {
     "room_volume_m3": (1.0, 30000.0, 1.0, "m³", None),
@@ -536,10 +537,13 @@ async def update_device_setting(manager: Any, kind: str, key: str,
             elif key in (CONF_AUTO_NOTIFY, CONF_AUTO_TTS, CONF_HUB, CONF_AI_REWRITE):
                 if type(value) is not bool:
                     raise HomeAssistantError("Global on/off settings require a boolean")
-                if value and key == CONF_HUB and not manager.hub_available:
-                    raise HomeAssistantError("Announcement Hub must be configured and running")
+                if value and key == CONF_HUB:
+                    from .hub_delivery import hub_installed
+                    if not hub_installed(manager.hass):
+                        raise HomeAssistantError("Announcement Hub must be installed and configured")
                 proposed_hub = (value if key == CONF_HUB else current.get(CONF_HUB))
-                hub_ready = bool(proposed_hub and manager.hub_available)
+                from .hub_delivery import hub_installed
+                hub_ready = bool(proposed_hub and hub_installed(manager.hass))
                 direct_speech = bool(
                     current.get(CONF_TTS_ENGINE) and current.get(CONF_MEDIA_PLAYERS)
                 )
@@ -555,17 +559,24 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                     raise HomeAssistantError(
                         "Configure direct speech before disconnecting the only TTS route"
                     )
-                if value and key == CONF_AI_REWRITE and not hub_ready and not (
-                    manager.hass.services.has_service("conversation", "process")
-                ):
-                    raise HomeAssistantError(
-                        "An available conversation agent or Announcement Hub is required"
+                if value and key == CONF_AI_REWRITE and not hub_ready:
+                    agent = str(current.get(CONF_AI_AGENT, "default") or "default")
+                    available = (
+                        manager.hass.services.has_service("ai_task", "generate_data")
+                        if agent.startswith("ai_task.") else
+                        manager.hass.services.has_service("conversation", "process")
                     )
+                    if not available:
+                        raise HomeAssistantError(
+                            "The selected AI provider or Announcement Hub must be available"
+                        )
                 options[key] = value
             elif key == "language":
-                from .const import LANGUAGES
-                if value not in LANGUAGES:
-                    raise HomeAssistantError("Unsupported output language")
+                from .tts_languages import supports_language
+                if not isinstance(value, str) or not supports_language(
+                    manager.hass, current.get(CONF_TTS_ENGINE), value
+                ):
+                    raise HomeAssistantError("Unsupported TTS/output language")
                 options[key] = value
             else:
                 raise HomeAssistantError("Unsupported home setting")
