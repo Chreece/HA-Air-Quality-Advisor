@@ -19,7 +19,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import area_registry as ar, device_registry as dr, entity_registry as er
 from custom_components.air_quality_advisor.const import DOMAIN
 from custom_components.air_quality_advisor.device_hierarchy import async_register_hierarchy
-from custom_components.air_quality_advisor.room_hubs import async_sync_room_hubs
+from custom_components.air_quality_advisor.room_hubs import (
+    HOME_TYPE, async_sync_room_hubs, home_subentry_id,
+)
 
 
 async def check(config_dir: str) -> None:
@@ -72,12 +74,20 @@ async def check(config_dir: str) -> None:
     manager._room_subentries = async_sync_room_hubs(hass, entry)
     async_register_hierarchy(hass, entry)
     assert manager._room_subentries == before
-    assert len(entry.subentries) == 1
+    home_sid = home_subentry_id(entry)
+    assert home_sid is not None
+    assert entry.subentries[home_sid].subentry_type == HOME_TYPE
+    assert len(entry.subentries) == 2  # Home + selected room.
+    assert manager._device_hierarchy["device_subentries"][entry.entry_id] == home_sid
+    home_device = device_registry.async_get(manager._device_hierarchy["home_device_id"])
+    assert home_device is not None and home_device.config_subentry_id == home_sid
     assert device_registry.async_get(old.id).config_subentry_id == groups[area.id]
     # Room removal uses the real config-entry and registry cleanup paths.
     hass.config_entries.async_remove_subentry(entry, groups[area.id])
     assert async_sync_room_hubs(hass, entry) == {}
     assert area.id not in entry.options["areas"]
+    remaining = list(entry.subentries.values())
+    assert len(remaining) == 1 and remaining[0].subentry_type == HOME_TYPE
     await hass.async_block_till_done()
     await hass.async_stop(force=True)
     print("Home Assistant 2026.10 real-registry migration, identity preservation, reload and room removal: PASS")
