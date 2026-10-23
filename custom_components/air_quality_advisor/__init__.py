@@ -94,6 +94,16 @@ def _exact_room_manager(hass: HomeAssistant, area: str,
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    from .domain_migration import (
+        async_new_domain_available, async_schedule_domain_migration,
+    )
+    # Bridge release: when the later environment_manager package exists, do
+    # not load any old-domain platforms. Schedule in-place migration after
+    # this setup lock is released so entity registry platform migration is safe.
+    if await async_new_domain_available(hass):
+        async_schedule_domain_migration(hass, entry)
+        return True
+
     # Existing installations retain entry IDs and selected devices. Only the
     # uncustomized legacy display title is migrated to the new product name.
     if getattr(entry, "title", None) in ("Air Quality Advisor", "Home Environment Advisor"):
@@ -257,6 +267,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    from .domain_migration import is_domain_migration_stub
+    if is_domain_migration_stub(hass, entry.entry_id):
+        return True
     if not await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         return False
     await entry.runtime_data.async_stop()

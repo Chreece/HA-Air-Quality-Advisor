@@ -1,18 +1,17 @@
 {
-  "version": "0.6.0b18",
+  "version": "0.6.0b19",
   "intent": "Pre-release from pinned beta branch after Python 3.13/3.14, translations, frontend, Hassfest, and HACS checks; never update main or stable latest",
-  "note": "Room Environment owns capability-derived controller limits; controllers prefer selected room feedback over device-native measurements",
+  "note": "Mandatory bridge release preparing in-place Home Assistant domain migration to environment_manager",
   "validation_attempt": 0,
   "changes": [
-    "Move temperature, humidity and percentage-fan min/max controls from physical-device controllers to the Room Environment device",
-    "Derive each room limit's editable range from the intersection of the available selected physical devices that support that capability",
-    "Apply one room limit set to every compatible managed controller while still respecting each device's stricter native bounds",
-    "Conservatively migrate beta17 per-device limits to room defaults and remove only the obsolete beta17 per-device limit registry entities",
-    "Use explicitly selected room temperature/humidity/air-quality sensors as the controller feedback source; aggregate multiple selected room sensors",
-    "Do not let a climate device's own temperature/humidity reading override explicitly selected room measurements",
-    "Keep per-device Quiet when in room/sleeping and Always/Occupied/Absent policies unchanged",
-    "Retain availability-first calculations, command ownership, dwell/interlock protections, rooms-first setup and stable v0.5.1"
+    "Keep the current air_quality_advisor domain active for this bridge release so HACS updates the existing local directory",
+    "Add a dormant domain migration shim that activates only when the later environment_manager package is installed",
+    "Preserve the exact config entry ID, subentry IDs, entity IDs, entity unique IDs, device IDs and user customizations during the future migration",
+    "Preflight entity/device namespace conflicts before any registry writes",
+    "Migrate entity registry platform and Manager-owned device identifier namespaces without config-entry registry cleanup",
+    "Retain all beta18 room limits, room feedback, quiet/occupancy behavior and safety controls unchanged",
+    "Require installing/restarting this bridge before installing the final domain-switch release"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b18"
+  "release_branch": "beta/v0.6.0b19"
 }

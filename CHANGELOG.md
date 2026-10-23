@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b19 - Mandatory environment_manager domain migration bridge (beta)
+
+- Keep the legacy `air_quality_advisor` domain for one bridge release so HACS updates the existing installed directory.
+- Add a dormant migration shim that activates only after the new `environment_manager` package is present.
+- Preserve config entry/subentry IDs, entity IDs/unique IDs, device IDs and user registry customizations; do not clear registries during the domain handoff.
+- Preflight new-domain entity/device namespace conflicts before any registry update.
+- Leave beta18 room limits, room-selected feedback, quiet/occupancy controls and physical safety behavior unchanged.
+- Existing installations must install/restart b19 before moving to the final domain-switch beta.
+
+
 ## 0.6.0b18 - Room Environment limits and room feedback precedence (beta)
 
 - Move temperature/humidity/fan percentage min/max controls from physical controllers to the Room Environment device.

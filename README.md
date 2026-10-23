@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b18/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b19/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 18 is available for opt-in testing.** The normal/stable release remains **v0.5.1**. Read the [beta release notes](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b18) and keep experimental actuator power and native AC DRY/FAN_ONLY automation **OFF** until the actual equipment and its independent electrical, thermal and compressor protections have been verified. Software unit tests do not certify physical hardware.
+> **v0.6.0 beta 19 is the mandatory bridge for the `environment_manager` domain migration.** Stable remains **v0.5.1**. Existing beta users must install **b19 and restart Home Assistant before installing the later final domain-switch beta**.
+
+## Beta 19 - Mandatory domain migration bridge
+
+Beta19 deliberately keeps the legacy `air_quality_advisor` domain so HACS updates the existing local directory. It adds a dormant migration shim that activates only when the later `environment_manager` package is present. The handoff preserves the exact config-entry ID, Home/room subentry IDs, entity IDs/unique IDs, device IDs and user registry customizations without clearing registries.
+
+**Do not skip b19 when upgrading an existing beta installation.** After b19 has been installed and Home Assistant restarted, the later domain-switch beta can be installed safely.
 
 ## Beta 18 - Room Environment limits and room-sensor control feedback
 

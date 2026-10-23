@@ -1,0 +1,113 @@
+name: Domain migration bridge b19
+on:
+  push:
+    branches: ['migration/domain-bridge-b19-20261023', 'beta/v0.6.0b19']
+permissions:
+  contents: read
+concurrency:
+  group: domain-bridge-b19-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13','3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest
+      - run: |
+          python generate_translations.py
+          python -m pytest -q tests
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node --check custom_components/air_quality_advisor/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: Reproducible catalogs on beta branch
+        if: github.ref == 'refs/heads/beta/v0.6.0b19'
+        run: git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  bridge_registry:
+    name: Actual HA domain bridge registries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: python tools/verify_domain_bridge_ha.py
+
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b19'
+    needs: [test,hassfest,hacs,bridge_registry]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify metadata and package
+        run: |
+          set -euo pipefail
+          python generate_translations.py
+          git diff --exit-code -- custom_components/air_quality_advisor/strings.json custom_components/air_quality_advisor/translations custom_components/air_quality_advisor/equipment_text.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path('custom_components/air_quality_advisor/manifest.json').read_text())
+          request=json.loads(Path('.github/release-request.json').read_text())
+          assert manifest['domain']=='air_quality_advisor'
+          assert manifest['version']==request['version']=='0.6.0b19'
+          assert request['release_branch']=='beta/v0.6.0b19'
+          assert Path('.github/releases/v0.6.0b19.md').stat().st_size > 1800
+          PY
+          mkdir -p dist
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b19.zip custom_components/air_quality_advisor -x '*__pycache__*' '*.pyc' '*.pyo'
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b19.zip > dist/HA-Home-Environment-Manager-v0.6.0b19.zip.sha256
+      - name: Publish bridge prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b19" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b19 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          gh release create v0.6.0b19 \
+            dist/HA-Home-Environment-Manager-v0.6.0b19.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b19.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 19 - domain bridge' \
+            --notes-file .github/releases/v0.6.0b19.md --prerelease --latest=false
