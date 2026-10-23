@@ -1,0 +1,208 @@
+name: Beta23 HACS domain switch
+on:
+  push:
+    branches:
+      - 'fix/beta23-hacs-domain-switch-20261023'
+      - 'beta/v0.6.0b23'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beta23-hacs-domain-switch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest
+      - name: Full regression suite
+        run: |
+          python -m pytest -q tests
+          python generate_translations.py
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend checks
+        run: |
+          node --check custom_components/environment_manager/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: HACS cached-domain switch assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          hacs=json.loads(Path('hacs.json').read_text())
+          root=json.loads(Path('manifest.json').read_text())
+          canonical=json.loads(Path('custom_components/environment_manager/manifest.json').read_text())
+          assert root == canonical
+          assert canonical['domain']=='environment_manager'
+          assert canonical['version']=='0.6.0b23'
+          assert hacs['content_in_root'] is True
+          assert hacs['zip_release'] is True
+          assert hacs['filename']=='environment_manager.zip'
+          assert hacs['hide_default_branch'] is True
+
+          # Mirror HACS integration.py for the failure reported by the user.
+          remote='custom_components/air_quality_advisor'
+          if hacs['content_in_root']:
+              remote=''
+          manifest_path='manifest.json' if hacs['content_in_root'] else f'{remote}/manifest.json'
+          local=f"/config/custom_components/{root['domain']}"
+          assert remote == ''
+          assert manifest_path == 'manifest.json'
+          assert local == '/config/custom_components/environment_manager'
+          PY
+      - name: Build and inspect HACS ZIP candidate
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          (
+            cd custom_components/environment_manager
+            zip -q -r ../../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
+          )
+          python - <<'PY'
+          import json, zipfile
+          from pathlib import Path
+
+          p=Path('dist/environment_manager.zip')
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              names=set(z.namelist())
+              assert 'manifest.json' in names
+              assert '__init__.py' in names
+              for name in names:
+                  assert 'custom_components/' not in name
+              m=json.loads(z.read('manifest.json'))
+              assert m['domain']=='environment_manager'
+              assert m['version']=='0.6.0b23'
+          PY
+      - name: Require reproducible generated catalogs on release branch
+        if: github.ref == 'refs/heads/beta/v0.6.0b23'
+        run: git diff --exit-code -- custom_components/environment_manager/strings.json custom_components/environment_manager/translations custom_components/environment_manager/equipment_text.py
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  home_assistant:
+    name: HA 2026.10 exact-ID migration from b19 and b20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: |
+          python tools/verify_domain_migration_ha.py
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+
+  publish_beta:
+    if: github.ref == 'refs/heads/beta/v0.6.0b23'
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify final source metadata
+        run: |
+          python generate_translations.py
+          git diff --exit-code -- custom_components/environment_manager/strings.json custom_components/environment_manager/translations custom_components/environment_manager/equipment_text.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          canonical=json.loads(Path('custom_components/environment_manager/manifest.json').read_text())
+          root=json.loads(Path('manifest.json').read_text())
+          hacs=json.loads(Path('hacs.json').read_text())
+          request=json.loads(Path('.github/release-request.json').read_text())
+          assert canonical == root
+          assert canonical['domain']=='environment_manager'
+          assert canonical['version']==request['version']=='0.6.0b23'
+          assert request['channel']=='beta'
+          assert request['release_branch']=='beta/v0.6.0b23'
+          assert hacs['content_in_root'] is True
+          assert hacs['zip_release'] is True
+          assert hacs['filename']=='environment_manager.zip'
+          assert Path('.github/releases/v0.6.0b23.md').stat().st_size > 1800
+          PY
+      - name: Package HACS and manual ZIPs
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          (
+            cd custom_components/environment_manager
+            zip -q -r ../../../dist/environment_manager.zip . -x '*__pycache__*' '*.pyc' '*.pyo'
+          )
+          zip -q -r dist/HA-Home-Environment-Manager-v0.6.0b23.zip custom_components/environment_manager -x '*__pycache__*' '*.pyc' '*.pyo'
+          python - <<'PY'
+          import json, zipfile
+
+          with zipfile.ZipFile('dist/environment_manager.zip') as z:
+              assert z.testzip() is None
+              names=set(z.namelist())
+              assert 'manifest.json' in names
+              assert '__init__.py' in names
+              assert all('custom_components/' not in name for name in names)
+              manifest=json.loads(z.read('manifest.json'))
+              assert manifest['domain']=='environment_manager'
+              assert manifest['version']=='0.6.0b23'
+
+          with zipfile.ZipFile('dist/HA-Home-Environment-Manager-v0.6.0b23.zip') as z:
+              assert z.testzip() is None
+              prefix='custom_components/environment_manager/'
+              assert all(name.startswith(prefix) for name in z.namelist())
+              manifest=json.loads(z.read(prefix+'manifest.json'))
+              assert manifest['domain']=='environment_manager'
+              assert manifest['version']=='0.6.0b23'
+          PY
+          sha256sum dist/environment_manager.zip > dist/environment_manager.zip.sha256
+          sha256sum dist/HA-Home-Environment-Manager-v0.6.0b23.zip > dist/HA-Home-Environment-Manager-v0.6.0b23.zip.sha256
+      - name: Publish opt-in beta, never stable Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b23" --jq '.object.sha')"
+          test "$current" = "$GITHUB_SHA"
+          if gh release view v0.6.0b23 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then exit 0; fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.6.0b23" >/dev/null 2>&1; then
+            echo 'Existing orphan tag; refusing to overwrite'
+            exit 1
+          fi
+          gh release create v0.6.0b23 \
+            dist/environment_manager.zip \
+            dist/environment_manager.zip.sha256 \
+            dist/HA-Home-Environment-Manager-v0.6.0b23.zip \
+            dist/HA-Home-Environment-Manager-v0.6.0b23.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'Home Environment Manager v0.6.0 beta 23' \
+            --notes-file .github/releases/v0.6.0b23.md --prerelease --latest=false
