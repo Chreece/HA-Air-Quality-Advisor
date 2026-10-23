@@ -272,7 +272,7 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry:
     manager.write_text(text.replace(old,new),encoding="utf-8")
 
     for filename,suffix,old_snippet in (
-        ("climate_pid.py","pid", 'self._store = Store(self.hass, 1, f"environment_manager.pid_{self.entry_id}")\n            loaded = await self._store.async_load()'),
+        ("climate_pid.py","pid", 'self._store = Store(self.hass, 1, f"environment_manager.pid_{self.entry_id}")\n            data = await self._store.async_load()'),
         ("climate_fan_power.py","fan_power", 'self._store = Store(\n                self.hass, 1,\n                f"environment_manager.fan_power_{self.entry_id}",\n            )\n            saved = await self._store.async_load()'),
         ("climate_humidity_power.py","humidity_power", 'self._store = Store(self.hass, 1,\n                f"environment_manager.humidity_power_{self.entry_id}")\n            loaded = await self._store.async_load()'),
     ):
@@ -280,7 +280,6 @@ async def async_open_migrated_store(hass: Any, version: int, suffix: str, entry:
         text=path.read_text(encoding="utf-8")
         if old_snippet not in text:
             raise RuntimeError(f"store anchor missing: {filename}")
-        entry_expr="self.manager.entry" if "manager" in text and hasattr(object,"x") else None
         # These legacy coordinators have entry_id only; migration marker is looked
         # up from the actual config entry.
         result_name = "data" if filename=="climate_pid.py" else "saved" if filename=="climate_fan_power.py" else "loaded"
