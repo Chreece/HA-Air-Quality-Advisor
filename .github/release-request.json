@@ -1,17 +1,17 @@
 {
-  "version": "0.6.0b23",
-  "intent": "Pre-release fixing HACS installation across the integration-domain rename; validate Python 3.13/3.14, frontend, Hassfest, HACS, HA 2026.10 exact-ID migration and HACS ZIP layout before publication; never update stable latest",
-  "note": "Use HACS content_in_root plus zip_release so cached air_quality_advisor repository paths switch cleanly to environment_manager",
+  "version": "0.6.0b24",
+  "intent": "Pre-release using a flat root integration tag so HACS can switch from the cached air_quality_advisor repository path without its broken zip_release asset path; validate full source, HACS root discovery, flat archive extraction and HA 2026.10 exact-ID migration before publishing; never update stable latest",
+  "note": "Publish the beta tag itself as the root environment_manager integration payload; no HACS release asset is used",
   "validation_attempt": 0,
   "changes": [
-    "Set HACS content_in_root=true and zip_release=true with environment_manager.zip so selected beta metadata overrides a cached custom_components/air_quality_advisor remote path",
-    "Add a root manifest.json matching the canonical environment_manager manifest solely for HACS repository discovery and validation",
-    "Ship environment_manager.zip with integration files at ZIP root so HACS extracts directly into /config/custom_components/environment_manager without nested custom_components directories",
-    "Hide the default branch in beta23 HACS metadata to avoid offering the stable branch's historical air_quality_advisor layout during the migration beta",
-    "Regression-test the exact cached-old-path scenario shown by HACS and verify root discovery resolves to environment_manager",
+    "Keep HACS content_in_root=true so the selected beta overrides cached custom_components/air_quality_advisor repository metadata and discovers environment_manager from root manifest.json",
+    "Disable HACS zip_release entirely to avoid HACS constructing a release-asset URL from an internal tags/ ref",
+    "Publish beta/v0.6.0b24 and tag v0.6.0b24 as a flattened integration payload with manifest.json, __init__.py, platforms, translations, frontend and brand files at repository root",
+    "Use HACS normal tag-archive extraction, which strips tags/ and installs the flat archive directly into /config/custom_components/environment_manager",
+    "Regression-test the cached old-domain path and the flattened tag-archive extraction contract",
     "Preserve beta22 exact ConfigEntry-ID migration and all controller, room, translation and safety behavior unchanged",
     "Stable Latest remains v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b23"
+  "release_branch": "beta/v0.6.0b24"
 }
