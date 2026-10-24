@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 32 is available for opt-in testing.** Stable remains **v0.5.1**. Beta32 fixes an excessive HA entity dispatcher/event loop caused by treating an internal timestamp as a public state change, and stops reading manifest.json synchronously from async_setup. Beta31's PID numbers/Room Environment profile repairs are preserved; the only integration domain is `environment_manager`.
+> **v0.6.0 beta 33 is available for opt-in testing.** Stable remains **v0.5.1**. Beta33 restores capability-dependent native quiet fan switches and the quiet fan-mode selector when underlying physical devices start late, preserving previous entity IDs and supporting all brands. Managed climate physical availability now refreshes from exact source events. Beta32 event-loop fixes and beta31 Room/PID controls are preserved; the only integration domain is `environment_manager`.
+
+## Beta 33 - generic native quiet fan controls survive late startup
+
+When a configured climate/fan/humidifier advertises its native fan modes **after** Home Assistant has loaded the Manager, previously missing **Quiet when sleeping**, **Quiet when occupied**, and **Quiet fan mode** configuration entities become available without losing their Home Assistant registry identifiers. Existing supported entities are also restored if the native device has not yet advertised its capabilities during a restart. No name-, model-, or vendor-specific exceptions are used.
+
+Quiet fan-mode selectors appear only for actually advertised discrete native modes; percentage fans retain their independent quiet percentage controls. A physical device that remains unavailable cannot be represented as operating, and unsupported native fan modes are never invented. Managed climate availability now follows exact physical source transitions without broadcasting all room entities unnecessarily.
 
 ## Beta 32 - event dispatch and async startup repairs
 
