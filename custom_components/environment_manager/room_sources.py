@@ -262,6 +262,59 @@ def aggregate(hass: Any, entities, area: str, group: str, age: float) -> tuple[f
     return sum(values) / len(values), "selected_mean" if len(values) > 1 else "selected_sensor"
 
 
+
+def room_temperature_evidence(
+    hass: Any, settings: dict, area: str, *,
+    pinned: str | None = None, age_minutes: float = 10,
+) -> tuple[float | None, dict]:
+    """Use only explicit, validated room temperature sources for room policy.
+
+    A configured single-device pin takes precedence over the room selection;
+    if it fails, do not silently substitute another device. Without a pin,
+    multiple explicitly selected sensors contribute only when ALL readings
+    are current, correctly typed and assigned to the exact HA area.
+    This never grants physical actuation authority.
+    """
+    from .discovery import entity_area, temperature_sensor_c
+
+    selected_ids = selected(settings, area, "temperature")
+    if isinstance(pinned, str) and pinned:
+        ids = (pinned,)
+        if selected_ids is not None and pinned not in selected_ids:
+            return None, {"status": "pinned_sensor_not_selected",
+                          "entity_ids": list(ids), "selected_count": len(selected_ids)}
+        source = "pinned_sensor"
+    else:
+        ids = selected_ids or ()
+        source = "room_selected_mean" if selected_ids is not None else "not_configured"
+    if not ids:
+        return None, {"status": "no_selected_room_temperature",
+                      "entity_ids": [], "selected_count": 0}
+    values = []
+    problems = []
+    for entity_id in ids:
+        state = hass.states.get(entity_id)
+        if not native(hass, entity_id):
+            reason = "manager_entity_not_physical"
+        elif entity_area(hass, entity_id) != area:
+            reason = "sensor_wrong_area"
+        elif state is None or state.state in ("unknown", "unavailable", "none", ""):
+            reason = "sensor_unavailable"
+        else:
+            value = temperature_sensor_c(hass, entity_id, age_minutes)
+            reason = None if value is not None and -60 <= value <= 85 else "invalid_or_stale_temperature"
+        if reason is not None:
+            problems.append({"entity_id": entity_id, "reason": reason})
+        else:
+            values.append(value)
+    evidence = {"entity_ids": list(ids), "selected_count": len(ids), "source": source}
+    if problems:
+        return None, {**evidence, "status": "selected_temperature_invalid",
+                      "invalid_sources": problems}
+    return sum(values) / len(values), {**evidence, "status": "ready",
+                                      "valid_count": len(values)}
+
+
 def source_overview(manager: Any, area: str) -> dict:
     if selected(manager.settings, area, "windows") is None:
         return {}
