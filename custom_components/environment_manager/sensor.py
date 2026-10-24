@@ -7,6 +7,7 @@ from .room_hubs import async_add_grouped_entities
 from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -15,6 +16,8 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, DOMAIN, NAME, SIGNAL_UPDATED
 from .dashboard import dashboard_snapshot
 from .messages import announcement, explain
+from .equipment_entity import EquipmentEntity
+from . import equipment_model as equipment
 
 
 async def async_setup_entry(
@@ -23,7 +26,14 @@ async def async_setup_entry(
     """Create exactly one entity per config entry."""
     from .area_entities import async_area_entities
     area_entities = await async_area_entities(hass, entry)
-    async_add_grouped_entities(entry.runtime_data, async_add_entities, [AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities])
+    controllers = [
+        ControllerStatusSensor(entry.runtime_data, spec)
+        for spec in equipment.specs(entry.runtime_data)
+    ]
+    async_add_grouped_entities(
+        entry.runtime_data, async_add_entities,
+        [AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities, *controllers],
+    )
 
 
 class AirQualityRecommendation(SensorEntity):
@@ -132,3 +142,63 @@ class AirQualityRecommendation(SensorEntity):
     @callback
     def _on_update(self) -> None:
         self.async_write_ha_state()
+
+
+class ControllerStatusSensor(EquipmentEntity, SensorEntity):
+    """Explain why a selected controller is running, idle, held, or paused.
+
+    The native climate entity intentionally reports the *physical* HVAC mode;
+    an OFF physical device is not proof that PID/Automatic was disabled.
+    Expose the algorithm's independently observed status on the same logical
+    managed-device page, without touching hardware or making new decisions.
+    """
+
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_icon = "mdi:information-outline"
+    _attr_should_poll = False
+
+    def __init__(self, manager: Any, spec: equipment.ManagedDevice) -> None:
+        self._equipment_init(manager, spec, "control_status")
+
+    @property
+    def native_value(self) -> str:
+        runtime = self._manager.equipment
+        observed = runtime.statuses.get(self._spec.identifier, {})
+        if isinstance(observed, dict) and isinstance(observed.get("status"), str):
+            return observed["status"]
+        mode = self.controller_settings.get("control_mode", "existing")
+        if mode in ("existing", "off"):
+            return mode
+        if not getattr(runtime, "_active", False):
+            return "inactive"
+        if not getattr(runtime, "_ready", False):
+            return "storage_unavailable"
+        return "awaiting_evaluation"
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        runtime = self._manager.equipment
+        cfg = self.controller_settings
+        observed = runtime.statuses.get(self._spec.identifier, {})
+        observed = observed if isinstance(observed, dict) else {}
+        record = runtime.records.get(self._spec.identifier, {})
+        record = record if isinstance(record, dict) else {}
+        physical = {
+            entity_id: (
+                state.state if (state := self._manager.hass.states.get(entity_id))
+                is not None else "unavailable"
+            )
+            for entity_id in self._spec.source_entities
+        }
+        return {
+            "area_id": self._spec.area_id,
+            "control_method": cfg.get("control_mode", "existing"),
+            "selected_preset": cfg.get("preset", "none"),
+            "status_reason": observed.get("reason"),
+            "last_evaluated_mode": observed.get("mode"),
+            "demand_percent": observed.get("demand_percent"),
+            "physical_entity_states": physical,
+            "controller_owns_power": bool(record.get("power")),
+            "paused_reason": record.get("paused"),
+            "command_pending": bool(record.get("pending")),
+        }
