@@ -34,6 +34,10 @@ class ManagedClimate(EquipmentEntity, ClimateEntity):
     def __init__(self, manager, spec):
         self._equipment_init(manager, spec, "climate")
 
+    async def async_added_to_hass(self):
+        await super().async_added_to_hass()
+        self._watch_native_updates()
+
     @property
     def _caps(self):
         return model.capabilities(self._manager, self._spec)
