@@ -683,7 +683,7 @@ class AirQualityManager:
         if isinstance(entity_id, str):
             from homeassistant.helpers import entity_registry as er
             record = er.async_get(self.hass).async_get(entity_id)
-            if record is not None and record.platform == DOMAIN:
+            if record is not None and getattr(record, "platform", None) == DOMAIN:
                 return
         device_id = event.data.get("device_id")
         if isinstance(device_id, str):
