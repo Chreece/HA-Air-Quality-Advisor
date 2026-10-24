@@ -18,6 +18,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
         *[EquipmentResumeButton(entry.runtime_data, spec) for spec in controllers],
         *[EquipmentCalibrationButton(entry.runtime_data, spec) for spec in controllers
           if "pid" in equipment.control_modes(entry.runtime_data, spec)],
+        *[EquipmentFanCapacityButton(entry.runtime_data, spec) for spec in controllers
+          if (cap := equipment.capabilities(entry.runtime_data, spec)) is not None
+          and cap.domain in ("climate", "humidifier")
+          and cap.fan_modes and "pid" in equipment.control_modes(entry.runtime_data, spec)],
     ])
     if settings.get(CONF_USE_MOLD) is not True:
         return
@@ -131,3 +135,54 @@ class EquipmentCalibrationButton(EquipmentEntity, ButtonEntity):
 
     async def async_press(self):
         await self._manager.equipment.async_apply_pid_calibration(self._spec)
+
+
+class EquipmentFanCapacityButton(EquipmentEntity, ButtonEntity):
+    """Explicitly apply observed fan/output capacity; never start hardware."""
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_icon = "mdi:chart-bell-curve"
+
+    def __init__(self, manager, spec):
+        self._equipment_init(manager, spec, "pid_apply_fan_capacity")
+
+    @property
+    def available(self):
+        from . import equipment_model as equipment
+        cap = equipment.capabilities(self._manager, self._spec)
+        return bool(cap and cap.fan_modes and cap.domain in ("climate", "humidifier")
+                    and self.controller_settings["control_mode"] == "pid")
+
+    @property
+    def extra_state_attributes(self):
+        from . import equipment_model as equipment
+        from .pid_fan_capacity import build_model
+        attributes = {**super().extra_state_attributes,
+            "pid_fan_capacity_role": "apply",
+            "strategy": self.controller_settings["pid_fan_capacity_mode"],
+            "direction": self.controller_settings["pid_fan_capacity_for_mode"],
+            "saved_directions": sorted(self.controller_settings["pid_fan_capacity_models"]),
+        }
+        cap = equipment.capabilities(self._manager, self._spec)
+        if not self.available or cap is None:
+            attributes["calibration_status"] = "select_pid_and_supported_native_fan"
+            return attributes
+        try:
+            if self.controller_settings["pid_fan_capacity_for_mode"] not in cap.modes or (
+                    self.controller_settings["pid_fan_capacity_for_mode"] == "choose"):
+                raise ValueError("select_native_heating_cooling_or_drying_direction")
+            evidence = build_model(
+                percentage=cap.fan_percentage, advertised_modes=cap.fan_modes,
+                measured=self.controller_settings,
+                min_speed=equipment.device_limits(
+                    self._manager, self._spec, cap)["fan_min_percentage"],
+            )
+        except ValueError as error:
+            attributes["calibration_status"] = str(error)
+        else:
+            attributes["calibration_status"] = "ready_to_apply_when_physical_off"
+            attributes["relative_capacity_model"] = evidence
+        return attributes
+
+    async def async_press(self):
+        await self._manager.equipment.async_apply_fan_capacity(self._spec)
