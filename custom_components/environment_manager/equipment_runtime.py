@@ -115,10 +115,11 @@ class EquipmentRuntime:
         self._active = True
         self._started = self.clock()
         try:
-            from .domain_migration import async_open_migrated_store
-            self._store, saved = await async_open_migrated_store(
-                self.hass, 1, "equipment", self.manager.entry
+            from homeassistant.helpers.storage import Store
+            self._store = Store(
+                self.hass, 1, f"{DOMAIN}.equipment_{self.manager.entry.entry_id}"
             )
+            saved = await self._store.async_load()
             if saved is not None and (not isinstance(saved, dict) or saved.get("version") != 1
                                       or not isinstance(saved.get("records"), dict)):
                 raise ValueError("Unknown equipment state schema")
