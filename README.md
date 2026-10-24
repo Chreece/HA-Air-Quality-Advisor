@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 34 is available for opt-in testing.** Stable remains **v0.5.1**. Beta34 fixes Room Environment temperature evidence using verified sensors selected in Room Setup, explains Environment-only monitoring separately from real device climate controllers, and adds click-to-open native managed climate entities plus per-device method and Manual target controls in the card. Beta31–33 fixes remain; the sole domain is `environment_manager`.
+> **v0.6.0 beta 35 is available for opt-in testing.** Stable remains **v0.5.1**. Beta35 fixes the Lovelace card closing native mode selectors during HA state updates and restores the card automatically after transient dashboard or device registry failures. Room temperatures, native per-device controls, beta31–34 fixes and the sole `environment_manager` domain remain unchanged.
+
+## Beta 35 - stable mode dropdown and automatic dashboard recovery
+
+The card no longer recreates the active HTML select dropdown or unfinished Manual temperature/humidity input when Home Assistant emits a new measurement. Pending updates are applied after the user chooses a mode or leaves the field, preserving user actions rather than closing the selector unexpectedly.
+
+Transient dashboard rendering errors no longer poison the card's render cache. The same card instance retries as Home Assistant data returns, and temporary Home Assistant device-registry WebSocket errors no longer require a browser hard reload. Registry retries use bounded backoff and never guess a device identity.
+
+All native physical-device permissions and safety restrictions stay unchanged.
 
 ## Beta 34 - room temperature evidence and native device climate card controls
 
