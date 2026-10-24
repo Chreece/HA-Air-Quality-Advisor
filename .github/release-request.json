@@ -1,17 +1,19 @@
 {
-  "version": "0.6.0b25",
-  "intent": "Pre-release enforcing environment_manager as the only active/installable Home Assistant domain while retaining legacy names strictly as one-time migration inputs; validate full source, legacy-folder quarantine, HACS flat tag install, and HA 2026.10 exact-ID migration before publication; never update stable latest",
-  "note": "Remove all legacy runtime aliases and automatically move verified old custom-component folders out of custom_components so only environment_manager remains installable",
+  "version": "0.6.0b26",
+  "intent": "Canonical-only prerelease: environment_manager is the sole domain with no legacy-domain migration code. Add room-owned per-profile temperature/humidity targets and make Automatic/PID/Manual method selection actively authorize the exact native controller to start/stop supported physical equipment under demand and safety gates.",
+  "note": "Clean environment_manager-only install plus room profile targets and active controller method behavior",
   "validation_attempt": 0,
   "changes": [
-    "Register services and frontend paths only under environment_manager; remove air_quality_advisor, enviroment_manager and home_environment_manager runtime aliases",
-    "Keep historical domain strings only in MIGRATION_SOURCE_DOMAINS for one-time config-entry/storage migration",
-    "When environment_manager loads, move verified legacy integration folders out of /config/custom_components into /config/.environment_manager_legacy_components backups and refresh the HA custom-component cache",
-    "Preserve exact config-entry ID, subentries, entity/device identity and saved settings while re-homing legacy entries to environment_manager",
-    "Keep the flat HACS tag payload so HACS installs only the canonical environment_manager integration",
-    "Update user-facing actions/documentation to environment_manager.* only",
+    "Remove legacy-domain migration completely: no migration module, migration config-flow step, old-domain runtime constants, legacy storage import, or migration UI strings",
+    "Use only canonical environment_manager storage keys and flat HACS tag packaging",
+    "Expose Room Environment targets for Comfort, Home, Away, Sleep and Eco; show applicable heating, cooling and humidity targets based on selected equipment capabilities",
+    "Make Away use its explicit room profile targets rather than silently substituting room min/max temperature limits",
+    "Selecting Automatic, PID or Manual explicitly authorizes the exact supported native controller to regulate targets/speed and start/stop the physical device or native HVAC mode when demand requires it",
+    "Reselecting an active control method re-arms a prior software pause while preserving all physical safety gates",
+    "Use the physical entity's observed OFF age for minimum-OFF dwell, avoiding an artificial new delay just because the user selected PID/Automatic",
+    "Keep minimum ON/OFF, max runtime, availability, windows, physical ownership, defrost/interlock and command acknowledgement protections",
     "Stable Latest remains v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b25"
+  "release_branch": "beta/v0.6.0b26"
 }
