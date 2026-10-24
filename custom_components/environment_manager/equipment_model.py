@@ -36,6 +36,7 @@ NUMBER_FIELDS = {
     "max_on_seconds": (900.0, 86400.0, 60.0, "s", 7200.0),
 }
 QUIET_FLAGS = ("quiet_sleep", "quiet_occupied")
+from .pid_calibration import METHODS as PID_CALIBRATION_METHODS, MODEL_FIELDS as PID_MODEL_FIELDS
 POWER_FIELDS = ("min_on_seconds", "min_off_seconds", "max_on_seconds")
 LIMIT_FIELDS = (
     "temperature_min_limit", "temperature_max_limit",
@@ -49,7 +50,9 @@ ROOM_LIMITS_KEY = "equipment_limits"
 DEFAULTS = {"control_mode": "existing", "preset": "none", "requested_mode": None,
             "quiet_sleep": False, "quiet_occupied": False,
             "quiet_fan_mode": None, "profile_targets": {}, "profile_fans": {},
-            **{key: item[4] for key, item in NUMBER_FIELDS.items()}}
+            "pid_calibration_method": "manual", "pid_last_calibration": None,
+            **{key: item[4] for key, item in NUMBER_FIELDS.items()},
+            **{key: 0.0 for key in PID_MODEL_FIELDS}}
 
 
 @dataclass(frozen=True, slots=True)
