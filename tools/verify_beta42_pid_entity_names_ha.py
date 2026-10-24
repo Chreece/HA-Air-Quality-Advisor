@@ -70,9 +70,9 @@ def main() -> None:
         assert isinstance(entity, (NumberEntity, SelectEntity, ButtonEntity))
         assert entity.has_entity_name is False, (type(entity).__name__, entity.unique_id)
         assert entity.translation_key is not None
-        assert entity.unique_id.endswith("_" + entity._key) or (
-            entity.unique_id.endswith("_pid_gain_source")
-        )
+        suffix = getattr(entity, "_key", None) or getattr(entity, "_kind", None)
+        assert isinstance(suffix, str)
+        assert entity.unique_id.endswith("_" + suffix)
         assert entity.device_info["identifiers"]
         assert entity.entity_category == EntityCategory.CONFIG
     for entity in non_pid:
