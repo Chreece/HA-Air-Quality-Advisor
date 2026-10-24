@@ -67,8 +67,26 @@ def _equipment_numbers(manager, spec, registry) -> tuple["EquipmentNumber", ...]
     cap = equipment.capabilities(manager, spec)
     saved_mode = equipment.settings(manager, spec).get("control_mode")
     keys: list[str] = []
-    for key in (*equipment.NUMBER_FIELDS, *equipment.PID_MODEL_FIELDS):
+    for key in (*equipment.NUMBER_FIELDS, *equipment.PID_MODEL_FIELDS,
+                *equipment.PID_FAN_CAPACITY_FIELDS):
         if cap is not None:
+            if key in equipment.PID_FAN_CAPACITY_FIELDS:
+                if (cap.domain not in ("climate", "humidifier")
+                        or not cap.fan_modes
+                        or "pid" not in equipment.control_modes(manager, spec)):
+                    continue
+                from .pid_fan_capacity import ordered_fan_stages, PERCENT_POINT_FIELDS
+                if cap.fan_percentage and key.startswith("pid_capacity_stage_"):
+                    continue
+                if not cap.fan_percentage and key.startswith((
+                    "pid_capacity_speed_", "pid_capacity_output_"
+                )):
+                    continue
+                if key.startswith("pid_capacity_stage_"):
+                    stages = ordered_fan_stages(cap.fan_modes)
+                    index = int(key.rsplit("_", 1)[-1])
+                    if not stages or index >= len(stages):
+                        continue
             if key == "quiet_percentage" and not cap.fan_percentage:
                 continue
             if key in equipment.POWER_FIELDS and cap.domain not in ("climate", "fan", "humidifier"):
@@ -76,8 +94,9 @@ def _equipment_numbers(manager, spec, registry) -> tuple["EquipmentNumber", ...]
             if (key in equipment.PID_MODEL_FIELDS
                     and "pid" not in equipment.control_modes(manager, spec)):
                 continue
-            if (key not in equipment.PID_MODEL_FIELDS and key != "quiet_percentage"
-                    and key not in equipment.POWER_FIELDS
+            if (key not in equipment.PID_MODEL_FIELDS
+                    and key not in equipment.PID_FAN_CAPACITY_FIELDS
+                    and key != "quiet_percentage" and key not in equipment.POWER_FIELDS
                     and "pid" not in equipment.control_modes(manager, spec)):
                 continue
         else:
@@ -86,7 +105,10 @@ def _equipment_numbers(manager, spec, registry) -> tuple["EquipmentNumber", ...]
             if not any(entity.partition(".")[0] in ("climate", "fan", "humidifier")
                        for entity in spec.source_entities):
                 continue
-            if key == "quiet_percentage":
+            if key in equipment.PID_FAN_CAPACITY_FIELDS:
+                if not _registered_number(registry, f"{spec.identifier}_{key}"):
+                    continue
+            elif key == "quiet_percentage":
                 if not _registered_number(registry, f"{spec.identifier}_{key}"):
                     continue
             elif key not in equipment.POWER_FIELDS:
@@ -430,7 +452,9 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
         cap = equipment.capabilities(manager, spec)
-        if key in equipment.PID_MODEL_FIELDS:
+        if key in equipment.PID_FAN_CAPACITY_FIELDS:
+            bounds = equipment.PID_FAN_CAPACITY_FIELDS[key]
+        elif key in equipment.PID_MODEL_FIELDS:
             # 0 is a deliberate "not yet identified" sentinel, never
             # interpreted as a measured plant model by the calibration code.
             low, high, step, unit = equipment.PID_MODEL_FIELDS[key]
@@ -452,6 +476,11 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
 
     @property
     def available(self):
+        if self._key in equipment.PID_FAN_CAPACITY_FIELDS:
+            cap = equipment.capabilities(self._manager, self._spec)
+            return bool(self.controller_settings["control_mode"] == "pid"
+                        and cap and cap.fan_modes
+                        and cap.domain in ("climate", "humidifier"))
         if self._key in equipment.PID_MODEL_FIELDS:
             settings = self.controller_settings
             return (settings["control_mode"] == "pid"
@@ -461,6 +490,8 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
     @property
     def extra_state_attributes(self):
         attributes = super().extra_state_attributes
+        if self._key in equipment.PID_FAN_CAPACITY_FIELDS:
+            return {**attributes, "pid_fan_capacity_field": self._key}
         if self._key in equipment.PID_MODEL_FIELDS:
             return {**attributes, "pid_calibration_field": self._key}
         return attributes
