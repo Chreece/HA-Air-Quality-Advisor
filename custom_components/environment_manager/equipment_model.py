@@ -522,27 +522,28 @@ def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
             "eco": {"heat_c":17.0,"cool_c":29.0},
         }
     defaults={
-        "comfort":{"heat_c":20.0,"cool_c":26.0},
-        "home":{"heat_c":18.0,"cool_c":28.0},
-        "sleep":{"heat_c":18.0,"cool_c":26.0},
-        "eco":{"heat_c":17.0,"cool_c":29.0},
+        "comfort":{"heat_c":20.0,"cool_c":26.0,"humidity":50.0},
+        "home":{"heat_c":18.0,"cool_c":28.0,"humidity":50.0},
+        "away":{"heat_c":16.0,"cool_c":30.0,"humidity":50.0},
+        "sleep":{"heat_c":18.0,"cool_c":26.0,"humidity":50.0},
+        "eco":{"heat_c":17.0,"cool_c":29.0,"humidity":50.0},
     }
 
-    if profile == "away":
-        heat = limits["temperature_min_limit"]
-        cool = limits["temperature_max_limit"]
-    elif profile == "manual":
+    if profile == "manual":
         band=bands.get("comfort",defaults["comfort"])
-        heat,cool=float(band.get("heat_c",20.0)),float(band.get("cool_c",26.0))
+        fallback=defaults["comfort"]
     else:
-        band=bands.get(profile,defaults.get(profile,defaults["home"]))
         fallback=defaults.get(profile,defaults["home"])
-        heat=float(band.get("heat_c",fallback["heat_c"]))
-        cool=float(band.get("cool_c",fallback["cool_c"]))
-
-    humidity = room.get(
-        "sleep_humidity_target" if profile == "sleep" else "humidity_target",
-        room.get("humidity_low_rh", 40) if cap.humidifying else room.get("humidity_high_rh", 60),
+        band=bands.get(profile,fallback)
+    band = band if isinstance(band,dict) else fallback
+    heat=float(band.get("heat_c",fallback["heat_c"]))
+    cool=float(band.get("cool_c",fallback["cool_c"]))
+    legacy_humidity = room.get(
+        "sleep_humidity_target" if profile == "sleep" else "humidity_target"
+    )
+    humidity = band.get(
+        "humidity",
+        legacy_humidity if legacy_humidity is not None else fallback["humidity"],
     )
     result={"heat":float(heat),"cool":float(cool),"humidity":float(humidity)}
 
