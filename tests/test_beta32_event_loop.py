@@ -12,6 +12,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import pytest
 
+from test_discovery import adapter
 from test_hub_manager import delivery_module
 from test_legacy_entry_lifecycle import integration, make_hass
 from custom_components.environment_manager.logic import Plan
