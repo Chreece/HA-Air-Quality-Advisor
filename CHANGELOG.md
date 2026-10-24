@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0b27 - Validated room targets and active controllers (beta)
+
+- Fresh immutable publication of the fully green canonical-only build; supersedes the earlier beta26 tag.
+- Keep only `environment_manager`; no historical-domain migration module/config-flow/runtime path.
+- Expose Comfort/Home/Away/Sleep/Eco room targets with capability-gated heat/cool/humidity controls.
+- Make Away use explicit room profile targets.
+- Selecting Automatic/PID/Manual authorizes that exact native controller to start/stop supported physical equipment/native HVAC modes when demand requires it.
+- Reselecting an active method re-arms a software pause while preserving physical safety gates.
+- Use the physical entity's observed OFF age so method selection does not create an artificial minimum-OFF delay.
+- Preserve availability, window, ownership, dwell/runtime, defrost/interlock and acknowledgement protections.
+
 ## 0.6.0b26 - Room profile targets and active controller methods (beta)
 
 - Remove historical-domain migration completely; `environment_manager` is the sole runtime/config-flow/storage domain.
