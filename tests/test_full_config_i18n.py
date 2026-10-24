@@ -221,17 +221,16 @@ def test_home_assistant_area_profile_entities_use_new_room_owned_profiles():
     for lang,doc in docs.items():
         numbers=doc["entity"]["number"]
         labels=[]
-        for profile in ("comfort","home","sleep","eco"):
-            for mode in ("heat","cool"):
+        for profile in ("comfort","home","away","sleep","eco"):
+            for mode in ("heat","cool","humidity"):
                 key=f"area_climate_profile_{profile}_{mode}"
                 assert key in numbers,(lang,key)
                 label=numbers[key]["name"]
                 assert label,(lang,key)
                 labels.append(label)
         assert len(labels)==len(set(labels)),lang
-        for old in ("unoccupied","away"):
-            for mode in ("heat","cool"):
-                assert f"area_climate_profile_{old}_{mode}" not in numbers
+        for mode in ("heat","cool","humidity"):
+            assert f"area_climate_profile_unoccupied_{mode}" not in numbers
 
 
 def test_mold_outdoor_weather_source_is_localized_and_has_explanation():
