@@ -21,7 +21,7 @@ def test_room_profile_migration_and_eco():
     assert parsed["home"].heat_c==18
     assert parsed["eco"].heat_c==17
 
-def test_new_domain_and_legacy_constant():
-    from custom_components.environment_manager.const import DOMAIN,LEGACY_DOMAIN
+def test_new_domain_and_migration_sources():
+    from custom_components.environment_manager.const import DOMAIN, MIGRATION_SOURCE_DOMAINS
     assert DOMAIN=="environment_manager"
-    assert LEGACY_DOMAIN=="air_quality_advisor"
+    assert set(MIGRATION_SOURCE_DOMAINS)=={"air_quality_advisor","enviroment_manager"}
