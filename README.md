@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 30 is available for opt-in testing.** Stable remains **v0.5.1**. Beta30 adds a separate **Control status** diagnostic sensor to every managed physical controller. It explains why PID/Automatic is idle or blocked while the physical climate remains OFF, without relaxing physical safety checks. It retains the canonical `environment_manager` domain, Comfort / Home / Away / Sleep / Eco room targets, and beta29's optional-window fix.
+> **v0.6.0 beta 31 is available for opt-in testing.** Stable remains **v0.5.1**. Beta31 fixes controller PID/timing numbers and Room Environment profile temperature/humidity targets that were missing after restart when native equipment was not yet ready. Previously registered room targets are preserved, and newly supported fields appear when the physical device recovers. Beta30's Control status diagnostic remains included; the only integration domain is `environment_manager`.
+
+## Beta 31 - restore room and controller numbers after delayed native startup
+
+**Configuration values must not disappear because an underlying physical device is late to start.** This release restores already-registered Kp/Ki/Kd, PID sampling/cycle intervals, and minimum/maximum ON/OFF entities even when the native climate/fan/humidifier state is temporarily unavailable.
+
+For each **Room Environment** hub, previously available Comfort/Home/Away/Sleep/Eco heating, cooling and humidity targets are retained when compatible equipment is temporarily offline. When a selected device publishes its capabilities after Home Assistant started, newly supported targets and PID fields register without another restart. Real hardware capabilities still determine which kinds of targets apply (for example, a heat-only device does not gain a cooling mode).
+
+The change does not command physical equipment, bypass native minimum ON/OFF protections, reset user settings, or add any migration/legacy domain.
 
 ## Beta 30 - visible per-device controller status
 
