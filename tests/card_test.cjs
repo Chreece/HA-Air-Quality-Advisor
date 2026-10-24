@@ -1045,3 +1045,94 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   assert.equal(card._homeDeviceId,'real-home-device');
   assert.equal(card._areaDeviceIds.get('bath'),'real-room-device');
 })().catch((error)=>{console.error(error);process.exitCode=1;});
+
+
+// Beta37: the recommendation sensor contains no full dashboard attributes.
+// The card retrieves the complete multi-room snapshot over the authenticated
+// read-only Home Assistant WS command, keyed to its small revision marker.
+(async ()=>{
+  const recommendation='sensor.b37_window_recommendations';
+  const meta=(revision)=>({
+    dashboard_api:'environment_manager/dashboard',
+    dashboard_version:1,dashboard_revision:revision,
+    outdoor_safe:true,recommendation_count:0,
+  });
+  const snapshots=[
+    {...input,rooms:[{...input.rooms[0],name:'Kitchen revision 0'}]},
+    {...input,rooms:[{...input.rooms[0],name:'Kitchen revision 1'}]},
+  ];
+  let getCount=0,deviceCount=0;
+  const hass={
+    language:'en',
+    states:{[recommendation]:{state:'idle',attributes:meta(0)}},
+    entities:{[recommendation]:{device_id:'home-b37'}},
+    callWS:async(request)=>{
+      if(request.type==='environment_manager/dashboard'){
+        assert.equal(request.entity_id,recommendation);
+        return snapshots[getCount++];
+      }
+      if(request.type==='config/device_registry/list'){
+        deviceCount++;
+        return [{id:'home-b37',identifiers:[['environment_manager','entry-b37']]}];
+      }
+      throw new Error('Unexpected dashboard call '+request.type);
+    },
+  };
+  const Card=registered.get('home-environment-manager-card');
+  assert.equal(window.customCards.find(c=>c.type==='home-environment-manager-card')
+    .getEntitySuggestion(hass,recommendation).config.entity,recommendation);
+  const card=new Card();
+  card.setConfig({entity:recommendation});
+  card.hass=hass;
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(getCount,1);
+  assert.ok(card.shadowRoot.innerHTML.includes('Kitchen revision 0'));
+  assert.ok(!card._hass.states[recommendation].attributes.dashboard);
+  card.hass={...hass};
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(getCount,1,'unchanged recorder token must not re-download dashboard');
+
+  const newer={...hass,states:{
+    ...hass.states,[recommendation]:{state:'idle',attributes:meta(1)},
+  }};
+  card.hass=newer;
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(getCount,2,'new revision must refresh only one WS snapshot');
+  assert.ok(card.shadowRoot.innerHTML.includes('Kitchen revision 1'));
+  assert.equal(deviceCount,1,'entity registry should not be repeatedly fetched');
+})().catch(error=>{console.error(error);process.exitCode=1;});
+
+
+// Beta37: a transient failed full-dashboard WS request is retryable on the
+// same card. An old in-flight reply never overwrites a newly configured sensor.
+(async ()=>{
+  const eid='sensor.b37_retry';
+  let calls=0;
+  const meta=(rev)=>({
+    dashboard_api:'environment_manager/dashboard',
+    dashboard_version:1,dashboard_revision:rev,
+  });
+  const card=new Card();
+  card.setConfig({entity:eid});
+  const states={[eid]:{state:'idle',attributes:meta(1)}};
+  const hass={language:'el',states,callWS:async request=>{
+    if(request.type==='environment_manager/dashboard'){
+      calls++;
+      if(calls===1) throw new Error('temporary websocket disconnect');
+      return {...input,rooms:[{...input.rooms[0],name:'Recovered kitchen'}]};
+    }
+    if(request.type==='config/device_registry/list')return [];
+    throw new Error('Unexpected request');
+  }};
+  card.hass=hass;
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(calls,1);
+  assert.ok(card._dashboardNextAttemptAt>Date.now());
+  card._dashboardNextAttemptAt=0; // simulate elapsed retry time
+  card.hass={...hass};
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(calls,2);
+  assert.ok(card.shadowRoot.innerHTML.includes('Recovered kitchen'));
+  assert.equal(card._dashboardData.version,1);
+  assert.ok(card._dashboardEntity===eid);
+})().catch(error=>{console.error(error);process.exitCode=1;});
