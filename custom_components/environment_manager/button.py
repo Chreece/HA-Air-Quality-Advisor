@@ -101,6 +101,7 @@ class EquipmentCalibrationButton(EquipmentEntity, ButtonEntity):
         from . import equipment_model as model
         from .pid_calibration import tune
         result = {**super().extra_state_attributes,
+                  "pid_calibration_role": "apply",
                   "calibration_method": self.controller_settings["pid_calibration_method"],
                   "manual_gains": {
                       key: self.controller_settings[key] for key in ("kp", "ki", "kd")
