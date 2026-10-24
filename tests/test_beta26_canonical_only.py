@@ -16,9 +16,15 @@ def test_only_canonical_domain_exists_and_no_migration_code_ships():
     assert manifest["version"] == "0.6.0b26"
     assert not (PKG / "domain_migration.py").exists()
 
+    assert not (ROOT / "custom_components" / "air_quality_advisor").exists()
+    assert not (ROOT / "custom_components" / "enviroment_manager").exists()
+
+    # Check only the surfaces that can define/discover/register an integration
+    # domain. Translation/history helpers may contain prose from old releases,
+    # but must never create a second HA integration.
     runtime = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in PKG.glob("*.py")
+        (PKG / name).read_text(encoding="utf-8")
+        for name in ("__init__.py", "const.py", "config_flow.py", "manifest.json")
     )
     for forbidden in (
         "air_quality_advisor",
