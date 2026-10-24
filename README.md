@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b25/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b26/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,17 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 25 is available for opt-in testing.** Stable remains **v0.5.1**. Beta25 makes `environment_manager` the **only active/installable domain**. Legacy folders are migration inputs only and are moved out of `custom_components` into a recoverable backup when the canonical integration loads. Do **not** delete the existing config entry; migrate it through Home Environment Manager. Physical equipment protections remain mandatory and software tests do not certify hardware.
+> **v0.6.0 beta 26 is available for opt-in testing.** Stable remains **v0.5.1**. Beta26 is a clean `environment_manager`-only integration with **no old-domain migration code**. Room Environment devices now own Comfort / Home / Away / Sleep / Eco temperature and humidity targets. Selecting Automatic, PID or Manual authorizes that exact native controller to start/stop its supported physical device or HVAC mode when verified demand requires it, while all safety gates remain active.
+
+## Beta 26 - room targets and active controller methods
+
+Beta26 removes domain migration entirely and ships only `environment_manager`. There is no migration module, old-domain config-flow step, legacy storage import or legacy runtime alias.
+
+Each **Room Environment** device exposes applicable profile targets for **Comfort, Home, Away, Sleep and Eco**: heating °C, cooling °C and humidity %. These targets are room policy and remain editable even when automation is currently Off. Away now uses its own editable targets instead of silently substituting room hard limits.
+
+Selecting **Automatic, PID or Manual** on a managed native controller is the authorization for that exact controller to regulate and, when verified demand exists, turn the physical device/native HVAC mode ON or OFF. There is no second hidden power switch. Beta26 also uses the physical device's real OFF age, so selecting PID does not create a fake new minimum-OFF delay, and deliberately reselecting a method re-arms a previous software pause.
+
+Minimum ON/OFF time, maximum runtime, windows, availability, identity/ownership, defrost and command-acknowledgement protections remain enforced.
 
 ## Beta 25 - one canonical integration only
 
@@ -281,11 +291,11 @@ interlocks.
 
 1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required. The only active integration domain is `environment_manager`; legacy entries are migration inputs only and keep their existing IDs/entities during the one-time migration.
 2. Open [Home Environment Manager in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), or add `Chreece/HA-Home-Environment-Manager` as a **custom Integration repository** if not already installed.
-3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b25**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
+3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b26**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
 5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `environment_manager.climate_diagnostics`. Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b25). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b26). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
 ### Complete configuration translations and explanations — beta 9
@@ -1320,7 +1330,7 @@ of one controller's persistence no longer prevents the remaining
 controllers, announcements, listeners or background tasks from being
 cleaned up.
 
-These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b25).
+These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b26).
 The [development PR #2](https://github.com/Chreece/HA-Home-Environment-Manager/pull/2) remains unmerged and production v0.5.1 stays unchanged pending representative hardware testing.
 
 
