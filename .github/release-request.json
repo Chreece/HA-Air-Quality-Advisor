@@ -1,18 +1,17 @@
 {
-  "version": "0.6.0b41",
+  "version": "0.6.0b42",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b41",
-  "intent": "Improve combined ON/OFF PID and native adjustable fans with user-measured per-stage/per-speed relative physical capacity, calibrated independently per exact HVAC direction and controller. Compensate ON duty by actual fan stage capacity while keeping quiet limits and reporting unmet demand. Legacy b40 allocation remains default until explicitly calibrated.",
-  "note": "Never assume Low/Medium/High fractions, extrapolate below measured fan speeds, infer heating/moisture output from RPM, or automatically exercise hardware. Explicit Apply on native physically OFF, no pending power/ack, exact source-mode identity. Hardware timing/window/ownership unchanged.",
+  "release_branch": "beta/v0.6.0b42",
+  "intent": "Make the actual Home Assistant friendly names for every PID parameter start with the literal PID acronym in all 38 supported languages. Include native per-device tuning numbers, measured-model calibration inputs, fan capacity model selectors/measurements/buttons, room PID numbers and gain selectors. Preserve translated descriptions and exact entity/unique IDs.",
+  "note": "Correct both generated i18n names and PID parameter has_entity_name behavior; HA device or physical channel prefixes must not precede PID in friendly_name. No native power, control behavior, settings, calibration data, or config entry migration changes.",
   "validation_attempt": 0,
   "changes": [
-    "Pure measured fan capacity model for two-to-five genuinely ordered discrete native speeds, with complete user measured relative capacities and top native stage normalized to 100% output reference.",
-    "Support generic native percentage fan speeds using at least two explicitly measured speed-to-delivered-capacity pairs plus full-speed reference; interpolate only inside observed range and only use actual native percentage steps.",
-    "Save calibration per exact physical primary, exact fan entity, advertised native fan list, and heat/cool/dry mode; reject stale source or wrong mode automatically.",
-    "Add per-device measured-capacity strategy (Legacy default/Measured), native HVAC calibration direction, bounded numeric capacity measurements, and explicit physically-OFF Apply button.",
-    "Convert one PID output request to calibrated fan selection and compensated duty, saturating duty under quiet cap and exposing predicted output and unmet demand in diagnostics and dashboard.",
-    "Keep quiet when sleeping/occupied as fan-speed cap and independent compressor/power safety; do not invent stage capacity or turn accessory fans on.",
-    "Keep prior PID gains and calibration methods, manual settings, source permissions, min ON/OFF, max ON, defrost, valid feedback, recovery/acknowledgement, and canonical environment_manager unchanged.",
-    "Include reproducible pure numeric and integration tests, exact-room frontend edits, HA 2026.10 checks, Python 3.13/3.14, HACS/Hassfest, 38 locale catalog and immutable flat beta package."
+    "Add a deterministic final translation-generation pass ensuring PID · is the first visible token of every PID parameter name in strings.json and all 38 translations, after all other per-device/room generators.",
+    "Move the multi-channel placeholder after PID; avoid duplicate literal PID strings within the same localized display name while preserving locale-specific wording and units.",
+    "Mark only per-controller and room PID parameter entities as has_entity_name=False so Home Assistant never inserts the physical device/room name ahead of the PID sorting prefix in friendly_name.",
+    "Apply to Kp/Ki/Kd, PID sample/cycle duration, process model inputs, capacity stage/speed/output inputs, PID calibration selectors, explicit Apply buttons, room-level and direct room tuning, and the room PID gain-source selector.",
+    "Preserve the original integration domain, entity registry unique IDs, translation keys, channel/device associations, valid ranges, selectable modes, and physical controller behavior.",
+    "Retain non-PID names (climate/quiet/physical devices), existing control mode selector, and the existing beta31–41 safety and measured-capacity behavior.",
+    "Test real Home Assistant 2026.10 entity has_entity_name behavior and exact original unique IDs, all locales' PID prefixes, generator idempotence and non-PID unchanged names, plus existing Python/Node, HACS/Hassfest and flat archive gates."
   ]
 }
