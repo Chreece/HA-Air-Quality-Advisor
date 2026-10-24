@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0b29 - Optional window-contact interlock correction (beta)
+
+- Fix false `open_or_unknown_window` holds when a monitored room has no selected/discovered window contact.
+- Preserve fail-closed behavior for real open, unavailable or missing selected contacts; continue rechecking before sending native commands.
+- Align primary room policy and live controller fallback so Automatic/PID equipment can start when there is verified demand and no window contact to monitor.
+- Keep the canonical `environment_manager` integration with no domain migration, capability-gated Room Environment targets, and safety interlocks/dwell/ownership.
+- Retain stable Latest v0.5.1.
+
 ## 0.6.0b28 - Final canonical room targets and active controllers (beta)
 
 - Supersede intermediate beta26/beta27 payloads with the fully validated final source.
