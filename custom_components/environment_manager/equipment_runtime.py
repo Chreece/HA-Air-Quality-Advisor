@@ -1196,7 +1196,7 @@ class EquipmentRuntime:
             if owned and state.state != "off":
                 await self._power(spec, cap, "off", automatic=auto, shutdown=True)
             return
-        demand, metric, increasing, goal = None, None, False, None
+        demand, metric, increasing, goal, wanted = None, None, False, None, None
         if cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}:
             from .device_activation import effective_device
             dev = effective_device(self.manager, spec, cap.primary)
@@ -1297,6 +1297,14 @@ class EquipmentRuntime:
             if cfg.get(key) is not None and state.attributes.get(key) != cfg[key]:
                 if await self._send(spec, cap, cap.primary, service, {key: cfg[key]}, {"attributes": {key: cfg[key]}}, automatic=auto):
                     return
-        self._status(spec, "controlling" if auto else "manual", demand_percent=demand,
+        status = "controlling" if auto else "manual"
+        if auto and wanted is False and output_off(state):
+            # A selected PID method is not necessarily energizing the device:
+            # expose duty-cycle idle vs ordinary deadband, without changing a
+            # single actuator command, timer, protection, or ownership decision.
+            status = ("pid_output_inactive" if cfg["control_mode"] == "pid"
+                      and demand is not None and demand > 0
+                      else "within_target_band")
+        self._status(spec, status, demand_percent=demand,
                      profile=model.profile_name(cfg, plan), mode=mode, temperature=measured["temperature"],
                      humidity=measured["humidity"])
