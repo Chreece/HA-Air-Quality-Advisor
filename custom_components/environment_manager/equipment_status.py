@@ -67,6 +67,10 @@ class ControllerStatusSensor(EquipmentEntity, SensorEntity):
             "demand_percent": observed.get("demand_percent"),
             "pid_calibration_method": cfg.get("pid_calibration_method", "manual"),
             "pid_last_calibration": cfg.get("pid_last_calibration"),
+            "pid_fan_capacity_strategy": cfg.get("pid_fan_capacity_mode", "legacy"),
+            "pid_fan_capacity_selected_direction": cfg.get("pid_fan_capacity_for_mode", "choose"),
+            "pid_fan_capacity_calibrated_modes": sorted(cfg.get("pid_fan_capacity_models", {})),
+            "pid_fan_capacity_allocation": runtime._fan_allocations.get(self._spec.identifier),
             "pid_output_strategy": (
                 "continuous_percentage_fan" if (cap := equipment.capabilities(self._manager, self._spec))
                 is not None and cap.domain == "fan" and cap.fan_percentage else
