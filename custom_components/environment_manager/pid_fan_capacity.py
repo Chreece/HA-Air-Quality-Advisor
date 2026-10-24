@@ -18,8 +18,13 @@ from typing import Any, Mapping
 from .pid_output_allocator import ordered_fan_stages
 
 STAGE_FIELDS = tuple(f"pid_capacity_stage_{i}" for i in range(1, 5))
-PERCENT_FIELDS = ("pid_capacity_at_25", "pid_capacity_at_50", "pid_capacity_at_75")
-CAPACITY_FIELDS = {key: (0., 99., 1., "%") for key in (*STAGE_FIELDS, *PERCENT_FIELDS)}
+PERCENT_POINT_FIELDS = tuple(
+    (f"pid_capacity_speed_{i}", f"pid_capacity_output_{i}") for i in range(1, 4)
+)
+CAPACITY_FIELDS = {
+    **{key: (0., 99., 1., "%") for key in STAGE_FIELDS},
+    **{key: (0., 99., 1., "%") for pair in PERCENT_POINT_FIELDS for key in pair},
+}
 CAPACITY_METHODS = ("legacy", "measured")
 CALIBRATION_DIRECTIONS = ("heat", "cool", "dry", "fan_only")
 
@@ -65,16 +70,20 @@ def build_model(
         if not supported or 100 not in supported:
             raise ValueError("native_full_fan_speed_not_available")
         observed = []
-        for speed, key in zip((25, 50, 75), PERCENT_FIELDS):
-            value = _number(measured.get(key))
-            if value is None or value < 0 or value > 99:
+        for speed_key, capacity_key in PERCENT_POINT_FIELDS:
+            speed, value = _number(measured.get(speed_key)), _number(measured.get(capacity_key))
+            if speed is None or value is None or not 0 <= speed <= 99 or not 0 <= value <= 99:
                 raise ValueError("invalid_measured_percentage_capacity")
-            if value > 0:
-                if speed not in supported or speed < min_speed:
-                    raise ValueError("calibrated_percentage_speed_not_supported")
-                observed.append((speed, value))
+            if speed == value == 0:
+                continue  # unused sample slot, not an invented response
+            if speed == 0 or value == 0:
+                raise ValueError("incomplete_measured_percentage_pair")
+            if int(speed) != speed or int(speed) not in supported or speed < min_speed:
+                raise ValueError("calibrated_percentage_speed_not_supported")
+            observed.append((int(speed), value))
         if len(observed) < 2:
             raise ValueError("two_measured_percentage_capacity_points_required")
+        observed.sort(key=lambda item: item[0])
         points = (*observed, (100, 100.0))
         name = "percentage"
         stages: tuple[str, ...] = ()
