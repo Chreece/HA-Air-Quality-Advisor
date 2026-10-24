@@ -27,7 +27,8 @@ def test_no_allow_power_backend_or_entity():
 def test_room_owned_preset_inputs_and_no_device_temperature_duplicates():
     controls=source("device_controls.py")
     numbers=source("number.py")
-    assert 'for profile in ("comfort", "home", "sleep", "eco")' in controls
+    assert 'ROOM_PROFILES = ("comfort", "home", "away", "sleep", "eco")' in controls
+    assert 'f"{profile}_humidity"' in controls
     assert '"humidity_target"' in controls and '"fan_speed_percent"' in controls
     assert 'f"{profile}_{mode}_c"' not in controls
     assert 'chosen = []' in numbers
