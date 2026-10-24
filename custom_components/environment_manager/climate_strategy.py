@@ -39,25 +39,14 @@ def _num(value: Any, low: float, high: float) -> float | None:
 
 
 def profiles(settings: dict) -> tuple[dict[str,Profile],str|None]:
-    """Room profiles with one-time semantic migration from beta18 names."""
+    """Canonical Room Environment temperature profiles."""
     raw=settings.get("profiles",{}) if isinstance(settings,dict) else {}
     if not isinstance(raw,dict):
         return {},"invalid_profile_collection"
     tolerance=_num(settings.get("hysteresis_c",0.7),0.2,3.0) if isinstance(settings,dict) else None
     if tolerance is None:
         return {},"invalid_hysteresis"
-
-    modern=any(name in raw for name in ("comfort","eco"))
-    if modern:
-        source=raw
-    else:
-        source={
-            "comfort": raw.get("home", {"heat_c":20.0,"cool_c":26.0}),
-            "home": raw.get("unoccupied", {"heat_c":18.0,"cool_c":28.0}),
-            "away": raw.get("away", {"heat_c":16.0,"cool_c":30.0}),
-            "sleep": raw.get("sleep", {"heat_c":18.0,"cool_c":26.0}),
-            "eco": {"heat_c":17.0,"cool_c":29.0},
-        }
+    source=raw
     defaults={
         "comfort":{"heat_c":20.0,"cool_c":26.0},
         "home":{"heat_c":18.0,"cool_c":28.0},
