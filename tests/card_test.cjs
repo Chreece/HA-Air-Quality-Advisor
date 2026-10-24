@@ -1136,3 +1136,82 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   assert.equal(card._dashboardData.version,1);
   assert.ok(card._dashboardEntity===eid);
 })().catch(error=>{console.error(error);process.exitCode=1;});
+
+
+// Beta38: unsupported/temporarily unavailable sensors keep source identity,
+// but the tile heading must be a short, readable label rather than a huge
+// raw sensor.* identifier spilling into neighboring tiles.
+{
+  const demo=JSON.parse(JSON.stringify(input));
+  demo.rooms=[{
+    area_id:'badezimmer',name:'Badezimmer',status:'unknown',
+    status_detail:'partial_indoor_data',readings:[
+      {metric:'humidity',entity_id:'sensor.badezimmer_humidity',
+       value:60.9,unit:'%',available:true,exceeded:false,threshold:65},
+      {metric:'unknown',entity_id:'sensor.badezimmer_fp300_presence',
+       name:'sensor.badezimmer_fp300_presence',
+       value:null,unit:'',available:false,exceeded:false},
+      {metric:'unknown',entity_id:'sensor.badezimmer_illumination',
+       name:'sensor.badezimmer_illumination',
+       value:null,unit:'',available:false,exceeded:false},
+    ],windows:[],
+  }];
+  const labelsFrom=(markup)=>[...markup.matchAll(
+    /<span class="metric-title" title="[^"]*">([^<]*)<\/span>/g
+  )].map(match=>match[1]);
+  const demoCard=new Card();
+  demoCard.setConfig({entity:'sensor.beta38'});
+  demoCard.hass={language:'el',states:{
+    'sensor.beta38':{state:'idle',attributes:{dashboard:demo}},
+  }};
+  const greek=demoCard.shadowRoot.innerHTML;
+  const greekTitles=labelsFrom(greek);
+  assert.ok(greekTitles.includes('Παρουσία'),JSON.stringify(greekTitles));
+  assert.ok(greekTitles.includes('Φωτισμός'),JSON.stringify(greekTitles));
+  assert.ok(greekTitles.includes('Υγρασία'),JSON.stringify(greekTitles));
+  assert.ok(!greekTitles.some(title=>title.startsWith('sensor.')),
+    'unknown source IDs must never be tile headings');
+  assert.ok(greek.includes('title="sensor.badezimmer_illumination"'),
+    'the exact sensor ID must still be discoverable in title');
+  assert.ok(greek.includes('Μη διαθέσιμο'),
+    'naming an unsupported metric must never fabricate a value');
+  assert.ok(greek.includes('.metric-title{min-width:0;flex:1 1 auto;'),
+    'names need a confined, wrapping flex column');
+  assert.ok(greek.includes('-webkit-line-clamp:2'),
+    'tile titles must not exceed two readable lines');
+
+  demoCard.hass={language:'en',states:{
+    'sensor.beta38':{state:'idle',attributes:{dashboard:demo}},
+  }};
+  const english=labelsFrom(demoCard.shadowRoot.innerHTML);
+  assert.ok(english.includes('Illumination'),JSON.stringify(english));
+  assert.ok(english.includes('Presence'),JSON.stringify(english));
+  demoCard.hass={language:'de',states:{
+    'sensor.beta38':{state:'idle',attributes:{dashboard:demo}},
+  }};
+  assert.ok(labelsFrom(demoCard.shadowRoot.innerHTML).includes('Beleuchtung'));
+
+  // Keep a custom short HA friendly name when present; use a generic compact
+  // suffix for unrecognized long identifiers, never reveal full ID as title.
+  demo.rooms[0].readings=[{
+    metric:'unknown',name:'sensor.long_device_coordinator_super_long_custom_reading',
+    entity_id:'sensor.long_device_coordinator_super_long_custom_reading',
+    value:null,unit:'',available:false,
+  },{
+    metric:'unknown',name:'Flow rate',
+    entity_id:'sensor.badezimmer_fp300_custom_flow',
+    value:null,unit:'',available:false,
+  },{
+    metric:'unknown',name:'<img src=x onerror=alert(1)>',
+    entity_id:'sensor.badezimmer_weird_measurement',
+    value:null,unit:'',available:false,
+  }];
+  demoCard.hass={language:'en',states:{
+    'sensor.beta38':{state:'idle',attributes:{dashboard:demo}},
+  }};
+  const fallbackTitles=labelsFrom(demoCard.shadowRoot.innerHTML);
+  assert.ok(fallbackTitles.includes('Custom Reading'));
+  assert.ok(fallbackTitles.includes('Flow rate'));
+  assert.ok(!demoCard.shadowRoot.innerHTML.includes('<img src=x onerror='),
+    'user-supplied malicious or long names must not become executable markup');
+}
