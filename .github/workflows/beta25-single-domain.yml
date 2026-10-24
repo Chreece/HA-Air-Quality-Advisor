@@ -1,0 +1,199 @@
+name: Beta25 single environment_manager domain
+on:
+  push:
+    branches:
+      - 'fix/beta25-single-environment-manager-20261024'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beta25-single-domain
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest
+      - name: Full regression suite
+        run: |
+          python -m pytest -q tests
+          python generate_translations.py
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend checks
+        run: |
+          node --check custom_components/environment_manager/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: Canonical-domain-only assertions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('custom_components/environment_manager')
+          init=(p/'__init__.py').read_text()
+          const=(p/'const.py').read_text()
+          assert 'SERVICE_ALIAS_DOMAINS' not in init
+          assert 'LEGACY_PUBLIC_ACTION_DOMAIN' not in init
+          assert 'home_environment_manager' not in init
+          assert 'air_quality_advisor' not in init
+          assert 'enviroment_manager' not in init
+          assert 'DOMAIN = "environment_manager"' in const
+          assert 'MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")' in const
+          PY
+      - name: Build exact flat HACS payload
+        run: |
+          python tools/build_beta25_payload.py /tmp/beta25-payload
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/beta25-payload')
+          assert (p/'manifest.json').is_file()
+          assert (p/'__init__.py').is_file()
+          assert (p/'hacs.json').is_file()
+          assert not (p/'custom_components').exists()
+          m=json.loads((p/'manifest.json').read_text())
+          h=json.loads((p/'hacs.json').read_text())
+          assert m['domain']=='environment_manager'
+          assert m['version']=='0.6.0b25'
+          assert h['content_in_root'] is True
+          assert h.get('zip_release') is not True
+          assert 'filename' not in h
+          PY
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate canonical source package, not HACS discovery shim
+        run: |
+          rm manifest.json
+          rm -rf brand
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  home_assistant:
+    name: HA 2026.10 exact-ID migration from b19 and b20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: |
+          python tools/verify_domain_migration_ha.py
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+
+  publish_flat_beta:
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Recheck generated source and build flat payload
+        run: |
+          set -euo pipefail
+          python generate_translations.py
+          git diff --exit-code -- custom_components/environment_manager/strings.json custom_components/environment_manager/translations custom_components/environment_manager/equipment_text.py
+          payload=/tmp/beta25-payload
+          python tools/build_beta25_payload.py "$payload"
+          cp .github/releases/v0.6.0b25.md /tmp/v0.6.0b25-notes.md
+          mkdir -p /tmp/manual/custom_components/environment_manager
+          cp -a custom_components/environment_manager/. /tmp/manual/custom_components/environment_manager/
+          (cd /tmp/manual && zip -q -r /tmp/HA-Home-Environment-Manager-v0.6.0b25.zip custom_components/environment_manager -x '*__pycache__*' '*.pyc' '*.pyo')
+          python -m compileall -q "$payload"
+      - name: Simulate HACS normal tag archive extraction
+        run: |
+          python - <<'PY'
+          import json, tempfile, zipfile
+          from pathlib import Path
+
+          payload=Path('/tmp/beta25-payload')
+          with tempfile.TemporaryDirectory() as tmp:
+              root=Path(tmp)
+              archive=root/'tag.zip'
+              outer='Chreece-HA-Home-Environment-Manager-deadbeef'
+              with zipfile.ZipFile(archive,'w') as z:
+                  for path in payload.rglob('*'):
+                      if path.is_file():
+                          z.write(path, f"{outer}/{path.relative_to(payload).as_posix()}")
+              dest=root/'config/custom_components/environment_manager'
+              dest.mkdir(parents=True)
+              remote=''
+              with zipfile.ZipFile(archive) as z:
+                  selected=[]
+                  for info in z.filelist:
+                      filename='/'.join(info.filename.split('/')[1:])
+                      if filename.startswith(remote) and filename != remote:
+                          info.filename=filename.replace(remote,'',1)
+                          if info.filename == '/':
+                              continue
+                          selected.append(info)
+                  assert selected
+                  z.extractall(dest, selected)
+              m=json.loads((dest/'manifest.json').read_text())
+              assert m['domain']=='environment_manager'
+              assert m['version']=='0.6.0b25'
+              assert (dest/'__init__.py').is_file()
+              assert not (dest/'custom_components').exists()
+          PY
+      - name: Hassfest the exact flat payload as installed by HACS
+        run: |
+          rm -rf /tmp/beta25-hassfest
+          mkdir -p /tmp/beta25-hassfest/custom_components/environment_manager
+          cp -a /tmp/beta25-payload/. /tmp/beta25-hassfest/custom_components/environment_manager/
+          docker run --rm -v /tmp/beta25-hassfest:/github/workspace ghcr.io/home-assistant/hassfest
+      - name: Publish flattened beta branch and prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.6.0b25 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'v0.6.0b25 already exists; refusing to replace it'
+            exit 1
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b25" >/dev/null 2>&1; then
+            echo 'beta/v0.6.0b25 already exists; refusing to replace it'
+            exit 1
+          fi
+          payload=/tmp/beta25-payload
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan beta25-payload
+          git rm -rf . || true
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a "$payload"/. .
+          git add -A
+          git commit -m 'release(beta24): flat HACS environment_manager payload'
+          payload_sha="$(git rev-parse HEAD)"
+          test "$(git ls-tree --name-only HEAD | grep -c '^custom_components$' || true)" = "0"
+          test "$(git show HEAD:manifest.json | python -c 'import json,sys; d=json.load(sys.stdin); assert d["domain"]=="environment_manager" and d["version"]=="0.6.0b25"')" = ""
+          git push origin HEAD:refs/heads/beta/v0.6.0b25
+          gh release create v0.6.0b25             --repo "$GITHUB_REPOSITORY"             --target "$payload_sha"             --title 'Home Environment Manager v0.6.0 beta 24'             --notes-file /tmp/v0.6.0b25-notes.md             --prerelease --latest=false
+          echo "BETA24_PAYLOAD_SHA=$payload_sha"
+
