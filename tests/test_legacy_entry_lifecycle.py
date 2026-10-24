@@ -20,9 +20,6 @@ from test_discovery import adapter
 ROOT = Path(__file__).resolve().parents[1]
 COMPONENT = ROOT / "custom_components" / "environment_manager"
 CANONICAL_DOMAIN = "environment_manager"
-LEGACY_DOMAIN = "air" + "_quality_advisor"
-PUBLIC_ACTION_DOMAIN = "home_environment_manager"
-BETA20_DOMAIN = "enviroment_manager"
 
 
 class ServiceRegistry:
@@ -189,8 +186,16 @@ def integration(adapter,monkeypatch):
 
 
 def make_hass():
-    return SimpleNamespace(data={},services=ServiceRegistry(),
-                           config_entries=ConfigEntries(),http=FakeHttp())
+    async def async_add_executor_job(fn, *args):
+        return fn(*args)
+    return SimpleNamespace(
+        data={},
+        services=ServiceRegistry(),
+        config_entries=ConfigEntries(),
+        http=FakeHttp(),
+        config=SimpleNamespace(config_dir=str(ROOT)),
+        async_add_executor_job=async_add_executor_job,
+    )
 
 
 def legacy_entry(number=1,title="Air Quality Advisor"):
@@ -218,8 +223,6 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     assert js[0][1].endswith("?v="+manifest["version"])
     assert {item.url for item in h.http.static_paths} == {
         f"/{CANONICAL_DOMAIN}/air-quality-advisor-card.js",
-        f"/{BETA20_DOMAIN}/air-quality-advisor-card.js",
-        f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js",
     }
     assert asyncio.run(module.async_setup_entry(h,entry)) is True
     assert entry.title=="Home Environment Manager"
@@ -229,8 +232,7 @@ def test_v05_entry_sets_up_without_schema_or_identity_migration(integration):
     from custom_components.environment_manager.const import PLATFORMS
     assert h.config_entries.forwarded==[("legacy-1", PLATFORMS)]
     assert set(h.services.callbacks)=={
-        (domain,action)
-        for domain in (CANONICAL_DOMAIN,PUBLIC_ACTION_DOMAIN,BETA20_DOMAIN,LEGACY_DOMAIN)
+        (CANONICAL_DOMAIN, action)
         for action in ("announce","pid_control","climate_control","climate_diagnostics")
     }
     # No climate permission is implicitly created for a legacy entry.
@@ -249,10 +251,10 @@ def test_multiple_config_entries_register_once_and_unload_cleanly(integration):
     second=legacy_entry(number=2,title="Home Environment Advisor")
     asyncio.run(module.async_setup_entry(h,first))
     asyncio.run(module.async_setup_entry(h,second))
-    assert len(h.services.registered)==16
+    assert len(h.services.registered)==4
     assert sorted(h.data[CANONICAL_DOMAIN])==["legacy-1","legacy-2"]
     assert asyncio.run(module.async_unload_entry(h,first))
-    assert len(h.services.callbacks)==16
+    assert len(h.services.callbacks)==4
     assert not FakeManager.instances[1].stopped
     assert asyncio.run(module.async_unload_entry(h,second))
     assert len(h.services.callbacks)==0
@@ -277,7 +279,7 @@ def test_setup_forwarding_and_partial_controller_start_failures_stop_manager(int
     assert h.services.registered==[]
 
 
-def test_read_only_climate_diagnostics_registers_both_aliases_and_never_calls_hvac(
+def test_read_only_climate_diagnostics_uses_only_canonical_domain_and_never_calls_hvac(
     integration,
 ):
     module,_=integration
@@ -286,7 +288,7 @@ def test_read_only_climate_diagnostics_registers_both_aliases_and_never_calls_hv
     asyncio.run(module.async_setup_entry(hass,entry))
     call=SimpleNamespace(data={"area":"living"},return_response=True)
     service=hass.services.callbacks[
-        ("home_environment_manager","climate_diagnostics")
+        ("environment_manager","climate_diagnostics")
     ]
     result=asyncio.run(service(call))
     assert result["status"]=="ok"
@@ -331,7 +333,7 @@ def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
             data={"area":area,"action":action},return_response=True,
         )
     routed=asyncio.run(
-        hass.services.callbacks[("home_environment_manager","climate_control")](
+        hass.services.callbacks[("environment_manager","climate_control")](
             request("kitchen")
         )
     )
