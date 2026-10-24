@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 39 is available for opt-in testing.** Stable remains **v0.5.1**. Beta39 unifies house presence: if **any fresh configured device tracker/person is home or any configured presence binary sensor is on**, the house is Home, regardless of contradictory tracker states or empty occupied-room lists. The existing safety/away cooldown rules and beta31–38 fixes remain; the canonical domain is `environment_manager`.
+> **v0.6.0 beta 40 is available for opt-in testing.** Stable remains **v0.5.1**. Beta40 coordinates a per-device PID output across binary ON/OFF, verified 0–100% modulation, real Low/Medium/High native fan stages and quiet-room limits; it adds Manual / IMC-Lambda / Cohen–Coon deterministic calibration choices using measured process models. All prior safety and beta31–39 fixes remain; the domain is `environment_manager`.
+
+## Beta 40 - coordinated PID outputs and deterministic per-device calibration
+
+One PID demand now selects the output allocation appropriate to the actual device. Binary heaters/dehumidifiers retain protected slow PWM, real 0–100% valves and percentage fans use continuous modulation without double PWM, and native Low/Medium/High or numbered fan levels can follow the same PID demand when supported. The existing Quiet when sleeping and Quiet when occupied settings cap fan speeds and hold output changes while the quiet context is unknown. Model calculations do **not** bypass compressor, window, power or occupancy safety interlocks.
+
+Select **PID** on a managed device to reveal its **PID calibration method**: Manual, **IMC / Lambda** or **Cohen–Coon**. Manual leaves current Kp/Ki/Kd untouched. The two deterministic choices require a measured first-order-plus-dead-time step-response model: absolute process gain per full actuator step, response time constant, dead time and (for IMC) desired response Lambda, all in minutes where applicable. Fill the model fields, then press **Apply PID calibration** while the physical device is OFF; invalid/unmeasured response or out-of-range gains are rejected without changing the existing tune. No device is automatically cycled, probed or oscillated during calibration.
+
+Reference: [ISA Lambda tuning](https://www.isa.org/intech-home/2016/may-june/departments/loop-tuning-basics-self-regulating-processes) and [NI Cohen–Coon](https://www.ni.com/docs/en-US/bundle/labview/page/cohen-coon-autotuning-method.html). Both are deterministic calculations from **measured** process dynamics, not automatic identification of unknown appliances. Preserve the same source/room controller IDs, authorization and safety bounds.
 
 ## Beta 39 - Home when any device tracker or configured presence sensor is positive
 
