@@ -96,7 +96,13 @@ def test_native_climate_facade_matches_actual_capabilities(platforms, domain, ex
     assert bool(entity.supported_features & platforms.Features.TARGET_HUMIDITY)==has_humidity
     assert entity.current_temperature==15
     assert entity.current_humidity==70
-    assert entity.hvac_mode=="off" and entity.hvac_action=="off"
+    # One native direction is unambiguous for an armed supervisor. A native
+    # multi-mode climate with no evaluated direction remains Off until decided.
+    idle_mode={"climate":"off","fan":"fan_only",
+               "humidifier":"dry","switch":"heat"}[domain]
+    assert entity.hvac_mode==idle_mode
+    assert entity.hvac_action==("off" if idle_mode=="off" else "idle")
+    assert entity.extra_state_attributes["physical_hvac_mode"]=="off"
     assert entity._attr_device_info["identifiers"]=={("environment_manager",h.spec.identifier)}
     assert entity._attr_native_temperature_unit=="°C"
     assert set(entity.preset_modes)==set(model.PRESETS)
