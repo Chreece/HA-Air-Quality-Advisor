@@ -25,7 +25,7 @@
 
 ## Beta 31 - restore room and controller numbers after delayed native startup
 
-**Configuration values must not disappear because an underlying physical device is late to start.** This release restores already-registered Kp/Ki/Kd, PID sampling/cycle intervals, and minimum/maximum ON/OFF entities even when the native climate/fan/humidifier state is temporarily unavailable.
+**A beta30 Python variable-name collision also left Room Environment heating/cooling target values empty even when hardware was online; beta31 fixes that runtime exception.**\n\n**Configuration values must not disappear because an underlying physical device is late to start.** This release restores already-registered Kp/Ki/Kd, PID sampling/cycle intervals, and minimum/maximum ON/OFF entities even when the native climate/fan/humidifier state is temporarily unavailable.
 
 For each **Room Environment** hub, previously available Comfort/Home/Away/Sleep/Eco heating, cooling and humidity targets are retained when compatible equipment is temporarily offline. When a selected device publishes its capabilities after Home Assistant started, newly supported targets and PID fields register without another restart. Real hardware capabilities still determine which kinds of targets apply (for example, a heat-only device does not gain a cooling mode).
 
