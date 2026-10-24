@@ -232,6 +232,24 @@ def test_binary_pid_controls_supported_equipment(runtime_module, domain):
     asyncio.run(run())
 
 
+def test_controller_distinguishes_no_demand_from_pid_duty_idle(runtime_module):
+    async def scenario():
+        automatic = home(runtime_module, domain="climate", mode="automatic")
+        automatic.hass.states.get("sensor.temp").state = "20"
+        await tick(automatic)
+        assert automatic.hass.services.calls == []
+        assert automatic.runtime.statuses[automatic.spec.identifier]["status"] == "within_target_band"
+
+        pid = home(runtime_module, domain="climate", mode="pid")
+        pid.hass.states.get("sensor.temp").state = "19.8"
+        await tick(pid)
+        assert pid.hass.services.calls == []
+        status = pid.runtime.statuses[pid.spec.identifier]
+        assert status["status"] == "pid_output_inactive"
+        assert 0 < status["demand_percent"] < 100
+    asyncio.run(scenario())
+
+
 def test_uncommissioned_power_never_starts_a_device(runtime_module):
     async def run():
         h = home(runtime_module, power=False)
