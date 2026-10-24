@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
@@ -29,6 +30,7 @@ BETA20_DOMAIN = MIGRATION_SOURCE_DOMAINS[0]
 LEGACY_DOMAIN = LEGACY_STORAGE_DEFAULT_DOMAIN
 from custom_components.environment_manager.domain_migration import (
     async_migrate_legacy_registry,
+    async_quarantine_legacy_component_dirs,
 )
 
 
@@ -141,11 +143,53 @@ async def check(config_dir: str, source_domain: str) -> None:
     await hass.async_stop(force=True)
 
 
+async def check_legacy_folder_cleanup(config_dir: str) -> None:
+    """Verified old packages leave custom_components but remain recoverable."""
+    config = Path(config_dir)
+    custom = config / "custom_components"
+    custom.mkdir(parents=True, exist_ok=True)
+
+    for domain in MIGRATION_SOURCE_DOMAINS:
+        folder = custom / domain
+        folder.mkdir()
+        (folder / "manifest.json").write_text(
+            json.dumps({"domain": domain, "name": "Legacy"}),
+            encoding="utf-8",
+        )
+        (folder / "marker.txt").write_text(domain, encoding="utf-8")
+
+    # A foreign folder must never be touched merely because it exists.
+    foreign = custom / "unrelated_component"
+    foreign.mkdir()
+    (foreign / "manifest.json").write_text(
+        json.dumps({"domain": "unrelated_component", "name": "Other"}),
+        encoding="utf-8",
+    )
+
+    hass = HomeAssistant(config_dir)
+    loader.async_setup(hass)
+    moved = await async_quarantine_legacy_component_dirs(hass)
+
+    assert set(moved) == set(MIGRATION_SOURCE_DOMAINS)
+    for domain in MIGRATION_SOURCE_DOMAINS:
+        assert not (custom / domain).exists()
+        backups = sorted(
+            (config / ".environment_manager_legacy_components").glob(f"{domain}*")
+        )
+        assert backups
+        assert any((item / "marker.txt").read_text(encoding="utf-8") == domain for item in backups)
+
+    assert foreign.is_dir()
+    await hass.async_block_till_done()
+    await hass.async_stop(force=True)
+
+
 if __name__ == "__main__":
     for domain in (LEGACY_DOMAIN, BETA20_DOMAIN):
         with TemporaryDirectory(prefix=f"hem-domain-{domain}-") as directory:
             asyncio.run(check(directory, domain))
+    with TemporaryDirectory(prefix="hem-legacy-folders-") as directory:
+        asyncio.run(check_legacy_folder_cleanup(directory))
     print(
-        "Home Assistant 2026.10 b19/b20 -> environment_manager "
-        "identity-preserving migration: PASS"
+        "Home Assistant 2026.10 single-domain migration and legacy-folder cleanup: PASS"
     )
