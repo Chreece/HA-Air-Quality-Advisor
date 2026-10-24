@@ -56,7 +56,7 @@ def test_branded_icons_and_beta_action_icons_have_valid_dimensions():
 
 
 def test_beta_workflow_uses_prerelease_and_never_changes_latest():
-    workflow = (ROOT / ".github/workflows/beta30-window-optional.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/beta30-controller-status.yml").read_text(encoding="utf-8")
     if (COMPONENT / "manifest.json").read_text(encoding="utf-8").find(
         '"version": "0.6.0b30"'
     ) < 0:
