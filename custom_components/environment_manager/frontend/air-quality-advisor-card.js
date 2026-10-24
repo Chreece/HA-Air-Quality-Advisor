@@ -459,7 +459,9 @@
 
   function detected(hass) {
     return Object.entries(hass?.states || {})
-      .filter(([id, state]) => id.startsWith('sensor.') && state?.attributes?.dashboard?.version === 1)
+      .filter(([id, state]) => id.startsWith('sensor.') &&
+        (state?.attributes?.dashboard?.version === 1 ||
+         state?.attributes?.dashboard_api === 'environment_manager/dashboard'))
       .map(([id]) => id);
   }
 
@@ -477,6 +479,12 @@
       this._shownEntity = null;
       this._shownLanguage = null;
       this._shownControllerSignature = null;
+      this._dashboardData = null;
+      this._dashboardEntity = null;
+      this._dashboardLoadedRevision = null;
+      this._dashboardFetching = null;
+      this._dashboardFailureCount = 0;
+      this._dashboardNextAttemptAt = 0;
       this._climateEditError = null;
       this._lastState = null;
       this._lastConfigKey = null;
@@ -667,13 +675,67 @@
       }
       this._config = {show_outside:true, show_metrics:true, show_science:true, ...config};
       this._lastConfigKey = null;
+      this._loadDashboard();
       this._render(true);
     }
 
     set hass(hass) {
       this._hass = hass;
+      this._loadDashboard();
       this._loadDeviceIds();
       this._render();
+    }
+
+    _loadDashboard() {
+      // Recorder attributes deliberately contain only an API marker/revision.
+      // Fetch the complete scientific and device data over authenticated WS.
+      // Old in-memory dashboards remain displayable during a rolling upgrade.
+      if (!this._hass?.callWS) return;
+      const [entityId, state] = this._state();
+      const attrs = state?.attributes || {};
+      if (!entityId || attrs.dashboard_api !== 'environment_manager/dashboard' ||
+          attrs.dashboard?.version === 1) return;
+      const revision = Number(attrs.dashboard_revision) || 0;
+      if (this._dashboardEntity === entityId &&
+          this._dashboardLoadedRevision === revision && this._dashboardData) return;
+      if (this._dashboardFetching ||
+          Date.now()<this._dashboardNextAttemptAt) return;
+      const capturedEntity = entityId;
+      const capturedRevision = revision;
+      this._dashboardFetching = Promise.resolve().then(() =>
+        this._hass.callWS({
+          type:'environment_manager/dashboard', entity_id:capturedEntity
+        })
+      ).then((snapshot) => {
+        if (!snapshot || snapshot.version !== 1 ||
+            !Array.isArray(snapshot.rooms)) throw new Error('Invalid dashboard snapshot');
+        // A response from a previously selected recommendation must never
+        // appear on another entry's card after the user changes the source.
+        if (this._state()[0] !== capturedEntity) return;
+        this._dashboardData = snapshot;
+        this._dashboardEntity = capturedEntity;
+        this._dashboardLoadedRevision = capturedRevision;
+        this._dashboardFailureCount = 0;
+        this._dashboardNextAttemptAt = 0;
+        this._render(true);
+      }).catch((error) => {
+        this._dashboardFailureCount = Math.min(6, this._dashboardFailureCount+1);
+        this._dashboardNextAttemptAt = Date.now() +
+          Math.min(60000, 1000 * (2 ** this._dashboardFailureCount));
+        if (this._dashboardFailureCount<=2) {
+          console.warn('Home Environment Manager dashboard will retry',error);
+        }
+      }).finally(() => {
+        this._dashboardFetching = null;
+        const [currentEntity, current] = this._state();
+        const currentRevision = Number(current?.attributes?.dashboard_revision) || 0;
+        if (current?.attributes?.dashboard_api === 'environment_manager/dashboard' &&
+            (currentEntity !== capturedEntity ||
+             currentRevision !== capturedRevision) &&
+            Date.now()>=this._dashboardNextAttemptAt) {
+          this._loadDashboard();
+        }
+      });
     }
 
     _loadDeviceIds() {
@@ -1538,10 +1600,17 @@
       if (!force && this._lastState === state && this._shownEntity === entity &&
           this._shownLanguage === lang && this._lastConfigKey === key &&
           this._shownControllerSignature === controllerSignature) return;
-      const data = state?.attributes?.dashboard;
+      const inline = state?.attributes?.dashboard;
+      const data = inline?.version === 1 ? inline :
+        this._dashboardEntity === entity ? this._dashboardData : null;
       if (!data || data.version !== 1) {
         this.shadowRoot.innerHTML = `${this._styles()}<ha-card class="shell" dir="${RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr'}"><div class="empty-state">
-        ${this._icon('mdi:air-filter')}<h3>${escape(this._t('title'))}</h3><p>${escape(this._t('missingCard'))}</p></div></ha-card>`;
+        ${this._icon('mdi:air-filter')}<h3>${escape(this._t('title'))}</h3><p>${escape(
+          state?.attributes?.dashboard_api==='environment_manager/dashboard'
+            ? (lang==='el' ? 'Φόρτωση δεδομένων δωματίων…'
+               : lang==='de' ? 'Raumdaten werden geladen…'
+               : 'Loading room data…')
+            : this._t('missingCard'))}</p></div></ha-card>`;
         // Keep retrying when the recommended sensor is still starting:
         // HA may later supply the dashboard on the same card instance.
         this._lastState = null;
@@ -1838,7 +1907,8 @@
       preview:true,
       documentationURL:'https://github.com/Chreece/HA-Air-Quality-Advisor',
       getEntitySuggestion: (hass,entityId) =>
-        hass.states[entityId]?.attributes?.dashboard?.version === 1
+        (hass.states[entityId]?.attributes?.dashboard?.version === 1 ||
+         hass.states[entityId]?.attributes?.dashboard_api === 'environment_manager/dashboard')
           ? {config:{type:'custom:air-quality-advisor-card',entity:entityId}}
           : null
     });
@@ -1851,7 +1921,8 @@
       preview:true,
       documentationURL:'https://github.com/Chreece/HA-Air-Quality-Advisor',
       getEntitySuggestion:(hass,entityId) =>
-        hass.states[entityId]?.attributes?.dashboard?.version === 1
+        (hass.states[entityId]?.attributes?.dashboard?.version === 1 ||
+         hass.states[entityId]?.attributes?.dashboard_api === 'environment_manager/dashboard')
           ? {config:{type:'custom:home-environment-manager-card',entity:entityId}}
           : null
     });
