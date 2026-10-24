@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b29/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/main/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 29 is available for opt-in testing.** Stable remains **v0.5.1**. Beta29 fixes the false window interlock that could leave a monitored room's authorized PID/Automatic climate controllers OFF when the room has **no configured window contact**. Existing configured contacts still must be closed and valid. It retains the canonical `environment_manager` domain, room targets for Comfort / Home / Away / Sleep / Eco, and native PID/Automatic device actuation.
+> **v0.6.0 beta 30 is available for opt-in testing.** Stable remains **v0.5.1**. Beta30 adds a separate **Control status** diagnostic sensor to every managed physical controller. It explains why PID/Automatic is idle or blocked while the physical climate remains OFF, without relaxing physical safety checks. It retains the canonical `environment_manager` domain, Comfort / Home / Away / Sleep / Eco room targets, and beta29's optional-window fix.
+
+## Beta 30 - visible per-device controller status
+
+Every managed physical controller now has a read-only **Control status** diagnostic sensor. The original managed climate entity still truthfully reflects the physical HVAC state. Select PID or Automatic on the controller's **Control method** entity; if the physical device is still OFF, inspect **Control status** on that same device to see whether the controller is waiting for minimum-OFF time, startup warmup, sensor feedback, a window/ownership interlock, or native command acknowledgement.
+
+The sensor also shows the selected method/preset, evaluated HVAC mode, PID demand percentage, current physical source states, ownership, and any pause reason. When verified demand is satisfied it reports `within_target_band`; when PID output is currently inactive despite positive demand it reports `pid_output_inactive`. These diagnostic status distinctions do not alter physical actuation.
 
 ## Beta 29 - optional window contact must not block room heating
 
