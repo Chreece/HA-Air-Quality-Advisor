@@ -59,18 +59,29 @@ def apply_device_controls_i18n(root: Path) -> None:
             number["area_pid_" + key] = {
                 "name": caption or (words[5] if key == "target_c" else "PID " + key)
             }
-        for kind in ("comfort", "home", "sleep", "eco"):
+        profile_names = {
+            "comfort": f"{vocabularies[locale]['room']} · {vocabularies[locale]['presence']}",
+            "home": vocabularies[locale]["house"],
+            "away": f"{vocabularies[locale]['house']} · {vocabularies[locale]['off']}",
+            "sleep": vocabularies[locale]["sleep"],
+            "eco": "ECO",
+        }
+        for kind in ("comfort", "home", "away", "sleep", "eco"):
             for mode in ("heat", "cool"):
                 key = kind + "_" + mode
                 prefix = words[0] if mode == "heat" else words[1]
-                # Climate profile labels are now completely localized in
-                # all 38 languages. Avoid prepending an English "Heating"/
-                # "Cooling" label a second time (or duplicating it in Greek).
                 number["area_climate_profile_" + key] = {
                     "name": profiles.get(key) or (
-                        prefix + " · " + kind.capitalize()
+                        prefix + " · " + profile_names[kind]
                     )
                 }
+            number["area_climate_profile_" + kind + "_humidity"] = {
+                "name": (
+                    vocabularies[locale]["humidity"] + " · "
+                    + profile_names[kind] + " · "
+                    + vocabularies[locale]["target"] + " (%)"
+                )
+            }
         for key in ("automatic_notifications", "automatic_tts",
                     "use_announcement_hub", "ai_rewrite_announcements"):
             switches["home_" + key] = {
