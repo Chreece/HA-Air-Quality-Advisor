@@ -1017,6 +1017,15 @@
       const calibrationInputs=states.filter(([id,item])=>
         id.startsWith('number.') && item?.attributes?.area_id===area &&
         typeof item.attributes.pid_calibration_field==='string');
+      const capacitySelectors=states.filter(([id,item])=>
+        id.startsWith('select.') && item?.attributes?.area_id===area &&
+        ['strategy','direction'].includes(item.attributes.pid_fan_capacity_role));
+      const capacityButtons=states.filter(([id,item])=>
+        id.startsWith('button.') && item?.attributes?.area_id===area &&
+        item.attributes.pid_fan_capacity_role==='apply');
+      const capacityFields=states.filter(([id,item])=>
+        id.startsWith('number.') && item?.attributes?.area_id===area &&
+        typeof item.attributes.pid_fan_capacity_field==='string');
       return physical.map(([entityId, climate])=>{
         const matched = selectors.filter(([,item])=>signature(item)===signature(climate));
         const [methodId, method] = matched.length===1 ? matched[0] : [null,null];
@@ -1030,9 +1039,22 @@
           signature(item)===signature(climate)).map(([id,state])=>({
             id,state,field:state.attributes.pid_calibration_field,
           }));
+        const capacitySelection=capacitySelectors.filter(([,item])=>
+          signature(item)===signature(climate));
+        const [capacityModeId, capacityMode]=capacitySelection.find(([,item])=>
+          item.attributes.pid_fan_capacity_role==='strategy') || [null,null];
+        const [capacityDirectionId, capacityDirection]=capacitySelection.find(([,item])=>
+          item.attributes.pid_fan_capacity_role==='direction') || [null,null];
+        const [capacityButtonId, capacityButton]=capacityButtons.find(([,item])=>
+          signature(item)===signature(climate)) || [null,null];
+        const capacityNumbers=capacityFields.filter(([,item])=>
+          signature(item)===signature(climate)).map(([id,state])=>({
+            id,state,field:state.attributes.pid_fan_capacity_field,
+          }));
         return {entityId,climate,methodId,method,calibrationSelectId,
                 calibrationSelect,calibrationButtonId,calibrationButton,
-                calibrationNumbers};
+                calibrationNumbers,capacityModeId,capacityMode,capacityDirectionId,
+                capacityDirection,capacityButtonId,capacityButton,capacityNumbers};
       }).sort((a,b)=>a.entityId.localeCompare(b.entityId));
     }
 
@@ -1042,8 +1064,10 @@
       const rows = Object.entries(this._hass?.states || {})
         .filter(([id, state]) =>
           (id.startsWith('select.') || id.startsWith('climate.') ||
-           (id.startsWith('button.') && state?.attributes?.pid_calibration_role) ||
-           (id.startsWith('number.') && state?.attributes?.pid_calibration_field)) &&
+           (id.startsWith('button.') && (
+             state?.attributes?.pid_calibration_role || state?.attributes?.pid_fan_capacity_role)) ||
+           (id.startsWith('number.') && (
+             state?.attributes?.pid_calibration_field || state?.attributes?.pid_fan_capacity_field))) &&
           Array.isArray(state?.attributes?.source_entity_ids) &&
           typeof state.attributes.area_id==='string')
         .map(([id,state])=>[
@@ -1054,6 +1078,8 @@
           state.attributes.source_entity_ids,
           state.attributes.pid_calibration_role,
           state.attributes.pid_calibration_field,
+          state.attributes.pid_fan_capacity_role,
+          state.attributes.pid_fan_capacity_field,
           state.attributes.calibration_status,
         ]);
       return JSON.stringify(rows);
