@@ -193,10 +193,8 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view v0.6.0b26 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release edit v0.6.0b26 --repo "$GITHUB_REPOSITORY" --title 'Home Environment Manager v0.6.0 beta 26'
-            gh release upload v0.6.0b26 /tmp/HA-Home-Environment-Manager-v0.6.0b26.zip --repo "$GITHUB_REPOSITORY" --clobber
-            echo 'Updated existing beta25 release metadata and manual ZIP.'
-            exit 0
+            echo 'v0.6.0b26 already exists; refusing to replace it'
+            exit 1
           fi
           if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b26" >/dev/null 2>&1; then
             echo 'beta/v0.6.0b26 already exists; refusing to replace it'
@@ -212,16 +210,16 @@ jobs:
           git add -A
           git commit -m 'release(beta26): canonical environment_manager payload'
           payload_sha="$(git rev-parse HEAD)"
-          test "$(git ls-tree --name-only HEAD | grep -c '^custom_components          test "$(git show HEAD:manifest.json | python -c 'import json,sys; d=json.load(sys.stdin); assert d["domain"]=="environment_manager" and d["version"]=="0.6.0b26"')" = ""
-          git push origin HEAD:refs/heads/beta/v0.6.0b26
-          gh release create v0.6.0b26             /tmp/HA-Home-Environment-Manager-v0.6.0b26.zip             --repo "$GITHUB_REPOSITORY"             --target "$payload_sha"             --title 'Home Environment Manager v0.6.0 beta 26'             --notes-file /tmp/v0.6.0b26-notes.md             --prerelease --latest=false
-          echo "BETA26_PAYLOAD_SHA=$payload_sha"
-
- || true)" = "0"
+          test "$(git ls-tree --name-only HEAD | grep -c '^custom_components$' || true)" = "0"
           test "$(git ls-tree -r --name-only HEAD | grep -c 'domain_migration.py' || true)" = "0"
           test "$(git ls-tree -r --name-only HEAD | grep -c '__pycache__' || true)" = "0"
           test "$(git show HEAD:manifest.json | python -c 'import json,sys; d=json.load(sys.stdin); assert d["domain"]=="environment_manager" and d["version"]=="0.6.0b26"')" = ""
           git push origin HEAD:refs/heads/beta/v0.6.0b26
-          gh release create v0.6.0b26             /tmp/HA-Home-Environment-Manager-v0.6.0b26.zip             --repo "$GITHUB_REPOSITORY"             --target "$payload_sha"             --title 'Home Environment Manager v0.6.0 beta 26'             --notes-file /tmp/v0.6.0b26-notes.md             --prerelease --latest=false
+          gh release create v0.6.0b26 \
+            /tmp/HA-Home-Environment-Manager-v0.6.0b26.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$payload_sha" \
+            --title 'Home Environment Manager v0.6.0 beta 26' \
+            --notes-file /tmp/v0.6.0b26-notes.md \
+            --prerelease --latest=false
           echo "BETA26_PAYLOAD_SHA=$payload_sha"
-
