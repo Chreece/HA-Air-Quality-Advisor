@@ -1,0 +1,329 @@
+name: Beta35 stable selectors and dashboard self-recovery
+on:
+  push:
+    branches:
+      - 'fix/beta35-card-interaction-render-recovery-20261024'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beta35-window-optional
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest
+      - name: Generate catalogs and run full regression suite
+        run: |
+          python generate_translations.py
+          python -m pytest -q tests
+          python -m pytest -q tests/test_number_recovery.py
+          python -m pytest -q tests/test_beta32_event_loop.py
+          python -m pytest -q tests/test_beta33_capability_recovery.py
+          python -m pytest -q tests/test_beta34_temperature_sources.py
+          python -m compileall -q custom_components
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frontend checks
+        run: |
+          node --check custom_components/environment_manager/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+      - name: Canonical-only and active-controller assertions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('custom_components/environment_manager')
+          runtime='\n'.join(
+              (p/name).read_text()
+              for name in ('__init__.py','const.py','config_flow.py','manifest.json')
+          )
+          assert 'DOMAIN = "environment_manager"' in (p/'const.py').read_text()
+          assert not (p/'domain_migration.py').exists()
+          for old in (
+              'air_quality_advisor','enviroment_manager','home_environment_manager',
+              'MIGRATION_SOURCE_DOMAINS','LEGACY_STORAGE_DEFAULT_DOMAIN',
+              'async_migrate_legacy_registry','async_open_migrated_store',
+          ):
+              assert old not in runtime, old
+          flow=(p/'config_flow.py').read_text()
+          assert 'migrate_legacy' not in flow
+          controls=(p/'device_controls.py').read_text()
+          for profile in ('comfort','home','away','sleep','eco'):
+              assert f'"{profile}": {{"heat":' in controls
+          PY
+      - name: No-contact PID activation and window safety regressions
+        run: |
+          python -m pytest -q tests/test_climate_rooms.py tests/test_equipment_control.py
+          python - <<'PY'
+          from pathlib import Path
+          base=Path('custom_components/environment_manager')
+          manager=(base/'manager.py').read_text()
+          model=(base/'equipment_model.py').read_text()
+          assert 'require_window_contact=False' in manager
+          assert 'require_window_contact=monitored.area_id in monitored_areas' not in manager
+          assert 'bool(contacts) and' not in model[model.index('def plan_for'):model.index('def profile_name')]
+          PY
+      - name: Internal timestamp and executor regressions
+        run: |
+          python -m pytest -q tests/test_beta32_event_loop.py
+          python - <<'PY'
+          from pathlib import Path
+          root=Path('custom_components/environment_manager')
+          manager=(root/'manager.py').read_text()
+          bootstrap=(root/'__init__.py').read_text()
+          assert '_plan_without_poll_clock' in manager
+          assert 'air_evidence_at' in manager
+          assert 'await hass.async_add_executor_job(' in bootstrap
+          assert 'native_room_source(self.hass, entity_id)' in manager
+          PY
+      - name: Native quiet capability source-only checks
+        run: |
+          python -m pytest -q tests/test_beta33_capability_recovery.py
+          python - <<'PY'
+          from pathlib import Path
+          root=Path('custom_components/environment_manager')
+          shared=(root/'equipment_feature_registration.py').read_text()
+          assert 'quiet_keys' in shared and 'native_changed' in shared
+          assert 'EVENT_STATE_CHANGED' in shared
+          for file in ('select.py','switch.py'):
+              source=(root/file).read_text()
+              assert 'register_late_capabilities' in source
+          assert '_watch_native_updates' in (root/'climate.py').read_text()
+          PY
+      - name: Beta35 retained editor and resilient render assertions
+        run: |
+          node --check custom_components/environment_manager/frontend/air-quality-advisor-card.js
+          node tests/card_test.cjs
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('custom_components/environment_manager/frontend/air-quality-advisor-card.js').read_text()
+          for key in (
+              "this._focusedEditor", "this._pendingRender",
+              "this._flushDeferredRenderSoon()", "_renderContent(force = false)",
+              "this._deviceRegistryNextAttemptAt", "this._lastRenderError",
+              "this._hasValidRender", "Retrying automatically.",
+          ):
+              assert key in src, key
+          assert "this._deviceRegistryUnavailable ||" not in src
+          PY
+      - name: Beta35 selected room temperature and card contracts
+        run: |
+          python -m pytest -q tests/test_beta34_temperature_sources.py
+          python - <<'PY'
+          from pathlib import Path
+          root=Path('custom_components/environment_manager')
+          mgr=(root/'manager.py').read_text()
+          climate=(root/'climate_rooms.py').read_text()
+          card=(root/'frontend/air-quality-advisor-card.js').read_text()
+          assert 'room_temperature_evidence(' in mgr
+          assert 'selected_temperature_c' in climate
+          for expected in ('hass-more-info', 'data-climate-method',
+              'data-save-climate-target', "'environment_manager','climate_control'",
+              "'environment_manager','pid_control'"):
+              assert expected in card
+          assert "'home_environment_manager','climate_control'" not in card
+          PY
+      - name: Controller diagnostics and 38-language catalog assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('custom_components/environment_manager')
+          sensor=(root/'sensor.py').read_text()
+          status=(root/'equipment_status.py').read_text()
+          assert 'ControllerStatusSensor(entry.runtime_data, spec)' in sensor
+          assert 'EntityCategory.DIAGNOSTIC' in status
+          assert 'self._manager.equipment' in status
+          files=list((root/'translations').glob('*.json'))
+          assert len(files)==38
+          for path in [root/'strings.json',*files]:
+              doc=json.loads(path.read_text())
+              assert doc['entity']['sensor']['equipment_control_status']['name']
+          PY
+      - name: Build exact flat HACS payload
+        run: |
+          python tools/build_beta35_payload.py /tmp/beta35-payload
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/beta35-payload')
+          assert (p/'manifest.json').is_file()
+          assert (p/'__init__.py').is_file()
+          assert (p/'hacs.json').is_file()
+          assert not (p/'custom_components').exists()
+          m=json.loads((p/'manifest.json').read_text())
+          h=json.loads((p/'hacs.json').read_text())
+          assert m['domain']=='environment_manager'
+          assert m['version']=='0.6.0b35'
+          assert h['content_in_root'] is True
+          assert h.get('zip_release') is not True
+          assert 'filename' not in h
+          PY
+
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - name: Validate canonical source package, not HACS discovery shim
+        run: |
+          rm manifest.json
+          rm -rf brand
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python generate_translations.py
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: description topics
+
+  home_assistant:
+    name: HA 2026.10 canonical setup and room/device checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python generate_translations.py
+      - run: python -m pip install 'homeassistant==2026.10.0'
+      - run: |
+          python tools/verify_room_hubs_ha.py
+          python tools/verify_room_setup_ha.py
+          python tools/verify_beta15_settings_ha.py
+          python tools/verify_controller_status_ha.py
+          python tools/verify_beta31_number_entities_ha.py
+          python tools/verify_beta33_native_quiet_ha.py
+
+  publish_flat_beta:
+    needs: [test, hassfest, hacs, home_assistant]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Recheck generated source and build flat payload
+        run: |
+          set -euo pipefail
+          python generate_translations.py
+          payload=/tmp/beta35-payload
+          python tools/build_beta35_payload.py "$payload"
+          cp .github/releases/v0.6.0b35.md /tmp/v0.6.0b35-notes.md
+          mkdir -p /tmp/manual/custom_components/environment_manager
+          cp -a custom_components/environment_manager/. /tmp/manual/custom_components/environment_manager/
+          (cd /tmp/manual && zip -q -r /tmp/HA-Home-Environment-Manager-v0.6.0b35.zip custom_components/environment_manager -x '*__pycache__*' '*.pyc' '*.pyo')
+          python -m compileall -q "$payload"
+          find "$payload" -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find "$payload" -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+          test ! -e "$payload/domain_migration.py"
+          test -f "$payload/equipment_status.py"
+      - name: Simulate HACS normal tag archive extraction
+        run: |
+          python - <<'PY'
+          import json, tempfile, zipfile
+          from pathlib import Path
+
+          payload=Path('/tmp/beta35-payload')
+          with tempfile.TemporaryDirectory() as tmp:
+              root=Path(tmp)
+              archive=root/'tag.zip'
+              outer='Chreece-HA-Home-Environment-Manager-deadbeef'
+              with zipfile.ZipFile(archive,'w') as z:
+                  for path in payload.rglob('*'):
+                      if path.is_file():
+                          z.write(path, f"{outer}/{path.relative_to(payload).as_posix()}")
+              dest=root/'config/custom_components/environment_manager'
+              dest.mkdir(parents=True)
+              remote=''
+              with zipfile.ZipFile(archive) as z:
+                  selected=[]
+                  for info in z.filelist:
+                      filename='/'.join(info.filename.split('/')[1:])
+                      if filename.startswith(remote) and filename != remote:
+                          info.filename=filename.replace(remote,'',1)
+                          if info.filename == '/':
+                              continue
+                          selected.append(info)
+                  assert selected
+                  z.extractall(dest, selected)
+              m=json.loads((dest/'manifest.json').read_text())
+              assert m['domain']=='environment_manager'
+              assert m['version']=='0.6.0b35'
+              assert (dest/'__init__.py').is_file()
+              assert (dest/'equipment_status.py').is_file()
+              assert not (dest/'custom_components').exists()
+              assert not (dest/'domain_migration.py').exists()
+              runtime='\n'.join(
+                  (dest/name).read_text()
+                  for name in ('__init__.py','const.py','config_flow.py','manifest.json')
+              )
+              for old in ('air_quality_advisor','enviroment_manager','home_environment_manager'):
+                  assert old not in runtime, old
+          PY
+      - name: Hassfest the exact flat payload as installed by HACS
+        run: |
+          rm -rf /tmp/beta35-hassfest
+          mkdir -p /tmp/beta35-hassfest/custom_components/environment_manager
+          cp -a /tmp/beta35-payload/. /tmp/beta35-hassfest/custom_components/environment_manager/
+          docker run --rm -v /tmp/beta35-hassfest:/github/workspace ghcr.io/home-assistant/hassfest
+      - name: Publish flattened beta branch and prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.6.0b35 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'v0.6.0b35 already exists; refusing to replace it'
+            exit 1
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b35" >/dev/null 2>&1; then
+            echo 'beta/v0.6.0b35 already exists; refusing to replace it'
+            exit 1
+          fi
+          payload=/tmp/beta35-payload
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan beta35-payload
+          git rm -rf . || true
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a "$payload"/. .
+          git add -A
+          git commit -m 'release(beta35): canonical environment_manager payload'
+          payload_sha="$(git rev-parse HEAD)"
+          test "$(git ls-tree --name-only HEAD | grep -c '^custom_components$' || true)" = "0"
+          test "$(git ls-tree -r --name-only HEAD | grep -c 'domain_migration.py' || true)" = "0"
+          test "$(git ls-tree -r --name-only HEAD | grep -c '__pycache__' || true)" = "0"
+          test "$(git show HEAD:manifest.json | python -c 'import json,sys; d=json.load(sys.stdin); assert d["domain"]=="environment_manager" and d["version"]=="0.6.0b35"')" = ""
+          git push origin HEAD:refs/heads/beta/v0.6.0b35
+          gh release create v0.6.0b35 \
+            /tmp/HA-Home-Environment-Manager-v0.6.0b35.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$payload_sha" \
+            --title 'Home Environment Manager v0.6.0 beta 35' \
+            --notes-file /tmp/v0.6.0b35-notes.md \
+            --prerelease --latest=false
+          echo "BETA35_PAYLOAD_SHA=$payload_sha"
