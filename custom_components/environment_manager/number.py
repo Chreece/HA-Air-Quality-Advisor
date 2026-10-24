@@ -459,6 +459,13 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
         return super().available
 
     @property
+    def extra_state_attributes(self):
+        attributes = super().extra_state_attributes
+        if self._key in equipment.PID_MODEL_FIELDS:
+            return {**attributes, "pid_calibration_field": self._key}
+        return attributes
+
+    @property
     def native_value(self):
         return self.controller_settings[self._key]
 
