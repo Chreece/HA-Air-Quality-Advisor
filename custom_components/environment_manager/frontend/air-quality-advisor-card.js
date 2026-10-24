@@ -833,7 +833,9 @@
 
     _metric(item, miniature = false) {
       const metric = item.details?.fallback_for_mold
-        ? `${this._t('humidity')} Ø (RH)` : this._metricName(item.metric);
+        ? `${this._t('humidity')} Ø (RH)`
+        : item.metric==='unknown' ? (item.name || item.entity_id || this._t('missing'))
+          : this._metricName(item.metric);
       const available = item.available && typeof item.value === 'number';
       const limit = item.threshold;
       const hasLimit = typeof limit === 'number' && limit > 0;
@@ -1087,9 +1089,78 @@
         '</strong></div>';
     }
 
+    _controllerPanel(room) {
+      const devices=this._managedControllers(room.area_id);
+      if (!devices.length) return '';
+      const l=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
+      const methods={existing:l.existing,automatic:l.automatic,manual:l.manual,
+        pid:l.pid,off:l.off};
+      const sections=devices.map((entry)=>{
+        const state=entry.climate;
+        const attrs=state.attributes || {};
+        const available=state.state!=='unavailable' && state.state!=='unknown';
+        const selection=entry.method;
+        const options=Array.isArray(selection?.attributes?.options)
+          ? selection.attributes.options : [];
+        const control=selection?.state || attrs.control_mode || 'existing';
+        const name=attrs.friendly_name || entry.entityId;
+        const method=entry.methodId && options.length
+          ? '<label class="managed-method-label"><span>'+escape(l.method)+'</span>'+
+          '<select data-climate-method="'+escape(entry.methodId)+
+          '" data-controller-area="'+escape(room.area_id)+
+          '" aria-label="'+escape(l.method)+' · '+escape(name)+'" '+
+          (available ? '' : 'disabled')+'>'+
+          options.map((option)=>'<option value="'+escape(option)+'" '+
+            (option===control ? 'selected' : '')+'>'+
+            escape(methods[option] || option)+'</option>').join('')+
+          '</select></label>' : '';
+        const features=Number(attrs.supported_features) || 0;
+        const editable=available && control==='manual';
+        const editors=[];
+        for(const [kind,bit,label,minKey,maxKey,fallbackLow,fallbackHigh,step] of [
+          ['temperature',1,l.manualTemperature,'min_temp','max_temp',5,35,0.5],
+          ['humidity',4,l.manualHumidity,'min_humidity','max_humidity',20,80,1],
+        ]) {
+          if (!(features & bit) || !editable) continue;
+          const minimum=Number(attrs[minKey] ?? fallbackLow);
+          const maximum=Number(attrs[maxKey] ?? fallbackHigh);
+          const value=attrs[kind];
+          if (!Number.isFinite(minimum) || !Number.isFinite(maximum) ||
+              !(maximum > minimum)) continue;
+          editors.push('<div class="climate-target-editor">'+
+            '<label><span>'+escape(label)+'</span>'+
+            '<input type="number" data-climate-input="'+escape(kind)+
+            '" min="'+escape(minimum)+'" max="'+escape(maximum)+
+            '" step="'+escape(step)+'" value="'+
+            (Number.isFinite(value) ? escape(value) : '')+'"></label>'+
+            '<button type="button" data-save-climate-target="'+escape(entry.entityId)+
+            '" data-target-metric="'+escape(kind)+'" data-controller-area="'+
+            escape(room.area_id)+'">'+escape(l.save)+'</button></div>');
+        }
+        const status=attrs.controller_status?.status || '';
+        return '<section class="managed-controller">'+
+          '<button type="button" class="climate-entity-link" '+
+          'data-open-climate="'+escape(entry.entityId)+
+          '" data-controller-area="'+escape(room.area_id)+
+          '" title="'+escape(l.openEntity)+'">'+
+          this._icon('mdi:thermostat')+' <strong>'+escape(name)+
+          '</strong> '+this._icon('mdi:open-in-new')+'</button>'+
+          '<div class="managed-status">'+escape(entry.entityId)+
+          ' · '+escape(state.state)+
+          (status ? ' · '+escape(status.replaceAll('_',' ')) : '')+'</div>'+
+          method+editors.join('')+'</section>';
+      }).join('');
+      return '<div class="managed-controllers">'+
+        '<strong>'+escape(l.devices)+'</strong>'+
+        (this._climateEditError ? '<small role="alert" class="climate-edit-error">'+
+          escape(this._climateEditError)+'</small>' : '')+
+        sections+'</div>';
+    }
+
     _climatePanel(room) {
       const p=room?.environment?.climate_plan || {};
-      if (!p.status || p.status==='disabled') return '';
+      const managed=this._managedControllers(room.area_id);
+      if ((!p.status || p.status==='disabled') && !managed.length) return '';
       const l=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
       const primary=p.actuation || {};
       const secondary=p.secondary_actuation || {};
@@ -1192,7 +1263,18 @@
           escape(kind)+': '+escape(String(data.reason||'unverified').replaceAll('_',' '))+
           '</small>').join('');
       const reason=(p.reason==='secondary_thermal_driver_pending' && active)
-        ? '' : (p.reason || '');
+        ? '' : p.reason==='environment_only_no_hvac' ? l.environmentOnly
+          : (p.reason || '');
+      const measuredTemp=typeof p.temperature_c==='number'
+        ? '<span>'+escape(l.roomTemperature)+': <b>'+
+          escape(this._format(p.temperature_c))+' °C</b></span>'
+        : '<span>'+escape(l.temperatureMissing)+'</span>';
+      const selected=p.temperature_evidence || {};
+      const sourceDiagnostic=p.temperature_c==null && selected.status &&
+        selected.status!=='ready' ? '<small>'+escape(selected.status.replaceAll('_',' '))+
+          (selected.entity_ids?.length ? ' · '+
+            escape(selected.entity_ids.slice(0,3).join(', ')) : '')+
+          '</small>' : '';
       return '<section class="pid-panel" aria-label="'+escape(l.title)+'">'+
         '<div class="pid-title">'+this._icon('mdi:thermostat')+
         '<strong>'+escape(l.title)+'</strong><span>'+escape(title)+'</span></div>'+
@@ -1201,11 +1283,12 @@
           '<span>'+escape(l.target)+': <b>'+escape(target)+'</b></span>'+
           '<span>'+escape(l.mode)+': <b>'+escape(p.mode||'—')+'</b></span>')+
         '<span>'+escape(l[p.profile] || p.profile || 'home')+'</span>'+sources+'</div>'+
+        measuredTemp+sourceDiagnostic+
         controllerDetails+priorityDetail+heldDetails+
         humidityDetails+airDetails+dryAdvice+windowAdvice+
         (blocked?'<small>'+escape(l.holding)+'</small>':'')+
         (reason?'<small>'+escape(reason)+'</small>':'')+
-        controls+'</section>';
+        controls+this._controllerPanel(room)+'</section>';
     }
 
     _pidPanel(room) {
@@ -1488,6 +1571,24 @@
       .pid-panel small{font-size:10px;line-height:1.4;color:var(--aqa-muted);display:block}
       .pid-button{padding:6px 10px;border:1px solid var(--aqa-edge);background:var(--aqa-surface);color:var(--aqa-text);border-radius:8px;cursor:pointer;margin-top:9px}
       .pid-button:focus-visible{outline:2px solid var(--aqa-blue)}
+      .managed-controllers{display:grid;gap:9px;margin-top:12px;border-top:1px solid var(--aqa-edge);padding-top:10px}
+      .managed-controllers>strong{font-size:11px}
+      .managed-controller{padding:9px;border:1px solid var(--aqa-edge);border-radius:11px;
+        background:var(--aqa-surface);min-width:0}
+      .climate-entity-link{display:flex;align-items:center;gap:6px;max-width:100%;cursor:pointer;
+        border:0;background:transparent;color:var(--aqa-text);padding:3px;font-size:11px;text-align:start}
+      .climate-entity-link strong{overflow-wrap:anywhere}
+      .climate-entity-link ha-icon{--mdc-icon-size:16px;color:var(--aqa-blue);flex:0 0 auto}
+      .managed-status{font-size:10px;color:var(--aqa-muted);margin:5px 0 9px;overflow-wrap:anywhere}
+      .managed-method-label,.climate-target-editor label{display:grid;gap:5px;font-size:10px}
+      .managed-method-label select,.climate-target-editor input{border:1px solid var(--aqa-edge);
+        border-radius:8px;background:var(--aqa-surface);color:var(--aqa-text);padding:7px;
+        font:inherit;max-width:100%;min-width:0}
+      .climate-target-editor{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin-top:9px}
+      .climate-target-editor label{flex:1 1 120px}
+      .climate-target-editor button{padding:7px 9px;border:1px solid var(--aqa-blue);border-radius:8px;
+        background:var(--aqa-surface);color:var(--aqa-blue);cursor:pointer;font-size:10px}
+      .climate-edit-error{color:var(--aqa-red)!important}
       .science-section{margin:10px 0 12px;padding:11px 12px;border:1px solid var(--aqa-edge);border-radius:12px;background:color-mix(in srgb,var(--aqa-blue),transparent 97%)}
       .science-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 12px;margin-top:8px}
       .science-line{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;border-bottom:1px solid var(--aqa-edge);padding:5px 0}
