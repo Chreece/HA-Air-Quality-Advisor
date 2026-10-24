@@ -65,6 +65,31 @@ POWER_NAMES = {"en": "Allow power and HVAC mode control", "el": "Να επιτρ
     "de": "Leistung und HLK-Moduswechsel erlauben", "fr": "Autoriser puissance et modes climatiques",
     "es": "Permitir control de potencia y modos"}
 
+PID_CALIBRATION_LABELS = {
+    "en": ("PID calibration method", "Manual Kp/Ki/Kd", "IMC / Lambda (measured response)",
+           "Cohen–Coon (measured response)", "Process gain (PV per full output)",
+           "Response time constant", "Response dead time", "IMC response Lambda",
+           "Apply verified PID calibration"),
+    "el": ("Μέθοδος βαθμονόμησης PID", "Χειροκίνητα Kp/Ki/Kd",
+           "IMC / Λάμδα (μετρημένη απόκριση)", "Cohen–Coon (μετρημένη απόκριση)",
+           "Κέρδος διεργασίας (μεταβολή μέτρησης / 100% εξόδου)",
+           "Χρονική σταθερά απόκρισης", "Νεκρός χρόνος απόκρισης",
+           "Λάμδα επιθυμητής απόκρισης", "Εφαρμογή βαθμονόμησης PID"),
+    "de": ("PID-Kalibrierungsverfahren", "Kp/Ki/Kd manuell",
+           "IMC / Lambda (gemessene Antwort)", "Cohen–Coon (gemessene Antwort)",
+           "Prozessverstärkung (Messwert / volle Ausgabe)",
+           "Prozesszeitkonstante", "Prozess-Totzeit", "IMC-Zielzeit Lambda",
+           "Geprüfte PID-Werte anwenden"),
+    "fr": ("Méthode de réglage PID", "Kp/Ki/Kd manuel",
+           "IMC / Lambda (réponse mesurée)", "Cohen–Coon (réponse mesurée)",
+           "Gain du procédé (mesure / sortie totale)", "Constante de temps",
+           "Temps mort", "Lambda de réponse", "Appliquer les gains PID"),
+    "es": ("Método de ajuste PID", "Kp/Ki/Kd manual",
+           "IMC / Lambda (respuesta medida)", "Cohen–Coon (respuesta medida)",
+           "Ganancia de proceso (medición / salida total)", "Constante de tiempo",
+           "Tiempo muerto", "Respuesta Lambda", "Aplicar calibración PID"),
+}
+
 
 def apply_equipment_i18n(root: Path) -> None:
     labels = json.loads((root / "equipment_labels.json").read_text(encoding="utf-8"))
@@ -104,6 +129,19 @@ def apply_equipment_i18n(root: Path) -> None:
             add("switch", key, words[key])
         for key in ("kp", "ki", "kd", "sample_seconds"):
             add("number", key, pid["pid_" + key])
+        calibration = PID_CALIBRATION_LABELS.get(lang, PID_CALIBRATION_LABELS["en"])
+        add("select", "pid_calibration_method", calibration[0], state={
+            "manual": calibration[1],
+            "imc_lambda": calibration[2],
+            "cohen_coon": calibration[3],
+        })
+        for key, label in zip(
+            ("pid_process_gain", "pid_time_constant_minutes",
+             "pid_dead_time_minutes", "pid_lambda_minutes"),
+            calibration[4:8],
+        ):
+            add("number", key, label)
+        add("button", "pid_apply_calibration", calibration[8])
         add("number", "cycle_seconds", actuator.get("pwm_period_s") or
             (v["power"] + " · PID · " + pid["pid_sample_seconds"]))
         add("number", "quiet_percentage", words["quiet_percentage"] + " (%)")
