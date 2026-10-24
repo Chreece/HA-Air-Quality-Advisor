@@ -1,17 +1,20 @@
 {
-  "version": "0.6.0b33",
+  "version": "0.6.0b34",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b33",
-  "intent": "Generic capability-based restoration of quiet fan configuration entities and physical managed-climate status after Home Assistant startup. Three separate physical native controllers reported fan_modes low/medium/high while their quiet switches and mode select were unavailable. Keep all supported device types; never add brand-specific code or fake fan modes.",
-  "note": "Home Assistant source entities may announce fan_modes after Manager's Select/Switch platform has created its initial entities; also preserve previously registered controls while native source is missing. Register source-dependent controls when the real capabilities appear and refresh physical facade availability from exact native source events.",
+  "release_branch": "beta/v0.6.0b34",
+  "intent": "Use verified, explicitly selected Home Assistant room temperature sensors in monitored-room climate and mold evidence, distinguish environment-only monitoring from individual native HVAC controllers, and add native Managed Climate popups, per-device control method selections and manual target editing to the Lovelace card.",
+  "note": "Do not substitute unavailable pinned sensors, infer HVAC modes from temperature readings, invent physical capabilities or bypass PID/window/ownership/safety checks; preserve the canonical environment_manager domain and all beta31-33 fixes.",
   "validation_attempt": 0,
   "changes": [
-    "Recreate previously registered quiet_sleep, quiet_occupied and quiet_fan_mode controls with stable unique IDs if the physical source has not yet advertised capabilities.",
-    "Dynamically add quiet fan configuration entities when a selected physical climate/fan/humidifier source later advertises supported fan modes.",
-    "Keep fan controls capability-gated; percentage fans never gain a fictional discrete fan mode dropdown; unsupported equipment never gets an invented Low option.",
-    "Watch only exact native entity state changes to refresh existing quiet controls and managed-climate availability without an all-entity dispatcher broadcast.",
-    "Never alter physical source integration entities, device permissions, hardware power control, or stored user settings.",
-    "Include Python 3.13/3.14 regression tests and installed HA 2026.10 late-start capability validation plus 38-language, frontend, HACS/Hassfest, flat release validation.",
-    "Preserve one canonical environment_manager domain, beta32 event-loop safety, and beta31 room/PID value repairs."
+    "Evaluate explicitly selected room temperature sensors (including multiple readings) using strict physical/area/staleness validation; preserve exact pinned source priority and never synthesize a measurement.",
+    "Use verified selected room temperature evidence for mold indicator input only when no fixed sensor is configured, and for room-level climate planning without authorizing extra hardware.",
+    "Expose room temperature evidence and source IDs in climate plan diagnostics rather than silently reporting no measurement.",
+    "Translate environment_only_no_hvac into understandable room-monitoring text; keep independent physical managed controllers separately visible.",
+    "Show each Manager-controlled native climate entity on the room card, opening Home Assistant's own More Info popup on click.",
+    "Expose the exact native managed controller's existing select.control_method options; when Manual is active show supported temperature/humidity setpoint inputs and issue standard select.select_option / climate.set_temperature / climate.set_humidity service calls only for matched device entities.",
+    "Fix legacy card pause/resume calls from old home_environment_manager alias to canonical environment_manager.",
+    "Replace raw metric_unknown on card with source identity; do not relabel unknown measurements as valid.",
+    "Add regression tests for selected sensor mean and pinned failure, card action/target validation, HA popup binding and cross-area safety.",
+    "Gate publication on Python 3.13/3.14, installed HA 2026.10, HACS/Hassfest, 38-language catalogs, frontend checks and flat-tag extraction."
   ]
 }
