@@ -1,10 +1,11 @@
 """Constants and cautious defaults for the Air Quality Advisor integration."""
 
 DOMAIN = "environment_manager"
-LEGACY_DOMAIN = "air_quality_advisor"
-BETA20_DOMAIN = "enviroment_manager"
-LEGACY_DOMAINS = (BETA20_DOMAIN, LEGACY_DOMAIN)
-LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"
+
+# Historical domains are migration inputs only. They are never registered as
+# services, frontend paths, config-flow domains or installable integrations.
+MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")
+LEGACY_STORAGE_DEFAULT_DOMAIN = "air_quality_advisor"
 NAME = "Home Environment Manager"
 PLATFORMS = ["sensor", "number", "switch", "select", "button", "time", "climate"]
 
