@@ -263,6 +263,13 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
         return list(cap.fan_modes) if cap else []
 
     @property
+    def extra_state_attributes(self):
+        attributes = super().extra_state_attributes
+        if self._key == "pid_calibration_method":
+            return {**attributes, "pid_calibration_role": "method"}
+        return attributes
+
+    @property
     def current_option(self):
         value = self.controller_settings.get(self._key)
         if self._key == "quiet_fan_mode" and value is None and "low" in self.options:
