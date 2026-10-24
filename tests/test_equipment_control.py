@@ -255,10 +255,11 @@ def test_selecting_active_control_mode_rearms_and_uses_real_off_age(runtime_modu
 
         await h.runtime.async_update(
             h.spec,
-            {"control_mode": algorithm, "requested_mode": "heat"},
+            {"control_mode": algorithm},
         )
         saved = m.settings(h.manager, h.spec)
         assert saved["control_mode"] == algorithm
+        assert saved["requested_mode"] is None
         assert "paused" not in record
         assert record["off_at"][h.entity] == h.clock[0] - 900
 
