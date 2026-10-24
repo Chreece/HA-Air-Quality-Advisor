@@ -23,6 +23,72 @@ from .device_controls import (
 from .climate_strategy import profiles
 
 
+def _registered_number(registry, unique_id: str) -> bool:
+    """An exposed number must survive a temporarily missing native HA state."""
+    lookup = getattr(registry, "async_get_entity_id", None)
+    return bool(lookup and lookup("number", DOMAIN, unique_id))
+
+
+def _profile_fields(manager, entry_id: str, area_id: str, registry) -> tuple[str, ...]:
+    """Keep previously exposed room targets, even if source HVAC is starting.
+
+    Never create fictional targets for a truly unconfigured room. Freshly
+    discovered capabilities are added immediately; prior supported targets
+    retain their stable unique IDs while native equipment is unavailable.
+    """
+    from . import equipment_model as equipment
+
+    current = room_profile_number_fields(manager, area_id)
+    if not any(spec.area_id == area_id for spec in equipment.specs(manager)):
+        return current
+    existing = (
+        key for key in PROFILE_NUMBERS
+        if _registered_number(
+            registry, f"{entry_id}_area_{area_id}_climate_profile_{key}"
+        )
+    )
+    return tuple(dict.fromkeys((*current, *existing)))
+
+
+def _equipment_numbers(manager, spec, registry) -> tuple["EquipmentNumber", ...]:
+    """Keep controller configuration available without native HVAC readiness.
+
+    The old capability gate removed *all* Kp/Kd/timing entities when the
+    physical thermostat was unavailable during setup. Those numbers describe
+    stored policy, not live measurements, and must not depend on hardware.
+    """
+    from . import equipment_model as equipment
+
+    cap = equipment.capabilities(manager, spec)
+    saved_mode = equipment.settings(manager, spec).get("control_mode")
+    keys: list[str] = []
+    for key in equipment.NUMBER_FIELDS:
+        if cap is not None:
+            if key == "quiet_percentage" and not cap.fan_percentage:
+                continue
+            if key in equipment.POWER_FIELDS and cap.domain not in ("climate", "fan", "humidifier"):
+                continue
+            if (key != "quiet_percentage" and key not in equipment.POWER_FIELDS
+                    and "pid" not in equipment.control_modes(manager, spec)):
+                continue
+        else:
+            # A managed physical native endpoint remains a managed controller
+            # even when HA has not restored its state or advertised features.
+            if not any(entity.partition(".")[0] in ("climate", "fan", "humidifier")
+                       for entity in spec.source_entities):
+                continue
+            if key == "quiet_percentage":
+                if not _registered_number(registry, f"{spec.identifier}_{key}"):
+                    continue
+            elif key not in equipment.POWER_FIELDS:
+                if saved_mode != "pid" and not _registered_number(
+                    registry, f"{spec.identifier}_{key}"
+                ):
+                    continue
+        keys.append(key)
+    return tuple(EquipmentNumber(manager, spec, key) for key in keys)
+
+
 async def async_setup_entry(hass, entry, async_add_entities) -> None:
     from .device_hierarchy import configured_area_ids
 
@@ -83,7 +149,7 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 ConfigNumber(manager, entry.entry_id, area_id, "area_environment", key, bounds[:4])
                 for key, bounds in AREA_ENV_NUMBERS.items()
             )
-        profile_fields = room_profile_number_fields(manager, area_id)
+        profile_fields = _profile_fields(manager, entry.entry_id, area_id, registry)
         numbers.extend(
             ConfigNumber(
                 manager, entry.entry_id, area_id, "climate_profile",
@@ -140,18 +206,57 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 "critical_temperature_c", (-60.0, 85.0, 0.1, "°C"),
             ))
     for spec in equipment.specs(manager):
-        cap = equipment.capabilities(manager, spec)
-        if cap is None:
-            continue
-        for key in equipment.NUMBER_FIELDS:
-            if key == "quiet_percentage" and not cap.fan_percentage:
-                continue
-            if key in equipment.POWER_FIELDS and cap.domain not in ("climate", "fan", "humidifier"):
-                continue
-            if key != "quiet_percentage" and key not in equipment.POWER_FIELDS and "pid" not in equipment.control_modes(manager, spec):
-                continue
-            numbers.append(EquipmentNumber(manager, spec, key))
-    async_add_grouped_entities(entry.runtime_data, async_add_entities, numbers)
+        numbers.extend(_equipment_numbers(manager, spec, registry))
+    async_add_grouped_entities(manager, async_add_entities, numbers)
+
+    # Home Assistant restores physical devices asynchronously. If its source
+    # state arrives *after* this platform setup, register newly supported room
+    # targets and device tuning without requiring another HA restart. Existing
+    # entity IDs and unique IDs are never removed or recreated unnecessarily.
+    added = {item.unique_id for item in numbers}
+    watched = {
+        entity_id for spec in equipment.specs(manager)
+        for entity_id in spec.source_entities
+    }
+
+    if watched:
+        from homeassistant.const import EVENT_STATE_CHANGED
+
+        @callback
+        def _source_updated(event) -> None:
+            if event.data.get("entity_id") not in watched:
+                return
+            recovered = []
+            for area_id in configured_area_ids(manager.settings):
+                for key in _profile_fields(
+                    manager, entry.entry_id, area_id, registry
+                ):
+                    candidate = ConfigNumber(
+                        manager, entry.entry_id, area_id, "climate_profile",
+                        key, PROFILE_NUMBERS[key],
+                    )
+                    if candidate.unique_id not in added:
+                        recovered.append(candidate)
+            for spec in equipment.specs(manager):
+                recovered.extend(
+                    candidate for candidate in _equipment_numbers(
+                        manager, spec, registry
+                    )
+                    if candidate.unique_id not in added
+                )
+            if not recovered:
+                return
+            # Prevent a duplicate add when several native attributes arrive
+            # in the same HA event loop iteration.
+            unique = {item.unique_id: item for item in recovered}
+            added.update(unique)
+            async_add_grouped_entities(
+                manager, async_add_entities, unique.values()
+            )
+
+        entry.async_on_unload(
+            hass.bus.async_listen(EVENT_STATE_CHANGED, _source_updated)
+        )
 
 
 class ConfigNumber(NumberEntity):
