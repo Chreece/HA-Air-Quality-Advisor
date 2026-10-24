@@ -1,9 +1,11 @@
 """Read-only operational status on each managed physical controller device.
 
-The managed climate entity intentionally reports the *physical* HVAC mode.
-When PID/Automatic is selected and physical HVAC is OFF, this sensor explains
-whether there is no demand, a minimum-OFF hold, a missing input, or a safety
-pause. It never makes a hardware decision or calls a Home Assistant service.
+The managed climate facade reports the *selected supervisory HVAC mode*,
+while keeping its actual physical source state in separate attributes. When
+PID/Automatic is armed and the physical HVAC output is OFF, its climate action
+is IDLE. This read-only sensor explains whether there is no demand, a
+minimum-OFF hold, a missing input, or a safety pause. Neither entity can
+bypass hardware safety decisions or write a physical HA service from status.
 """
 from __future__ import annotations
 
