@@ -60,12 +60,22 @@ async def async_setup_entry(hass, entry, async_add_entities):
     )
     registry = er.async_get(hass)
 
+    from .equipment_feature_registration import registered_control
+
     def native_quiet_selects():
-        return [
-            EquipmentSelect(manager, spec, key)
-            for spec in equipment.specs(manager)
-            for key in quiet_keys(manager, registry, spec, platform="select")
-        ]
+        selection = []
+        for spec in equipment.specs(manager):
+            selection.extend(EquipmentSelect(manager, spec, key)
+                for key in quiet_keys(manager, registry, spec, platform="select"))
+            cap = equipment.capabilities(manager, spec)
+            active = bool(
+                cap and cap.domain in ("climate", "humidifier")
+                and cap.fan_modes and "pid" in equipment.control_modes(manager, spec)
+            )
+            for key in ("pid_fan_capacity_mode", "pid_fan_capacity_for_mode"):
+                if active or registered_control(registry, "select", spec, key):
+                    selection.append(EquipmentSelect(manager, spec, key))
+        return selection
 
     entities.extend(native_quiet_selects())
     from .const import CONF_AREAS
@@ -244,6 +254,11 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
             return bool(cap and cap.fan_modes and not cap.fan_percentage)
         if self._key == "pid_calibration_method":
             return self.controller_settings["control_mode"] == "pid"
+        if self._key in ("pid_fan_capacity_mode", "pid_fan_capacity_for_mode"):
+            cap = equipment.capabilities(self._manager, self._spec)
+            return bool(cap and cap.fan_modes
+                        and cap.domain in ("climate", "humidifier")
+                        and self.controller_settings["control_mode"] == "pid")
         return super().available
 
     async def async_added_to_hass(self):
@@ -257,6 +272,12 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
             return list(equipment.control_modes(self._manager, self._spec))
         if self._key == "pid_calibration_method":
             return list(equipment.PID_CALIBRATION_METHODS)
+        if self._key == "pid_fan_capacity_mode":
+            return list(equipment.PID_FAN_CAPACITY_METHODS)
+        if self._key == "pid_fan_capacity_for_mode":
+            cap = equipment.capabilities(self._manager, self._spec)
+            return ["choose", *(mode for mode in (cap.modes if cap else ())
+                if mode in equipment.PID_FAN_DIRECTIONS)]
         if self._key in equipment.DEVICE_SELECTS:
             return list(equipment.DEVICE_SELECTS[self._key])
         cap = equipment.capabilities(self._manager, self._spec)
@@ -265,6 +286,9 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
     @property
     def extra_state_attributes(self):
         attributes = super().extra_state_attributes
+        if self._key in ("pid_fan_capacity_mode", "pid_fan_capacity_for_mode"):
+            return {**attributes, "pid_fan_capacity_role":
+                "strategy" if self._key == "pid_fan_capacity_mode" else "direction"}
         if self._key == "pid_calibration_method":
             return {**attributes, "pid_calibration_role": "method"}
         return attributes
