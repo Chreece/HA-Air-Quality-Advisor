@@ -20,6 +20,47 @@ DEVICE_APPROVAL_HELP = {
     "fr": "Choisissez Automatique, Manuel ou PID sur ce contrôleur; aucun second interrupteur de puissance n'est nécessaire. Le choix de la méthode autorise ce contrôleur natif précis à régler ses consignes/vitesses et à démarrer ou arrêter l'appareil physique ou le mode CVC pris en charge lorsque la demande l'exige. Les durées minimales marche/arrêt, la durée maximale, les fenêtres, la disponibilité et les protections matérielles restent appliquées.",
     "es": "Elige Automático, Manual o PID en este controlador; no hace falta un segundo interruptor de potencia. Elegir el método autoriza exactamente a este controlador nativo a regular sus consignas/velocidades y a encender o apagar el dispositivo físico o el modo HVAC compatible cuando exista demanda. Se mantienen los tiempos mínimos de encendido/apagado, el máximo de funcionamiento, las ventanas, la disponibilidad y las protecciones del equipo.",
 }
+STATUS_NAMES = {
+  "ar": "حالة وحدة التحكم",
+  "bg": "Състояние на контролера",
+  "bn": "কন্ট্রোলারের অবস্থা",
+  "cs": "Stav regulátoru",
+  "da": "Regulatorstatus",
+  "de": "Reglerstatus",
+  "el": "Κατάσταση ελεγκτή",
+  "en": "Controller status",
+  "es": "Estado del controlador",
+  "fa": "وضعیت کنترل‌کننده",
+  "fi": "Säätimen tila",
+  "fr": "État du contrôleur",
+  "he": "מצב הבקר",
+  "hi": "नियंत्रक की स्थिति",
+  "hr": "Stanje regulatora",
+  "hu": "Vezérlő állapota",
+  "id": "Status pengendali",
+  "it": "Stato del controller",
+  "ja": "コントローラーの状態",
+  "ko": "컨트롤러 상태",
+  "nb": "Regulatorstatus",
+  "nl": "Status van de regelaar",
+  "pl": "Stan sterownika",
+  "pt-BR": "Status do controlador",
+  "pt": "Estado do controlador",
+  "ro": "Starea controlerului",
+  "ru": "Состояние контроллера",
+  "sk": "Stav regulátora",
+  "sr": "Стање контролера",
+  "sv": "Regulatorstatus",
+  "ta": "கட்டுப்படுத்தி நிலை",
+  "th": "สถานะตัวควบคุม",
+  "tr": "Denetleyici durumu",
+  "uk": "Стан контролера",
+  "ur": "کنٹرولر کی حالت",
+  "vi": "Trạng thái bộ điều khiển",
+  "zh-Hans": "控制器状态",
+  "zh-Hant": "控制器狀態"
+}
+
 POWER_NAMES = {"en": "Allow power and HVAC mode control", "el": "Να επιτρέπεται έλεγχος ισχύος και λειτουργίας",
     "de": "Leistung und HLK-Moduswechsel erlauben", "fr": "Autoriser puissance et modes climatiques",
     "es": "Permitir control de potencia y modos"}
@@ -31,6 +72,8 @@ def apply_equipment_i18n(root: Path) -> None:
     paths = sorted((root / "translations").glob("*.json"))
     if set(labels) != {p.stem for p in paths} or len(labels) != 38:
         raise ValueError("Every supported locale needs equipment controller labels")
+    if set(STATUS_NAMES) != set(labels):
+        raise ValueError("Controller status requires a name in all 38 languages")
     help_by_locale = {}
     for path in [root / "strings.json", *paths]:
         lang = "en" if path.name == "strings.json" else path.stem
@@ -50,6 +93,7 @@ def apply_equipment_i18n(root: Path) -> None:
         def add(domain, key, name, **extra):
             entities.setdefault(domain, {})["equipment_" + key] = {"name": "{channel}" + name, **extra}
         add("climate", "climate", words["climate"])
+        add("sensor", "control_status", STATUS_NAMES[lang])
         add("select", "control_mode", words["control_mode"], state={
             "existing": words["existing"], "automatic": v["automatic"],
             "manual": words["manual"], "off": v["off"], "pid": "PID",
