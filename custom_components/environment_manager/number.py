@@ -214,7 +214,7 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             ))
     for spec in equipment.specs(manager):
         numbers.extend(_equipment_numbers(manager, spec, registry))
-    async_add_grouped_entities(manager, async_add_entities, numbers)
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, numbers)
 
     # Home Assistant restores physical devices asynchronously. If its source
     # state arrives *after* this platform setup, register newly supported room
