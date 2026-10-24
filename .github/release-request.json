@@ -1,19 +1,18 @@
 {
-  "version": "0.6.0b26",
-  "intent": "Canonical-only prerelease: environment_manager is the sole domain with no legacy-domain migration code. Add room-owned per-profile temperature/humidity targets and make Automatic/PID/Manual method selection actively authorize the exact native controller to start/stop supported physical equipment under demand and safety gates.",
-  "note": "Clean environment_manager-only install plus room profile targets and active controller method behavior",
+  "version": "0.6.0b27",
+  "intent": "Promote the fully validated canonical-only Home Environment Manager after beta26 was published before the final canonical storage-key cleanup. Preserve beta26 room profile targets and active controller method behavior, with every runtime/store namespace canonicalized to environment_manager.",
+  "note": "Supersede beta26 with canonical storage keys plus validated room targets and active PID/Automatic controller operation",
   "validation_attempt": 0,
   "changes": [
-    "Remove legacy-domain migration completely: no migration module, migration config-flow step, old-domain runtime constants, legacy storage import, or migration UI strings",
-    "Use only canonical environment_manager storage keys and flat HACS tag packaging",
-    "Expose Room Environment targets for Comfort, Home, Away, Sleep and Eco; show applicable heating, cooling and humidity targets based on selected equipment capabilities",
-    "Make Away use its explicit room profile targets rather than silently substituting room min/max temperature limits",
-    "Selecting Automatic, PID or Manual explicitly authorizes the exact supported native controller to regulate targets/speed and start/stop the physical device or native HVAC mode when demand requires it",
-    "Reselecting an active control method re-arms a prior software pause while preserving all physical safety gates",
-    "Use the physical entity's observed OFF age for minimum-OFF dwell, avoiding an artificial new delay just because the user selected PID/Automatic",
-    "Keep minimum ON/OFF, max runtime, availability, windows, physical ownership, defrost/interlock and command acknowledgement protections",
+    "Supersede beta26 because two native controller safety stores still used historical air_quality_advisor storage keys",
+    "Use environment_manager exclusively for manifest/config flow/services/runtime and every persisted storage key; no old-domain migration code ships",
+    "Expose Comfort, Home, Away, Sleep and Eco Room Environment targets with capability-gated heating, cooling and humidity values",
+    "Keep Away as an explicit editable profile rather than replacing it with hard room min/max limits",
+    "Selecting Automatic, PID or Manual authorizes the exact native controller to start/stop its supported physical device/native HVAC mode on verified demand; no second power switch exists",
+    "Reselecting an active method re-arms a software pause and minimum-OFF uses the physical entity's actual observed OFF age",
+    "Retain minimum ON/OFF, max runtime, window, availability, ownership, defrost/interlock and acknowledgement protections",
     "Stable Latest remains v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b26"
+  "release_branch": "beta/v0.6.0b27"
 }
