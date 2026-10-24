@@ -29,10 +29,10 @@ async def async_setup_entry(
         ControllerStatusSensor(entry.runtime_data, spec)
         for spec in equipment.specs(entry.runtime_data)
     ]
-    async_add_grouped_entities(
-        entry.runtime_data, async_add_entities,
-        [AirQualityRecommendation(entry.runtime_data, entry.entry_id), *area_entities, *controllers],
-    )
+    async_add_grouped_entities(entry.runtime_data, async_add_entities, [
+        AirQualityRecommendation(entry.runtime_data, entry.entry_id),
+        *area_entities, *controllers,
+    ])
 
 
 class AirQualityRecommendation(SensorEntity):
