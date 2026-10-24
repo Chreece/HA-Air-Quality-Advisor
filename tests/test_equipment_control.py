@@ -251,7 +251,7 @@ def test_pid_can_start_without_window_contact_and_blocks_missing_selected_contac
         # the room has no contact interlock, not that a contact is unknown.
         h.manager.plan.environment = {}
         h.manager.entry.data["room_sources"] = {
-            "room": {"windows": selection}
+            "room": {"windows": selection, "temperature": ["sensor.temp"]}
         }
         plan = m.plan_for(h.manager, h.spec)
         assert plan["window_safe"] is should_start
