@@ -1,4 +1,4 @@
-"""Beta19 domain migration and room preset semantics."""
+"""Room preset semantics and canonical domain."""
 from types import SimpleNamespace
 from custom_components.environment_manager import equipment_model as model
 from custom_components.environment_manager.climate_strategy import select_profile, profiles
@@ -21,7 +21,6 @@ def test_room_profile_migration_and_eco():
     assert parsed["home"].heat_c==18
     assert parsed["eco"].heat_c==17
 
-def test_new_domain_and_migration_sources():
-    from custom_components.environment_manager.const import DOMAIN, MIGRATION_SOURCE_DOMAINS
+def test_canonical_domain_only():
+    from custom_components.environment_manager.const import DOMAIN
     assert DOMAIN=="environment_manager"
-    assert set(MIGRATION_SOURCE_DOMAINS)=={"air_quality_advisor","enviroment_manager"}
