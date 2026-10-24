@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0b28 - Final canonical room targets and active controllers (beta)
+
+- Supersede intermediate beta26/beta27 payloads with the fully validated final source.
+- Use only `environment_manager` for the integration domain and every persisted/runtime storage namespace.
+- Keep Room Environment Comfort/Home/Away/Sleep/Eco heating, cooling and humidity targets capability-gated and editable.
+- Keep Automatic/PID/Manual selection as the authorization for that exact native controller to start/stop supported physical equipment or HVAC modes on verified demand.
+- Preserve observed physical OFF age and allow deliberate method reselection to re-arm a software pause.
+- Keep all availability, window, dwell/runtime, ownership, defrost/interlock and acknowledgement protections.
+- Publish only from the frozen `release/beta28-ready-20261024` candidate branch.
+
 ## 0.6.0b27 - Canonical storage, room targets and active controllers (beta)
 
 - Supersede beta26 because two native safety stores still used historical `air_quality_advisor.*` keys.
