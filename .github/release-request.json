@@ -1,16 +1,17 @@
 {
-  "version": "0.6.0b32",
+  "version": "0.6.0b33",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b32",
-  "intent": "Fix user-observed HA 2026.10 10000-event state_reported queue failures and synchronous manifest read_text/open inside the event loop. Eliminate volatile air_evidence_at churn and own generated-entity feedback, without changing native fan/quiet modes, physical HVAC commands or controller safety.",
-  "note": "No publication for quiet fan mode or quiet flags without physical source fan_modes/supported_features evidence. Beta32 covers only proven event flood and blocking manifest I/O, preserving all b31 room target and PID fixes.",
+  "release_branch": "beta/v0.6.0b33",
+  "intent": "Generic capability-based restoration of quiet fan configuration entities and physical managed-climate status after Home Assistant startup. Three separate physical native controllers reported fan_modes low/medium/high while their quiet switches and mode select were unavailable. Keep all supported device types; never add brand-specific code or fake fan modes.",
+  "note": "Home Assistant source entities may announce fan_modes after Manager's Select/Switch platform has created its initial entities; also preserve previously registered controls while native source is missing. Register source-dependent controls when the real capabilities appear and refresh physical facade availability from exact native source events.",
   "validation_attempt": 0,
   "changes": [
-    "Move manifest.json read_text/open into hass.async_add_executor_job, preserving cache-busting frontend version.",
-    "Ignore volatile air_evidence_at when deciding whether to broadcast all integration states; keep newest evidence for controller safety.",
-    "Skip integration-owned entities in tracked sensor inputs and skip unchanged native source state reports.",
-    "Ignore our own entity/device registry changes while preserving recalculation for physical/room input changes.",
-    "Add regressions for 119 timestamp-only updates with zero dispatcher broadcasts, real changes with exactly one broadcast, and manifest disk I/O from executor.",
-    "Retain existing safety, b31 room/PID recovery, canonical environment_manager domain, and 38 language catalogs."
+    "Recreate previously registered quiet_sleep, quiet_occupied and quiet_fan_mode controls with stable unique IDs if the physical source has not yet advertised capabilities.",
+    "Dynamically add quiet fan configuration entities when a selected physical climate/fan/humidifier source later advertises supported fan modes.",
+    "Keep fan controls capability-gated; percentage fans never gain a fictional discrete fan mode dropdown; unsupported equipment never gets an invented Low option.",
+    "Watch only exact native entity state changes to refresh existing quiet controls and managed-climate availability without an all-entity dispatcher broadcast.",
+    "Never alter physical source integration entities, device permissions, hardware power control, or stored user settings.",
+    "Include Python 3.13/3.14 regression tests and installed HA 2026.10 late-start capability validation plus 38-language, frontend, HACS/Hassfest, flat release validation.",
+    "Preserve one canonical environment_manager domain, beta32 event-loop safety, and beta31 room/PID value repairs."
   ]
 }
