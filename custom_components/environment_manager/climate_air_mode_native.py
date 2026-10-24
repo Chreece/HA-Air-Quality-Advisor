@@ -24,6 +24,7 @@ from .climate_hvac_modes import native_air_mode_advice
 from .discovery import entity_area, reading
 from .logic import Reading
 from .pid_math import finite
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 STARTUP_WARMUP_S=300
@@ -96,7 +97,7 @@ class NativeAirModeControl:
             from homeassistant.helpers.storage import Store
             self._store=Store(
                 self.hass,1,
-                f"air_quality_advisor.native_dry_fan_{self.entry_id}",
+                f"{DOMAIN}.native_dry_fan_{self.entry_id}",
             )
             loaded=await self._store.async_load()
         except Exception:
