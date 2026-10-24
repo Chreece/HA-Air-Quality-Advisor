@@ -99,6 +99,8 @@ def test_quiet_switches_and_dropdown_created_only_for_native_discrete_fan(
     assert _keys(loaded.select_new) == {
         (loaded.h.spec.identifier, "control_mode"),
         (loaded.h.spec.identifier, "pid_calibration_method"),
+        (loaded.h.spec.identifier, "pid_fan_capacity_mode"),
+        (loaded.h.spec.identifier, "pid_fan_capacity_for_mode"),
         (loaded.h.spec.identifier, "presence_requirement"),
         (loaded.h.spec.identifier, "sleep_behavior"),
         (loaded.h.spec.identifier, "quiet_fan_mode"),
