@@ -1,0 +1,1902 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "חדרים",
+        "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "חדרים",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "window_sensors": {
+        "title": "החרגת חיישני חלונות",
+        "description": "2 · החרגת חיישני חלונות. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "החרגת חיישני חלונות"
+        },
+        "data_description": {
+          "excluded_window_entities": "בחרו: החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "חדרים · מדד עובש",
+        "description": "חדרים: {area_name} ({position}/{total}). 🌡️ 🧊 מדד עובש · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים",
+          "mold_indoor_temperature": "חדרים · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "מדד עובש · 🧊 °C",
+          "mold_recalibrate": "מדד עובש · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "חוץ · טמפרטורה · מקור · מדד עובש"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "הגדר „חדרים · 🌡️ (°C/°F)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "mold_critical_temperature_c": "🧊 מדד עובש · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "השתמש במדידה אמיתית מתאימה עבור „מדד עובש · ↻ 🌡️”. אומדן אינו תחליף לחיישן מכויל.",
+          "mold_outdoor_weather_entity": "בחר weather.* · חוץ טמפרטורה (temperature, °C/°F) → מדד עובש. נדרש: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "איכות האוויר בחוץ",
+        "description": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "איכות האוויר בחוץ"
+        },
+        "data_description": {
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠"
+        }
+      },
+      "weather": {
+        "title": "מזג אוויר ואזהרות",
+        "description": "מזג אוויר ואזהרות. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "weather_warnings": "אזהרות מזג אוויר"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "הודעות (אופציונלי)",
+        "description": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+        "data": {
+          "language": "שפה",
+          "automatic_tts": "אוטומטי",
+          "automatic_notifications": "אוטומטי · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "הודעות (אופציונלי) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "הגדרות · מקור",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי)",
+          "ai_conversation_agent": "AI · שפה"
+        },
+        "data_description": {
+          "language": "הגדר „שפה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "automatic_tts": "ברירת מחדל: ⛔ · אוטומטי · 🪟 90 s. האפשרות שולטת ב־„אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "automatic_notifications": "האפשרות שולטת ב־„אוטומטי · AUTOMATIC_NOTIFICATIONS”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "announcement_repeat_minutes": "ברירת מחדל: 10 min · 0 = לעולם לא · כל עוד אותה סיבה נמשכת · חדרים.",
+          "use_announcement_hub": "Announcement Hub · לא זמין → Home Assistant.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל)."
+        }
+      },
+      "thresholds": {
+        "title": "ספי התראה מתקדמים",
+        "description": "ספי התראה מתקדמים. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "בחוץ · AQI (≤)",
+          "outdoor_co2": "בחוץ · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "בחוץ · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "בחוץ · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "בחוץ · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "בחוץ · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · חוץ (µg/m³)",
+          "outdoor_o3": "O₃ · חוץ (µg/m³)",
+          "outdoor_so2": "SO₂ · חוץ (µg/m³)",
+          "indoor_aqi": "איכות האוויר · AQI (≥)",
+          "indoor_co2": "איכות האוויר · CO₂ (ppm) (≥)",
+          "indoor_pm25": "איכות האוויר · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "איכות האוויר · PM10 (µg/m³) (≥)",
+          "indoor_voc": "איכות האוויר · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "איכות האוויר · VOC (ppb) (≥)",
+          "indoor_humidity": "איכות האוויר · RH (%) (≥)",
+          "min_outdoor_temp": "בחוץ · °C (≥)",
+          "max_outdoor_temp": "בחוץ · °C (≤)",
+          "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
+          "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
+          "max_age_minutes": "⏱ · פתחו (min, ≤)",
+          "indoor_mold": "מדד עובש · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "זהו סף החלטה עבור „בחוץ · AQI (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_co2": "זהו סף החלטה עבור „בחוץ · CO₂ (ppm) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_pm25": "זהו סף החלטה עבור „בחוץ · PM2.5 (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_pm10": "זהו סף החלטה עבור „בחוץ · PM10 (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_voc": "זהו סף החלטה עבור „בחוץ · VOC (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_voc_parts": "זהו סף החלטה עבור „בחוץ · VOC (ppb) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_no2": "זהו סף החלטה עבור „NO₂ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_o3": "זהו סף החלטה עבור „O₃ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_so2": "זהו סף החלטה עבור „SO₂ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_aqi": "זהו סף החלטה עבור „איכות האוויר · AQI (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_co2": "זהו סף החלטה עבור „איכות האוויר · CO₂ (ppm) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_pm25": "זהו סף החלטה עבור „איכות האוויר · PM2.5 (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_pm10": "זהו סף החלטה עבור „איכות האוויר · PM10 (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_voc": "זהו סף החלטה עבור „איכות האוויר · VOC (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_voc_parts": "זהו סף החלטה עבור „איכות האוויר · VOC (ppb) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_humidity": "זהו סף החלטה עבור „איכות האוויר · RH (%) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "min_outdoor_temp": "זהו סף החלטה עבור „בחוץ · °C (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_outdoor_temp": "זהו סף החלטה עבור „בחוץ · °C (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_outdoor_humidity": "זהו סף החלטה עבור „בחוץ · RH (%) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_wind_kmh": "זהו סף החלטה עבור „מזג אוויר ואזהרות · km/h (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_age_minutes": "זהו סף החלטה עבור „⏱ · פתחו (min, ≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_mold": "זהו סף החלטה עבור „מדד עובש · ≥ 70%”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "setup_rooms": {
+        "title": "חדרים למעקב",
+        "description": "חדרים למעקב → מקור → כלליות הגדרות",
+        "data": {
+          "areas": "חדרים למעקב"
+        },
+        "data_description": {
+          "areas": "חדרים למעקב. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_room_sources": {
+        "title": "חדר · {area_name} · {room_index}/{room_count}",
+        "description": "בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+        "data": {
+          "windows": "חלונות",
+          "air_quality": "חיישני איכות אוויר וסביבה",
+          "temperature": "טמפרטורה",
+          "humidity": "לחות",
+          "pressure": "חיישני לחץ",
+          "climate_devices": "התקנים"
+        },
+        "data_description": {
+          "windows": "חלונות. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "air_quality": "חיישני איכות אוויר וסביבה. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "temperature": "טמפרטורה. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "humidity": "לחות. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "pressure": "חיישני לחץ. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "climate_devices": "התקנים. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_general": {
+        "title": "כלליות הגדרות",
+        "description": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים.",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "outdoor_sensors": "איכות האוויר בחוץ",
+          "weather_warnings": "אזהרות מזג אוויר",
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "notify_entities": "הגדרות · מקור",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "ai_conversation_agent": "AI · בחר · מקור",
+          "language": "TTS · בחר · מקור",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%",
+          "pollen_entities": "אבקנים · מקור · בחר",
+          "use_announcement_hub": "אוטומטי · Announcement Hub",
+          "general_away_cooldown_minutes": "בית · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒",
+          "general_room_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „חדר · נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_home_trackers": "בחר מקור Home Assistant אמיתי עבור „בית · נוכחות · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_attribute": "הגדר „נוכחות · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_sleep_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „שינה · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_sleep_rooms_attribute": "הגדר „שינה · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "ai_conversation_agent": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · AI · בחר · מקור · conversation.* / ai_task.*.",
+          "language": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · TTS · בחר · מקור · provider capabilities.",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_entities": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · אבקנים · מקור · בחר.",
+          "use_announcement_hub": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · אוטומטי · Announcement Hub.",
+          "general_away_cooldown_minutes": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · בית · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "בחירה לא תקינה: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "לא זמין: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "בחירה לא תקינה: מזג אוויר ואזהרות (weather.*).",
+      "invalid_warning": "בחירה לא תקינה: מזג אוויר ואזהרות ⚠.",
+      "missing_notify": "בחרו: Announcement Hub / notify.*.",
+      "missing_tts": "בחרו: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "בחירה לא תקינה: °C min < max.",
+      "no_areas": "בחרו: חדרים.",
+      "no_window_areas": "לא זמין: מדידות (binary_sensor, window).",
+      "invalid_areas": "בחירה לא תקינה: חדרים.",
+      "invalid_window_exclusions": "בחירה לא תקינה: החרגת חיישני חלונות.",
+      "invalid_indoor_exclusions": "בחירה לא תקינה: החרגת חיישני אוויר פנימיים.",
+      "no_windows_after_exclusions": "השאירו לפחות חיישן חלון אחד פעיל.",
+      "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
+      "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "לא זמין: conversation.process.",
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*.",
+      "invalid_mold_temperature_sensor": "חדרים · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "חדרים · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "מדד עובש · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "מדד עובש · 🧊 °C ⚠",
+      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "לא תקין: חדרים למעקב",
+      "invalid_room_source": "לא תקין: חדר · מקור"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — כבר הוגדר.",
+      "setup_area_removed": "לא תקין: חדרים למעקב",
+      "setup_changed": "הגדרות ↻ חדרים למעקב"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ בחרו",
+        "description": "בחרו: חדרים / מזג אוויר ואזהרות / הודעות (אופציונלי) / ספי התראה מתקדמים",
+        "menu_options": {
+          "outside_data": "חוץ · מקור",
+          "general_settings": "כלליות · הגדרות",
+          "area_settings": "אזור · הגדרות",
+          "delivery": "הודעות (אופציונלי)",
+          "thresholds": "ספי התראה מתקדמים"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "החרגת חיישני חלונות",
+        "description": "2 · החרגת חיישני חלונות. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "החרגת חיישני חלונות"
+        },
+        "data_description": {
+          "excluded_window_entities": "בחרו: החרגת חיישני חלונות · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "חדרים",
+        "description": "1 · 🪟 חדרים. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "חדרים",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "בחרו: חדרים · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "indoor_sensors": {
+        "title": "חדרים · מדד עובש",
+        "description": "חדרים: {area_name} ({position}/{total}). 🌡️ 🧊 מדד עובש · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "החרגת חיישני אוויר פנימיים",
+          "mold_indoor_temperature": "חדרים · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "מדד עובש · 🧊 °C",
+          "mold_recalibrate": "מדד עובש · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "חוץ · טמפרטורה · מקור · מדד עובש"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "בחרו: החרגת חיישני אוויר פנימיים · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "הגדר „חדרים · 🌡️ (°C/°F)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "mold_critical_temperature_c": "🧊 מדד עובש · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "השתמש במדידה אמיתית מתאימה עבור „מדד עובש · ↻ 🌡️”. אומדן אינו תחליף לחיישן מכויל.",
+          "mold_outdoor_weather_entity": "בחר weather.* · חוץ טמפרטורה (temperature, °C/°F) → מדד עובש. נדרש: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "איכות האוויר בחוץ",
+        "description": "איכות האוויר בחוץ. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "איכות האוויר בחוץ"
+        },
+        "data_description": {
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠"
+        }
+      },
+      "weather": {
+        "title": "מזג אוויר ואזהרות",
+        "description": "מזג אוויר ואזהרות. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "weather_warnings": "אזהרות מזג אוויר"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "הודעות (אופציונלי)",
+        "description": "הודעות (אופציונלי). התראות אוטומטיות · הודעות קוליות אוטומטיות. Announcement Hub.",
+        "data": {
+          "language": "שפה",
+          "automatic_tts": "אוטומטי",
+          "automatic_notifications": "אוטומטי · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "הודעות (אופציונלי) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "הגדרות · מקור",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי)",
+          "ai_conversation_agent": "AI · שפה"
+        },
+        "data_description": {
+          "language": "הגדר „שפה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "automatic_tts": "ברירת מחדל: ⛔ · אוטומטי · 🪟 90 s. האפשרות שולטת ב־„אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "automatic_notifications": "האפשרות שולטת ב־„אוטומטי · AUTOMATIC_NOTIFICATIONS”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "announcement_repeat_minutes": "ברירת מחדל: 10 min · 0 = לעולם לא · כל עוד אותה סיבה נמשכת · חדרים.",
+          "use_announcement_hub": "Announcement Hub · לא זמין → Home Assistant.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · הודעות (אופציונלי) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "בחרו: conversation.* (Home Assistant · ברירת מחדל)."
+        }
+      },
+      "thresholds": {
+        "title": "ספי התראה מתקדמים",
+        "description": "ספי התראה מתקדמים. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "בחוץ · AQI (≤)",
+          "outdoor_co2": "בחוץ · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "בחוץ · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "בחוץ · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "בחוץ · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "בחוץ · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · חוץ (µg/m³)",
+          "outdoor_o3": "O₃ · חוץ (µg/m³)",
+          "outdoor_so2": "SO₂ · חוץ (µg/m³)",
+          "indoor_aqi": "איכות האוויר · AQI (≥)",
+          "indoor_co2": "איכות האוויר · CO₂ (ppm) (≥)",
+          "indoor_pm25": "איכות האוויר · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "איכות האוויר · PM10 (µg/m³) (≥)",
+          "indoor_voc": "איכות האוויר · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "איכות האוויר · VOC (ppb) (≥)",
+          "indoor_humidity": "איכות האוויר · RH (%) (≥)",
+          "min_outdoor_temp": "בחוץ · °C (≥)",
+          "max_outdoor_temp": "בחוץ · °C (≤)",
+          "max_outdoor_humidity": "בחוץ · RH (%) (≤)",
+          "max_wind_kmh": "מזג אוויר ואזהרות · km/h (≤)",
+          "max_age_minutes": "⏱ · פתחו (min, ≤)",
+          "indoor_mold": "מדד עובש · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "זהו סף החלטה עבור „בחוץ · AQI (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_co2": "זהו סף החלטה עבור „בחוץ · CO₂ (ppm) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_pm25": "זהו סף החלטה עבור „בחוץ · PM2.5 (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_pm10": "זהו סף החלטה עבור „בחוץ · PM10 (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_voc": "זהו סף החלטה עבור „בחוץ · VOC (µg/m³) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_voc_parts": "זהו סף החלטה עבור „בחוץ · VOC (ppb) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_no2": "זהו סף החלטה עבור „NO₂ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_o3": "זהו סף החלטה עבור „O₃ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outdoor_so2": "זהו סף החלטה עבור „SO₂ · חוץ (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_aqi": "זהו סף החלטה עבור „איכות האוויר · AQI (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_co2": "זהו סף החלטה עבור „איכות האוויר · CO₂ (ppm) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_pm25": "זהו סף החלטה עבור „איכות האוויר · PM2.5 (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_pm10": "זהו סף החלטה עבור „איכות האוויר · PM10 (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_voc": "זהו סף החלטה עבור „איכות האוויר · VOC (µg/m³) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_voc_parts": "זהו סף החלטה עבור „איכות האוויר · VOC (ppb) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_humidity": "זהו סף החלטה עבור „איכות האוויר · RH (%) (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "min_outdoor_temp": "זהו סף החלטה עבור „בחוץ · °C (≥)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_outdoor_temp": "זהו סף החלטה עבור „בחוץ · °C (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_outdoor_humidity": "זהו סף החלטה עבור „בחוץ · RH (%) (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_wind_kmh": "זהו סף החלטה עבור „מזג אוויר ואזהרות · km/h (≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "max_age_minutes": "זהו סף החלטה עבור „⏱ · פתחו (min, ≤)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "indoor_mold": "זהו סף החלטה עבור „מדד עובש · ≥ 70%”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "environment": {
+        "title": "הגדרות · הגדרות · מקור",
+        "description": "הגדר „הגדרות · הגדרות · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "pollen_entity": "אבקנים · מקור",
+          "pollen_high_from": "POLLEN · אבקנים · HIGH",
+          "pollen_max_scale": "POLLEN · אבקנים · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · אבקנים · NO VENT",
+          "aqi_scale_0": "AQI #1 · מקור",
+          "aqi_custom_limit_0": "AQI #1 · יעד",
+          "aqi_scale_1": "AQI #2 · מקור",
+          "aqi_custom_limit_1": "AQI #2 · יעד",
+          "aqi_scale_2": "AQI #3 · מקור",
+          "aqi_custom_limit_2": "AQI #3 · יעד",
+          "aqi_scale_3": "AQI #4 · מקור",
+          "aqi_custom_limit_3": "AQI #4 · יעד",
+          "aqi_scale_4": "AQI #5 · מקור",
+          "aqi_custom_limit_4": "AQI #5 · יעד",
+          "aqi_scale_5": "AQI #6 · מקור",
+          "aqi_custom_limit_5": "AQI #6 · יעד",
+          "aqi_scale_6": "AQI #7 · מקור",
+          "aqi_custom_limit_6": "AQI #7 · יעד",
+          "aqi_scale_7": "AQI #8 · מקור",
+          "aqi_custom_limit_7": "AQI #8 · יעד",
+          "aqi_scale_8": "AQI #9 · מקור",
+          "aqi_custom_limit_8": "AQI #9 · יעד",
+          "aqi_scale_9": "AQI #10 · מקור",
+          "aqi_custom_limit_9": "AQI #10 · יעד",
+          "aqi_scale_10": "AQI #11 · מקור",
+          "aqi_custom_limit_10": "AQI #11 · יעד",
+          "aqi_scale_11": "AQI #12 · מקור",
+          "aqi_custom_limit_11": "AQI #12 · יעד",
+          "aqi_scale_12": "AQI #13 · מקור",
+          "aqi_custom_limit_12": "AQI #13 · יעד",
+          "aqi_scale_13": "AQI #14 · מקור",
+          "aqi_custom_limit_13": "AQI #14 · יעד",
+          "aqi_scale_14": "AQI #15 · מקור",
+          "aqi_custom_limit_14": "AQI #15 · יעד",
+          "aqi_scale_15": "AQI #16 · מקור",
+          "aqi_custom_limit_15": "AQI #16 · יעד",
+          "aqi_scale_16": "AQI #17 · מקור",
+          "aqi_custom_limit_16": "AQI #17 · יעד",
+          "aqi_scale_17": "AQI #18 · מקור",
+          "aqi_custom_limit_17": "AQI #18 · יעד",
+          "aqi_scale_18": "AQI #19 · מקור",
+          "aqi_custom_limit_18": "AQI #19 · יעד",
+          "aqi_scale_19": "AQI #20 · מקור",
+          "aqi_custom_limit_19": "AQI #20 · יעד",
+          "aqi_scale_20": "AQI #21 · מקור",
+          "aqi_custom_limit_20": "AQI #21 · יעד",
+          "aqi_scale_21": "AQI #22 · מקור",
+          "aqi_custom_limit_21": "AQI #22 · יעד",
+          "aqi_scale_22": "AQI #23 · מקור",
+          "aqi_custom_limit_22": "AQI #23 · יעד",
+          "aqi_scale_23": "AQI #24 · מקור",
+          "aqi_custom_limit_23": "AQI #24 · יעד",
+          "aqi_scale_24": "AQI #25 · מקור",
+          "aqi_custom_limit_24": "AQI #25 · יעד",
+          "aqi_scale_25": "AQI #26 · מקור",
+          "aqi_custom_limit_25": "AQI #26 · יעד",
+          "aqi_scale_26": "AQI #27 · מקור",
+          "aqi_custom_limit_26": "AQI #27 · יעד",
+          "aqi_scale_27": "AQI #28 · מקור",
+          "aqi_custom_limit_27": "AQI #28 · יעד",
+          "aqi_scale_28": "AQI #29 · מקור",
+          "aqi_custom_limit_28": "AQI #29 · יעד",
+          "aqi_scale_29": "AQI #30 · מקור",
+          "aqi_custom_limit_29": "AQI #30 · יעד",
+          "aqi_scale_30": "AQI #31 · מקור",
+          "aqi_custom_limit_30": "AQI #31 · יעד",
+          "aqi_scale_31": "AQI #32 · מקור",
+          "aqi_custom_limit_31": "AQI #32 · יעד"
+        },
+        "data_description": {
+          "pollen_entity": "בחר מקור Home Assistant אמיתי עבור „אבקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "pollen_high_from": "הגדר „POLLEN · אבקנים · HIGH” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_max_scale": "הגדר „POLLEN · אבקנים · SCALE” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_avoid_ventilation": "הגדר „POLLEN · אבקנים · NO VENT” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_scale_0": "הגדר „AQI #1 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_0": "זהו סף החלטה עבור „AQI #1 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_1": "הגדר „AQI #2 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_1": "זהו סף החלטה עבור „AQI #2 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_2": "הגדר „AQI #3 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_2": "זהו סף החלטה עבור „AQI #3 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_3": "הגדר „AQI #4 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_3": "זהו סף החלטה עבור „AQI #4 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_4": "הגדר „AQI #5 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_4": "זהו סף החלטה עבור „AQI #5 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_5": "הגדר „AQI #6 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_5": "זהו סף החלטה עבור „AQI #6 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_6": "הגדר „AQI #7 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_6": "זהו סף החלטה עבור „AQI #7 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_7": "הגדר „AQI #8 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_7": "זהו סף החלטה עבור „AQI #8 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_8": "הגדר „AQI #9 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_8": "זהו סף החלטה עבור „AQI #9 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_9": "הגדר „AQI #10 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_9": "זהו סף החלטה עבור „AQI #10 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_10": "הגדר „AQI #11 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_10": "זהו סף החלטה עבור „AQI #11 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_11": "הגדר „AQI #12 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_11": "זהו סף החלטה עבור „AQI #12 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_12": "הגדר „AQI #13 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_12": "זהו סף החלטה עבור „AQI #13 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_13": "הגדר „AQI #14 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_13": "זהו סף החלטה עבור „AQI #14 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_14": "הגדר „AQI #15 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_14": "זהו סף החלטה עבור „AQI #15 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_15": "הגדר „AQI #16 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_15": "זהו סף החלטה עבור „AQI #16 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_16": "הגדר „AQI #17 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_16": "זהו סף החלטה עבור „AQI #17 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_17": "הגדר „AQI #18 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_17": "זהו סף החלטה עבור „AQI #18 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_18": "הגדר „AQI #19 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_18": "זהו סף החלטה עבור „AQI #19 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_19": "הגדר „AQI #20 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_19": "זהו סף החלטה עבור „AQI #20 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_20": "הגדר „AQI #21 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_20": "זהו סף החלטה עבור „AQI #21 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_21": "הגדר „AQI #22 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_21": "זהו סף החלטה עבור „AQI #22 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_22": "הגדר „AQI #23 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_22": "זהו סף החלטה עבור „AQI #23 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_23": "הגדר „AQI #24 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_23": "זהו סף החלטה עבור „AQI #24 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_24": "הגדר „AQI #25 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_24": "זהו סף החלטה עבור „AQI #25 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_25": "הגדר „AQI #26 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_25": "זהו סף החלטה עבור „AQI #26 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_26": "הגדר „AQI #27 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_26": "זהו סף החלטה עבור „AQI #27 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_27": "הגדר „AQI #28 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_27": "זהו סף החלטה עבור „AQI #28 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_28": "הגדר „AQI #29 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_28": "זהו סף החלטה עבור „AQI #29 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_29": "הגדר „AQI #30 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_29": "זהו סף החלטה עבור „AQI #30 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_30": "הגדר „AQI #31 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_30": "זהו סף החלטה עבור „AQI #31 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "aqi_scale_31": "הגדר „AQI #32 · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "aqi_custom_limit_31": "זהו סף החלטה עבור „AQI #32 · יעד”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "environment_room": {
+        "title": "הגדרות · הגדרות · מקור",
+        "description": "הגדר „הגדרות · הגדרות · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "environment_area": "הגדרות · מקור"
+        },
+        "data_description": {
+          "environment_area": "הגדר „הגדרות · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "environment_room_air": {
+        "title": "הגדרות · חוץ",
+        "description": "הגדר „הגדרות · חוץ” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "temperature_entity": "טמפרטורה · מקור",
+          "room_volume_m3": "הגדרות · מקור (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "מטהר אוויר · מקור",
+          "extractor_entity": "מאוורר פליטה · מקור",
+          "co2_ndir_verified": "CO₂ · נדרש",
+          "co2_target_ppm": "CO₂ · CO₂ · יעד (ppm)",
+          "sleep_room": "שינה"
+        },
+        "data_description": {
+          "temperature_entity": "בחר מקור Home Assistant אמיתי עבור „טמפרטורה · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "room_volume_m3": "השתמש במדידה אמיתית מתאימה עבור „הגדרות · מקור (m³)”. אומדן אינו תחליף לחיישן מכויל.",
+          "particle_cadr_m3h": "השתמש במדידה אמיתית מתאימה עבור „CADR (m³/h)”. אומדן אינו תחליף לחיישן מכויל.",
+          "purifier_entity": "בחר מטהר אוויר · מקור Home Assistant אמיתי עבור „מטהר אוויר · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "extractor_entity": "בחר מאוורר פליטה · מקור Home Assistant אמיתי עבור „מאוורר פליטה · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "co2_ndir_verified": "השתמש במדידה אמיתית מתאימה עבור „CO₂ · נדרש”. אומדן אינו תחליף לחיישן מכויל.",
+          "co2_target_ppm": "זהו סף החלטה עבור „CO₂ · CO₂ · יעד (ppm)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "sleep_room": "הגדר „שינה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "הגדרות · הגדרות · מקור",
+        "description": "הגדר „הגדרות · הגדרות · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "radon_entity": "RADON · Rn · מקור",
+          "radon_sensor_verified": "RADON · Rn · חיישן · נדרש · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · מקור",
+          "formaldehyde_sensor_verified": "HCHO · חיישן · נדרש · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · מקור · חיישן (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · חיישן · נדרש",
+          "illuminance_entity": "LUX · מקור (lux)",
+          "melanopic_edi_entity": "EDI · EDI · מקור (lx)",
+          "melanopic_spectral_verified": "EDI · נדרש"
+        },
+        "data_description": {
+          "radon_entity": "בחר RADON · Rn · מקור Home Assistant אמיתי עבור „RADON · Rn · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "radon_sensor_verified": "השתמש במדידה אמיתית מתאימה עבור „RADON · Rn · חיישן · נדרש · SENSOR ✓ · VERIFIED”. אומדן אינו תחליף לRADON · Rn · חיישן · נדרש · SENSOR ✓ · VERIFIED מכויל.",
+          "radon_reference_bq_m3": "הגדר „Rn (Bq/m³)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "formaldehyde_entity": "בחר HCHO · מקור Home Assistant אמיתי עבור „HCHO · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "formaldehyde_sensor_verified": "השתמש במדידה אמיתית מתאימה עבור „HCHO · חיישן · נדרש · SENSOR ✓ · VERIFIED”. אומדן אינו תחליף לHCHO · חיישן · נדרש · SENSOR ✓ · VERIFIED מכויל.",
+          "noise_entity": "בחר dB(A) · מקור · חיישן (dB(A)) Home Assistant אמיתי עבור „dB(A) · מקור · חיישן (dB(A))”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "noise_sensor_calibrated": "השתמש במדידה אמיתית מתאימה עבור „dB(A) · חיישן · נדרש”. אומדן אינו תחליף לdB(A) · חיישן · נדרש מכויל.",
+          "illuminance_entity": "בחר LUX · מקור (lux) Home Assistant אמיתי עבור „LUX · מקור (lux)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "melanopic_edi_entity": "בחר EDI · EDI · מקור (lx) Home Assistant אמיתי עבור „EDI · EDI · מקור (lx)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "melanopic_spectral_verified": "השתמש במדידה אמיתית מתאימה עבור „EDI · נדרש”. אומדן אינו תחליף לחיישן מכויל."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "הגדרות · הגדרות · מקור",
+        "description": "הגדר „הגדרות · הגדרות · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "enable_pmv": "PMV / PPD · אוטומטי",
+          "radiant_temperature_entity": "טמפרטורה · מקור",
+          "air_speed_entity": "מקור · מהירות · חוץ (m/s)",
+          "air_speed_m_s": "מהירות · חוץ (m/s)",
+          "met": "הגדרות · מקור (met)",
+          "clo": "הגדרות · מקור (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "הגדר „PMV / PPD · אוטומטי” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "radiant_temperature_entity": "בחר מקור Home Assistant אמיתי עבור „טמפרטורה · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "air_speed_entity": "בחר מקור · מהירות · חוץ (m/s) Home Assistant אמיתי עבור „מקור · מהירות · חוץ (m/s)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "air_speed_m_s": "השתמש במדידה אמיתית מתאימה עבור „מהירות · חוץ (m/s)”. אומדן אינו תחליף לחיישן מכויל.",
+          "met": "השתמש במדידה אמיתית מתאימה עבור „הגדרות · מקור (met)”. אומדן אינו תחליף לחיישן מכויל.",
+          "clo": "השתמש במדידה אמיתית מתאימה עבור „הגדרות · מקור (clo)”. אומדן אינו תחליף לחיישן מכויל."
+        }
+      },
+      "pid": {
+        "title": "הגדרות · PID",
+        "description": "הגדר „הגדרות · PID” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "האפשרות שולטת ב־„PID”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות."
+        }
+      },
+      "pid_room": {
+        "title": "הגדרות · PID",
+        "description": "הגדר „הגדרות · PID” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "pid_enabled": "PID · אוטומטי · AUTO",
+          "pid_climate_entities": "PID · התקנים",
+          "pid_temperature_entity": "טמפרטורה · מקור",
+          "pid_mode": "PID",
+          "pid_target_c": "יעד (°C)",
+          "pid_pause_on_window_open": "PID · חוץ"
+        },
+        "data_description": {
+          "pid_enabled": "האפשרות שולטת ב־„PID · אוטומטי · AUTO”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "pid_climate_entities": "בחר מקור Home Assistant אמיתי עבור „PID · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "pid_temperature_entity": "בחר מקור Home Assistant אמיתי עבור „טמפרטורה · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "pid_mode": "האפשרות שולטת ב־„PID”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "pid_target_c": "זהו סף החלטה עבור „יעד (°C)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "pid_pause_on_window_open": "האפשרות שולטת ב־„PID · חוץ”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות."
+        }
+      },
+      "pid_tuning": {
+        "title": "הגדרות · PID",
+        "description": "הגדר „הגדרות · PID” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "pid_kp": "PID Kp · בקרה (% per °C)",
+          "pid_ki": "PID Ki · בקרה (% per °C-minute)",
+          "pid_kd": "PID Kd · בקרה (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "האפשרות שולטת ב־„PID Kp · בקרה (% per °C)”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "pid_ki": "האפשרות שולטת ב־„PID Ki · בקרה (% per °C-minute)”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "pid_kd": "האפשרות שולטת ב־„PID Kd · בקרה (%·minute per °C)”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "pid_offset_c": "זהו סף החלטה עבור „PID (°C) · PID_OFFSET_C”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "pid_min_setpoint_c": "זהו סף החלטה עבור „PID (°C) · MIN TARGET”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "pid_max_setpoint_c": "זהו סף החלטה עבור „PID (°C) · MAX TARGET”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "pid_sample_seconds": "הזמן הזה מגדיר את „PID (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "pid_max_change_c": "זהו סף החלטה עבור „PID (°C) · MAX Δ”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "pid_min_change_c": "זהו סף החלטה עבור „PID (°C) · MIN Δ”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "climate": {
+        "title": "הגדרות · התקנים",
+        "description": "הגדר „הגדרות · התקנים” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+        "data": {
+          "climate_area": "התקנים"
+        },
+        "data_description": {
+          "climate_area": "האפשרות שולטת ב־„התקנים”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות."
+        }
+      },
+      "climate_room": {
+        "title": "הגדרות · התקנים",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "climate_enabled": "התקנים · אוטומטי · AUTO",
+          "climate_allow_actuation": "התקנים · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "התקנים · אוטומטי · MODE SWITCH",
+          "climate_prefer_native_auto": "התקנים · אוטומטי · NATIVE",
+          "climate_controller": "התקנים · בקרה",
+          "climate_mode": "התקנים · MODE",
+          "climate_entity": "התקנים · מקור",
+          "climate_temperature_entity": "טמפרטורה · מקור",
+          "climate_hysteresis_c": "התקנים (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "האפשרות שולטת ב־„התקנים · אוטומטי · AUTO”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_allow_actuation": "האפשרות שולטת ב־„התקנים · CLIMATE_ALLOW_ACTUATION”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_auto_switch_hvac": "האפשרות שולטת ב־„התקנים · אוטומטי · MODE SWITCH”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_prefer_native_auto": "האפשרות שולטת ב־„התקנים · אוטומטי · NATIVE”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_controller": "האפשרות שולטת ב־„התקנים · בקרה”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_mode": "האפשרות שולטת ב־„התקנים · MODE”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_entity": "בחר התקנים · מקור Home Assistant אמיתי עבור „התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_temperature_entity": "בחר מקור Home Assistant אמיתי עבור „טמפרטורה · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_hysteresis_c": "זהו סף החלטה עבור „התקנים (°C)”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "climate_presence": {
+        "title": "הגדרות · נוכחות · התקנים",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "climate_occupancy_sensors": "נוכחות · חיישן",
+          "climate_away_entities": "בית · התקנים",
+          "climate_unknown_occupancy": "נוכחות · התקנים",
+          "climate_unoccupied_delay_minutes": "התקנים · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "נוכחות · התקנים · חיישן · נדרש",
+          "climate_away_policy": "בית · התקנים · POLICY",
+          "climate_manual_profile": "התקנים · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "שינה · התקנים",
+          "climate_sleep_schedule_enabled": "שינה · אוטומטי",
+          "climate_sleep_start": "שינה · התקנים · START",
+          "climate_sleep_end": "שינה · התקנים · END",
+          "climate_target_source": "התקנים · מקור · יעד",
+          "climate_comfort_adjustment_max_c": "התקנים (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_away_entities": "בחר מקור Home Assistant אמיתי עבור „בית · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_unknown_occupancy": "האפשרות שולטת ב־„נוכחות · התקנים”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_unoccupied_delay_minutes": "הזמן הזה מגדיר את „התקנים · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_occupancy_stale_minutes": "הזמן הזה מגדיר את „נוכחות · התקנים · חיישן · נדרש”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_away_policy": "האפשרות שולטת ב־„בית · התקנים · POLICY”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_manual_profile": "האפשרות שולטת ב־„התקנים · CLIMATE_MANUAL_PROFILE”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_sleep_active": "האפשרות שולטת ב־„שינה · התקנים”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_sleep_schedule_enabled": "האפשרות שולטת ב־„שינה · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_sleep_start": "הזמן הזה מגדיר את „שינה · התקנים · START”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_sleep_end": "הזמן הזה מגדיר את „שינה · התקנים · END”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_target_source": "זהו סף החלטה עבור „התקנים · מקור · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_comfort_adjustment_max_c": "זהו סף החלטה עבור „התקנים (°C)”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "climate_equipment": {
+        "title": "הגדרות · התקנים",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · התקנים · מקור · טמפרטורה +",
+          "climate_cool_climate_entity": "COOL · התקנים · מקור · טמפרטורה −",
+          "climate_dry_climate_entity": "DRY · התקנים · מקור",
+          "climate_fan_climate_entity": "FAN_ONLY · מהירות · התקנים · מקור",
+          "climate_humidifier_entity": "HUMIDIFIER · התקנים · מקור",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · התקנים · מקור",
+          "climate_extraction_fan_entity": "EXTRACT · מהירות · התקנים · מקור",
+          "climate_purifier_fan_entity": "מטהר אוויר · מקור",
+          "climate_humidity_entity": "לחות · מקור",
+          "climate_humidity_low_rh": "RH · לחות · התקנים (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · לחות · התקנים (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · לחות · התקנים · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "התקנים · טמפרטורה −",
+          "climate_humidity_setpoint_auto": "לחות · אוטומטי",
+          "climate_window_efficiency_notify": "התקנים · חוץ",
+          "climate_dry_fan_mode_auto": "מהירות · אוטומטי",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · מהירות · התקנים · נדרש · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · מהירות · התקנים · חוץ · נדרש · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · מהירות · התקנים (s) · MODE DWELL",
+          "climate_humidity_power_auto": "לחות · הספק · אוטומטי",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · לחות · התקנים · הספק · נדרש · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · לחות · התקנים · הספק · חוץ · נדרש · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · לחות · התקנים · הספק · אוטומטי (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · לחות · התקנים · הספק · כיבוי (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · לחות · התקנים · הספק · אוטומטי (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "התקנים · אוטומטי · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "בחר HEAT · התקנים · מקור · טמפרטורה + Home Assistant אמיתי עבור „HEAT · התקנים · מקור · טמפרטורה +”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_cool_climate_entity": "בחר COOL · התקנים · מקור · טמפרטורה − Home Assistant אמיתי עבור „COOL · התקנים · מקור · טמפרטורה −”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_dry_climate_entity": "בחר DRY · התקנים · מקור Home Assistant אמיתי עבור „DRY · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_fan_climate_entity": "בחר מקור Home Assistant אמיתי עבור „FAN_ONLY · מהירות · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_humidifier_entity": "בחר HUMIDIFIER · התקנים · מקור Home Assistant אמיתי עבור „HUMIDIFIER · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_dehumidifier_entity": "בחר DEHUMIDIFIER · התקנים · מקור Home Assistant אמיתי עבור „DEHUMIDIFIER · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_extraction_fan_entity": "בחר מקור Home Assistant אמיתי עבור „EXTRACT · מהירות · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_purifier_fan_entity": "בחר מקור Home Assistant אמיתי עבור „מטהר אוויר · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_humidity_entity": "בחר מקור Home Assistant אמיתי עבור „לחות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_humidity_low_rh": "זהו סף החלטה עבור „RH · לחות · התקנים (%) · RH MIN”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_humidity_high_rh": "זהו סף החלטה עבור „RH · לחות · התקנים (%) · RH MAX”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_humidity_hysteresis_rh": "זהו סף החלטה עבור „RH · לחות · התקנים · ± RH”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_cooling_dry_deferral_rh_points": "האפשרות שולטת ב־„התקנים · טמפרטורה −”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_humidity_setpoint_auto": "האפשרות שולטת ב־„לחות · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_window_efficiency_notify": "האפשרות שולטת ב־„התקנים · חוץ”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_dry_fan_mode_auto": "האפשרות שולטת ב־„מהירות · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_dry_fan_hardware_confirmed": "השתמש במדידה אמיתית מתאימה עבור „DRY/FAN_ONLY · מהירות · התקנים · נדרש · HW ✓”. אומדן אינו תחליף לחיישן מכויל.",
+          "climate_dry_fan_windowless_confirmed": "השתמש במדידה אמיתית מתאימה עבור „DRY/FAN_ONLY · מהירות · התקנים · חוץ · נדרש · NO WINDOW”. אומדן אינו תחליף לחיישן מכויל.",
+          "climate_dry_fan_mode_dwell_s": "הזמן הזה מגדיר את „DRY/FAN_ONLY · מהירות · התקנים (s) · MODE DWELL”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_humidity_power_auto": "האפשרות שולטת ב־„לחות · הספק · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_humidity_power_hardware_confirmed": "השתמש במדידה אמיתית מתאימה עבור „RH POWER · לחות · התקנים · הספק · נדרש · HW ✓”. אומדן אינו תחליף לחיישן מכויל.",
+          "climate_humidity_power_windowless_confirmed": "השתמש במדידה אמיתית מתאימה עבור „RH POWER · לחות · התקנים · הספק · חוץ · נדרש · NO WINDOW”. אומדן אינו תחליף לחיישן מכויל.",
+          "climate_humidity_power_min_on_s": "הזמן הזה מגדיר את „RH POWER · לחות · התקנים · הספק · אוטומטי (s) · MIN ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_humidity_power_min_off_s": "הזמן הזה מגדיר את „RH POWER · לחות · התקנים · הספק · כיבוי (s) · MIN OFF”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_humidity_power_max_on_s": "הזמן הזה מגדיר את „RH POWER · לחות · התקנים · הספק · אוטומטי (s) · MAX ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_secondary_climate_setpoint_auto": "האפשרות שולטת ב־„התקנים · אוטומטי · TARGET AUTO”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "הגדרות · התקנים · חוץ",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "climate_fan_speed_auto": "מהירות · אוטומטי",
+          "climate_fan_power_auto": "מהירות · הספק · אוטומטי",
+          "climate_fan_power_hardware_confirmed": "FAN · מהירות · התקנים · הספק · נדרש · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · מהירות · התקנים · הספק · אוטומטי (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · מהירות · התקנים · הספק · כיבוי (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · מהירות · התקנים · הספק · אוטומטי (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · התקנים · חיישן · נדרש · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · התקנים · מקור",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · התקנים · מקור",
+          "climate_pm25_action_ug_m3": "PM2.5 · התקנים (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · התקנים · מהירות (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · התקנים · מהירות (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "האפשרות שולטת ב־„מהירות · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_fan_power_auto": "האפשרות שולטת ב־„מהירות · הספק · אוטומטי”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "climate_fan_power_hardware_confirmed": "השתמש במדידה אמיתית מתאימה עבור „FAN · מהירות · התקנים · הספק · נדרש · HW ✓”. אומדן אינו תחליף לחיישן מכויל.",
+          "climate_fan_power_min_on_s": "הזמן הזה מגדיר את „FAN · מהירות · התקנים · הספק · אוטומטי (s) · MIN ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_fan_power_min_off_s": "הזמן הזה מגדיר את „FAN · מהירות · התקנים · הספק · כיבוי (s) · MIN OFF”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_fan_power_max_on_s": "הזמן הזה מגדיר את „FAN · מהירות · התקנים · הספק · אוטומטי (s) · MAX ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "climate_pm25_sensor_verified": "השתמש במדידה אמיתית מתאימה עבור „PM2.5 · PM2.5 · התקנים · חיישן · נדרש · SENSOR ✓ · VERIFIED”. אומדן אינו תחליף לPM2.5 · PM2.5 · התקנים · חיישן · נדרש · SENSOR ✓ · VERIFIED מכויל.",
+          "climate_co2_entity": "בחר CO₂ · CO₂ · התקנים · מקור Home Assistant אמיתי עבור „CO₂ · CO₂ · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_pm25_entity": "בחר PM2.5 · PM2.5 · התקנים · מקור Home Assistant אמיתי עבור „PM2.5 · PM2.5 · התקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "climate_pm25_action_ug_m3": "זהו סף החלטה עבור „PM2.5 · התקנים (µg/m³)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_extraction_speed_percent": "זהו סף החלטה עבור „EXTRACT · התקנים · מהירות (%) · SPEED %”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "climate_purifier_speed_percent": "זהו סף החלטה עבור „PURIFIER · התקנים · מהירות (%) · SPEED %”. הוא משפיע על המלצות ואינו גבול רפואי."
+        }
+      },
+      "climate_profiles": {
+        "title": "הגדרות · התקנים",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "home_heat": "חימום · בבית (°C)",
+          "home_cool": "קירור · בבית (°C)",
+          "unoccupied_heat": "חימום · חדר לא מאוכלס (°C)",
+          "unoccupied_cool": "קירור · חדר לא מאוכלס (°C)",
+          "away_heat": "חימום · מחוץ לבית (°C)",
+          "away_cool": "קירור · מחוץ לבית (°C)",
+          "sleep_heat": "חימום · שינה (°C)",
+          "sleep_cool": "קירור · שינה (°C)"
+        },
+        "data_description": {
+          "home_heat": "יעד „חימום · בבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "home_cool": "יעד „קירור · בבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "unoccupied_heat": "יעד „חימום · חדר לא מאוכלס (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "unoccupied_cool": "יעד „קירור · חדר לא מאוכלס (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "away_heat": "יעד „חימום · מחוץ לבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "away_cool": "יעד „קירור · מחוץ לבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "sleep_heat": "יעד „חימום · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "sleep_cool": "יעד „קירור · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק."
+        }
+      },
+      "climate_actuators": {
+        "title": "הגדרות · התקנים",
+        "description": "אזור · הגדרות · התקנים · בקרה. נוכחות · חיישן · נדרש.",
+        "data": {
+          "direct_hardware_confirmed": "נדרש",
+          "heat_actuator": "חימום · התקנים",
+          "cool_actuator": "קירור · התקנים",
+          "min_on_s": "הספק · אוטומטי (s) · MIN ON",
+          "min_off_s": "הספק · כיבוי (s)",
+          "max_on_s": "הספק · אוטומטי (s) · MAX ON",
+          "mode_dwell_s": "הגדרות · מקור (s) · MODE DWELL",
+          "kp": "PID Kp · בקרה (percentage points/°C)",
+          "ki": "PID Ki · בקרה (percentage points/(°C·minute))",
+          "kd": "PID Kd · בקרה (percentage points·minute/°C)",
+          "sample_seconds": "הגדרות · מקור (s) · SAMPLE",
+          "pwm_period_s": "הגדרות · מקור (s) · PWM PERIOD",
+          "max_demand_change": "הגדרות · מקור · MAX Δ",
+          "min_demand_change": "הגדרות · מקור · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "השתמש במדידה אמיתית מתאימה עבור „נדרש”. אומדן אינו תחליף לחיישן מכויל.",
+          "heat_actuator": "הגדר „חימום · התקנים” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "cool_actuator": "הגדר „קירור · התקנים” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "min_on_s": "הזמן הזה מגדיר את „הספק · אוטומטי (s) · MIN ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "min_off_s": "הזמן הזה מגדיר את „הספק · כיבוי (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "max_on_s": "הזמן הזה מגדיר את „הספק · אוטומטי (s) · MAX ON”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "mode_dwell_s": "הזמן הזה מגדיר את „הגדרות · מקור (s) · MODE DWELL”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "kp": "הגדר „PID Kp · בקרה (percentage points/°C)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "ki": "הגדר „PID Ki · בקרה (percentage points/(°C·minute))” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "kd": "הגדר „PID Kd · בקרה (percentage points·minute/°C)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "sample_seconds": "הזמן הזה מגדיר את „הגדרות · מקור (s) · SAMPLE”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "pwm_period_s": "הזמן הזה מגדיר את „הגדרות · מקור (s) · PWM PERIOD”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "max_demand_change": "הגדר „הגדרות · מקור · MAX Δ” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "min_demand_change": "הגדר „הגדרות · מקור · MIN Δ” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "outside_data": {
+        "title": "חוץ · מקור",
+        "description": "חוץ · מקור: בחר מקור, חיישן / התקנים · בקרה.",
+        "menu_options": {
+          "weather": "מזג אוויר ואזהרות",
+          "outdoor": "איכות האוויר בחוץ",
+          "outside_aqi": "חוץ · AQI",
+          "pollen": "אבקנים"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "אזור · הגדרות",
+        "description": "אזור · הגדרות: בחר מקור, חיישן / התקנים · בקרה.",
+        "menu_options": {
+          "areas": "חדרים",
+          "indoor_sensors": "חדרים · מדד עובש",
+          "window_sensors": "החרגת חיישני חלונות",
+          "environment_room": "הגדרות · הגדרות · מקור",
+          "area_devices": "מכשירי אקלים"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "התקנים · הגדרות",
+        "description": "אופציונלי: המשך לחיישנים ולהרשאות הבטיחות של המכשיר. השאר כבוי כדי לשמור מיד את הרשימה.",
+        "menu_options": {
+          "device_settings": "התקנים · בקרה",
+          "device_choice": "בחר · התקנים",
+          "device_done": "הגדרות · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "כלליות · הגדרות",
+        "description": "כלליות · הגדרות: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_home_policy": "בית · נוכחות · בקרה",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "general_source_stale_minutes": "מקור · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „חדר · נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_attribute": "הגדר „נוכחות · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_home_trackers": "בחר מקור Home Assistant אמיתי עבור „בית · נוכחות · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_home_policy": "האפשרות שולטת ב־„בית · נוכחות · בקרה”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "general_sleep_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „שינה · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_sleep_rooms_attribute": "הגדר „שינה · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_source_stale_minutes": "מקור · שינה / נוכחות · max 240 min. לא תקין · כיבוי."
+        }
+      },
+      "pollen": {
+        "title": "אבקנים",
+        "description": "אבקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "pollen_entity": "אבקנים · מקור",
+          "pollen_high_from": "POLLEN · אבקנים · HIGH",
+          "pollen_max_scale": "POLLEN · אבקנים · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · אבקנים · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "בחר מקור Home Assistant אמיתי עבור „אבקנים · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "pollen_high_from": "הגדר „POLLEN · אבקנים · HIGH” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_max_scale": "הגדר „POLLEN · אבקנים · SCALE” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_avoid_ventilation": "הגדר „POLLEN · אבקנים · NO VENT” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "outside_aqi": {
+        "title": "חוץ · AQI",
+        "description": "חוץ · AQI: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "outside_aqi_entity": "AQI · חיישן",
+          "outside_aqi_scale": "AQI · מקור",
+          "outside_aqi_limit": "AQI · יעד",
+          "outside_aqi_no_sources": "AQI · חיישן · נדרש"
+        },
+        "data_description": {
+          "outside_aqi_entity": "בחר מקור Home Assistant אמיתי עבור „AQI · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "outside_aqi_scale": "הגדר „AQI · מקור” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "outside_aqi_limit": "זהו סף החלטה עבור „AQI · יעד”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "outside_aqi_no_sources": "הגדר „AQI · חיישן · נדרש” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה."
+        }
+      },
+      "area_devices": {
+        "title": "מכשירי אקלים",
+        "description": "בחר · אזור",
+        "data": {
+          "area_devices_area": "בחר · אזור"
+        },
+        "data_description": {
+          "area_devices_area": "בחר מקור Home Assistant אמיתי עבור „בחר · אזור”. נתונים חסרים או ישנים עוצרים את הפעולה."
+        }
+      },
+      "select_devices": {
+        "title": "מכשירי אקלים",
+        "description": "בחר מכשירים עבור {area_name}. שמירה יוצרת בקר אחד לכל מכשיר פיזי במרכז החדר. הגדר יעדים, פרופילים, אוטומטי/ידני/כבוי/PID ופעולה שקטה במכשירים. הבחירה אינה מפעילה שליטה אוטומטית.",
+        "data": {
+          "selected_devices": "בחר · התקנים",
+          "configure_device_sources": "הגדרת חיישנים והרשאות כעת"
+        },
+        "data_description": {
+          "selected_devices": "בחר מכשירים עבור {area_name}. שמירה יוצרת בקר אחד לכל מכשיר פיזי במרכז החדר. הגדר יעדים, פרופילים, אוטומטי/ידני/כבוי/PID ופעולה שקטה במכשירים. הבחירה אינה מפעילה שליטה אוטומטית.",
+          "configure_device_sources": "אופציונלי: המשך לחיישנים ולהרשאות הבטיחות של המכשיר. השאר כבוי כדי לשמור מיד את הרשימה."
+        }
+      },
+      "device_choice": {
+        "title": "בחר · התקנים",
+        "description": "בחר · התקנים: בחר מקור, חיישן / התקנים · בקרה.",
+        "data": {
+          "device_choice": "בחר · התקנים"
+        },
+        "data_description": {
+          "device_choice": "בחר מקור Home Assistant אמיתי עבור „בחר · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה."
+        }
+      },
+      "device_settings": {
+        "title": "התקנים · בקרה",
+        "description": "האפשרות שולטת ב־„בקרה · מקור”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות. השתמש במדידה אמיתית מתאימה עבור „נדרש · התקנים · הספק”. אומדן אינו תחליף לחיישן מכויל. הזמן הזה מגדיר את „הספק · min ON (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה. הזמן הזה מגדיר את „הספק · min OFF (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה. הגדר „שינה · בקרה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה. זהו סף החלטה עבור „מהירות (%)”. הוא משפיע על המלצות ואינו גבול רפואי.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "אוטומטי בקרה",
+          "device_method": "בקרה · מקור",
+          "device_presence_requirement": "בקרה · נוכחות",
+          "device_absence_action": "כיבוי · נוכחות",
+          "device_sleep_behavior": "שינה · בקרה",
+          "device_hardware_confirmed": "נדרש · התקנים · הספק",
+          "device_temperature_entity": "טמפרטורה · חיישן",
+          "device_humidity_entity": "לחות · חיישן",
+          "device_co2_entity": "CO₂ · חיישן",
+          "device_pm25_entity": "PM2.5 · חיישן",
+          "device_fan_purpose": "בקרה · התקנים",
+          "device_sensor_verified": "חיישן · נדרש",
+          "device_fan_speed_percent": "מהירות (%)",
+          "device_humidity_target": "לחות · יעד (%)",
+          "device_sleep_humidity_target": "שינה · לחות · יעד (%)",
+          "device_min_on_s": "הספק · min ON (s)",
+          "device_min_off_s": "הספק · min OFF (s)",
+          "device_max_on_s": "הספק · max ON (s)",
+          "device_home_heat_c": "חימום · בבית (°C)",
+          "device_home_cool_c": "קירור · בבית (°C)",
+          "device_unoccupied_heat_c": "חימום · חדר לא מאוכלס (°C)",
+          "device_unoccupied_cool_c": "קירור · חדר לא מאוכלס (°C)",
+          "device_away_heat_c": "חימום · מחוץ לבית (°C)",
+          "device_away_cool_c": "קירור · מחוץ לבית (°C)",
+          "device_sleep_heat_c": "חימום · שינה (°C)",
+          "device_sleep_cool_c": "קירור · שינה (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "האפשרות שולטת ב־„אוטומטי בקרה”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "device_method": "האפשרות שולטת ב־„בקרה · מקור”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "device_presence_requirement": "הגדר „בקרה · נוכחות” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "device_absence_action": "האפשרות שולטת ב־„כיבוי · נוכחות”. פקודות למכשיר דורשות אישור נפרד והגנות עצמאיות.",
+          "device_sleep_behavior": "הגדר „שינה · בקרה” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "device_hardware_confirmed": "השתמש במדידה אמיתית מתאימה עבור „נדרש · התקנים · הספק”. אומדן אינו תחליף לחיישן מכויל.",
+          "device_temperature_entity": "בחר מקור Home Assistant אמיתי עבור „טמפרטורה · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "device_humidity_entity": "בחר מקור Home Assistant אמיתי עבור „לחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "device_co2_entity": "בחר מקור Home Assistant אמיתי עבור „CO₂ · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "device_pm25_entity": "בחר מקור Home Assistant אמיתי עבור „PM2.5 · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "device_fan_purpose": "הגדר „בקרה · התקנים” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "device_sensor_verified": "השתמש במדידה אמיתית מתאימה עבור „חיישן · נדרש”. אומדן אינו תחליף לחיישן מכויל.",
+          "device_fan_speed_percent": "זהו סף החלטה עבור „מהירות (%)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "device_humidity_target": "זהו סף החלטה עבור „לחות · יעד (%)”. הוא משפיע על המלצות ואינו גבול רפואי.",
+          "device_sleep_humidity_target": "יעד „שינה · לחות · יעד (%)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_min_on_s": "הזמן הזה מגדיר את „הספק · min ON (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "device_min_off_s": "הזמן הזה מגדיר את „הספק · min OFF (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "device_max_on_s": "הזמן הזה מגדיר את „הספק · max ON (s)”. הוא מגביל מיתוג תכוף ואינו מחליף הגנת חומרה.",
+          "device_home_heat_c": "יעד „חימום · בבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_home_cool_c": "יעד „קירור · בבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_unoccupied_heat_c": "יעד „חימום · חדר לא מאוכלס (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_unoccupied_cool_c": "יעד „קירור · חדר לא מאוכלס (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_away_heat_c": "יעד „חימום · מחוץ לבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_away_cool_c": "יעד „קירור · מחוץ לבית (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_sleep_heat_c": "יעד „חימום · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק.",
+          "device_sleep_cool_c": "יעד „קירור · שינה (°C)” חל רק כאשר אושרו נוכחות או שינה. מצב לא ידוע אינו חדר ריק."
+        }
+      },
+      "setup_rooms": {
+        "title": "חדרים למעקב",
+        "description": "חדרים למעקב → מקור → כלליות הגדרות",
+        "data": {
+          "areas": "חדרים למעקב"
+        },
+        "data_description": {
+          "areas": "חדרים למעקב. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_room_sources": {
+        "title": "חדר · {area_name} · {room_index}/{room_count}",
+        "description": "בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+        "data": {
+          "windows": "חלונות",
+          "air_quality": "חיישני איכות אוויר וסביבה",
+          "temperature": "טמפרטורה",
+          "humidity": "לחות",
+          "pressure": "חיישני לחץ",
+          "climate_devices": "התקנים"
+        },
+        "data_description": {
+          "windows": "חלונות. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "air_quality": "חיישני איכות אוויר וסביבה. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "temperature": "טמפרטורה. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "humidity": "לחות. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "pressure": "חיישני לחץ. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים.",
+          "climate_devices": "התקנים. בחר את קלטי החדר: שם המכשיר - שם הישות. קבוצות ריקות אינן בשימוש ולא מפעילות גילוי או בקרה אוטומטיים."
+        }
+      },
+      "setup_general": {
+        "title": "כלליות הגדרות",
+        "description": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים.",
+        "data": {
+          "weather_entities": "מזג אוויר ואזהרות",
+          "outdoor_sensors": "איכות האוויר בחוץ",
+          "weather_warnings": "אזהרות מזג אוויר",
+          "general_room_occupancy_sensors": "חדר · נוכחות · חיישן",
+          "general_home_trackers": "בית · נוכחות · התקנים",
+          "general_occupied_rooms_entity": "נוכחות · חדר · מקור (state)",
+          "general_occupied_rooms_attribute": "נוכחות · חדר · מקור (attribute)",
+          "general_sleep_rooms_entity": "שינה · חדר · מקור (state)",
+          "general_sleep_rooms_attribute": "שינה · חדר · מקור (attribute)",
+          "notify_entities": "הגדרות · מקור",
+          "media_players": "הגדרות · מקור · MEDIA_PLAYERS",
+          "tts_engine": "הגדרות · מקור · TTS_ENGINE",
+          "ai_conversation_agent": "AI · בחר · מקור",
+          "language": "TTS · בחר · מקור",
+          "use_mold_indicator": "מדד עובש · RH (%) → 70%",
+          "pollen_entities": "אבקנים · מקור · בחר",
+          "use_announcement_hub": "אוטומטי · Announcement Hub",
+          "general_away_cooldown_minutes": "בית · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "בחרו: מזג אוויר ואזהרות · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "בחרו: איכות האוויר בחוץ · AQI, CO₂, PM2.5, PM10, VOC. לא זמין: ⚠",
+          "weather_warnings": "מזג אוויר ואזהרות · ⚠ (לא זמין) → 🪟🔒",
+          "general_room_occupancy_sensors": "בחר מקור Home Assistant אמיתי עבור „חדר · נוכחות · חיישן”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_home_trackers": "בחר מקור Home Assistant אמיתי עבור „בית · נוכחות · התקנים”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „נוכחות · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_occupied_rooms_attribute": "הגדר „נוכחות · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "general_sleep_rooms_entity": "בחר מקור Home Assistant אמיתי עבור „שינה · חדר · מקור (state)”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "general_sleep_rooms_attribute": "הגדר „שינה · חדר · מקור (attribute)” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "notify_entities": "בחר מקור Home Assistant אמיתי עבור „הגדרות · מקור”. נתונים חסרים או ישנים עוצרים את הפעולה.",
+          "media_players": "בחרו: media_player.* · הגדרות · מקור · MEDIA_PLAYERS.",
+          "tts_engine": "בחרו: tts.* · הגדרות · מקור · TTS_ENGINE.",
+          "ai_conversation_agent": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · AI · בחר · מקור · conversation.* / ai_task.*.",
+          "language": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · TTS · בחר · מקור · provider capabilities.",
+          "use_mold_indicator": "הגדר „מדד עובש · RH (%) → 70%” רק בחדר שנבחר. נתונים חסרים או שגויים מונעים פעולה.",
+          "pollen_entities": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · אבקנים · מקור · בחר.",
+          "use_announcement_hub": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · אוטומטי · Announcement Hub.",
+          "general_away_cooldown_minutes": "בחר מקורות משותפים ופלטי התראות. שמירה מסיימת את ההגדרה. הגדרות התפעול נשארות במכשירי הבית והחדרים. · בית · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "בחירה לא תקינה: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "לא זמין: איכות האוויר בחוץ (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "בחירה לא תקינה: מזג אוויר ואזהרות (weather.*).",
+      "invalid_warning": "בחירה לא תקינה: מזג אוויר ואזהרות ⚠.",
+      "missing_notify": "בחרו: Announcement Hub / notify.*.",
+      "missing_tts": "בחרו: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "בחירה לא תקינה: °C min < max.",
+      "no_areas": "בחרו: חדרים.",
+      "no_window_areas": "לא זמין: מדידות (binary_sensor, window).",
+      "invalid_areas": "בחירה לא תקינה: חדרים.",
+      "invalid_window_exclusions": "בחירה לא תקינה: החרגת חיישני חלונות.",
+      "invalid_indoor_exclusions": "בחירה לא תקינה: החרגת חיישני אוויר פנימיים.",
+      "no_windows_after_exclusions": "השאירו לפחות חיישן חלון אחד פעיל.",
+      "review_areas_after_exclusions": "בדקו: חדרים · מדידות (0).",
+      "invalid_repeat_minutes": "בחירה לא תקינה: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "לא זמין: conversation.process.",
+      "invalid_ai_agent": "בחירה לא תקינה: conversation.*.",
+      "invalid_mold_temperature_sensor": "חדרים · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "חדרים · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "מדד עובש · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "מדד עובש · 🧊 °C ⚠",
+      "invalid_mold_calibration": "מדד עובש · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "הגדרה לא תקינה של „הגדרות · מקור”. בדוק מקור, יחידות ובטיחות.",
+      "invalid_environment_measurement": "הגדרה לא תקינה של „הגדרות · מקור”. בדוק מקור, יחידות ובטיחות.",
+      "pmv_requires_explicit_inputs": "הגדרה לא תקינה של „PMV / PPD”. בדוק מקור, יחידות ובטיחות.",
+      "pid_climate_required": "הגדרה לא תקינה של „PID · התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "pid_temperature_required": "הגדרה לא תקינה של „PID · טמפרטורה”. בדוק מקור, יחידות ובטיחות.",
+      "pid_invalid_target": "הגדרה לא תקינה של „PID · יעד”. בדוק מקור, יחידות ובטיחות.",
+      "pid_duplicate_climate": "הגדרה לא תקינה של „PID · התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "pid_invalid_parameters": "הגדרה לא תקינה של „PID”. בדוק מקור, יחידות ובטיחות.",
+      "climate_dry_fan_control_inputs_missing": "הגדרה לא תקינה של „מהירות · התקנים · בקרה”. בדוק מקור, יחידות ובטיחות.",
+      "climate_humidity_power_inputs_missing": "הגדרה לא תקינה של „לחות · התקנים · הספק”. בדוק מקור, יחידות ובטיחות.",
+      "climate_secondary_control_inputs_missing": "הגדרה לא תקינה של „התקנים · בקרה”. בדוק מקור, יחידות ובטיחות.",
+      "climate_fan_power_inputs_missing": "הגדרה לא תקינה של „מהירות · התקנים · הספק”. בדוק מקור, יחידות ובטיחות.",
+      "climate_fan_control_inputs_missing": "הגדרה לא תקינה של „מהירות · התקנים · בקרה”. בדוק מקור, יחידות ובטיחות.",
+      "climate_fan_sensor_invalid": "הגדרה לא תקינה של „מהירות · התקנים · חיישן”. בדוק מקור, יחידות ובטיחות.",
+      "climate_humidity_control_inputs_missing": "הגדרה לא תקינה של „לחות · התקנים · בקרה”. בדוק מקור, יחידות ובטיחות.",
+      "climate_temperature_required": "הגדרה לא תקינה של „טמפרטורה · התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_target_required": "הגדרה לא תקינה של „התקנים · יעד”. בדוק מקור, יחידות ובטיחות.",
+      "climate_direct_actuator_not_ready": "הגדרה לא תקינה של „התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_controller_invalid": "הגדרה לא תקינה של „התקנים · בקרה”. בדוק מקור, יחידות ובטיחות.",
+      "climate_mode_invalid": "הגדרה לא תקינה של „התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_occupancy_invalid": "הגדרה לא תקינה של „נוכחות · התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_away_invalid": "הגדרה לא תקינה של „בית · התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_deadband_invalid": "הגדרה לא תקינה של „התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_attestation_required": "הגדרה לא תקינה של „התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "climate_direct_targets_invalid": "הגדרה לא תקינה של „התקנים · יעד”. בדוק מקור, יחידות ובטיחות.",
+      "climate_direct_timing_invalid": "הגדרה לא תקינה של „התקנים”. בדוק מקור, יחידות ובטיחות.",
+      "general_invalid_presence": "לא תקין · נוכחות · הגדרות",
+      "general_invalid_trackers": "לא תקין · בית · הגדרות",
+      "general_invalid_rooms_entity": "לא תקין · חדר · הגדרות",
+      "general_invalid_attribute": "לא תקין · מקור · הגדרות",
+      "general_invalid_source_age": "לא תקין · מקור · הגדרות",
+      "invalid_selected_devices": "לא תקין · התקנים · הגדרות",
+      "device_policy_invalid": "לא תקין · נוכחות · הגדרות",
+      "device_method_invalid": "לא תקין · בקרה · הגדרות",
+      "device_hardware_required": "לא תקין · נדרש · הגדרות",
+      "device_power_required_for_off": "לא תקין · הספק · הגדרות",
+      "device_temperature_required": "לא תקין · טמפרטורה · הגדרות",
+      "device_humidity_required": "לא תקין · לחות · הגדרות",
+      "device_air_sensor_required": "לא תקין · חיישן · הגדרות",
+      "device_temperature_band_invalid": "לא תקין · טמפרטורה · הגדרות",
+      "device_humidity_invalid": "לא תקין · לחות · הגדרות",
+      "device_runtime_invalid": "לא תקין · הספק · הגדרות",
+      "invalid_setup_rooms": "לא תקין: חדרים למעקב",
+      "invalid_room_source": "לא תקין: חדר · מקור"
+    },
+    "abort": {
+      "setup_area_removed": "לא תקין: חדרים למעקב",
+      "setup_changed": "הגדרות ↻ חדרים למעקב"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "איכות האוויר",
+        "state": {
+          "open": "סגרו · מדידות",
+          "close": "התראות אוטומטיות · מדידות",
+          "idle": "טובה",
+          "blocked": "השאירו חלונות סגורים"
+        }
+      },
+      "area_overview": {
+        "name": "סקירת הסביבה"
+      },
+      "area_surface_humidity": {
+        "name": "לחות פני השטח (מחושבת)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}מצב הבקר"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "בחוץ · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "בחוץ · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "בחוץ · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "בחוץ · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "בחוץ · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "בחוץ · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · חוץ (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · חוץ (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · חוץ (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "איכות האוויר · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "איכות האוויר · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "איכות האוויר · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "איכות האוויר · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "איכות האוויר · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "איכות האוויר · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "איכות האוויר · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "מדד עובש · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "בחוץ · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "בחוץ · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "בחוץ · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "מזג אוויר ואזהרות · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · פתחו (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "הודעות (אופציונלי) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "יעד (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · בקרה (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · בקרה (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · בקרה (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "חימום · חדר · נוכחות"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "קירור · חדר · נוכחות"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "לחות · חדר · נוכחות · יעד (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "חימום · בית"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "קירור · בית"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "לחות · בית · יעד (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "חימום · בית · כיבוי"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "קירור · בית · כיבוי"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "לחות · בית · כיבוי · יעד (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "חימום · שינה"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "קירור · שינה"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "לחות · שינה · יעד (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "חימום · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "קירור · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "לחות · ECO · יעד (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · אבקנים · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · אבקנים · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "מקור · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "הגדרות · מקור (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · יעד (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "מהירות · חוץ (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "הגדרות · מקור (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "הגדרות · מקור (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "התקנים · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "נוכחות · התקנים · חיישן · נדרש"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "התקנים (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · לחות · התקנים (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · לחות · התקנים (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · לחות · התקנים · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "התקנים · טמפרטורה −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · התקנים (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · התקנים · מהירות (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · התקנים · מהירות (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · בקרה (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · בקרה (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · בקרה (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "הגדרות · מקור (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "הגדרות · מקור · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "הגדרות · מקור · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "מדד עובש · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · בקרה (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · בקרה (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · בקרה (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_pid_process_gain": {
+        "name": "{channel}Process gain (PV per full output)"
+      },
+      "equipment_pid_time_constant_minutes": {
+        "name": "{channel}Response time constant"
+      },
+      "equipment_pid_dead_time_minutes": {
+        "name": "{channel}Response dead time"
+      },
+      "equipment_pid_lambda_minutes": {
+        "name": "{channel}IMC response Lambda"
+      },
+      "equipment_pid_capacity_stage_1": {
+        "name": "{channel}Measured fan stage 1 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_2": {
+        "name": "{channel}Measured fan stage 2 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_3": {
+        "name": "{channel}Measured fan stage 3 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_4": {
+        "name": "{channel}Measured fan stage 4 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_speed_1": {
+        "name": "{channel}Measured fan speed 1 (%)"
+      },
+      "equipment_pid_capacity_output_1": {
+        "name": "{channel}Measured delivered capacity 1 (%)"
+      },
+      "equipment_pid_capacity_speed_2": {
+        "name": "{channel}Measured fan speed 2 (%)"
+      },
+      "equipment_pid_capacity_output_2": {
+        "name": "{channel}Measured delivered capacity 2 (%)"
+      },
+      "equipment_pid_capacity_speed_3": {
+        "name": "{channel}Measured fan speed 3 (%)"
+      },
+      "equipment_pid_capacity_output_3": {
+        "name": "{channel}Measured delivered capacity 3 (%)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}הגדרות · מקור (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}מגבלת מאוורר שקט (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}הספק · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}הספק · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}הספק · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "חדר · טמפרטורה · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "חדר · טמפרטורה · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "חדר · לחות · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "חדר · לחות · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "חדר · מהירות · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "חדר · מהירות · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "בית · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "אוטומטי · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "אוטומטי"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · הודעות (אופציונלי)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · אבקנים · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "שינה"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · אוטומטי"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "שינה · התקנים"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "שינה · אוטומטי"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "התקנים · חוץ"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}רעש מופחת בזמן שינה"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}רעש מופחת בעת נוכחות"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}חיישן · נדרש"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "שפה"
+      },
+      "area_manual_profile": {
+        "name": "התקנים · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "בית · נוכחות · בקרה"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "נוכחות · התקנים"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "בית · התקנים · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "התקנים · מקור · יעד"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}שיטת בקרה",
+        "state": {
+          "existing": "בקר החדר הקיים",
+          "automatic": "אוטומטי",
+          "manual": "ידני",
+          "off": "כיבוי",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}מצב מאוורר שקט מובנה"
+      },
+      "equipment_pid_calibration_method": {
+        "name": "{channel}PID calibration method",
+        "state": {
+          "manual": "Manual Kp/Ki/Kd",
+          "imc_lambda": "IMC / Lambda (measured response)",
+          "cohen_coon": "Cohen–Coon (measured response)"
+        }
+      },
+      "equipment_pid_fan_capacity_mode": {
+        "name": "{channel}PID fan capacity strategy",
+        "state": {
+          "legacy": "Original PID allocation",
+          "measured": "Measured capacity compensation"
+        }
+      },
+      "equipment_pid_fan_capacity_for_mode": {
+        "name": "{channel}Calibrate for HVAC mode",
+        "state": {
+          "choose": "Choose direction",
+          "heat": "Heating",
+          "cool": "Cooling",
+          "dry": "Drying",
+          "fan_only": "Fan only"
+        }
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}בקרה · נוכחות",
+        "state": {
+          "always": "אוטומטי",
+          "occupied": "חדר · נוכחות",
+          "absent": "חדר · נוכחות · כיבוי"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}שינה · בקרה",
+        "state": {
+          "normal": "אוטומטי",
+          "pause": "השהיה",
+          "sleep_targets": "שינה · יעד"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}בקרה · התקנים",
+        "state": {
+          "extraction": "חוץ · בקרה",
+          "filtration": "PM2.5 · בקרה",
+          "auto": "אוטומטי"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "טמפרטורה · מקור"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "מקור · מהירות · חוץ (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "שינה · התקנים · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "שינה · התקנים · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "מדד עובש · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}אימות והמשך"
+      },
+      "equipment_pid_apply_calibration": {
+        "name": "{channel}Apply verified PID calibration"
+      },
+      "equipment_pid_apply_fan_capacity": {
+        "name": "{channel}Apply measured fan capacity"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}בקר אקלים"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "הודעות (אופציונלי) — Home Environment Manager",
+      "description": "הודעות (אופציונלי) · חדרים",
+      "fields": {
+        "language": {
+          "name": "שפה",
+          "description": "שפה"
+        },
+        "channels": {
+          "name": "הודעות (אופציונלי)",
+          "description": "הודעות (אופציונלי)"
+        },
+        "areas": {
+          "name": "חדרים",
+          "description": "חדרים"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — ברירת מחדל",
+        "en": "הגדרות · מקור",
+        "de": "הגדרות · מקור",
+        "el": "הגדרות · מקור",
+        "fr": "הגדרות · מקור",
+        "es": "הגדרות · מקור",
+        "it": "הגדרות · מקור",
+        "nl": "הגדרות · מקור",
+        "pt": "הגדרות · מקור",
+        "pt-br": "הגדרות · מקור",
+        "pl": "הגדרות · מקור",
+        "ru": "הגדרות · מקור",
+        "uk": "הגדרות · מקור",
+        "tr": "הגדרות · מקור",
+        "cs": "הגדרות · מקור",
+        "sk": "הגדרות · מקור",
+        "hu": "הגדרות · מקור",
+        "ro": "הגדרות · מקור",
+        "bg": "הגדרות · מקור",
+        "hr": "הגדרות · מקור",
+        "sr": "הגדרות · מקור",
+        "sv": "הגדרות · מקור",
+        "nb": "הגדרות · מקור",
+        "da": "הגדרות · מקור",
+        "fi": "הגדרות · מקור",
+        "id": "הגדרות · מקור",
+        "vi": "הגדרות · מקור",
+        "th": "הגדרות · מקור",
+        "hi": "הגדרות · מקור",
+        "zh-hans": "הגדרות · מקור",
+        "zh-hant": "הגדרות · מקור",
+        "ja": "הגדרות · מקור",
+        "ko": "הגדרות · מקור",
+        "ar": "הגדרות · מקור",
+        "he": "הגדרות · מקור",
+        "fa": "הגדרות · מקור",
+        "bn": "הגדרות · מקור",
+        "ur": "הגדרות · מקור",
+        "ta": "הגדרות · מקור"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "בית · נוכחות",
+        "all_home": "בית · התקנים · נוכחות"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "יעד · בקרה",
+        "native": "התקנים · בקרה",
+        "power": "הספק",
+        "speed": "מהירות"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "אוטומטי",
+        "room": "חדר · נוכחות",
+        "home": "בית · נוכחות"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "השהיה",
+        "off": "כיבוי"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "אוטומטי",
+        "pause": "השהיה",
+        "sleep_targets": "שינה · יעד"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "חוץ · בקרה",
+        "filtration": "PM2.5 · בקרה"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "מקור · לא תקין",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "יעד · הגדרות"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "מרכז החדר",
+      "initiate_flow": {
+        "user": "מרכז החדר"
+      },
+      "step": {
+        "user": {
+          "title": "מרכז החדר",
+          "description": "בחרו אזור ב-Home Assistant. הקבוצה מכילה את הגדרות החדר הכלליות ובקר אחד לכל מכשיר פיזי שנבחר. הוספת חדר אינה מפעילה שליטה אוטומטית בציוד.",
+          "data": {
+            "area_id": "חדר"
+          },
+          "data_description": {
+            "area_id": "בחרו אזור ב-Home Assistant. הקבוצה מכילה את הגדרות החדר הכלליות ובקר אחד לכל מכשיר פיזי שנבחר. הוספת חדר אינה מפעילה שליטה אוטומטית בציוד."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "לא תקין: אזור."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

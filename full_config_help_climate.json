@@ -1,0 +1,330 @@
+{
+  "climate_room.climate_enabled": {
+    "en": "Enables per-room climate planning and status. It does not authorize actuator commands; Allow actuation and each device's separate opt-in are required.",
+    "el": "Ενεργοποιεί σχεδιασμό και παρακολούθηση κλίματος στον χώρο. Δεν επιτρέπει εντολές συσκευών· χρειάζονται ξεχωριστές άδειες ελέγχου."
+  },
+  "climate_room.climate_allow_actuation": {
+    "en": "Allows commands only through the separately enabled, capability-checked room controllers. Leave off for monitoring/advice only.",
+    "el": "Επιτρέπει εντολές μόνο από ρητά ενεργοποιημένους και ελεγμένους ελεγκτές του χώρου. Άφησέ το OFF για συμβουλές χωρίς αυτοματισμούς."
+  },
+  "climate_room.climate_auto_switch_hvac": {
+    "en": "Separate consent to switch between supported heating and cooling modes, subject to dwell and device interlocks. Does not bypass equipment compressor protection.",
+    "el": "Ξεχωριστή άδεια αλλαγής μεταξύ υποστηριζόμενης θέρμανσης και ψύξης, με χρόνους ασφαλείας. Δεν παρακάμπτει την προστασία συμπιεστή."
+  },
+  "climate_room.climate_prefer_native_auto": {
+    "en": "When a thermostat genuinely supports native HEAT_COOL with two target temperatures, prefer its built-in control over simulated mode switching.",
+    "el": "Όταν ο θερμοστάτης υποστηρίζει πραγματικά HEAT_COOL με δύο στόχους, προτιμάται ο ενσωματωμένος έλεγχος αντί για τεχνητές εναλλαγές λειτουργίας."
+  },
+  "climate_room.climate_controller": {
+    "en": "Choose the control strategy supported by installed equipment: native thermostat, or independently protected slow direct actuator. Do not use relays for compressors.",
+    "el": "Διάλεξε στρατηγική βάσει πραγματικού εξοπλισμού: εγγενή θερμοστάτη ή προστατευμένο βραδύ θερμικό ενεργοποιητή. Όχι γενικά ρελέ για συμπιεστές."
+  },
+  "climate_room.climate_mode": {
+    "en": "Heating, cooling, or automatic decision only when those modes truly exist on the device. An unsupported mode remains advisory and does not send commands.",
+    "el": "Θέρμανση, ψύξη ή αυτόματη απόφαση μόνο αν οι λειτουργίες υποστηρίζονται πραγματικά. Μη διαθέσιμη λειτουργία δεν αποστέλλει εντολή."
+  },
+  "climate_room.climate_entity": {
+    "en": "Select exactly one primary climate.* device assigned to this HA room. It supplies native capabilities; manual OFF or unsupported modes cannot be auto-restarted.",
+    "el": "Επίλεξε μία βασική οντότητα climate.* του χώρου. Παρέχει πραγματικές δυνατότητες· χειροκίνητο OFF δεν επανεκκινείται αυτόματα."
+  },
+  "climate_room.climate_temperature_entity": {
+    "en": "Independent fresh temperature sensor (°C or °F) in the same room; stale readings stop target changes. Avoid using an unrelated outdoor or thermostat estimate.",
+    "el": "Ανεξάρτητος πρόσφατος αισθητήρας θερμοκρασίας (°C ή °F) στον ίδιο χώρο. Παλιές ενδείξεις παγώνουν αλλαγές στόχου."
+  },
+  "climate_room.climate_hysteresis_c": {
+    "en": "Temperature separation in °C before changing heating/cooling direction. Prevents rapid oscillation; native mode dwell protections also apply.",
+    "el": "Διαφορά θερμοκρασίας σε °C πριν αλλάξει κατεύθυνση θέρμανσης/ψύξης. Αποτρέπει συνεχείς εναλλαγές μαζί με τους χρόνους ασφαλείας."
+  },
+  "climate_presence.climate_occupancy_sensors": {
+    "en": "Select actual room presence/occupancy binary sensors. A positive value means occupied; an unavailable sensor does not prove an empty room.",
+    "el": "Επίλεξε πραγματικούς δυαδικούς αισθητήρες παρουσίας του χώρου. Ενεργή ένδειξη σημαίνει κατειλημμένο· άγνωστος αισθητήρας δεν σημαίνει άδειο."
+  },
+  "climate_presence.climate_away_entities": {
+    "en": "People or device trackers for home/away status. Absence is considered only with explicit, fresh evidence; unknown trackers are treated conservatively.",
+    "el": "Πρόσωπα ή συσκευές εντοπισμού για σπίτι/απουσία. Η απουσία απαιτεί ρητά πρόσφατα δεδομένα· άγνωστος εντοπισμός αντιμετωπίζεται συντηρητικά."
+  },
+  "climate_presence.climate_unknown_occupancy": {
+    "en": "When room presence is unknown choose conservative occupied assumptions or hold. Never interpret a missing sensor as permission to power devices off.",
+    "el": "Όταν η παρουσία είναι άγνωστη, θεώρησε συντηρητικά τον χώρο κατειλημμένο ή πάγωσε έλεγχο. Ποτέ μην εκλαμβάνεις έλλειψη αισθητήρα ως άδεια απενεργοποίησης."
+  },
+  "climate_presence.climate_unoccupied_delay_minutes": {
+    "en": "How long all selected presence sources must continuously indicate vacancy before applying a room-unoccupied temperature profile. Prevents reacting to brief motion gaps.",
+    "el": "Πόσα λεπτά πρέπει όλοι οι αισθητήρες να δείχνουν συνεχώς απουσία πριν χρησιμοποιηθεί προφίλ άδειου χώρου. Αποτρέπει αντιδράσεις σε στιγμιαία κενά κίνησης."
+  },
+  "climate_presence.climate_occupancy_stale_minutes": {
+    "en": "Maximum age of presence data in minutes. A sensor older than this cannot prove the room empty or authorize an absence OFF.",
+    "el": "Μέγιστη ηλικία δεδομένων παρουσίας σε λεπτά. Παλαιότερος αισθητήρας δεν αποδεικνύει άδειο δωμάτιο ούτε επιτρέπει απενεργοποίηση."
+  },
+  "climate_presence.climate_away_policy": {
+    "en": "Choose whether any resident at home or all selected trackers must report home before assigning the at-home profile. Confirm it matches real household behavior.",
+    "el": "Επίλεξε αν αρκεί ένας κάτοικος ή απαιτούνται όλοι οι επιλεγμένοι εντοπιστές για προφίλ σπιτιού. Διάλεξε κατάλληλο κανόνα για την κατοικία."
+  },
+  "climate_presence.climate_manual_profile": {
+    "en": "Explicitly override the automatically selected home/unoccupied/away/sleep profile for this room. Use for diagnostics or deliberate preferences; it still obeys safety gates.",
+    "el": "Χειροκίνητη παράκαμψη του προφίλ σπίτι/άδειος χώρος/απουσία/ύπνος μόνο εδώ. Χρήσιμο για διάγνωση, χωρίς παράκαμψη προστασιών."
+  },
+  "climate_presence.climate_sleep_active": {
+    "en": "Manual indication that this room currently uses its sleep profile. It is separate from room occupancy and may be superseded by verified shared sleep-room data.",
+    "el": "Χειροκίνητη ένδειξη ότι ο χώρος χρησιμοποιεί προφίλ ύπνου. Διαφέρει από την απλή παρουσία και συνδυάζεται με την επιβεβαιωμένη λίστα χώρων ύπνου."
+  },
+  "climate_presence.climate_sleep_schedule_enabled": {
+    "en": "Enable a local-time sleep interval for this room. This does not detect sleep biologically; it selects a preset schedule.",
+    "el": "Ενεργοποιεί χρονικό διάστημα ύπνου κατά την τοπική ώρα. Δεν ανιχνεύει πραγματικό ύπνο· εφαρμόζει πρόγραμμα."
+  },
+  "climate_presence.climate_sleep_start": {
+    "en": "Local clock time HH:MM when this room's scheduled sleep profile begins. Must differ from the end time.",
+    "el": "Τοπική ώρα HH:MM έναρξης προγραμματισμένου προφίλ ύπνου στον χώρο. Πρέπει να διαφέρει από τη λήξη."
+  },
+  "climate_presence.climate_sleep_end": {
+    "en": "Local clock time HH:MM when the scheduled sleep profile ends. Overnight intervals crossing midnight are supported.",
+    "el": "Τοπική ώρα HH:MM λήξης προφίλ ύπνου. Υποστηρίζεται διάστημα που περνά τα μεσάνυχτα."
+  },
+  "climate_presence.climate_target_source": {
+    "en": "Choose fixed configured heat/cool targets, or evidence-based ISO 7730 comfort adjustment when all required comfort measurements are available.",
+    "el": "Επίλεξε σταθερούς στόχους θέρμανσης/ψύξης ή διόρθωση άνεσης ISO 7730 μόνο με όλα τα απαιτούμενα αξιόπιστα δεδομένα."
+  },
+  "climate_presence.climate_comfort_adjustment_max_c": {
+    "en": "Maximum absolute °C offset from the chosen temperature target when the qualified PMV/PPD comfort estimate is available. Avoids uncontrolled target shifts.",
+    "el": "Μέγιστη απόλυτη διόρθωση στόχου σε °C βάσει αξιόπιστης εκτίμησης PMV/PPD. Περιορίζει υπερβολικές αλλαγές θερμοκρασίας."
+  },
+  "climate_equipment.climate_heat_climate_entity": {
+    "en": "Optional same-room heat-only radiator or heating-zone climate.* entity. It must actually support HEAT; it never receives cooling commands.",
+    "el": "Προαιρετικός θερμοστάτης καλοριφέρ ή ζώνης θέρμανσης στον ίδιο χώρο με πραγματική λειτουργία HEAT. Δεν λαμβάνει εντολές ψύξης."
+  },
+  "climate_equipment.climate_cool_climate_entity": {
+    "en": "Optional same-room air conditioner or cooling heat-pump climate.* entity. It must support COOL; manual OFF is respected.",
+    "el": "Προαιρετικό κλιματιστικό ή αντλία θερμότητας ψύξης στον ίδιο χώρο με λειτουργία COOL. Το χειροκίνητο OFF παραμένει σεβαστό."
+  },
+  "climate_equipment.climate_dry_climate_entity": {
+    "en": "Optional climate.* device with real native DRY. DRY-only devices provide humidity advice without fabricated temperature setpoints; automatic mode control is separately commissioned.",
+    "el": "Προαιρετική συσκευή climate.* με εγγενές DRY. Οι συσκευές μόνο DRY βοηθούν σε συμβουλές χωρίς ψεύτικους θερμοκρασιακούς στόχους."
+  },
+  "climate_equipment.climate_fan_climate_entity": {
+    "en": "Optional climate.* device exposing FAN_ONLY. Do not assume an arbitrary air conditioner can safely switch to fan mode.",
+    "el": "Προαιρετική συσκευή climate.* με πραγματικό FAN_ONLY. Μην υποθέτεις ότι κάθε κλιματιστικό μπορεί να αλλάζει με ασφάλεια σε ανεμιστήρα."
+  },
+  "climate_equipment.climate_humidifier_entity": {
+    "en": "Optional HA humidifier.* adding moisture. Select only a matching same-room device; automatic setpoint/power changes need separate authorization.",
+    "el": "Προαιρετικός υγραντήρας humidifier.* που προσθέτει υγρασία. Πρέπει να ανήκει στον χώρο· αυτόματος στόχος ή ισχύς θέλει ξεχωριστή άδεια."
+  },
+  "climate_equipment.climate_dehumidifier_entity": {
+    "en": "Optional HA dehumidifier.* removing moisture. Compressor-equipped units need independent frost, tank and cycle protections.",
+    "el": "Προαιρετικός αφυγραντήρας humidifier.* που αφαιρεί υγρασία. Αν έχει συμπιεστή απαιτεί ανεξάρτητη προστασία παγετού, δοχείου και κύκλων."
+  },
+  "climate_equipment.climate_extraction_fan_entity": {
+    "en": "Optional same-room fan.* extracting air, driven by verified CO₂/ventilation demand. Merely selecting the entity does not power it on.",
+    "el": "Προαιρετικός ανεμιστήρας fan.* εξαερισμού για επιβεβαιωμένη ανάγκη CO₂. Η επιλογή οντότητας δεν τον ενεργοποιεί."
+  },
+  "climate_equipment.climate_purifier_fan_entity": {
+    "en": "Optional same-room fan.* used as air purifier for measured PM2.5. Filtration capability must be real; plain ventilation is not HEPA purification.",
+    "el": "Προαιρετικός ανεμιστήρας fan.* καθαριστή για μετρούμενο PM2.5. Απλή κυκλοφορία αέρα δεν ισοδυναμεί με φίλτρανση HEPA."
+  },
+  "climate_equipment.climate_humidity_entity": {
+    "en": "Select one fresh independent same-room RH sensor (%). Humidity controls hold rather than guess when this measurement is missing.",
+    "el": "Επίλεξε έναν πραγματικό πρόσφατο αισθητήρα σχετικής υγρασίας (%) στον ίδιο χώρο. Χωρίς μέτρηση παγώνουν οι αυτοματισμοί υγρασίας."
+  },
+  "climate_equipment.climate_humidity_low_rh": {
+    "en": "Lower desired relative humidity (%) for humidifier advice. Sustained values below it may cause discomfort; prevents over-drying.",
+    "el": "Κατώτατος επιθυμητός στόχος σχετικής υγρασίας (%) για ύγρανση. Πολύ χαμηλές τιμές προκαλούν ξηρότητα και δυσφορία."
+  },
+  "climate_equipment.climate_humidity_high_rh": {
+    "en": "Upper desired relative humidity (%) for dehumidification advice. Persistent high RH can promote condensation and mold on cold surfaces.",
+    "el": "Ανώτατος στόχος σχετικής υγρασίας (%) για αφύγρανση. Επίμονη υπερβολική υγρασία ευνοεί συμπύκνωση και μούχλα στις ψυχρές επιφάνειες."
+  },
+  "climate_equipment.climate_humidity_hysteresis_rh": {
+    "en": "RH percentage-point margin before changing humidify/dry decisions. Prevents repeated switching around a target.",
+    "el": "Περιθώριο σχετικής υγρασίας σε ποσοστιαίες μονάδες πριν αλλάξουν οι αποφάσεις ύγρανσης/αφύγρανσης. Περιορίζει συνεχείς εναλλαγές."
+  },
+  "climate_equipment.climate_cooling_dry_deferral_rh_points": {
+    "en": "While AC is already cooling, defer separate dehumidification until RH exceeds the upper target by this extra number of points. Set zero to disable deferral.",
+    "el": "Όταν το κλιματιστικό ήδη ψύχει, αναβάλλει επιπλέον αφύγρανση μέχρι η RH να υπερβεί το άνω όριο κατά αυτές τις μονάδες. Μηδέν απενεργοποιεί την αναβολή."
+  },
+  "climate_equipment.climate_humidity_setpoint_auto": {
+    "en": "Separate permission to adjust humidity targets of an already-running native humidifier. Does not power on equipment or overrule manual settings.",
+    "el": "Ξεχωριστή άδεια αλλαγής στόχου υγρασίας σε ήδη ενεργό υγραντήρα. Δεν ενεργοποιεί τροφοδοσία και σέβεται χειροκίνητες αλλαγές."
+  },
+  "climate_equipment.climate_window_efficiency_notify": {
+    "en": "Notify only when measured safe outdoor air could genuinely replace part of active heating/cooling/drying. Advisory only: never opens windows or shuts equipment off.",
+    "el": "Ενημέρωση μόνο όταν μετρούμενος ασφαλής εξωτερικός αέρας μπορεί πραγματικά να βοηθήσει θέρμανση/ψύξη/στέγνωμα. Μόνο συμβουλή, χωρίς άνοιγμα παραθύρων ή κλείσιμο HVAC."
+  },
+  "climate_equipment.climate_dry_fan_mode_auto": {
+    "en": "Experimental opt-in for supported native DRY/FAN_ONLY transitions. Requires exact-device commissioning, mode dwell and independent compressor protections.",
+    "el": "Πειραματική άδεια εγγενών εναλλαγών DRY/FAN_ONLY μόνο σε κατάλληλη συσκευή, μετά από έλεγχο συμπιεστή και χρόνων προστασίας."
+  },
+  "climate_equipment.climate_dry_fan_hardware_confirmed": {
+    "en": "Installer attests independent compressor minimum-OFF, defrost, electrical and manufacturer protections on this exact AC. A checkbox alone cannot verify hardware.",
+    "el": "Δήλωση εγκαταστάτη για ανεξάρτητη προστασία συμπιεστή, απόψυξης, ηλεκτρικής ασφάλειας και ελάχιστου OFF στη συγκεκριμένη συσκευή. Το checkbox δεν πιστοποιεί εξοπλισμό."
+  },
+  "climate_equipment.climate_dry_fan_windowless_confirmed": {
+    "en": "Extra explicit consent when native DRY/FAN_ONLY switching must work without a verified room window contact. Does not bypass other safety interlocks.",
+    "el": "Επιπλέον άδεια εγγενούς DRY/FAN_ONLY χωρίς επαληθευμένο αισθητήρα παραθύρου. Δεν παρακάμπτει λοιπές προστασίες."
+  },
+  "climate_equipment.climate_dry_fan_mode_dwell_s": {
+    "en": "Minimum seconds between automatic DRY/FAN_ONLY mode changes; at least 1800 seconds. Avoids aggressive switching but cannot replace physical compressor protection.",
+    "el": "Ελάχιστος χρόνος μεταξύ αυτόματων αλλαγών DRY/FAN_ONLY σε δευτερόλεπτα, τουλάχιστον 1800. Περιορίζει εναλλαγές αλλά δεν αντικαθιστά φυσική προστασία συμπιεστή."
+  },
+  "climate_equipment.climate_humidity_power_auto": {
+    "en": "Separate experimental permission to turn verified dedicated humidifier/dehumidifier power on/off. Requires hardware protection, measured RH and strict runtime bounds.",
+    "el": "Ξεχωριστή πειραματική άδεια on/off επαληθευμένου υγραντήρα/αφυγραντήρα. Απαιτούνται προστασίες, μετρούμενη RH και αυστηρά χρονικά όρια."
+  },
+  "climate_equipment.climate_humidity_power_hardware_confirmed": {
+    "en": "Attest independent overflow, frost, overtemperature, electrical and any compressor-cycle protections appropriate to this exact humidity device.",
+    "el": "Επιβεβαίωσε ανεξάρτητη προστασία υπερχείλισης, παγετού, υπερθέρμανσης, ηλεκτρικής ασφάλειας και κύκλων συμπιεστή για την ακριβή συσκευή."
+  },
+  "climate_equipment.climate_humidity_power_windowless_confirmed": {
+    "en": "Extra consent to run dedicated moisture equipment in this room without a known window contact. Does not waive source freshness or safety bounds.",
+    "el": "Επιπλέον άδεια ελέγχου υγρασίας χωρίς γνωστή επαφή παραθύρου. Δεν παρακάμπτει απαιτήσεις πρόσφατων μετρήσεων και προστασίας."
+  },
+  "climate_equipment.climate_humidity_power_min_on_s": {
+    "en": "Minimum number of seconds dedicated humidity equipment must run before a supervised OFF is attempted, unless independent physical protection intervenes.",
+    "el": "Ελάχιστα δευτερόλεπτα συνεχούς λειτουργίας εξοπλισμού υγρασίας πριν ζητηθεί ασφαλής διακοπή, εκτός αν επέμβει φυσική προστασία."
+  },
+  "climate_equipment.climate_humidity_power_min_off_s": {
+    "en": "Minimum verified OFF duration before another managed humidity-device start. Avoid rapid compressor cycling; never bypass manufacturer limits.",
+    "el": "Ελάχιστος επιβεβαιωμένος χρόνος OFF πριν νέα ελεγχόμενη εκκίνηση. Αποτρέπει συχνές εκκινήσεις συμπιεστή και δεν παρακάμπτει τον κατασκευαστή."
+  },
+  "climate_equipment.climate_humidity_power_max_on_s": {
+    "en": "Maximum continuous controller-owned run time in seconds for a humidifier or dehumidifier. Triggers bounded OFF/reconciliation.",
+    "el": "Μέγιστος συνεχής χρόνος λειτουργίας υγραντήρα/αφυγραντήρα υπό τον ελεγκτή, σε δευτερόλεπτα. Ενεργοποιεί ασφαλή διακοπή/επαλήθευση."
+  },
+  "climate_equipment.climate_secondary_climate_setpoint_auto": {
+    "en": "Separate opt-in to adjust the temperature setpoint of an already-running secondary heat/cool climate device. Never powers it on or changes unsupported modes.",
+    "el": "Ξεχωριστή άδεια αλλαγής στόχου θερμοκρασίας σε ήδη ενεργή δευτερεύουσα συσκευή θέρμανσης/ψύξης. Ποτέ δεν την ανοίγει και δεν εφευρίσκει λειτουργίες."
+  },
+  "climate_air_strategy.climate_fan_speed_auto": {
+    "en": "Separate permission to increase percentage only on an already-running extraction or purifier fan with verified air measurements. Never changes fan power.",
+    "el": "Ξεχωριστή άδεια μεταβολής ποσοστού ταχύτητας σε ήδη ενεργό ανεμιστήρα εξαερισμού/καθαρισμού με πραγματικές μετρήσεις. Δεν ανοίγει τροφοδοσία."
+  },
+  "climate_air_strategy.climate_fan_power_auto": {
+    "en": "Experimental opt-in for bounded ON/OFF of the exact room fan.* device, using verified demand and hardware safety. Cannot share ownership with fan-speed automation.",
+    "el": "Πειραματική άδεια προστατευμένου ON/OFF του συγκεκριμένου fan.* με πραγματική ανάγκη και προστασίες. Δεν μπορεί να συνδυαστεί με ανταγωνιστικό έλεγχο ταχύτητας."
+  },
+  "climate_air_strategy.climate_fan_power_hardware_confirmed": {
+    "en": "Attest the selected extractor/purifier has independent electrical, fire, backdraft and ventilation pressure protection suitable for automatic switching.",
+    "el": "Βεβαίωση ανεξάρτητης ηλεκτρικής/πυρασφάλειας, προστασίας αντίστροφης ροής και πίεσης αερισμού για τον συγκεκριμένο ανεμιστήρα."
+  },
+  "climate_air_strategy.climate_fan_power_min_on_s": {
+    "en": "Minimum fan ON seconds after an authorized activation, before an automated OFF. Avoid rapid toggling but do not bypass required emergency cutouts.",
+    "el": "Ελάχιστος χρόνος ON ανεμιστήρα μετά από επιτρεπτή ενεργοποίηση πριν το αυτόματο OFF. Αποτρέπει συχνές αλλαγές χωρίς να παρακάμπτει φυσικές διακοπές ασφαλείας."
+  },
+  "climate_air_strategy.climate_fan_power_min_off_s": {
+    "en": "Minimum observed fan OFF seconds before another permitted start. Hardware protection still applies independently.",
+    "el": "Ελάχιστα δευτερόλεπτα επαληθευμένου OFF ανεμιστήρα πριν νέα επιτρεπτή εκκίνηση. Η φυσική προστασία παραμένει ανεξάρτητη."
+  },
+  "climate_air_strategy.climate_fan_power_max_on_s": {
+    "en": "Maximum duration in seconds that this controller can own an active fan. Exceeding it requests safe shutdown or manual reconciliation.",
+    "el": "Μέγιστος συνεχής χρόνος σε δευτερόλεπτα που ο ελεγκτής διατηρεί ενεργό ανεμιστήρα. Υπέρβαση ζητά ασφαλή διακοπή ή χειροκίνητη επαλήθευση."
+  },
+  "climate_air_strategy.climate_pm25_sensor_verified": {
+    "en": "Confirm that the selected sensor directly measures PM2.5 mass concentration (µg/m³), not an uncalibrated proxy or arbitrary AQI.",
+    "el": "Επιβεβαίωσε ότι ο αισθητήρας μετρά πραγματική συγκέντρωση PM2.5 (µg/m³), όχι εκτιμώμενο δείκτη AQI."
+  },
+  "climate_air_strategy.climate_co2_entity": {
+    "en": "True same-room CO₂ sensor in ppm, preferably verified NDIR, used for demand-based extraction. eCO₂ from VOC is not equivalent.",
+    "el": "Πραγματικός αισθητήρας CO₂ στον χώρο σε ppm, κατά προτίμηση NDIR, για εξαερισμό κατά ανάγκη. Το eCO₂ από VOC δεν ισοδυναμεί."
+  },
+  "climate_air_strategy.climate_pm25_entity": {
+    "en": "Same-room PM2.5 µg/m³ sensor used for filtration control. Missing or unsupported data cannot start a purifier.",
+    "el": "Αισθητήρας PM2.5 σε µg/m³ στον ίδιο χώρο για φιλτράρισμα. Ελλιπή ή ασύμβατα δεδομένα δεν ενεργοποιούν καθαριστή."
+  },
+  "climate_air_strategy.climate_pm25_action_ug_m3": {
+    "en": "Operational instantaneous PM2.5 threshold (µg/m³) for purifier-fan demand. Not a WHO daily exposure limit; a short spike is interpreted conservatively.",
+    "el": "Λειτουργικό στιγμιαίο όριο PM2.5 (µg/m³) για ανάγκη φιλτραρίσματος. Δεν είναι ημερήσιο όριο έκθεσης ΠΟΥ· αιχμές αξιολογούνται συντηρητικά."
+  },
+  "climate_air_strategy.climate_extraction_speed_percent": {
+    "en": "Maximum extraction-fan speed (%) when verified CO₂ demand requires more airflow. Applies only to a supported fan already ON.",
+    "el": "Μέγιστη ταχύτητα εξαεριστήρα (%) όταν επιβεβαιωμένο CO₂ απαιτεί περισσότερο αέρα. Εφαρμόζεται μόνο σε ήδη ενεργό συμβατό ανεμιστήρα."
+  },
+  "climate_air_strategy.climate_purifier_speed_percent": {
+    "en": "Maximum purifier-fan speed (%) when PM2.5 demand exists. Changing percentage does not switch power or confirm filter efficiency.",
+    "el": "Μέγιστη ταχύτητα καθαριστή αέρα (%) όταν υπάρχει ανάγκη PM2.5. Η αλλαγή ταχύτητας δεν ανοίγει τροφοδοσία ούτε πιστοποιεί απόδοση φίλτρου."
+  },
+  "climate_actuators.direct_hardware_confirmed": {
+    "en": "Confirm these are independently protected, slow, non-compressor heating/cooling loads. This check must never be used to authorize a generic AC compressor relay.",
+    "el": "Επιβεβαίωσε βραδύ θερμικό φορτίο χωρίς συμπιεστή, με ανεξάρτητη προστασία υπερθέρμανσης. Το πλαίσιο ΠΟΤΕ δεν επιτρέπει γενικό ρελέ συμπιεστή AC."
+  },
+  "climate_actuators.heat_actuator": {
+    "en": "Exact same-room switch or number output for independently protected heating. Never use the direct driver for an AC compressor or unknown load.",
+    "el": "Συγκεκριμένος διακόπτης ή αναλογική έξοδος θέρμανσης του χώρου με φυσικές προστασίες. Όχι συμπιεστές ή άγνωστα φορτία."
+  },
+  "climate_actuators.cool_actuator": {
+    "en": "Exact same-room switch or number output for independently protected non-compressor cooling load. Verify interlocks and electrical ratings.",
+    "el": "Συγκεκριμένη έξοδος ψύξης του χώρου χωρίς συμπιεστή, με επαληθευμένες ηλεκτρικές προδιαγραφές και αλληλοασφαλίσεις."
+  },
+  "climate_actuators.min_on_s": {
+    "en": "Minimum energized seconds before switching a thermal actuator off. Slow heating equipment needs safe dwell; emergency protection remains independent.",
+    "el": "Ελάχιστα δευτερόλεπτα ενεργοποίησης θερμικού φορτίου πριν το OFF. Οι φυσικές προστασίες έκτακτης ανάγκης παραμένουν ανεξάρτητες."
+  },
+  "climate_actuators.min_off_s": {
+    "en": "Minimum de-energized seconds before starting a thermal output again; reduces rapid cycling.",
+    "el": "Ελάχιστος χρόνος OFF σε δευτερόλεπτα πριν νέα ενεργοποίηση θερμικής εξόδου. Περιορίζει συχνές εναλλαγές."
+  },
+  "climate_actuators.max_on_s": {
+    "en": "Maximum uninterrupted energized seconds for an output owned by the controller. Reaching it requests a bounded safe shutdown.",
+    "el": "Μέγιστος συνεχής χρόνος ON σε δευτερόλεπτα της εξόδου. Η υπέρβαση ζητά προστατευμένη απενεργοποίηση."
+  },
+  "climate_actuators.mode_dwell_s": {
+    "en": "Minimum seconds between changing heating and cooling direction. Prevents contradictory simultaneous outputs.",
+    "el": "Ελάχιστα δευτερόλεπτα ανάμεσα σε θέρμανση και ψύξη. Αποτρέπει ταυτόχρονες αντίθετες εξόδους."
+  },
+  "climate_actuators.kp": {
+    "en": "Proportional PID coefficient controlling how strongly current temperature error changes direct thermal demand. Too large may oscillate.",
+    "el": "Αναλογικός συντελεστής PID: καθορίζει πόσο επηρεάζει το τρέχον σφάλμα θερμοκρασίας τη θερμική ισχύ. Μεγάλη τιμή προκαλεί ταλαντώσεις."
+  },
+  "climate_actuators.ki": {
+    "en": "Integral PID coefficient accumulating persistent thermal error. Anti-windup and saturation limits apply; too high causes overshoot.",
+    "el": "Ολοκληρωτικός συντελεστής PID: συγκεντρώνει επίμονο σφάλμα. Ισχύουν όρια κορεσμού· μεγάλη τιμή μπορεί να προκαλέσει υπερύψωση θερμοκρασίας."
+  },
+  "climate_actuators.kd": {
+    "en": "Derivative PID coefficient responding to the rate of measured temperature change. Noisy sensors can make large derivative gains unstable.",
+    "el": "Διαφορικός συντελεστής PID: αντιδρά στον ρυθμό μεταβολής θερμοκρασίας. Θορυβώδης μέτρηση με μεγάλη τιμή προκαλεί αστάθεια."
+  },
+  "climate_actuators.sample_seconds": {
+    "en": "Time between direct thermal controller samples in seconds. Short cycles can cause excessive writes and heating oscillation.",
+    "el": "Διάστημα δειγματοληψίας άμεσου θερμικού PID σε δευτερόλεπτα. Πολύ σύντομος κύκλος αυξάνει εγγραφές και ταλαντώσεις."
+  },
+  "climate_actuators.pwm_period_s": {
+    "en": "PWM period in seconds for slow thermal loads. Sets modulation window, not high-frequency electrical PWM; generic compressors are excluded.",
+    "el": "Περίοδος PWM σε δευτερόλεπτα για βραδέα θερμικά φορτία. Πρόκειται για αργό χρονικό κύκλο, όχι PWM υψηλής συχνότητας ή έλεγχο συμπιεστή."
+  },
+  "climate_actuators.max_demand_change": {
+    "en": "Maximum change of requested proportional output percentage points each cycle. Prevents sudden steps and oversized corrections.",
+    "el": "Μέγιστη μεταβολή ζήτησης σε ποσοστιαίες μονάδες ανά κύκλο. Αποτρέπει απότομα βήματα και υπερβολικές διορθώσεις."
+  },
+  "climate_actuators.min_demand_change": {
+    "en": "Minimum output change (percentage points) considered meaningful enough to send to a proportional actuator. Avoids tiny repeated updates.",
+    "el": "Ελάχιστη σημαντική μεταβολή ζήτησης σε ποσοστιαίες μονάδες για αποστολή εντολής. Αποτρέπει άσκοπες συνεχείς μικρορυθμίσεις."
+  },
+  "climate_profiles.home_heat": {
+    "en": "Room heating target (°C) when the home profile is active. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος θέρμανσης (°C) με επιβεβαιωμένο προφίλ σπιτιού. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.home_cool": {
+    "en": "Room cooling target (°C) when the home profile is active. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος ψύξης (°C) με επιβεβαιωμένο προφίλ σπιτιού. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.unoccupied_heat": {
+    "en": "Room heating target (°C) after confirmed stable room vacancy. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος θέρμανσης (°C) όταν ο χώρος έχει μείνει άδειος για τον απαιτούμενο χρόνο. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.unoccupied_cool": {
+    "en": "Room cooling target (°C) after confirmed stable room vacancy. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος ψύξης (°C) όταν ο χώρος έχει μείνει άδειος για τον απαιτούμενο χρόνο. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.away_heat": {
+    "en": "Room heating target (°C) when household away status is verified. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος θέρμανσης (°C) όταν όλοι έχουν επιβεβαιωμένα αποχωρήσει. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.away_cool": {
+    "en": "Room cooling target (°C) when household away status is verified. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος ψύξης (°C) όταν όλοι έχουν επιβεβαιωμένα αποχωρήσει. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.sleep_heat": {
+    "en": "Room heating target (°C) when this room uses its sleep profile. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος θέρμανσης (°C) στο επιβεβαιωμένο προφίλ ύπνου. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  },
+  "climate_profiles.sleep_cool": {
+    "en": "Room cooling target (°C) when this room uses its sleep profile. It applies only to equipment with that native capability, within independent device limits.",
+    "el": "Στόχος ψύξης (°C) στο επιβεβαιωμένο προφίλ ύπνου. Εφαρμόζεται μόνο σε συσκευή με πραγματική αντίστοιχη λειτουργία και όρια ασφαλείας."
+  }
+}

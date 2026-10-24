@@ -1,0 +1,1902 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Camere",
+        "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Camere",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Exclude senzori de fereastră",
+        "description": "2 · Exclude senzori de fereastră. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Exclude senzori de fereastră"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alegeți: Exclude senzori de fereastră · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Camere · Indicator de mucegai",
+        "description": "Camere: {area_name} ({position}/{total}). 🌡️ 🧊 Indicator de mucegai · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior",
+          "mold_indoor_temperature": "Camere · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicator de mucegai · 🧊 °C",
+          "mold_recalibrate": "Indicator de mucegai · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Exterior · Temperatură · sursă · Indicator de mucegai"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Camere: 🌡️ °C/°F · Indicator de mucegai.",
+          "mold_critical_temperature_c": "🧊 Indicator de mucegai · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Utilizați măsurători reale potrivite pentru „Indicator de mucegai · ↻ 🌡️”. Estimarea nu înlocuiește senzorul calibrat.",
+          "mold_outdoor_weather_entity": "Selectați weather.* · Exterior Temperatură (temperature, °C/°F) → Indicator de mucegai. Obligatoriu: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Calitatea aerului exterior",
+        "description": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Calitatea aerului exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Vreme și avertizări",
+        "description": "Vreme și avertizări. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "weather_warnings": "Avertizări meteo"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Anunțuri (opțional)",
+        "description": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+        "data": {
+          "language": "Limbă",
+          "automatic_tts": "Automat",
+          "automatic_notifications": "Automat · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Anunțuri (opțional) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "setări · sursă",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Anunțuri (opțional)",
+          "ai_conversation_agent": "AI · Limbă"
+        },
+        "data_description": {
+          "language": "Configurați „Limbă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "automatic_tts": "Implicit: ⛔ · Automat · 🪟 90 s. Această opțiune controlează „Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "automatic_notifications": "Această opțiune controlează „Automat · AUTOMATIC_NOTIFICATIONS”. Comenzile fizice cer acord separat și protecții independente.",
+          "announcement_repeat_minutes": "Implicit: 10 min · 0 = niciodată · Cât timp persistă aceeași cauză · Camere.",
+          "use_announcement_hub": "Announcement Hub · Indisponibil → Home Assistant.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Anunțuri (opțional) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Alegeți: conversation.* (Home Assistant · Implicit)."
+        }
+      },
+      "thresholds": {
+        "title": "Praguri avansate",
+        "description": "Praguri avansate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Exterior · AQI (≤)",
+          "outdoor_co2": "Exterior · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Exterior · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Exterior · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Exterior · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Exterior · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Exterior (µg/m³)",
+          "outdoor_o3": "O₃ · Exterior (µg/m³)",
+          "outdoor_so2": "SO₂ · Exterior (µg/m³)",
+          "indoor_aqi": "Calitatea aerului · AQI (≥)",
+          "indoor_co2": "Calitatea aerului · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Calitatea aerului · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Calitatea aerului · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Calitatea aerului · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Calitatea aerului · VOC (ppb) (≥)",
+          "indoor_humidity": "Calitatea aerului · RH (%) (≥)",
+          "min_outdoor_temp": "Exterior · °C (≥)",
+          "max_outdoor_temp": "Exterior · °C (≤)",
+          "max_outdoor_humidity": "Exterior · RH (%) (≤)",
+          "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)",
+          "indoor_mold": "Indicator de mucegai · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Prag de decizie pentru „Exterior · AQI (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_co2": "Prag de decizie pentru „Exterior · CO₂ (ppm) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_pm25": "Prag de decizie pentru „Exterior · PM2.5 (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_pm10": "Prag de decizie pentru „Exterior · PM10 (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_voc": "Prag de decizie pentru „Exterior · VOC (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_voc_parts": "Prag de decizie pentru „Exterior · VOC (ppb) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_no2": "Prag de decizie pentru „NO₂ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_o3": "Prag de decizie pentru „O₃ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_so2": "Prag de decizie pentru „SO₂ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_aqi": "Prag de decizie pentru „Calitatea aerului · AQI (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_co2": "Prag de decizie pentru „Calitatea aerului · CO₂ (ppm) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_pm25": "Prag de decizie pentru „Calitatea aerului · PM2.5 (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_pm10": "Prag de decizie pentru „Calitatea aerului · PM10 (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_voc": "Prag de decizie pentru „Calitatea aerului · VOC (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_voc_parts": "Prag de decizie pentru „Calitatea aerului · VOC (ppb) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_humidity": "Prag de decizie pentru „Calitatea aerului · RH (%) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "min_outdoor_temp": "Prag de decizie pentru „Exterior · °C (≥)”. Influențează recomandările, nu este limită medicală.",
+          "max_outdoor_temp": "Prag de decizie pentru „Exterior · °C (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_outdoor_humidity": "Prag de decizie pentru „Exterior · RH (%) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_wind_kmh": "Prag de decizie pentru „Vreme și avertizări · km/h (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_age_minutes": "Prag de decizie pentru „⏱ · Deschideți (min, ≤)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_mold": "Prag de decizie pentru „Indicator de mucegai · ≥ 70%”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "setup_rooms": {
+        "title": "Camere de monitorizat",
+        "description": "Camere de monitorizat → sursă → Generale setări",
+        "data": {
+          "areas": "Camere de monitorizat"
+        },
+        "data_description": {
+          "areas": "Camere de monitorizat. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cameră · {area_name} · {room_index}/{room_count}",
+        "description": "Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+        "data": {
+          "windows": "Ferestre",
+          "air_quality": "Senzori de calitate a aerului și de mediu",
+          "temperature": "Temperatură",
+          "humidity": "Umiditate",
+          "pressure": "Senzori de presiune",
+          "climate_devices": "Dispozitive"
+        },
+        "data_description": {
+          "windows": "Ferestre. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "air_quality": "Senzori de calitate a aerului și de mediu. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "temperature": "Temperatură. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "humidity": "Umiditate. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "pressure": "Senzori de presiune. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "climate_devices": "Dispozitive. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_general": {
+        "title": "Generale setări",
+        "description": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor.",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "outdoor_sensors": "Calitatea aerului exterior",
+          "weather_warnings": "Avertizări meteo",
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "notify_entities": "setări · sursă",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Selectați · sursă",
+          "language": "TTS · Selectați · sursă",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%",
+          "pollen_entities": "Polen · sursă · Selectați",
+          "use_announcement_hub": "Automat · Announcement Hub",
+          "general_away_cooldown_minutes": "Acasă · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒",
+          "general_room_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Cameră · Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_home_trackers": "Alegeți o sursă Home Assistant reală pentru „Acasă · Ocupare · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Ocupare · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_attribute": "Configurați „Ocupare · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_sleep_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Somn · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_sleep_rooms_attribute": "Configurați „Somn · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "ai_conversation_agent": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · AI · Selectați · sursă · conversation.* / ai_task.*.",
+          "language": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · TTS · Selectați · sursă · provider capabilities.",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Polen · sursă · Selectați.",
+          "use_announcement_hub": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Automat · Announcement Hub.",
+          "general_away_cooldown_minutes": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Acasă · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Selecție invalidă: Calitatea aerului exterior (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Indisponibil: Calitatea aerului exterior (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Selecție invalidă: Vreme și avertizări (weather.*).",
+      "invalid_warning": "Selecție invalidă: Vreme și avertizări ⚠.",
+      "missing_notify": "Alegeți: Announcement Hub / notify.*.",
+      "missing_tts": "Alegeți: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Selecție invalidă: °C min < max.",
+      "no_areas": "Alegeți: Camere.",
+      "no_window_areas": "Indisponibil: Măsurători (binary_sensor, window).",
+      "invalid_areas": "Selecție invalidă: Camere.",
+      "invalid_window_exclusions": "Selecție invalidă: Exclude senzori de fereastră.",
+      "invalid_indoor_exclusions": "Selecție invalidă: Exclude senzori de aer interior.",
+      "no_windows_after_exclusions": "Păstrați cel puțin un senzor de fereastră.",
+      "review_areas_after_exclusions": "Verificați: Camere · Măsurători (0).",
+      "invalid_repeat_minutes": "Selecție invalidă: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Indisponibil: conversation.process.",
+      "invalid_ai_agent": "Selecție invalidă: conversation.*.",
+      "invalid_mold_temperature_sensor": "Camere · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Camere · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicator de mucegai · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicator de mucegai · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Invalid: Camere de monitorizat",
+      "invalid_room_source": "Invalid: Cameră · sursă"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — deja configurat.",
+      "setup_area_removed": "Invalid: Camere de monitorizat",
+      "setup_changed": "setări ↻ Camere de monitorizat"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Alegeți",
+        "description": "Alegeți: Camere / Vreme și avertizări / Anunțuri (opțional) / Praguri avansate",
+        "menu_options": {
+          "outside_data": "Exterior · sursă",
+          "general_settings": "Generale · setări",
+          "area_settings": "Zonă · setări",
+          "delivery": "Anunțuri (opțional)",
+          "thresholds": "Praguri avansate"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Exclude senzori de fereastră",
+        "description": "2 · Exclude senzori de fereastră. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Exclude senzori de fereastră"
+        },
+        "data_description": {
+          "excluded_window_entities": "Alegeți: Exclude senzori de fereastră · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Camere",
+        "description": "1 · 🪟 Camere. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Camere",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Alegeți: Camere · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Camere · Indicator de mucegai",
+        "description": "Camere: {area_name} ({position}/{total}). 🌡️ 🧊 Indicator de mucegai · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Exclude senzori de aer interior",
+          "mold_indoor_temperature": "Camere · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indicator de mucegai · 🧊 °C",
+          "mold_recalibrate": "Indicator de mucegai · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Exterior · Temperatură · sursă · Indicator de mucegai"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Alegeți: Exclude senzori de aer interior · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Camere: 🌡️ °C/°F · Indicator de mucegai.",
+          "mold_critical_temperature_c": "🧊 Indicator de mucegai · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Utilizați măsurători reale potrivite pentru „Indicator de mucegai · ↻ 🌡️”. Estimarea nu înlocuiește senzorul calibrat.",
+          "mold_outdoor_weather_entity": "Selectați weather.* · Exterior Temperatură (temperature, °C/°F) → Indicator de mucegai. Obligatoriu: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Calitatea aerului exterior",
+        "description": "Calitatea aerului exterior. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Calitatea aerului exterior"
+        },
+        "data_description": {
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Vreme și avertizări",
+        "description": "Vreme și avertizări. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "weather_warnings": "Avertizări meteo"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Anunțuri (opțional)",
+        "description": "Anunțuri (opțional). Notificări automate · Anunțuri vocale automate. Announcement Hub.",
+        "data": {
+          "language": "Limbă",
+          "automatic_tts": "Automat",
+          "automatic_notifications": "Automat · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Anunțuri (opțional) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "setări · sursă",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Anunțuri (opțional)",
+          "ai_conversation_agent": "AI · Limbă"
+        },
+        "data_description": {
+          "language": "Configurați „Limbă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "automatic_tts": "Implicit: ⛔ · Automat · 🪟 90 s. Această opțiune controlează „Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "automatic_notifications": "Această opțiune controlează „Automat · AUTOMATIC_NOTIFICATIONS”. Comenzile fizice cer acord separat și protecții independente.",
+          "announcement_repeat_minutes": "Implicit: 10 min · 0 = niciodată · Cât timp persistă aceeași cauză · Camere.",
+          "use_announcement_hub": "Announcement Hub · Indisponibil → Home Assistant.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Anunțuri (opțional) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Alegeți: conversation.* (Home Assistant · Implicit)."
+        }
+      },
+      "thresholds": {
+        "title": "Praguri avansate",
+        "description": "Praguri avansate. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Exterior · AQI (≤)",
+          "outdoor_co2": "Exterior · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Exterior · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Exterior · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Exterior · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Exterior · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Exterior (µg/m³)",
+          "outdoor_o3": "O₃ · Exterior (µg/m³)",
+          "outdoor_so2": "SO₂ · Exterior (µg/m³)",
+          "indoor_aqi": "Calitatea aerului · AQI (≥)",
+          "indoor_co2": "Calitatea aerului · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Calitatea aerului · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Calitatea aerului · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Calitatea aerului · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Calitatea aerului · VOC (ppb) (≥)",
+          "indoor_humidity": "Calitatea aerului · RH (%) (≥)",
+          "min_outdoor_temp": "Exterior · °C (≥)",
+          "max_outdoor_temp": "Exterior · °C (≤)",
+          "max_outdoor_humidity": "Exterior · RH (%) (≤)",
+          "max_wind_kmh": "Vreme și avertizări · km/h (≤)",
+          "max_age_minutes": "⏱ · Deschideți (min, ≤)",
+          "indoor_mold": "Indicator de mucegai · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Prag de decizie pentru „Exterior · AQI (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_co2": "Prag de decizie pentru „Exterior · CO₂ (ppm) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_pm25": "Prag de decizie pentru „Exterior · PM2.5 (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_pm10": "Prag de decizie pentru „Exterior · PM10 (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_voc": "Prag de decizie pentru „Exterior · VOC (µg/m³) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_voc_parts": "Prag de decizie pentru „Exterior · VOC (ppb) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_no2": "Prag de decizie pentru „NO₂ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_o3": "Prag de decizie pentru „O₃ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "outdoor_so2": "Prag de decizie pentru „SO₂ · Exterior (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_aqi": "Prag de decizie pentru „Calitatea aerului · AQI (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_co2": "Prag de decizie pentru „Calitatea aerului · CO₂ (ppm) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_pm25": "Prag de decizie pentru „Calitatea aerului · PM2.5 (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_pm10": "Prag de decizie pentru „Calitatea aerului · PM10 (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_voc": "Prag de decizie pentru „Calitatea aerului · VOC (µg/m³) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_voc_parts": "Prag de decizie pentru „Calitatea aerului · VOC (ppb) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_humidity": "Prag de decizie pentru „Calitatea aerului · RH (%) (≥)”. Influențează recomandările, nu este limită medicală.",
+          "min_outdoor_temp": "Prag de decizie pentru „Exterior · °C (≥)”. Influențează recomandările, nu este limită medicală.",
+          "max_outdoor_temp": "Prag de decizie pentru „Exterior · °C (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_outdoor_humidity": "Prag de decizie pentru „Exterior · RH (%) (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_wind_kmh": "Prag de decizie pentru „Vreme și avertizări · km/h (≤)”. Influențează recomandările, nu este limită medicală.",
+          "max_age_minutes": "Prag de decizie pentru „⏱ · Deschideți (min, ≤)”. Influențează recomandările, nu este limită medicală.",
+          "indoor_mold": "Prag de decizie pentru „Indicator de mucegai · ≥ 70%”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "environment": {
+        "title": "setări · setări · sursă",
+        "description": "Configurați „setări · setări · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "pollen_entity": "Polen · sursă",
+          "pollen_high_from": "POLLEN · Polen · HIGH",
+          "pollen_max_scale": "POLLEN · Polen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Polen · NO VENT",
+          "aqi_scale_0": "AQI #1 · sursă",
+          "aqi_custom_limit_0": "AQI #1 · țintă",
+          "aqi_scale_1": "AQI #2 · sursă",
+          "aqi_custom_limit_1": "AQI #2 · țintă",
+          "aqi_scale_2": "AQI #3 · sursă",
+          "aqi_custom_limit_2": "AQI #3 · țintă",
+          "aqi_scale_3": "AQI #4 · sursă",
+          "aqi_custom_limit_3": "AQI #4 · țintă",
+          "aqi_scale_4": "AQI #5 · sursă",
+          "aqi_custom_limit_4": "AQI #5 · țintă",
+          "aqi_scale_5": "AQI #6 · sursă",
+          "aqi_custom_limit_5": "AQI #6 · țintă",
+          "aqi_scale_6": "AQI #7 · sursă",
+          "aqi_custom_limit_6": "AQI #7 · țintă",
+          "aqi_scale_7": "AQI #8 · sursă",
+          "aqi_custom_limit_7": "AQI #8 · țintă",
+          "aqi_scale_8": "AQI #9 · sursă",
+          "aqi_custom_limit_8": "AQI #9 · țintă",
+          "aqi_scale_9": "AQI #10 · sursă",
+          "aqi_custom_limit_9": "AQI #10 · țintă",
+          "aqi_scale_10": "AQI #11 · sursă",
+          "aqi_custom_limit_10": "AQI #11 · țintă",
+          "aqi_scale_11": "AQI #12 · sursă",
+          "aqi_custom_limit_11": "AQI #12 · țintă",
+          "aqi_scale_12": "AQI #13 · sursă",
+          "aqi_custom_limit_12": "AQI #13 · țintă",
+          "aqi_scale_13": "AQI #14 · sursă",
+          "aqi_custom_limit_13": "AQI #14 · țintă",
+          "aqi_scale_14": "AQI #15 · sursă",
+          "aqi_custom_limit_14": "AQI #15 · țintă",
+          "aqi_scale_15": "AQI #16 · sursă",
+          "aqi_custom_limit_15": "AQI #16 · țintă",
+          "aqi_scale_16": "AQI #17 · sursă",
+          "aqi_custom_limit_16": "AQI #17 · țintă",
+          "aqi_scale_17": "AQI #18 · sursă",
+          "aqi_custom_limit_17": "AQI #18 · țintă",
+          "aqi_scale_18": "AQI #19 · sursă",
+          "aqi_custom_limit_18": "AQI #19 · țintă",
+          "aqi_scale_19": "AQI #20 · sursă",
+          "aqi_custom_limit_19": "AQI #20 · țintă",
+          "aqi_scale_20": "AQI #21 · sursă",
+          "aqi_custom_limit_20": "AQI #21 · țintă",
+          "aqi_scale_21": "AQI #22 · sursă",
+          "aqi_custom_limit_21": "AQI #22 · țintă",
+          "aqi_scale_22": "AQI #23 · sursă",
+          "aqi_custom_limit_22": "AQI #23 · țintă",
+          "aqi_scale_23": "AQI #24 · sursă",
+          "aqi_custom_limit_23": "AQI #24 · țintă",
+          "aqi_scale_24": "AQI #25 · sursă",
+          "aqi_custom_limit_24": "AQI #25 · țintă",
+          "aqi_scale_25": "AQI #26 · sursă",
+          "aqi_custom_limit_25": "AQI #26 · țintă",
+          "aqi_scale_26": "AQI #27 · sursă",
+          "aqi_custom_limit_26": "AQI #27 · țintă",
+          "aqi_scale_27": "AQI #28 · sursă",
+          "aqi_custom_limit_27": "AQI #28 · țintă",
+          "aqi_scale_28": "AQI #29 · sursă",
+          "aqi_custom_limit_28": "AQI #29 · țintă",
+          "aqi_scale_29": "AQI #30 · sursă",
+          "aqi_custom_limit_29": "AQI #30 · țintă",
+          "aqi_scale_30": "AQI #31 · sursă",
+          "aqi_custom_limit_30": "AQI #31 · țintă",
+          "aqi_scale_31": "AQI #32 · sursă",
+          "aqi_custom_limit_31": "AQI #32 · țintă"
+        },
+        "data_description": {
+          "pollen_entity": "Alegeți o sursă Home Assistant reală pentru „Polen · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "pollen_high_from": "Configurați „POLLEN · Polen · HIGH” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_max_scale": "Configurați „POLLEN · Polen · SCALE” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_avoid_ventilation": "Configurați „POLLEN · Polen · NO VENT” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_scale_0": "Configurați „AQI #1 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_0": "Prag de decizie pentru „AQI #1 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_1": "Configurați „AQI #2 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_1": "Prag de decizie pentru „AQI #2 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_2": "Configurați „AQI #3 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_2": "Prag de decizie pentru „AQI #3 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_3": "Configurați „AQI #4 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_3": "Prag de decizie pentru „AQI #4 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_4": "Configurați „AQI #5 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_4": "Prag de decizie pentru „AQI #5 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_5": "Configurați „AQI #6 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_5": "Prag de decizie pentru „AQI #6 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_6": "Configurați „AQI #7 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_6": "Prag de decizie pentru „AQI #7 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_7": "Configurați „AQI #8 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_7": "Prag de decizie pentru „AQI #8 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_8": "Configurați „AQI #9 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_8": "Prag de decizie pentru „AQI #9 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_9": "Configurați „AQI #10 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_9": "Prag de decizie pentru „AQI #10 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_10": "Configurați „AQI #11 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_10": "Prag de decizie pentru „AQI #11 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_11": "Configurați „AQI #12 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_11": "Prag de decizie pentru „AQI #12 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_12": "Configurați „AQI #13 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_12": "Prag de decizie pentru „AQI #13 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_13": "Configurați „AQI #14 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_13": "Prag de decizie pentru „AQI #14 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_14": "Configurați „AQI #15 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_14": "Prag de decizie pentru „AQI #15 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_15": "Configurați „AQI #16 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_15": "Prag de decizie pentru „AQI #16 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_16": "Configurați „AQI #17 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_16": "Prag de decizie pentru „AQI #17 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_17": "Configurați „AQI #18 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_17": "Prag de decizie pentru „AQI #18 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_18": "Configurați „AQI #19 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_18": "Prag de decizie pentru „AQI #19 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_19": "Configurați „AQI #20 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_19": "Prag de decizie pentru „AQI #20 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_20": "Configurați „AQI #21 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_20": "Prag de decizie pentru „AQI #21 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_21": "Configurați „AQI #22 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_21": "Prag de decizie pentru „AQI #22 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_22": "Configurați „AQI #23 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_22": "Prag de decizie pentru „AQI #23 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_23": "Configurați „AQI #24 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_23": "Prag de decizie pentru „AQI #24 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_24": "Configurați „AQI #25 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_24": "Prag de decizie pentru „AQI #25 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_25": "Configurați „AQI #26 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_25": "Prag de decizie pentru „AQI #26 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_26": "Configurați „AQI #27 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_26": "Prag de decizie pentru „AQI #27 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_27": "Configurați „AQI #28 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_27": "Prag de decizie pentru „AQI #28 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_28": "Configurați „AQI #29 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_28": "Prag de decizie pentru „AQI #29 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_29": "Configurați „AQI #30 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_29": "Prag de decizie pentru „AQI #30 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_30": "Configurați „AQI #31 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_30": "Prag de decizie pentru „AQI #31 · țintă”. Influențează recomandările, nu este limită medicală.",
+          "aqi_scale_31": "Configurați „AQI #32 · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "aqi_custom_limit_31": "Prag de decizie pentru „AQI #32 · țintă”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "environment_room": {
+        "title": "setări · setări · sursă",
+        "description": "Configurați „setări · setări · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "environment_area": "setări · sursă"
+        },
+        "data_description": {
+          "environment_area": "Configurați „setări · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea."
+        }
+      },
+      "environment_room_air": {
+        "title": "setări · Exterior",
+        "description": "Configurați „setări · Exterior” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "temperature_entity": "Temperatură · sursă",
+          "room_volume_m3": "setări · sursă (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Purificator de aer · sursă",
+          "extractor_entity": "Ventilator de extracție · sursă",
+          "co2_ndir_verified": "CO₂ · Obligatoriu",
+          "co2_target_ppm": "CO₂ · CO₂ · țintă (ppm)",
+          "sleep_room": "Somn"
+        },
+        "data_description": {
+          "temperature_entity": "Alegeți o sursă Home Assistant reală pentru „Temperatură · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "room_volume_m3": "Utilizați măsurători reale potrivite pentru „setări · sursă (m³)”. Estimarea nu înlocuiește senzorul calibrat.",
+          "particle_cadr_m3h": "Utilizați măsurători reale potrivite pentru „CADR (m³/h)”. Estimarea nu înlocuiește senzorul calibrat.",
+          "purifier_entity": "Alegeți o Purificator de aer · sursă Home Assistant reală pentru „Purificator de aer · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "extractor_entity": "Alegeți o Ventilator de extracție · sursă Home Assistant reală pentru „Ventilator de extracție · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "co2_ndir_verified": "Utilizați măsurători reale potrivite pentru „CO₂ · Obligatoriu”. Estimarea nu înlocuiește senzorul calibrat.",
+          "co2_target_ppm": "Prag de decizie pentru „CO₂ · CO₂ · țintă (ppm)”. Influențează recomandările, nu este limită medicală.",
+          "sleep_room": "Configurați „Somn” numai pentru camera aleasă. Datele greșite blochează acțiunea."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "setări · setări · sursă",
+        "description": "Configurați „setări · setări · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "radon_entity": "RADON · Rn · sursă",
+          "radon_sensor_verified": "RADON · Rn · senzor · Obligatoriu · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · sursă",
+          "formaldehyde_sensor_verified": "HCHO · senzor · Obligatoriu · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · sursă · senzor (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · senzor · Obligatoriu",
+          "illuminance_entity": "LUX · sursă (lux)",
+          "melanopic_edi_entity": "EDI · EDI · sursă (lx)",
+          "melanopic_spectral_verified": "EDI · Obligatoriu"
+        },
+        "data_description": {
+          "radon_entity": "Alegeți o RADON · Rn · sursă Home Assistant reală pentru „RADON · Rn · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "radon_sensor_verified": "Utilizați măsurători reale potrivite pentru „RADON · Rn · senzor · Obligatoriu · SENSOR ✓ · VERIFIED”. Estimarea nu înlocuiește RADON · Rn · senzor · Obligatoriu · SENSOR ✓ · VERIFIEDul calibrat.",
+          "radon_reference_bq_m3": "Configurați „Rn (Bq/m³)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "formaldehyde_entity": "Alegeți o HCHO · sursă Home Assistant reală pentru „HCHO · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "formaldehyde_sensor_verified": "Utilizați măsurători reale potrivite pentru „HCHO · senzor · Obligatoriu · SENSOR ✓ · VERIFIED”. Estimarea nu înlocuiește HCHO · senzor · Obligatoriu · SENSOR ✓ · VERIFIEDul calibrat.",
+          "noise_entity": "Alegeți o dB(A) · sursă · senzor (dB(A)) Home Assistant reală pentru „dB(A) · sursă · senzor (dB(A))”. Datele lipsă sau vechi suspendă acțiunea.",
+          "noise_sensor_calibrated": "Utilizați măsurători reale potrivite pentru „dB(A) · senzor · Obligatoriu”. Estimarea nu înlocuiește dB(A) · senzor · Obligatoriuul calibrat.",
+          "illuminance_entity": "Alegeți o LUX · sursă (lux) Home Assistant reală pentru „LUX · sursă (lux)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "melanopic_edi_entity": "Alegeți o EDI · EDI · sursă (lx) Home Assistant reală pentru „EDI · EDI · sursă (lx)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "melanopic_spectral_verified": "Utilizați măsurători reale potrivite pentru „EDI · Obligatoriu”. Estimarea nu înlocuiește senzorul calibrat."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "setări · setări · sursă",
+        "description": "Configurați „setări · setări · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automat",
+          "radiant_temperature_entity": "Temperatură · sursă",
+          "air_speed_entity": "sursă · Viteză · Exterior (m/s)",
+          "air_speed_m_s": "Viteză · Exterior (m/s)",
+          "met": "setări · sursă (met)",
+          "clo": "setări · sursă (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Configurați „PMV / PPD · Automat” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "radiant_temperature_entity": "Alegeți o sursă Home Assistant reală pentru „Temperatură · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "air_speed_entity": "Alegeți o sursă · Viteză · Exterior (m/s) Home Assistant reală pentru „sursă · Viteză · Exterior (m/s)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "air_speed_m_s": "Utilizați măsurători reale potrivite pentru „Viteză · Exterior (m/s)”. Estimarea nu înlocuiește senzorul calibrat.",
+          "met": "Utilizați măsurători reale potrivite pentru „setări · sursă (met)”. Estimarea nu înlocuiește senzorul calibrat.",
+          "clo": "Utilizați măsurători reale potrivite pentru „setări · sursă (clo)”. Estimarea nu înlocuiește senzorul calibrat."
+        }
+      },
+      "pid": {
+        "title": "setări · PID",
+        "description": "Configurați „setări · PID” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Această opțiune controlează „PID”. Comenzile fizice cer acord separat și protecții independente."
+        }
+      },
+      "pid_room": {
+        "title": "setări · PID",
+        "description": "Configurați „setări · PID” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "pid_enabled": "PID · Automat · AUTO",
+          "pid_climate_entities": "PID · Dispozitive",
+          "pid_temperature_entity": "Temperatură · sursă",
+          "pid_mode": "PID",
+          "pid_target_c": "țintă (°C)",
+          "pid_pause_on_window_open": "PID · Exterior"
+        },
+        "data_description": {
+          "pid_enabled": "Această opțiune controlează „PID · Automat · AUTO”. Comenzile fizice cer acord separat și protecții independente.",
+          "pid_climate_entities": "Alegeți o sursă Home Assistant reală pentru „PID · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "pid_temperature_entity": "Alegeți o sursă Home Assistant reală pentru „Temperatură · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "pid_mode": "Această opțiune controlează „PID”. Comenzile fizice cer acord separat și protecții independente.",
+          "pid_target_c": "Prag de decizie pentru „țintă (°C)”. Influențează recomandările, nu este limită medicală.",
+          "pid_pause_on_window_open": "Această opțiune controlează „PID · Exterior”. Comenzile fizice cer acord separat și protecții independente."
+        }
+      },
+      "pid_tuning": {
+        "title": "setări · PID",
+        "description": "Configurați „setări · PID” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "pid_kp": "PID Kp · control (% per °C)",
+          "pid_ki": "PID Ki · control (% per °C-minute)",
+          "pid_kd": "PID Kd · control (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Această opțiune controlează „PID Kp · control (% per °C)”. Comenzile fizice cer acord separat și protecții independente.",
+          "pid_ki": "Această opțiune controlează „PID Ki · control (% per °C-minute)”. Comenzile fizice cer acord separat și protecții independente.",
+          "pid_kd": "Această opțiune controlează „PID Kd · control (%·minute per °C)”. Comenzile fizice cer acord separat și protecții independente.",
+          "pid_offset_c": "Prag de decizie pentru „PID (°C) · PID_OFFSET_C”. Influențează recomandările, nu este limită medicală.",
+          "pid_min_setpoint_c": "Prag de decizie pentru „PID (°C) · MIN TARGET”. Influențează recomandările, nu este limită medicală.",
+          "pid_max_setpoint_c": "Prag de decizie pentru „PID (°C) · MAX TARGET”. Influențează recomandările, nu este limită medicală.",
+          "pid_sample_seconds": "Acest interval reglează „PID (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "pid_max_change_c": "Prag de decizie pentru „PID (°C) · MAX Δ”. Influențează recomandările, nu este limită medicală.",
+          "pid_min_change_c": "Prag de decizie pentru „PID (°C) · MIN Δ”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "climate": {
+        "title": "setări · Dispozitive",
+        "description": "Configurați „setări · Dispozitive” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+        "data": {
+          "climate_area": "Dispozitive"
+        },
+        "data_description": {
+          "climate_area": "Această opțiune controlează „Dispozitive”. Comenzile fizice cer acord separat și protecții independente."
+        }
+      },
+      "climate_room": {
+        "title": "setări · Dispozitive",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "climate_enabled": "Dispozitive · Automat · AUTO",
+          "climate_allow_actuation": "Dispozitive · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Dispozitive · Automat · MODE SWITCH",
+          "climate_prefer_native_auto": "Dispozitive · Automat · NATIVE",
+          "climate_controller": "Dispozitive · control",
+          "climate_mode": "Dispozitive · MODE",
+          "climate_entity": "Dispozitive · sursă",
+          "climate_temperature_entity": "Temperatură · sursă",
+          "climate_hysteresis_c": "Dispozitive (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Această opțiune controlează „Dispozitive · Automat · AUTO”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_allow_actuation": "Această opțiune controlează „Dispozitive · CLIMATE_ALLOW_ACTUATION”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_auto_switch_hvac": "Această opțiune controlează „Dispozitive · Automat · MODE SWITCH”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_prefer_native_auto": "Această opțiune controlează „Dispozitive · Automat · NATIVE”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_controller": "Această opțiune Dispozitive · controlează „Dispozitive · control”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_mode": "Această opțiune controlează „Dispozitive · MODE”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_entity": "Alegeți o Dispozitive · sursă Home Assistant reală pentru „Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_temperature_entity": "Alegeți o sursă Home Assistant reală pentru „Temperatură · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_hysteresis_c": "Prag de decizie pentru „Dispozitive (°C)”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "climate_presence": {
+        "title": "setări · Ocupare · Dispozitive",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "climate_occupancy_sensors": "Ocupare · senzor",
+          "climate_away_entities": "Acasă · Dispozitive",
+          "climate_unknown_occupancy": "Ocupare · Dispozitive",
+          "climate_unoccupied_delay_minutes": "Dispozitive · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Ocupare · Dispozitive · senzor · Obligatoriu",
+          "climate_away_policy": "Acasă · Dispozitive · POLICY",
+          "climate_manual_profile": "Dispozitive · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Somn · Dispozitive",
+          "climate_sleep_schedule_enabled": "Somn · Automat",
+          "climate_sleep_start": "Somn · Dispozitive · START",
+          "climate_sleep_end": "Somn · Dispozitive · END",
+          "climate_target_source": "Dispozitive · sursă · țintă",
+          "climate_comfort_adjustment_max_c": "Dispozitive (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_away_entities": "Alegeți o sursă Home Assistant reală pentru „Acasă · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_unknown_occupancy": "Această opțiune controlează „Ocupare · Dispozitive”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_unoccupied_delay_minutes": "Acest interval reglează „Dispozitive · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_occupancy_stale_minutes": "Acest interval reglează „Ocupare · Dispozitive · senzor · Obligatoriu”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_away_policy": "Această opțiune controlează „Acasă · Dispozitive · POLICY”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_manual_profile": "Această opțiune controlează „Dispozitive · CLIMATE_MANUAL_PROFILE”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_sleep_active": "Această opțiune controlează „Somn · Dispozitive”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_sleep_schedule_enabled": "Această opțiune controlează „Somn · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_sleep_start": "Acest interval reglează „Somn · Dispozitive · START”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_sleep_end": "Acest interval reglează „Somn · Dispozitive · END”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_target_source": "Prag de decizie pentru „Dispozitive · sursă · țintă”. Influențează recomandările, nu este limită medicală.",
+          "climate_comfort_adjustment_max_c": "Prag de decizie pentru „Dispozitive (°C)”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "climate_equipment": {
+        "title": "setări · Dispozitive",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Dispozitive · sursă · Temperatură +",
+          "climate_cool_climate_entity": "COOL · Dispozitive · sursă · Temperatură −",
+          "climate_dry_climate_entity": "DRY · Dispozitive · sursă",
+          "climate_fan_climate_entity": "FAN_ONLY · Viteză · Dispozitive · sursă",
+          "climate_humidifier_entity": "HUMIDIFIER · Dispozitive · sursă",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Dispozitive · sursă",
+          "climate_extraction_fan_entity": "EXTRACT · Viteză · Dispozitive · sursă",
+          "climate_purifier_fan_entity": "Purificator de aer · sursă",
+          "climate_humidity_entity": "Umiditate · sursă",
+          "climate_humidity_low_rh": "RH · Umiditate · Dispozitive (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Umiditate · Dispozitive (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Umiditate · Dispozitive · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Dispozitive · Temperatură −",
+          "climate_humidity_setpoint_auto": "Umiditate · Automat",
+          "climate_window_efficiency_notify": "Dispozitive · Exterior",
+          "climate_dry_fan_mode_auto": "Viteză · Automat",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Viteză · Dispozitive · Obligatoriu · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Viteză · Dispozitive · Exterior · Obligatoriu · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Viteză · Dispozitive (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Umiditate · Putere · Automat",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Umiditate · Dispozitive · Putere · Obligatoriu · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Umiditate · Dispozitive · Putere · Exterior · Obligatoriu · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Umiditate · Dispozitive · Putere · Automat (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Umiditate · Dispozitive · Putere · Oprire (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Umiditate · Dispozitive · Putere · Automat (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Dispozitive · Automat · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Alegeți o HEAT · Dispozitive · sursă · Temperatură + Home Assistant reală pentru „HEAT · Dispozitive · sursă · Temperatură +”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_cool_climate_entity": "Alegeți o COOL · Dispozitive · sursă · Temperatură − Home Assistant reală pentru „COOL · Dispozitive · sursă · Temperatură −”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_dry_climate_entity": "Alegeți o DRY · Dispozitive · sursă Home Assistant reală pentru „DRY · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_fan_climate_entity": "Alegeți o sursă Home Assistant reală pentru „FAN_ONLY · Viteză · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_humidifier_entity": "Alegeți o HUMIDIFIER · Dispozitive · sursă Home Assistant reală pentru „HUMIDIFIER · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_dehumidifier_entity": "Alegeți o DEHUMIDIFIER · Dispozitive · sursă Home Assistant reală pentru „DEHUMIDIFIER · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_extraction_fan_entity": "Alegeți o sursă Home Assistant reală pentru „EXTRACT · Viteză · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_purifier_fan_entity": "Alegeți o sursă Home Assistant reală pentru „Purificator de aer · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_humidity_entity": "Alegeți o sursă Home Assistant reală pentru „Umiditate · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_humidity_low_rh": "Prag de decizie pentru „RH · Umiditate · Dispozitive (%) · RH MIN”. Influențează recomandările, nu este limită medicală.",
+          "climate_humidity_high_rh": "Prag de decizie pentru „RH · Umiditate · Dispozitive (%) · RH MAX”. Influențează recomandările, nu este limită medicală.",
+          "climate_humidity_hysteresis_rh": "Prag de decizie pentru „RH · Umiditate · Dispozitive · ± RH”. Influențează recomandările, nu este limită medicală.",
+          "climate_cooling_dry_deferral_rh_points": "Această opțiune controlează „Dispozitive · Temperatură −”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_humidity_setpoint_auto": "Această opțiune controlează „Umiditate · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_window_efficiency_notify": "Această opțiune controlează „Dispozitive · Exterior”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_dry_fan_mode_auto": "Această opțiune controlează „Viteză · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_dry_fan_hardware_confirmed": "Utilizați măsurători reale potrivite pentru „DRY/FAN_ONLY · Viteză · Dispozitive · Obligatoriu · HW ✓”. Estimarea nu înlocuiește senzorul calibrat.",
+          "climate_dry_fan_windowless_confirmed": "Utilizați măsurători reale potrivite pentru „DRY/FAN_ONLY · Viteză · Dispozitive · Exterior · Obligatoriu · NO WINDOW”. Estimarea nu înlocuiește senzorul calibrat.",
+          "climate_dry_fan_mode_dwell_s": "Acest interval reglează „DRY/FAN_ONLY · Viteză · Dispozitive (s) · MODE DWELL”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_humidity_power_auto": "Această opțiune controlează „Umiditate · Putere · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_humidity_power_hardware_confirmed": "Utilizați măsurători reale potrivite pentru „RH POWER · Umiditate · Dispozitive · Putere · Obligatoriu · HW ✓”. Estimarea nu înlocuiește senzorul calibrat.",
+          "climate_humidity_power_windowless_confirmed": "Utilizați măsurători reale potrivite pentru „RH POWER · Umiditate · Dispozitive · Putere · Exterior · Obligatoriu · NO WINDOW”. Estimarea nu înlocuiește senzorul calibrat.",
+          "climate_humidity_power_min_on_s": "Acest interval reglează „RH POWER · Umiditate · Dispozitive · Putere · Automat (s) · MIN ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_humidity_power_min_off_s": "Acest interval reglează „RH POWER · Umiditate · Dispozitive · Putere · Oprire (s) · MIN OFF”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_humidity_power_max_on_s": "Acest interval reglează „RH POWER · Umiditate · Dispozitive · Putere · Automat (s) · MAX ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_secondary_climate_setpoint_auto": "Această opțiune controlează „Dispozitive · Automat · TARGET AUTO”. Comenzile fizice cer acord separat și protecții independente."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "setări · Dispozitive · Exterior",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "climate_fan_speed_auto": "Viteză · Automat",
+          "climate_fan_power_auto": "Viteză · Putere · Automat",
+          "climate_fan_power_hardware_confirmed": "FAN · Viteză · Dispozitive · Putere · Obligatoriu · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Viteză · Dispozitive · Putere · Automat (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Viteză · Dispozitive · Putere · Oprire (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Viteză · Dispozitive · Putere · Automat (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Dispozitive · senzor · Obligatoriu · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Dispozitive · sursă",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Dispozitive · sursă",
+          "climate_pm25_action_ug_m3": "PM2.5 · Dispozitive (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Dispozitive · Viteză (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Dispozitive · Viteză (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Această opțiune controlează „Viteză · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_fan_power_auto": "Această opțiune controlează „Viteză · Putere · Automat”. Comenzile fizice cer acord separat și protecții independente.",
+          "climate_fan_power_hardware_confirmed": "Utilizați măsurători reale potrivite pentru „FAN · Viteză · Dispozitive · Putere · Obligatoriu · HW ✓”. Estimarea nu înlocuiește senzorul calibrat.",
+          "climate_fan_power_min_on_s": "Acest interval reglează „FAN · Viteză · Dispozitive · Putere · Automat (s) · MIN ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_fan_power_min_off_s": "Acest interval reglează „FAN · Viteză · Dispozitive · Putere · Oprire (s) · MIN OFF”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_fan_power_max_on_s": "Acest interval reglează „FAN · Viteză · Dispozitive · Putere · Automat (s) · MAX ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "climate_pm25_sensor_verified": "Utilizați măsurători reale potrivite pentru „PM2.5 · PM2.5 · Dispozitive · senzor · Obligatoriu · SENSOR ✓ · VERIFIED”. Estimarea nu înlocuiește PM2.5 · PM2.5 · Dispozitive · senzor · Obligatoriu · SENSOR ✓ · VERIFIEDul calibrat.",
+          "climate_co2_entity": "Alegeți o CO₂ · CO₂ · Dispozitive · sursă Home Assistant reală pentru „CO₂ · CO₂ · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_pm25_entity": "Alegeți o PM2.5 · PM2.5 · Dispozitive · sursă Home Assistant reală pentru „PM2.5 · PM2.5 · Dispozitive · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "climate_pm25_action_ug_m3": "Prag de decizie pentru „PM2.5 · Dispozitive (µg/m³)”. Influențează recomandările, nu este limită medicală.",
+          "climate_extraction_speed_percent": "Prag de decizie pentru „EXTRACT · Dispozitive · Viteză (%) · SPEED %”. Influențează recomandările, nu este limită medicală.",
+          "climate_purifier_speed_percent": "Prag de decizie pentru „PURIFIER · Dispozitive · Viteză (%) · SPEED %”. Influențează recomandările, nu este limită medicală."
+        }
+      },
+      "climate_profiles": {
+        "title": "setări · Dispozitive",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "home_heat": "Încălzire · Acasă (°C)",
+          "home_cool": "Răcire · Acasă (°C)",
+          "unoccupied_heat": "Încălzire · Cameră neocupată (°C)",
+          "unoccupied_cool": "Răcire · Cameră neocupată (°C)",
+          "away_heat": "Încălzire · Absență (°C)",
+          "away_cool": "Răcire · Absență (°C)",
+          "sleep_heat": "Încălzire · Somn (°C)",
+          "sleep_cool": "Răcire · Somn (°C)"
+        },
+        "data_description": {
+          "home_heat": "Ținta „Încălzire · Acasă (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "home_cool": "Ținta „Răcire · Acasă (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "unoccupied_heat": "Ținta „Încălzire · Cameră neocupată (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "unoccupied_cool": "Ținta „Răcire · Cameră neocupată (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "away_heat": "Ținta „Încălzire · Absență (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "away_cool": "Ținta „Răcire · Absență (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "sleep_heat": "Ținta „Încălzire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "sleep_cool": "Ținta „Răcire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală."
+        }
+      },
+      "climate_actuators": {
+        "title": "setări · Dispozitive",
+        "description": "Zonă · setări · Dispozitive · control. Ocupare · senzor · Obligatoriu.",
+        "data": {
+          "direct_hardware_confirmed": "Obligatoriu",
+          "heat_actuator": "Încălzire · Dispozitive",
+          "cool_actuator": "Răcire · Dispozitive",
+          "min_on_s": "Putere · Automat (s) · MIN ON",
+          "min_off_s": "Putere · Oprire (s)",
+          "max_on_s": "Putere · Automat (s) · MAX ON",
+          "mode_dwell_s": "setări · sursă (s) · MODE DWELL",
+          "kp": "PID Kp · control (percentage points/°C)",
+          "ki": "PID Ki · control (percentage points/(°C·minute))",
+          "kd": "PID Kd · control (percentage points·minute/°C)",
+          "sample_seconds": "setări · sursă (s) · SAMPLE",
+          "pwm_period_s": "setări · sursă (s) · PWM PERIOD",
+          "max_demand_change": "setări · sursă · MAX Δ",
+          "min_demand_change": "setări · sursă · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Utilizați măsurători reale potrivite pentru „Obligatoriu”. Estimarea nu înlocuiește senzorul calibrat.",
+          "heat_actuator": "Configurați „Încălzire · Dispozitive” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "cool_actuator": "Configurați „Răcire · Dispozitive” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "min_on_s": "Acest interval reglează „Putere · Automat (s) · MIN ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "min_off_s": "Acest interval reglează „Putere · Oprire (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "max_on_s": "Acest interval reglează „Putere · Automat (s) · MAX ON”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "mode_dwell_s": "Acest interval reglează „setări · sursă (s) · MODE DWELL”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "kp": "Configurați „PID Kp · control (percentage points/°C)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "ki": "Configurați „PID Ki · control (percentage points/(°C·minute))” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "kd": "Configurați „PID Kd · control (percentage points·minute/°C)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "sample_seconds": "Acest interval reglează „setări · sursă (s) · SAMPLE”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "pwm_period_s": "Acest interval reglează „setări · sursă (s) · PWM PERIOD”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "max_demand_change": "Configurați „setări · sursă · MAX Δ” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "min_demand_change": "Configurați „setări · sursă · MIN Δ” numai pentru camera aleasă. Datele greșite blochează acțiunea."
+        }
+      },
+      "outside_data": {
+        "title": "Exterior · sursă",
+        "description": "Exterior · sursă: Selectați sursă, senzor / Dispozitive · control.",
+        "menu_options": {
+          "weather": "Vreme și avertizări",
+          "outdoor": "Calitatea aerului exterior",
+          "outside_aqi": "Exterior · AQI",
+          "pollen": "Polen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Zonă · setări",
+        "description": "Zonă · setări: Selectați sursă, senzor / Dispozitive · control.",
+        "menu_options": {
+          "areas": "Camere",
+          "indoor_sensors": "Camere · Indicator de mucegai",
+          "window_sensors": "Exclude senzori de fereastră",
+          "environment_room": "setări · setări · sursă",
+          "area_devices": "Dispozitive climatice"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Dispozitive · setări",
+        "description": "Opțional: continuă cu senzorii și permisiunile de siguranță ale aparatului. Lasă dezactivat pentru a salva imediat lista.",
+        "menu_options": {
+          "device_settings": "Dispozitive · control",
+          "device_choice": "Selectați · Dispozitive",
+          "device_done": "setări · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Generale · setări",
+        "description": "Generale · setări: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_home_policy": "Acasă · Ocupare · control",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "general_source_stale_minutes": "sursă · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Cameră · Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Ocupare · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_attribute": "Configurați „Ocupare · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_home_trackers": "Alegeți o sursă Home Assistant reală pentru „Acasă · Ocupare · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_home_policy": "Această opțiune controlează „Acasă · Ocupare · control”. Comenzile fizice cer acord separat și protecții independente.",
+          "general_sleep_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Somn · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_sleep_rooms_attribute": "Configurați „Somn · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_source_stale_minutes": "sursă · Somn / Ocupare · max 240 min. Invalid · Oprire."
+        }
+      },
+      "pollen": {
+        "title": "Polen",
+        "description": "Polen: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "pollen_entity": "Polen · sursă",
+          "pollen_high_from": "POLLEN · Polen · HIGH",
+          "pollen_max_scale": "POLLEN · Polen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Polen · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Alegeți o sursă Home Assistant reală pentru „Polen · sursă”. Datele lipsă sau vechi suspendă acțiunea.",
+          "pollen_high_from": "Configurați „POLLEN · Polen · HIGH” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_max_scale": "Configurați „POLLEN · Polen · SCALE” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "pollen_avoid_ventilation": "Configurați „POLLEN · Polen · NO VENT” numai pentru camera aleasă. Datele greșite blochează acțiunea."
+        }
+      },
+      "outside_aqi": {
+        "title": "Exterior · AQI",
+        "description": "Exterior · AQI: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "outside_aqi_entity": "AQI · senzor",
+          "outside_aqi_scale": "AQI · sursă",
+          "outside_aqi_limit": "AQI · țintă",
+          "outside_aqi_no_sources": "AQI · senzor · Obligatoriu"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Alegeți o sursă Home Assistant reală pentru „AQI · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "outside_aqi_scale": "Configurați „AQI · sursă” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "outside_aqi_limit": "Prag de decizie pentru „AQI · țintă”. Influențează recomandările, nu este limită medicală.",
+          "outside_aqi_no_sources": "Configurați „AQI · senzor · Obligatoriu” numai pentru camera aleasă. Datele greșite blochează acțiunea."
+        }
+      },
+      "area_devices": {
+        "title": "Dispozitive climatice",
+        "description": "Selectați · Zonă",
+        "data": {
+          "area_devices_area": "Selectați · Zonă"
+        },
+        "data_description": {
+          "area_devices_area": "Alegeți o sursă Home Assistant reală pentru „Selectați · Zonă”. Datele lipsă sau vechi suspendă acțiunea."
+        }
+      },
+      "select_devices": {
+        "title": "Dispozitive climatice",
+        "description": "Selectează dispozitivele pentru {area_name}. Salvarea creează un controler pentru fiecare aparat fizic în hubul camerei. Configurează țintele, profilurile, automat/manual/oprit/PID și funcționarea silențioasă pe dispozitive. Selectarea nu activează controlul automat.",
+        "data": {
+          "selected_devices": "Selectați · Dispozitive",
+          "configure_device_sources": "Configurează acum senzorii și permisiunile"
+        },
+        "data_description": {
+          "selected_devices": "Selectează dispozitivele pentru {area_name}. Salvarea creează un controler pentru fiecare aparat fizic în hubul camerei. Configurează țintele, profilurile, automat/manual/oprit/PID și funcționarea silențioasă pe dispozitive. Selectarea nu activează controlul automat.",
+          "configure_device_sources": "Opțional: continuă cu senzorii și permisiunile de siguranță ale aparatului. Lasă dezactivat pentru a salva imediat lista."
+        }
+      },
+      "device_choice": {
+        "title": "Selectați · Dispozitive",
+        "description": "Selectați · Dispozitive: Selectați sursă, senzor / Dispozitive · control.",
+        "data": {
+          "device_choice": "Selectați · Dispozitive"
+        },
+        "data_description": {
+          "device_choice": "Alegeți o sursă Home Assistant reală pentru „Selectați · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea."
+        }
+      },
+      "device_settings": {
+        "title": "Dispozitive · control",
+        "description": "Această opțiune controlează „control · sursă”. Comenzile fizice cer acord separat și protecții independente. Utilizați măsurători reale potrivite pentru „Obligatoriu · Dispozitive · Putere”. Estimarea nu înlocuiește senzorul calibrat. Acest interval reglează „Putere · min ON (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware. Acest interval reglează „Putere · min OFF (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware. Configurați „Somn · control” numai pentru camera aleasă. Datele greșite blochează acțiunea. Prag de decizie pentru „Viteză (%)”. Influențează recomandările, nu este limită medicală.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automat control",
+          "device_method": "control · sursă",
+          "device_presence_requirement": "control · Ocupare",
+          "device_absence_action": "Oprire · Ocupare",
+          "device_sleep_behavior": "Somn · control",
+          "device_hardware_confirmed": "Obligatoriu · Dispozitive · Putere",
+          "device_temperature_entity": "Temperatură · senzor",
+          "device_humidity_entity": "Umiditate · senzor",
+          "device_co2_entity": "CO₂ · senzor",
+          "device_pm25_entity": "PM2.5 · senzor",
+          "device_fan_purpose": "control · Dispozitive",
+          "device_sensor_verified": "senzor · Obligatoriu",
+          "device_fan_speed_percent": "Viteză (%)",
+          "device_humidity_target": "Umiditate · țintă (%)",
+          "device_sleep_humidity_target": "Somn · Umiditate · țintă (%)",
+          "device_min_on_s": "Putere · min ON (s)",
+          "device_min_off_s": "Putere · min OFF (s)",
+          "device_max_on_s": "Putere · max ON (s)",
+          "device_home_heat_c": "Încălzire · Acasă (°C)",
+          "device_home_cool_c": "Răcire · Acasă (°C)",
+          "device_unoccupied_heat_c": "Încălzire · Cameră neocupată (°C)",
+          "device_unoccupied_cool_c": "Răcire · Cameră neocupată (°C)",
+          "device_away_heat_c": "Încălzire · Absență (°C)",
+          "device_away_cool_c": "Răcire · Absență (°C)",
+          "device_sleep_heat_c": "Încălzire · Somn (°C)",
+          "device_sleep_cool_c": "Răcire · Somn (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Această opțiune controlează „Automat control”. Comenzile fizice cer acord separat și protecții independente.",
+          "device_method": "Această opțiune controlează „control · sursă”. Comenzile fizice cer acord separat și protecții independente.",
+          "device_presence_requirement": "Configurați „control · Ocupare” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "device_absence_action": "Această opțiune controlează „Oprire · Ocupare”. Comenzile fizice cer acord separat și protecții independente.",
+          "device_sleep_behavior": "Configurați „Somn · control” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "device_hardware_confirmed": "Utilizați măsurători reale potrivite pentru „Obligatoriu · Dispozitive · Putere”. Estimarea nu înlocuiește senzorul calibrat.",
+          "device_temperature_entity": "Alegeți o sursă Home Assistant reală pentru „Temperatură · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "device_humidity_entity": "Alegeți o sursă Home Assistant reală pentru „Umiditate · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "device_co2_entity": "Alegeți o sursă Home Assistant reală pentru „CO₂ · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "device_pm25_entity": "Alegeți o sursă Home Assistant reală pentru „PM2.5 · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "device_fan_purpose": "Configurați „control · Dispozitive” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "device_sensor_verified": "Utilizați măsurători reale potrivite pentru „senzor · Obligatoriu”. Estimarea nu înlocuiește senzorul calibrat.",
+          "device_fan_speed_percent": "Prag de decizie pentru „Viteză (%)”. Influențează recomandările, nu este limită medicală.",
+          "device_humidity_target": "Prag de decizie pentru „Umiditate · țintă (%)”. Influențează recomandările, nu este limită medicală.",
+          "device_sleep_humidity_target": "Ținta „Somn · Umiditate · țintă (%)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_min_on_s": "Acest interval reglează „Putere · min ON (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "device_min_off_s": "Acest interval reglează „Putere · min OFF (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "device_max_on_s": "Acest interval reglează „Putere · max ON (s)”. Limitează comutările frecvente, fără a înlocui protecția hardware.",
+          "device_home_heat_c": "Ținta „Încălzire · Acasă (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_home_cool_c": "Ținta „Răcire · Acasă (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_unoccupied_heat_c": "Ținta „Încălzire · Cameră neocupată (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_unoccupied_cool_c": "Ținta „Răcire · Cameră neocupată (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_away_heat_c": "Ținta „Încălzire · Absență (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_away_cool_c": "Ținta „Răcire · Absență (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_sleep_heat_c": "Ținta „Încălzire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală.",
+          "device_sleep_cool_c": "Ținta „Răcire · Somn (°C)” se aplică la prezență sau somn confirmat. Necunoscut nu înseamnă cameră goală."
+        }
+      },
+      "setup_rooms": {
+        "title": "Camere de monitorizat",
+        "description": "Camere de monitorizat → sursă → Generale setări",
+        "data": {
+          "areas": "Camere de monitorizat"
+        },
+        "data_description": {
+          "areas": "Camere de monitorizat. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Cameră · {area_name} · {room_index}/{room_count}",
+        "description": "Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+        "data": {
+          "windows": "Ferestre",
+          "air_quality": "Senzori de calitate a aerului și de mediu",
+          "temperature": "Temperatură",
+          "humidity": "Umiditate",
+          "pressure": "Senzori de presiune",
+          "climate_devices": "Dispozitive"
+        },
+        "data_description": {
+          "windows": "Ferestre. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "air_quality": "Senzori de calitate a aerului și de mediu. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "temperature": "Temperatură. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "humidity": "Umiditate. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "pressure": "Senzori de presiune. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat.",
+          "climate_devices": "Dispozitive. Selectează intrările camerei: numele dispozitivului - numele entității. Grupurile goale rămân neutilizate și nu activează descoperirea sau controlul automat."
+        }
+      },
+      "setup_general": {
+        "title": "Generale setări",
+        "description": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor.",
+        "data": {
+          "weather_entities": "Vreme și avertizări",
+          "outdoor_sensors": "Calitatea aerului exterior",
+          "weather_warnings": "Avertizări meteo",
+          "general_room_occupancy_sensors": "Cameră · Ocupare · senzor",
+          "general_home_trackers": "Acasă · Ocupare · Dispozitive",
+          "general_occupied_rooms_entity": "Ocupare · Cameră · sursă (state)",
+          "general_occupied_rooms_attribute": "Ocupare · Cameră · sursă (attribute)",
+          "general_sleep_rooms_entity": "Somn · Cameră · sursă (state)",
+          "general_sleep_rooms_attribute": "Somn · Cameră · sursă (attribute)",
+          "notify_entities": "setări · sursă",
+          "media_players": "setări · sursă · MEDIA_PLAYERS",
+          "tts_engine": "setări · sursă · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Selectați · sursă",
+          "language": "TTS · Selectați · sursă",
+          "use_mold_indicator": "Indicator de mucegai · RH (%) → 70%",
+          "pollen_entities": "Polen · sursă · Selectați",
+          "use_announcement_hub": "Automat · Announcement Hub",
+          "general_away_cooldown_minutes": "Acasă · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Alegeți: Vreme și avertizări · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Alegeți: Calitatea aerului exterior · AQI, CO₂, PM2.5, PM10, VOC. Indisponibil: ⚠",
+          "weather_warnings": "Vreme și avertizări · ⚠ (Indisponibil) → 🪟🔒",
+          "general_room_occupancy_sensors": "Alegeți o sursă Home Assistant reală pentru „Cameră · Ocupare · senzor”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_home_trackers": "Alegeți o sursă Home Assistant reală pentru „Acasă · Ocupare · Dispozitive”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Ocupare · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_occupied_rooms_attribute": "Configurați „Ocupare · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "general_sleep_rooms_entity": "Alegeți o sursă Home Assistant reală pentru „Somn · Cameră · sursă (state)”. Datele lipsă sau vechi suspendă acțiunea.",
+          "general_sleep_rooms_attribute": "Configurați „Somn · Cameră · sursă (attribute)” numai pentru camera aleasă. Datele greșite blochează acțiunea.",
+          "notify_entities": "Alegeți: notify.* · setări · sursă.",
+          "media_players": "Alegeți: media_player.* · setări · sursă · MEDIA_PLAYERS.",
+          "tts_engine": "Alegeți: tts.* · setări · sursă · TTS_ENGINE.",
+          "ai_conversation_agent": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · AI · Selectați · sursă · conversation.* / ai_task.*.",
+          "language": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · TTS · Selectați · sursă · provider capabilities.",
+          "use_mold_indicator": "🧱 Indicator de mucegai · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Polen · sursă · Selectați.",
+          "use_announcement_hub": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Automat · Announcement Hub.",
+          "general_away_cooldown_minutes": "Selectează sursele comune și ieșirile de notificare. Salvarea încheie configurarea. Setările de funcționare rămân pe dispozitivele casei și camerelor. · Acasă · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Selecție invalidă: Calitatea aerului exterior (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Indisponibil: Calitatea aerului exterior (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Selecție invalidă: Vreme și avertizări (weather.*).",
+      "invalid_warning": "Selecție invalidă: Vreme și avertizări ⚠.",
+      "missing_notify": "Alegeți: Announcement Hub / notify.*.",
+      "missing_tts": "Alegeți: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Selecție invalidă: °C min < max.",
+      "no_areas": "Alegeți: Camere.",
+      "no_window_areas": "Indisponibil: Măsurători (binary_sensor, window).",
+      "invalid_areas": "Selecție invalidă: Camere.",
+      "invalid_window_exclusions": "Selecție invalidă: Exclude senzori de fereastră.",
+      "invalid_indoor_exclusions": "Selecție invalidă: Exclude senzori de aer interior.",
+      "no_windows_after_exclusions": "Păstrați cel puțin un senzor de fereastră.",
+      "review_areas_after_exclusions": "Verificați: Camere · Măsurători (0).",
+      "invalid_repeat_minutes": "Selecție invalidă: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Indisponibil: conversation.process.",
+      "invalid_ai_agent": "Selecție invalidă: conversation.*.",
+      "invalid_mold_temperature_sensor": "Camere · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Camere · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indicator de mucegai · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indicator de mucegai · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indicator de mucegai · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Setare nevalidă pentru „setări · sursă”. Verificați sursa, unitatea și siguranța.",
+      "invalid_environment_measurement": "Setare nevalidă pentru „setări · sursă”. Verificați sursa, unitatea și siguranța.",
+      "pmv_requires_explicit_inputs": "Setare nevalidă pentru „PMV / PPD”. Verificați sursa, unitatea și siguranța.",
+      "pid_climate_required": "Setare nevalidă pentru „PID · Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "pid_temperature_required": "Setare nevalidă pentru „PID · Temperatură”. Verificați sursa, unitatea și siguranța.",
+      "pid_invalid_target": "Setare nevalidă pentru „PID · țintă”. Verificați sursa, unitatea și siguranța.",
+      "pid_duplicate_climate": "Setare nevalidă pentru „PID · Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "pid_invalid_parameters": "Setare nevalidă pentru „PID”. Verificați sursa, unitatea și siguranța.",
+      "climate_dry_fan_control_inputs_missing": "Setare nevalidă pentru „Viteză · Dispozitive · control”. Verificați sursa, unitatea și siguranța.",
+      "climate_humidity_power_inputs_missing": "Setare nevalidă pentru „Umiditate · Dispozitive · Putere”. Verificați sursa, unitatea și siguranța.",
+      "climate_secondary_control_inputs_missing": "Setare nevalidă pentru „Dispozitive · control”. Verificați sursa, unitatea și siguranța.",
+      "climate_fan_power_inputs_missing": "Setare nevalidă pentru „Viteză · Dispozitive · Putere”. Verificați sursa, unitatea și siguranța.",
+      "climate_fan_control_inputs_missing": "Setare nevalidă pentru „Viteză · Dispozitive · control”. Verificați sursa, unitatea și siguranța.",
+      "climate_fan_sensor_invalid": "Setare nevalidă pentru „Viteză · Dispozitive · senzor”. Verificați sursa, unitatea și siguranța.",
+      "climate_humidity_control_inputs_missing": "Setare nevalidă pentru „Umiditate · Dispozitive · control”. Verificați sursa, unitatea și siguranța.",
+      "climate_temperature_required": "Setare nevalidă pentru „Temperatură · Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_target_required": "Setare nevalidă pentru „Dispozitive · țintă”. Verificați sursa, unitatea și siguranța.",
+      "climate_direct_actuator_not_ready": "Setare nevalidă pentru „Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_controller_invalid": "Setare nevalidă pentru „Dispozitive · control”. Verificați sursa, unitatea și siguranța.",
+      "climate_mode_invalid": "Setare nevalidă pentru „Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_occupancy_invalid": "Setare nevalidă pentru „Ocupare · Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_away_invalid": "Setare nevalidă pentru „Acasă · Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_deadband_invalid": "Setare nevalidă pentru „Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_attestation_required": "Setare nevalidă pentru „Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "climate_direct_targets_invalid": "Setare nevalidă pentru „Dispozitive · țintă”. Verificați sursa, unitatea și siguranța.",
+      "climate_direct_timing_invalid": "Setare nevalidă pentru „Dispozitive”. Verificați sursa, unitatea și siguranța.",
+      "general_invalid_presence": "Invalid · Ocupare · setări",
+      "general_invalid_trackers": "Invalid · Acasă · setări",
+      "general_invalid_rooms_entity": "Invalid · Cameră · setări",
+      "general_invalid_attribute": "Invalid · sursă · setări",
+      "general_invalid_source_age": "Invalid · sursă · setări",
+      "invalid_selected_devices": "Invalid · Dispozitive · setări",
+      "device_policy_invalid": "Invalid · Ocupare · setări",
+      "device_method_invalid": "Invalid · control · setări",
+      "device_hardware_required": "Invalid · Obligatoriu · setări",
+      "device_power_required_for_off": "Invalid · Putere · setări",
+      "device_temperature_required": "Invalid · Temperatură · setări",
+      "device_humidity_required": "Invalid · Umiditate · setări",
+      "device_air_sensor_required": "Invalid · senzor · setări",
+      "device_temperature_band_invalid": "Invalid · Temperatură · setări",
+      "device_humidity_invalid": "Invalid · Umiditate · setări",
+      "device_runtime_invalid": "Invalid · Putere · setări",
+      "invalid_setup_rooms": "Invalid: Camere de monitorizat",
+      "invalid_room_source": "Invalid: Cameră · sursă"
+    },
+    "abort": {
+      "setup_area_removed": "Invalid: Camere de monitorizat",
+      "setup_changed": "setări ↻ Camere de monitorizat"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Calitatea aerului",
+        "state": {
+          "open": "Închideți · Măsurători",
+          "close": "Notificări automate · Măsurători",
+          "idle": "Bună",
+          "blocked": "Țineți ferestrele închise"
+        }
+      },
+      "area_overview": {
+        "name": "Prezentare generală a mediului"
+      },
+      "area_surface_humidity": {
+        "name": "Umiditate de suprafață (calculată)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}Starea controlerului"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Exterior · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Exterior · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Exterior · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Exterior · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Exterior · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Exterior · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Exterior (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Exterior (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Exterior (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Calitatea aerului · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Calitatea aerului · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Calitatea aerului · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Calitatea aerului · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Calitatea aerului · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Calitatea aerului · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Calitatea aerului · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Indicator de mucegai · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Exterior · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Exterior · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Exterior · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Vreme și avertizări · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Deschideți (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Anunțuri (opțional) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "țintă (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · control (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · control (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · control (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Încălzire · Cameră · Ocupare"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Răcire · Cameră · Ocupare"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Umiditate · Cameră · Ocupare · țintă (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Încălzire · Acasă"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Răcire · Acasă"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Umiditate · Acasă · țintă (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Încălzire · Acasă · Oprire"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Răcire · Acasă · Oprire"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Umiditate · Acasă · Oprire · țintă (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Încălzire · Somn"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Răcire · Somn"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Umiditate · Somn · țintă (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Încălzire · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Răcire · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Umiditate · ECO · țintă (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Polen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Polen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "sursă · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "setări · sursă (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · țintă (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Viteză · Exterior (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "setări · sursă (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "setări · sursă (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Dispozitive · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Ocupare · Dispozitive · senzor · Obligatoriu"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Dispozitive (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Umiditate · Dispozitive (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Umiditate · Dispozitive (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Umiditate · Dispozitive · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Dispozitive · Temperatură −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Dispozitive (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Dispozitive · Viteză (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Dispozitive · Viteză (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · control (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · control (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · control (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "setări · sursă (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "setări · sursă · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "setări · sursă · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Indicator de mucegai · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · control (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · control (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · control (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_pid_process_gain": {
+        "name": "{channel}Process gain (PV per full output)"
+      },
+      "equipment_pid_time_constant_minutes": {
+        "name": "{channel}Response time constant"
+      },
+      "equipment_pid_dead_time_minutes": {
+        "name": "{channel}Response dead time"
+      },
+      "equipment_pid_lambda_minutes": {
+        "name": "{channel}IMC response Lambda"
+      },
+      "equipment_pid_capacity_stage_1": {
+        "name": "{channel}Measured fan stage 1 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_2": {
+        "name": "{channel}Measured fan stage 2 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_3": {
+        "name": "{channel}Measured fan stage 3 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_4": {
+        "name": "{channel}Measured fan stage 4 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_speed_1": {
+        "name": "{channel}Measured fan speed 1 (%)"
+      },
+      "equipment_pid_capacity_output_1": {
+        "name": "{channel}Measured delivered capacity 1 (%)"
+      },
+      "equipment_pid_capacity_speed_2": {
+        "name": "{channel}Measured fan speed 2 (%)"
+      },
+      "equipment_pid_capacity_output_2": {
+        "name": "{channel}Measured delivered capacity 2 (%)"
+      },
+      "equipment_pid_capacity_speed_3": {
+        "name": "{channel}Measured fan speed 3 (%)"
+      },
+      "equipment_pid_capacity_output_3": {
+        "name": "{channel}Measured delivered capacity 3 (%)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}setări · sursă (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limită pentru ventilare silențioasă (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Putere · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Putere · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Putere · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Cameră · Temperatură · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Cameră · Temperatură · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Cameră · Umiditate · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Cameră · Umiditate · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Cameră · Viteză · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Cameră · Viteză · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Acasă · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automat · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automat"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Anunțuri (opțional)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Polen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Somn"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automat"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Somn · Dispozitive"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Somn · Automat"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Dispozitive · Exterior"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Zgomot redus în timpul somnului"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Zgomot redus la prezență"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}senzor · Obligatoriu"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Limbă"
+      },
+      "area_manual_profile": {
+        "name": "Dispozitive · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Acasă · Ocupare · control"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Ocupare · Dispozitive"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Acasă · Dispozitive · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Dispozitive · sursă · țintă"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metodă de control",
+        "state": {
+          "existing": "Controlerul existent al camerei",
+          "automatic": "Automat",
+          "manual": "Manual",
+          "off": "Oprire",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Treaptă silențioasă nativă"
+      },
+      "equipment_pid_calibration_method": {
+        "name": "{channel}PID calibration method",
+        "state": {
+          "manual": "Manual Kp/Ki/Kd",
+          "imc_lambda": "IMC / Lambda (measured response)",
+          "cohen_coon": "Cohen–Coon (measured response)"
+        }
+      },
+      "equipment_pid_fan_capacity_mode": {
+        "name": "{channel}PID fan capacity strategy",
+        "state": {
+          "legacy": "Original PID allocation",
+          "measured": "Measured capacity compensation"
+        }
+      },
+      "equipment_pid_fan_capacity_for_mode": {
+        "name": "{channel}Calibrate for HVAC mode",
+        "state": {
+          "choose": "Choose direction",
+          "heat": "Heating",
+          "cool": "Cooling",
+          "dry": "Drying",
+          "fan_only": "Fan only"
+        }
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}control · Ocupare",
+        "state": {
+          "always": "Automat",
+          "occupied": "Cameră · Ocupare",
+          "absent": "Cameră · Ocupare · Oprire"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Somn · control",
+        "state": {
+          "normal": "Automat",
+          "pause": "Pauză",
+          "sleep_targets": "Somn · țintă"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}control · Dispozitive",
+        "state": {
+          "extraction": "Exterior · control",
+          "filtration": "setări · sursă",
+          "auto": "Automat"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Temperatură · sursă"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "sursă · Viteză · Exterior (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Somn · Dispozitive · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Somn · Dispozitive · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Indicator de mucegai · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Verifică și reia"
+      },
+      "equipment_pid_apply_calibration": {
+        "name": "{channel}Apply verified PID calibration"
+      },
+      "equipment_pid_apply_fan_capacity": {
+        "name": "{channel}Apply measured fan capacity"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Controler climatic"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Anunțuri (opțional) — Home Environment Manager",
+      "description": "Anunțuri (opțional) · Camere",
+      "fields": {
+        "language": {
+          "name": "Limbă",
+          "description": "Limbă"
+        },
+        "channels": {
+          "name": "Anunțuri (opțional)",
+          "description": "Anunțuri (opțional)"
+        },
+        "areas": {
+          "name": "Camere",
+          "description": "Camere"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Implicit",
+        "en": "setări · sursă",
+        "de": "setări · sursă",
+        "el": "setări · sursă",
+        "fr": "setări · sursă",
+        "es": "setări · sursă",
+        "it": "setări · sursă",
+        "nl": "setări · sursă",
+        "pt": "setări · sursă",
+        "pt-br": "setări · sursă",
+        "pl": "setări · sursă",
+        "ru": "setări · sursă",
+        "uk": "setări · sursă",
+        "tr": "setări · sursă",
+        "cs": "setări · sursă",
+        "sk": "setări · sursă",
+        "hu": "setări · sursă",
+        "ro": "setări · sursă",
+        "bg": "setări · sursă",
+        "hr": "setări · sursă",
+        "sr": "setări · sursă",
+        "sv": "setări · sursă",
+        "nb": "setări · sursă",
+        "da": "setări · sursă",
+        "fi": "setări · sursă",
+        "id": "setări · sursă",
+        "vi": "setări · sursă",
+        "th": "setări · sursă",
+        "hi": "setări · sursă",
+        "zh-hans": "setări · sursă",
+        "zh-hant": "setări · sursă",
+        "ja": "setări · sursă",
+        "ko": "setări · sursă",
+        "ar": "setări · sursă",
+        "he": "setări · sursă",
+        "fa": "setări · sursă",
+        "bn": "setări · sursă",
+        "ur": "setări · sursă",
+        "ta": "setări · sursă"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Acasă · Ocupare",
+        "all_home": "Acasă · Dispozitive · Ocupare"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "țintă · control",
+        "native": "Dispozitive · control",
+        "power": "Putere",
+        "speed": "Viteză"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automat",
+        "room": "Cameră · Ocupare",
+        "home": "Acasă · Ocupare"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pauză",
+        "off": "Oprire"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automat",
+        "pause": "Pauză",
+        "sleep_targets": "Somn · țintă"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Exterior · control",
+        "filtration": "setări · sursă"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "sursă · Invalid",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "țintă · setări"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centru de cameră",
+      "initiate_flow": {
+        "user": "Centru de cameră"
+      },
+      "step": {
+        "user": {
+          "title": "Centru de cameră",
+          "description": "Selectați o zonă Home Assistant. Grupul conține setările generale ale camerei și un controler pentru fiecare dispozitiv fizic selectat. Adăugarea unei camere nu activează controlul automat al echipamentelor.",
+          "data": {
+            "area_id": "Cameră"
+          },
+          "data_description": {
+            "area_id": "Selectați o zonă Home Assistant. Grupul conține setările generale ale camerei și un controler pentru fiecare dispozitiv fizic selectat. Adăugarea unei camere nu activează controlul automat al echipamentelor."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Invalid: Zonă."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
