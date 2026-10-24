@@ -46,6 +46,33 @@ class EquipmentEntity:
         self.async_on_remove(async_dispatcher_connect(
             self.hass, f"{SIGNAL_UPDATED}_{self._manager.entry.entry_id}", self._equipment_update))
 
+    def _watch_native_updates(self) -> None:
+        """Refresh physical facades/quiet controls only when their source changes.
+
+        Stored controller preferences are independent of physical availability,
+        while available native options and physical HVAC truth are dynamic.
+        Subscribe only to this controller's exact physical inputs, never to the
+        generated Manager entities, to avoid dispatcher/event feedback loops.
+        """
+        from homeassistant.const import EVENT_STATE_CHANGED
+
+        selected = frozenset(self._spec.source_entities)
+
+        @callback
+        def source_changed(event):
+            if event.data.get("entity_id") not in selected:
+                return
+            old, new = event.data.get("old_state"), event.data.get("new_state")
+            if (old is not None and new is not None
+                    and old.state == new.state
+                    and old.attributes == new.attributes):
+                return
+            self.async_write_ha_state()
+
+        self.async_on_remove(
+            self.hass.bus.async_listen(EVENT_STATE_CHANGED, source_changed)
+        )
+
     @callback
     def _equipment_update(self):
         self.async_write_ha_state()
