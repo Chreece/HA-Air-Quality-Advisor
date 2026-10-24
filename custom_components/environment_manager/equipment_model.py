@@ -478,7 +478,7 @@ def plan_for(manager: Any, spec: ManagedDevice) -> dict:
     occupancy, evidence, sensors = room_presence(manager.hass, spec.area_id, room, shared, known_areas=known)
     home, home_evidence, trackers = home_presence(manager.hass, shared)
     sleeping, sleep_evidence = sleep_presence(manager.hass, spec.area_id, shared, known)
-    return {"window_safe": bool(contacts) and (chosen_contacts is None or len(contacts) == len(chosen_contacts)) and all(s.state == "off" for s in contacts),
+    return {"window_safe": (chosen_contacts is None or len(contacts) == len(chosen_contacts)) and all(s.state == "off" for s in contacts),
             "window_contacts": [s.entity_id for s in contacts],
             "occupancy": occupancy, "occupancy_evidence": evidence,
             "away": home, "away_evidence": home_evidence, "sleeping": sleeping,
