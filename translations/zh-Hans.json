@@ -1,0 +1,1852 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "房间",
+        "description": "1 · 🪟 房间. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "设置 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "请选择: 设置 · 来源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "window_sensors": {
+        "title": "排除窗户传感器",
+        "description": "2 · 排除窗户传感器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗户传感器"
+        },
+        "data_description": {
+          "excluded_window_entities": "请选择: 排除窗户传感器 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "房间 · 霉菌指标",
+        "description": "房间: {area_name} ({position}/{total}). 🌡️ 🧊 霉菌指标 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "排除室内空气传感器",
+          "mold_indoor_temperature": "房间 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "霉菌指标 · 🧊 °C",
+          "mold_recalibrate": "霉菌指标 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "室外 · 温度 · 来源 · 霉菌指标"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "请选择: 排除室内空气传感器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "只为所选房间配置“房间 · 🌡️ (°C/°F)”。缺失或无效数据会阻止相关操作。",
+          "mold_critical_temperature_c": "🧊 霉菌指标 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "为“霉菌指标 · ↻ 🌡️”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "mold_outdoor_weather_entity": "选择 weather.* · 室外 温度 (temperature, °C/°F) → 霉菌指标. 必填: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "室外空气质量",
+        "description": "室外空气质量. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空气质量"
+        },
+        "data_description": {
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天气与预警",
+        "description": "天气与预警. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天气与预警",
+          "weather_warnings": "天气预警"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "delivery": {
+        "title": "播报（可选）",
+        "description": "播报（可选）. 自动通知 · 自动语音播报. Announcement Hub.",
+        "data": {
+          "language": "语言",
+          "automatic_tts": "自动",
+          "automatic_notifications": "自动 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "播报（可选） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "设置 · 来源",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 播报（可选）",
+          "ai_conversation_agent": "AI · 语言"
+        },
+        "data_description": {
+          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
+          "automatic_tts": "该选项控制“自动”。实际设备命令必须单独授权并具有独立保护。",
+          "automatic_notifications": "该选项控制“自动 · AUTOMATIC_NOTIFICATIONS”。实际设备命令必须单独授权并具有独立保护。",
+          "announcement_repeat_minutes": "默认: 10 min · 0 = 从不 · 仅在同一原因持续时 · 房间.",
+          "use_announcement_hub": "Announcement Hub · 不可用 → Home Assistant.",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "ai_rewrite_announcements": "AI · 播报（可选） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认)."
+        }
+      },
+      "thresholds": {
+        "title": "高级阈值",
+        "description": "高级阈值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 室外 (µg/m³)",
+          "outdoor_o3": "O₃ · 室外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 室外 (µg/m³)",
+          "indoor_aqi": "空气质量 · AQI (≥)",
+          "indoor_co2": "空气质量 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空气质量 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空气质量 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空气质量 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空气质量 · VOC (ppb) (≥)",
+          "indoor_humidity": "空气质量 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天气与预警 · km/h (≤)",
+          "max_age_minutes": "⏱ · 打开 (min, ≤)",
+          "indoor_mold": "霉菌指标 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "“室外 · AQI (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_co2": "“室外 · CO₂ (ppm) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_pm25": "“室外 · PM2.5 (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_pm10": "“室外 · PM10 (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_voc": "“室外 · VOC (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_voc_parts": "“室外 · VOC (ppb) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_no2": "“NO₂ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_o3": "“O₃ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_so2": "“SO₂ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_aqi": "“空气质量 · AQI (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_co2": "“空气质量 · CO₂ (ppm) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_pm25": "“空气质量 · PM2.5 (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_pm10": "“空气质量 · PM10 (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_voc": "“空气质量 · VOC (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_voc_parts": "“空气质量 · VOC (ppb) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_humidity": "“空气质量 · RH (%) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "min_outdoor_temp": "“室外 · °C (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_outdoor_temp": "“室外 · °C (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_outdoor_humidity": "“室外 · RH (%) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_wind_kmh": "“天气与预警 · km/h (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_age_minutes": "“⏱ · 打开 (min, ≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_mold": "“霉菌指标 · ≥ 70%”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "setup_rooms": {
+        "title": "要监测的房间",
+        "description": "要监测的房间 → 来源 → 常规 设置",
+        "data": {
+          "areas": "要监测的房间"
+        },
+        "data_description": {
+          "areas": "要监测的房间. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房间 · {area_name} · {room_index}/{room_count}",
+        "description": "选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+        "data": {
+          "windows": "窗户",
+          "air_quality": "空气质量与环境传感器",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "压力传感器",
+          "climate_devices": "设备"
+        },
+        "data_description": {
+          "windows": "窗户. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "air_quality": "空气质量与环境传感器. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "temperature": "温度. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "humidity": "湿度. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "pressure": "压力传感器. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "climate_devices": "设备. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "常规 设置",
+        "description": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。",
+        "data": {
+          "weather_entities": "天气与预警",
+          "outdoor_sensors": "室外空气质量",
+          "weather_warnings": "天气预警",
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "notify_entities": "设置 · 来源",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 选择 · 来源",
+          "language": "TTS · 选择 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 来源 · 选择",
+          "use_announcement_hub": "自动 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。",
+          "general_room_occupancy_sensors": "为“房间 · 占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_home_trackers": "为“家中 · 占用 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_entity": "为“占用 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "ai_conversation_agent": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · AI · 选择 · 来源 · conversation.* / ai_task.*.",
+          "language": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · TTS · 选择 · 来源 · provider capabilities.",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。",
+          "pollen_entities": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 花粉 · 来源 · 选择.",
+          "use_announcement_hub": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 自动 · Announcement Hub.",
+          "general_away_cooldown_minutes": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "选择无效: 室外空气质量 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "不可用: 室外空气质量 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "选择无效: 天气与预警 (weather.*).",
+      "invalid_warning": "选择无效: 天气与预警 ⚠.",
+      "missing_notify": "请选择: Announcement Hub / notify.*.",
+      "missing_tts": "请选择: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "选择无效: °C min < max.",
+      "no_areas": "请选择: 房间.",
+      "no_window_areas": "不可用: 测量值 (binary_sensor, window).",
+      "invalid_areas": "选择无效: 房间.",
+      "invalid_window_exclusions": "选择无效: 排除窗户传感器.",
+      "invalid_indoor_exclusions": "选择无效: 排除室内空气传感器.",
+      "no_windows_after_exclusions": "至少保留一个窗户传感器.",
+      "review_areas_after_exclusions": "请检查: 房间 · 测量值 (0).",
+      "invalid_repeat_minutes": "选择无效: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "不可用: conversation.process.",
+      "invalid_ai_agent": "选择无效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房间 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房间 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "霉菌指标 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "霉菌指标 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "霉菌指标 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "无效: 要监测的房间",
+      "invalid_room_source": "无效: 房间 · 来源"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — 已配置.",
+      "setup_area_removed": "无效: 要监测的房间",
+      "setup_changed": "设置 ↻ 要监测的房间"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ 请选择",
+        "description": "请选择: 房间 / 天气与预警 / 播报（可选） / 高级阈值",
+        "menu_options": {
+          "outside_data": "室外 · 来源",
+          "general_settings": "常规 · 设置",
+          "area_settings": "区域 · 设置",
+          "delivery": "播报（可选）",
+          "thresholds": "高级阈值"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "排除窗户传感器",
+        "description": "2 · 排除窗户传感器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗户传感器"
+        },
+        "data_description": {
+          "excluded_window_entities": "请选择: 排除窗户传感器 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "房间",
+        "description": "1 · 🪟 房间. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "设置 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "请选择: 设置 · 来源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "indoor_sensors": {
+        "title": "房间 · 霉菌指标",
+        "description": "房间: {area_name} ({position}/{total}). 🌡️ 🧊 霉菌指标 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "排除室内空气传感器",
+          "mold_indoor_temperature": "房间 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "霉菌指标 · 🧊 °C",
+          "mold_recalibrate": "霉菌指标 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "室外 · 温度 · 来源 · 霉菌指标"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "请选择: 排除室内空气传感器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "只为所选房间配置“房间 · 🌡️ (°C/°F)”。缺失或无效数据会阻止相关操作。",
+          "mold_critical_temperature_c": "🧊 霉菌指标 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "为“霉菌指标 · ↻ 🌡️”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "mold_outdoor_weather_entity": "选择 weather.* · 室外 温度 (temperature, °C/°F) → 霉菌指标. 必填: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "室外空气质量",
+        "description": "室外空气质量. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空气质量"
+        },
+        "data_description": {
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天气与预警",
+        "description": "天气与预警. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天气与预警",
+          "weather_warnings": "天气预警"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "delivery": {
+        "title": "播报（可选）",
+        "description": "播报（可选）. 自动通知 · 自动语音播报. Announcement Hub.",
+        "data": {
+          "language": "语言",
+          "automatic_tts": "自动",
+          "automatic_notifications": "自动 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "播报（可选） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "设置 · 来源",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 播报（可选）",
+          "ai_conversation_agent": "AI · 语言"
+        },
+        "data_description": {
+          "language": "只为所选房间配置“语言”。缺失或无效数据会阻止相关操作。",
+          "automatic_tts": "该选项控制“自动”。实际设备命令必须单独授权并具有独立保护。",
+          "automatic_notifications": "该选项控制“自动 · AUTOMATIC_NOTIFICATIONS”。实际设备命令必须单独授权并具有独立保护。",
+          "announcement_repeat_minutes": "默认: 10 min · 0 = 从不 · 仅在同一原因持续时 · 房间.",
+          "use_announcement_hub": "Announcement Hub · 不可用 → Home Assistant.",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "ai_rewrite_announcements": "AI · 播报（可选） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "请选择: conversation.* (Home Assistant · 默认)."
+        }
+      },
+      "thresholds": {
+        "title": "高级阈值",
+        "description": "高级阈值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 室外 (µg/m³)",
+          "outdoor_o3": "O₃ · 室外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 室外 (µg/m³)",
+          "indoor_aqi": "空气质量 · AQI (≥)",
+          "indoor_co2": "空气质量 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空气质量 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空气质量 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空气质量 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空气质量 · VOC (ppb) (≥)",
+          "indoor_humidity": "空气质量 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天气与预警 · km/h (≤)",
+          "max_age_minutes": "⏱ · 打开 (min, ≤)",
+          "indoor_mold": "霉菌指标 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "“室外 · AQI (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_co2": "“室外 · CO₂ (ppm) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_pm25": "“室外 · PM2.5 (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_pm10": "“室外 · PM10 (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_voc": "“室外 · VOC (µg/m³) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_voc_parts": "“室外 · VOC (ppb) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_no2": "“NO₂ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_o3": "“O₃ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "outdoor_so2": "“SO₂ · 室外 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_aqi": "“空气质量 · AQI (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_co2": "“空气质量 · CO₂ (ppm) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_pm25": "“空气质量 · PM2.5 (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_pm10": "“空气质量 · PM10 (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_voc": "“空气质量 · VOC (µg/m³) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_voc_parts": "“空气质量 · VOC (ppb) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_humidity": "“空气质量 · RH (%) (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "min_outdoor_temp": "“室外 · °C (≥)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_outdoor_temp": "“室外 · °C (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_outdoor_humidity": "“室外 · RH (%) (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_wind_kmh": "“天气与预警 · km/h (≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "max_age_minutes": "“⏱ · 打开 (min, ≤)”的决策阈值会影响建议，但不属于医学限值。",
+          "indoor_mold": "“霉菌指标 · ≥ 70%”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "environment": {
+        "title": "设置 · 设置 · 来源",
+        "description": "只为所选房间配置“设置 · 设置 · 来源”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "pollen_entity": "花粉 · 来源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT",
+          "aqi_scale_0": "AQI #1 · 来源",
+          "aqi_custom_limit_0": "AQI #1 · 目标",
+          "aqi_scale_1": "AQI #2 · 来源",
+          "aqi_custom_limit_1": "AQI #2 · 目标",
+          "aqi_scale_2": "AQI #3 · 来源",
+          "aqi_custom_limit_2": "AQI #3 · 目标",
+          "aqi_scale_3": "AQI #4 · 来源",
+          "aqi_custom_limit_3": "AQI #4 · 目标",
+          "aqi_scale_4": "AQI #5 · 来源",
+          "aqi_custom_limit_4": "AQI #5 · 目标",
+          "aqi_scale_5": "AQI #6 · 来源",
+          "aqi_custom_limit_5": "AQI #6 · 目标",
+          "aqi_scale_6": "AQI #7 · 来源",
+          "aqi_custom_limit_6": "AQI #7 · 目标",
+          "aqi_scale_7": "AQI #8 · 来源",
+          "aqi_custom_limit_7": "AQI #8 · 目标",
+          "aqi_scale_8": "AQI #9 · 来源",
+          "aqi_custom_limit_8": "AQI #9 · 目标",
+          "aqi_scale_9": "AQI #10 · 来源",
+          "aqi_custom_limit_9": "AQI #10 · 目标",
+          "aqi_scale_10": "AQI #11 · 来源",
+          "aqi_custom_limit_10": "AQI #11 · 目标",
+          "aqi_scale_11": "AQI #12 · 来源",
+          "aqi_custom_limit_11": "AQI #12 · 目标",
+          "aqi_scale_12": "AQI #13 · 来源",
+          "aqi_custom_limit_12": "AQI #13 · 目标",
+          "aqi_scale_13": "AQI #14 · 来源",
+          "aqi_custom_limit_13": "AQI #14 · 目标",
+          "aqi_scale_14": "AQI #15 · 来源",
+          "aqi_custom_limit_14": "AQI #15 · 目标",
+          "aqi_scale_15": "AQI #16 · 来源",
+          "aqi_custom_limit_15": "AQI #16 · 目标",
+          "aqi_scale_16": "AQI #17 · 来源",
+          "aqi_custom_limit_16": "AQI #17 · 目标",
+          "aqi_scale_17": "AQI #18 · 来源",
+          "aqi_custom_limit_17": "AQI #18 · 目标",
+          "aqi_scale_18": "AQI #19 · 来源",
+          "aqi_custom_limit_18": "AQI #19 · 目标",
+          "aqi_scale_19": "AQI #20 · 来源",
+          "aqi_custom_limit_19": "AQI #20 · 目标",
+          "aqi_scale_20": "AQI #21 · 来源",
+          "aqi_custom_limit_20": "AQI #21 · 目标",
+          "aqi_scale_21": "AQI #22 · 来源",
+          "aqi_custom_limit_21": "AQI #22 · 目标",
+          "aqi_scale_22": "AQI #23 · 来源",
+          "aqi_custom_limit_22": "AQI #23 · 目标",
+          "aqi_scale_23": "AQI #24 · 来源",
+          "aqi_custom_limit_23": "AQI #24 · 目标",
+          "aqi_scale_24": "AQI #25 · 来源",
+          "aqi_custom_limit_24": "AQI #25 · 目标",
+          "aqi_scale_25": "AQI #26 · 来源",
+          "aqi_custom_limit_25": "AQI #26 · 目标",
+          "aqi_scale_26": "AQI #27 · 来源",
+          "aqi_custom_limit_26": "AQI #27 · 目标",
+          "aqi_scale_27": "AQI #28 · 来源",
+          "aqi_custom_limit_27": "AQI #28 · 目标",
+          "aqi_scale_28": "AQI #29 · 来源",
+          "aqi_custom_limit_28": "AQI #29 · 目标",
+          "aqi_scale_29": "AQI #30 · 来源",
+          "aqi_custom_limit_29": "AQI #30 · 目标",
+          "aqi_scale_30": "AQI #31 · 来源",
+          "aqi_custom_limit_30": "AQI #31 · 目标",
+          "aqi_scale_31": "AQI #32 · 来源",
+          "aqi_custom_limit_31": "AQI #32 · 目标"
+        },
+        "data_description": {
+          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "pollen_high_from": "只为所选房间配置“POLLEN · 花粉 · HIGH”。缺失或无效数据会阻止相关操作。",
+          "pollen_max_scale": "只为所选房间配置“POLLEN · 花粉 · SCALE”。缺失或无效数据会阻止相关操作。",
+          "pollen_avoid_ventilation": "只为所选房间配置“POLLEN · 花粉 · NO VENT”。缺失或无效数据会阻止相关操作。",
+          "aqi_scale_0": "只为所选房间配置“AQI #1 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_0": "“AQI #1 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_1": "只为所选房间配置“AQI #2 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_1": "“AQI #2 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_2": "只为所选房间配置“AQI #3 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_2": "“AQI #3 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_3": "只为所选房间配置“AQI #4 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_3": "“AQI #4 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_4": "只为所选房间配置“AQI #5 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_4": "“AQI #5 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_5": "只为所选房间配置“AQI #6 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_5": "“AQI #6 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_6": "只为所选房间配置“AQI #7 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_6": "“AQI #7 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_7": "只为所选房间配置“AQI #8 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_7": "“AQI #8 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_8": "只为所选房间配置“AQI #9 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_8": "“AQI #9 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_9": "只为所选房间配置“AQI #10 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_9": "“AQI #10 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_10": "只为所选房间配置“AQI #11 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_10": "“AQI #11 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_11": "只为所选房间配置“AQI #12 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_11": "“AQI #12 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_12": "只为所选房间配置“AQI #13 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_12": "“AQI #13 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_13": "只为所选房间配置“AQI #14 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_13": "“AQI #14 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_14": "只为所选房间配置“AQI #15 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_14": "“AQI #15 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_15": "只为所选房间配置“AQI #16 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_15": "“AQI #16 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_16": "只为所选房间配置“AQI #17 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_16": "“AQI #17 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_17": "只为所选房间配置“AQI #18 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_17": "“AQI #18 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_18": "只为所选房间配置“AQI #19 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_18": "“AQI #19 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_19": "只为所选房间配置“AQI #20 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_19": "“AQI #20 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_20": "只为所选房间配置“AQI #21 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_20": "“AQI #21 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_21": "只为所选房间配置“AQI #22 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_21": "“AQI #22 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_22": "只为所选房间配置“AQI #23 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_22": "“AQI #23 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_23": "只为所选房间配置“AQI #24 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_23": "“AQI #24 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_24": "只为所选房间配置“AQI #25 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_24": "“AQI #25 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_25": "只为所选房间配置“AQI #26 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_25": "“AQI #26 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_26": "只为所选房间配置“AQI #27 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_26": "“AQI #27 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_27": "只为所选房间配置“AQI #28 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_27": "“AQI #28 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_28": "只为所选房间配置“AQI #29 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_28": "“AQI #29 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_29": "只为所选房间配置“AQI #30 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_29": "“AQI #30 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_30": "只为所选房间配置“AQI #31 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_30": "“AQI #31 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "aqi_scale_31": "只为所选房间配置“AQI #32 · 来源”。缺失或无效数据会阻止相关操作。",
+          "aqi_custom_limit_31": "“AQI #32 · 目标”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "environment_room": {
+        "title": "设置 · 设置 · 来源",
+        "description": "只为所选房间配置“设置 · 设置 · 来源”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "environment_area": "设置 · 来源"
+        },
+        "data_description": {
+          "environment_area": "只为所选房间配置“设置 · 来源”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "environment_room_air": {
+        "title": "设置 · 室外",
+        "description": "只为所选房间配置“设置 · 室外”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "temperature_entity": "温度 · 来源",
+          "room_volume_m3": "设置 · 来源 (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "空气净化器 · 来源",
+          "extractor_entity": "排风扇 · 来源",
+          "co2_ndir_verified": "CO₂ · 必填",
+          "co2_target_ppm": "CO₂ · CO₂ · 目标 (ppm)",
+          "sleep_room": "睡眠"
+        },
+        "data_description": {
+          "temperature_entity": "为“温度 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "room_volume_m3": "为“设置 · 来源 (m³)”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "particle_cadr_m3h": "为“CADR (m³/h)”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "purifier_entity": "为“空气净化器 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "extractor_entity": "为“排风扇 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "co2_ndir_verified": "为“CO₂ · 必填”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "co2_target_ppm": "“CO₂ · CO₂ · 目标 (ppm)”的决策阈值会影响建议，但不属于医学限值。",
+          "sleep_room": "只为所选房间配置“睡眠”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "environment_room_exposure": {
+        "title": "设置 · 设置 · 来源",
+        "description": "只为所选房间配置“设置 · 设置 · 来源”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "radon_entity": "RADON · Rn · 来源",
+          "radon_sensor_verified": "RADON · Rn · 传感器 · 必填 · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · 来源",
+          "formaldehyde_sensor_verified": "HCHO · 传感器 · 必填 · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · 来源 · 传感器 (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · 传感器 · 必填",
+          "illuminance_entity": "LUX · 来源 (lux)",
+          "melanopic_edi_entity": "EDI · EDI · 来源 (lx)",
+          "melanopic_spectral_verified": "EDI · 必填"
+        },
+        "data_description": {
+          "radon_entity": "为“RADON · Rn · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "radon_sensor_verified": "为“RADON · Rn · 传感器 · 必填 · SENSOR ✓ · VERIFIED”使用真实、合适的测量值。估算值不能代替校准RADON · Rn · 传感器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "radon_reference_bq_m3": "只为所选房间配置“Rn (Bq/m³)”。缺失或无效数据会阻止相关操作。",
+          "formaldehyde_entity": "为“HCHO · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "formaldehyde_sensor_verified": "为“HCHO · 传感器 · 必填 · SENSOR ✓ · VERIFIED”使用真实、合适的测量值。估算值不能代替校准HCHO · 传感器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "noise_entity": "为“dB(A) · 来源 · 传感器 (dB(A))”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "noise_sensor_calibrated": "为“dB(A) · 传感器 · 必填”使用真实、合适的测量值。估算值不能代替校准dB(A) · 传感器 · 必填。",
+          "illuminance_entity": "为“LUX · 来源 (lux)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "melanopic_edi_entity": "为“EDI · EDI · 来源 (lx)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "melanopic_spectral_verified": "为“EDI · 必填”使用真实、合适的测量值。估算值不能代替校准传感器。"
+        }
+      },
+      "environment_room_comfort": {
+        "title": "设置 · 设置 · 来源",
+        "description": "只为所选房间配置“设置 · 设置 · 来源”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "enable_pmv": "PMV / PPD · 自动",
+          "radiant_temperature_entity": "温度 · 来源",
+          "air_speed_entity": "来源 · 速度 · 室外 (m/s)",
+          "air_speed_m_s": "速度 · 室外 (m/s)",
+          "met": "设置 · 来源 (met)",
+          "clo": "设置 · 来源 (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "只为所选房间配置“PMV / PPD · 自动”。缺失或无效数据会阻止相关操作。",
+          "radiant_temperature_entity": "为“温度 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "air_speed_entity": "为“来源 · 速度 · 室外 (m/s)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "air_speed_m_s": "为“速度 · 室外 (m/s)”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "met": "为“设置 · 来源 (met)”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "clo": "为“设置 · 来源 (clo)”使用真实、合适的测量值。估算值不能代替校准传感器。"
+        }
+      },
+      "pid": {
+        "title": "设置 · PID",
+        "description": "只为所选房间配置“设置 · PID”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "该选项控制“PID”。实际设备命令必须单独授权并具有独立保护。"
+        }
+      },
+      "pid_room": {
+        "title": "设置 · PID",
+        "description": "只为所选房间配置“设置 · PID”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "pid_enabled": "PID · 自动 · AUTO",
+          "pid_climate_entities": "PID · 设备",
+          "pid_temperature_entity": "温度 · 来源",
+          "pid_mode": "PID",
+          "pid_target_c": "目标 (°C)",
+          "pid_pause_on_window_open": "PID · 室外"
+        },
+        "data_description": {
+          "pid_enabled": "该选项控制“PID · 自动 · AUTO”。实际设备命令必须单独授权并具有独立保护。",
+          "pid_climate_entities": "为“PID · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "pid_temperature_entity": "为“温度 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "pid_mode": "该选项控制“PID”。实际设备命令必须单独授权并具有独立保护。",
+          "pid_target_c": "“目标 (°C)”的决策阈值会影响建议，但不属于医学限值。",
+          "pid_pause_on_window_open": "该选项控制“PID · 室外”。实际设备命令必须单独授权并具有独立保护。"
+        }
+      },
+      "pid_tuning": {
+        "title": "设置 · PID",
+        "description": "只为所选房间配置“设置 · PID”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "pid_kp": "PID Kp · 控制 (% per °C)",
+          "pid_ki": "PID Ki · 控制 (% per °C-minute)",
+          "pid_kd": "PID Kd · 控制 (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "该选项控制“PID Kp · 控制 (% per °C)”。实际设备命令必须单独授权并具有独立保护。",
+          "pid_ki": "该选项控制“PID Ki · 控制 (% per °C-minute)”。实际设备命令必须单独授权并具有独立保护。",
+          "pid_kd": "该选项控制“PID Kd · 控制 (%·minute per °C)”。实际设备命令必须单独授权并具有独立保护。",
+          "pid_offset_c": "“PID (°C) · PID_OFFSET_C”的决策阈值会影响建议，但不属于医学限值。",
+          "pid_min_setpoint_c": "“PID (°C) · MIN TARGET”的决策阈值会影响建议，但不属于医学限值。",
+          "pid_max_setpoint_c": "“PID (°C) · MAX TARGET”的决策阈值会影响建议，但不属于医学限值。",
+          "pid_sample_seconds": "该时间参数用于“PID (s)”。避免频繁切换，但不能代替硬件保护。",
+          "pid_max_change_c": "“PID (°C) · MAX Δ”的决策阈值会影响建议，但不属于医学限值。",
+          "pid_min_change_c": "“PID (°C) · MIN Δ”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "climate": {
+        "title": "设置 · 设备",
+        "description": "只为所选房间配置“设置 · 设备”。缺失或无效数据会阻止相关操作。",
+        "data": {
+          "climate_area": "设备"
+        },
+        "data_description": {
+          "climate_area": "该选项控制“设备”。实际设备命令必须单独授权并具有独立保护。"
+        }
+      },
+      "climate_room": {
+        "title": "设置 · 设备",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "climate_enabled": "设备 · 自动 · AUTO",
+          "climate_allow_actuation": "设备 · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "设备 · 自动 · MODE SWITCH",
+          "climate_prefer_native_auto": "设备 · 自动 · NATIVE",
+          "climate_controller": "设备 · 控制",
+          "climate_mode": "设备 · MODE",
+          "climate_entity": "设备 · 来源",
+          "climate_temperature_entity": "温度 · 来源",
+          "climate_hysteresis_c": "设备 (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "该选项控制“设备 · 自动 · AUTO”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_allow_actuation": "该选项控制“设备 · CLIMATE_ALLOW_ACTUATION”。实际设备 · CLIMATE_ALLOW_ACTUATION命令必须单独授权并具有独立保护。",
+          "climate_auto_switch_hvac": "该选项控制“设备 · 自动 · MODE SWITCH”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_prefer_native_auto": "该选项控制“设备 · 自动 · NATIVE”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_controller": "该选项设备 · 控制“设备 · 控制”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_mode": "该选项控制“设备 · MODE”。实际设备 · MODE命令必须单独授权并具有独立保护。",
+          "climate_entity": "为“设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_temperature_entity": "为“温度 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_hysteresis_c": "“设备 (°C)”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "climate_presence": {
+        "title": "设置 · 占用 · 设备",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "climate_occupancy_sensors": "占用 · 传感器",
+          "climate_away_entities": "家中 · 设备",
+          "climate_unknown_occupancy": "占用 · 设备",
+          "climate_unoccupied_delay_minutes": "设备 · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "占用 · 设备 · 传感器 · 必填",
+          "climate_away_policy": "家中 · 设备 · POLICY",
+          "climate_manual_profile": "设备 · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "睡眠 · 设备",
+          "climate_sleep_schedule_enabled": "睡眠 · 自动",
+          "climate_sleep_start": "睡眠 · 设备 · START",
+          "climate_sleep_end": "睡眠 · 设备 · END",
+          "climate_target_source": "设备 · 来源 · 目标",
+          "climate_comfort_adjustment_max_c": "设备 (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "为“占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_away_entities": "为“家中 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_unknown_occupancy": "该选项控制“占用 · 设备”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_unoccupied_delay_minutes": "该时间参数用于“设备 · CLIMATE_UNOCCUPIED_DELAY_MINUTES”。避免频繁切换，但不能代替硬件保护。",
+          "climate_occupancy_stale_minutes": "该时间参数用于“占用 · 设备 · 传感器 · 必填”。避免频繁切换，但不能代替硬件保护。",
+          "climate_away_policy": "该选项控制“家中 · 设备 · POLICY”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_manual_profile": "该选项控制“设备 · CLIMATE_MANUAL_PROFILE”。实际设备 · CLIMATE_MANUAL_PROFILE命令必须单独授权并具有独立保护。",
+          "climate_sleep_active": "该选项控制“睡眠 · 设备”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_sleep_schedule_enabled": "该选项控制“睡眠 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_sleep_start": "该时间参数用于“睡眠 · 设备 · START”。避免频繁切换，但不能代替硬件保护。",
+          "climate_sleep_end": "该时间参数用于“睡眠 · 设备 · END”。避免频繁切换，但不能代替硬件保护。",
+          "climate_target_source": "“设备 · 来源 · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_comfort_adjustment_max_c": "“设备 (°C)”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "climate_equipment": {
+        "title": "设置 · 设备",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · 设备 · 来源 · 温度 +",
+          "climate_cool_climate_entity": "COOL · 设备 · 来源 · 温度 −",
+          "climate_dry_climate_entity": "DRY · 设备 · 来源",
+          "climate_fan_climate_entity": "FAN_ONLY · 速度 · 设备 · 来源",
+          "climate_humidifier_entity": "HUMIDIFIER · 设备 · 来源",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · 设备 · 来源",
+          "climate_extraction_fan_entity": "EXTRACT · 速度 · 设备 · 来源",
+          "climate_purifier_fan_entity": "空气净化器 · 来源",
+          "climate_humidity_entity": "湿度 · 来源",
+          "climate_humidity_low_rh": "RH · 湿度 · 设备 (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · 湿度 · 设备 (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · 湿度 · 设备 · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "设备 · 温度 −",
+          "climate_humidity_setpoint_auto": "湿度 · 自动",
+          "climate_window_efficiency_notify": "设备 · 室外",
+          "climate_dry_fan_mode_auto": "速度 · 自动",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · 速度 · 设备 · 必填 · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · 速度 · 设备 · 室外 · 必填 · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · 速度 · 设备 (s) · MODE DWELL",
+          "climate_humidity_power_auto": "湿度 · 功率 · 自动",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · 湿度 · 设备 · 功率 · 必填 · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · 湿度 · 设备 · 功率 · 室外 · 必填 · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · 湿度 · 设备 · 功率 · 自动 (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · 湿度 · 设备 · 功率 · 关闭 (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · 湿度 · 设备 · 功率 · 自动 (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "设备 · 自动 · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "为“HEAT · 设备 · 来源 · 温度 +”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_cool_climate_entity": "为“COOL · 设备 · 来源 · 温度 −”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_dry_climate_entity": "为“DRY · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_fan_climate_entity": "为“FAN_ONLY · 速度 · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_humidifier_entity": "为“HUMIDIFIER · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_dehumidifier_entity": "为“DEHUMIDIFIER · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_extraction_fan_entity": "为“EXTRACT · 速度 · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_purifier_fan_entity": "为“空气净化器 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_humidity_entity": "为“湿度 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_humidity_low_rh": "“RH · 湿度 · 设备 (%) · RH MIN”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_humidity_high_rh": "“RH · 湿度 · 设备 (%) · RH MAX”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_humidity_hysteresis_rh": "“RH · 湿度 · 设备 · ± RH”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_cooling_dry_deferral_rh_points": "该选项控制“设备 · 温度 −”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_humidity_setpoint_auto": "该选项控制“湿度 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_window_efficiency_notify": "该选项控制“设备 · 室外”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_dry_fan_mode_auto": "该选项控制“速度 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_dry_fan_hardware_confirmed": "为“DRY/FAN_ONLY · 速度 · 设备 · 必填 · HW ✓”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "climate_dry_fan_windowless_confirmed": "为“DRY/FAN_ONLY · 速度 · 设备 · 室外 · 必填 · NO WINDOW”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "climate_dry_fan_mode_dwell_s": "该时间参数用于“DRY/FAN_ONLY · 速度 · 设备 (s) · MODE DWELL”。避免频繁切换，但不能代替硬件保护。",
+          "climate_humidity_power_auto": "该选项控制“湿度 · 功率 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_humidity_power_hardware_confirmed": "为“RH POWER · 湿度 · 设备 · 功率 · 必填 · HW ✓”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "climate_humidity_power_windowless_confirmed": "为“RH POWER · 湿度 · 设备 · 功率 · 室外 · 必填 · NO WINDOW”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "climate_humidity_power_min_on_s": "该时间参数用于“RH POWER · 湿度 · 设备 · 功率 · 自动 (s) · MIN ON”。避免频繁切换，但不能代替硬件保护。",
+          "climate_humidity_power_min_off_s": "该时间参数用于“RH POWER · 湿度 · 设备 · 功率 · 关闭 (s) · MIN OFF”。避免频繁切换，但不能代替硬件保护。",
+          "climate_humidity_power_max_on_s": "该时间参数用于“RH POWER · 湿度 · 设备 · 功率 · 自动 (s) · MAX ON”。避免频繁切换，但不能代替硬件保护。",
+          "climate_secondary_climate_setpoint_auto": "该选项控制“设备 · 自动 · TARGET AUTO”。实际设备命令必须单独授权并具有独立保护。"
+        }
+      },
+      "climate_air_strategy": {
+        "title": "设置 · 设备 · 室外",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "climate_fan_speed_auto": "速度 · 自动",
+          "climate_fan_power_auto": "速度 · 功率 · 自动",
+          "climate_fan_power_hardware_confirmed": "FAN · 速度 · 设备 · 功率 · 必填 · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · 速度 · 设备 · 功率 · 自动 (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · 速度 · 设备 · 功率 · 关闭 (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · 速度 · 设备 · 功率 · 自动 (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · 设备 · 传感器 · 必填 · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · 设备 · 来源",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · 设备 · 来源",
+          "climate_pm25_action_ug_m3": "PM2.5 · 设备 (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · 设备 · 速度 (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · 设备 · 速度 (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "该选项控制“速度 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_fan_power_auto": "该选项控制“速度 · 功率 · 自动”。实际设备命令必须单独授权并具有独立保护。",
+          "climate_fan_power_hardware_confirmed": "为“FAN · 速度 · 设备 · 功率 · 必填 · HW ✓”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "climate_fan_power_min_on_s": "该时间参数用于“FAN · 速度 · 设备 · 功率 · 自动 (s) · MIN ON”。避免频繁切换，但不能代替硬件保护。",
+          "climate_fan_power_min_off_s": "该时间参数用于“FAN · 速度 · 设备 · 功率 · 关闭 (s) · MIN OFF”。避免频繁切换，但不能代替硬件保护。",
+          "climate_fan_power_max_on_s": "该时间参数用于“FAN · 速度 · 设备 · 功率 · 自动 (s) · MAX ON”。避免频繁切换，但不能代替硬件保护。",
+          "climate_pm25_sensor_verified": "为“PM2.5 · PM2.5 · 设备 · 传感器 · 必填 · SENSOR ✓ · VERIFIED”使用真实、合适的测量值。估算值不能代替校准PM2.5 · PM2.5 · 设备 · 传感器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "climate_co2_entity": "为“CO₂ · CO₂ · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_pm25_entity": "为“PM2.5 · PM2.5 · 设备 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "climate_pm25_action_ug_m3": "“PM2.5 · 设备 (µg/m³)”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_extraction_speed_percent": "“EXTRACT · 设备 · 速度 (%) · SPEED %”的决策阈值会影响建议，但不属于医学限值。",
+          "climate_purifier_speed_percent": "“PURIFIER · 设备 · 速度 (%) · SPEED %”的决策阈值会影响建议，但不属于医学限值。"
+        }
+      },
+      "climate_profiles": {
+        "title": "设置 · 设备",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "home_heat": "供暖 · 在家 (°C)",
+          "home_cool": "制冷 · 在家 (°C)",
+          "unoccupied_heat": "供暖 · 空房间 (°C)",
+          "unoccupied_cool": "制冷 · 空房间 (°C)",
+          "away_heat": "供暖 · 离家 (°C)",
+          "away_cool": "制冷 · 离家 (°C)",
+          "sleep_heat": "供暖 · 睡眠 (°C)",
+          "sleep_cool": "制冷 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "home_heat": "仅在确认房间有人或睡眠状态时应用“供暖 · 在家 (°C)”目标。未知不等于无人。",
+          "home_cool": "仅在确认房间有人或睡眠状态时应用“制冷 · 在家 (°C)”目标。未知不等于无人。",
+          "unoccupied_heat": "仅在确认房间有人或睡眠状态时应用“供暖 · 空房间 (°C)”目标。未知不等于无人。",
+          "unoccupied_cool": "仅在确认房间有人或睡眠状态时应用“制冷 · 空房间 (°C)”目标。未知不等于无人。",
+          "away_heat": "仅在确认房间有人或睡眠状态时应用“供暖 · 离家 (°C)”目标。未知不等于无人。",
+          "away_cool": "仅在确认房间有人或睡眠状态时应用“制冷 · 离家 (°C)”目标。未知不等于无人。",
+          "sleep_heat": "仅在确认房间有人或睡眠状态时应用“供暖 · 睡眠 (°C)”目标。未知不等于无人。",
+          "sleep_cool": "仅在确认房间有人或睡眠状态时应用“制冷 · 睡眠 (°C)”目标。未知不等于无人。"
+        }
+      },
+      "climate_actuators": {
+        "title": "设置 · 设备",
+        "description": "区域 · 设置 · 设备 · 控制. 占用 · 传感器 · 必填.",
+        "data": {
+          "direct_hardware_confirmed": "必填",
+          "heat_actuator": "供暖 · 设备",
+          "cool_actuator": "制冷 · 设备",
+          "min_on_s": "功率 · 自动 (s) · MIN ON",
+          "min_off_s": "功率 · 关闭 (s)",
+          "max_on_s": "功率 · 自动 (s) · MAX ON",
+          "mode_dwell_s": "设置 · 来源 (s) · MODE DWELL",
+          "kp": "PID Kp · 控制 (percentage points/°C)",
+          "ki": "PID Ki · 控制 (percentage points/(°C·minute))",
+          "kd": "PID Kd · 控制 (percentage points·minute/°C)",
+          "sample_seconds": "设置 · 来源 (s) · SAMPLE",
+          "pwm_period_s": "设置 · 来源 (s) · PWM PERIOD",
+          "max_demand_change": "设置 · 来源 · MAX Δ",
+          "min_demand_change": "设置 · 来源 · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "为“必填”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "heat_actuator": "只为所选房间配置“供暖 · 设备”。缺失或无效数据会阻止相关操作。",
+          "cool_actuator": "只为所选房间配置“制冷 · 设备”。缺失或无效数据会阻止相关操作。",
+          "min_on_s": "该时间参数用于“功率 · 自动 (s) · MIN ON”。避免频繁切换，但不能代替硬件保护。",
+          "min_off_s": "该时间参数用于“功率 · 关闭 (s)”。避免频繁切换，但不能代替硬件保护。",
+          "max_on_s": "该时间参数用于“功率 · 自动 (s) · MAX ON”。避免频繁切换，但不能代替硬件保护。",
+          "mode_dwell_s": "该时间参数用于“设置 · 来源 (s) · MODE DWELL”。避免频繁切换，但不能代替硬件保护。",
+          "kp": "只为所选房间配置“PID Kp · 控制 (percentage points/°C)”。缺失或无效数据会阻止相关操作。",
+          "ki": "只为所选房间配置“PID Ki · 控制 (percentage points/(°C·minute))”。缺失或无效数据会阻止相关操作。",
+          "kd": "只为所选房间配置“PID Kd · 控制 (percentage points·minute/°C)”。缺失或无效数据会阻止相关操作。",
+          "sample_seconds": "该时间参数用于“设置 · 来源 (s) · SAMPLE”。避免频繁切换，但不能代替硬件保护。",
+          "pwm_period_s": "该时间参数用于“设置 · 来源 (s) · PWM PERIOD”。避免频繁切换，但不能代替硬件保护。",
+          "max_demand_change": "只为所选房间配置“设置 · 来源 · MAX Δ”。缺失或无效数据会阻止相关操作。",
+          "min_demand_change": "只为所选房间配置“设置 · 来源 · MIN Δ”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "outside_data": {
+        "title": "室外 · 来源",
+        "description": "室外 · 来源: 选择 来源, 传感器 / 设备 · 控制.",
+        "menu_options": {
+          "weather": "天气与预警",
+          "outdoor": "室外空气质量",
+          "outside_aqi": "室外 · AQI",
+          "pollen": "花粉"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "区域 · 设置",
+        "description": "区域 · 设置: 选择 来源, 传感器 / 设备 · 控制.",
+        "menu_options": {
+          "areas": "房间",
+          "indoor_sensors": "房间 · 霉菌指标",
+          "window_sensors": "排除窗户传感器",
+          "environment_room": "设置 · 设置 · 来源",
+          "area_devices": "室内环境设备"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "设备 · 设置",
+        "description": "可选：继续配置传感器及设备专属安全权限。保持关闭可立即保存设备列表。",
+        "menu_options": {
+          "device_settings": "设备 · 控制",
+          "device_choice": "选择 · 设备",
+          "device_done": "设置 · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "常规 · 设置",
+        "description": "常规 · 设置: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_home_policy": "家中 · 占用 · 控制",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "general_source_stale_minutes": "来源 · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "为“房间 · 占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_entity": "为“占用 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_home_trackers": "为“家中 · 占用 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_home_policy": "该选项控制“家中 · 占用 · 控制”。实际设备命令必须单独授权并具有独立保护。",
+          "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_source_stale_minutes": "来源 · 睡眠 / 占用 · max 240 min. 无效 · 关闭."
+        }
+      },
+      "pollen": {
+        "title": "花粉",
+        "description": "花粉: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "pollen_entity": "花粉 · 来源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "为“花粉 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "pollen_high_from": "只为所选房间配置“POLLEN · 花粉 · HIGH”。缺失或无效数据会阻止相关操作。",
+          "pollen_max_scale": "只为所选房间配置“POLLEN · 花粉 · SCALE”。缺失或无效数据会阻止相关操作。",
+          "pollen_avoid_ventilation": "只为所选房间配置“POLLEN · 花粉 · NO VENT”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "outside_aqi": {
+        "title": "室外 · AQI",
+        "description": "室外 · AQI: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "outside_aqi_entity": "AQI · 传感器",
+          "outside_aqi_scale": "AQI · 来源",
+          "outside_aqi_limit": "AQI · 目标",
+          "outside_aqi_no_sources": "AQI · 传感器 · 必填"
+        },
+        "data_description": {
+          "outside_aqi_entity": "为“AQI · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "outside_aqi_scale": "只为所选房间配置“AQI · 来源”。缺失或无效数据会阻止相关操作。",
+          "outside_aqi_limit": "“AQI · 目标”的决策阈值会影响建议，但不属于医学限值。",
+          "outside_aqi_no_sources": "只为所选房间配置“AQI · 传感器 · 必填”。缺失或无效数据会阻止相关操作。"
+        }
+      },
+      "area_devices": {
+        "title": "室内环境设备",
+        "description": "选择 · 区域",
+        "data": {
+          "area_devices_area": "选择 · 区域"
+        },
+        "data_description": {
+          "area_devices_area": "为“选择 · 区域”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。"
+        }
+      },
+      "select_devices": {
+        "title": "室内环境设备",
+        "description": "选择{area_name}的设备。保存后，房间枢纽内会为每台物理设备创建一个控制设备。请在各设备中设置目标、预设、自动/手动/关闭/PID和静音运行。仅选择设备不会启用自动控制。",
+        "data": {
+          "selected_devices": "选择 · 设备",
+          "configure_device_sources": "现在配置传感器和设备权限"
+        },
+        "data_description": {
+          "selected_devices": "选择{area_name}的设备。保存后，房间枢纽内会为每台物理设备创建一个控制设备。请在各设备中设置目标、预设、自动/手动/关闭/PID和静音运行。仅选择设备不会启用自动控制。",
+          "configure_device_sources": "可选：继续配置传感器及设备专属安全权限。保持关闭可立即保存设备列表。"
+        }
+      },
+      "device_choice": {
+        "title": "选择 · 设备",
+        "description": "选择 · 设备: 选择 来源, 传感器 / 设备 · 控制.",
+        "data": {
+          "device_choice": "选择 · 设备"
+        },
+        "data_description": {
+          "device_choice": "为“选择 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。"
+        }
+      },
+      "device_settings": {
+        "title": "设备 · 控制",
+        "description": "该选项控制“控制 · 来源”。实际设备命令必须单独授权并具有独立保护。 为“必填 · 设备 · 功率”使用真实、合适的测量值。估算值不能代替校准传感器。 该时间参数用于“功率 · min ON (s)”。避免频繁切换，但不能代替硬件保护。 该时间参数用于“功率 · min OFF (s)”。避免频繁切换，但不能代替硬件保护。 只为所选房间配置“睡眠 · 控制”。缺失或无效数据会阻止相关操作。 “速度 (%)”的决策阈值会影响建议，但不属于医学限值。\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "自动 控制",
+          "device_method": "控制 · 来源",
+          "device_presence_requirement": "控制 · 占用",
+          "device_absence_action": "关闭 · 占用",
+          "device_sleep_behavior": "睡眠 · 控制",
+          "device_hardware_confirmed": "必填 · 设备 · 功率",
+          "device_temperature_entity": "温度 · 传感器",
+          "device_humidity_entity": "湿度 · 传感器",
+          "device_co2_entity": "CO₂ · 传感器",
+          "device_pm25_entity": "PM2.5 · 传感器",
+          "device_fan_purpose": "控制 · 设备",
+          "device_sensor_verified": "传感器 · 必填",
+          "device_fan_speed_percent": "速度 (%)",
+          "device_humidity_target": "湿度 · 目标 (%)",
+          "device_sleep_humidity_target": "睡眠 · 湿度 · 目标 (%)",
+          "device_min_on_s": "功率 · min ON (s)",
+          "device_min_off_s": "功率 · min OFF (s)",
+          "device_max_on_s": "功率 · max ON (s)",
+          "device_home_heat_c": "供暖 · 在家 (°C)",
+          "device_home_cool_c": "制冷 · 在家 (°C)",
+          "device_unoccupied_heat_c": "供暖 · 空房间 (°C)",
+          "device_unoccupied_cool_c": "制冷 · 空房间 (°C)",
+          "device_away_heat_c": "供暖 · 离家 (°C)",
+          "device_away_cool_c": "制冷 · 离家 (°C)",
+          "device_sleep_heat_c": "供暖 · 睡眠 (°C)",
+          "device_sleep_cool_c": "制冷 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "该选项控制“自动 控制”。实际设备命令必须单独授权并具有独立保护。",
+          "device_method": "该选项控制“控制 · 来源”。实际设备命令必须单独授权并具有独立保护。",
+          "device_presence_requirement": "只为所选房间配置“控制 · 占用”。缺失或无效数据会阻止相关操作。",
+          "device_absence_action": "该选项控制“关闭 · 占用”。实际设备命令必须单独授权并具有独立保护。",
+          "device_sleep_behavior": "只为所选房间配置“睡眠 · 控制”。缺失或无效数据会阻止相关操作。",
+          "device_hardware_confirmed": "为“必填 · 设备 · 功率”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "device_temperature_entity": "为“温度 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "device_humidity_entity": "为“湿度 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "device_co2_entity": "为“CO₂ · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "device_pm25_entity": "为“PM2.5 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "device_fan_purpose": "只为所选房间配置“控制 · 设备”。缺失或无效数据会阻止相关操作。",
+          "device_sensor_verified": "为“传感器 · 必填”使用真实、合适的测量值。估算值不能代替校准传感器。",
+          "device_fan_speed_percent": "“速度 (%)”的决策阈值会影响建议，但不属于医学限值。",
+          "device_humidity_target": "“湿度 · 目标 (%)”的决策阈值会影响建议，但不属于医学限值。",
+          "device_sleep_humidity_target": "仅在确认房间有人或睡眠状态时应用“睡眠 · 湿度 · 目标 (%)”目标。未知不等于无人。",
+          "device_min_on_s": "该时间参数用于“功率 · min ON (s)”。避免频繁切换，但不能代替硬件保护。",
+          "device_min_off_s": "该时间参数用于“功率 · min OFF (s)”。避免频繁切换，但不能代替硬件保护。",
+          "device_max_on_s": "该时间参数用于“功率 · max ON (s)”。避免频繁切换，但不能代替硬件保护。",
+          "device_home_heat_c": "仅在确认房间有人或睡眠状态时应用“供暖 · 在家 (°C)”目标。未知不等于无人。",
+          "device_home_cool_c": "仅在确认房间有人或睡眠状态时应用“制冷 · 在家 (°C)”目标。未知不等于无人。",
+          "device_unoccupied_heat_c": "仅在确认房间有人或睡眠状态时应用“供暖 · 空房间 (°C)”目标。未知不等于无人。",
+          "device_unoccupied_cool_c": "仅在确认房间有人或睡眠状态时应用“制冷 · 空房间 (°C)”目标。未知不等于无人。",
+          "device_away_heat_c": "仅在确认房间有人或睡眠状态时应用“供暖 · 离家 (°C)”目标。未知不等于无人。",
+          "device_away_cool_c": "仅在确认房间有人或睡眠状态时应用“制冷 · 离家 (°C)”目标。未知不等于无人。",
+          "device_sleep_heat_c": "仅在确认房间有人或睡眠状态时应用“供暖 · 睡眠 (°C)”目标。未知不等于无人。",
+          "device_sleep_cool_c": "仅在确认房间有人或睡眠状态时应用“制冷 · 睡眠 (°C)”目标。未知不等于无人。"
+        }
+      },
+      "setup_rooms": {
+        "title": "要监测的房间",
+        "description": "要监测的房间 → 来源 → 常规 设置",
+        "data": {
+          "areas": "要监测的房间"
+        },
+        "data_description": {
+          "areas": "要监测的房间. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房间 · {area_name} · {room_index}/{room_count}",
+        "description": "选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+        "data": {
+          "windows": "窗户",
+          "air_quality": "空气质量与环境传感器",
+          "temperature": "温度",
+          "humidity": "湿度",
+          "pressure": "压力传感器",
+          "climate_devices": "设备"
+        },
+        "data_description": {
+          "windows": "窗户. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "air_quality": "空气质量与环境传感器. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "temperature": "温度. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "humidity": "湿度. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "pressure": "压力传感器. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。",
+          "climate_devices": "设备. 选择房间的输入，显示为设备名称 - 实体名称。空组不使用，也不会启用自动发现或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "常规 设置",
+        "description": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。",
+        "data": {
+          "weather_entities": "天气与预警",
+          "outdoor_sensors": "室外空气质量",
+          "weather_warnings": "天气预警",
+          "general_room_occupancy_sensors": "房间 · 占用 · 传感器",
+          "general_home_trackers": "家中 · 占用 · 设备",
+          "general_occupied_rooms_entity": "占用 · 房间 · 来源 (state)",
+          "general_occupied_rooms_attribute": "占用 · 房间 · 来源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房间 · 来源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房间 · 来源 (attribute)",
+          "notify_entities": "设置 · 来源",
+          "media_players": "设置 · 来源 · MEDIA_PLAYERS",
+          "tts_engine": "设置 · 来源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 选择 · 来源",
+          "language": "TTS · 选择 · 来源",
+          "use_mold_indicator": "霉菌指标 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 来源 · 选择",
+          "use_announcement_hub": "自动 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "请选择: 天气与预警 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "请选择: 室外空气质量 · AQI, CO₂, PM2.5, PM10, VOC. 不可用: ⚠",
+          "weather_warnings": "只为所选房间配置“天气预警”。缺失或无效数据会阻止相关操作。",
+          "general_room_occupancy_sensors": "为“房间 · 占用 · 传感器”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_home_trackers": "为“家中 · 占用 · 设备”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_entity": "为“占用 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_occupied_rooms_attribute": "只为所选房间配置“占用 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "general_sleep_rooms_entity": "为“睡眠 · 房间 · 来源 (state)”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "general_sleep_rooms_attribute": "只为所选房间配置“睡眠 · 房间 · 来源 (attribute)”。缺失或无效数据会阻止相关操作。",
+          "notify_entities": "为“设置 · 来源”选择真实的 Home Assistant 数据源。数据缺失或过期时暂停相关操作。",
+          "media_players": "只为所选房间配置“设置 · 来源 · MEDIA_PLAYERS”。缺失或无效数据会阻止相关操作。",
+          "tts_engine": "只为所选房间配置“设置 · 来源 · TTS_ENGINE”。缺失或无效数据会阻止相关操作。",
+          "ai_conversation_agent": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · AI · 选择 · 来源 · conversation.* / ai_task.*.",
+          "language": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · TTS · 选择 · 来源 · provider capabilities.",
+          "use_mold_indicator": "只为所选房间配置“霉菌指标 · RH (%) → 70%”。缺失或无效数据会阻止相关操作。",
+          "pollen_entities": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 花粉 · 来源 · 选择.",
+          "use_announcement_hub": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 自动 · Announcement Hub.",
+          "general_away_cooldown_minutes": "选择共享输入源和通知输出。保存即完成设置。运行参数保留在家庭和房间设备上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "选择无效: 室外空气质量 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "不可用: 室外空气质量 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "选择无效: 天气与预警 (weather.*).",
+      "invalid_warning": "选择无效: 天气与预警 ⚠.",
+      "missing_notify": "请选择: Announcement Hub / notify.*.",
+      "missing_tts": "请选择: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "选择无效: °C min < max.",
+      "no_areas": "请选择: 房间.",
+      "no_window_areas": "不可用: 测量值 (binary_sensor, window).",
+      "invalid_areas": "选择无效: 房间.",
+      "invalid_window_exclusions": "选择无效: 排除窗户传感器.",
+      "invalid_indoor_exclusions": "选择无效: 排除室内空气传感器.",
+      "no_windows_after_exclusions": "至少保留一个窗户传感器.",
+      "review_areas_after_exclusions": "请检查: 房间 · 测量值 (0).",
+      "invalid_repeat_minutes": "选择无效: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "不可用: conversation.process.",
+      "invalid_ai_agent": "选择无效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房间 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房间 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "霉菌指标 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "霉菌指标 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "霉菌指标 · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "“设置 · 来源”设置无效，请检查数据源、单位和安全条件。",
+      "invalid_environment_measurement": "“设置 · 来源”设置无效，请检查数据源、单位和安全条件。",
+      "pmv_requires_explicit_inputs": "“PMV / PPD”设置无效，请检查数据源、单位和安全条件。",
+      "pid_climate_required": "“PID · 设备”设置无效，请检查数据源、单位和安全条件。",
+      "pid_temperature_required": "“PID · 温度”设置无效，请检查数据源、单位和安全条件。",
+      "pid_invalid_target": "“PID · 目标”设置无效，请检查数据源、单位和安全条件。",
+      "pid_duplicate_climate": "“PID · 设备”设置无效，请检查数据源、单位和安全条件。",
+      "pid_invalid_parameters": "“PID”设置无效，请检查数据源、单位和安全条件。",
+      "climate_dry_fan_control_inputs_missing": "“速度 · 设备 · 控制”设置无效，请检查数据源、单位和安全条件。",
+      "climate_humidity_power_inputs_missing": "“湿度 · 设备 · 功率”设置无效，请检查数据源、单位和安全条件。",
+      "climate_secondary_control_inputs_missing": "“设备 · 控制”设置无效，请检查数据源、单位和安全条件。",
+      "climate_fan_power_inputs_missing": "“速度 · 设备 · 功率”设置无效，请检查数据源、单位和安全条件。",
+      "climate_fan_control_inputs_missing": "“速度 · 设备 · 控制”设置无效，请检查数据源、单位和安全条件。",
+      "climate_fan_sensor_invalid": "“速度 · 设备 · 传感器”设置无效，请检查数据源、单位和安全条件。",
+      "climate_humidity_control_inputs_missing": "“湿度 · 设备 · 控制”设置无效，请检查数据源、单位和安全条件。",
+      "climate_temperature_required": "“温度 · 设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_target_required": "“设备 · 目标”设置无效，请检查数据源、单位和安全条件。",
+      "climate_direct_actuator_not_ready": "“设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_controller_invalid": "“设备 · 控制”设置无效，请检查数据源、单位和安全条件。",
+      "climate_mode_invalid": "“设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_occupancy_invalid": "“占用 · 设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_away_invalid": "“家中 · 设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_deadband_invalid": "“设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_attestation_required": "“设备”设置无效，请检查数据源、单位和安全条件。",
+      "climate_direct_targets_invalid": "“设备 · 目标”设置无效，请检查数据源、单位和安全条件。",
+      "climate_direct_timing_invalid": "“设备”设置无效，请检查数据源、单位和安全条件。",
+      "general_invalid_presence": "无效 · 占用 · 设置",
+      "general_invalid_trackers": "无效 · 家中 · 设置",
+      "general_invalid_rooms_entity": "无效 · 房间 · 设置",
+      "general_invalid_attribute": "无效 · 来源 · 设置",
+      "general_invalid_source_age": "无效 · 来源 · 设置",
+      "invalid_selected_devices": "无效 · 设备 · 设置",
+      "device_policy_invalid": "无效 · 占用 · 设置",
+      "device_method_invalid": "无效 · 控制 · 设置",
+      "device_hardware_required": "无效 · 必填 · 设置",
+      "device_power_required_for_off": "无效 · 功率 · 设置",
+      "device_temperature_required": "无效 · 温度 · 设置",
+      "device_humidity_required": "无效 · 湿度 · 设置",
+      "device_air_sensor_required": "无效 · 传感器 · 设置",
+      "device_temperature_band_invalid": "无效 · 温度 · 设置",
+      "device_humidity_invalid": "无效 · 湿度 · 设置",
+      "device_runtime_invalid": "无效 · 功率 · 设置",
+      "invalid_setup_rooms": "无效: 要监测的房间",
+      "invalid_room_source": "无效: 房间 · 来源"
+    },
+    "abort": {
+      "setup_area_removed": "无效: 要监测的房间",
+      "setup_changed": "设置 ↻ 要监测的房间"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "空气质量",
+        "state": {
+          "open": "关闭 · 测量值",
+          "close": "自动通知 · 测量值",
+          "idle": "良好",
+          "blocked": "请保持窗户关闭"
+        }
+      },
+      "area_overview": {
+        "name": "环境概览"
+      },
+      "area_surface_humidity": {
+        "name": "表面湿度（计算值）"
+      },
+      "equipment_control_status": {
+        "name": "{channel}控制器状态"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "室外 · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "室外 · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "室外 · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "室外 · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "室外 · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "室外 · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · 室外 (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · 室外 (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · 室外 (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "空气质量 · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "空气质量 · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "空气质量 · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "空气质量 · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "空气质量 · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "空气质量 · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "空气质量 · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "霉菌指标 · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "室外 · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "室外 · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "室外 · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "天气与预警 · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · 打开 (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "播报（可选） · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "目标 (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · 控制 (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · 控制 (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · 控制 (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "供暖 · 房间 · 占用"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "制冷 · 房间 · 占用"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "湿度 · 房间 · 占用 · 目标 (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "供暖 · 家中"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "制冷 · 家中"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "湿度 · 家中 · 目标 (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "供暖 · 家中 · 关闭"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "制冷 · 家中 · 关闭"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "湿度 · 家中 · 关闭 · 目标 (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "供暖 · 睡眠"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "制冷 · 睡眠"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "湿度 · 睡眠 · 目标 (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "供暖 · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "制冷 · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "湿度 · ECO · 目标 (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · 花粉 · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · 花粉 · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "来源 · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "设置 · 来源 (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · 目标 (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "速度 · 室外 (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "设置 · 来源 (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "设置 · 来源 (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "设备 · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "占用 · 设备 · 传感器 · 必填"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "设备 (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · 湿度 · 设备 (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · 湿度 · 设备 (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · 湿度 · 设备 · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "设备 · 温度 −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · 设备 (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · 设备 · 速度 (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · 设备 · 速度 (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · 控制 (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · 控制 (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · 控制 (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "设置 · 来源 (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "设置 · 来源 · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "设置 · 来源 · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "霉菌指标 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 控制 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 控制 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 控制 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_pid_process_gain": {
+        "name": "{channel}Process gain (PV per full output)"
+      },
+      "equipment_pid_time_constant_minutes": {
+        "name": "{channel}Response time constant"
+      },
+      "equipment_pid_dead_time_minutes": {
+        "name": "{channel}Response dead time"
+      },
+      "equipment_pid_lambda_minutes": {
+        "name": "{channel}IMC response Lambda"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}设置 · 来源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低噪声风扇上限 (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}功率 · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}功率 · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}功率 · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "房间 · 温度 · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "房间 · 温度 · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "房间 · 湿度 · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "房间 · 湿度 · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "房间 · 速度 · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "房间 · 速度 · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "家中 · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "自动 · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "自动"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · 播报（可选）"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · 花粉 · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "睡眠"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · 自动"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "睡眠 · 设备"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "睡眠 · 自动"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "设备 · 室外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠时降低噪声"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}有人时降低噪声"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}传感器 · 必填"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "语言"
+      },
+      "area_manual_profile": {
+        "name": "设备 · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "家中 · 占用 · 控制"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "占用 · 设备"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "家中 · 设备 · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "设备 · 来源 · 目标"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}控制方式",
+        "state": {
+          "existing": "现有房间控制器",
+          "automatic": "自动",
+          "manual": "手动",
+          "off": "关闭",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}设备原生低噪声风扇模式"
+      },
+      "equipment_pid_calibration_method": {
+        "name": "{channel}PID calibration method",
+        "state": {
+          "manual": "Manual Kp/Ki/Kd",
+          "imc_lambda": "IMC / Lambda (measured response)",
+          "cohen_coon": "Cohen–Coon (measured response)"
+        }
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}控制 · 占用",
+        "state": {
+          "always": "自动",
+          "occupied": "房间 · 占用",
+          "absent": "房间 · 占用 · 关闭"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}睡眠 · 控制",
+        "state": {
+          "normal": "自动",
+          "pause": "暂停",
+          "sleep_targets": "睡眠 · 目标"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}控制 · 设备",
+        "state": {
+          "extraction": "室外 · 控制",
+          "filtration": "PM2.5 · 控制",
+          "auto": "自动"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "温度 · 来源"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "来源 · 速度 · 室外 (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "睡眠 · 设备 · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "睡眠 · 设备 · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "霉菌指标 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}核实并恢复"
+      },
+      "equipment_pid_apply_calibration": {
+        "name": "{channel}Apply verified PID calibration"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室内环境控制器"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "播报（可选） — Home Environment Manager",
+      "description": "播报（可选） · 房间",
+      "fields": {
+        "language": {
+          "name": "语言",
+          "description": "语言"
+        },
+        "channels": {
+          "name": "播报（可选）",
+          "description": "播报（可选）"
+        },
+        "areas": {
+          "name": "房间",
+          "description": "房间"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — 默认",
+        "en": "设置 · 来源",
+        "de": "设置 · 来源",
+        "el": "设置 · 来源",
+        "fr": "设置 · 来源",
+        "es": "设置 · 来源",
+        "it": "设置 · 来源",
+        "nl": "设置 · 来源",
+        "pt": "设置 · 来源",
+        "pt-br": "设置 · 来源",
+        "pl": "设置 · 来源",
+        "ru": "设置 · 来源",
+        "uk": "设置 · 来源",
+        "tr": "设置 · 来源",
+        "cs": "设置 · 来源",
+        "sk": "设置 · 来源",
+        "hu": "设置 · 来源",
+        "ro": "设置 · 来源",
+        "bg": "设置 · 来源",
+        "hr": "设置 · 来源",
+        "sr": "设置 · 来源",
+        "sv": "设置 · 来源",
+        "nb": "设置 · 来源",
+        "da": "设置 · 来源",
+        "fi": "设置 · 来源",
+        "id": "设置 · 来源",
+        "vi": "设置 · 来源",
+        "th": "设置 · 来源",
+        "hi": "设置 · 来源",
+        "zh-hans": "设置 · 来源",
+        "zh-hant": "设置 · 来源",
+        "ja": "设置 · 来源",
+        "ko": "设置 · 来源",
+        "ar": "设置 · 来源",
+        "he": "设置 · 来源",
+        "fa": "设置 · 来源",
+        "bn": "设置 · 来源",
+        "ur": "设置 · 来源",
+        "ta": "设置 · 来源"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "家中 · 占用",
+        "all_home": "家中 · 设备 · 占用"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "目标 · 控制",
+        "native": "设备 · 控制",
+        "power": "功率",
+        "speed": "速度"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "自动",
+        "room": "房间 · 占用",
+        "home": "家中 · 占用"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "暂停",
+        "off": "关闭"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "自动",
+        "pause": "暂停",
+        "sleep_targets": "睡眠 · 目标"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "室外 · 控制",
+        "filtration": "PM2.5 · 控制"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "来源 · 无效",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "目标 · 设置"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "房间中枢",
+      "initiate_flow": {
+        "user": "房间中枢"
+      },
+      "step": {
+        "user": {
+          "title": "房间中枢",
+          "description": "选择一个 Home Assistant 区域。其分组包含房间通用设置，以及每个已选物理设备对应的一个控制器设备。添加房间不会启用设备的自动控制。",
+          "data": {
+            "area_id": "房间"
+          },
+          "data_description": {
+            "area_id": "选择一个 Home Assistant 区域。其分组包含房间通用设置，以及每个已选物理设备对应的一个控制器设备。添加房间不会启用设备的自动控制。"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "无效: 区域."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
