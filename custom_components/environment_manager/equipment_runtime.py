@@ -102,6 +102,8 @@ class EquipmentRuntime:
     def _status(self, spec: Any, status: str, **data: Any) -> None:
         key = spec if isinstance(spec, str) else spec.identifier
         value = {"status": status, **data}
+        if key in self._fan_allocations:
+            value["pid_fan_capacity"] = self._fan_allocations[key]
         if self.statuses.get(key) == value:
             return
         self.statuses[key] = value
@@ -280,10 +282,9 @@ class EquipmentRuntime:
                 changes["pid_fan_capacity_models"], dict
             ):
                 raise HomeAssistantError("Invalid calibrated fan model data")
-            if new["pid_fan_capacity_mode"] == "measured":
+            if new["pid_fan_capacity_mode"] == "measured" and new["control_mode"] == "pid":
                 saved = maps.get(direction)
-                if (new["control_mode"] != "pid"
-                        or not cap.fan_entity
+                if (not cap.fan_entity
                         or not fan_capacity_model_is_valid(
                             saved, mode=direction, physical_entity=cap.primary,
                             fan_entity=cap.fan_entity, percentage=cap.fan_percentage,
@@ -420,6 +421,7 @@ class EquipmentRuntime:
                     raise HomeAssistantError("Device sources changed; select the control method again")
                 self.hass.config_entries.async_update_entry(self.manager.entry, options=options)
             self._memory.pop(spec.identifier, None)
+            self._fan_allocations.pop(spec.identifier, None)
             self._status(spec, "settings_updated", control_mode=new["control_mode"])
         if getattr(self.manager, "_active", False):
             self.manager._recalculate(initial=True)
@@ -1180,7 +1182,8 @@ class EquipmentRuntime:
         return sent
 
     async def _fan(self, spec: model.ManagedDevice, cap: model.Capabilities,
-                   cfg: dict, plan: dict, demand: float | None, automatic: bool) -> bool:
+                   cfg: dict, plan: dict, demand: float | None, automatic: bool,
+                   measured_capacity_speed: str | int | None = None) -> bool:
         if not cap.fan_entity or not cap.fan_modes:
             return False
         state = self.hass.states.get(cap.fan_entity)
@@ -1197,7 +1200,9 @@ class EquipmentRuntime:
         if cap.fan_percentage:
             dev = model.device_config(self.manager, spec, cap.primary)
             normal = selected_fan or dev.get("fan_speed_percent") or normal
-            if demand is not None and automatic and cfg["control_mode"] == "pid":
+            if measured_capacity_speed is not None:
+                normal = measured_capacity_speed
+            elif demand is not None and automatic and cfg["control_mode"] == "pid":
                 planned = fan_speed_for_pid(
                     demand, modes=cap.fan_modes, percentage=True,
                     min_percentage=model.device_limits(self.manager, spec, cap)["fan_min_percentage"],
@@ -1236,10 +1241,12 @@ class EquipmentRuntime:
             quiet = quiet_state is True
             low = cfg.get("quiet_fan_mode") or ("low" if "low" in cap.fan_modes else None)
             value = low if quiet and low is not None else normal
+            if measured_capacity_speed is not None and measured_capacity_speed in cap.fan_modes:
+                value = measured_capacity_speed
             # Map the same PID demand to Low/Medium/High ONLY where the
             # physical source advertises an unambiguous ordered speed set.
             # Arbitrary native presets keep their saved profile/normal speed.
-            if (automatic and cfg["control_mode"] == "pid"
+            if (measured_capacity_speed is None and automatic and cfg["control_mode"] == "pid"
                     and demand is not None and demand > 0):
                 chosen = fan_speed_for_pid(
                     demand, modes=cap.fan_modes, percentage=False,
@@ -1346,6 +1353,8 @@ class EquipmentRuntime:
                 await self._power(spec, cap, "off", automatic=auto, shutdown=True)
             return
         demand, metric, increasing, goal, wanted = None, None, False, None, None
+        measured_fan_allocation = None
+        self._fan_allocations.pop(spec.identifier, None)
         if cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}:
             from .device_activation import effective_device
             dev = effective_device(self.manager, spec, cap.primary)
@@ -1385,6 +1394,56 @@ class EquipmentRuntime:
                 self._memory[spec.identifier] = (signature, memory, anchor)
                 demand = memory.demand
                 on_min, off_min, _ = model.timing(self.manager, spec, cap)
+                if (cfg.get("pid_fan_capacity_mode") == "measured"
+                        and cap.domain in ("climate", "humidifier")
+                        and cap.fan_entity and cap.fan_modes and demand > 0):
+                    # Only the calibrated HVAC direction and the *exact*
+                    # same physical endpoint and fan may use the model.
+                    # A separate accessory fan that is currently OFF cannot
+                    # be assumed to produce the measured capacity.
+                    saved_models = cfg.get("pid_fan_capacity_models") or {}
+                    saved_curve = saved_models.get(mode) if isinstance(saved_models, dict) else None
+                    fan_state = self.hass.states.get(cap.fan_entity)
+                    native_ready = (cap.fan_entity == cap.primary or
+                                    fan_state is not None and
+                                    fan_state.state not in ("off", "unknown", "unavailable"))
+                    valid = (native_ready and isinstance(saved_curve, dict)
+                             and saved_curve.get("sources") == list(spec.source_entities)
+                             and fan_capacity_model_is_valid(
+                                 saved_curve, mode=mode,
+                                 physical_entity=cap.primary,
+                                 fan_entity=cap.fan_entity,
+                                 percentage=cap.fan_percentage,
+                                 advertised_modes=cap.fan_modes))
+                    if valid:
+                        quiet_context = self._quiet_context(spec, cfg, plan)
+                        if quiet_context is not None:
+                            limits = model.device_limits(self.manager, spec, cap)
+                            measured_fan_allocation = allocate_fan_capacity(
+                                demand, saved_curve, quiet=quiet_context,
+                                quiet_mode=cfg.get("quiet_fan_mode"),
+                                quiet_percentage=cfg["quiet_percentage"],
+                                fan_min_percentage=limits["fan_min_percentage"],
+                                fan_max_percentage=limits["fan_max_percentage"],
+                            )
+                            if measured_fan_allocation:
+                                self._fan_allocations[spec.identifier] = {
+                                    "status": "capacity_limited" if
+                                        measured_fan_allocation.unmet_demand_percent > 0
+                                        else "capacity_compensated",
+                                    **measured_fan_allocation.snapshot(),
+                                    "direction": mode,
+                                }
+                        else:
+                            self._fan_allocations[spec.identifier] = {
+                                "status": "quiet_context_unknown",
+                                "direction": mode,
+                            }
+                    else:
+                        self._fan_allocations[spec.identifier] = {
+                            "status": "model_source_or_mode_not_ready",
+                            "direction": mode,
+                        }
                 # Use ONE modulation dimension for continuously adjustable
                 # standalone fans. Never multiply a PID percentage by a
                 # second PWM duty. Binary valves/heaters retain safe slow PWM.
@@ -1394,8 +1453,12 @@ class EquipmentRuntime:
                 elif cap.domain == "fan" and ordered_fan_stages(cap.fan_modes):
                     wanted = demand > 0
                 else:
+                    duty_demand = (
+                        measured_fan_allocation.compensated_duty_percent
+                        if measured_fan_allocation else demand
+                    )
                     wanted = model.duty_on(
-                        demand, self.clock()-anchor, cfg["cycle_seconds"],
+                        duty_demand, self.clock()-anchor, cfg["cycle_seconds"],
                         on_min, off_min, starting=output_off(state),
                     )
             else:
@@ -1456,7 +1519,8 @@ class EquipmentRuntime:
                 return
         if await self._fan(spec, cap, cfg, plan,
                            demand if auto and cfg["control_mode"] == "pid" else None,
-                           auto):
+                           auto, measured_fan_allocation.speed
+                           if measured_fan_allocation else None):
             return
         if spec.identifier in self._invalidated:
             return
