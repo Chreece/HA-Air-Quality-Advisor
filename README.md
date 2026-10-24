@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 31 is available for opt-in testing.** Stable remains **v0.5.1**. Beta31 fixes controller PID/timing numbers and Room Environment profile temperature/humidity targets that were missing after restart when native equipment was not yet ready. Previously registered room targets are preserved, and newly supported fields appear when the physical device recovers. Beta30's Control status diagnostic remains included; the only integration domain is `environment_manager`.
+> **v0.6.0 beta 32 is available for opt-in testing.** Stable remains **v0.5.1**. Beta32 fixes an excessive HA entity dispatcher/event loop caused by treating an internal timestamp as a public state change, and stops reading manifest.json synchronously from async_setup. Beta31's PID numbers/Room Environment profile repairs are preserved; the only integration domain is `environment_manager`.
+
+## Beta 32 - event dispatch and async startup repairs
+
+Reported Home Assistant 2026.10 logs showed thousands of dispatcher failures due to the 10,000 `state_reported` event queue safety limit. Room calculations refreshed an internal `air_evidence_at` timestamp on every pass and then republished all Manager entities as though that internal clock were a physical sensor or status change.
+
+Beta32 compares meaningful plan contents for state publication, excludes Manager-generated entities from its own input tracking, and ignores duplicate physical sensor state events. The newest evidence timestamp is still preserved for physical safety decisions. Frontend cache-busting now loads `manifest.json` in Home Assistant's executor rather than performing blocking `open`/`read_text` on the event loop.
+
+The native Comfee low/quiet fan controls remain subject to the physical integration's actually advertised fan modes; no hardware capabilities are fabricated from device names or screenshots. This beta does not alter fan speed or physical HVAC actuation.
 
 ## Beta 31 - restore room and controller numbers after delayed native startup
 
