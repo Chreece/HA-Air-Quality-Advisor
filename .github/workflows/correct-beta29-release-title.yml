@@ -1,0 +1,18 @@
+name: Correct beta29 release title
+on:
+  push:
+    branches:
+      - 'chore/beta29-release-title-20261024'
+permissions:
+  contents: write
+jobs:
+  correct_release_title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fix release-page title without modifying tag or assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release edit v0.6.0b29             --repo "$GITHUB_REPOSITORY"             --title 'Home Environment Manager v0.6.0 beta 29'
+          test "$(gh release view v0.6.0b29 --repo "$GITHUB_REPOSITORY" --json name --jq .name)" = "Home Environment Manager v0.6.0 beta 29"
