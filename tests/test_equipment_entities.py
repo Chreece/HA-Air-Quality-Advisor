@@ -60,13 +60,15 @@ def platforms(monkeypatch, runtime_module):
     entities.EntityCategory = SimpleNamespace(CONFIG="config", DIAGNOSTIC="diagnostic")
     monkeypatch.setitem(sys.modules, entities.__name__, entities)
     monkeypatch.setitem(sys.modules, "homeassistant.components", types.ModuleType("homeassistant.components"))
-    for domain in ("climate", "number", "select", "switch", "button"):
+    for domain in ("climate", "number", "select", "switch", "button", "sensor"):
         native = types.ModuleType(f"homeassistant.components.{domain}")
         setattr(native, domain.title()+"Entity", Entity)
         if domain == "climate":
             native.HVACMode, native.HVACAction, native.ClimateEntityFeature = HVACMode, HVACAction, ClimateEntityFeature
         elif domain == "number":
             native.NumberMode = SimpleNamespace(BOX="box")
+        elif domain == "sensor":
+            native.SensorDeviceClass = SimpleNamespace(ENUM="enum")
         monkeypatch.setitem(sys.modules, native.__name__, native)
     monkeypatch.delitem(sys.modules, "custom_components.environment_manager.equipment_entity", raising=False)
     result = {}
@@ -74,6 +76,9 @@ def platforms(monkeypatch, runtime_module):
         name=f"custom_components.environment_manager.{domain}"
         monkeypatch.delitem(sys.modules, name, raising=False)
         result[domain]=importlib.import_module(name)
+    name="custom_components.environment_manager.equipment_status"
+    monkeypatch.delitem(sys.modules, name, raising=False)
+    result["equipment_status"]=importlib.import_module(name)
     return SimpleNamespace(**result, runtime=runtime_module, Features=ClimateEntityFeature)
 
 
@@ -329,3 +334,45 @@ def test_room_limit_number_persists_under_environment_room(platforms):
         assert saved["temperature_min_limit"]==18
         assert model.room_limit_values(h.manager,"room")["temperature_min_limit"]==18
     asyncio.run(run())
+
+
+def test_controller_status_reports_runtime_hold_not_fake_physical_hvac_mode(platforms):
+    """A PID-selected controller may be held while the physical unit is OFF."""
+    h=home(platforms.runtime,domain="climate",mode="pid",state="off")
+    sensor=platforms.equipment_status.ControllerStatusSensor(h.manager,h.spec)
+    assert sensor._attr_unique_id == h.spec.identifier + "_control_status"
+    assert sensor._attr_device_info["identifiers"] == {
+        ("environment_manager",h.spec.identifier)
+    }
+    assert sensor.native_value == "awaiting_evaluation"
+    h.runtime._status(h.spec,"minimum_off_hold")
+    assert sensor.native_value == "minimum_off_hold"
+    assert h.state.state == "off"
+    attrs=sensor.extra_state_attributes
+    assert attrs["control_method"] == "pid"
+    assert attrs["physical_entity_states"] == {h.entity:"off"}
+    assert attrs["controller_owns_power"] is False
+    assert attrs["command_pending"] is False
+    assert h.hass.services.calls == []
+
+    record=h.runtime._record(h.spec)
+    record["paused"]="physical_manual_override"
+    h.runtime._status(h.spec,"paused",reason=record["paused"])
+    assert sensor.native_value == "paused"
+    assert sensor.extra_state_attributes["paused_reason"] == "physical_manual_override"
+    assert sensor.extra_state_attributes["status_reason"] == "physical_manual_override"
+
+
+def test_controller_status_distinguishes_disabled_legacy_and_missing_runtime(platforms):
+    h=home(platforms.runtime,domain="humidifier",mode="existing")
+    sensor=platforms.equipment_status.ControllerStatusSensor(h.manager,h.spec)
+    assert sensor.native_value == "existing"
+    h.runtime._active=False
+    h.manager.entry.data["equipment_controllers"][h.spec.identifier]["control_mode"]="automatic"
+    assert sensor.native_value == "inactive"
+    h.runtime._active=True
+    h.runtime._ready=False
+    assert sensor.native_value == "storage_unavailable"
+    h.runtime._ready=True
+    h.state.state="unavailable"
+    assert sensor.extra_state_attributes["physical_entity_states"][h.entity] == "unavailable"
