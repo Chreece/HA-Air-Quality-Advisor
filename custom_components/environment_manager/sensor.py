@@ -13,7 +13,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import CONF_EXCLUDED_WINDOWS, CONF_EXCLUDED_INDOOR, DOMAIN, NAME, SIGNAL_UPDATED
-from .dashboard import dashboard_snapshot
+from .recorder_attributes import bounded_attributes
 from .messages import announcement, explain
 from . import equipment_model as equipment
 from .equipment_status import ControllerStatusSensor
@@ -47,6 +47,7 @@ class AirQualityRecommendation(SensorEntity):
 
     def __init__(self, manager: Any, entry_id: str) -> None:
         self._manager = manager
+        self._dashboard_revision = 0
         self._attr_unique_id = f"{entry_id}_recommendation"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry_id)},
@@ -81,7 +82,7 @@ class AirQualityRecommendation(SensorEntity):
                 ],
                 "message": message,
             })
-        return {
+        details = {
             # outdoor_safe means no *known* blockers, not that every selected
             # sensor currently provides a verified air-quality measurement.
             "outdoor_safe": plan.outdoor_safe,
@@ -129,8 +130,34 @@ class AirQualityRecommendation(SensorEntity):
                 "away_cooldown_minutes": (self._manager.settings.get("occupancy_global") or {}).get(
                     "away_cooldown_minutes", 10),
             },
-            "dashboard": dashboard_snapshot(plan, self._manager.thresholds),
         }
+        # The full dashboard snapshot used to be embedded here. On a
+        # multi-room home that routinely exceeds Recorder's hard 16 KB
+        # attribute limit, causing repeated database warnings and losing
+        # *all* state attributes in history. Serve that complete snapshot
+        # separately via the authenticated read-only Home Assistant WebSocket
+        # API; this sensor remains the stable automation/recommendation source.
+        summary = {
+            "dashboard_api": "environment_manager/dashboard",
+            "dashboard_version": 1,
+            "dashboard_revision": self._dashboard_revision,
+            "outdoor_safe": plan.outdoor_safe,
+            "outdoor_data_complete": not plan.unavailable_outdoor,
+            "recommendation_count": len(actionable),
+            "open_window_count": len(open_ids),
+            "close_window_count": len(close_ids),
+            "language": language,
+        }
+        priority = (
+            "open_windows", "close_windows", "recommendations",
+            "outside_blockers", "diagnostics", "mold_input_warnings",
+            "unavailable_outdoor_sensors", "excluded_window_entities",
+            "excluded_indoor_entities", "home_settings",
+            "announcement_hub_available",
+        )
+        return bounded_attributes(
+            summary, {key: details[key] for key in priority if key in details},
+        )
 
     async def async_added_to_hass(self) -> None:
         await super().async_added_to_hass()
@@ -140,5 +167,9 @@ class AirQualityRecommendation(SensorEntity):
 
     @callback
     def _on_update(self) -> None:
+        # A small monotonic change token tells frontend cards when their
+        # on-demand WS snapshot needs refresh without writing that JSON to
+        # the Recorder. It is intentionally instance-local and resets on reload.
+        self._dashboard_revision += 1
         self.async_write_ha_state()
 
