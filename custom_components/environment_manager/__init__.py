@@ -28,8 +28,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
-    manifest = json.loads(
-        (Path(__file__).parent / "manifest.json").read_text(encoding="utf-8")
+    # File reads are blocking operations, even for a tiny manifest. Load
+    # this once in HA's executor instead of opening it on the event loop.
+    manifest = await hass.async_add_executor_job(
+        lambda: json.loads(
+            (Path(__file__).parent / "manifest.json").read_text(encoding="utf-8")
+        )
     )
     # Bundled asset and HACS release version share ONE authoritative source.
     # Rebranding must not change the original integration domain/path.
