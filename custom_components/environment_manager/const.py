@@ -2,10 +2,6 @@
 
 DOMAIN = "environment_manager"
 
-# Historical domains are migration inputs only. They are never registered as
-# services, frontend paths, config-flow domains or installable integrations.
-MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")
-LEGACY_STORAGE_DEFAULT_DOMAIN = "air_quality_advisor"
 NAME = "Home Environment Manager"
 PLATFORMS = ["sensor", "number", "switch", "select", "button", "time", "climate"]
 
