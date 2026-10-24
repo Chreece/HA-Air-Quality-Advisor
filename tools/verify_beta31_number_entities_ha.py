@@ -59,7 +59,16 @@ def main() -> None:
     assert values["min_on_seconds"] == 600.0
     assert values["min_off_seconds"] == 600.0
     assert values["max_on_seconds"] == 7200.0
-    assert all(entity.available and entity.native_value is not None for entity in actual)
+    assert all(entity.available and entity.native_value is not None for entity in actual
+               if entity._key not in ("pid_process_gain","pid_time_constant_minutes",
+                                     "pid_dead_time_minutes","pid_lambda_minutes"))
+    # Calibration input entities exist with stable IDs, but are disabled until
+    # a nonmanual PID method is explicitly selected on this device.
+    model_inputs=[entity for entity in actual
+                  if entity._key in ("pid_process_gain","pid_time_constant_minutes",
+                                     "pid_dead_time_minutes","pid_lambda_minutes")]
+    assert len(model_inputs)==4
+    assert all(not entity.available and entity.native_value == 0 for entity in model_inputs)
     assert all(entity.entity_category == EntityCategory.CONFIG for entity in actual)
 
     fields = _profile_fields(manager, "entry", "living", registry)
