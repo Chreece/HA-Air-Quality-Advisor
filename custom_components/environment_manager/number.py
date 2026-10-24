@@ -116,12 +116,14 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
             entity_id=entity_id,
         ))
     from . import equipment_model as equipment
+    # Query the registry before constructing number entities; offline source
+    # recovery needs this same registry even when old-entity cleanup is skipped.
+    from homeassistant.helpers import entity_registry as er
+    registry = er.async_get(hass)
     # Beta17 briefly exposed room-wide limits on each physical controller.
     # Remove only those obsolete registry entities; their stored config values
     # remain available to equipment_model's conservative room migration.
     try:
-        from homeassistant.helpers import entity_registry as er
-        registry = er.async_get(hass)
         getter = getattr(registry, "async_get_entity_id", None)
         remover = getattr(registry, "async_remove", None)
         if getter is not None and remover is not None:
