@@ -1,18 +1,17 @@
 {
-  "version": "0.6.0b35",
+  "version": "0.6.0b36",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b35",
-  "intent": "Repair Home Environment Manager Lovelace dashboard selector closing without user action and intermittent card render/registry failure requiring hard tab refresh, using DOM-safe interaction lifecycle and self-healing rendering without any physical-device changes.",
-  "note": "Home Assistant updates trigger full shadowRoot.innerHTML recreation in beta34 and destroy open mode selects and manual inputs. Render cache is committed before the HTML rendering can fail. A transient config/device_registry/list failure sets a permanent unavailable flag. Beta35 fixes these exact frontend lifecycles.",
+  "release_branch": "beta/v0.6.0b36",
+  "intent": "Fix logical managed climate control mode displayed as Off when Automatic/PID/Manual has an explicit supported or evaluated HVAC direction but physical output is idle and safely OFF. Keep the physical state separate; report idle action with armed mode, and never force native hardware on.",
+  "note": "The existing managed climate hvac_mode mirrored physical state even though separate Control Method was PID/Automatic/Manual and Controller Status reported within_target_band. Beta36 changes facade presentation only: declared supported/evaluated HVAC direction remains selected while native device is OFF; hvac_action becomes idle. Existing/Off selections and unknown hardware remain conservative.",
   "validation_attempt": 0,
   "changes": [
-    "Keep native control-method select and in-progress manual target inputs mounted while editing; queue incoming HA state/config redraws and flush only after the interaction completes.",
-    "Release focused control after an actual committed select change or delayed focusout, preserving click-to-save on manual target fields.",
-    "Wrap dashboard template construction in a recoverable UI error boundary and preserve/retry after an invalid/transient HA state snapshot without needing browser hard reload.",
-    "Commit render-cache references only after successfully constructing/applying complete UI; malformed room rows do not crash the entire card.",
-    "Retry transient Home Assistant device registry lookup failures with bounded backoff instead of permanently latching the registry as unavailable.",
-    "Test live selector staying open across repeated HA updates, manual input preservation, automatic recovery after transient dashboard/render failures, and recovery after WebSocket errors.",
-    "Keep exact native controller IDs, manual targets and physical command authorization unchanged; only canonical environment_manager domain, no migrations or vendor-specific code.",
-    "Validate Node frontend regression, Python 3.13/3.14, Home Assistant 2026.10, HACS/Hassfest, 38-language catalogs and exact flat HACS beta tag extraction."
+    "Split ManagedClimate physical HVAC output observation from selected logical supervisory HVAC mode; preserve physical source state and original physical HVAC mode in diagnostic attributes.",
+    "For selected Automatic/PID, use the already evaluated native direction; for explicitly selected Manual/PID/Automatic use only supported requested mode; when only one native direction is advertised, allow that exact option without fabricating unsupported HVAC modes.",
+    "Show HVACAction.IDLE when the supervisory mode is selected but the native physical output is truly OFF, preserving physical OFF for idle periods and safety holds.",
+    "When Off explicitly selected, display Off; when Existing selected, mirror physical source and native HVAC action as before.",
+    "Do not touch EquipmentRuntime demand, duty cycle, native mode/ON/OFF writes, PID targets, safety interlocks, power ownership, acknowledgement or manual pause; preserve beta31–35 fixes.",
+    "Add regressions for heat/cool climate, fan, humidifier/dehumidifier logical HVAC idle, exact physical state attributes, explicit Off/Existing, unavailable source and no unadvertised modes.",
+    "One canonical environment_manager domain with no migrations; validate full Python 3.13/3.14 suite, native Home Assistant 2026.10, card, 38 language catalogs, HACS/Hassfest, and immutable flat beta payload."
   ]
 }
