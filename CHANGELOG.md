@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b30 - Visible per-controller operational status (beta)
+
+- Create a per-controller **Control status** diagnostic sensor attached to each managed physical controller device.
+- Expose control method, preset, real physical source states, pending command, current demand, blocked/pause reason, and Manager-owned power.
+- Distinguish a PID output currently inactive from an Automatic controller sitting inside its target deadband; no actuator or duty-cycle changes.
+- Translate the diagnostic entity in all 38 supported languages, including Greek and German.
+- Retain beta29 window contact behavior, room temperature/humidity profile targets, and native PID/Automatic control with all safety gates.
+- Continue canonical `environment_manager` only, no migration. Stable remains v0.5.1.
+
 ## 0.6.0b29 - Optional window-contact interlock correction (beta)
 
 - Fix false `open_or_unknown_window` holds when a monitored room has no selected/discovered window contact.
