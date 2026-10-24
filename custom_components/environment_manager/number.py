@@ -306,6 +306,10 @@ class ConfigNumber(NumberEntity):
         self._kind = kind
         self._key = key
         self._entity_id = entity_id
+        # Older room-level PID numbers are also sorted by friendly name;
+        # avoid Home Assistant prefixing the room/device before "PID".
+        if kind in ("pid", "direct_tuning"):
+            self._attr_has_entity_name = False
         if entity_id:
             self._attr_name = f"{entity_id} · {key.replace('_', ' ')}"
         else:
