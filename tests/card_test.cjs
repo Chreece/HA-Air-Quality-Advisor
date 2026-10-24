@@ -891,3 +891,157 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   assert.ok(card.shadowRoot.innerHTML.includes('&lt;img src=x'));
   assert.ok(!card.shadowRoot.innerHTML.includes('<img src=x onerror='));
 }
+
+
+// Beta35: an open native method menu must never be replaced by HA's next
+// sensor/controller state update. A committed selection then refreshes, and
+// typing an unfinished manual target is also preserved until focus leaves it.
+(async () => {
+  const live = JSON.parse(JSON.stringify(input));
+  live.rooms=[{area_id:'bath',name:'Bathroom',status:'unknown',
+    readings:[],windows:[],environment:{climate_plan:{
+      status:'advisory',controller:'environment',temperature_c:20,
+      reason:'environment_only_no_hvac',
+    }}}];
+  const climateId='climate.beta35_managed';
+  const methodId='select.beta35_method';
+  const attrs={area_id:'bath',source_entity_ids:['climate.physical_source'],
+    control_mode:'manual',supported_features:1,temperature:20,
+    min_temp:5,max_temp:35};
+  const physical={state:'off',attributes:attrs};
+  const selected={state:'manual',attributes:{
+    area_id:'bath',source_entity_ids:['climate.physical_source'],
+    options:['existing','automatic','manual','pid','off'],
+  }};
+  const first={state:'idle',attributes:{dashboard:live}};
+  const calls=[];
+  const card=new Card();
+  card.setConfig({entity:'sensor.beta35'});
+  const state={language:'en',states:{
+    'sensor.beta35':first,[climateId]:physical,[methodId]:selected,
+  },callService:(domain,service,data)=>{
+    calls.push([domain,service,data]);
+    if(domain==='select' && service==='select_option') selected.state=data.option;
+    return Promise.resolve();
+  }};
+  card.hass=state;
+  assert.ok(card.shadowRoot.innerHTML.includes('data-climate-method="'+methodId+'"'));
+  const originalMarkup=card.shadowRoot.innerHTML;
+  const dropdown={
+    value:'manual',
+    closest(query){return query.includes('data-climate-method') || query.includes('data-climate-input')
+      ? this : null;},
+    getAttribute(name){
+      return {'data-controller-area':'bath','data-climate-method':methodId}[name]??null;
+    },
+  };
+  card.shadowRoot.listeners.focusin({target:dropdown});
+  const next={...state,states:{...state.states,
+    'sensor.beta35':{state:'idle',attributes:{dashboard:{
+      ...live,rooms:[{...live.rooms[0],environment:{
+        climate_plan:{...live.rooms[0].environment.climate_plan,temperature_c:22},
+      }}],
+    }}},
+  }};
+  card.hass=next;
+  assert.equal(card.shadowRoot.innerHTML,originalMarkup,
+    'HA state updates must not destroy an open method select');
+  assert.equal(card._pendingRender,true,'render must be queued until committed');
+  dropdown.value='automatic';
+  card.shadowRoot.listeners.change({target:{
+    closest(query){return query==='[data-climate-method]' ? dropdown : null;},
+  }});
+  assert.deepEqual(calls[0],['select','select_option',{
+    entity_id:methodId,option:'automatic',
+  }]);
+  assert.equal(card.shadowRoot.innerHTML,originalMarkup,
+    'method picker must remain mounted until the change event is complete');
+  await new Promise((resolve)=>setTimeout(resolve,130));
+  assert.ok(card.shadowRoot.innerHTML.includes('22 °C') ||
+            card.shadowRoot.innerHTML.includes('22°C'));
+  assert.ok(card.shadowRoot.innerHTML.includes('option value="automatic" selected'));
+
+  selected.state='manual';
+  card.hass={...next,states:{...next.states,
+    'sensor.beta35':{state:'idle',attributes:{dashboard:live}},
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('data-climate-input="temperature"'));
+  const editingMarkup=card.shadowRoot.innerHTML;
+  const input={value:'25',closest(selector){
+    return selector.includes('data-climate-input') || selector.includes('data-climate-method')
+      ? this : null;
+  }};
+  card.shadowRoot.listeners.focusin({target:input});
+  physical.attributes={...physical.attributes,temperature:21};
+  card.hass={...next};
+  assert.equal(card.shadowRoot.innerHTML,editingMarkup,
+    'manual setpoint input must preserve unsaved value while focused');
+  card.shadowRoot.listeners.focusout({target:input});
+  await new Promise((resolve)=>setTimeout(resolve,130));
+  assert.notEqual(card.shadowRoot.innerHTML,editingMarkup,
+    'queued state changes must be applied after editing ends');
+})().catch((error)=>{console.error(error);process.exitCode=1;});
+
+
+// Beta35: a temporary bad dashboard snapshot must not raise a Lovelace card
+// exception or poison the update cache. A valid update repairs the same card
+// instance without a page refresh.
+{
+  const card=new Card();
+  card.setConfig({entity:'sensor.recover'});
+  const bad={version:1,get rooms(){throw new Error('simulated malformed snapshot');}};
+  assert.doesNotThrow(()=>{card.hass={language:'en',states:{
+    'sensor.recover':{state:'unavailable',attributes:{dashboard:bad}},
+  }};});
+  assert.equal(card._lastState,null,'failed render must never be cached');
+  assert.ok(card.shadowRoot.innerHTML.includes('Retrying automatically'));
+  const healthy=JSON.parse(JSON.stringify(input));
+  healthy.rooms=[null,healthy.rooms[0]];
+  assert.doesNotThrow(()=>{card.hass={language:'en',states:{
+    'sensor.recover':{state:'idle',attributes:{dashboard:healthy}},
+  }};});
+  assert.ok(card.shadowRoot.innerHTML.includes('Kitchen'),
+    'the original card instance must recover when valid data returns');
+  assert.equal(card._lastRenderError,null);
+  assert.equal(card._hasValidRender,true);
+}
+
+
+// Beta35: transient WebSocket exceptions must not permanently block registry
+// lookups. The card can recover on the next normal HA update.
+(async ()=>{
+  const card=new Card();
+  card.setConfig({entity:'sensor.device_recovery'});
+  const data={version:1,summary:{},rooms:[],outdoor:{}};
+  const states={'sensor.device_recovery':{
+    state:'idle',attributes:{dashboard:data},
+  }};
+  let attempts=0;
+  const hass={
+    language:'en',states,
+    entities:{'sensor.device_recovery':{device_id:'real-home-device'}},
+    callWS(){
+      attempts++;
+      if(attempts===1) throw new Error('transient HA websocket disconnect');
+      return Promise.resolve([
+        {id:'real-home-device',identifiers:[['environment_manager','entry-101']]},
+        {id:'real-room-device',identifiers:[['environment_manager','entry-101_area_bath']]},
+      ]);
+    },
+  };
+  card.hass=hass;
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(attempts,1);
+  assert.equal(card._deviceRegistryLoaded,false);
+  assert.ok(card._deviceRegistryNextAttemptAt>Date.now());
+  assert.ok(card.shadowRoot.innerHTML.includes('Home Environment Manager'),
+    'registry failure must not prevent dashboard rendering');
+  // Clock expiration is emulated; production waits for HA's next hass update.
+  card._deviceRegistryNextAttemptAt=0;
+  card.hass={...hass};
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(attempts,2);
+  assert.equal(card._deviceRegistryLoaded,true);
+  assert.equal(card._homeDeviceId,'real-home-device');
+  assert.equal(card._areaDeviceIds.get('bath'),'real-room-device');
+})().catch((error)=>{console.error(error);process.exitCode=1;});
