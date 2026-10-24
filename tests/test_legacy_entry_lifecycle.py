@@ -364,7 +364,7 @@ def test_climate_and_pid_controls_route_only_to_unique_configured_entry(
     assert len(FakeManager.instances[1].calls)==1
     # An unknown room is not accidentally routed to the first entry.
     unknown=asyncio.run(
-        hass.services.callbacks[("home_environment_manager","climate_control")](
+        hass.services.callbacks[("environment_manager","climate_control")](
             request("office")
         )
     )
