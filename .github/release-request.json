@@ -1,16 +1,16 @@
 {
-  "version": "0.6.0b30",
+  "version": "0.6.0b31",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b30",
-  "intent": "Canonical-only prerelease exposing per-device PID/Automatic operational status and blocking reasons without changing hardware command behavior; validate complete Python 3.13/3.14, generated 38-language catalogs, Home Assistant 2026.10, HACS/Hassfest and exact flattened payload before release.",
-  "note": "Make selected controller operational status visible when the physical HVAC entity is OFF; distinguish no demand, PID inactive output, minimum-off/warmup, missing inputs and safety pauses.",
+  "release_branch": "beta/v0.6.0b31",
+  "intent": "Canonical-only beta31 repairing unavailable per-device PID/timing number entities and missing per-room Comfort/Home/Away/Sleep/Eco heating/cooling/humidity profile inputs when native HA equipment starts late; validate full CI, installed HA 2026.10, 38-language translations, HACS/Hassfest and exact flat-tag before publication.",
+  "note": "Keep controller numeric configuration editable through native device unavailability and restore previously exposed room targets; add newly applicable targets when native HA source states arrive without restart; never change physical actuation rules.",
   "validation_attempt": 0,
   "changes": [
-    "Add read-only sensor.equipment_control_status for every selected managed controller, attached to the controller device.",
-    "Show control method, physical source states, blocked/pause reason, demand percentage and pending command as diagnostic attributes.",
-    "Distinguish within_target_band and pid_output_inactive in existing runtime status without modifying demand, dwell or hardware service calls.",
-    "Add full 38-language localized controller-status entity names including Greek and German.",
-    "Preserve beta29 optional-window contract, native actuation and room profile targets.",
-    "Keep canonical environment_manager-only HACS package with no migration or legacy aliases; stable Latest remains v0.5.1."
+    "Restore per-device PID/timing numbers when the native climate/fan/humidifier is temporarily unavailable at HA startup.",
+    "Retain already-registered capability-appropriate Room Environment heating/cooling/humidity targets when sources start late.",
+    "Listen for native source recovery and register newly applicable profile fields and device PID numbers without duplicating unique IDs.",
+    "Add unit regressions and real HA 2026.10 NumberEntity native-value validation.",
+    "Preserve beta30 Control status diagnostics, beta29 window rules, b28 active control methods and all physical safety interlocks.",
+    "Publish only immutable canonical environment_manager-only HACS flat payload; no domain migration and no stable release changes."
   ]
 }
