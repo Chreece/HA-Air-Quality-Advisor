@@ -135,7 +135,9 @@ def test_profile_target_updates_preserve_room_comfort_band_and_safety(controls):
     asyncio.run(module.update_device_setting(
         controller, "climate_profile", "comfort_heat", 21.0, area="living"))
     saved = controller.settings["climate_rooms"]["living"]
-    assert saved["profiles"]["comfort"] == {"heat_c": 21.0, "cool_c": 26.0}
+    assert saved["profiles"]["comfort"] == {
+        "heat_c": 21.0, "cool_c": 26.0, "humidity": 50.0
+    }
     with pytest.raises(Err, match="Invalid comfort band"):
         asyncio.run(module.update_device_setting(
             controller, "climate_profile", "comfort_cool", 21.2, area="living"))
