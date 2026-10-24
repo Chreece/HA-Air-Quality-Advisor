@@ -656,6 +656,9 @@
         clearTimeout(this._editRenderTimer);
         this._editRenderTimer = null;
       }
+      this._focusedEditor = null;
+      this._pendingRender = false;
+      this._pendingForceRender = false;
     }
 
     setConfig(config) {
@@ -1488,6 +1491,46 @@
 
     _render(force = false) {
       if (!this._hass || !this._config) return;
+      if (this._focusedEditor) {
+        this._pendingRender = true;
+        this._pendingForceRender = this._pendingForceRender || force;
+        return; // Never replace an open native select / unfinished input.
+      }
+      try {
+        this._renderContent(force);
+        this._lastRenderError = null;
+      } catch (error) {
+        // A transient malformed/partial HA snapshot must not cause Lovelace's
+        // generic broken-card error or poison the cache until a hard refresh.
+        const message = String(error?.message || error);
+        if (message !== this._lastRenderError) {
+          console.warn('Home Environment Manager card update will retry', error);
+        }
+        this._lastRenderError = message;
+        this._lastState = null;
+        this._shownControllerSignature = null;
+        this._lastConfigKey = null;
+        const notice = this._language()==='el'
+          ? 'Προσωρινό πρόβλημα δεδομένων. Αυτόματη επαναφορά.'
+          : this._language()==='de'
+            ? 'Daten vorübergehend nicht verfügbar. Automatischer neuer Versuch.'
+            : 'Data temporarily unavailable. Retrying automatically.';
+        const card = this._hasValidRender && this.shadowRoot.querySelector?.('ha-card');
+        if (card) {
+          card.setAttribute('aria-busy','true');
+          if (!card.querySelector?.('[data-card-recovery]')) {
+            card.insertAdjacentHTML?.('afterbegin',
+              '<div data-card-recovery role="status" style="padding:12px">'+
+              escape(notice)+'</div>');
+          }
+        } else {
+          this.shadowRoot.innerHTML = '<ha-card><div role="status" style="padding:20px">'+
+            escape(notice)+'</div></ha-card>';
+        }
+      }
+    }
+
+    _renderContent(force = false) {
       const [entity, state] = this._state();
       const lang = this._language();
       const key = JSON.stringify(this._config);
@@ -1495,18 +1538,18 @@
       if (!force && this._lastState === state && this._shownEntity === entity &&
           this._shownLanguage === lang && this._lastConfigKey === key &&
           this._shownControllerSignature === controllerSignature) return;
-      this._shownControllerSignature = controllerSignature;
-      this._lastState = state;
-      this._shownEntity = entity;
-      this._shownLanguage = lang;
-      this._lastConfigKey = key;
       const data = state?.attributes?.dashboard;
       if (!data || data.version !== 1) {
         this.shadowRoot.innerHTML = `${this._styles()}<ha-card class="shell" dir="${RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr'}"><div class="empty-state">
         ${this._icon('mdi:air-filter')}<h3>${escape(this._t('title'))}</h3><p>${escape(this._t('missingCard'))}</p></div></ha-card>`;
+        // Keep retrying when the recommended sensor is still starting:
+        // HA may later supply the dashboard on the same card instance.
+        this._lastState = null;
+        this._hasValidRender = false;
         return;
       }
-      const rooms = safeArray(data.rooms).slice().sort((a,b) =>
+      const rooms = safeArray(data.rooms).filter((room)=>room &&
+        typeof room==='object' && typeof room.area_id==='string').slice().sort((a,b) =>
         ({attention:0,unknown:1,safe:2}[a.status] ?? 3) - ({attention:0,unknown:1,safe:2}[b.status] ?? 3) ||
         String(a.name).localeCompare(String(b.name), this._hass.language));
       this.shadowRoot.innerHTML = `${this._styles()}<ha-card class="shell" dir="${RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr'}">
@@ -1525,6 +1568,14 @@
           <footer>${this._icon('mdi:shield-check-outline')} ${escape(this._t('sourceData'))}</footer>
         </div>
       </ha-card>`;
+      // Commit the cache only after the complete template was constructed
+      // and applied. A failed render must be retried on the next HA update.
+      this._shownControllerSignature = controllerSignature;
+      this._lastState = state;
+      this._shownEntity = entity;
+      this._shownLanguage = lang;
+      this._lastConfigKey = key;
+      this._hasValidRender = true;
     }
 
     _styles() { return `<style>
