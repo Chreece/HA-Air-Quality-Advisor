@@ -1,4 +1,4 @@
-"""Beta21 canonical domain repair and beta20 compatibility."""
+"""Canonical environment_manager domain and migration-only legacy sources."""
 from pathlib import Path
 import json
 
@@ -19,25 +19,33 @@ def test_canonical_package_and_manifest():
     assert not (ROOT / "custom_components" / "air_quality_advisor").exists()
 
 
-def test_b19_and_b20_are_both_migration_sources():
+def test_historical_domains_are_migration_inputs_only():
     const = source("const.py")
     migration = source("domain_migration.py")
     flow = source("config_flow.py")
-    assert 'DOMAIN = "environment_manager"' in const
-    assert 'LEGACY_DOMAIN = "air_quality_advisor"' in const
-    assert 'BETA20_DOMAIN = "enviroment_manager"' in const
-    assert 'LEGACY_DOMAINS = (BETA20_DOMAIN, LEGACY_DOMAIN)' in const
-    assert "source_domain not in LEGACY_DOMAINS" in migration
-    assert "for domain in LEGACY_DOMAINS" in flow
-    assert "async_migrate_legacy_registry(self.hass, legacy)" in flow
-    assert "async_create_entry" not in flow[flow.index("async def async_step_migrate_legacy"):flow.index("async def _finish")]
-
-
-def test_service_and_card_compatibility_aliases_remain():
     init = source("__init__.py")
-    const = source("const.py")
-    assert 'LEGACY_PUBLIC_ACTION_DOMAIN = "home_environment_manager"' in const
-    assert 'BETA20_DOMAIN = "enviroment_manager"' in const
-    assert "SERVICE_ALIAS_DOMAINS" in init
-    assert "BETA20_DOMAIN" in init
-    assert 'StaticPathConfig(f"/{BETA20_DOMAIN}/air-quality-advisor-card.js"' in init
+
+    assert 'DOMAIN = "environment_manager"' in const
+    assert 'MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")' in const
+    assert "for domain in MIGRATION_SOURCE_DOMAINS" in flow
+    assert "source_domain not in MIGRATION_SOURCE_DOMAINS" in migration
+    assert "async_migrate_legacy_registry(self.hass, legacy)" in flow
+
+    # Historical names must never be registered as services/front-end paths.
+    assert "SERVICE_ALIAS_DOMAINS" not in init
+    assert "LEGACY_PUBLIC_ACTION_DOMAIN" not in init
+    assert "BETA20_DOMAIN" not in init
+    assert "LEGACY_DOMAIN" not in init
+    assert 'StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js"' in init
+    assert 'StaticPathConfig(f"/{BETA20_DOMAIN}' not in init
+    assert 'StaticPathConfig(f"/{LEGACY_DOMAIN}' not in init
+
+
+def test_migration_flow_does_not_create_second_config_entry():
+    flow = source("config_flow.py")
+    section = flow[
+        flow.index("async def async_step_migrate_legacy"):
+        flow.index("async def _finish")
+    ]
+    assert "async_migrate_legacy_registry(self.hass, legacy)" in section
+    assert "async_create_entry" not in section
