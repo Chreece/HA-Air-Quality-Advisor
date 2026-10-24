@@ -163,7 +163,7 @@ def test_runtime_quiet_capacity_saturates_and_reports_shortfall(runtime_module):
     async def run():
         cfg={"pid_fan_capacity_for_mode":"heat",
              "pid_capacity_stage_1":30,"pid_capacity_stage_2":65,
-             "kp":10,"ki":0,"kd":0,"quiet_sleep":True}
+             "kp":100,"ki":0,"kd":0,"quiet_sleep":True}
         h=home(runtime_module,domain="climate",mode="pid",state="off",controls=cfg)
         h.plan["sleeping"]=True
         await h.runtime.async_apply_fan_capacity(h.spec)
