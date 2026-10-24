@@ -163,6 +163,18 @@ class EquipmentRuntime:
             "sources": list(spec.source_entities), "source_device_id": spec.source_device_id,
             "baseline": {}, "power": {}, "off_at": {}})
 
+    def _observed_off_since(self, entity: str, now: float | None = None) -> float:
+        """Best known physical OFF timestamp, not the selector-click time."""
+        now = self.clock() if now is None else now
+        state = self.hass.states.get(entity)
+        changed = getattr(state, "last_changed", None) if state is not None else None
+        try:
+            stamp = changed.timestamp() if changed is not None else None
+        except (AttributeError, TypeError, ValueError, OverflowError):
+            stamp = None
+        stamp = finite(stamp, 0, 1e13)
+        return stamp if stamp is not None and stamp <= now else now
+
     def _lock(self, key: str) -> asyncio.Lock:
         record = self.records.get(key)
         if record:
@@ -323,10 +335,25 @@ class EquipmentRuntime:
                 raise HomeAssistantError("Wait for the current physical-device acknowledgement before editing")
             if new["control_mode"] == "existing" and record.get("power"):
                 raise HomeAssistantError("Reconcile managed power OFF before returning to the room controller")
-            if old["control_mode"] != new["control_mode"]:
-                record["baseline"] = {e: snapshot(self.hass.states.get(e)) for e in spec.source_entities}
-                record.setdefault("off_at", {}).update({e: self.clock() for e in spec.source_entities
-                    if output_off(self.hass.states.get(e))})
+            method_selected = "control_mode" in changes
+            if method_selected or old["control_mode"] != new["control_mode"]:
+                # Explicitly selecting a controller method is the user's
+                # acknowledgement/re-arm after a previous software pause. A
+                # still-running unowned appliance is handled separately below
+                # and is never silently adopted.
+                if method_selected and new["control_mode"] in (
+                    "automatic", "pid", "manual", "off"
+                ):
+                    record.pop("paused", None)
+                record["baseline"] = {
+                    e: snapshot(self.hass.states.get(e)) for e in spec.source_entities
+                }
+                now = self.clock()
+                record.setdefault("off_at", {}).update({
+                    e: self._observed_off_since(e, now)
+                    for e in spec.source_entities
+                    if output_off(self.hass.states.get(e))
+                })
                 await self._save()
             # Use the shared options lock to preserve simultaneous room/mold edits.
             lock = getattr(self.manager, "_device_settings_write_lock", None)
@@ -879,10 +906,19 @@ class EquipmentRuntime:
                 self._status(spec, "minimum_on_hold")
                 return False
         else:
-            stamp = record["off_at"].setdefault(cap.primary, now)
             changed = getattr(state, "last_changed", None)
-            if changed is not None:
-                stamp = max(stamp, changed.timestamp())
+            try:
+                observed = changed.timestamp() if changed is not None else None
+            except (AttributeError, TypeError, ValueError, OverflowError):
+                observed = None
+            observed = finite(observed, 0, 1e13)
+            stamp = record["off_at"].get(cap.primary)
+            if stamp is None:
+                stamp = observed if observed is not None and observed <= now else now
+            elif observed is not None and stamp < observed <= now:
+                # A newer HA state transition proves a later physical OFF.
+                stamp = observed
+            record["off_at"][cap.primary] = stamp
             if not 0 <= now-stamp or now-stamp < off_min:
                 self._status(spec, "minimum_off_hold")
                 return False
