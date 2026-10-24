@@ -65,6 +65,17 @@ class ControllerStatusSensor(EquipmentEntity, SensorEntity):
             "status_reason": observed.get("reason"),
             "last_evaluated_mode": observed.get("mode"),
             "demand_percent": observed.get("demand_percent"),
+            "pid_calibration_method": cfg.get("pid_calibration_method", "manual"),
+            "pid_last_calibration": cfg.get("pid_last_calibration"),
+            "pid_output_strategy": (
+                "continuous_percentage_fan" if (cap := equipment.capabilities(self._manager, self._spec))
+                is not None and cap.domain == "fan" and cap.fan_percentage else
+                "discrete_fan_stages" if cap is not None and cap.domain == "fan"
+                and bool(cap.fan_modes) else
+                "continuous_percentage_valve" if cap is not None
+                and cap.domain in ("number", "input_number") else
+                "binary_duty_cycle"
+            ) if cfg.get("control_mode") == "pid" else "not_pid",
             "physical_entity_states": physical,
             "controller_owns_power": bool(record.get("power")),
             "paused_reason": record.get("paused"),
