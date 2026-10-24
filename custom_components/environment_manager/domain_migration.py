@@ -1,17 +1,74 @@
 """Safe in-place migration from previous Home Environment Manager domains."""
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 from homeassistant.exceptions import HomeAssistantError
 
-from .const import DOMAIN, LEGACY_DOMAIN, LEGACY_DOMAINS
+from .const import DOMAIN, LEGACY_STORAGE_DEFAULT_DOMAIN, MIGRATION_SOURCE_DOMAINS
+
+
+
+
+
+async def async_quarantine_legacy_component_dirs(hass: Any) -> list[str]:
+    """Move verified legacy integration folders out of custom_components.
+
+    This removes duplicate installable integrations while keeping a recoverable
+    backup. Only folders whose own manifest domain exactly matches a known
+    historical domain are touched.
+    """
+
+    def _move() -> list[str]:
+        config_dir = Path(hass.config.config_dir)
+        custom_components = config_dir / "custom_components"
+        backup_root = config_dir / ".environment_manager_legacy_components"
+        moved: list[str] = []
+
+        for legacy_domain in MIGRATION_SOURCE_DOMAINS:
+            source = custom_components / legacy_domain
+            manifest_path = source / "manifest.json"
+            if not source.is_dir() or not manifest_path.is_file():
+                continue
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError, TypeError):
+                continue
+            if manifest.get("domain") != legacy_domain:
+                continue
+
+            backup_root.mkdir(parents=True, exist_ok=True)
+            target = backup_root / legacy_domain
+            suffix = 1
+            while target.exists():
+                target = backup_root / f"{legacy_domain}.{suffix}"
+                suffix += 1
+            source.rename(target)
+            moved.append(legacy_domain)
+
+        return moved
+
+    moved = await hass.async_add_executor_job(_move)
+    if moved:
+        # Home Assistant caches discovered custom integrations. Rebuild the
+        # cache so the removed legacy folders disappear from Add Integration.
+        try:
+            from homeassistant import loader
+
+            hass.data.pop("custom_components", None)
+            await loader.async_get_custom_components(hass)
+        except Exception:
+            # Disk cleanup succeeded; a normal restart will refresh the cache.
+            pass
+    return moved
 
 
 def legacy_entries(hass: Any) -> list[Any]:
     """Return entries owned by a previous integration domain."""
     entries: list[Any] = []
-    for domain in LEGACY_DOMAINS:
+    for domain in MIGRATION_SOURCE_DOMAINS:
         entries.extend(hass.config_entries.async_entries(domain))
     return entries
 
@@ -32,7 +89,7 @@ def _migration_data(entry: Any, source_domain: str) -> dict[str, Any]:
     if isinstance(previous_id, str) and previous_id:
         marker = {
             "domain": (
-                previous_domain if previous_domain in LEGACY_DOMAINS else LEGACY_DOMAIN
+                previous_domain if previous_domain in MIGRATION_SOURCE_DOMAINS else LEGACY_STORAGE_DEFAULT_DOMAIN
             ),
             "entry_id": previous_id,
         }
@@ -108,7 +165,7 @@ async def async_migrate_legacy_registry(hass: Any, legacy: Any) -> Any:
     from homeassistant.helpers import device_registry as dr, entity_registry as er
 
     source_domain = legacy.domain
-    if source_domain not in LEGACY_DOMAINS:
+    if source_domain not in MIGRATION_SOURCE_DOMAINS:
         raise HomeAssistantError("Unexpected domain migration source")
     if hass.config_entries.async_entries(DOMAIN):
         raise HomeAssistantError(
@@ -228,7 +285,7 @@ def _migration_markers(entry: Any) -> list[tuple[str, str]]:
     domain = data.get("_legacy_domain")
     if isinstance(entry_id, str) and entry_id:
         markers.append(
-            (domain if domain in LEGACY_DOMAINS else LEGACY_DOMAIN, entry_id)
+            (domain if domain in MIGRATION_SOURCE_DOMAINS else LEGACY_STORAGE_DEFAULT_DOMAIN, entry_id)
         )
     chain = data.get("_legacy_entry_chain")
     if isinstance(chain, list):
@@ -237,7 +294,7 @@ def _migration_markers(entry: Any) -> list[tuple[str, str]]:
                 continue
             item_id = item.get("entry_id")
             item_domain = item.get("domain")
-            if isinstance(item_id, str) and item_id and item_domain in LEGACY_DOMAINS:
+            if isinstance(item_id, str) and item_id and item_domain in MIGRATION_SOURCE_DOMAINS:
                 marker = (item_domain, item_id)
                 if marker not in markers:
                     markers.append(marker)
