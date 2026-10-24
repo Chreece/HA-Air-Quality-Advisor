@@ -19,6 +19,7 @@ from .climate_strategy import guarded_transition, pwm_slot, relay_demand
 from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
 from .pid_math import Memory, finite, step
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 MAX_SENSOR_AGE_MINUTES = 10
@@ -88,7 +89,7 @@ class DirectClimateControl:
         self._started = self.clock()
         try:
             from homeassistant.helpers.storage import Store
-            self._store = Store(self.hass, 1, f"air_quality_advisor.direct_{self.entry_id}")
+            self._store = Store(self.hass, 1, f"{DOMAIN}.direct_{self.entry_id}")
             saved = await self._store.async_load()
         except Exception:
             _LOGGER.exception("Direct actuator storage unavailable; output writes disabled")
