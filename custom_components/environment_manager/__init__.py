@@ -20,8 +20,10 @@ from .manager import AirQualityManager
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
-    """Serve and register the card once; installation needs no www copy/YAML."""
+    """Serve the canonical integration and retire verified legacy folders."""
     hass.data.setdefault(DOMAIN, {})
+    from .domain_migration import async_quarantine_legacy_component_dirs
+    await async_quarantine_legacy_component_dirs(hass)
     card_path = Path(__file__).parent / "frontend" / "air-quality-advisor-card.js"
     await hass.http.async_register_static_paths([
         StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
