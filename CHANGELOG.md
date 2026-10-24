@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b27 - Validated room targets and active controllers (beta)
+
+- Carry the fully validated beta26 controller/Room Environment changes onto a fresh immutable prerelease tag.
+- Keep `environment_manager` as the only runtime/config-flow/storage domain with no domain migration module.
+- Keep Comfort, Home, Away, Sleep and Eco room-owned heat/cool/humidity targets.
+- Keep Automatic/PID/Manual as the authorization for the exact native controller to start/stop supported equipment on verified demand.
+- Preserve the real physical OFF age when selecting a method and re-arm a deliberate method selection after a prior software pause.
+- Pass Python 3.13/3.14, HACS, Hassfest, HA 2026.10 setup checks and exact flat-payload validation before publication.
+
 ## 0.6.0b26 - Room profile targets and active controller methods (beta)
 
 - Remove historical-domain migration completely; `environment_manager` is the sole runtime/config-flow/storage domain.
