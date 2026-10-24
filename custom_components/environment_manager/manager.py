@@ -294,7 +294,10 @@ class AirQualityManager:
                     prior_mode=prior,comfort_target_c=comfort,
                     outdoor_safe=base_plan.outdoor_safe,
                     duplicate_equipment=duplicate_devices,
-                    require_window_contact=monitored.area_id in monitored_areas,
+                    # A room without any configured window contact is eligible.
+                    # Any discovered/selected contact must still report CLOSED;
+                    # missing selected contacts are represented as unknown.
+                    require_window_contact=False,
                     global_presence=shared_presence,
                     known_areas=set(room_climate_configs) | set(monitored_areas),
                 )
