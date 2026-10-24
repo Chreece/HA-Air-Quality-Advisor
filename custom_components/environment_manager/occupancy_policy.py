@@ -157,17 +157,60 @@ def _after_away_cooldown(states: list[Any], minutes: Any, reason: str
 
 def home_presence(hass: Any, global_settings: Mapping,
                   fallback_trackers: list[str] | None = None) -> tuple[str, str, list[str]]:
-    """A fresh empty occupied-room source means nobody home, after cooldown."""
+    """Any fresh positive tracker or presence sensor is sufficient for HOME.
+
+    Evaluate *all* explicitly configured presence signals before any negative
+    priority/cooldown logic. A fresh device_tracker/person 'home' or binary
+    sensor 'on' can never be vetoed by another 'not_home'/'off', a missing
+    sensor, or an empty/stale occupied-rooms list. Only a real fresh positive
+    qualifies; unavailable or stale values are not affirmative evidence.
+
+    Once no positive evidence exists, retain conservative existing behavior
+    for room lists, all-negative room sensors and away cooldowns.
+    """
     cooldown = global_settings.get("away_cooldown_minutes", 10)
     room_entity = global_settings.get("occupied_rooms_entity")
+    room_sources = global_settings.get("room_occupancy_sensors", [])
+    allowed_rooms = list(dict.fromkeys(
+        entity for entity in (room_sources if isinstance(room_sources, list) else [])
+        if isinstance(entity, str) and entity.startswith("binary_sensor.")
+    ))
+    global_trackers = global_settings.get("home_trackers", [])
+    # Legacy area trackers are explicit sources too: a positive should not
+    # disappear merely because the General settings list is also configured.
+    combined = [
+        *(global_trackers if isinstance(global_trackers, list) else []),
+        *(fallback_trackers if isinstance(fallback_trackers, list) else []),
+    ]
+    allowed = list(dict.fromkeys(
+        entity for entity in combined
+        if isinstance(entity, str)
+        and entity.startswith(("person.", "device_tracker.", "binary_sensor."))
+    ))
+    all_sources = list(dict.fromkeys([
+        *([room_entity] if isinstance(room_entity, str) and room_entity else []),
+        *allowed_rooms, *allowed,
+    ]))
+    room_values = [_bool_presence(hass.states.get(e)) for e in allowed_rooms]
+    tracker_values = [_bool_presence(hass.states.get(e)) for e in allowed]
+
+    # Positive evidence has unconditional priority over contradictory/unknown
+    # negative sources and old all_home configuration (which no longer vetoes
+    # a known person at home). This affects only house presence; independent
+    # physical compressor and per-room safety gates still apply.
+    if any(value is True for value in tracker_values):
+        return "home", "any_home_policy", all_sources
+    if any(value is True for value in room_values):
+        return "home", "room_sensor_occupied", all_sources
+
     if isinstance(room_entity, str) and room_entity:
         rooms, why = configured_rooms(
             hass, room_entity, global_settings.get("occupied_rooms_attribute"),
             set(), max_age_minutes=global_settings.get("source_stale_minutes", 240))
         if rooms is None:
-            return "unknown", why, [room_entity]
+            return "unknown", why, all_sources
         if rooms:
-            return "home", "occupied_rooms_present", [room_entity]
+            return "home", "occupied_rooms_present", all_sources
         state = hass.states.get(room_entity)
         # A list stored in an attribute may change while the state string stays
         # constant, so use last_updated as the transition evidence in that case.
@@ -177,36 +220,21 @@ def home_presence(hass: Any, global_settings: Mapping,
             status, reason = _after_away_cooldown([proxy], cooldown, "occupied_rooms_empty")
         else:
             status, reason = _after_away_cooldown([state], cooldown, "occupied_rooms_empty")
-        return status, reason, [room_entity]
+        return status, reason, all_sources
 
-    room_sources = global_settings.get("room_occupancy_sensors", [])
-    if isinstance(room_sources, list) and room_sources:
-        allowed_rooms = [e for e in room_sources if isinstance(e, str)
-                         and e.startswith("binary_sensor.")]
-        values = [_bool_presence(hass.states.get(e)) for e in allowed_rooms]
-        if any(v is True for v in values):
-            return "home", "room_sensor_occupied", allowed_rooms
-        if values and all(v is False for v in values):
+    if room_values:
+        if all(value is False for value in room_values):
             status, reason = _after_away_cooldown(
                 [hass.states.get(e) for e in allowed_rooms], cooldown,
                 "all_room_sensors_unoccupied")
-            return status, reason, allowed_rooms
-        if values:
-            return "unknown", "room_presence_evidence_unknown", allowed_rooms
+            return status, reason, all_sources
+        return "unknown", "room_presence_evidence_unknown", all_sources
 
-    source = global_settings.get("home_trackers") or fallback_trackers or []
-    if not isinstance(source, list):
-        source = []
-    allowed = [e for e in source if isinstance(e, str) and
-               e.startswith(("person.", "device_tracker.", "binary_sensor."))]
     if not allowed:
         return "home", "no_trackers_assume_home", []
-    values = [_bool_presence(hass.states.get(e)) for e in allowed]
-    if any(v is None for v in values):
-        return "unknown", "unverified_home_trackers", allowed
-    if global_settings.get("home_policy", "any_home") == "all_home":
-        return ("home" if all(values) else "away"), "all_home_policy", allowed
-    return ("home" if any(values) else "away"), "any_home_policy", allowed
+    if any(value is None for value in tracker_values):
+        return "unknown", "unverified_home_trackers", all_sources
+    return "away", "any_home_policy", all_sources
 
 
 def room_presence(hass: Any, area: str, settings: Mapping,
