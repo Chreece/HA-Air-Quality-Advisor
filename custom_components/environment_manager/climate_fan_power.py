@@ -84,10 +84,10 @@ class FanPowerControl:
         self._started = self.clock()
         try:
             from homeassistant.helpers.storage import Store
-            from .domain_migration import async_open_migrated_store
-            self._store, saved = await async_open_migrated_store(
-                self.hass, 1, "fan_power", self.entry_id
+            self._store = Store(
+                self.hass, 1, f"{DOMAIN}.fan_power_{self.entry_id}"
             )
+            saved = await self._store.async_load()
         except Exception:
             _LOGGER.exception("Native fan power storage unavailable")
             return
