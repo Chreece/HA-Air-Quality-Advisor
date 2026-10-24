@@ -16,6 +16,7 @@ from .climate_equipment import humidity_advice
 from .climate_arbitration import new_command_gate
 from .discovery import entity_area, reading
 from .pid_math import finite
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 STARTUP_SETTLING_SECONDS = 300
@@ -105,7 +106,7 @@ class HumiditySetpointControl:
         try:
             from homeassistant.helpers.storage import Store
             self._store = Store(self.hass, 1,
-                f"air_quality_advisor.humidity_native_{self.entry_id}")
+                f"{DOMAIN}.humidity_native_{self.entry_id}")
             saved = await self._store.async_load()
         except Exception:
             _LOGGER.exception("Humidity setpoint safety storage unavailable")
