@@ -1443,6 +1443,34 @@
         'Process gain','Time constant (min)','Dead time (min)','Lambda (min)',
         'Save input','Apply calibration','Measured response required',
       ];
+      const fanCapacityLabels={
+        en:['Measured PID fan capacity','Legacy (uncalibrated)','Measured model',
+            'HVAC direction','Choose direction','Heat','Cool','Dry','Fan only',
+            'Stage','Speed at sample','Relative capacity at sample',
+            'Save measurement','Apply measured model',
+            'Highest physical speed is the 100% reference. Enter real capacity ratios.',
+            'Effective duty','Predicted output','Unmet demand','Physical output must be OFF'],
+        el:['Μετρημένη απόδοση ανεμιστήρα PID','Αρχική λειτουργία','Μετρημένο μοντέλο',
+            'Λειτουργία HVAC','Επιλογή','Θέρμανση','Ψύξη','Αφύγρανση','Ανεμιστήρας',
+            'Βαθμίδα','Ταχύτητα δείγματος','Σχετική απόδοση δείγματος',
+            'Αποθήκευση μέτρησης','Εφαρμογή μετρημένου μοντέλου',
+            'Η μέγιστη ταχύτητα ορίζει το 100%. Συμπλήρωσε πραγματικές μετρήσεις.',
+            'Ενεργός χρόνος','Προβλεπόμενη απόδοση','Μη καλυπτόμενη ζήτηση',
+            'Η φυσική συσκευή πρέπει να είναι κλειστή'],
+        de:['Gemessene PID-Lüfterleistung','Bisherig (unkalibriert)','Gemessenes Modell',
+            'HVAC-Betriebsart','Betriebsart wählen','Heizen','Kühlen','Entfeuchten','Nur Lüfter',
+            'Stufe','Gemessene Drehzahl','Gemessene relative Leistung',
+            'Messung speichern','Messmodell anwenden',
+            'Höchste Lüfterstufe ist die 100%-Referenz. Nur reale Messungen eingeben.',
+            'Einschaltdauer','Erwartete Leistung','Unerfüllter Bedarf',
+            'Physisches Gerät muss AUS sein'],
+      }[this._language()] || [
+        'Measured PID fan capacity','Legacy (uncalibrated)','Measured model',
+        'HVAC direction','Choose direction','Heat','Cool','Dry','Fan only',
+        'Stage','Speed at sample','Relative capacity at sample','Save measurement',
+        'Apply measured model','Highest speed is the 100% reference; use real measurements.',
+        'Effective duty','Predicted output','Unmet demand','Physical output must be OFF',
+      ];
       const sections=devices.map((entry)=>{
         const state=entry.climate;
         const attrs=state.attributes || {};
@@ -1507,6 +1535,75 @@
             'data-apply-pid-calibration="'+escape(entry.calibrationButtonId)+
             '" data-controller-area="'+escape(room.area_id)+'" '+
             (!available ? 'disabled' : '')+'>'+escape(pidLabels[9])+'</button>' : '';
+        const capMethod=entry.capacityMode;
+        const capDirection=entry.capacityDirection;
+        const capChoices={
+          legacy:fanCapacityLabels[1],measured:fanCapacityLabels[2],
+          choose:fanCapacityLabels[4],heat:fanCapacityLabels[5],
+          cool:fanCapacityLabels[6],dry:fanCapacityLabels[7],
+          fan_only:fanCapacityLabels[8],
+        };
+        const renderCapacitySelect=(id,state,label)=>{
+          if (!id || !Array.isArray(state?.attributes?.options)) return '';
+          return '<label class="managed-method-label"><span>'+escape(label)+'</span>'+
+            '<select data-pid-capacity-select="'+escape(id)+
+            '" data-controller-area="'+escape(room.area_id)+'" '+
+            (available && control==='pid' ? '' : 'disabled')+'>'+
+            state.attributes.options.map(option=>
+              '<option value="'+escape(option)+'" '+
+              (state.state===option ? 'selected' : '')+'>'+
+              escape(capChoices[option] || option)+'</option>').join('')+
+            '</select></label>';
+        };
+        const capVisible=control==='pid' && entry.capacityModeId &&
+          entry.capacityDirectionId;
+        const capSelectors=capVisible ?
+          renderCapacitySelect(entry.capacityModeId,capMethod,fanCapacityLabels[0])+
+          renderCapacitySelect(entry.capacityDirectionId,capDirection,fanCapacityLabels[3]) : '';
+        const capacityInput=capVisible && capDirection?.state!=='choose' ?
+          (entry.capacityNumbers || []).map((item)=>{
+            const name=item.field;
+            const number=Number(name.split('_').at(-1));
+            const fieldName=name.startsWith('pid_capacity_stage_')
+              ? fanCapacityLabels[9]+' '+number
+              : name.startsWith('pid_capacity_speed_')
+                ? fanCapacityLabels[10]+' '+number+' (%)'
+                : fanCapacityLabels[11]+' '+number+' (%)';
+            const limits=item.state?.attributes || {};
+            return '<div class="climate-target-editor"><label><span>'+
+              escape(fieldName)+'</span><input type="number" '+
+              'data-pid-capacity-input="'+escape(name)+'" '+
+              'min="'+escape(limits.min??0)+'" max="'+escape(limits.max??99)+
+              '" step="'+escape(limits.step??1)+'" value="'+
+              escape(item.state.state==='unavailable'?'':item.state.state)+'"></label>'+
+              '<button type="button" data-save-pid-capacity="'+escape(item.id)+
+              '" data-pid-capacity-field="'+escape(name)+'" '+
+              'data-controller-area="'+escape(room.area_id)+'">'+
+              escape(fanCapacityLabels[12])+'</button></div>';
+          }).join('') : '';
+        const nativeOff=attrs.physical_source_state==='off';
+        const applyCapacity=capVisible && entry.capacityButtonId ?
+          '<small>'+escape(fanCapacityLabels[14])+' · '+
+          escape(entry.capacityButton?.attributes?.calibration_status || '')+
+          '</small><button type="button" class="pid-button" '+
+          'data-apply-pid-fan-capacity="'+escape(entry.capacityButtonId)+
+          '" data-controller-area="'+escape(room.area_id)+'" '+
+          (!nativeOff || capDirection?.state==='choose' || !available ?
+            'disabled title="'+escape(fanCapacityLabels[18])+'"' : '')+
+          '>'+escape(fanCapacityLabels[13])+'</button>' : '';
+        const capacityStatus=attrs.controller_status?.pid_fan_capacity;
+        const capacitySummary=control==='pid' && capacityStatus ?
+          '<small>'+escape(capacityStatus.status||'')+
+          (typeof capacityStatus.compensated_duty_percent==='number'
+            ? ' · '+escape(fanCapacityLabels[15])+': '+
+              escape(this._format(capacityStatus.compensated_duty_percent))+'%' : '')+
+          (typeof capacityStatus.expected_delivered_percent==='number'
+            ? ' · '+escape(fanCapacityLabels[16])+': '+
+              escape(this._format(capacityStatus.expected_delivered_percent))+'%' : '')+
+          (capacityStatus.unmet_demand_percent>0
+            ? ' · '+escape(fanCapacityLabels[17])+': '+
+              escape(this._format(capacityStatus.unmet_demand_percent))+'%' : '')+
+          '</small>' : '';
         const features=Number(attrs.supported_features) || 0;
         const editable=available && control==='manual';
         const editors=[];
@@ -1541,7 +1638,9 @@
           '<div class="managed-status">'+escape(entry.entityId)+
           ' · '+escape(state.state)+
           (status ? ' · '+escape(status.replaceAll('_',' ')) : '')+'</div>'+
-          method+calibrationMethod+pidInputs+apply+editors.join('')+'</section>';
+          method+calibrationMethod+pidInputs+apply+
+          capSelectors+capacityInput+applyCapacity+capacitySummary+
+          editors.join('')+'</section>';
       }).join('');
       return '<div class="managed-controllers">'+
         '<strong>'+escape(l.devices)+'</strong>'+
