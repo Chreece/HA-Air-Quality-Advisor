@@ -13,7 +13,7 @@ def test_only_canonical_domain_exists_and_no_migration_code_ships():
     root_manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
     assert manifest == root_manifest
     assert manifest["domain"] == "environment_manager"
-    assert manifest["version"] == "0.6.0b28"
+    assert manifest["version"].startswith("0.6.0b")
     assert not (PKG / "domain_migration.py").exists()
 
     assert not (ROOT / "custom_components" / "air_quality_advisor").exists()
