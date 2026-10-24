@@ -37,15 +37,28 @@ async def async_setup_entry(hass, entry, async_add_entities):
                 manager, entry.entry_id, key, kind="climate_operating", area=area,
             ) for key in CLIMATE_OPERATING_FLAGS)
     from . import equipment_model as equipment
-    entities.extend(EquipmentQuietSwitch(manager, spec, key)
-                    for spec in equipment.specs(manager)
-                    if (cap := equipment.capabilities(manager, spec)) is not None and cap.fan_modes
-                    for key in equipment.QUIET_FLAGS)
+    from homeassistant.helpers import entity_registry as er
+    from .equipment_feature_registration import (
+        quiet_keys, register_late_capabilities,
+    )
+    registry = er.async_get(hass)
+
+    def native_quiet_switches():
+        return [
+            EquipmentQuietSwitch(manager, spec, key)
+            for spec in equipment.specs(manager)
+            for key in quiet_keys(manager, registry, spec, platform="switch")
+        ]
+
+    entities.extend(native_quiet_switches())
     entities.extend(EquipmentQuietSwitch(manager, spec, "sensor_verified")
                     for spec in equipment.specs(manager)
                     if (cap := equipment.capabilities(manager, spec)) is not None
                     and (cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
+    register_late_capabilities(
+        hass, entry, async_add_entities, entities, native_quiet_switches,
+    )
 
 
 class HomeSettingSwitch(SwitchEntity):
@@ -128,6 +141,7 @@ class HomeSettingSwitch(SwitchEntity):
 
 
 from .equipment_entity import EquipmentEntity
+from . import equipment_model as equipment
 
 
 class EquipmentQuietSwitch(EquipmentEntity, SwitchEntity):
@@ -137,6 +151,18 @@ class EquipmentQuietSwitch(EquipmentEntity, SwitchEntity):
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
         self._attr_icon = {"sensor_verified": "mdi:check-decagram-outline"}.get(key, "mdi:fan-speed-1")
+
+    @property
+    def available(self):
+        if self._key in equipment.QUIET_FLAGS:
+            cap = equipment.capabilities(self._manager, self._spec)
+            return bool(cap and cap.fan_modes)
+        return super().available
+
+    async def async_added_to_hass(self):
+        await super().async_added_to_hass()
+        if self._key in equipment.QUIET_FLAGS:
+            self._watch_native_updates()
 
     @property
     def is_on(self):
