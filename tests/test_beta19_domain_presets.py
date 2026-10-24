@@ -11,14 +11,15 @@ def test_automatic_profile_semantics():
     assert select_profile({},at_home="unknown",occupied="unknown")[0]=="home"
     assert select_profile({},at_home="home",occupied="occupied",manual="eco")[0]=="eco"
 
-def test_room_profile_migration_and_eco():
+def test_canonical_room_profiles_and_eco_defaults():
     parsed,problem=profiles({"profiles":{
-        "home":{"heat_c":20,"cool_c":26},
-        "unoccupied":{"heat_c":18,"cool_c":28},
+        "comfort":{"heat_c":21,"cool_c":25},
+        "home":{"heat_c":19,"cool_c":27},
     }})
     assert problem is None
-    assert parsed["comfort"].heat_c==20
-    assert parsed["home"].heat_c==18
+    assert parsed["comfort"].heat_c==21
+    assert parsed["home"].heat_c==19
+    assert parsed["away"].heat_c==16
     assert parsed["eco"].heat_c==17
 
 def test_canonical_domain_only():
