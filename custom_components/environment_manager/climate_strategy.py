@@ -82,13 +82,16 @@ def occupied_evidence(values: list[bool|None], *, unknown_policy: str="occupied"
 
 
 def home_away_evidence(states: list[bool|None], *, mode: str="any_home") -> tuple[str,str]:
-    """True means person at home from a tracker or explicit binary sensor."""
+    """Any positive tracker or binary sensor proves Home, including legacy UI.
+
+    An old all_home setting cannot veto an explicitly verified person home.
+    Unknown trackers are conservative rather than negative, as before.
+    """
     if mode not in ("any_home","all_home"): return "unknown","invalid_policy"
     if not states: return "home","no_tracker_configured"
+    if any(s is True for s in states): return "home","someone_home"
     if any(s is None for s in states): return "home","unknown_tracker_conservative"
-    if mode=="any_home":
-        return ("home","someone_home") if any(states) else ("away","everyone_away")
-    return ("home","everyone_home") if all(states) else ("away","not_everyone_home")
+    return "away","everyone_away"
 
 
 def select_profile(settings:dict, *, at_home:str, occupied:str,
