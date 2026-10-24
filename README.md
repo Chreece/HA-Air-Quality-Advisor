@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b26/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b27/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 26 is available for opt-in testing.** Stable remains **v0.5.1**. Beta26 is a clean `environment_manager`-only integration with **no old-domain migration code**. Room Environment devices now own Comfort / Home / Away / Sleep / Eco temperature and humidity targets. Selecting Automatic, PID or Manual authorizes that exact native controller to start/stop its supported physical device or HVAC mode when verified demand requires it, while all safety gates remain active.
+> **v0.6.0 beta 27 is available for opt-in testing.** Stable remains **v0.5.1**. Beta27 supersedes the earlier beta26 tag and contains the fully validated canonical-only `environment_manager` build. Room Environment devices expose Comfort / Home / Away / Sleep / Eco temperature and humidity targets, and selecting Automatic, PID or Manual authorizes that exact native controller to start/stop its supported physical device or HVAC mode when verified demand requires it.
+
+## Beta 27 - validated room targets and active controllers
+
+Beta27 is the fresh immutable publication of the fully validated beta26 implementation. It keeps only the canonical `environment_manager` domain, with no old-domain migration path.
+
+Each **Room Environment** device exposes capability-aware targets for **Comfort, Home, Away, Sleep and Eco**: heating, cooling and humidity where supported. Targets remain editable even when automation is Off.
+
+Selecting **Automatic, PID or Manual** authorizes the exact managed native controller to regulate and to turn its supported physical device/HVAC mode ON or OFF when verified demand requires it. There is no second hidden power permission. Beta27 also uses the physical device's observed OFF age instead of treating the selector click as a fresh OFF transition.
 
 ## Beta 26 - room targets and active controller methods
 
