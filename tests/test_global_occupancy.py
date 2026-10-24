@@ -157,26 +157,29 @@ def test_empty_occupied_rooms_means_away_only_after_cooldown(adapter):
     empty = MockState("sensor.occupied_rooms", "[]")
     empty.last_changed = datetime.now(timezone.utc) - timedelta(minutes=5)
     empty.last_updated = empty.last_changed
-    resident = MockState("person.resident", "home")
+    resident = MockState("person.resident", "not_home")
     h = FakeHass([empty, resident])
     cfg = {"occupied_rooms_entity": empty.entity_id,
            "home_trackers": [resident.entity_id],
            "away_cooldown_minutes": 10}
     status, reason, sources = home_presence(h, cfg)
     assert status == "home" and reason == "no_occupied_rooms_cooldown"
-    assert sources == [empty.entity_id]
+    assert sources == [empty.entity_id, resident.entity_id]
     empty.last_changed = datetime.now(timezone.utc) - timedelta(minutes=11)
     empty.last_updated = empty.last_changed
     assert home_presence(h, cfg)[:2] == ("away", "occupied_rooms_empty")
     empty.state = "unavailable"
     assert home_presence(h, cfg)[0] == "unknown"
+    # A positive tracker always overrules the negative or unknown room-list.
+    resident.state = "home"
+    assert home_presence(h, cfg)[:2] == ("home", "any_home_policy")
 
 
-def test_all_room_presence_sensors_empty_override_home_tracker_after_cooldown(adapter):
+def test_all_room_presence_sensors_empty_mark_away_only_without_home_tracker(adapter):
     from custom_components.environment_manager.occupancy_policy import home_presence
     a = MockState("binary_sensor.a_presence", "off", device_class="presence")
     b = MockState("binary_sensor.b_presence", "off", device_class="presence")
-    resident = MockState("person.resident", "home")
+    resident = MockState("person.resident", "not_home")
     stamp = datetime.now(timezone.utc) - timedelta(minutes=20)
     a.last_changed = b.last_changed = stamp
     h = FakeHass([a, b, resident])
@@ -185,3 +188,7 @@ def test_all_room_presence_sensors_empty_override_home_tracker_after_cooldown(ad
     assert home_presence(h, cfg)[0] == "away"
     b.state = "on"
     assert home_presence(h, cfg)[0] == "home"
+    # Room sensor OFF cannot veto an independently configured tracker HOME.
+    b.state = "off"
+    resident.state = "home"
+    assert home_presence(h, cfg)[:2] == ("home", "any_home_policy")
