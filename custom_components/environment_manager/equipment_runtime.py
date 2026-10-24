@@ -411,42 +411,50 @@ class EquipmentRuntime:
             rooms=deepcopy(self.manager.settings.get("climate_rooms",{}))
             room=deepcopy(rooms.get(spec.area_id,{}))
 
+            if profile not in ("comfort","home","away","sleep","eco"):
+                raise HomeAssistantError("Select a Room Environment profile before editing its target")
+
+            defaults={
+                "comfort":{"heat_c":20.0,"cool_c":26.0,"humidity":50.0},
+                "home":{"heat_c":18.0,"cool_c":28.0,"humidity":50.0},
+                "away":{"heat_c":16.0,"cool_c":30.0,"humidity":50.0},
+                "sleep":{"heat_c":18.0,"cool_c":26.0,"humidity":50.0},
+                "eco":{"heat_c":17.0,"cool_c":29.0,"humidity":50.0},
+            }
+            raw_profiles=deepcopy(room.get("profiles",{}))
+            raw_profiles=raw_profiles if isinstance(raw_profiles,dict) else {}
+            fallback=defaults[profile]
+            existing=raw_profiles.get(profile,{})
+            band={**fallback,**(existing if isinstance(existing,dict) else {})}
+
             if "humidity" in values:
-                humidity=finite(values["humidity"],limits["humidity_min_limit"],limits["humidity_max_limit"])
+                humidity=finite(
+                    values["humidity"],
+                    limits["humidity_min_limit"],
+                    limits["humidity_max_limit"],
+                )
                 if humidity is None:
                     raise HomeAssistantError("Humidity target outside Room Environment limits")
-                room["sleep_humidity_target" if profile=="sleep" else "humidity_target"]=humidity
+                band["humidity"]=humidity
 
-            thermal={k:v for k,v in values.items() if k in ("heat","cool")}
-            if thermal:
-                if profile=="away":
-                    raise HomeAssistantError(
-                        "Away targets are the Room Environment minimum/maximum temperature limits"
-                    )
-                if profile not in ("comfort","home","sleep","eco"):
-                    raise HomeAssistantError("Select a room preset before editing its setpoint")
-                raw_profiles=deepcopy(room.get("profiles",{}))
-                modern=any(name in raw_profiles for name in ("comfort","eco"))
-                if not modern:
-                    raw_profiles={
-                        "comfort": deepcopy(raw_profiles.get("home",{"heat_c":20.0,"cool_c":26.0})),
-                        "home": deepcopy(raw_profiles.get("unoccupied",{"heat_c":18.0,"cool_c":28.0})),
-                        "sleep": deepcopy(raw_profiles.get("sleep",{"heat_c":18.0,"cool_c":26.0})),
-                        "eco": {"heat_c":17.0,"cool_c":29.0},
-                    }
-                band=deepcopy(raw_profiles.get(profile,{}))
-                for key,value in thermal.items():
-                    number=finite(value,limits["temperature_min_limit"],limits["temperature_max_limit"])
-                    if number is None:
-                        raise HomeAssistantError("Target outside Room Environment limits")
-                    band["heat_c" if key=="heat" else "cool_c"]=number
-                defaults={"comfort":(20.,26.),"home":(18.,28.),"sleep":(18.,26.),"eco":(17.,29.)}
-                heat=float(band.get("heat_c",defaults[profile][0]))
-                cool=float(band.get("cool_c",defaults[profile][1]))
-                if cool-heat<1.0:
-                    raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
-                raw_profiles[profile]=band
-                room["profiles"]=raw_profiles
+            for key,value in values.items():
+                if key not in ("heat","cool"):
+                    continue
+                number=finite(
+                    value,
+                    limits["temperature_min_limit"],
+                    limits["temperature_max_limit"],
+                )
+                if number is None:
+                    raise HomeAssistantError("Target outside Room Environment limits")
+                band["heat_c" if key=="heat" else "cool_c"]=number
+
+            heat=float(band["heat_c"])
+            cool=float(band["cool_c"])
+            if cool-heat<1.0:
+                raise HomeAssistantError("Heating and cooling targets must be at least 1°C apart")
+            raw_profiles[profile]=band
+            room["profiles"]=raw_profiles
 
             rooms[spec.area_id]=room
             options["climate_rooms"]=rooms
