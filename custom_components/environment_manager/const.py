@@ -1,4 +1,4 @@
-"""Constants and cautious defaults for the Air Quality Advisor integration."""
+"""Constants and cautious defaults for Home Environment Manager."""
 
 DOMAIN = "environment_manager"
 
