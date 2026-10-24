@@ -65,10 +65,10 @@ class ClimatePidCoordinator:
         self._started_at = self._clock()
         try:
             from homeassistant.helpers.storage import Store
-            from .domain_migration import async_open_migrated_store
-            self._store, data = await async_open_migrated_store(
-                self.hass, 1, "pid", self.entry_id
+            self._store = Store(
+                self.hass, 1, f"{DOMAIN}.pid_{self.entry_id}"
             )
+            data = await self._store.async_load()
         except ImportError:
             # Only the lightweight testing runtime lacks HA storage; never
             # silently act without storage in a real Home Assistant runtime.
