@@ -102,21 +102,103 @@ def test_native_climate_facade_matches_actual_capabilities(platforms, domain, ex
     assert set(entity.preset_modes)==set(model.PRESETS)
 
 
-def test_climate_reports_observed_state_not_optimistic_desired_state(platforms):
+def test_selected_climate_mode_is_armed_but_physical_remains_off_until_safe(platforms):
     async def run():
         h=home(platforms.runtime,domain="climate",mode="existing")
         entity=platforms.climate.ManagedClimate(h.manager,h.spec)
         h.state.last_changed = __import__("datetime").datetime.fromtimestamp(
             h.clock[0] - 900, tz=__import__("datetime").timezone.utc
         )
+        assert entity.hvac_mode=="off" and entity.hvac_action=="off"
         await entity.async_set_hvac_mode("heat")
-        assert entity.hvac_mode=="off"
-        assert entity.extra_state_attributes["requested_hvac_mode"]=="heat"
-        assert h.hass.services.calls==[]
-        await h.runtime.tick(h.spec)
-        # The physical OFF age already satisfies the dwell, so control starts.
+        assert entity.controller_settings["control_mode"]=="manual"
         assert entity.hvac_mode=="heat"
+        assert entity.hvac_action=="idle"
+        attrs=entity.extra_state_attributes
+        assert attrs["requested_hvac_mode"]=="heat"
+        assert attrs["physical_hvac_mode"]=="off"
+        assert attrs["physical_source_state"]=="off"
+        assert attrs["controller_mode_selected"] is True
+        assert h.state.state=="off"
+        assert h.hass.services.calls==[], "Arming a facade is not a physical command"
+        await h.runtime.tick(h.spec)
+        # The physical OFF age already satisfies dwell; only runtime operates it.
+        assert h.state.state=="heat"
+        assert entity.hvac_mode=="heat"
+        assert entity.extra_state_attributes["physical_hvac_mode"]=="heat"
     asyncio.run(run())
+
+
+@pytest.mark.parametrize("domain,method,physical,selected", [
+    ("climate","automatic","off","heat"),
+    ("climate","pid","off","heat"),
+    ("humidifier","automatic","off","dry"),
+    ("humidifier","pid","off","dry"),
+    ("fan","automatic","off","fan_only"),
+    ("fan","pid","off","fan_only"),
+])
+def test_armed_mode_is_idle_with_physical_off_and_no_extra_actuation(
+    platforms,domain,method,physical,selected,
+):
+    h=home(platforms.runtime,domain=domain,mode=method,state=physical)
+    h.runtime.statuses[h.spec.identifier]={
+        "status":"within_target_band","mode":selected,
+        "demand_percent":0,"reason":None,
+    }
+    entity=platforms.climate.ManagedClimate(h.manager,h.spec)
+    assert entity.available
+    assert entity.hvac_mode==selected
+    assert entity.hvac_action=="idle"
+    assert entity.hvac_mode in entity.hvac_modes
+    assert h.state.state=="off", "Native source must stay truly off"
+    attributes=entity.extra_state_attributes
+    assert attributes["physical_hvac_mode"]=="off"
+    assert attributes["physical_source_state"]=="off"
+    assert attributes["controller_status"]["status"]=="within_target_band"
+    assert attributes["control_mode"]==method
+    assert h.hass.services.calls==[]
+
+
+def test_explicit_off_native_existing_and_missing_direction_never_fake_heating(platforms):
+    h=home(platforms.runtime,domain="climate",mode="existing",state="off")
+    climate=platforms.climate.ManagedClimate(h.manager,h.spec)
+    assert climate.hvac_mode=="off" and climate.hvac_action=="off"
+    # Even with an evaluated direction the existing mode mirrors native OFF.
+    h.runtime.statuses[h.spec.identifier]={"status":"within_target_band","mode":"heat"}
+    assert climate.hvac_mode=="off"
+    h.manager.entry.data[model.SETTINGS][h.spec.identifier]["control_mode"]="off"
+    assert climate.hvac_mode=="off" and climate.hvac_action=="off"
+    h.manager.entry.data[model.SETTINGS][h.spec.identifier]["control_mode"]="manual"
+    assert climate.hvac_mode=="off", "Manual without an explicit mode remains unarmed"
+    assert h.hass.services.calls==[]
+
+
+def test_selected_hvac_mode_preserves_physical_idle_on_native_climate(platforms):
+    h=home(platforms.runtime,domain="climate",mode="pid",state="off",
+           controls={"requested_mode":"cool"})
+    climate=platforms.climate.ManagedClimate(h.manager,h.spec)
+    assert climate.hvac_mode=="cool" and climate.hvac_action=="idle"
+    assert climate.extra_state_attributes["physical_hvac_mode"]=="off"
+    assert h.hass.services.calls==[]
+    # Native activity is observed instead of being inferred from intent.
+    h.state.state="cool"
+    h.state.attributes["hvac_action"]="cooling"
+    assert climate.hvac_mode=="cool" and climate.hvac_action=="cooling"
+    assert climate.extra_state_attributes["physical_hvac_mode"]=="cool"
+
+
+def test_automatic_mode_prefers_last_evaluated_direction_without_inventing_native_mode(platforms):
+    h=home(platforms.runtime,domain="climate",mode="automatic",state="off")
+    climate=platforms.climate.ManagedClimate(h.manager,h.spec)
+    # When a multi-mode device has not selected/evaluated a direction, do not
+    # invent AUTO/HEAT or turn on physical output.
+    assert climate.hvac_mode=="off"
+    h.runtime.statuses[h.spec.identifier]={"status":"within_target_band","mode":"heat"}
+    assert climate.hvac_mode=="heat" and climate.hvac_action=="idle"
+    h.runtime.statuses[h.spec.identifier]={"status":"within_target_band","mode":"cool"}
+    assert climate.hvac_mode=="cool" and climate.hvac_action=="idle"
+    assert "auto" not in [str(x) for x in climate.hvac_modes]
+    assert h.hass.services.calls==[]
 
 
 def test_facade_temperature_and_preset_edit_effective_targets(platforms):
