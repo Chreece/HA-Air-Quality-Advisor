@@ -510,17 +510,7 @@ def targets(manager: Any, spec: ManagedDevice, cap: Capabilities, config: dict,
     limits = device_limits(manager, spec, cap)
 
     raw_profiles = room.get("profiles", {}) if isinstance(room, dict) else {}
-    raw_profiles = raw_profiles if isinstance(raw_profiles, dict) else {}
-    modern=any(name in raw_profiles for name in ("comfort","eco"))
-    if modern:
-        bands=raw_profiles
-    else:
-        bands={
-            "comfort": raw_profiles.get("home", {"heat_c":20.0,"cool_c":26.0}),
-            "home": raw_profiles.get("unoccupied", {"heat_c":18.0,"cool_c":28.0}),
-            "sleep": raw_profiles.get("sleep", {"heat_c":18.0,"cool_c":26.0}),
-            "eco": {"heat_c":17.0,"cool_c":29.0},
-        }
+    bands = raw_profiles if isinstance(raw_profiles, dict) else {}
     defaults={
         "comfort":{"heat_c":20.0,"cool_c":26.0,"humidity":50.0},
         "home":{"heat_c":18.0,"cool_c":28.0,"humidity":50.0},
