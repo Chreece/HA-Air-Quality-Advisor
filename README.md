@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 38 is available for opt-in testing.** Stable remains **v0.5.1**. Beta38 fixes oversized room metric tile headings by displaying short readable sensor labels such as Illumination instead of raw sensor IDs, with two-line layout constraints and exact entity-ID tooltips. Beta37's Recorder-safe dashboard and prior backend controls are preserved; the sole domain is `environment_manager`.
+> **v0.6.0 beta 39 is available for opt-in testing.** Stable remains **v0.5.1**. Beta39 unifies house presence: if **any fresh configured device tracker/person is home or any configured presence binary sensor is on**, the house is Home, regardless of contradictory tracker states or empty occupied-room lists. The existing safety/away cooldown rules and beta31–38 fixes remain; the canonical domain is `environment_manager`.
+
+## Beta 39 - Home when any device tracker or configured presence sensor is positive
+
+House-wide `home_presence` previously used a priority list: an empty `occupied_rooms` list or room sensors all OFF could override a person's explicit `home` tracker state. Now **any fresh positive evidence wins**, whether from a configured `device_tracker.*` or `person.*` marked `home`, a selected home binary sensor `on`, a configured room presence sensor `on`, or an explicitly configured legacy room tracker.
+
+That positive Home signal wins over other sources being `not_home`, `off`, `unknown` or over an empty/unknown occupied-rooms list. General and room-specific selected trackers both count. An old `all_home` configuration cannot veto a known person at home. When no fresh positive is available, missing/stale sources remain unknown and all-negative/cooldown behavior remains conservative. It does not bypass any room-device power or safety conditions.
 
 ## Beta 38 - compact tile names and no cross-tile overlap
 
