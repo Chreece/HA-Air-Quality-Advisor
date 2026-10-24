@@ -835,6 +835,63 @@
       return this._t(`metric_${metric}`);
     }
 
+    _unknownMetricName(item) {
+      // Unavailable/unsupported selected sensors can have no friendly name
+      // and their fallback "name" is then the full sensor.entity_id. Never
+      // display that identifier as the heading of a narrow metric tile.
+      // This is a *label only*, not a claim that the sensor is usable data.
+      const entityId = typeof item?.entity_id === 'string' ? item.entity_id : '';
+      const native = this._hass?.states?.[entityId];
+      const kind = String(native?.attributes?.device_class || '').toLowerCase();
+      const slug = entityId.split('.').slice(1).join('.').toLowerCase();
+      const dictionary = {
+        illumination:{en:'Illumination',de:'Beleuchtung',el:'Φωτισμός',
+          fr:'Éclairement',es:'Iluminación'},
+        presence:{en:'Presence',de:'Präsenz',el:'Παρουσία',
+          fr:'Présence',es:'Presencia'},
+        motion:{en:'Motion',de:'Bewegung',el:'Κίνηση',
+          fr:'Mouvement',es:'Movimiento'},
+        temperature:{en:'Temperature',de:'Temperatur',el:'Θερμοκρασία',
+          fr:'Température',es:'Temperatura'},
+        humidity:{en:'Humidity',de:'Luftfeuchtigkeit',el:'Υγρασία',
+          fr:'Humidité',es:'Humedad'},
+        pressure:{en:'Pressure',de:'Luftdruck',el:'Πίεση',
+          fr:'Pression',es:'Presión'},
+        noise:{en:'Noise',de:'Geräusch',el:'Θόρυβος',
+          fr:'Bruit',es:'Ruido'},
+      };
+      const hints = [
+        ['illumination',/(?:^|_)(?:illuminance|illumination|brightness|light_level|lux)$/],
+        ['presence',/(?:^|_)(?:presence|occupancy|occupied)$/],
+        ['motion',/(?:^|_)(?:motion|movement)$/],
+        ['temperature',/(?:^|_)(?:temperature|temp)$/],
+        ['humidity',/(?:^|_)(?:humidity|relative_humidity)$/],
+        ['pressure',/(?:^|_)(?:pressure|atmospheric_pressure)$/],
+        ['noise',/(?:^|_)(?:noise|sound_level|sound_pressure)$/],
+      ];
+      const identified = hints.find(([id, pattern])=>
+        kind===id || (id==='illumination' && kind==='illuminance') ||
+        (id==='presence' && kind==='occupancy') ||
+        (id==='noise' && kind==='sound_pressure') ||
+        pattern.test(slug));
+      if (identified) {
+        const language=this._language();
+        return dictionary[identified[0]][language] ||
+          dictionary[identified[0]].en;
+      }
+      const name=String(native?.attributes?.friendly_name || item?.name || '').trim();
+      // Keep actual user-given short names, but not raw entity IDs.
+      if (name && !/^(sensor|binary_sensor|input_number)\.[\w.]+$/i.test(name)
+          && name.length<=24) return name;
+      if (name && !/^(sensor|binary_sensor|input_number)\.[\w.]+$/i.test(name)) {
+        const finalPart=name.split(/\s+[·:–-]\s+/).at(-1).trim();
+        if (finalPart.length<=24) return finalPart;
+      }
+      const words=slug.split(/[_.]+/).filter(Boolean).slice(-2)
+        .map((word)=>word.replace(/^\w/,ch=>ch.toUpperCase()));
+      return words.join(' ') || this._t('sensor');
+    }
+
     _weatherName(condition) {
       if (!condition) return this._t('missing');
       const key = { 'clear-night':'wx_clearNight','partlycloudy':'wx_partlycloudy',
@@ -969,8 +1026,10 @@
     _metric(item, miniature = false) {
       const metric = item.details?.fallback_for_mold
         ? `${this._t('humidity')} Ø (RH)`
-        : item.metric==='unknown' ? (item.name || item.entity_id || this._t('missing'))
+        : item.metric==='unknown' ? this._unknownMetricName(item)
           : this._metricName(item.metric);
+      const fullSource=[item.name,item.entity_id].filter(Boolean)
+        .filter((value,index,arr)=>arr.indexOf(value)===index).join(' · ');
       const available = item.available && typeof item.value === 'number';
       const limit = item.threshold;
       const hasLimit = typeof limit === 'number' && limit > 0;
@@ -1005,7 +1064,7 @@
         ? `<div class="mold-summary">${average}${surface}</div>` : '';
       return `<div class="metric ${miniature ? 'tiny' : ''} metric-${level}">
         <div class="metric-line">
-          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')} ${escape(metric)} <details class="metric-help"><summary aria-label="${escape(metric)} information" title="${escape(this._metricHelp(item))}">${this._icon('mdi:information-outline')}</summary><div class="metric-help-content" role="note">${escape(this._metricHelp(item))}</div></details></span>
+          <span class="metric-name">${this._icon(METRIC_ICON[item.metric] || 'mdi:gauge')}<span class="metric-title" title="${escape(fullSource || metric)}">${escape(metric)}</span><details class="metric-help"><summary aria-label="${escape(metric)} information" title="${escape(this._metricHelp(item))}">${this._icon('mdi:information-outline')}</summary><div class="metric-help-content" role="note">${escape(this._metricHelp(item))}</div></details></span>
           <span class="metric-number">${escape(display)} <small>${escape(unit)}</small></span>
         </div>
         ${hasLimit ? `<div class="meter" role="progressbar" aria-label="${escape(metric)}"
@@ -1787,15 +1846,20 @@
       .metric{border-radius:11px;background:color-mix(in srgb,var(--aqa-muted),transparent 96%);border:1px solid var(--aqa-edge);padding:10px;min-width:0}
       .metric-attention{border-color:color-mix(in srgb,var(--aqa-amber),transparent 66%)}
       .metric-line{display:flex;align-items:flex-start;gap:7px;justify-content:space-between;flex-wrap:wrap}
-      .metric-name{font-size:10px;color:var(--aqa-muted);display:inline-flex;align-items:center;gap:3px;font-weight:700}
-      .metric-name ha-icon{--mdc-icon-size:15px}
-      .metric-help{display:inline-flex;position:relative;align-items:center}
+      .metric-name{font-size:10px;color:var(--aqa-muted);display:flex;align-items:flex-start;gap:5px;
+        font-weight:700;min-width:0;width:100%;max-width:100%}
+      .metric-name>ha-icon{--mdc-icon-size:15px;flex:0 0 15px}
+      .metric-title{min-width:0;flex:1 1 auto;max-width:100%;overflow:hidden;overflow-wrap:anywhere;
+        display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.3;white-space:normal}
+      .metric-help{display:inline-flex;position:relative;align-items:center;flex:0 0 auto;
+        margin-inline-start:auto}
       .metric-help summary{display:flex;align-items:center;cursor:pointer;list-style:none;color:var(--primary-color,#03a9f4);padding:2px}
       .metric-help summary::-webkit-details-marker{display:none}
       .metric-help-content{position:absolute;z-index:25;top:100%;left:-30px;width:min(280px,72vw);padding:12px;border-radius:12px;box-shadow:0 6px 24px #0006;background:var(--card-background-color,#20252b);color:var(--primary-text-color,#fff);font-size:12px;line-height:1.5;font-weight:400;white-space:normal}
       .metric-help[open] summary{color:var(--accent-color,#00bcd4)}
 
-      .metric-number{font-size:15px;font-weight:760;white-space:nowrap;line-height:1.2}
+      .metric-number{font-size:15px;font-weight:760;white-space:nowrap;line-height:1.2;
+        margin-inline-start:auto;min-width:0;max-width:100%}
       .metric-number small{font-size:9px;color:var(--aqa-muted);font-weight:500}
       .meter{position:relative;display:block;height:6px;border-radius:99px;margin-top:11px;background:color-mix(in srgb,var(--aqa-muted),transparent 80%);overflow:hidden}
       .meter-fill{height:100%;display:block;background:var(--aqa-green);border-radius:99px;transition:width .35s ease}
