@@ -827,10 +827,13 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   assert.equal(popups[0].composed,true);
   global.CustomEvent=previous;
 
+  const chosenMethod=elt({
+    'data-controller-area':'bath','data-climate-method':methodId,
+  });
+  chosenMethod.value='automatic';
   widget.shadowRoot.listeners.change({target:{
-    value:'automatic',
     closest:(selector)=>selector==='[data-climate-method]'
-      ? elt({'data-controller-area':'bath','data-climate-method':methodId}) : null,
+      ? chosenMethod : null,
   }});
   assert.deepEqual(calls[0],['select','select_option',
     {entity_id:methodId,option:'automatic'}]);
