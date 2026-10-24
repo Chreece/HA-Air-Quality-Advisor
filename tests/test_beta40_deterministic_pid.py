@@ -165,9 +165,18 @@ def test_climate_pid_allocates_same_demand_to_native_discrete_fan_with_quiet_cap
         await h.runtime.tick(h.spec)
         assert h.hass.services.calls[0][1:3]==(
             "set_hvac_mode",{"hvac_mode":"heat"})
-        await h.runtime.tick(h.spec)
+        # A native target update or acknowledgement may occupy one complete
+        # device transaction before the selected fan speed can be adjusted.
+        # Per-device FIFO must eventually apply the same demand/quiet cap.
+        for index in range(5):
+            await h.runtime.tick(h.spec)
+            if any(call[1]=="set_fan_mode" for call in h.hass.services.calls):
+                break
         fan=[call for call in h.hass.services.calls if call[1]=="set_fan_mode"]
-        assert fan and fan[-1][2]=={"fan_mode":"low"},fan
+        assert fan and fan[-1][2]=={"fan_mode":"low"},(
+            h.hass.services.calls,h.runtime.statuses.get(h.spec.identifier),
+            h.runtime.records.get(h.spec.identifier),
+        )
         assert all(call[1] != "set_percentage" for call in h.hass.services.calls)
     asyncio.run(scenario())
 
