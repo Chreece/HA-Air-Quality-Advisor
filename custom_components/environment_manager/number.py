@@ -39,7 +39,12 @@ def _profile_fields(manager, entry_id: str, area_id: str, registry) -> tuple[str
     from . import equipment_model as equipment
 
     current = room_profile_number_fields(manager, area_id)
-    if not any(spec.area_id == area_id for spec in equipment.specs(manager)):
+    selected = tuple(
+        spec for spec in equipment.specs(manager) if spec.area_id == area_id
+    )
+    if not selected or all(
+        equipment.capabilities(manager, spec) is not None for spec in selected
+    ):
         return current
     existing = (
         key for key in PROFILE_NUMBERS
