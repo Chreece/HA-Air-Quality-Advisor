@@ -1,18 +1,17 @@
 {
-  "version": "0.6.0b28",
-  "intent": "Final canonical-only beta promotion of the already validated room-target and active-controller work. Publish only after one immutable release-candidate branch passes all gates; no staging commit can publish.",
-  "note": "Supersede intermediate beta26/beta27 payloads with the final fully validated canonical environment_manager build",
+  "version": "0.6.0b29",
+  "channel": "beta",
+  "release_branch": "beta/v0.6.0b29",
+  "intent": "Canonical-only environment_manager release fixing false open/unknown window interlock holds in a monitored room with no selected window contact. Retain actual selected/discovered contact fail-closed behavior, PID/Automatic activation and all five room heat/cool/humidity presets. Release only after Python 3.13/3.14, HACS/Hassfest, installed HA 2026.10 and exact flat-tag extraction checks.",
+  "note": "Make unconfigured windows optional for room climate controllers while continuing to block open, missing or unavailable configured contacts.",
   "validation_attempt": 0,
   "changes": [
-    "Supersede beta26/beta27 intermediate payloads; beta28 is built from the fully validated final source head",
-    "Use environment_manager exclusively for manifest/config flow/services/runtime and every persisted storage key; no old-domain migration code ships",
-    "Expose Comfort, Home, Away, Sleep and Eco Room Environment targets with capability-gated heating, cooling and humidity values",
-    "Selecting Automatic, PID or Manual authorizes the exact native controller to start/stop supported physical equipment or native HVAC modes on verified demand; no second power switch exists",
-    "Reselecting an active method re-arms a software pause and minimum-OFF uses the physical entity's actual observed OFF age",
-    "Retain minimum ON/OFF, maximum runtime, window, availability, ownership, defrost/interlock and acknowledgement protections",
-    "Publish only from release/beta28-ready2-20261024 after all source files are frozen",
+    "Monitored rooms without any window contacts no longer require one solely to operate the authorized physical climate controller",
+    "Explicitly selected or discovered window contacts must still be closed and valid; unknown/open/missing configured contacts block actuation",
+    "Fallback controller plan uses the same optional-window semantics as the primary room plan, including explicit empty selection",
+    "Regression-test the previous PID startup stall for an eligible room with no window contact and strict fail-closed behavior for a missing selected contact",
+    "Preserve Comfort/Home/Away/Sleep/Eco per-room heating/cooling/humidity targets and native Automatic/PID/Manual power control with physical safety guards",
+    "Canonical domain environment_manager only; no legacy-domain migration; flat HACS release payload",
     "Stable Latest remains v0.5.1"
-  ],
-  "channel": "beta",
-  "release_branch": "beta/v0.6.0b28"
+  ]
 }
