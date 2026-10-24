@@ -101,15 +101,15 @@ def test_climate_reports_observed_state_not_optimistic_desired_state(platforms):
     async def run():
         h=home(platforms.runtime,domain="climate",mode="existing")
         entity=platforms.climate.ManagedClimate(h.manager,h.spec)
+        h.state.last_changed = __import__("datetime").datetime.fromtimestamp(
+            h.clock[0] - 900, tz=__import__("datetime").timezone.utc
+        )
         await entity.async_set_hvac_mode("heat")
         assert entity.hvac_mode=="off"
         assert entity.extra_state_attributes["requested_hvac_mode"]=="heat"
         assert h.hass.services.calls==[]
         await h.runtime.tick(h.spec)
-        # Transfer deliberately starts a new observed minimum-OFF interval.
-        assert entity.hvac_mode=="off"
-        h.clock[0]+=600
-        await h.runtime.tick(h.spec)
+        # The physical OFF age already satisfies the dwell, so control starts.
         assert entity.hvac_mode=="heat"
     asyncio.run(run())
 
@@ -229,6 +229,44 @@ def test_presence_selector_is_per_controller_and_has_only_requested_modes(platfo
     entity=platforms.select.EquipmentSelect(h.manager,h.spec,"presence_requirement")
     assert entity.options==["always","occupied","absent"]
     assert entity.current_option=="always"
+
+
+def test_room_profile_targets_exist_before_automation_and_include_humidity(platforms):
+    from custom_components.environment_manager.device_controls import (
+        PROFILE_DEFAULTS, PROFILE_NUMBERS, room_profile_number_fields,
+    )
+
+    thermal = home(platforms.runtime, domain="climate", state="off", power=False)
+    thermal.room["enabled"] = False
+    fields = set(room_profile_number_fields(thermal.manager, "room"))
+    assert {f"{profile}_heat" for profile in PROFILE_DEFAULTS} <= fields
+    assert {f"{profile}_cool" for profile in PROFILE_DEFAULTS} <= fields
+
+    humidity = home(platforms.runtime, domain="humidifier", state="off", power=False)
+    humidity.room["enabled"] = False
+    hfields = set(room_profile_number_fields(humidity.manager, "room"))
+    assert {f"{profile}_humidity" for profile in PROFILE_DEFAULTS} <= hfields
+
+    entity = platforms.number.ConfigNumber(
+        humidity.manager, "entry", "room", "climate_profile",
+        "away_humidity", PROFILE_NUMBERS["away_humidity"],
+    )
+    assert entity._attr_device_info["identifiers"] == {
+        ("environment_manager", "entry_area_room")
+    }
+
+    async def edit():
+        await entity.async_set_native_value(45)
+    asyncio.run(edit())
+    assert entity.native_value == 45
+    saved = humidity.manager.entry.options["climate_rooms"]["room"]["profiles"]
+    assert saved["away"]["humidity"] == 45
+    target = model.targets(
+        humidity.manager, humidity.spec, humidity.cap,
+        model.settings(humidity.manager, humidity.spec),
+        {**humidity.plan, "away": "away"},
+    )
+    assert target["humidity"] == 45
 
 
 def test_room_limit_numbers_attach_to_room_environment_device(platforms):
