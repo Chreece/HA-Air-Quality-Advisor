@@ -20,10 +20,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 
 from custom_components.environment_manager.const import (
-    BETA20_DOMAIN,
     DOMAIN,
-    LEGACY_DOMAIN,
+    LEGACY_STORAGE_DEFAULT_DOMAIN,
+    MIGRATION_SOURCE_DOMAINS,
 )
+
+BETA20_DOMAIN = MIGRATION_SOURCE_DOMAINS[0]
+LEGACY_DOMAIN = LEGACY_STORAGE_DEFAULT_DOMAIN
 from custom_components.environment_manager.domain_migration import (
     async_migrate_legacy_registry,
 )
