@@ -174,8 +174,10 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view v0.6.0b25 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo 'v0.6.0b25 already exists; refusing to replace it'
-            exit 1
+            gh release edit v0.6.0b25 --repo "$GITHUB_REPOSITORY" --title 'Home Environment Manager v0.6.0 beta 25'
+            gh release upload v0.6.0b25 /tmp/HA-Home-Environment-Manager-v0.6.0b25.zip --repo "$GITHUB_REPOSITORY" --clobber
+            echo 'Updated existing beta25 release metadata and manual ZIP.'
+            exit 0
           fi
           if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/beta/v0.6.0b25" >/dev/null 2>&1; then
             echo 'beta/v0.6.0b25 already exists; refusing to replace it'
@@ -194,6 +196,6 @@ jobs:
           test "$(git ls-tree --name-only HEAD | grep -c '^custom_components$' || true)" = "0"
           test "$(git show HEAD:manifest.json | python -c 'import json,sys; d=json.load(sys.stdin); assert d["domain"]=="environment_manager" and d["version"]=="0.6.0b25"')" = ""
           git push origin HEAD:refs/heads/beta/v0.6.0b25
-          gh release create v0.6.0b25             --repo "$GITHUB_REPOSITORY"             --target "$payload_sha"             --title 'Home Environment Manager v0.6.0 beta 24'             --notes-file /tmp/v0.6.0b25-notes.md             --prerelease --latest=false
+          gh release create v0.6.0b25             /tmp/HA-Home-Environment-Manager-v0.6.0b25.zip             --repo "$GITHUB_REPOSITORY"             --target "$payload_sha"             --title 'Home Environment Manager v0.6.0 beta 25'             --notes-file /tmp/v0.6.0b25-notes.md             --prerelease --latest=false
           echo "BETA24_PAYLOAD_SHA=$payload_sha"
 
