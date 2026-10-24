@@ -67,13 +67,17 @@ def _equipment_numbers(manager, spec, registry) -> tuple["EquipmentNumber", ...]
     cap = equipment.capabilities(manager, spec)
     saved_mode = equipment.settings(manager, spec).get("control_mode")
     keys: list[str] = []
-    for key in equipment.NUMBER_FIELDS:
+    for key in (*equipment.NUMBER_FIELDS, *equipment.PID_MODEL_FIELDS):
         if cap is not None:
             if key == "quiet_percentage" and not cap.fan_percentage:
                 continue
             if key in equipment.POWER_FIELDS and cap.domain not in ("climate", "fan", "humidifier"):
                 continue
-            if (key != "quiet_percentage" and key not in equipment.POWER_FIELDS
+            if (key in equipment.PID_MODEL_FIELDS
+                    and "pid" not in equipment.control_modes(manager, spec)):
+                continue
+            if (key not in equipment.PID_MODEL_FIELDS and key != "quiet_percentage"
+                    and key not in equipment.POWER_FIELDS
                     and "pid" not in equipment.control_modes(manager, spec)):
                 continue
         else:
@@ -426,7 +430,12 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
         cap = equipment.capabilities(manager, spec)
-        if cap is None:
+        if key in equipment.PID_MODEL_FIELDS:
+            # 0 is a deliberate "not yet identified" sentinel, never
+            # interpreted as a measured plant model by the calibration code.
+            low, high, step, unit = equipment.PID_MODEL_FIELDS[key]
+            bounds = (0.0, high, step, unit)
+        elif cap is None:
             bounds = equipment.NUMBER_FIELDS[key][:4]
         else:
             bounds = equipment.number_bounds(cap, key)
@@ -440,6 +449,14 @@ class EquipmentNumber(EquipmentEntity, NumberEntity):
             self._attr_native_min_value = 600
         if key == "max_on_seconds" and cap and cap.domain != "fan":
             self._attr_native_max_value = 28800
+
+    @property
+    def available(self):
+        if self._key in equipment.PID_MODEL_FIELDS:
+            settings = self.controller_settings
+            return (settings["control_mode"] == "pid"
+                    and settings["pid_calibration_method"] != "manual")
+        return super().available
 
     @property
     def native_value(self):
