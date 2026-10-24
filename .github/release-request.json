@@ -1,17 +1,17 @@
 {
-  "version": "0.6.0b24",
-  "intent": "Pre-release using a flat root integration tag so HACS can switch from the cached air_quality_advisor repository path without its broken zip_release asset path; validate full source, HACS root discovery, flat archive extraction and HA 2026.10 exact-ID migration before publishing; never update stable latest",
-  "note": "Publish the beta tag itself as the root environment_manager integration payload; no HACS release asset is used",
+  "version": "0.6.0b25",
+  "intent": "Pre-release enforcing environment_manager as the only active/installable Home Assistant domain while retaining legacy names strictly as one-time migration inputs; validate full source, legacy-folder quarantine, HACS flat tag install, and HA 2026.10 exact-ID migration before publication; never update stable latest",
+  "note": "Remove all legacy runtime aliases and automatically move verified old custom-component folders out of custom_components so only environment_manager remains installable",
   "validation_attempt": 0,
   "changes": [
-    "Keep HACS content_in_root=true so the selected beta overrides cached custom_components/air_quality_advisor repository metadata and discovers environment_manager from root manifest.json",
-    "Disable HACS zip_release entirely to avoid HACS constructing a release-asset URL from an internal tags/ ref",
-    "Publish beta/v0.6.0b24 and tag v0.6.0b24 as a flattened integration payload with manifest.json, __init__.py, platforms, translations, frontend and brand files at repository root",
-    "Use HACS normal tag-archive extraction, which strips tags/ and installs the flat archive directly into /config/custom_components/environment_manager",
-    "Regression-test the cached old-domain path and the flattened tag-archive extraction contract",
-    "Preserve beta22 exact ConfigEntry-ID migration and all controller, room, translation and safety behavior unchanged",
+    "Register services and frontend paths only under environment_manager; remove air_quality_advisor, enviroment_manager and home_environment_manager runtime aliases",
+    "Keep historical domain strings only in MIGRATION_SOURCE_DOMAINS for one-time config-entry/storage migration",
+    "When environment_manager loads, move verified legacy integration folders out of /config/custom_components into /config/.environment_manager_legacy_components backups and refresh the HA custom-component cache",
+    "Preserve exact config-entry ID, subentries, entity/device identity and saved settings while re-homing legacy entries to environment_manager",
+    "Keep the flat HACS tag payload so HACS installs only the canonical environment_manager integration",
+    "Update user-facing actions/documentation to environment_manager.* only",
     "Stable Latest remains v0.5.1"
   ],
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b24"
+  "release_branch": "beta/v0.6.0b25"
 }
