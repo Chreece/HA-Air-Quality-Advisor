@@ -125,6 +125,9 @@ def integration(adapter,monkeypatch):
     helpers=types.ModuleType(pkg+".helpers.config_validation")
     probatio=types.ModuleType("probatio")
     native=types.ModuleType("custom_components.environment_manager.manager")
+    dashboard_ws=types.ModuleType("custom_components.environment_manager.dashboard_api")
+    ws_registrations=[]
+    dashboard_ws.async_register_dashboard_api=lambda hass: ws_registrations.append(hass)
     extras=[]
     frontend.add_extra_js_url=lambda hass,url: extras.append((hass,url))
     http.StaticPathConfig=lambda url,path,cache: SimpleNamespace(
@@ -158,6 +161,7 @@ def integration(adapter,monkeypatch):
         pkg+".helpers.config_validation":helpers,
         "probatio":probatio,
         "custom_components.environment_manager.manager":native,
+        "custom_components.environment_manager.dashboard_api":dashboard_ws,
     }.items():
         monkeypatch.setitem(sys.modules,name,obj)
     from homeassistant import core
