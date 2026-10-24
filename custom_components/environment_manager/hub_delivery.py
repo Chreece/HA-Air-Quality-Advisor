@@ -1,4 +1,4 @@
-"""Air Quality Advisor-to-Announcement Hub message handoff.
+"""Home Environment Manager-to-Announcement Hub message handoff.
 
 The Advisor owns the actionable recommendation, text, and Home Assistant room
 name, but never selects a Hub device, room-policy fallback, or occupancy
@@ -130,7 +130,7 @@ async def async_system_notification(hass: Any, title: str, message: str, area_id
             {
                 "title": title,
                 "message": message,
-                "notification_id": f"air_quality_advisor_{area_id}",
+                "notification_id": f"environment_manager_{area_id}",
             },
             blocking=True,
         )
