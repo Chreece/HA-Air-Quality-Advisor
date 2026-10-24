@@ -1,20 +1,18 @@
 {
-  "version": "0.6.0b40",
+  "version": "0.6.0b41",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b40",
-  "intent": "Coordinate PID output to native hardware capability: binary duty cycling, percentage fan/valve control without double PWM, supported discrete speed levels, quiet sleep/occupancy caps; offer per-device Manual, IMC-Lambda, Cohen-Coon deterministic calibration selector with measured FOPDT model and explicit safe Apply action.",
-  "note": "Pure model tuning never probes, oscillates, starts or physically calibrates appliances automatically. Model input changes alone do not alter Kp/Ki/Kd; Apply requires native physical output OFF, no owned power or pending command, and valid bounded gains. No vendor-specific workarounds.",
+  "release_branch": "beta/v0.6.0b41",
+  "intent": "Improve combined ON/OFF PID and native adjustable fans with user-measured per-stage/per-speed relative physical capacity, calibrated independently per exact HVAC direction and controller. Compensate ON duty by actual fan stage capacity while keeping quiet limits and reporting unmet demand. Legacy b40 allocation remains default until explicitly calibrated.",
+  "note": "Never assume Low/Medium/High fractions, extrapolate below measured fan speeds, infer heating/moisture output from RPM, or automatically exercise hardware. Explicit Apply on native physically OFF, no pending power/ack, exact source-mode identity. Hardware timing/window/ownership unchanged.",
   "validation_attempt": 0,
   "changes": [
-    "Per-device PID output allocator maps demand to real proportional speed or valid ordered discrete fan modes, while pure binary outputs retain protected duty cycle.",
-    "Standalone percentage fans never receive double PID PWM/percentage scaling; direct verified number valves retain gradual bounded modulation.",
-    "Quiet-room flags cap native fan output and unknown sleep/occupancy evidence holds speed and power-start decisions.",
-    "New per-device Manual / SIMC-IMC Lambda / Cohen-Coon PID calibration selector and four model parameters shown conditionally in Home Assistant and room dashboard.",
-    "Pure FOPDT tuning math converts known process gain, dead time and time constant to parallel Kp/Ki/Kd; rejects implausible or out-of-bound models without clamping or phantom hardware tests.",
-    "Explicit Apply calibration button requires PID selection, measured process model, physically OFF output, no owned power and no pending acknowledgement; never issues hardware service commands.",
-    "Expose read-only PID output strategy, calibration method and last applied input evidence per physical controller.",
-    "Provide all 38 translation catalog entries with reviewed English/Greek/German/French/Spanish calibration names and device-specific model controls.",
-    "Add deterministic tests for math, safe apply, authorization, staged/percentage fans, no double duty modulation, quiet caps, unknown occupancy and cross-room dashboard constraints.",
-    "Preserve prior beta31-39 behavior and one canonical environment_manager domain; only publish after Python 3.13/3.14, installed HA 2026.10, frontend/HACS/Hassfest and flat prerelease checks pass."
+    "Pure measured fan capacity model for two-to-five genuinely ordered discrete native speeds, with complete user measured relative capacities and top native stage normalized to 100% output reference.",
+    "Support generic native percentage fan speeds using at least two explicitly measured speed-to-delivered-capacity pairs plus full-speed reference; interpolate only inside observed range and only use actual native percentage steps.",
+    "Save calibration per exact physical primary, exact fan entity, advertised native fan list, and heat/cool/dry mode; reject stale source or wrong mode automatically.",
+    "Add per-device measured-capacity strategy (Legacy default/Measured), native HVAC calibration direction, bounded numeric capacity measurements, and explicit physically-OFF Apply button.",
+    "Convert one PID output request to calibrated fan selection and compensated duty, saturating duty under quiet cap and exposing predicted output and unmet demand in diagnostics and dashboard.",
+    "Keep quiet when sleeping/occupied as fan-speed cap and independent compressor/power safety; do not invent stage capacity or turn accessory fans on.",
+    "Keep prior PID gains and calibration methods, manual settings, source permissions, min ON/OFF, max ON, defrost, valid feedback, recovery/acknowledgement, and canonical environment_manager unchanged.",
+    "Include reproducible pure numeric and integration tests, exact-room frontend edits, HA 2026.10 checks, Python 3.13/3.14, HACS/Hassfest, 38 locale catalog and immutable flat beta package."
   ]
 }
