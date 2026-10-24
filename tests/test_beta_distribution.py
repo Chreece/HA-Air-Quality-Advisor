@@ -27,7 +27,8 @@ def test_beta_distribution_manifest_hacs_and_readme():
     )
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Show beta versions" in text and "v0.5.1" in text
-    assert "home_environment_manager.climate_diagnostics" in text
+    assert "environment_manager.climate_diagnostics" in text
+    assert "home_environment_manager." not in text
     assert "disabled by default" in text.lower()
     note = ROOT / ".github" / "releases" / "v0.6.0b25.md"
     assert note.stat().st_size > 1500
