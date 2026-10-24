@@ -478,10 +478,11 @@ class AirQualityManager:
         # Home Assistant Store keeps bounded sensor samples through restart.
         # Pure-logic tests may stub HA without its storage package.
         try:
-            from .domain_migration import async_open_migrated_store
-            self._environment_store, stored = await async_open_migrated_store(
-                self.hass, 1, "environment_history", self.entry
+            from homeassistant.helpers.storage import Store
+            self._environment_store = Store(
+                self.hass, 1, f"{DOMAIN}.environment_history_{self.entry.entry_id}"
             )
+            stored = await self._environment_store.async_load()
             self._environment_history = EnvironmentHistory.restore(stored)
         except ImportError:
             _LOGGER.debug("Home Assistant storage not available in test runtime")
