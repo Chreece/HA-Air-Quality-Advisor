@@ -1,18 +1,18 @@
 {
-  "version": "0.6.0b38",
+  "version": "0.6.0b39",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b38",
-  "intent": "Fix Home Environment Manager dashboard metric tiles where selected unavailable/unsupported sources display long raw sensor.* entity identifiers overlapping adjacent metric cards. Use compact localized labels e.g. Illumination/Φωτισμός and constrain heading layout without inventing supported measurements.",
-  "note": "Only frontend presentation of metric tile labels, clipping/wrapping and source tooltips changes. Preserve Recorder-safe dashboard WebSocket from b37, current entities, raw measurements, selected source IDs, HA services, translations and all physical device safety.",
+  "release_branch": "beta/v0.6.0b39",
+  "intent": "Implement the user's strict house-Home definition: a fresh positive from ANY configured device_tracker/person in home or ANY configured binary_sensor on means Home, regardless of other negatives/unknowns, empty/unknown occupied_rooms list, legacy all_home mode or simultaneous general and area trackers.",
+  "note": "Return Home unconditionally on verified positive evidence; preserve conservative source freshness, unknown and away cooldown behavior when no positives, room/sleep occupancy differentiation and all physical equipment safety gates.",
   "validation_attempt": 0,
   "changes": [
-    "Render compact user-readable metric headings instead of the full sensor.entity_id whenever an unknown/unavailable selected input has no friendly display name.",
-    "Resolve common sensor suffixes/device classes (illuminance/illumination, presence/occupancy, motion, temperature, humidity, pressure, noise) to localized English/Greek/German/French/Spanish short labels, with sensible fallback for other locales.",
-    "Retain genuine short custom friendly names and shorten arbitrary long unknown identifiers to a compact final descriptive suffix.",
-    "Keep the original exact entity ID and full friendly name in the heading tooltip; do not classify unsupported inputs as valid sensor readings.",
-    "Use a confined flex heading with 2-line ellipsis/clamp and flexible numeric value placement so tiles cannot bleed into each other in narrow layouts.",
-    "Add Node regression checks for bathroom illumination/presence sensors, Greek/German/English titles, unknown source identity, full source tooltip, readable unsupported states and escaped hostile sensor names.",
-    "Keep canonical environment_manager domain, b37 Recorder budget/full WS dashboard, and prior beta native controls unchanged; no migrations, hardware service or other integration edits.",
-    "Gate publication on Node, Python 3.13/3.14, real Home Assistant 2026.10, HACS/Hassfest, translations and exact flat HACS tag payload."
+    "Evaluate all explicit home_trackers, legacy room fallback trackers and general room_occupancy_sensors together before any negative/priority evaluation.",
+    "Make fresh tracker HOME or binary sensor ON dominate contradictory NOT_HOME/OFF, an empty or unavailable occupied_rooms entity, and old all_home selector.",
+    "Return all applicable source entity IDs so manager state tracking and live command revalidation see configured changes.",
+    "Preserve configured occupied-room list as evidence when nonempty, and retain existing cooldown, stale/unknown and conservative negative results only in the absence of fresh positives.",
+    "Align legacy climate_strategy.home_away_evidence with any-positive Home semantics, without altering room-specific presence or sleep behavior.",
+    "Add regressions for mixed tracker sources, contradictory lists/sensors, general+fallback inputs, home_policy=all_home, source staleness and live device home gating.",
+    "Keep exact environment_manager domain, no migration, no hardware service changes, PID/windows/physical power permissions unchanged, and beta31–38 fixes.",
+    "Verify full Python 3.13/3.14, installed Home Assistant 2026.10, HACS/Hassfest, 38-language catalog and canonical flat prerelease payload."
   ]
 }
