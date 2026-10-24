@@ -19,6 +19,12 @@ class EquipmentEntity:
         self._manager, self._spec, self._key = manager, spec, key
         self._attr_unique_id = f"{spec.identifier}_{key}"
         self._attr_translation_key = f"equipment_{key}"
+        # Home Assistant ordinarily prepends a device name to friendly_name
+        # when has_entity_name=True. Disable that ONLY for PID parameters so
+        # the real displayed friendly name begins with the translated "PID".
+        # The device association and unique ID remain exactly unchanged.
+        if key in ("kp", "ki", "kd", "sample_seconds", "cycle_seconds") or key.startswith("pid_"):
+            self._attr_has_entity_name = False
         self._attr_device_info = {"identifiers": {(DOMAIN, model.device_identifier(spec))}}
         self._attr_translation_placeholders = {
             "channel": f"{spec.name} · " if isinstance(spec, model.ManagedEndpoint) else ""
