@@ -1,4 +1,4 @@
-"""Public rebrand must not damage existing Home Assistant installations."""
+"""Home Environment Manager branding and canonical-domain contract."""
 import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DOMAIN = ROOT / "custom_components" / "environment_manager"
 
 
-def test_public_name_and_domain_migration_is_canonical_and_backward_compatible():
+def test_public_name_and_domain_are_canonical():
     manifest = json.loads((DOMAIN / "manifest.json").read_text(encoding="utf-8"))
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     assert manifest["domain"] == "environment_manager"
@@ -19,16 +19,16 @@ def test_public_name_and_domain_migration_is_canonical_and_backward_compatible()
     assert (DOMAIN / "pmv_core.py").is_file()
 
 
-def test_domain_migration_sources_are_not_runtime_aliases():
+def test_only_canonical_domain_exists_in_runtime():
     source = (DOMAIN / "__init__.py").read_text(encoding="utf-8")
     const = (DOMAIN / "const.py").read_text(encoding="utf-8")
+    flow = (DOMAIN / "config_flow.py").read_text(encoding="utf-8")
     assert 'DOMAIN = "environment_manager"' in const
-    assert 'MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")' in const
-    assert "SERVICE_ALIAS_DOMAINS" not in source
-    assert "LEGACY_PUBLIC_ACTION_DOMAIN" not in source
-    assert "home_environment_manager" not in source
-    assert "enviroment_manager" not in source
-    assert "air_quality_advisor" not in source
+    assert "MIGRATION_SOURCE_DOMAINS" not in const
+    assert "LEGACY_STORAGE_DEFAULT_DOMAIN" not in const
+    assert "domain_migration" not in source
+    assert "migrate_legacy" not in flow
+    assert not (DOMAIN / "domain_migration.py").exists()
     assert 'DOMAIN, "announce"' in source
 
 
