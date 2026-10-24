@@ -6,6 +6,7 @@ settings, native service targets and all non-PID entities unchanged.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -72,7 +73,12 @@ def test_all_38_locales_and_canonical_strings_have_pid_first_names():
                 assert label.startswith("PID"), (path.name, domain, key, label)
                 assert label == pid_first(label), (path.name, domain, key, label)
                 assert not label.startswith("{channel}"), (path.name, key, label)
-                assert label.count("PID") == 1, (path.name, key, label)
+                # Literal PID prefixes must not duplicate; underscore tokens
+                # like PID_OFFSET_C are technical suffix identifiers, not
+                # a second standalone PID word.
+                assert len(re.findall(r"(?<!\\w)PID(?!\\w)", label)) == 1, (
+                    path.name, key, label,
+                )
         # Exact field/option meanings and other entity groups are still there.
         assert source["entity"]["select"]["equipment_control_mode"]["state"]["pid"]
         assert not source["entity"]["select"]["equipment_control_mode"]["name"].startswith("PID")
