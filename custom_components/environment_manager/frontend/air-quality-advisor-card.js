@@ -452,6 +452,8 @@
       this._expanded = new Set();
       this._shownEntity = null;
       this._shownLanguage = null;
+      this._shownControllerSignature = null;
+      this._climateEditError = null;
       this._lastState = null;
       this._lastConfigKey = null;
       this._areaDeviceIds = new Map();
@@ -475,12 +477,62 @@
           }
           return;
         }
+        const moreInfo = event.target.closest?.('[data-open-climate]');
+        if (moreInfo) {
+          const entityId = moreInfo.getAttribute('data-open-climate');
+          const area = moreInfo.getAttribute('data-controller-area');
+          if (this._managedControllers(area).some((item)=>item.entityId===entityId)) {
+            this.dispatchEvent(new CustomEvent('hass-more-info', {
+              detail:{entityId}, bubbles:true, composed:true
+            }));
+          }
+          return;
+        }
+        const targetSave = event.target.closest?.('[data-save-climate-target]');
+        if (targetSave) {
+          const area = targetSave.getAttribute('data-controller-area');
+          const entityId = targetSave.getAttribute('data-save-climate-target');
+          const metric = targetSave.getAttribute('data-target-metric');
+          const controller = this._managedControllers(area).find(
+            (entry)=>entry.entityId===entityId);
+          const input = targetSave.closest('.climate-target-editor')
+            ?.querySelector('input[data-climate-input]');
+          const parsed = input ? Number(String(input.value).replace(',', '.')) : NaN;
+          const boundaries = controller?.climate?.attributes || {};
+          const nativeSupported = Number(boundaries.supported_features) || 0;
+          const validMetric = metric==='temperature' ? Boolean(nativeSupported & 1)
+            : metric==='humidity' && Boolean(nativeSupported & 4);
+          const minimum = metric==='temperature'
+            ? Number(boundaries.min_temp ?? 5) : Number(boundaries.min_humidity ?? 20);
+          const maximum = metric==='temperature'
+            ? Number(boundaries.max_temp ?? 35) : Number(boundaries.max_humidity ?? 80);
+          if (!controller || controller.method?.state!=='manual' ||
+              controller.climate?.state==='unavailable' || !validMetric ||
+              !Number.isFinite(parsed) || !Number.isFinite(minimum) ||
+              !Number.isFinite(maximum) || parsed<minimum || parsed>maximum) {
+            this._climateEditError = (CLIMATE_LABELS[this._language()] ||
+              CLIMATE_LABELS.en).invalidTarget;
+            this._render(true);
+            return;
+          }
+          const service = metric==='temperature' ? 'set_temperature' : 'set_humidity';
+          this._climateEditError = null;
+          Promise.resolve(this._hass.callService('climate',service,{
+            entity_id:entityId,[metric]:parsed
+          })).catch((error)=>{
+            console.error('Home Environment Manager manual target failed',error);
+            this._climateEditError = (CLIMATE_LABELS[this._language()] ||
+              CLIMATE_LABELS.en).editFailed;
+            this._render(true);
+          });
+          return;
+        }
         const climate = event.target.closest?.('[data-climate-action]');
         if (climate) {
           const area = climate.getAttribute('data-climate-area');
           const action = climate.getAttribute('data-climate-action');
           if (area && ['pause','resume'].includes(action) && this._hass?.callService) {
-            Promise.resolve(this._hass.callService('home_environment_manager','climate_control',{area,action}))
+            Promise.resolve(this._hass.callService('environment_manager','climate_control',{area,action}))
               .catch((error)=>console.error('Home Environment Manager climate action failed',error));
           }
           return;
@@ -490,7 +542,7 @@
           const area = pid.getAttribute('data-pid-area');
           const action = pid.getAttribute('data-pid-action');
           if (area && ['pause','resume'].includes(action) && this._hass?.callService) {
-            Promise.resolve(this._hass.callService('home_environment_manager','pid_control',{area,action}))
+            Promise.resolve(this._hass.callService('environment_manager','pid_control',{area,action}))
               .catch((error)=>console.error('Home Environment Manager PID action failed',error));
           }
           return;
@@ -501,6 +553,27 @@
         if (this._expanded.has(area)) this._expanded.delete(area);
         else this._expanded.add(area);
         this._render(true);
+      });
+      this.shadowRoot.addEventListener('change', (event) => {
+        const selector = event.target.closest?.('[data-climate-method]');
+        if (!selector || !this._hass?.callService) return;
+        const area = selector.getAttribute('data-controller-area');
+        const entityId = selector.getAttribute('data-climate-method');
+        const current = this._managedControllers(area).find(
+          (item)=>item.methodId===entityId);
+        const value = selector.value;
+        const choices = current?.method?.attributes?.options;
+        if (!current || current.climate?.state==='unavailable' ||
+            !Array.isArray(choices) || !choices.includes(value)) return;
+        this._climateEditError = null;
+        Promise.resolve(this._hass.callService('select','select_option',{
+          entity_id:entityId,option:value
+        })).catch((error)=>{
+          console.error('Home Environment Manager control method failed',error);
+          this._climateEditError = (CLIMATE_LABELS[this._language()] ||
+            CLIMATE_LABELS.en).editFailed;
+          this._render(true);
+        });
       });
     }
 
@@ -614,6 +687,47 @@
     _state() {
       const id = this._config.entity || (detected(this._hass).length === 1 ? detected(this._hass)[0] : null);
       return [id, id ? this._hass?.states?.[id] : null];
+    }
+
+    _managedControllers(area) {
+      // Only match Manager-created native climate facades with provenance.
+      // An unrelated physical entity must never acquire writable controls.
+      const states = Object.entries(this._hass?.states || {});
+      const physical = states.filter(([id, item])=>
+        id.startsWith('climate.') && item?.attributes?.area_id===area &&
+        Array.isArray(item.attributes.source_entity_ids) &&
+        item.attributes.source_entity_ids.length>0 &&
+        typeof item.attributes.control_mode==='string');
+      const selectors = states.filter(([id, item])=> id.startsWith('select.') &&
+        item?.attributes?.area_id===area &&
+        Array.isArray(item.attributes.source_entity_ids) &&
+        Array.isArray(item.attributes.options) &&
+        ['automatic','manual','off'].every((mode)=>item.attributes.options.includes(mode)));
+      const signature = (item) => JSON.stringify(
+        safeArray(item.attributes.source_entity_ids).slice().sort());
+      return physical.map(([entityId, climate])=>{
+        const matched = selectors.filter(([,item])=>signature(item)===signature(climate));
+        const [methodId, method] = matched.length===1 ? matched[0] : [null,null];
+        return {entityId,climate,methodId,method};
+      }).sort((a,b)=>a.entityId.localeCompare(b.entityId));
+    }
+
+    _controllerSignature() {
+      // The main recommendation sensor may be unchanged while a physical
+      // controller is switched to Manual/PID/Off in Home Assistant.
+      const rows = Object.entries(this._hass?.states || {})
+        .filter(([id, state]) =>
+          (id.startsWith('select.') || id.startsWith('climate.')) &&
+          Array.isArray(state?.attributes?.source_entity_ids) &&
+          typeof state.attributes.area_id==='string')
+        .map(([id,state])=>[
+          id,state.state,state.attributes.control_mode,
+          state.attributes.temperature,state.attributes.humidity,
+          state.attributes.supported_features,
+          state.attributes.options,
+          state.attributes.source_entity_ids,
+        ]);
+      return JSON.stringify(rows);
     }
 
     _icon(icon, extraClass = '') {
@@ -1200,7 +1314,11 @@
       const [entity, state] = this._state();
       const lang = this._language();
       const key = JSON.stringify(this._config);
-      if (!force && this._lastState === state && this._shownEntity === entity && this._shownLanguage === lang && this._lastConfigKey === key) return;
+      const controllerSignature = this._controllerSignature();
+      if (!force && this._lastState === state && this._shownEntity === entity &&
+          this._shownLanguage === lang && this._lastConfigKey === key &&
+          this._shownControllerSignature === controllerSignature) return;
+      this._shownControllerSignature = controllerSignature;
       this._lastState = state;
       this._shownEntity = entity;
       this._shownLanguage = lang;
