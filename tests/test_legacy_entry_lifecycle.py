@@ -198,7 +198,7 @@ def make_hass():
     )
 
 
-def legacy_entry(number=1,title="Air Quality Advisor"):
+def legacy_entry(number=1,title="Home Environment Manager"):
     original={"areas":["living"],
               "excluded_window_entities":[],
               "excluded_indoor_entities":{"living":["sensor.legacy_co2"]},
@@ -248,7 +248,7 @@ def test_multiple_config_entries_register_once_and_unload_cleanly(integration):
     module,_=integration
     h=make_hass()
     first=legacy_entry(number=1)
-    second=legacy_entry(number=2,title="Home Environment Advisor")
+    second=legacy_entry(number=2,title="Home Environment Manager")
     asyncio.run(module.async_setup_entry(h,first))
     asyncio.run(module.async_setup_entry(h,second))
     assert len(h.services.registered)==4
