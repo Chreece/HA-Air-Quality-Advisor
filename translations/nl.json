@@ -1,0 +1,1829 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Kamers",
+        "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Kamers",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Raamsensoren uitsluiten",
+        "description": "2 · Raamsensoren uitsluiten. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Raamsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Kies: Raamsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Kamers · Schimmelindicator",
+        "description": "Kamers: {area_name} ({position}/{total}). 🌡️ 🧊 Schimmelindicator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten",
+          "mold_indoor_temperature": "Kamers · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Schimmelindicator · 🧊 °C",
+          "mold_recalibrate": "Schimmelindicator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Buiten · Temperatuur · bron · Schimmelindicator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Kamers: 🌡️ °C/°F · Schimmelindicator.",
+          "mold_critical_temperature_c": "🧊 Schimmelindicator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Gebruik echte passende meetgegevens voor ‘Schimmelindicator · ↻ 🌡️’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "mold_outdoor_weather_entity": "Kiezen weather.* · Buiten Temperatuur (temperature, °C/°F) → Schimmelindicator. Vereist: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Buitenluchtkwaliteit",
+        "description": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Buitenluchtkwaliteit"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Weer en waarschuwingen",
+        "description": "Weer en waarschuwingen. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "weather_warnings": "Weerwaarschuwingen"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Meldingen (optioneel)",
+        "description": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+        "data": {
+          "language": "Taal",
+          "automatic_tts": "Automatische",
+          "automatic_notifications": "Automatische · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Meldingen (optioneel) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "instellingen · bron",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Meldingen (optioneel)",
+          "ai_conversation_agent": "AI · Taal"
+        },
+        "data_description": {
+          "language": "Stel ‘Taal’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "automatic_tts": "Standaard: ⛔ · Automatische · 🪟 90 s.",
+          "automatic_notifications": "Standaard: ⛔ · Automatische · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Standaard: 10 min · 0 = nooit · Zolang dezelfde oorzaak aanhoudt · Kamers.",
+          "use_announcement_hub": "Announcement Hub · Niet beschikbaar → Home Assistant.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Meldingen (optioneel) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Kies: conversation.* (Home Assistant · Standaard)."
+        }
+      },
+      "thresholds": {
+        "title": "Geavanceerde grenswaarden",
+        "description": "Geavanceerde grenswaarden. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Buiten · AQI (≤)",
+          "outdoor_co2": "Buiten · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Buiten · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Buiten · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Buiten · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Buiten · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Buiten (µg/m³)",
+          "outdoor_o3": "O₃ · Buiten (µg/m³)",
+          "outdoor_so2": "SO₂ · Buiten (µg/m³)",
+          "indoor_aqi": "Luchtkwaliteit · AQI (≥)",
+          "indoor_co2": "Luchtkwaliteit · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luchtkwaliteit · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luchtkwaliteit · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luchtkwaliteit · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luchtkwaliteit · VOC (ppb) (≥)",
+          "indoor_humidity": "Luchtkwaliteit · RH (%) (≥)",
+          "min_outdoor_temp": "Buiten · °C (≥)",
+          "max_outdoor_temp": "Buiten · °C (≤)",
+          "max_outdoor_humidity": "Buiten · RH (%) (≤)",
+          "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
+          "max_age_minutes": "⏱ · Open (min, ≤)",
+          "indoor_mold": "Schimmelindicator · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Beslisdrempel voor ‘Buiten · AQI (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_co2": "Beslisdrempel voor ‘Buiten · CO₂ (ppm) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_pm25": "Beslisdrempel voor ‘Buiten · PM2.5 (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_pm10": "Beslisdrempel voor ‘Buiten · PM10 (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_voc": "Beslisdrempel voor ‘Buiten · VOC (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_voc_parts": "Beslisdrempel voor ‘Buiten · VOC (ppb) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_no2": "Beslisdrempel voor ‘NO₂ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_o3": "Beslisdrempel voor ‘O₃ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_so2": "Beslisdrempel voor ‘SO₂ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_aqi": "Beslisdrempel voor ‘Luchtkwaliteit · AQI (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_co2": "Beslisdrempel voor ‘Luchtkwaliteit · CO₂ (ppm) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_pm25": "Beslisdrempel voor ‘Luchtkwaliteit · PM2.5 (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_pm10": "Beslisdrempel voor ‘Luchtkwaliteit · PM10 (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_voc": "Beslisdrempel voor ‘Luchtkwaliteit · VOC (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_voc_parts": "Beslisdrempel voor ‘Luchtkwaliteit · VOC (ppb) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_humidity": "Beslisdrempel voor ‘Luchtkwaliteit · RH (%) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "min_outdoor_temp": "Beslisdrempel voor ‘Buiten · °C (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_outdoor_temp": "Beslisdrempel voor ‘Buiten · °C (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_outdoor_humidity": "Beslisdrempel voor ‘Buiten · RH (%) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_wind_kmh": "Beslisdrempel voor ‘Weer en waarschuwingen · km/h (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_age_minutes": "Beslisdrempel voor ‘⏱ · Open (min, ≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_mold": "Beslisdrempel voor ‘Schimmelindicator · ≥ 70%’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "setup_rooms": {
+        "title": "Te bewaken kamers",
+        "description": "Te bewaken kamers → bron → Algemene instellingen",
+        "data": {
+          "areas": "Te bewaken kamers"
+        },
+        "data_description": {
+          "areas": "Te bewaken kamers. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Kamer · {area_name} · {room_index}/{room_count}",
+        "description": "Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+        "data": {
+          "windows": "Ramen",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren",
+          "temperature": "Temperatuur",
+          "humidity": "Vochtigheid",
+          "pressure": "Druksensoren",
+          "climate_devices": "Apparaten"
+        },
+        "data_description": {
+          "windows": "Ramen. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "temperature": "Temperatuur. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "humidity": "Vochtigheid. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "pressure": "Druksensoren. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "climate_devices": "Apparaten. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_general": {
+        "title": "Algemene instellingen",
+        "description": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten.",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "outdoor_sensors": "Buitenluchtkwaliteit",
+          "weather_warnings": "Weerwaarschuwingen",
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "notify_entities": "instellingen · bron",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Kiezen · bron",
+          "language": "TTS · Kiezen · bron",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%",
+          "pollen_entities": "Pollen · bron · Kiezen",
+          "use_announcement_hub": "Automatische · Announcement Hub",
+          "general_away_cooldown_minutes": "Thuis · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒",
+          "general_room_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Kamer · Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_home_trackers": "Kies een echte Home Assistant-bron voor ‘Thuis · Aanwezigheid · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_attribute": "Stel ‘Aanwezigheid · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_sleep_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Slaap · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_sleep_rooms_attribute": "Stel ‘Slaap · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "ai_conversation_agent": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · AI · Kiezen · bron · conversation.* / ai_task.*.",
+          "language": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · TTS · Kiezen · bron · provider capabilities.",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Pollen · bron · Kiezen.",
+          "use_announcement_hub": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Automatische · Announcement Hub.",
+          "general_away_cooldown_minutes": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Thuis · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Ongeldige selectie: Buitenluchtkwaliteit (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Niet beschikbaar: Buitenluchtkwaliteit (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Ongeldige selectie: Weer en waarschuwingen (weather.*).",
+      "invalid_warning": "Ongeldige selectie: Weer en waarschuwingen ⚠.",
+      "missing_notify": "Kies: Announcement Hub / notify.*.",
+      "missing_tts": "Kies: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Ongeldige selectie: °C min < max.",
+      "no_areas": "Kies: Kamers.",
+      "no_window_areas": "Niet beschikbaar: Metingen (binary_sensor, window).",
+      "invalid_areas": "Ongeldige selectie: Kamers.",
+      "invalid_window_exclusions": "Ongeldige selectie: Raamsensoren uitsluiten.",
+      "invalid_indoor_exclusions": "Ongeldige selectie: Binnenluchtsensoren uitsluiten.",
+      "no_windows_after_exclusions": "Houd minstens één raamcontact actief.",
+      "review_areas_after_exclusions": "Controleer: Kamers · Metingen (0).",
+      "invalid_repeat_minutes": "Ongeldige selectie: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Niet beschikbaar: conversation.process.",
+      "invalid_ai_agent": "Ongeldige selectie: conversation.*.",
+      "invalid_mold_temperature_sensor": "Kamers · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Kamers · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Schimmelindicator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Schimmelindicator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Ongeldig: Te bewaken kamers",
+      "invalid_room_source": "Ongeldig: Kamer · bron"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — al ingesteld.",
+      "setup_area_removed": "Ongeldig: Te bewaken kamers",
+      "setup_changed": "instellingen ↻ Te bewaken kamers"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Kies",
+        "description": "Kies: Kamers / Weer en waarschuwingen / Meldingen (optioneel) / Geavanceerde grenswaarden",
+        "menu_options": {
+          "outside_data": "Buiten · bron",
+          "general_settings": "Algemene · instellingen",
+          "area_settings": "Ruimte · instellingen",
+          "delivery": "Meldingen (optioneel)",
+          "thresholds": "Geavanceerde grenswaarden"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Raamsensoren uitsluiten",
+        "description": "2 · Raamsensoren uitsluiten. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Raamsensoren uitsluiten"
+        },
+        "data_description": {
+          "excluded_window_entities": "Kies: Raamsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Kamers",
+        "description": "1 · 🪟 Kamers. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Kamers",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Kies: Kamers · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Kamers · Schimmelindicator",
+        "description": "Kamers: {area_name} ({position}/{total}). 🌡️ 🧊 Schimmelindicator · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Binnenluchtsensoren uitsluiten",
+          "mold_indoor_temperature": "Kamers · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Schimmelindicator · 🧊 °C",
+          "mold_recalibrate": "Schimmelindicator · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Buiten · Temperatuur · bron · Schimmelindicator"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Kies: Binnenluchtsensoren uitsluiten · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Kamers: 🌡️ °C/°F · Schimmelindicator.",
+          "mold_critical_temperature_c": "🧊 Schimmelindicator · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Gebruik echte passende meetgegevens voor ‘Schimmelindicator · ↻ 🌡️’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "mold_outdoor_weather_entity": "Kiezen weather.* · Buiten Temperatuur (temperature, °C/°F) → Schimmelindicator. Vereist: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Buitenluchtkwaliteit",
+        "description": "Buitenluchtkwaliteit. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Buitenluchtkwaliteit"
+        },
+        "data_description": {
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Weer en waarschuwingen",
+        "description": "Weer en waarschuwingen. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "weather_warnings": "Weerwaarschuwingen"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Meldingen (optioneel)",
+        "description": "Meldingen (optioneel). Automatische meldingen · Automatisch gesproken meldingen. Announcement Hub.",
+        "data": {
+          "language": "Taal",
+          "automatic_tts": "Automatische",
+          "automatic_notifications": "Automatische · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Meldingen (optioneel) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "instellingen · bron",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Meldingen (optioneel)",
+          "ai_conversation_agent": "AI · Taal"
+        },
+        "data_description": {
+          "language": "Stel ‘Taal’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "automatic_tts": "Standaard: ⛔ · Automatische · 🪟 90 s.",
+          "automatic_notifications": "Standaard: ⛔ · Automatische · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Standaard: 10 min · 0 = nooit · Zolang dezelfde oorzaak aanhoudt · Kamers.",
+          "use_announcement_hub": "Announcement Hub · Niet beschikbaar → Home Assistant.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Meldingen (optioneel) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Kies: conversation.* (Home Assistant · Standaard)."
+        }
+      },
+      "thresholds": {
+        "title": "Geavanceerde grenswaarden",
+        "description": "Geavanceerde grenswaarden. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Buiten · AQI (≤)",
+          "outdoor_co2": "Buiten · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Buiten · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Buiten · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Buiten · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Buiten · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Buiten (µg/m³)",
+          "outdoor_o3": "O₃ · Buiten (µg/m³)",
+          "outdoor_so2": "SO₂ · Buiten (µg/m³)",
+          "indoor_aqi": "Luchtkwaliteit · AQI (≥)",
+          "indoor_co2": "Luchtkwaliteit · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Luchtkwaliteit · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Luchtkwaliteit · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Luchtkwaliteit · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Luchtkwaliteit · VOC (ppb) (≥)",
+          "indoor_humidity": "Luchtkwaliteit · RH (%) (≥)",
+          "min_outdoor_temp": "Buiten · °C (≥)",
+          "max_outdoor_temp": "Buiten · °C (≤)",
+          "max_outdoor_humidity": "Buiten · RH (%) (≤)",
+          "max_wind_kmh": "Weer en waarschuwingen · km/h (≤)",
+          "max_age_minutes": "⏱ · Open (min, ≤)",
+          "indoor_mold": "Schimmelindicator · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Beslisdrempel voor ‘Buiten · AQI (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_co2": "Beslisdrempel voor ‘Buiten · CO₂ (ppm) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_pm25": "Beslisdrempel voor ‘Buiten · PM2.5 (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_pm10": "Beslisdrempel voor ‘Buiten · PM10 (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_voc": "Beslisdrempel voor ‘Buiten · VOC (µg/m³) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_voc_parts": "Beslisdrempel voor ‘Buiten · VOC (ppb) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_no2": "Beslisdrempel voor ‘NO₂ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_o3": "Beslisdrempel voor ‘O₃ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outdoor_so2": "Beslisdrempel voor ‘SO₂ · Buiten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_aqi": "Beslisdrempel voor ‘Luchtkwaliteit · AQI (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_co2": "Beslisdrempel voor ‘Luchtkwaliteit · CO₂ (ppm) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_pm25": "Beslisdrempel voor ‘Luchtkwaliteit · PM2.5 (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_pm10": "Beslisdrempel voor ‘Luchtkwaliteit · PM10 (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_voc": "Beslisdrempel voor ‘Luchtkwaliteit · VOC (µg/m³) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_voc_parts": "Beslisdrempel voor ‘Luchtkwaliteit · VOC (ppb) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_humidity": "Beslisdrempel voor ‘Luchtkwaliteit · RH (%) (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "min_outdoor_temp": "Beslisdrempel voor ‘Buiten · °C (≥)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_outdoor_temp": "Beslisdrempel voor ‘Buiten · °C (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_outdoor_humidity": "Beslisdrempel voor ‘Buiten · RH (%) (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_wind_kmh": "Beslisdrempel voor ‘Weer en waarschuwingen · km/h (≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "max_age_minutes": "Beslisdrempel voor ‘⏱ · Open (min, ≤)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "indoor_mold": "Beslisdrempel voor ‘Schimmelindicator · ≥ 70%’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "environment": {
+        "title": "instellingen · instellingen · bron",
+        "description": "Stel ‘instellingen · instellingen · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "pollen_entity": "Pollen · bron",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT",
+          "aqi_scale_0": "AQI #1 · bron",
+          "aqi_custom_limit_0": "AQI #1 · doelwaarde",
+          "aqi_scale_1": "AQI #2 · bron",
+          "aqi_custom_limit_1": "AQI #2 · doelwaarde",
+          "aqi_scale_2": "AQI #3 · bron",
+          "aqi_custom_limit_2": "AQI #3 · doelwaarde",
+          "aqi_scale_3": "AQI #4 · bron",
+          "aqi_custom_limit_3": "AQI #4 · doelwaarde",
+          "aqi_scale_4": "AQI #5 · bron",
+          "aqi_custom_limit_4": "AQI #5 · doelwaarde",
+          "aqi_scale_5": "AQI #6 · bron",
+          "aqi_custom_limit_5": "AQI #6 · doelwaarde",
+          "aqi_scale_6": "AQI #7 · bron",
+          "aqi_custom_limit_6": "AQI #7 · doelwaarde",
+          "aqi_scale_7": "AQI #8 · bron",
+          "aqi_custom_limit_7": "AQI #8 · doelwaarde",
+          "aqi_scale_8": "AQI #9 · bron",
+          "aqi_custom_limit_8": "AQI #9 · doelwaarde",
+          "aqi_scale_9": "AQI #10 · bron",
+          "aqi_custom_limit_9": "AQI #10 · doelwaarde",
+          "aqi_scale_10": "AQI #11 · bron",
+          "aqi_custom_limit_10": "AQI #11 · doelwaarde",
+          "aqi_scale_11": "AQI #12 · bron",
+          "aqi_custom_limit_11": "AQI #12 · doelwaarde",
+          "aqi_scale_12": "AQI #13 · bron",
+          "aqi_custom_limit_12": "AQI #13 · doelwaarde",
+          "aqi_scale_13": "AQI #14 · bron",
+          "aqi_custom_limit_13": "AQI #14 · doelwaarde",
+          "aqi_scale_14": "AQI #15 · bron",
+          "aqi_custom_limit_14": "AQI #15 · doelwaarde",
+          "aqi_scale_15": "AQI #16 · bron",
+          "aqi_custom_limit_15": "AQI #16 · doelwaarde",
+          "aqi_scale_16": "AQI #17 · bron",
+          "aqi_custom_limit_16": "AQI #17 · doelwaarde",
+          "aqi_scale_17": "AQI #18 · bron",
+          "aqi_custom_limit_17": "AQI #18 · doelwaarde",
+          "aqi_scale_18": "AQI #19 · bron",
+          "aqi_custom_limit_18": "AQI #19 · doelwaarde",
+          "aqi_scale_19": "AQI #20 · bron",
+          "aqi_custom_limit_19": "AQI #20 · doelwaarde",
+          "aqi_scale_20": "AQI #21 · bron",
+          "aqi_custom_limit_20": "AQI #21 · doelwaarde",
+          "aqi_scale_21": "AQI #22 · bron",
+          "aqi_custom_limit_21": "AQI #22 · doelwaarde",
+          "aqi_scale_22": "AQI #23 · bron",
+          "aqi_custom_limit_22": "AQI #23 · doelwaarde",
+          "aqi_scale_23": "AQI #24 · bron",
+          "aqi_custom_limit_23": "AQI #24 · doelwaarde",
+          "aqi_scale_24": "AQI #25 · bron",
+          "aqi_custom_limit_24": "AQI #25 · doelwaarde",
+          "aqi_scale_25": "AQI #26 · bron",
+          "aqi_custom_limit_25": "AQI #26 · doelwaarde",
+          "aqi_scale_26": "AQI #27 · bron",
+          "aqi_custom_limit_26": "AQI #27 · doelwaarde",
+          "aqi_scale_27": "AQI #28 · bron",
+          "aqi_custom_limit_27": "AQI #28 · doelwaarde",
+          "aqi_scale_28": "AQI #29 · bron",
+          "aqi_custom_limit_28": "AQI #29 · doelwaarde",
+          "aqi_scale_29": "AQI #30 · bron",
+          "aqi_custom_limit_29": "AQI #30 · doelwaarde",
+          "aqi_scale_30": "AQI #31 · bron",
+          "aqi_custom_limit_30": "AQI #31 · doelwaarde",
+          "aqi_scale_31": "AQI #32 · bron",
+          "aqi_custom_limit_31": "AQI #32 · doelwaarde"
+        },
+        "data_description": {
+          "pollen_entity": "Kies een echte Home Assistant-bron voor ‘Pollen · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "pollen_high_from": "Stel ‘POLLEN · Pollen · HIGH’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_max_scale": "Stel ‘POLLEN · Pollen · SCALE’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_avoid_ventilation": "Stel ‘POLLEN · Pollen · NO VENT’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_scale_0": "Stel ‘AQI #1 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_0": "Beslisdrempel voor ‘AQI #1 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_1": "Stel ‘AQI #2 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_1": "Beslisdrempel voor ‘AQI #2 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_2": "Stel ‘AQI #3 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_2": "Beslisdrempel voor ‘AQI #3 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_3": "Stel ‘AQI #4 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_3": "Beslisdrempel voor ‘AQI #4 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_4": "Stel ‘AQI #5 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_4": "Beslisdrempel voor ‘AQI #5 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_5": "Stel ‘AQI #6 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_5": "Beslisdrempel voor ‘AQI #6 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_6": "Stel ‘AQI #7 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_6": "Beslisdrempel voor ‘AQI #7 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_7": "Stel ‘AQI #8 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_7": "Beslisdrempel voor ‘AQI #8 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_8": "Stel ‘AQI #9 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_8": "Beslisdrempel voor ‘AQI #9 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_9": "Stel ‘AQI #10 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_9": "Beslisdrempel voor ‘AQI #10 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_10": "Stel ‘AQI #11 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_10": "Beslisdrempel voor ‘AQI #11 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_11": "Stel ‘AQI #12 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_11": "Beslisdrempel voor ‘AQI #12 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_12": "Stel ‘AQI #13 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_12": "Beslisdrempel voor ‘AQI #13 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_13": "Stel ‘AQI #14 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_13": "Beslisdrempel voor ‘AQI #14 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_14": "Stel ‘AQI #15 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_14": "Beslisdrempel voor ‘AQI #15 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_15": "Stel ‘AQI #16 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_15": "Beslisdrempel voor ‘AQI #16 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_16": "Stel ‘AQI #17 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_16": "Beslisdrempel voor ‘AQI #17 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_17": "Stel ‘AQI #18 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_17": "Beslisdrempel voor ‘AQI #18 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_18": "Stel ‘AQI #19 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_18": "Beslisdrempel voor ‘AQI #19 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_19": "Stel ‘AQI #20 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_19": "Beslisdrempel voor ‘AQI #20 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_20": "Stel ‘AQI #21 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_20": "Beslisdrempel voor ‘AQI #21 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_21": "Stel ‘AQI #22 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_21": "Beslisdrempel voor ‘AQI #22 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_22": "Stel ‘AQI #23 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_22": "Beslisdrempel voor ‘AQI #23 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_23": "Stel ‘AQI #24 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_23": "Beslisdrempel voor ‘AQI #24 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_24": "Stel ‘AQI #25 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_24": "Beslisdrempel voor ‘AQI #25 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_25": "Stel ‘AQI #26 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_25": "Beslisdrempel voor ‘AQI #26 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_26": "Stel ‘AQI #27 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_26": "Beslisdrempel voor ‘AQI #27 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_27": "Stel ‘AQI #28 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_27": "Beslisdrempel voor ‘AQI #28 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_28": "Stel ‘AQI #29 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_28": "Beslisdrempel voor ‘AQI #29 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_29": "Stel ‘AQI #30 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_29": "Beslisdrempel voor ‘AQI #30 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_30": "Stel ‘AQI #31 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_30": "Beslisdrempel voor ‘AQI #31 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "aqi_scale_31": "Stel ‘AQI #32 · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "aqi_custom_limit_31": "Beslisdrempel voor ‘AQI #32 · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "environment_room": {
+        "title": "instellingen · instellingen · bron",
+        "description": "Stel ‘instellingen · instellingen · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "environment_area": "instellingen · bron"
+        },
+        "data_description": {
+          "environment_area": "Stel ‘instellingen · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie."
+        }
+      },
+      "environment_room_air": {
+        "title": "instellingen · Buiten",
+        "description": "Stel ‘instellingen · Buiten’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "temperature_entity": "Temperatuur · bron",
+          "room_volume_m3": "instellingen · bron (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Luchtreiniger · bron",
+          "extractor_entity": "Afzuigventilator · bron",
+          "co2_ndir_verified": "CO₂ · Vereist",
+          "co2_target_ppm": "CO₂ · CO₂ · doelwaarde (ppm)",
+          "sleep_room": "Slaap"
+        },
+        "data_description": {
+          "temperature_entity": "Kies een echte Home Assistant-bron voor ‘Temperatuur · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "room_volume_m3": "Gebruik echte passende meetgegevens voor ‘instellingen · bron (m³)’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "particle_cadr_m3h": "Gebruik echte passende meetgegevens voor ‘CADR (m³/h)’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "purifier_entity": "Kies een echte Home Assistant-Luchtreiniger · bron voor ‘Luchtreiniger · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "extractor_entity": "Kies een echte Home Assistant-Afzuigventilator · bron voor ‘Afzuigventilator · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "co2_ndir_verified": "Gebruik echte passende meetgegevens voor ‘CO₂ · Vereist’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "co2_target_ppm": "Beslisdrempel voor ‘CO₂ · CO₂ · doelwaarde (ppm)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "sleep_room": "Stel ‘Slaap’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "instellingen · instellingen · bron",
+        "description": "Stel ‘instellingen · instellingen · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "radon_entity": "RADON · Rn · bron",
+          "radon_sensor_verified": "RADON · Rn · sensor · Vereist · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · bron",
+          "formaldehyde_sensor_verified": "HCHO · sensor · Vereist · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · bron · sensor (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · sensor · Vereist",
+          "illuminance_entity": "LUX · bron (lux)",
+          "melanopic_edi_entity": "EDI · EDI · bron (lx)",
+          "melanopic_spectral_verified": "EDI · Vereist"
+        },
+        "data_description": {
+          "radon_entity": "Kies een echte Home Assistant-RADON · Rn · bron voor ‘RADON · Rn · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "radon_sensor_verified": "Gebruik echte passende meetgegevens voor ‘RADON · Rn · sensor · Vereist · SENSOR ✓ · VERIFIED’. Schattingen vervangen geen gekalibreerde RADON · Rn · sensor · Vereist · SENSOR ✓ · VERIFIEDen.",
+          "radon_reference_bq_m3": "Stel ‘Rn (Bq/m³)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "formaldehyde_entity": "Kies een echte Home Assistant-HCHO · bron voor ‘HCHO · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "formaldehyde_sensor_verified": "Gebruik echte passende meetgegevens voor ‘HCHO · sensor · Vereist · SENSOR ✓ · VERIFIED’. Schattingen vervangen geen gekalibreerde HCHO · sensor · Vereist · SENSOR ✓ · VERIFIEDen.",
+          "noise_entity": "Kies een echte Home Assistant-dB(A) · bron · sensor (dB(A)) voor ‘dB(A) · bron · sensor (dB(A))’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "noise_sensor_calibrated": "Gebruik echte passende meetgegevens voor ‘dB(A) · sensor · Vereist’. Schattingen vervangen geen gekalibreerde dB(A) · sensor · Vereisten.",
+          "illuminance_entity": "Kies een echte Home Assistant-LUX · bron (lux) voor ‘LUX · bron (lux)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "melanopic_edi_entity": "Kies een echte Home Assistant-EDI · EDI · bron (lx) voor ‘EDI · EDI · bron (lx)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "melanopic_spectral_verified": "Gebruik echte passende meetgegevens voor ‘EDI · Vereist’. Schattingen vervangen geen gekalibreerde sensoren."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "instellingen · instellingen · bron",
+        "description": "Stel ‘instellingen · instellingen · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automatische",
+          "radiant_temperature_entity": "Temperatuur · bron",
+          "air_speed_entity": "bron · Snelheid · Buiten (m/s)",
+          "air_speed_m_s": "Snelheid · Buiten (m/s)",
+          "met": "instellingen · bron (met)",
+          "clo": "instellingen · bron (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Stel ‘PMV / PPD · Automatische’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "radiant_temperature_entity": "Kies een echte Home Assistant-bron voor ‘Temperatuur · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "air_speed_entity": "Kies een echte Home Assistant-bron · Snelheid · Buiten (m/s) voor ‘bron · Snelheid · Buiten (m/s)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "air_speed_m_s": "Gebruik echte passende meetgegevens voor ‘Snelheid · Buiten (m/s)’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "met": "Gebruik echte passende meetgegevens voor ‘instellingen · bron (met)’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "clo": "Gebruik echte passende meetgegevens voor ‘instellingen · bron (clo)’. Schattingen vervangen geen gekalibreerde sensoren."
+        }
+      },
+      "pid": {
+        "title": "instellingen · PID",
+        "description": "Stel ‘instellingen · PID’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Deze optie regelt ‘PID’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen."
+        }
+      },
+      "pid_room": {
+        "title": "instellingen · PID",
+        "description": "Stel ‘instellingen · PID’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "pid_enabled": "PID · Automatische · AUTO",
+          "pid_climate_entities": "PID · Apparaten",
+          "pid_temperature_entity": "Temperatuur · bron",
+          "pid_mode": "PID",
+          "pid_target_c": "doelwaarde (°C)",
+          "pid_pause_on_window_open": "PID · Buiten"
+        },
+        "data_description": {
+          "pid_enabled": "Deze optie regelt ‘PID · Automatische · AUTO’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "pid_climate_entities": "Kies een echte Home Assistant-bron voor ‘PID · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "pid_temperature_entity": "Kies een echte Home Assistant-bron voor ‘Temperatuur · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "pid_mode": "Deze optie regelt ‘PID’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "pid_target_c": "Beslisdrempel voor ‘doelwaarde (°C)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "pid_pause_on_window_open": "Deze optie regelt ‘PID · Buiten’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen."
+        }
+      },
+      "pid_tuning": {
+        "title": "instellingen · PID",
+        "description": "Stel ‘instellingen · PID’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "pid_kp": "PID Kp · regeling (% per °C)",
+          "pid_ki": "PID Ki · regeling (% per °C-minute)",
+          "pid_kd": "PID Kd · regeling (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Deze optie regelt ‘PID Kp · regeling (% per °C)’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "pid_ki": "Deze optie regelt ‘PID Ki · regeling (% per °C-minute)’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "pid_kd": "Deze optie regelt ‘PID Kd · regeling (%·minute per °C)’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "pid_offset_c": "Beslisdrempel voor ‘PID (°C) · PID_OFFSET_C’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "pid_min_setpoint_c": "Beslisdrempel voor ‘PID (°C) · MIN TARGET’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "pid_max_setpoint_c": "Beslisdrempel voor ‘PID (°C) · MAX TARGET’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "pid_sample_seconds": "Deze tijd bepaalt ‘PID (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "pid_max_change_c": "Beslisdrempel voor ‘PID (°C) · MAX Δ’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "pid_min_change_c": "Beslisdrempel voor ‘PID (°C) · MIN Δ’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "climate": {
+        "title": "instellingen · Apparaten",
+        "description": "Stel ‘instellingen · Apparaten’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+        "data": {
+          "climate_area": "Apparaten"
+        },
+        "data_description": {
+          "climate_area": "Deze optie regelt ‘Apparaten’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen."
+        }
+      },
+      "climate_room": {
+        "title": "instellingen · Apparaten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "climate_enabled": "Apparaten · Automatische · AUTO",
+          "climate_allow_actuation": "Apparaten · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Apparaten · Automatische · MODE SWITCH",
+          "climate_prefer_native_auto": "Apparaten · Automatische · NATIVE",
+          "climate_controller": "Apparaten · regeling",
+          "climate_mode": "Apparaten · MODE",
+          "climate_entity": "Apparaten · bron",
+          "climate_temperature_entity": "Temperatuur · bron",
+          "climate_hysteresis_c": "Apparaten (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Deze optie regelt ‘Apparaten · Automatische · AUTO’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_allow_actuation": "Deze optie regelt ‘Apparaten · CLIMATE_ALLOW_ACTUATION’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_auto_switch_hvac": "Deze optie regelt ‘Apparaten · Automatische · MODE SWITCH’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_prefer_native_auto": "Deze optie regelt ‘Apparaten · Automatische · NATIVE’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_controller": "Deze optie regelt ‘Apparaten · regeling’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_mode": "Deze optie regelt ‘Apparaten · MODE’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_entity": "Kies een echte Home Assistant-Apparaten · bron voor ‘Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_temperature_entity": "Kies een echte Home Assistant-bron voor ‘Temperatuur · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_hysteresis_c": "Beslisdrempel voor ‘Apparaten (°C)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "climate_presence": {
+        "title": "instellingen · Aanwezigheid · Apparaten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "climate_occupancy_sensors": "Aanwezigheid · sensor",
+          "climate_away_entities": "Thuis · Apparaten",
+          "climate_unknown_occupancy": "Aanwezigheid · Apparaten",
+          "climate_unoccupied_delay_minutes": "Apparaten · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Aanwezigheid · Apparaten · sensor · Vereist",
+          "climate_away_policy": "Thuis · Apparaten · POLICY",
+          "climate_manual_profile": "Apparaten · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Slaap · Apparaten",
+          "climate_sleep_schedule_enabled": "Slaap · Automatische",
+          "climate_sleep_start": "Slaap · Apparaten · START",
+          "climate_sleep_end": "Slaap · Apparaten · END",
+          "climate_target_source": "Apparaten · bron · doelwaarde",
+          "climate_comfort_adjustment_max_c": "Apparaten (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_away_entities": "Kies een echte Home Assistant-bron voor ‘Thuis · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_unknown_occupancy": "Deze optie regelt ‘Aanwezigheid · Apparaten’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_unoccupied_delay_minutes": "Deze tijd bepaalt ‘Apparaten · CLIMATE_UNOCCUPIED_DELAY_MINUTES’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_occupancy_stale_minutes": "Deze tijd bepaalt ‘Aanwezigheid · Apparaten · sensor · Vereist’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_away_policy": "Deze optie regelt ‘Thuis · Apparaten · POLICY’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_manual_profile": "Deze optie regelt ‘Apparaten · CLIMATE_MANUAL_PROFILE’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_sleep_active": "Deze optie regelt ‘Slaap · Apparaten’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_sleep_schedule_enabled": "Deze optie regelt ‘Slaap · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_sleep_start": "Deze tijd bepaalt ‘Slaap · Apparaten · START’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_sleep_end": "Deze tijd bepaalt ‘Slaap · Apparaten · END’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_target_source": "Beslisdrempel voor ‘Apparaten · bron · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_comfort_adjustment_max_c": "Beslisdrempel voor ‘Apparaten (°C)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "climate_equipment": {
+        "title": "instellingen · Apparaten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Apparaten · bron · Temperatuur +",
+          "climate_cool_climate_entity": "COOL · Apparaten · bron · Temperatuur −",
+          "climate_dry_climate_entity": "DRY · Apparaten · bron",
+          "climate_fan_climate_entity": "FAN_ONLY · Snelheid · Apparaten · bron",
+          "climate_humidifier_entity": "HUMIDIFIER · Apparaten · bron",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Apparaten · bron",
+          "climate_extraction_fan_entity": "EXTRACT · Snelheid · Apparaten · bron",
+          "climate_purifier_fan_entity": "Luchtreiniger · bron",
+          "climate_humidity_entity": "Vochtigheid · bron",
+          "climate_humidity_low_rh": "RH · Vochtigheid · Apparaten (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Vochtigheid · Apparaten (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Vochtigheid · Apparaten · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Apparaten · Temperatuur −",
+          "climate_humidity_setpoint_auto": "Vochtigheid · Automatische",
+          "climate_window_efficiency_notify": "Apparaten · Buiten",
+          "climate_dry_fan_mode_auto": "Snelheid · Automatische",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Snelheid · Apparaten · Vereist · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Snelheid · Apparaten · Buiten · Vereist · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Snelheid · Apparaten (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Vochtigheid · Vermogen · Automatische",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Vochtigheid · Apparaten · Vermogen · Vereist · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Vochtigheid · Apparaten · Vermogen · Buiten · Vereist · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Vochtigheid · Apparaten · Vermogen · Automatische (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Vochtigheid · Apparaten · Vermogen · Uitschakelen (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Vochtigheid · Apparaten · Vermogen · Automatische (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Apparaten · Automatische · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Kies een echte Home Assistant-HEAT · Apparaten · bron · Temperatuur + voor ‘HEAT · Apparaten · bron · Temperatuur +’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_cool_climate_entity": "Kies een echte Home Assistant-COOL · Apparaten · bron · Temperatuur − voor ‘COOL · Apparaten · bron · Temperatuur −’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_dry_climate_entity": "Kies een echte Home Assistant-DRY · Apparaten · bron voor ‘DRY · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_fan_climate_entity": "Kies een echte Home Assistant-bron voor ‘FAN_ONLY · Snelheid · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_humidifier_entity": "Kies een echte Home Assistant-HUMIDIFIER · Apparaten · bron voor ‘HUMIDIFIER · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_dehumidifier_entity": "Kies een echte Home Assistant-DEHUMIDIFIER · Apparaten · bron voor ‘DEHUMIDIFIER · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_extraction_fan_entity": "Kies een echte Home Assistant-bron voor ‘EXTRACT · Snelheid · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_purifier_fan_entity": "Kies een echte Home Assistant-bron voor ‘Luchtreiniger · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_humidity_entity": "Kies een echte Home Assistant-bron voor ‘Vochtigheid · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_humidity_low_rh": "Beslisdrempel voor ‘RH · Vochtigheid · Apparaten (%) · RH MIN’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_humidity_high_rh": "Beslisdrempel voor ‘RH · Vochtigheid · Apparaten (%) · RH MAX’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_humidity_hysteresis_rh": "Beslisdrempel voor ‘RH · Vochtigheid · Apparaten · ± RH’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_cooling_dry_deferral_rh_points": "Deze optie regelt ‘Apparaten · Temperatuur −’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_humidity_setpoint_auto": "Deze optie regelt ‘Vochtigheid · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_window_efficiency_notify": "Deze optie regelt ‘Apparaten · Buiten’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_dry_fan_mode_auto": "Deze optie regelt ‘Snelheid · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_dry_fan_hardware_confirmed": "Gebruik echte passende meetgegevens voor ‘DRY/FAN_ONLY · Snelheid · Apparaten · Vereist · HW ✓’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "climate_dry_fan_windowless_confirmed": "Gebruik echte passende meetgegevens voor ‘DRY/FAN_ONLY · Snelheid · Apparaten · Buiten · Vereist · NO WINDOW’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "climate_dry_fan_mode_dwell_s": "Deze tijd bepaalt ‘DRY/FAN_ONLY · Snelheid · Apparaten (s) · MODE DWELL’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_humidity_power_auto": "Deze optie regelt ‘Vochtigheid · Vermogen · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_humidity_power_hardware_confirmed": "Gebruik echte passende meetgegevens voor ‘RH POWER · Vochtigheid · Apparaten · Vermogen · Vereist · HW ✓’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "climate_humidity_power_windowless_confirmed": "Gebruik echte passende meetgegevens voor ‘RH POWER · Vochtigheid · Apparaten · Vermogen · Buiten · Vereist · NO WINDOW’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "climate_humidity_power_min_on_s": "Deze tijd bepaalt ‘RH POWER · Vochtigheid · Apparaten · Vermogen · Automatische (s) · MIN ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_humidity_power_min_off_s": "Deze tijd bepaalt ‘RH POWER · Vochtigheid · Apparaten · Vermogen · Uitschakelen (s) · MIN OFF’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_humidity_power_max_on_s": "Deze tijd bepaalt ‘RH POWER · Vochtigheid · Apparaten · Vermogen · Automatische (s) · MAX ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_secondary_climate_setpoint_auto": "Deze optie regelt ‘Apparaten · Automatische · TARGET AUTO’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "instellingen · Apparaten · Buiten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "climate_fan_speed_auto": "Snelheid · Automatische",
+          "climate_fan_power_auto": "Snelheid · Vermogen · Automatische",
+          "climate_fan_power_hardware_confirmed": "FAN · Snelheid · Apparaten · Vermogen · Vereist · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Snelheid · Apparaten · Vermogen · Automatische (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Snelheid · Apparaten · Vermogen · Uitschakelen (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Snelheid · Apparaten · Vermogen · Automatische (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Apparaten · sensor · Vereist · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Apparaten · bron",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Apparaten · bron",
+          "climate_pm25_action_ug_m3": "PM2.5 · Apparaten (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Apparaten · Snelheid (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Apparaten · Snelheid (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Deze optie regelt ‘Snelheid · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_fan_power_auto": "Deze optie regelt ‘Snelheid · Vermogen · Automatische’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "climate_fan_power_hardware_confirmed": "Gebruik echte passende meetgegevens voor ‘FAN · Snelheid · Apparaten · Vermogen · Vereist · HW ✓’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "climate_fan_power_min_on_s": "Deze tijd bepaalt ‘FAN · Snelheid · Apparaten · Vermogen · Automatische (s) · MIN ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_fan_power_min_off_s": "Deze tijd bepaalt ‘FAN · Snelheid · Apparaten · Vermogen · Uitschakelen (s) · MIN OFF’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_fan_power_max_on_s": "Deze tijd bepaalt ‘FAN · Snelheid · Apparaten · Vermogen · Automatische (s) · MAX ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "climate_pm25_sensor_verified": "Gebruik echte passende meetgegevens voor ‘PM2.5 · PM2.5 · Apparaten · sensor · Vereist · SENSOR ✓ · VERIFIED’. Schattingen vervangen geen gekalibreerde PM2.5 · PM2.5 · Apparaten · sensor · Vereist · SENSOR ✓ · VERIFIEDen.",
+          "climate_co2_entity": "Kies een echte Home Assistant-CO₂ · CO₂ · Apparaten · bron voor ‘CO₂ · CO₂ · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_pm25_entity": "Kies een echte Home Assistant-PM2.5 · PM2.5 · Apparaten · bron voor ‘PM2.5 · PM2.5 · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "climate_pm25_action_ug_m3": "Beslisdrempel voor ‘PM2.5 · Apparaten (µg/m³)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_extraction_speed_percent": "Beslisdrempel voor ‘EXTRACT · Apparaten · Snelheid (%) · SPEED %’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "climate_purifier_speed_percent": "Beslisdrempel voor ‘PURIFIER · Apparaten · Snelheid (%) · SPEED %’. Deze stuurt adviezen aan, maar is geen medische grenswaarde."
+        }
+      },
+      "climate_profiles": {
+        "title": "instellingen · Apparaten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "home_heat": "Verwarmen · Thuis (°C)",
+          "home_cool": "Koelen · Thuis (°C)",
+          "unoccupied_heat": "Verwarmen · Onbezette kamer (°C)",
+          "unoccupied_cool": "Koelen · Onbezette kamer (°C)",
+          "away_heat": "Verwarmen · Afwezig (°C)",
+          "away_cool": "Koelen · Afwezig (°C)",
+          "sleep_heat": "Verwarmen · Slaap (°C)",
+          "sleep_cool": "Koelen · Slaap (°C)"
+        },
+        "data_description": {
+          "home_heat": "Doelwaarde voor ‘Verwarmen · Thuis (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "home_cool": "Doelwaarde voor ‘Koelen · Thuis (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "unoccupied_heat": "Doelwaarde voor ‘Verwarmen · Onbezette kamer (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "unoccupied_cool": "Doelwaarde voor ‘Koelen · Onbezette kamer (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "away_heat": "Doelwaarde voor ‘Verwarmen · Afwezig (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "away_cool": "Doelwaarde voor ‘Koelen · Afwezig (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "sleep_heat": "Doelwaarde voor ‘Verwarmen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "sleep_cool": "Doelwaarde voor ‘Koelen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg."
+        }
+      },
+      "climate_actuators": {
+        "title": "instellingen · Apparaten",
+        "description": "Ruimte · instellingen · Apparaten · regeling. Aanwezigheid · sensor · Vereist.",
+        "data": {
+          "direct_hardware_confirmed": "Vereist",
+          "heat_actuator": "Verwarmen · Apparaten",
+          "cool_actuator": "Koelen · Apparaten",
+          "min_on_s": "Vermogen · Automatische (s) · MIN ON",
+          "min_off_s": "Vermogen · Uitschakelen (s)",
+          "max_on_s": "Vermogen · Automatische (s) · MAX ON",
+          "mode_dwell_s": "instellingen · bron (s) · MODE DWELL",
+          "kp": "PID Kp · regeling (percentage points/°C)",
+          "ki": "PID Ki · regeling (percentage points/(°C·minute))",
+          "kd": "PID Kd · regeling (percentage points·minute/°C)",
+          "sample_seconds": "instellingen · bron (s) · SAMPLE",
+          "pwm_period_s": "instellingen · bron (s) · PWM PERIOD",
+          "max_demand_change": "instellingen · bron · MAX Δ",
+          "min_demand_change": "instellingen · bron · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Gebruik echte passende meetgegevens voor ‘Vereist’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "heat_actuator": "Stel ‘Verwarmen · Apparaten’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "cool_actuator": "Stel ‘Koelen · Apparaten’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "min_on_s": "Deze tijd bepaalt ‘Vermogen · Automatische (s) · MIN ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "min_off_s": "Deze tijd bepaalt ‘Vermogen · Uitschakelen (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "max_on_s": "Deze tijd bepaalt ‘Vermogen · Automatische (s) · MAX ON’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "mode_dwell_s": "Deze tijd bepaalt ‘instellingen · bron (s) · MODE DWELL’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "kp": "Stel ‘PID Kp · regeling (percentage points/°C)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "ki": "Stel ‘PID Ki · regeling (percentage points/(°C·minute))’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "kd": "Stel ‘PID Kd · regeling (percentage points·minute/°C)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "sample_seconds": "Deze tijd bepaalt ‘instellingen · bron (s) · SAMPLE’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "pwm_period_s": "Deze tijd bepaalt ‘instellingen · bron (s) · PWM PERIOD’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "max_demand_change": "Stel ‘instellingen · bron · MAX Δ’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "min_demand_change": "Stel ‘instellingen · bron · MIN Δ’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie."
+        }
+      },
+      "outside_data": {
+        "title": "Buiten · bron",
+        "description": "Buiten · bron: Kiezen bron, sensor / Apparaten · regeling.",
+        "menu_options": {
+          "weather": "Weer en waarschuwingen",
+          "outdoor": "Buitenluchtkwaliteit",
+          "outside_aqi": "Buiten · AQI",
+          "pollen": "Pollen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Ruimte · instellingen",
+        "description": "Ruimte · instellingen: Kiezen bron, sensor / Apparaten · regeling.",
+        "menu_options": {
+          "areas": "Kamers",
+          "indoor_sensors": "Kamers · Schimmelindicator",
+          "window_sensors": "Raamsensoren uitsluiten",
+          "environment_room": "instellingen · instellingen · bron",
+          "area_devices": "Klimaatapparaten"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Apparaten · instellingen",
+        "description": "Optioneel: ga door naar sensoren en veiligheidsmachtigingen voor het apparaat. Laat uit om de lijst direct op te slaan.",
+        "menu_options": {
+          "device_settings": "Apparaten · regeling",
+          "device_choice": "Kiezen · Apparaten",
+          "device_done": "instellingen · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Algemene · instellingen",
+        "description": "Algemene · instellingen: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_home_policy": "Thuis · Aanwezigheid · regeling",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "general_source_stale_minutes": "bron · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Kamer · Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_attribute": "Stel ‘Aanwezigheid · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_home_trackers": "Kies een echte Home Assistant-bron voor ‘Thuis · Aanwezigheid · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_home_policy": "Deze optie regelt ‘Thuis · Aanwezigheid · regeling’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "general_sleep_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Slaap · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_sleep_rooms_attribute": "Stel ‘Slaap · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_source_stale_minutes": "bron · Slaap / Aanwezigheid · max 240 min. Ongeldig · Uitschakelen."
+        }
+      },
+      "pollen": {
+        "title": "instellingen · Pollen",
+        "description": "Pollen: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "pollen_entity": "Pollen · bron",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Kies een echte Home Assistant-bron voor ‘Pollen · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "pollen_high_from": "Stel ‘POLLEN · Pollen · HIGH’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_max_scale": "Stel ‘POLLEN · Pollen · SCALE’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "pollen_avoid_ventilation": "Stel ‘POLLEN · Pollen · NO VENT’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie."
+        }
+      },
+      "outside_aqi": {
+        "title": "Buiten · AQI",
+        "description": "Buiten · AQI: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "outside_aqi_entity": "AQI · bron · Buiten",
+          "outside_aqi_scale": "AQI · bron",
+          "outside_aqi_limit": "AQI · doelwaarde",
+          "outside_aqi_no_sources": "AQI · sensor · Vereist"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Kies een echte Home Assistant-bron voor ‘AQI · bron · Buiten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "outside_aqi_scale": "Stel ‘AQI · bron’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "outside_aqi_limit": "Beslisdrempel voor ‘AQI · doelwaarde’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "outside_aqi_no_sources": "Stel ‘AQI · sensor · Vereist’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie."
+        }
+      },
+      "area_devices": {
+        "title": "Klimaatapparaten",
+        "description": "Kiezen · Ruimte",
+        "data": {
+          "area_devices_area": "Kiezen · Ruimte"
+        },
+        "data_description": {
+          "area_devices_area": "Kies een echte Home Assistant-bron voor ‘Kiezen · Ruimte’. Ontbrekende of oude waarden blokkeren de bijbehorende actie."
+        }
+      },
+      "select_devices": {
+        "title": "Klimaatapparaten",
+        "description": "Selecteer apparaten voor {area_name}. Opslaan maakt één regelapparaat per fysiek product in de kamerhub. Stel doelen, profielen, automatisch/handmatig/uit/PID en stille werking op die apparaten in. Selecteren schakelt automatische bediening niet in.",
+        "data": {
+          "selected_devices": "Kiezen · Apparaten",
+          "configure_device_sources": "Sensoren en apparaatmachtigingen nu instellen"
+        },
+        "data_description": {
+          "selected_devices": "Selecteer apparaten voor {area_name}. Opslaan maakt één regelapparaat per fysiek product in de kamerhub. Stel doelen, profielen, automatisch/handmatig/uit/PID en stille werking op die apparaten in. Selecteren schakelt automatische bediening niet in.",
+          "configure_device_sources": "Optioneel: ga door naar sensoren en veiligheidsmachtigingen voor het apparaat. Laat uit om de lijst direct op te slaan."
+        }
+      },
+      "device_choice": {
+        "title": "Kiezen · Apparaten",
+        "description": "Kiezen · Apparaten: Kiezen bron, sensor / Apparaten · regeling.",
+        "data": {
+          "device_choice": "Kiezen · Apparaten"
+        },
+        "data_description": {
+          "device_choice": "Kies een echte Home Assistant-bron voor ‘Kiezen · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie."
+        }
+      },
+      "device_settings": {
+        "title": "Apparaten · regeling",
+        "description": "Deze optie regelt ‘regeling · bron’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen. Gebruik echte passende meetgegevens voor ‘Vereist · Apparaten · Vermogen’. Schattingen vervangen geen gekalibreerde sensoren. Deze tijd bepaalt ‘Vermogen · min ON (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging. Deze tijd bepaalt ‘Vermogen · min OFF (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging. Stel ‘Slaap · regeling’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie. Beslisdrempel voor ‘Snelheid (%)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatische regeling",
+          "device_method": "regeling · bron",
+          "device_presence_requirement": "regeling · Aanwezigheid",
+          "device_absence_action": "Uitschakelen · Aanwezigheid",
+          "device_sleep_behavior": "Slaap · regeling",
+          "device_hardware_confirmed": "Vereist · Apparaten · Vermogen",
+          "device_temperature_entity": "Temperatuur · sensor",
+          "device_humidity_entity": "Vochtigheid · sensor",
+          "device_co2_entity": "CO₂ · Apparaten · bron",
+          "device_pm25_entity": "PM2.5 · Apparaten · bron",
+          "device_fan_purpose": "regeling · Apparaten",
+          "device_sensor_verified": "sensor · Vereist",
+          "device_fan_speed_percent": "Snelheid (%)",
+          "device_humidity_target": "Vochtigheid · doelwaarde (%)",
+          "device_sleep_humidity_target": "Slaap · Vochtigheid · doelwaarde (%)",
+          "device_min_on_s": "Vermogen · min ON (s)",
+          "device_min_off_s": "Vermogen · min OFF (s)",
+          "device_max_on_s": "Vermogen · max ON (s)",
+          "device_home_heat_c": "Verwarmen · Thuis (°C)",
+          "device_home_cool_c": "Koelen · Thuis (°C)",
+          "device_unoccupied_heat_c": "Verwarmen · Onbezette kamer (°C)",
+          "device_unoccupied_cool_c": "Koelen · Onbezette kamer (°C)",
+          "device_away_heat_c": "Verwarmen · Afwezig (°C)",
+          "device_away_cool_c": "Koelen · Afwezig (°C)",
+          "device_sleep_heat_c": "Verwarmen · Slaap (°C)",
+          "device_sleep_cool_c": "Koelen · Slaap (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Deze optie regelt ‘Automatische regeling’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "device_method": "Deze optie regelt ‘regeling · bron’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "device_presence_requirement": "Stel ‘regeling · Aanwezigheid’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "device_absence_action": "Deze optie regelt ‘Uitschakelen · Aanwezigheid’. Fysieke opdrachten vereisen afzonderlijke toestemming en beveiligingen.",
+          "device_sleep_behavior": "Stel ‘Slaap · regeling’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "device_hardware_confirmed": "Gebruik echte passende meetgegevens voor ‘Vereist · Apparaten · Vermogen’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "device_temperature_entity": "Kies een echte Home Assistant-bron voor ‘Temperatuur · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "device_humidity_entity": "Kies een echte Home Assistant-bron voor ‘Vochtigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "device_co2_entity": "Kies een echte Home Assistant-bron voor ‘CO₂ · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "device_pm25_entity": "Kies een echte Home Assistant-bron voor ‘PM2.5 · Apparaten · bron’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "device_fan_purpose": "Stel ‘regeling · Apparaten’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "device_sensor_verified": "Gebruik echte passende meetgegevens voor ‘sensor · Vereist’. Schattingen vervangen geen gekalibreerde sensoren.",
+          "device_fan_speed_percent": "Beslisdrempel voor ‘Snelheid (%)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "device_humidity_target": "Beslisdrempel voor ‘Vochtigheid · doelwaarde (%)’. Deze stuurt adviezen aan, maar is geen medische grenswaarde.",
+          "device_sleep_humidity_target": "Doelwaarde voor ‘Slaap · Vochtigheid · doelwaarde (%)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_min_on_s": "Deze tijd bepaalt ‘Vermogen · min ON (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "device_min_off_s": "Deze tijd bepaalt ‘Vermogen · min OFF (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "device_max_on_s": "Deze tijd bepaalt ‘Vermogen · max ON (s)’. Het voorkomt te snel schakelen en vervangt geen hardwarebeveiliging.",
+          "device_home_heat_c": "Doelwaarde voor ‘Verwarmen · Thuis (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_home_cool_c": "Doelwaarde voor ‘Koelen · Thuis (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_unoccupied_heat_c": "Doelwaarde voor ‘Verwarmen · Onbezette kamer (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_unoccupied_cool_c": "Doelwaarde voor ‘Koelen · Onbezette kamer (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_away_heat_c": "Doelwaarde voor ‘Verwarmen · Afwezig (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_away_cool_c": "Doelwaarde voor ‘Koelen · Afwezig (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_sleep_heat_c": "Doelwaarde voor ‘Verwarmen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg.",
+          "device_sleep_cool_c": "Doelwaarde voor ‘Koelen · Slaap (°C)’ bij bevestigde aanwezigheid of slaap. Onbekend betekent niet leeg."
+        }
+      },
+      "setup_rooms": {
+        "title": "Te bewaken kamers",
+        "description": "Te bewaken kamers → bron → Algemene instellingen",
+        "data": {
+          "areas": "Te bewaken kamers"
+        },
+        "data_description": {
+          "areas": "Te bewaken kamers. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Kamer · {area_name} · {room_index}/{room_count}",
+        "description": "Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+        "data": {
+          "windows": "Ramen",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren",
+          "temperature": "Temperatuur",
+          "humidity": "Vochtigheid",
+          "pressure": "Druksensoren",
+          "climate_devices": "Apparaten"
+        },
+        "data_description": {
+          "windows": "Ramen. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "air_quality": "Luchtkwaliteits- en omgevingssensoren. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "temperature": "Temperatuur. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "humidity": "Vochtigheid. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "pressure": "Druksensoren. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening.",
+          "climate_devices": "Apparaten. Selecteer ingangen voor deze kamer: apparaatnaam - entiteitsnaam. Lege groepen blijven ongebruikt en activeren geen automatische detectie of bediening."
+        }
+      },
+      "setup_general": {
+        "title": "Algemene instellingen",
+        "description": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten.",
+        "data": {
+          "weather_entities": "Weer en waarschuwingen",
+          "outdoor_sensors": "Buitenluchtkwaliteit",
+          "weather_warnings": "Weerwaarschuwingen",
+          "general_room_occupancy_sensors": "Kamer · Aanwezigheid · sensor",
+          "general_home_trackers": "Thuis · Aanwezigheid · Apparaten",
+          "general_occupied_rooms_entity": "Aanwezigheid · Kamer · bron (state)",
+          "general_occupied_rooms_attribute": "Aanwezigheid · Kamer · bron (attribute)",
+          "general_sleep_rooms_entity": "Slaap · Kamer · bron (state)",
+          "general_sleep_rooms_attribute": "Slaap · Kamer · bron (attribute)",
+          "notify_entities": "instellingen · bron",
+          "media_players": "instellingen · bron · MEDIA_PLAYERS",
+          "tts_engine": "instellingen · bron · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Kiezen · bron",
+          "language": "TTS · Kiezen · bron",
+          "use_mold_indicator": "Schimmelindicator · RH (%) → 70%",
+          "pollen_entities": "Pollen · bron · Kiezen",
+          "use_announcement_hub": "Automatische · Announcement Hub",
+          "general_away_cooldown_minutes": "Thuis · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Kies: Weer en waarschuwingen · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Kies: Buitenluchtkwaliteit · AQI, CO₂, PM2.5, PM10, VOC. Niet beschikbaar: ⚠",
+          "weather_warnings": "Weer en waarschuwingen · ⚠ (Niet beschikbaar) → 🪟🔒",
+          "general_room_occupancy_sensors": "Kies een echte Home Assistant-bron voor ‘Kamer · Aanwezigheid · sensor’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_home_trackers": "Kies een echte Home Assistant-bron voor ‘Thuis · Aanwezigheid · Apparaten’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Aanwezigheid · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_occupied_rooms_attribute": "Stel ‘Aanwezigheid · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "general_sleep_rooms_entity": "Kies een echte Home Assistant-bron voor ‘Slaap · Kamer · bron (state)’. Ontbrekende of oude waarden blokkeren de bijbehorende actie.",
+          "general_sleep_rooms_attribute": "Stel ‘Slaap · Kamer · bron (attribute)’ alleen in voor de gekozen kamer. Ontbrekende of ongeschikte gegevens blokkeren de actie.",
+          "notify_entities": "Kies: notify.* · instellingen · bron.",
+          "media_players": "Kies: media_player.* · instellingen · bron · MEDIA_PLAYERS.",
+          "tts_engine": "Kies: tts.* · instellingen · bron · TTS_ENGINE.",
+          "ai_conversation_agent": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · AI · Kiezen · bron · conversation.* / ai_task.*.",
+          "language": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · TTS · Kiezen · bron · provider capabilities.",
+          "use_mold_indicator": "🧱 Schimmelindicator · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Pollen · bron · Kiezen.",
+          "use_announcement_hub": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Automatische · Announcement Hub.",
+          "general_away_cooldown_minutes": "Selecteer gedeelde bronnen en meldingsuitgangen. Opslaan voltooit de installatie. Bedrijfsinstellingen blijven op de huis- en kamerapparaten. · Thuis · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Ongeldige selectie: Buitenluchtkwaliteit (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Niet beschikbaar: Buitenluchtkwaliteit (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Ongeldige selectie: Weer en waarschuwingen (weather.*).",
+      "invalid_warning": "Ongeldige selectie: Weer en waarschuwingen ⚠.",
+      "missing_notify": "Kies: Announcement Hub / notify.*.",
+      "missing_tts": "Kies: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Ongeldige selectie: °C min < max.",
+      "no_areas": "Kies: Kamers.",
+      "no_window_areas": "Niet beschikbaar: Metingen (binary_sensor, window).",
+      "invalid_areas": "Ongeldige selectie: Kamers.",
+      "invalid_window_exclusions": "Ongeldige selectie: Raamsensoren uitsluiten.",
+      "invalid_indoor_exclusions": "Ongeldige selectie: Binnenluchtsensoren uitsluiten.",
+      "no_windows_after_exclusions": "Houd minstens één raamcontact actief.",
+      "review_areas_after_exclusions": "Controleer: Kamers · Metingen (0).",
+      "invalid_repeat_minutes": "Ongeldige selectie: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Niet beschikbaar: conversation.process.",
+      "invalid_ai_agent": "Ongeldige selectie: conversation.*.",
+      "invalid_mold_temperature_sensor": "Kamers · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Kamers · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Schimmelindicator · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Schimmelindicator · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Schimmelindicator · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Ongeldige instelling voor ‘instellingen · bron’. Controleer bron, eenheid en beveiliging.",
+      "invalid_environment_measurement": "Ongeldige instelling voor ‘instellingen · bron’. Controleer bron, eenheid en beveiliging.",
+      "pmv_requires_explicit_inputs": "Ongeldige instelling voor ‘PMV / PPD’. Controleer bron, eenheid en beveiliging.",
+      "pid_climate_required": "Ongeldige instelling voor ‘PID · Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "pid_temperature_required": "Ongeldige instelling voor ‘PID · Temperatuur’. Controleer bron, eenheid en beveiliging.",
+      "pid_invalid_target": "Ongeldige instelling voor ‘PID · doelwaarde’. Controleer bron, eenheid en beveiliging.",
+      "pid_duplicate_climate": "Ongeldige instelling voor ‘PID · Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "pid_invalid_parameters": "Ongeldige instelling voor ‘PID’. Controleer bron, eenheid en beveiliging.",
+      "climate_dry_fan_control_inputs_missing": "Ongeldige instelling voor ‘Snelheid · Apparaten · regeling’. Controleer bron, eenheid en beveiliging.",
+      "climate_humidity_power_inputs_missing": "Ongeldige instelling voor ‘Vochtigheid · Apparaten · Vermogen’. Controleer bron, eenheid en beveiliging.",
+      "climate_secondary_control_inputs_missing": "Ongeldige instelling voor ‘Apparaten · regeling’. Controleer bron, eenheid en beveiliging.",
+      "climate_fan_power_inputs_missing": "Ongeldige instelling voor ‘Snelheid · Apparaten · Vermogen’. Controleer bron, eenheid en beveiliging.",
+      "climate_fan_control_inputs_missing": "Ongeldige instelling voor ‘Snelheid · Apparaten · regeling’. Controleer bron, eenheid en beveiliging.",
+      "climate_fan_sensor_invalid": "Ongeldige instelling voor ‘Snelheid · Apparaten · sensor’. Controleer bron, eenheid en beveiliging.",
+      "climate_humidity_control_inputs_missing": "Ongeldige instelling voor ‘Vochtigheid · Apparaten · regeling’. Controleer bron, eenheid en beveiliging.",
+      "climate_temperature_required": "Ongeldige instelling voor ‘Temperatuur · Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_target_required": "Ongeldige instelling voor ‘Apparaten · doelwaarde’. Controleer bron, eenheid en beveiliging.",
+      "climate_direct_actuator_not_ready": "Ongeldige instelling voor ‘Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_controller_invalid": "Ongeldige instelling voor ‘Apparaten · regeling’. Controleer bron, eenheid en beveiliging.",
+      "climate_mode_invalid": "Ongeldige instelling voor ‘Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_occupancy_invalid": "Ongeldige instelling voor ‘Aanwezigheid · Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_away_invalid": "Ongeldige instelling voor ‘Thuis · Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_deadband_invalid": "Ongeldige instelling voor ‘Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_attestation_required": "Ongeldige instelling voor ‘Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "climate_direct_targets_invalid": "Ongeldige instelling voor ‘Apparaten · doelwaarde’. Controleer bron, eenheid en beveiliging.",
+      "climate_direct_timing_invalid": "Ongeldige instelling voor ‘Apparaten’. Controleer bron, eenheid en beveiliging.",
+      "general_invalid_presence": "Ongeldig · Aanwezigheid · instellingen",
+      "general_invalid_trackers": "Ongeldig · Thuis · instellingen",
+      "general_invalid_rooms_entity": "Ongeldig · Kamer · instellingen",
+      "general_invalid_attribute": "Ongeldig · bron · instellingen",
+      "general_invalid_source_age": "Ongeldig · bron · instellingen",
+      "invalid_selected_devices": "Ongeldig · Apparaten · instellingen",
+      "device_policy_invalid": "Ongeldig · Aanwezigheid · instellingen",
+      "device_method_invalid": "Ongeldig · regeling · instellingen",
+      "device_hardware_required": "Ongeldig · Vereist · instellingen",
+      "device_power_required_for_off": "Ongeldig · Vermogen · instellingen",
+      "device_temperature_required": "Ongeldig · Temperatuur · instellingen",
+      "device_humidity_required": "Ongeldig · Vochtigheid · instellingen",
+      "device_air_sensor_required": "Ongeldig · sensor · instellingen",
+      "device_temperature_band_invalid": "Ongeldig · Temperatuur · instellingen",
+      "device_humidity_invalid": "Ongeldig · Vochtigheid · instellingen",
+      "device_runtime_invalid": "Ongeldig · Vermogen · instellingen",
+      "invalid_setup_rooms": "Ongeldig: Te bewaken kamers",
+      "invalid_room_source": "Ongeldig: Kamer · bron"
+    },
+    "abort": {
+      "setup_area_removed": "Ongeldig: Te bewaken kamers",
+      "setup_changed": "instellingen ↻ Te bewaken kamers"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Luchtkwaliteit",
+        "state": {
+          "open": "Sluit · Metingen",
+          "close": "Automatische meldingen · Metingen",
+          "idle": "Goed",
+          "blocked": "Houd ramen gesloten"
+        }
+      },
+      "area_overview": {
+        "name": "Omgevingsoverzicht"
+      },
+      "area_surface_humidity": {
+        "name": "Oppervlaktevochtigheid (berekend)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}Status van de regelaar"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Buiten · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Buiten · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Buiten · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Buiten · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Buiten · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Buiten · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Buiten (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Buiten (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Buiten (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Luchtkwaliteit · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Luchtkwaliteit · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Luchtkwaliteit · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Luchtkwaliteit · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Luchtkwaliteit · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Luchtkwaliteit · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Luchtkwaliteit · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Schimmelindicator · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Buiten · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Buiten · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Buiten · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Weer en waarschuwingen · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Open (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Meldingen (optioneel) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "doelwaarde (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · regeling (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · regeling (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · regeling (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Verwarmen · Kamer · Aanwezigheid"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Koelen · Kamer · Aanwezigheid"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Vochtigheid · Kamer · Aanwezigheid · doelwaarde (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Verwarmen · Thuis"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Koelen · Thuis"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Vochtigheid · Thuis · doelwaarde (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Verwarmen · Thuis · Uitschakelen"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Koelen · Thuis · Uitschakelen"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Vochtigheid · Thuis · Uitschakelen · doelwaarde (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Verwarmen · Slaap"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Koelen · Slaap"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Vochtigheid · Slaap · doelwaarde (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Verwarmen · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Koelen · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Vochtigheid · ECO · doelwaarde (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Pollen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Pollen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "bron · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "instellingen · bron (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · doelwaarde (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Snelheid · Buiten (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "instellingen · bron (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "instellingen · bron (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Apparaten · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Aanwezigheid · Apparaten · sensor · Vereist"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Apparaten (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Vochtigheid · Apparaten (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Vochtigheid · Apparaten (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Vochtigheid · Apparaten · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Apparaten · Temperatuur −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Apparaten (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Apparaten · Snelheid (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Apparaten · Snelheid (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · regeling (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · regeling (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · regeling (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "instellingen · bron (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "instellingen · bron · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "instellingen · bron · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Schimmelindicator · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · regeling (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · regeling (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · regeling (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}instellingen · bron (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Ventilatorlimiet voor stille werking (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Vermogen · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Vermogen · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Vermogen · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Kamer · Temperatuur · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Kamer · Temperatuur · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Kamer · Vochtigheid · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Kamer · Vochtigheid · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Kamer · Snelheid · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Kamer · Snelheid · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Thuis · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automatische · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automatische"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Meldingen (optioneel)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Pollen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Slaap"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automatische"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Slaap · Apparaten"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Slaap · Automatische"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Apparaten · Buiten"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Minder geluid tijdens slapen"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Minder geluid bij aanwezigheid"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}sensor · Vereist"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Taal"
+      },
+      "area_manual_profile": {
+        "name": "Apparaten · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Thuis · Aanwezigheid · regeling"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Aanwezigheid · Apparaten"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Thuis · Apparaten · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Apparaten · bron · doelwaarde"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Regelmethode",
+        "state": {
+          "existing": "Bestaande ruimteregeling",
+          "automatic": "Automatische",
+          "manual": "Handmatig",
+          "off": "Uitschakelen",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Stille stand van de ventilator"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}regeling · Aanwezigheid",
+        "state": {
+          "always": "Automatische",
+          "occupied": "Kamer · Aanwezigheid",
+          "absent": "Kamer · Aanwezigheid · Uitschakelen"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Slaap · regeling",
+        "state": {
+          "normal": "Automatische",
+          "pause": "Pauzeren",
+          "sleep_targets": "Slaap · doelwaarde"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}regeling · Apparaten",
+        "state": {
+          "extraction": "Buiten · regeling",
+          "filtration": "PM2.5 · regeling",
+          "auto": "Automatische"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Temperatuur · bron"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "bron · Snelheid · Buiten (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Slaap · Apparaten · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Slaap · Apparaten · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Schimmelindicator · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Controleren en hervatten"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klimaatregelaar"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Meldingen (optioneel) — Home Environment Manager",
+      "description": "Meldingen (optioneel) · Kamers",
+      "fields": {
+        "language": {
+          "name": "Taal",
+          "description": "Taal"
+        },
+        "channels": {
+          "name": "Meldingen (optioneel)",
+          "description": "Meldingen (optioneel)"
+        },
+        "areas": {
+          "name": "Kamers",
+          "description": "Kamers"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Standaard",
+        "en": "instellingen · bron",
+        "de": "instellingen · bron",
+        "el": "instellingen · bron",
+        "fr": "instellingen · bron",
+        "es": "instellingen · bron",
+        "it": "instellingen · bron",
+        "nl": "instellingen · bron",
+        "pt": "instellingen · bron",
+        "pt-br": "instellingen · bron",
+        "pl": "instellingen · bron",
+        "ru": "instellingen · bron",
+        "uk": "instellingen · bron",
+        "tr": "instellingen · bron",
+        "cs": "instellingen · bron",
+        "sk": "instellingen · bron",
+        "hu": "instellingen · bron",
+        "ro": "instellingen · bron",
+        "bg": "instellingen · bron",
+        "hr": "instellingen · bron",
+        "sr": "instellingen · bron",
+        "sv": "instellingen · bron",
+        "nb": "instellingen · bron",
+        "da": "instellingen · bron",
+        "fi": "instellingen · bron",
+        "id": "instellingen · bron",
+        "vi": "instellingen · bron",
+        "th": "instellingen · bron",
+        "hi": "instellingen · bron",
+        "zh-hans": "instellingen · bron",
+        "zh-hant": "instellingen · bron",
+        "ja": "instellingen · bron",
+        "ko": "instellingen · bron",
+        "ar": "instellingen · bron",
+        "he": "instellingen · bron",
+        "fa": "instellingen · bron",
+        "bn": "instellingen · bron",
+        "ur": "instellingen · bron",
+        "ta": "instellingen · bron"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Thuis · Aanwezigheid",
+        "all_home": "Thuis · Apparaten · Aanwezigheid"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "doelwaarde · regeling",
+        "native": "Apparaten · regeling",
+        "power": "Vermogen",
+        "speed": "Snelheid"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatische",
+        "room": "Kamer · Aanwezigheid",
+        "home": "Thuis · Aanwezigheid"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Pauzeren",
+        "off": "Uitschakelen"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatische",
+        "pause": "Pauzeren",
+        "sleep_targets": "Slaap · doelwaarde"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Buiten · regeling",
+        "filtration": "PM2.5 · regeling"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "bron · Ongeldig",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "doelwaarde · instellingen"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Ruimtehub",
+      "initiate_flow": {
+        "user": "Ruimtehub"
+      },
+      "step": {
+        "user": {
+          "title": "Ruimtehub",
+          "description": "Selecteer een Home Assistant-ruimte. De groep bevat algemene ruimte-instellingen en één regelaar per geselecteerd fysiek apparaat. Een ruimte toevoegen schakelt geen automatische apparaatbesturing in.",
+          "data": {
+            "area_id": "Kamer"
+          },
+          "data_description": {
+            "area_id": "Selecteer een Home Assistant-ruimte. De groep bevat algemene ruimte-instellingen en één regelaar per geselecteerd fysiek apparaat. Een ruimte toevoegen schakelt geen automatische apparaatbesturing in."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Ongeldig: Ruimte."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
