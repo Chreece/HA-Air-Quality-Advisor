@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 36 is available for opt-in testing.** Stable remains **v0.5.1**. Beta36 distinguishes an armed managed HVAC controller from its physically OFF output: Automatic/PID/Manual with a selected supported mode shows the selected mode and an Idle action when no physical demand exists. Native state, permissions and b31–35 fixes remain unchanged; the domain stays `environment_manager`.
+> **v0.6.0 beta 37 is available for opt-in testing.** Stable remains **v0.5.1**. Beta37 fixes Recorder's 16 KiB attribute-limit warning for the Home Environment Manager window recommendation sensor: its full dashboard is now served read-only through an authenticated WebSocket API, while state metadata stays under 12 KiB. The bundled card uses that API; b31–36 fixes and the canonical `environment_manager` domain remain unchanged.
+
+## Beta 37 - Recorder-safe recommendations and full WebSocket dashboard
+
+The recommendation sensor used to embed every room's complete dashboard snapshot as a state attribute. This could exceed Home Assistant Recorder's 16,384-byte limit and repeatedly log that no attributes would be stored.
+
+The existing recommendation entity retains its state, status, counts and ordinary small attributes. All Recorder attributes are capped at 12,000 JSON bytes, with explicit truncation counters if long recommendation lists need a preview. The **full dashboard**, including all room readings, weather, mold indicators and independent climate devices, is still available to the bundled card through a new authenticated read-only `environment_manager/dashboard` WebSocket command. The caller must have permission to read the exact recommendation sensor. The card loads the full snapshot on demand and refreshes it using a small revision number.
+
+There is no change to other sensors (including `sensor.gr_news_feed` or `sensor.queue`), Recorder configuration, hardware control, entity identity, or stored historical data.
 
 ## Beta 36 - armed climate mode while a physical device is idle
 
