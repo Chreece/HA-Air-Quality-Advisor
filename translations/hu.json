@@ -1,0 +1,1902 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Helyiségek",
+        "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Helyiségek",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Ablakérzékelők kizárása",
+        "description": "2 · Ablakérzékelők kizárása. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ablakérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_window_entities": "Válassz: Ablakérzékelők kizárása · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Helyiségek · Penészesedési mutató",
+        "description": "Helyiségek: {area_name} ({position}/{total}). 🌡️ 🧊 Penészesedési mutató · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása",
+          "mold_indoor_temperature": "Helyiségek · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Penészesedési mutató · 🧊 °C",
+          "mold_recalibrate": "Penészesedési mutató · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Kültéri · Hőmérséklet · forrás · Penészesedési mutató"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Helyiségek: 🌡️ °C/°F · Penészesedési mutató.",
+          "mold_critical_temperature_c": "🧊 Penészesedési mutató · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Valódi megfelelő mérést használjon ehhez: „Penészesedési mutató · ↻ 🌡️”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "mold_outdoor_weather_entity": "Választás weather.* · Kültéri Hőmérséklet (temperature, °C/°F) → Penészesedési mutató. Kötelező: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Kültéri levegőminőség",
+        "description": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kültéri levegőminőség"
+        },
+        "data_description": {
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Időjárás és riasztások",
+        "description": "Időjárás és riasztások. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "weather_warnings": "Időjárási figyelmeztetések"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Értesítések (opcionális)",
+        "description": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+        "data": {
+          "language": "Nyelv",
+          "automatic_tts": "Automatikus",
+          "automatic_notifications": "Automatikus · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Értesítések (opcionális) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "beállítások · forrás",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Értesítések (opcionális)",
+          "ai_conversation_agent": "AI · Nyelv"
+        },
+        "data_description": {
+          "language": "Nyelv: Home Assistant (Alapértelmezett).",
+          "automatic_tts": "Alapértelmezett: ⛔ · Automatikus · 🪟 90 s.",
+          "automatic_notifications": "Alapértelmezett: ⛔ · Automatikus · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Alapértelmezett: 10 min · 0 = soha · Amíg ugyanaz az ok fennáll · Helyiségek.",
+          "use_announcement_hub": "Announcement Hub · Nem érhető el → Home Assistant.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Értesítések (opcionális) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Válassz: conversation.* (Home Assistant · Alapértelmezett)."
+        }
+      },
+      "thresholds": {
+        "title": "Speciális határértékek",
+        "description": "Speciális határértékek. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Kint · AQI (≤)",
+          "outdoor_co2": "Kint · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Kint · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Kint · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Kint · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Kint · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Kültéri (µg/m³)",
+          "outdoor_o3": "O₃ · Kültéri (µg/m³)",
+          "outdoor_so2": "SO₂ · Kültéri (µg/m³)",
+          "indoor_aqi": "Levegőminőség · AQI (≥)",
+          "indoor_co2": "Levegőminőség · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Levegőminőség · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Levegőminőség · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Levegőminőség · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Levegőminőség · VOC (ppb) (≥)",
+          "indoor_humidity": "Levegőminőség · RH (%) (≥)",
+          "min_outdoor_temp": "Kint · °C (≥)",
+          "max_outdoor_temp": "Kint · °C (≤)",
+          "max_outdoor_humidity": "Kint · RH (%) (≤)",
+          "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)",
+          "indoor_mold": "Penészesedési mutató · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "„Kint · AQI (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_co2": "„Kint · CO₂ (ppm) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_pm25": "„Kint · PM2.5 (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_pm10": "„Kint · PM10 (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_voc": "„Kint · VOC (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_voc_parts": "„Kint · VOC (ppb) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_no2": "„NO₂ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_o3": "„O₃ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_so2": "„SO₂ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_aqi": "„Levegőminőség · AQI (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_co2": "„Levegőminőség · CO₂ (ppm) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_pm25": "„Levegőminőség · PM2.5 (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_pm10": "„Levegőminőség · PM10 (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_voc": "„Levegőminőség · VOC (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_voc_parts": "„Levegőminőség · VOC (ppb) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_humidity": "„Levegőminőség · RH (%) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "min_outdoor_temp": "„Kint · °C (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_outdoor_temp": "„Kint · °C (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_outdoor_humidity": "„Kint · RH (%) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_wind_kmh": "„Időjárás és riasztások · km/h (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_age_minutes": "„⏱ · Nyisd ki (min, ≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_mold": "„Penészesedési mutató · ≥ 70%” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "setup_rooms": {
+        "title": "Figyelendő helyiségek",
+        "description": "Figyelendő helyiségek → forrás → Általános beállítások",
+        "data": {
+          "areas": "Figyelendő helyiségek"
+        },
+        "data_description": {
+          "areas": "Figyelendő helyiségek. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Szoba · {area_name} · {room_index}/{room_count}",
+        "description": "Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+        "data": {
+          "windows": "Ablakok",
+          "air_quality": "Levegőminőség- és környezeti érzékelők",
+          "temperature": "Hőmérséklet",
+          "humidity": "Páratartalom",
+          "pressure": "Nyomásérzékelők",
+          "climate_devices": "Eszközök"
+        },
+        "data_description": {
+          "windows": "Ablakok. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "air_quality": "Levegőminőség- és környezeti érzékelők. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "temperature": "Hőmérséklet. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "humidity": "Páratartalom. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "pressure": "Nyomásérzékelők. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "climate_devices": "Eszközök. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_general": {
+        "title": "Általános beállítások",
+        "description": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak.",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "outdoor_sensors": "Kültéri levegőminőség",
+          "weather_warnings": "Időjárási figyelmeztetések",
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "notify_entities": "beállítások · forrás",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Választás · forrás",
+          "language": "TTS · Választás · forrás",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%",
+          "pollen_entities": "Pollen · forrás · Választás",
+          "use_announcement_hub": "Automatikus · Announcement Hub",
+          "general_away_cooldown_minutes": "Otthon · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒",
+          "general_room_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Szoba · Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_home_trackers": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Jelenlét · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_attribute": "„Jelenlét · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_sleep_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Alvás · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_sleep_rooms_attribute": "„Alvás · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "ai_conversation_agent": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · AI · Választás · forrás · conversation.* / ai_task.*.",
+          "language": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · TTS · Választás · forrás · provider capabilities.",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Pollen · forrás · Választás.",
+          "use_announcement_hub": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Automatikus · Announcement Hub.",
+          "general_away_cooldown_minutes": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Otthon · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Érvénytelen választás: Kültéri levegőminőség (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Nem érhető el: Kültéri levegőminőség (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Érvénytelen választás: Időjárás és riasztások (weather.*).",
+      "invalid_warning": "Érvénytelen választás: Időjárás és riasztások ⚠.",
+      "missing_notify": "Válassz: Announcement Hub / notify.*.",
+      "missing_tts": "Válassz: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Érvénytelen választás: °C min < max.",
+      "no_areas": "Válassz: Helyiségek.",
+      "no_window_areas": "Nem érhető el: Mérések (binary_sensor, window).",
+      "invalid_areas": "Érvénytelen választás: Helyiségek.",
+      "invalid_window_exclusions": "Érvénytelen választás: Ablakérzékelők kizárása.",
+      "invalid_indoor_exclusions": "Érvénytelen választás: Beltéri levegőérzékelők kizárása.",
+      "no_windows_after_exclusions": "Legalább egy ablakérzékelő maradjon aktív.",
+      "review_areas_after_exclusions": "Ellenőrizd: Helyiségek · Mérések (0).",
+      "invalid_repeat_minutes": "Érvénytelen választás: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Nem érhető el: conversation.process.",
+      "invalid_ai_agent": "Érvénytelen választás: conversation.*.",
+      "invalid_mold_temperature_sensor": "Helyiségek · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Helyiségek · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Penészesedési mutató · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Penészesedési mutató · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Érvénytelen: Figyelendő helyiségek",
+      "invalid_room_source": "Érvénytelen: Szoba · forrás"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — már be van állítva.",
+      "setup_area_removed": "Érvénytelen: Figyelendő helyiségek",
+      "setup_changed": "beállítások ↻ Figyelendő helyiségek"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Válassz",
+        "description": "Válassz: Helyiségek / Időjárás és riasztások / Értesítések (opcionális) / Speciális határértékek",
+        "menu_options": {
+          "outside_data": "Kültéri · forrás",
+          "general_settings": "Általános · beállítások",
+          "area_settings": "Terület · beállítások",
+          "delivery": "Értesítések (opcionális)",
+          "thresholds": "Speciális határértékek"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Ablakérzékelők kizárása",
+        "description": "2 · Ablakérzékelők kizárása. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ablakérzékelők kizárása"
+        },
+        "data_description": {
+          "excluded_window_entities": "Válassz: Ablakérzékelők kizárása · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Helyiségek",
+        "description": "1 · 🪟 Helyiségek. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Helyiségek",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Válassz: Helyiségek · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Helyiségek · Penészesedési mutató",
+        "description": "Helyiségek: {area_name} ({position}/{total}). 🌡️ 🧊 Penészesedési mutató · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Beltéri levegőérzékelők kizárása",
+          "mold_indoor_temperature": "Helyiségek · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Penészesedési mutató · 🧊 °C",
+          "mold_recalibrate": "Penészesedési mutató · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Kültéri · Hőmérséklet · forrás · Penészesedési mutató"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Válassz: Beltéri levegőérzékelők kizárása · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Helyiségek: 🌡️ °C/°F · Penészesedési mutató.",
+          "mold_critical_temperature_c": "🧊 Penészesedési mutató · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Valódi megfelelő mérést használjon ehhez: „Penészesedési mutató · ↻ 🌡️”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "mold_outdoor_weather_entity": "Választás weather.* · Kültéri Hőmérséklet (temperature, °C/°F) → Penészesedési mutató. Kötelező: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Kültéri levegőminőség",
+        "description": "Kültéri levegőminőség. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kültéri levegőminőség"
+        },
+        "data_description": {
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Időjárás és riasztások",
+        "description": "Időjárás és riasztások. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "weather_warnings": "Időjárási figyelmeztetések"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Értesítések (opcionális)",
+        "description": "Értesítések (opcionális). Automatikus értesítések · Automatikus hangos értesítések. Announcement Hub.",
+        "data": {
+          "language": "Nyelv",
+          "automatic_tts": "Automatikus",
+          "automatic_notifications": "Automatikus · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Értesítések (opcionális) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "beállítások · forrás",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Értesítések (opcionális)",
+          "ai_conversation_agent": "AI · Nyelv"
+        },
+        "data_description": {
+          "language": "Nyelv: Home Assistant (Alapértelmezett).",
+          "automatic_tts": "Alapértelmezett: ⛔ · Automatikus · 🪟 90 s.",
+          "automatic_notifications": "Alapértelmezett: ⛔ · Automatikus · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Alapértelmezett: 10 min · 0 = soha · Amíg ugyanaz az ok fennáll · Helyiségek.",
+          "use_announcement_hub": "Announcement Hub · Nem érhető el → Home Assistant.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Értesítések (opcionális) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Válassz: conversation.* (Home Assistant · Alapértelmezett)."
+        }
+      },
+      "thresholds": {
+        "title": "Speciális határértékek",
+        "description": "Speciális határértékek. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Kint · AQI (≤)",
+          "outdoor_co2": "Kint · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Kint · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Kint · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Kint · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Kint · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Kültéri (µg/m³)",
+          "outdoor_o3": "O₃ · Kültéri (µg/m³)",
+          "outdoor_so2": "SO₂ · Kültéri (µg/m³)",
+          "indoor_aqi": "Levegőminőség · AQI (≥)",
+          "indoor_co2": "Levegőminőség · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Levegőminőség · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Levegőminőség · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Levegőminőség · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Levegőminőség · VOC (ppb) (≥)",
+          "indoor_humidity": "Levegőminőség · RH (%) (≥)",
+          "min_outdoor_temp": "Kint · °C (≥)",
+          "max_outdoor_temp": "Kint · °C (≤)",
+          "max_outdoor_humidity": "Kint · RH (%) (≤)",
+          "max_wind_kmh": "Időjárás és riasztások · km/h (≤)",
+          "max_age_minutes": "⏱ · Nyisd ki (min, ≤)",
+          "indoor_mold": "Penészesedési mutató · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "„Kint · AQI (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_co2": "„Kint · CO₂ (ppm) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_pm25": "„Kint · PM2.5 (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_pm10": "„Kint · PM10 (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_voc": "„Kint · VOC (µg/m³) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_voc_parts": "„Kint · VOC (ppb) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_no2": "„NO₂ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_o3": "„O₃ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outdoor_so2": "„SO₂ · Kültéri (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_aqi": "„Levegőminőség · AQI (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_co2": "„Levegőminőség · CO₂ (ppm) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_pm25": "„Levegőminőség · PM2.5 (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_pm10": "„Levegőminőség · PM10 (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_voc": "„Levegőminőség · VOC (µg/m³) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_voc_parts": "„Levegőminőség · VOC (ppb) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_humidity": "„Levegőminőség · RH (%) (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "min_outdoor_temp": "„Kint · °C (≥)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_outdoor_temp": "„Kint · °C (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_outdoor_humidity": "„Kint · RH (%) (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_wind_kmh": "„Időjárás és riasztások · km/h (≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "max_age_minutes": "„⏱ · Nyisd ki (min, ≤)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "indoor_mold": "„Penészesedési mutató · ≥ 70%” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "environment": {
+        "title": "beállítások · beállítások · forrás",
+        "description": "„beállítások · beállítások · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "pollen_entity": "Pollen · forrás",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT",
+          "aqi_scale_0": "AQI #1 · forrás",
+          "aqi_custom_limit_0": "AQI #1 · cél",
+          "aqi_scale_1": "AQI #2 · forrás",
+          "aqi_custom_limit_1": "AQI #2 · cél",
+          "aqi_scale_2": "AQI #3 · forrás",
+          "aqi_custom_limit_2": "AQI #3 · cél",
+          "aqi_scale_3": "AQI #4 · forrás",
+          "aqi_custom_limit_3": "AQI #4 · cél",
+          "aqi_scale_4": "AQI #5 · forrás",
+          "aqi_custom_limit_4": "AQI #5 · cél",
+          "aqi_scale_5": "AQI #6 · forrás",
+          "aqi_custom_limit_5": "AQI #6 · cél",
+          "aqi_scale_6": "AQI #7 · forrás",
+          "aqi_custom_limit_6": "AQI #7 · cél",
+          "aqi_scale_7": "AQI #8 · forrás",
+          "aqi_custom_limit_7": "AQI #8 · cél",
+          "aqi_scale_8": "AQI #9 · forrás",
+          "aqi_custom_limit_8": "AQI #9 · cél",
+          "aqi_scale_9": "AQI #10 · forrás",
+          "aqi_custom_limit_9": "AQI #10 · cél",
+          "aqi_scale_10": "AQI #11 · forrás",
+          "aqi_custom_limit_10": "AQI #11 · cél",
+          "aqi_scale_11": "AQI #12 · forrás",
+          "aqi_custom_limit_11": "AQI #12 · cél",
+          "aqi_scale_12": "AQI #13 · forrás",
+          "aqi_custom_limit_12": "AQI #13 · cél",
+          "aqi_scale_13": "AQI #14 · forrás",
+          "aqi_custom_limit_13": "AQI #14 · cél",
+          "aqi_scale_14": "AQI #15 · forrás",
+          "aqi_custom_limit_14": "AQI #15 · cél",
+          "aqi_scale_15": "AQI #16 · forrás",
+          "aqi_custom_limit_15": "AQI #16 · cél",
+          "aqi_scale_16": "AQI #17 · forrás",
+          "aqi_custom_limit_16": "AQI #17 · cél",
+          "aqi_scale_17": "AQI #18 · forrás",
+          "aqi_custom_limit_17": "AQI #18 · cél",
+          "aqi_scale_18": "AQI #19 · forrás",
+          "aqi_custom_limit_18": "AQI #19 · cél",
+          "aqi_scale_19": "AQI #20 · forrás",
+          "aqi_custom_limit_19": "AQI #20 · cél",
+          "aqi_scale_20": "AQI #21 · forrás",
+          "aqi_custom_limit_20": "AQI #21 · cél",
+          "aqi_scale_21": "AQI #22 · forrás",
+          "aqi_custom_limit_21": "AQI #22 · cél",
+          "aqi_scale_22": "AQI #23 · forrás",
+          "aqi_custom_limit_22": "AQI #23 · cél",
+          "aqi_scale_23": "AQI #24 · forrás",
+          "aqi_custom_limit_23": "AQI #24 · cél",
+          "aqi_scale_24": "AQI #25 · forrás",
+          "aqi_custom_limit_24": "AQI #25 · cél",
+          "aqi_scale_25": "AQI #26 · forrás",
+          "aqi_custom_limit_25": "AQI #26 · cél",
+          "aqi_scale_26": "AQI #27 · forrás",
+          "aqi_custom_limit_26": "AQI #27 · cél",
+          "aqi_scale_27": "AQI #28 · forrás",
+          "aqi_custom_limit_27": "AQI #28 · cél",
+          "aqi_scale_28": "AQI #29 · forrás",
+          "aqi_custom_limit_28": "AQI #29 · cél",
+          "aqi_scale_29": "AQI #30 · forrás",
+          "aqi_custom_limit_29": "AQI #30 · cél",
+          "aqi_scale_30": "AQI #31 · forrás",
+          "aqi_custom_limit_30": "AQI #31 · cél",
+          "aqi_scale_31": "AQI #32 · forrás",
+          "aqi_custom_limit_31": "AQI #32 · cél"
+        },
+        "data_description": {
+          "pollen_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Pollen · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "pollen_high_from": "„POLLEN · Pollen · HIGH” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_max_scale": "„POLLEN · Pollen · SCALE” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_avoid_ventilation": "„POLLEN · Pollen · NO VENT” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_scale_0": "„AQI #1 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_0": "„AQI #1 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_1": "„AQI #2 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_1": "„AQI #2 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_2": "„AQI #3 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_2": "„AQI #3 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_3": "„AQI #4 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_3": "„AQI #4 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_4": "„AQI #5 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_4": "„AQI #5 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_5": "„AQI #6 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_5": "„AQI #6 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_6": "„AQI #7 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_6": "„AQI #7 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_7": "„AQI #8 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_7": "„AQI #8 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_8": "„AQI #9 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_8": "„AQI #9 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_9": "„AQI #10 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_9": "„AQI #10 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_10": "„AQI #11 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_10": "„AQI #11 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_11": "„AQI #12 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_11": "„AQI #12 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_12": "„AQI #13 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_12": "„AQI #13 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_13": "„AQI #14 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_13": "„AQI #14 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_14": "„AQI #15 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_14": "„AQI #15 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_15": "„AQI #16 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_15": "„AQI #16 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_16": "„AQI #17 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_16": "„AQI #17 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_17": "„AQI #18 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_17": "„AQI #18 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_18": "„AQI #19 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_18": "„AQI #19 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_19": "„AQI #20 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_19": "„AQI #20 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_20": "„AQI #21 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_20": "„AQI #21 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_21": "„AQI #22 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_21": "„AQI #22 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_22": "„AQI #23 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_22": "„AQI #23 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_23": "„AQI #24 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_23": "„AQI #24 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_24": "„AQI #25 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_24": "„AQI #25 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_25": "„AQI #26 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_25": "„AQI #26 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_26": "„AQI #27 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_26": "„AQI #27 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_27": "„AQI #28 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_27": "„AQI #28 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_28": "„AQI #29 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_28": "„AQI #29 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_29": "„AQI #30 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_29": "„AQI #30 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_30": "„AQI #31 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_30": "„AQI #31 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "aqi_scale_31": "„AQI #32 · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "aqi_custom_limit_31": "„AQI #32 · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "environment_room": {
+        "title": "beállítások · beállítások · forrás",
+        "description": "„beállítások · beállítások · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "environment_area": "beállítások · forrás"
+        },
+        "data_description": {
+          "environment_area": "„beállítások · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet."
+        }
+      },
+      "environment_room_air": {
+        "title": "beállítások · Kültéri",
+        "description": "„beállítások · Kültéri” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "temperature_entity": "Hőmérséklet · forrás",
+          "room_volume_m3": "beállítások · forrás (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Légtisztító · forrás",
+          "extractor_entity": "Elszívó ventilátor · forrás",
+          "co2_ndir_verified": "CO₂ · Kötelező",
+          "co2_target_ppm": "CO₂ · CO₂ · cél (ppm)",
+          "sleep_room": "Alvás"
+        },
+        "data_description": {
+          "temperature_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Hőmérséklet · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "room_volume_m3": "Valódi megfelelő mérést használjon ehhez: „beállítások · forrás (m³)”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "particle_cadr_m3h": "Valódi megfelelő mérést használjon ehhez: „CADR (m³/h)”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "purifier_entity": "Válasszon valódi Home Assistant-Légtisztító · forrást ehhez: „Légtisztító · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "extractor_entity": "Válasszon valódi Home Assistant-Elszívó ventilátor · forrást ehhez: „Elszívó ventilátor · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "co2_ndir_verified": "Valódi megfelelő mérést használjon ehhez: „CO₂ · Kötelező”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "co2_target_ppm": "„CO₂ · CO₂ · cél (ppm)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "sleep_room": "„Alvás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "beállítások · beállítások · forrás",
+        "description": "„beállítások · beállítások · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "radon_entity": "RADON · Rn · forrás",
+          "radon_sensor_verified": "RADON · Rn · érzékelő · Kötelező · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · forrás",
+          "formaldehyde_sensor_verified": "HCHO · érzékelő · Kötelező · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · forrás · érzékelő (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · érzékelő · Kötelező",
+          "illuminance_entity": "LUX · forrás (lux)",
+          "melanopic_edi_entity": "EDI · EDI · forrás (lx)",
+          "melanopic_spectral_verified": "EDI · Kötelező"
+        },
+        "data_description": {
+          "radon_entity": "Válasszon valódi Home Assistant-RADON · Rn · forrást ehhez: „RADON · Rn · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "radon_sensor_verified": "Valódi megfelelő mérést használjon ehhez: „RADON · Rn · érzékelő · Kötelező · SENSOR ✓ · VERIFIED”. Becslés nem helyettesít kalibrált RADON · Rn · érzékelő · Kötelező · SENSOR ✓ · VERIFIEDt.",
+          "radon_reference_bq_m3": "„Rn (Bq/m³)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "formaldehyde_entity": "Válasszon valódi Home Assistant-HCHO · forrást ehhez: „HCHO · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "formaldehyde_sensor_verified": "Valódi megfelelő mérést használjon ehhez: „HCHO · érzékelő · Kötelező · SENSOR ✓ · VERIFIED”. Becslés nem helyettesít kalibrált HCHO · érzékelő · Kötelező · SENSOR ✓ · VERIFIEDt.",
+          "noise_entity": "Válasszon valódi Home Assistant-dB(A) · forrás · érzékelő (dB(A))t ehhez: „dB(A) · forrás · érzékelő (dB(A))”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "noise_sensor_calibrated": "Valódi megfelelő mérést használjon ehhez: „dB(A) · érzékelő · Kötelező”. Becslés nem helyettesít kalibrált dB(A) · érzékelő · Kötelezőt.",
+          "illuminance_entity": "Válasszon valódi Home Assistant-LUX · forrás (lux)t ehhez: „LUX · forrás (lux)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "melanopic_edi_entity": "Válasszon valódi Home Assistant-EDI · EDI · forrás (lx)t ehhez: „EDI · EDI · forrás (lx)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "melanopic_spectral_verified": "Valódi megfelelő mérést használjon ehhez: „EDI · Kötelező”. Becslés nem helyettesít kalibrált érzékelőt."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "beállítások · beállítások · forrás",
+        "description": "„beállítások · beállítások · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automatikus",
+          "radiant_temperature_entity": "Hőmérséklet · forrás",
+          "air_speed_entity": "forrás · Sebesség · Kültéri (m/s)",
+          "air_speed_m_s": "Sebesség · Kültéri (m/s)",
+          "met": "beállítások · forrás (met)",
+          "clo": "beállítások · forrás (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "„PMV / PPD · Automatikus” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "radiant_temperature_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Hőmérséklet · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "air_speed_entity": "Válasszon valódi Home Assistant-forrás · Sebesség · Kültéri (m/s)t ehhez: „forrás · Sebesség · Kültéri (m/s)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "air_speed_m_s": "Valódi megfelelő mérést használjon ehhez: „Sebesség · Kültéri (m/s)”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "met": "Valódi megfelelő mérést használjon ehhez: „beállítások · forrás (met)”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "clo": "Valódi megfelelő mérést használjon ehhez: „beállítások · forrás (clo)”. Becslés nem helyettesít kalibrált érzékelőt."
+        }
+      },
+      "pid": {
+        "title": "beállítások · PID",
+        "description": "„beállítások · PID” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Ez a beállítás ezt vezérli: „PID”. Fizikai parancshoz külön engedély és védelem kell."
+        }
+      },
+      "pid_room": {
+        "title": "beállítások · PID",
+        "description": "„beállítások · PID” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "pid_enabled": "PID · Automatikus · AUTO",
+          "pid_climate_entities": "PID · Eszközök",
+          "pid_temperature_entity": "Hőmérséklet · forrás",
+          "pid_mode": "PID",
+          "pid_target_c": "cél (°C)",
+          "pid_pause_on_window_open": "PID · Kültéri"
+        },
+        "data_description": {
+          "pid_enabled": "Ez a beállítás ezt vezérli: „PID · Automatikus · AUTO”. Fizikai parancshoz külön engedély és védelem kell.",
+          "pid_climate_entities": "Válasszon valódi Home Assistant-forrást ehhez: „PID · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "pid_temperature_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Hőmérséklet · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "pid_mode": "Ez a beállítás ezt vezérli: „PID”. Fizikai parancshoz külön engedély és védelem kell.",
+          "pid_target_c": "„cél (°C)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "pid_pause_on_window_open": "Ez a beállítás ezt vezérli: „PID · Kültéri”. Fizikai parancshoz külön engedély és védelem kell."
+        }
+      },
+      "pid_tuning": {
+        "title": "beállítások · PID",
+        "description": "„beállítások · PID” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "pid_kp": "PID Kp · vezérlés (% per °C)",
+          "pid_ki": "PID Ki · vezérlés (% per °C-minute)",
+          "pid_kd": "PID Kd · vezérlés (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Ez a beállítás ezt vezérli: „PID Kp · vezérlés (% per °C)”. Fizikai parancshoz külön engedély és védelem kell.",
+          "pid_ki": "Ez a beállítás ezt vezérli: „PID Ki · vezérlés (% per °C-minute)”. Fizikai parancshoz külön engedély és védelem kell.",
+          "pid_kd": "Ez a beállítás ezt vezérli: „PID Kd · vezérlés (%·minute per °C)”. Fizikai parancshoz külön engedély és védelem kell.",
+          "pid_offset_c": "„PID (°C) · PID_OFFSET_C” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "pid_min_setpoint_c": "„PID (°C) · MIN TARGET” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "pid_max_setpoint_c": "„PID (°C) · MAX TARGET” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "pid_sample_seconds": "Ez az időzítés erre vonatkozik: „PID (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "pid_max_change_c": "„PID (°C) · MAX Δ” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "pid_min_change_c": "„PID (°C) · MIN Δ” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "climate": {
+        "title": "beállítások · Eszközök",
+        "description": "„beállítások · Eszközök” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+        "data": {
+          "climate_area": "Eszközök"
+        },
+        "data_description": {
+          "climate_area": "Ez a beállítás ezt vezérli: „Eszközök”. Fizikai parancshoz külön engedély és védelem kell."
+        }
+      },
+      "climate_room": {
+        "title": "beállítások · Eszközök",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "climate_enabled": "Eszközök · Automatikus · AUTO",
+          "climate_allow_actuation": "Eszközök · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Eszközök · Automatikus · MODE SWITCH",
+          "climate_prefer_native_auto": "Eszközök · Automatikus · NATIVE",
+          "climate_controller": "Eszközök · vezérlés",
+          "climate_mode": "Eszközök · MODE",
+          "climate_entity": "Eszközök · forrás",
+          "climate_temperature_entity": "Hőmérséklet · forrás",
+          "climate_hysteresis_c": "Eszközök (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Ez a beállítás ezt vezérli: „Eszközök · Automatikus · AUTO”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_allow_actuation": "Ez a beállítás ezt vezérli: „Eszközök · CLIMATE_ALLOW_ACTUATION”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_auto_switch_hvac": "Ez a beállítás ezt vezérli: „Eszközök · Automatikus · MODE SWITCH”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_prefer_native_auto": "Ez a beállítás ezt vezérli: „Eszközök · Automatikus · NATIVE”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_controller": "Ez a beállítás ezt vezérli: „Eszközök · vezérlés”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_mode": "Ez a beállítás ezt vezérli: „Eszközök · MODE”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_entity": "Válasszon valódi Home Assistant-Eszközök · forrást ehhez: „Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_temperature_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Hőmérséklet · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_hysteresis_c": "„Eszközök (°C)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "climate_presence": {
+        "title": "beállítások · Jelenlét · Eszközök",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "climate_occupancy_sensors": "Jelenlét · érzékelő",
+          "climate_away_entities": "Otthon · Eszközök",
+          "climate_unknown_occupancy": "Jelenlét · Eszközök",
+          "climate_unoccupied_delay_minutes": "Eszközök · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Jelenlét · Eszközök · érzékelő · Kötelező",
+          "climate_away_policy": "Otthon · Eszközök · POLICY",
+          "climate_manual_profile": "Eszközök · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Alvás · Eszközök",
+          "climate_sleep_schedule_enabled": "Alvás · Automatikus",
+          "climate_sleep_start": "Alvás · Eszközök · START",
+          "climate_sleep_end": "Alvás · Eszközök · END",
+          "climate_target_source": "Eszközök · forrás · cél",
+          "climate_comfort_adjustment_max_c": "Eszközök (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_away_entities": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_unknown_occupancy": "Ez a beállítás ezt vezérli: „Jelenlét · Eszközök”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_unoccupied_delay_minutes": "Ez az időzítés erre vonatkozik: „Eszközök · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_occupancy_stale_minutes": "Ez az időzítés erre vonatkozik: „Jelenlét · Eszközök · érzékelő · Kötelező”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_away_policy": "Ez a beállítás ezt vezérli: „Otthon · Eszközök · POLICY”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_manual_profile": "Ez a beállítás ezt vezérli: „Eszközök · CLIMATE_MANUAL_PROFILE”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_sleep_active": "Ez a beállítás ezt vezérli: „Alvás · Eszközök”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_sleep_schedule_enabled": "Ez a beállítás ezt vezérli: „Alvás · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_sleep_start": "Ez az időzítés erre vonatkozik: „Alvás · Eszközök · START”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_sleep_end": "Ez az időzítés erre vonatkozik: „Alvás · Eszközök · END”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_target_source": "„Eszközök · forrás · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_comfort_adjustment_max_c": "„Eszközök (°C)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "climate_equipment": {
+        "title": "beállítások · Eszközök",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Eszközök · forrás · Hőmérséklet +",
+          "climate_cool_climate_entity": "COOL · Eszközök · forrás · Hőmérséklet −",
+          "climate_dry_climate_entity": "DRY · Eszközök · forrás",
+          "climate_fan_climate_entity": "FAN_ONLY · Sebesség · Eszközök · forrás",
+          "climate_humidifier_entity": "HUMIDIFIER · Eszközök · forrás",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Eszközök · forrás",
+          "climate_extraction_fan_entity": "EXTRACT · Sebesség · Eszközök · forrás",
+          "climate_purifier_fan_entity": "Légtisztító · forrás",
+          "climate_humidity_entity": "Páratartalom · forrás",
+          "climate_humidity_low_rh": "RH · Páratartalom · Eszközök (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Páratartalom · Eszközök (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Páratartalom · Eszközök · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Eszközök · Hőmérséklet −",
+          "climate_humidity_setpoint_auto": "Páratartalom · Automatikus",
+          "climate_window_efficiency_notify": "Eszközök · Kültéri",
+          "climate_dry_fan_mode_auto": "Sebesség · Automatikus",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Sebesség · Eszközök · Kötelező · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Sebesség · Eszközök · Kültéri · Kötelező · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Sebesség · Eszközök (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Páratartalom · Teljesítmény · Automatikus",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Páratartalom · Eszközök · Teljesítmény · Kötelező · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Páratartalom · Eszközök · Teljesítmény · Kültéri · Kötelező · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Páratartalom · Eszközök · Teljesítmény · Automatikus (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Páratartalom · Eszközök · Teljesítmény · Kikapcsolás (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Páratartalom · Eszközök · Teljesítmény · Automatikus (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Eszközök · Automatikus · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Válasszon valódi Home Assistant-HEAT · Eszközök · forrás · Hőmérséklet +t ehhez: „HEAT · Eszközök · forrás · Hőmérséklet +”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_cool_climate_entity": "Válasszon valódi Home Assistant-COOL · Eszközök · forrás · Hőmérséklet −t ehhez: „COOL · Eszközök · forrás · Hőmérséklet −”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_dry_climate_entity": "Válasszon valódi Home Assistant-DRY · Eszközök · forrást ehhez: „DRY · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_fan_climate_entity": "Válasszon valódi Home Assistant-forrást ehhez: „FAN_ONLY · Sebesség · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_humidifier_entity": "Válasszon valódi Home Assistant-HUMIDIFIER · Eszközök · forrást ehhez: „HUMIDIFIER · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_dehumidifier_entity": "Válasszon valódi Home Assistant-DEHUMIDIFIER · Eszközök · forrást ehhez: „DEHUMIDIFIER · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_extraction_fan_entity": "Válasszon valódi Home Assistant-forrást ehhez: „EXTRACT · Sebesség · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_purifier_fan_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Légtisztító · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_humidity_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Páratartalom · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_humidity_low_rh": "„RH · Páratartalom · Eszközök (%) · RH MIN” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_humidity_high_rh": "„RH · Páratartalom · Eszközök (%) · RH MAX” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_humidity_hysteresis_rh": "„RH · Páratartalom · Eszközök · ± RH” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_cooling_dry_deferral_rh_points": "Ez a beállítás ezt vezérli: „Eszközök · Hőmérséklet −”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_humidity_setpoint_auto": "Ez a beállítás ezt vezérli: „Páratartalom · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_window_efficiency_notify": "Ez a beállítás ezt vezérli: „Eszközök · Kültéri”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_dry_fan_mode_auto": "Ez a beállítás ezt vezérli: „Sebesség · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_dry_fan_hardware_confirmed": "Valódi megfelelő mérést használjon ehhez: „DRY/FAN_ONLY · Sebesség · Eszközök · Kötelező · HW ✓”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "climate_dry_fan_windowless_confirmed": "Valódi megfelelő mérést használjon ehhez: „DRY/FAN_ONLY · Sebesség · Eszközök · Kültéri · Kötelező · NO WINDOW”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "climate_dry_fan_mode_dwell_s": "Ez az időzítés erre vonatkozik: „DRY/FAN_ONLY · Sebesség · Eszközök (s) · MODE DWELL”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_humidity_power_auto": "Ez a beállítás ezt vezérli: „Páratartalom · Teljesítmény · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_humidity_power_hardware_confirmed": "Valódi megfelelő mérést használjon ehhez: „RH POWER · Páratartalom · Eszközök · Teljesítmény · Kötelező · HW ✓”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "climate_humidity_power_windowless_confirmed": "Valódi megfelelő mérést használjon ehhez: „RH POWER · Páratartalom · Eszközök · Teljesítmény · Kültéri · Kötelező · NO WINDOW”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "climate_humidity_power_min_on_s": "Ez az időzítés erre vonatkozik: „RH POWER · Páratartalom · Eszközök · Teljesítmény · Automatikus (s) · MIN ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_humidity_power_min_off_s": "Ez az időzítés erre vonatkozik: „RH POWER · Páratartalom · Eszközök · Teljesítmény · Kikapcsolás (s) · MIN OFF”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_humidity_power_max_on_s": "Ez az időzítés erre vonatkozik: „RH POWER · Páratartalom · Eszközök · Teljesítmény · Automatikus (s) · MAX ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_secondary_climate_setpoint_auto": "Ez a beállítás ezt vezérli: „Eszközök · Automatikus · TARGET AUTO”. Fizikai parancshoz külön engedély és védelem kell."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "beállítások · Eszközök · Kültéri",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "climate_fan_speed_auto": "Sebesség · Automatikus",
+          "climate_fan_power_auto": "Sebesség · Teljesítmény · Automatikus",
+          "climate_fan_power_hardware_confirmed": "FAN · Sebesség · Eszközök · Teljesítmény · Kötelező · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Sebesség · Eszközök · Teljesítmény · Automatikus (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Sebesség · Eszközök · Teljesítmény · Kikapcsolás (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Sebesség · Eszközök · Teljesítmény · Automatikus (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Eszközök · érzékelő · Kötelező · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Eszközök · forrás",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Eszközök · forrás",
+          "climate_pm25_action_ug_m3": "PM2.5 · Eszközök (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Eszközök · Sebesség (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Eszközök · Sebesség (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Ez a beállítás ezt vezérli: „Sebesség · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_fan_power_auto": "Ez a beállítás ezt vezérli: „Sebesség · Teljesítmény · Automatikus”. Fizikai parancshoz külön engedély és védelem kell.",
+          "climate_fan_power_hardware_confirmed": "Valódi megfelelő mérést használjon ehhez: „FAN · Sebesség · Eszközök · Teljesítmény · Kötelező · HW ✓”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "climate_fan_power_min_on_s": "Ez az időzítés erre vonatkozik: „FAN · Sebesség · Eszközök · Teljesítmény · Automatikus (s) · MIN ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_fan_power_min_off_s": "Ez az időzítés erre vonatkozik: „FAN · Sebesség · Eszközök · Teljesítmény · Kikapcsolás (s) · MIN OFF”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_fan_power_max_on_s": "Ez az időzítés erre vonatkozik: „FAN · Sebesség · Eszközök · Teljesítmény · Automatikus (s) · MAX ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "climate_pm25_sensor_verified": "Valódi megfelelő mérést használjon ehhez: „PM2.5 · PM2.5 · Eszközök · érzékelő · Kötelező · SENSOR ✓ · VERIFIED”. Becslés nem helyettesít kalibrált PM2.5 · PM2.5 · Eszközök · érzékelő · Kötelező · SENSOR ✓ · VERIFIEDt.",
+          "climate_co2_entity": "Válasszon valódi Home Assistant-CO₂ · CO₂ · Eszközök · forrást ehhez: „CO₂ · CO₂ · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_pm25_entity": "Válasszon valódi Home Assistant-PM2.5 · PM2.5 · Eszközök · forrást ehhez: „PM2.5 · PM2.5 · Eszközök · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "climate_pm25_action_ug_m3": "„PM2.5 · Eszközök (µg/m³)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_extraction_speed_percent": "„EXTRACT · Eszközök · Sebesség (%) · SPEED %” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "climate_purifier_speed_percent": "„PURIFIER · Eszközök · Sebesség (%) · SPEED %” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték."
+        }
+      },
+      "climate_profiles": {
+        "title": "beállítások · Eszközök",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "home_heat": "Fűtés · Otthon (°C)",
+          "home_cool": "Hűtés · Otthon (°C)",
+          "unoccupied_heat": "Fűtés · Üres szoba (°C)",
+          "unoccupied_cool": "Hűtés · Üres szoba (°C)",
+          "away_heat": "Fűtés · Távollét (°C)",
+          "away_cool": "Hűtés · Távollét (°C)",
+          "sleep_heat": "Fűtés · Alvás (°C)",
+          "sleep_cool": "Hűtés · Alvás (°C)"
+        },
+        "data_description": {
+          "home_heat": "„Fűtés · Otthon (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "home_cool": "„Hűtés · Otthon (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "unoccupied_heat": "„Fűtés · Üres szoba (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "unoccupied_cool": "„Hűtés · Üres szoba (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "away_heat": "„Fűtés · Távollét (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "away_cool": "„Hűtés · Távollét (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "sleep_heat": "„Fűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "sleep_cool": "„Hűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent."
+        }
+      },
+      "climate_actuators": {
+        "title": "beállítások · Eszközök",
+        "description": "Terület · beállítások · Eszközök · vezérlés. Jelenlét · érzékelő · Kötelező.",
+        "data": {
+          "direct_hardware_confirmed": "Kötelező",
+          "heat_actuator": "Fűtés · Eszközök",
+          "cool_actuator": "Hűtés · Eszközök",
+          "min_on_s": "Teljesítmény · Automatikus (s) · MIN ON",
+          "min_off_s": "Teljesítmény · Kikapcsolás (s)",
+          "max_on_s": "Teljesítmény · Automatikus (s) · MAX ON",
+          "mode_dwell_s": "beállítások · forrás (s) · MODE DWELL",
+          "kp": "PID Kp · vezérlés (percentage points/°C)",
+          "ki": "PID Ki · vezérlés (percentage points/(°C·minute))",
+          "kd": "PID Kd · vezérlés (percentage points·minute/°C)",
+          "sample_seconds": "beállítások · forrás (s) · SAMPLE",
+          "pwm_period_s": "beállítások · forrás (s) · PWM PERIOD",
+          "max_demand_change": "beállítások · forrás · MAX Δ",
+          "min_demand_change": "beállítások · forrás · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Valódi megfelelő mérést használjon ehhez: „Kötelező”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "heat_actuator": "„Fűtés · Eszközök” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "cool_actuator": "„Hűtés · Eszközök” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "min_on_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · Automatikus (s) · MIN ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "min_off_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · Kikapcsolás (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "max_on_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · Automatikus (s) · MAX ON”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "mode_dwell_s": "Ez az időzítés erre vonatkozik: „beállítások · forrás (s) · MODE DWELL”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "kp": "„PID Kp · vezérlés (percentage points/°C)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "ki": "„PID Ki · vezérlés (percentage points/(°C·minute))” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "kd": "„PID Kd · vezérlés (percentage points·minute/°C)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "sample_seconds": "Ez az időzítés erre vonatkozik: „beállítások · forrás (s) · SAMPLE”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "pwm_period_s": "Ez az időzítés erre vonatkozik: „beállítások · forrás (s) · PWM PERIOD”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "max_demand_change": "„beállítások · forrás · MAX Δ” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "min_demand_change": "„beállítások · forrás · MIN Δ” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet."
+        }
+      },
+      "outside_data": {
+        "title": "Kültéri · forrás",
+        "description": "Kültéri · forrás: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "menu_options": {
+          "weather": "Időjárás és riasztások",
+          "outdoor": "Kültéri levegőminőség",
+          "outside_aqi": "Kültéri · AQI",
+          "pollen": "Pollen"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Terület · beállítások",
+        "description": "Terület · beállítások: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "menu_options": {
+          "areas": "Helyiségek",
+          "indoor_sensors": "Helyiségek · Penészesedési mutató",
+          "window_sensors": "Ablakérzékelők kizárása",
+          "environment_room": "beállítások · beállítások · forrás",
+          "area_devices": "Klímaberendezések"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Eszközök · beállítások",
+        "description": "Opcionális: folytatás az érzékelők és az eszköz biztonsági engedélyeinek beállításával. Kikapcsolva a lista azonnal mentődik.",
+        "menu_options": {
+          "device_settings": "Eszközök · vezérlés",
+          "device_choice": "Választás · Eszközök",
+          "device_done": "beállítások · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Általános · beállítások",
+        "description": "Általános · beállítások: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_home_policy": "Otthon · Jelenlét · vezérlés",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "general_source_stale_minutes": "forrás · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Szoba · Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_attribute": "„Jelenlét · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_home_trackers": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Jelenlét · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_home_policy": "Ez a beállítás ezt vezérli: „Otthon · Jelenlét · vezérlés”. Fizikai parancshoz külön engedély és védelem kell.",
+          "general_sleep_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Alvás · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_sleep_rooms_attribute": "„Alvás · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_source_stale_minutes": "forrás · Alvás / Jelenlét · max 240 min. Érvénytelen · Kikapcsolás."
+        }
+      },
+      "pollen": {
+        "title": "beállítások · Pollen",
+        "description": "Pollen: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "pollen_entity": "Pollen · forrás",
+          "pollen_high_from": "POLLEN · Pollen · HIGH",
+          "pollen_max_scale": "POLLEN · Pollen · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pollen · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Pollen · forrás”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "pollen_high_from": "„POLLEN · Pollen · HIGH” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_max_scale": "„POLLEN · Pollen · SCALE” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "pollen_avoid_ventilation": "„POLLEN · Pollen · NO VENT” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet."
+        }
+      },
+      "outside_aqi": {
+        "title": "Kültéri · AQI",
+        "description": "Kültéri · AQI: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "outside_aqi_entity": "AQI · érzékelő",
+          "outside_aqi_scale": "AQI · forrás",
+          "outside_aqi_limit": "AQI · cél",
+          "outside_aqi_no_sources": "AQI · érzékelő · Kötelező"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Válasszon valódi Home Assistant-forrást ehhez: „AQI · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "outside_aqi_scale": "„AQI · forrás” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "outside_aqi_limit": "„AQI · cél” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "outside_aqi_no_sources": "„AQI · érzékelő · Kötelező” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet."
+        }
+      },
+      "area_devices": {
+        "title": "Klímaberendezések",
+        "description": "Választás · Terület",
+        "data": {
+          "area_devices_area": "Választás · Terület"
+        },
+        "data_description": {
+          "area_devices_area": "Válasszon valódi Home Assistant-forrást ehhez: „Választás · Terület”. A hiányzó vagy régi adat leállítja a műveletet."
+        }
+      },
+      "select_devices": {
+        "title": "Klímaberendezések",
+        "description": "Válassz eszközöket ehhez: {area_name}. A mentés fizikai eszközönként egy vezérlőt hoz létre a szoba központjában. A célokat, profilokat, automatikus/kézi/kikapcsolt/PID és csendes működést az eszközökön állítsd be. A kiválasztás nem indít automatikus vezérlést.",
+        "data": {
+          "selected_devices": "Választás · Eszközök",
+          "configure_device_sources": "Érzékelők és engedélyek beállítása most"
+        },
+        "data_description": {
+          "selected_devices": "Válassz eszközöket ehhez: {area_name}. A mentés fizikai eszközönként egy vezérlőt hoz létre a szoba központjában. A célokat, profilokat, automatikus/kézi/kikapcsolt/PID és csendes működést az eszközökön állítsd be. A kiválasztás nem indít automatikus vezérlést.",
+          "configure_device_sources": "Opcionális: folytatás az érzékelők és az eszköz biztonsági engedélyeinek beállításával. Kikapcsolva a lista azonnal mentődik."
+        }
+      },
+      "device_choice": {
+        "title": "Választás · Eszközök",
+        "description": "Választás · Eszközök: Választás forrás, érzékelő / Eszközök · vezérlés.",
+        "data": {
+          "device_choice": "Választás · Eszközök"
+        },
+        "data_description": {
+          "device_choice": "Válasszon valódi Home Assistant-forrást ehhez: „Választás · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet."
+        }
+      },
+      "device_settings": {
+        "title": "Eszközök · vezérlés",
+        "description": "Ez a beállítás ezt vezérli: „vezérlés · forrás”. Fizikai parancshoz külön engedély és védelem kell. Valódi megfelelő mérést használjon ehhez: „Kötelező · Eszközök · Teljesítmény”. Becslés nem helyettesít kalibrált érzékelőt. Ez az időzítés erre vonatkozik: „Teljesítmény · min ON (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet. Ez az időzítés erre vonatkozik: „Teljesítmény · min OFF (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet. „Alvás · vezérlés” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet. „Sebesség (%)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatikus vezérlés",
+          "device_method": "vezérlés · forrás",
+          "device_presence_requirement": "vezérlés · Jelenlét",
+          "device_absence_action": "Kikapcsolás · Jelenlét",
+          "device_sleep_behavior": "Alvás · vezérlés",
+          "device_hardware_confirmed": "Kötelező · Eszközök · Teljesítmény",
+          "device_temperature_entity": "Hőmérséklet · érzékelő",
+          "device_humidity_entity": "Páratartalom · érzékelő",
+          "device_co2_entity": "CO₂ · érzékelő",
+          "device_pm25_entity": "PM2.5 · érzékelő",
+          "device_fan_purpose": "vezérlés · Eszközök",
+          "device_sensor_verified": "érzékelő · Kötelező",
+          "device_fan_speed_percent": "Sebesség (%)",
+          "device_humidity_target": "Páratartalom · cél (%)",
+          "device_sleep_humidity_target": "Alvás · Páratartalom · cél (%)",
+          "device_min_on_s": "Teljesítmény · min ON (s)",
+          "device_min_off_s": "Teljesítmény · min OFF (s)",
+          "device_max_on_s": "Teljesítmény · max ON (s)",
+          "device_home_heat_c": "Fűtés · Otthon (°C)",
+          "device_home_cool_c": "Hűtés · Otthon (°C)",
+          "device_unoccupied_heat_c": "Fűtés · Üres szoba (°C)",
+          "device_unoccupied_cool_c": "Hűtés · Üres szoba (°C)",
+          "device_away_heat_c": "Fűtés · Távollét (°C)",
+          "device_away_cool_c": "Hűtés · Távollét (°C)",
+          "device_sleep_heat_c": "Fűtés · Alvás (°C)",
+          "device_sleep_cool_c": "Hűtés · Alvás (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Ez a beállítás ezt vezérli: „Automatikus vezérlés”. Fizikai parancshoz külön engedély és védelem kell.",
+          "device_method": "Ez a beállítás ezt vezérli: „vezérlés · forrás”. Fizikai parancshoz külön engedély és védelem kell.",
+          "device_presence_requirement": "„vezérlés · Jelenlét” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "device_absence_action": "Ez a beállítás ezt vezérli: „Kikapcsolás · Jelenlét”. Fizikai parancshoz külön engedély és védelem kell.",
+          "device_sleep_behavior": "„Alvás · vezérlés” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "device_hardware_confirmed": "Valódi megfelelő mérést használjon ehhez: „Kötelező · Eszközök · Teljesítmény”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "device_temperature_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Hőmérséklet · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "device_humidity_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Páratartalom · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "device_co2_entity": "Válasszon valódi Home Assistant-forrást ehhez: „CO₂ · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "device_pm25_entity": "Válasszon valódi Home Assistant-forrást ehhez: „PM2.5 · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "device_fan_purpose": "„vezérlés · Eszközök” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "device_sensor_verified": "Valódi megfelelő mérést használjon ehhez: „érzékelő · Kötelező”. Becslés nem helyettesít kalibrált érzékelőt.",
+          "device_fan_speed_percent": "„Sebesség (%)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "device_humidity_target": "„Páratartalom · cél (%)” döntési küszöbe. Az ajánlásokat befolyásolja, nem orvosi határérték.",
+          "device_sleep_humidity_target": "„Alvás · Páratartalom · cél (%)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_min_on_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · min ON (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "device_min_off_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · min OFF (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "device_max_on_s": "Ez az időzítés erre vonatkozik: „Teljesítmény · max ON (s)”. Korlátozza a gyors kapcsolásokat, de nem helyettesíti a védelmet.",
+          "device_home_heat_c": "„Fűtés · Otthon (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_home_cool_c": "„Hűtés · Otthon (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_unoccupied_heat_c": "„Fűtés · Üres szoba (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_unoccupied_cool_c": "„Hűtés · Üres szoba (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_away_heat_c": "„Fűtés · Távollét (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_away_cool_c": "„Hűtés · Távollét (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_sleep_heat_c": "„Fűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent.",
+          "device_sleep_cool_c": "„Hűtés · Alvás (°C)” célértéke csak igazolt jelenlét vagy alvás esetén érvényes. Az ismeretlen nem üres szobát jelent."
+        }
+      },
+      "setup_rooms": {
+        "title": "Figyelendő helyiségek",
+        "description": "Figyelendő helyiségek → forrás → Általános beállítások",
+        "data": {
+          "areas": "Figyelendő helyiségek"
+        },
+        "data_description": {
+          "areas": "Figyelendő helyiségek. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Szoba · {area_name} · {room_index}/{room_count}",
+        "description": "Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+        "data": {
+          "windows": "Ablakok",
+          "air_quality": "Levegőminőség- és környezeti érzékelők",
+          "temperature": "Hőmérséklet",
+          "humidity": "Páratartalom",
+          "pressure": "Nyomásérzékelők",
+          "climate_devices": "Eszközök"
+        },
+        "data_description": {
+          "windows": "Ablakok. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "air_quality": "Levegőminőség- és környezeti érzékelők. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "temperature": "Hőmérséklet. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "humidity": "Páratartalom. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "pressure": "Nyomásérzékelők. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést.",
+          "climate_devices": "Eszközök. Válaszd ki a helyiség bemeneteit: eszköznév - entitásnév. Az üres csoportok nem használtak, és nem indítanak automatikus felismerést vagy vezérlést."
+        }
+      },
+      "setup_general": {
+        "title": "Általános beállítások",
+        "description": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak.",
+        "data": {
+          "weather_entities": "Időjárás és riasztások",
+          "outdoor_sensors": "Kültéri levegőminőség",
+          "weather_warnings": "Időjárási figyelmeztetések",
+          "general_room_occupancy_sensors": "Szoba · Jelenlét · érzékelő",
+          "general_home_trackers": "Otthon · Jelenlét · Eszközök",
+          "general_occupied_rooms_entity": "Jelenlét · Szoba · forrás (state)",
+          "general_occupied_rooms_attribute": "Jelenlét · Szoba · forrás (attribute)",
+          "general_sleep_rooms_entity": "Alvás · Szoba · forrás (state)",
+          "general_sleep_rooms_attribute": "Alvás · Szoba · forrás (attribute)",
+          "notify_entities": "beállítások · forrás",
+          "media_players": "beállítások · forrás · MEDIA_PLAYERS",
+          "tts_engine": "beállítások · forrás · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Választás · forrás",
+          "language": "TTS · Választás · forrás",
+          "use_mold_indicator": "Penészesedési mutató · RH (%) → 70%",
+          "pollen_entities": "Pollen · forrás · Választás",
+          "use_announcement_hub": "Automatikus · Announcement Hub",
+          "general_away_cooldown_minutes": "Otthon · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Válassz: Időjárás és riasztások · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Válassz: Kültéri levegőminőség · AQI, CO₂, PM2.5, PM10, VOC. Nem érhető el: ⚠",
+          "weather_warnings": "Időjárás és riasztások · ⚠ (Nem érhető el) → 🪟🔒",
+          "general_room_occupancy_sensors": "Válasszon valódi Home Assistant-forrást ehhez: „Szoba · Jelenlét · érzékelő”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_home_trackers": "Válasszon valódi Home Assistant-forrást ehhez: „Otthon · Jelenlét · Eszközök”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Jelenlét · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_occupied_rooms_attribute": "„Jelenlét · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "general_sleep_rooms_entity": "Válasszon valódi Home Assistant-forrást ehhez: „Alvás · Szoba · forrás (state)”. A hiányzó vagy régi adat leállítja a műveletet.",
+          "general_sleep_rooms_attribute": "„Alvás · Szoba · forrás (attribute)” csak a választott helyiségre állítható. Hibás adat esetén nincs művelet.",
+          "notify_entities": "Válassz: notify.* · beállítások · forrás.",
+          "media_players": "Válassz: media_player.* · beállítások · forrás · MEDIA_PLAYERS.",
+          "tts_engine": "Válassz: tts.* · beállítások · forrás · TTS_ENGINE.",
+          "ai_conversation_agent": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · AI · Választás · forrás · conversation.* / ai_task.*.",
+          "language": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · TTS · Választás · forrás · provider capabilities.",
+          "use_mold_indicator": "🧱 Penészesedési mutató · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Pollen · forrás · Választás.",
+          "use_announcement_hub": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Automatikus · Announcement Hub.",
+          "general_away_cooldown_minutes": "Válassz közös forrásokat és értesítési kimeneteket. A mentés befejezi a beállítást. Az üzemi beállítások a ház és a helyiségek eszközein maradnak. · Otthon · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Érvénytelen választás: Kültéri levegőminőség (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Nem érhető el: Kültéri levegőminőség (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Érvénytelen választás: Időjárás és riasztások (weather.*).",
+      "invalid_warning": "Érvénytelen választás: Időjárás és riasztások ⚠.",
+      "missing_notify": "Válassz: Announcement Hub / notify.*.",
+      "missing_tts": "Válassz: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Érvénytelen választás: °C min < max.",
+      "no_areas": "Válassz: Helyiségek.",
+      "no_window_areas": "Nem érhető el: Mérések (binary_sensor, window).",
+      "invalid_areas": "Érvénytelen választás: Helyiségek.",
+      "invalid_window_exclusions": "Érvénytelen választás: Ablakérzékelők kizárása.",
+      "invalid_indoor_exclusions": "Érvénytelen választás: Beltéri levegőérzékelők kizárása.",
+      "no_windows_after_exclusions": "Legalább egy ablakérzékelő maradjon aktív.",
+      "review_areas_after_exclusions": "Ellenőrizd: Helyiségek · Mérések (0).",
+      "invalid_repeat_minutes": "Érvénytelen választás: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Nem érhető el: conversation.process.",
+      "invalid_ai_agent": "Érvénytelen választás: conversation.*.",
+      "invalid_mold_temperature_sensor": "Helyiségek · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Helyiségek · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Penészesedési mutató · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Penészesedési mutató · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Penészesedési mutató · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Érvénytelen beállítás: „beállítások · forrás”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "invalid_environment_measurement": "Érvénytelen beállítás: „beállítások · forrás”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pmv_requires_explicit_inputs": "Érvénytelen beállítás: „PMV / PPD”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pid_climate_required": "Érvénytelen beállítás: „PID · Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pid_temperature_required": "Érvénytelen beállítás: „PID · Hőmérséklet”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pid_invalid_target": "Érvénytelen beállítás: „PID · cél”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pid_duplicate_climate": "Érvénytelen beállítás: „PID · Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "pid_invalid_parameters": "Érvénytelen beállítás: „PID”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_dry_fan_control_inputs_missing": "Érvénytelen beállítás: „Sebesség · Eszközök · vezérlés”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_humidity_power_inputs_missing": "Érvénytelen beállítás: „Páratartalom · Eszközök · Teljesítmény”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_secondary_control_inputs_missing": "Érvénytelen beállítás: „Eszközök · vezérlés”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_fan_power_inputs_missing": "Érvénytelen beállítás: „Sebesség · Eszközök · Teljesítmény”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_fan_control_inputs_missing": "Érvénytelen beállítás: „Sebesség · Eszközök · vezérlés”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_fan_sensor_invalid": "Érvénytelen beállítás: „Sebesség · Eszközök · érzékelő”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_humidity_control_inputs_missing": "Érvénytelen beállítás: „Páratartalom · Eszközök · vezérlés”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_temperature_required": "Érvénytelen beállítás: „Hőmérséklet · Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_target_required": "Érvénytelen beállítás: „Eszközök · cél”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_direct_actuator_not_ready": "Érvénytelen beállítás: „Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_controller_invalid": "Érvénytelen beállítás: „Eszközök · vezérlés”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_mode_invalid": "Érvénytelen beállítás: „Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_occupancy_invalid": "Érvénytelen beállítás: „Jelenlét · Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_away_invalid": "Érvénytelen beállítás: „Otthon · Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_deadband_invalid": "Érvénytelen beállítás: „Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_attestation_required": "Érvénytelen beállítás: „Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_direct_targets_invalid": "Érvénytelen beállítás: „Eszközök · cél”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "climate_direct_timing_invalid": "Érvénytelen beállítás: „Eszközök”. Ellenőrizze a forrást, egységet és biztonságot.",
+      "general_invalid_presence": "Érvénytelen · Jelenlét · beállítások",
+      "general_invalid_trackers": "Érvénytelen · Otthon · beállítások",
+      "general_invalid_rooms_entity": "Érvénytelen · Szoba · beállítások",
+      "general_invalid_attribute": "Érvénytelen · forrás · beállítások",
+      "general_invalid_source_age": "Érvénytelen · forrás · beállítások",
+      "invalid_selected_devices": "Érvénytelen · Eszközök · beállítások",
+      "device_policy_invalid": "Érvénytelen · Jelenlét · beállítások",
+      "device_method_invalid": "Érvénytelen · vezérlés · beállítások",
+      "device_hardware_required": "Érvénytelen · Kötelező · beállítások",
+      "device_power_required_for_off": "Érvénytelen · Teljesítmény · beállítások",
+      "device_temperature_required": "Érvénytelen · Hőmérséklet · beállítások",
+      "device_humidity_required": "Érvénytelen · Páratartalom · beállítások",
+      "device_air_sensor_required": "Érvénytelen · érzékelő · beállítások",
+      "device_temperature_band_invalid": "Érvénytelen · Hőmérséklet · beállítások",
+      "device_humidity_invalid": "Érvénytelen · Páratartalom · beállítások",
+      "device_runtime_invalid": "Érvénytelen · Teljesítmény · beállítások",
+      "invalid_setup_rooms": "Érvénytelen: Figyelendő helyiségek",
+      "invalid_room_source": "Érvénytelen: Szoba · forrás"
+    },
+    "abort": {
+      "setup_area_removed": "Érvénytelen: Figyelendő helyiségek",
+      "setup_changed": "beállítások ↻ Figyelendő helyiségek"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Levegőminőség",
+        "state": {
+          "open": "Csukd be · Mérések",
+          "close": "Automatikus értesítések · Mérések",
+          "idle": "Jó",
+          "blocked": "Tartsd csukva az ablakokat"
+        }
+      },
+      "area_overview": {
+        "name": "Környezeti áttekintés"
+      },
+      "area_surface_humidity": {
+        "name": "Felületi páratartalom (számított)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}Vezérlő állapota"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Kint · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Kint · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Kint · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Kint · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Kint · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Kint · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Kültéri (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Kültéri (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Kültéri (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Levegőminőség · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Levegőminőség · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Levegőminőség · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Levegőminőség · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Levegőminőség · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Levegőminőség · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Levegőminőség · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Penészesedési mutató · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Kint · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Kint · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Kint · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Időjárás és riasztások · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Nyisd ki (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Értesítések (opcionális) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "PID · cél (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID · Kp · vezérlés (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID · Ki · vezérlés (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID · Kd · vezérlés (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID · (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID · (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID · (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID · (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID · (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID · (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Fűtés · Szoba · Jelenlét"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Hűtés · Szoba · Jelenlét"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Páratartalom · Szoba · Jelenlét · cél (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Fűtés · Otthon"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Hűtés · Otthon"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Páratartalom · Otthon · cél (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Fűtés · Otthon · Kikapcsolás"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Hűtés · Otthon · Kikapcsolás"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Páratartalom · Otthon · Kikapcsolás · cél (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Fűtés · Alvás"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Hűtés · Alvás"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Páratartalom · Alvás · cél (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Fűtés · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Hűtés · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Páratartalom · ECO · cél (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Pollen · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Pollen · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "forrás · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "beállítások · forrás (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · cél (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Sebesség · Kültéri (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "beállítások · forrás (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "beállítások · forrás (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Eszközök · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Jelenlét · Eszközök · érzékelő · Kötelező"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Eszközök (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Páratartalom · Eszközök (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Páratartalom · Eszközök (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Páratartalom · Eszközök · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Eszközök · Hőmérséklet −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Eszközök (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Eszközök · Sebesség (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Eszközök · Sebesség (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID · Kp · vezérlés (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID · Ki · vezérlés (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID · Kd · vezérlés (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "PID · beállítások · forrás (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "PID · beállítások · forrás · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "PID · beállítások · forrás · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Penészesedési mutató · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "PID · {channel}Kp · vezérlés (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "PID · {channel}Ki · vezérlés (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "PID · {channel}Kd · vezérlés (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "PID · {channel}(s)"
+      },
+      "equipment_pid_process_gain": {
+        "name": "PID · {channel}Process gain (PV per full output)"
+      },
+      "equipment_pid_time_constant_minutes": {
+        "name": "PID · {channel}Response time constant"
+      },
+      "equipment_pid_dead_time_minutes": {
+        "name": "PID · {channel}Response dead time"
+      },
+      "equipment_pid_lambda_minutes": {
+        "name": "PID · {channel}IMC response Lambda"
+      },
+      "equipment_pid_capacity_stage_1": {
+        "name": "PID · {channel}Measured fan stage 1 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_2": {
+        "name": "PID · {channel}Measured fan stage 2 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_3": {
+        "name": "PID · {channel}Measured fan stage 3 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_stage_4": {
+        "name": "PID · {channel}Measured fan stage 4 · Measured delivered capacity (%)"
+      },
+      "equipment_pid_capacity_speed_1": {
+        "name": "PID · {channel}Measured fan speed 1 (%)"
+      },
+      "equipment_pid_capacity_output_1": {
+        "name": "PID · {channel}Measured delivered capacity 1 (%)"
+      },
+      "equipment_pid_capacity_speed_2": {
+        "name": "PID · {channel}Measured fan speed 2 (%)"
+      },
+      "equipment_pid_capacity_output_2": {
+        "name": "PID · {channel}Measured delivered capacity 2 (%)"
+      },
+      "equipment_pid_capacity_speed_3": {
+        "name": "PID · {channel}Measured fan speed 3 (%)"
+      },
+      "equipment_pid_capacity_output_3": {
+        "name": "PID · {channel}Measured delivered capacity 3 (%)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "PID · {channel}beállítások · forrás (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Csendes ventilátorfokozat korlátja (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Teljesítmény · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Teljesítmény · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Teljesítmény · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Szoba · Hőmérséklet · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Szoba · Hőmérséklet · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Szoba · Páratartalom · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Szoba · Páratartalom · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Szoba · Sebesség · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Szoba · Sebesség · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Otthon · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automatikus · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automatikus"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Értesítések (opcionális)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Pollen · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Alvás"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automatikus"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Alvás · Eszközök"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Alvás · Automatikus"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Eszközök · Kültéri"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Alacsonyabb zaj alváskor"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Alacsonyabb zaj jelenlétkor"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}érzékelő · Kötelező"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Nyelv"
+      },
+      "area_manual_profile": {
+        "name": "Eszközök · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "PID · Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Otthon · Jelenlét · vezérlés"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Jelenlét · Eszközök"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Otthon · Eszközök · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Eszközök · forrás · cél"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Szabályozási mód",
+        "state": {
+          "existing": "Meglévő helyiségszabályozó",
+          "automatic": "Automatikus",
+          "manual": "Kézi",
+          "off": "Kikapcsolás",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Natív csendes ventilátorfokozat"
+      },
+      "equipment_pid_calibration_method": {
+        "name": "PID · {channel}calibration method",
+        "state": {
+          "manual": "Manual Kp/Ki/Kd",
+          "imc_lambda": "IMC / Lambda (measured response)",
+          "cohen_coon": "Cohen–Coon (measured response)"
+        }
+      },
+      "equipment_pid_fan_capacity_mode": {
+        "name": "PID · {channel}fan capacity strategy",
+        "state": {
+          "legacy": "Original PID allocation",
+          "measured": "Measured capacity compensation"
+        }
+      },
+      "equipment_pid_fan_capacity_for_mode": {
+        "name": "PID · {channel}Calibrate for HVAC mode",
+        "state": {
+          "choose": "Choose direction",
+          "heat": "Heating",
+          "cool": "Cooling",
+          "dry": "Drying",
+          "fan_only": "Fan only"
+        }
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}vezérlés · Jelenlét",
+        "state": {
+          "always": "Automatikus",
+          "occupied": "Szoba · Jelenlét",
+          "absent": "Szoba · Jelenlét · Kikapcsolás"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Alvás · vezérlés",
+        "state": {
+          "normal": "Automatikus",
+          "pause": "Szünet",
+          "sleep_targets": "Alvás · cél"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}vezérlés · Eszközök",
+        "state": {
+          "extraction": "Kültéri · vezérlés",
+          "filtration": "PM2.5 · vezérlés",
+          "auto": "Automatikus"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Hőmérséklet · forrás"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "forrás · Sebesség · Kültéri (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Alvás · Eszközök · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Alvás · Eszközök · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Penészesedési mutató · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Ellenőrzés és folytatás"
+      },
+      "equipment_pid_apply_calibration": {
+        "name": "PID · {channel}Apply verified calibration"
+      },
+      "equipment_pid_apply_fan_capacity": {
+        "name": "PID · {channel}Apply measured fan capacity"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Klímaszabályozó"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Értesítések (opcionális) — Home Environment Manager",
+      "description": "Értesítések (opcionális) · Helyiségek",
+      "fields": {
+        "language": {
+          "name": "Nyelv",
+          "description": "Nyelv"
+        },
+        "channels": {
+          "name": "Értesítések (opcionális)",
+          "description": "Értesítések (opcionális)"
+        },
+        "areas": {
+          "name": "Helyiségek",
+          "description": "Helyiségek"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Alapértelmezett",
+        "en": "beállítások · forrás",
+        "de": "beállítások · forrás",
+        "el": "beállítások · forrás",
+        "fr": "beállítások · forrás",
+        "es": "beállítások · forrás",
+        "it": "beállítások · forrás",
+        "nl": "beállítások · forrás",
+        "pt": "beállítások · forrás",
+        "pt-br": "beállítások · forrás",
+        "pl": "beállítások · forrás",
+        "ru": "beállítások · forrás",
+        "uk": "beállítások · forrás",
+        "tr": "beállítások · forrás",
+        "cs": "beállítások · forrás",
+        "sk": "beállítások · forrás",
+        "hu": "beállítások · forrás",
+        "ro": "beállítások · forrás",
+        "bg": "beállítások · forrás",
+        "hr": "beállítások · forrás",
+        "sr": "beállítások · forrás",
+        "sv": "beállítások · forrás",
+        "nb": "beállítások · forrás",
+        "da": "beállítások · forrás",
+        "fi": "beállítások · forrás",
+        "id": "beállítások · forrás",
+        "vi": "beállítások · forrás",
+        "th": "beállítások · forrás",
+        "hi": "beállítások · forrás",
+        "zh-hans": "beállítások · forrás",
+        "zh-hant": "beállítások · forrás",
+        "ja": "beállítások · forrás",
+        "ko": "beállítások · forrás",
+        "ar": "beállítások · forrás",
+        "he": "beállítások · forrás",
+        "fa": "beállítások · forrás",
+        "bn": "beállítások · forrás",
+        "ur": "beállítások · forrás",
+        "ta": "beállítások · forrás"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Otthon · Jelenlét",
+        "all_home": "Otthon · Eszközök · Jelenlét"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cél · vezérlés",
+        "native": "Eszközök · vezérlés",
+        "power": "Teljesítmény",
+        "speed": "Sebesség"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatikus",
+        "room": "Szoba · Jelenlét",
+        "home": "Otthon · Jelenlét"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Szünet",
+        "off": "Kikapcsolás"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatikus",
+        "pause": "Szünet",
+        "sleep_targets": "Alvás · cél"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Kültéri · vezérlés",
+        "filtration": "PM2.5 · vezérlés"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "forrás · Érvénytelen",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cél · beállítások"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Helyiségközpont",
+      "initiate_flow": {
+        "user": "Helyiségközpont"
+      },
+      "step": {
+        "user": {
+          "title": "Helyiségközpont",
+          "description": "Válassz egy Home Assistant-területet. A csoport az általános helyiségbeállításokat és minden kiválasztott fizikai eszközhöz egy vezérlőt tartalmaz. A helyiség hozzáadása nem kapcsolja be az eszközök automatikus vezérlését.",
+          "data": {
+            "area_id": "Szoba"
+          },
+          "data_description": {
+            "area_id": "Válassz egy Home Assistant-területet. A csoport az általános helyiségbeállításokat és minden kiválasztott fizikai eszközhöz egy vezérlőt tartalmaz. A helyiség hozzáadása nem kapcsolja be az eszközök automatikus vezérlését."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Érvénytelen: Terület."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
