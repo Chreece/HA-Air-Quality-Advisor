@@ -38,10 +38,13 @@ def bounded_attributes(
     result["truncated_fields"] = {}
     if _size(result) > max_bytes:
         raise ValueError("Recorder-safe metadata unexpectedly exceeds limit")
+    # The optional field map has a fixed small set of names, but partial-list
+    # counts must still fit after adding the last optional field.
+    payload_budget = max_bytes - 1024
 
     for key, value in optional.items():
         trial = {**result, key: value}
-        if _size(trial) <= max_bytes:
+        if _size(trial) <= payload_budget:
             result[key] = value
             continue
         if isinstance(value, list):
