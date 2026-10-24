@@ -8,7 +8,7 @@
 - Keep Automatic/PID/Manual selection as the authorization for that exact native controller to start/stop supported physical equipment or HVAC modes on verified demand.
 - Preserve observed physical OFF age and allow deliberate method reselection to re-arm a software pause.
 - Keep all availability, window, dwell/runtime, ownership, defrost/interlock and acknowledgement protections.
-- Publish only from the frozen `release/beta28-ready-20261024` candidate branch.
+- Publish only from the frozen `release/beta28-ready2-20261024` candidate branch.
 
 ## 0.6.0b27 - Canonical storage, room targets and active controllers (beta)
 
