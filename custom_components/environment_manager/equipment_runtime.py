@@ -25,6 +25,11 @@ from .climate_entry_ownership import foreign_owner_hold
 from .occupancy_policy import live_device_permission, room_presence, sleep_presence
 from .pid_math import finite, target_from_unit, target_to_unit, quantize_target
 from .pid_output_allocator import fan_speed_for_pid, ordered_fan_stages, percentage_output_requested
+from .pid_fan_capacity import (
+    allocate as allocate_fan_capacity,
+    build_model as build_fan_capacity_model,
+    model_is_valid as fan_capacity_model_is_valid,
+)
 from .pid_calibration import tune as tune_pid
 from . import equipment_model as model
 
@@ -85,6 +90,7 @@ class EquipmentRuntime:
         self._tasks: dict[str, asyncio.Task] = {}
         self._locks: dict[str, asyncio.Lock] = {}
         self._memory: dict[str, tuple[Any, model.PIDMemory, float]] = {}
+        self._fan_allocations: dict[str, dict] = {}
         self._store = None
         self._ready = False
         self._active = False
@@ -254,6 +260,37 @@ class EquipmentRuntime:
                 if value is None or (value > 0 and value < limits[0]):
                     raise HomeAssistantError(f"Invalid PID response parameter: {key}")
                 new[key] = value
+            if new["pid_fan_capacity_mode"] not in model.PID_FAN_CAPACITY_METHODS:
+                raise HomeAssistantError("Unsupported PID fan capacity strategy")
+            direction = new["pid_fan_capacity_for_mode"]
+            if direction not in ("choose", *model.PID_FAN_DIRECTIONS):
+                raise HomeAssistantError("Unsupported calibrated HVAC direction")
+            if direction != "choose" and direction not in cap.modes:
+                raise HomeAssistantError("Fan capacity calibration direction is not a native HVAC mode")
+            for key, limits in model.PID_FAN_CAPACITY_FIELDS.items():
+                value = finite(new[key], 0, limits[1])
+                if value is None:
+                    raise HomeAssistantError(f"Invalid measured fan capacity input: {key}")
+                new[key] = value
+            maps = new.get("pid_fan_capacity_models")
+            if not isinstance(maps, dict) or set(maps) - set(model.PID_FAN_DIRECTIONS):
+                raise HomeAssistantError("Invalid per-mode PID capacity models")
+            # The apply button is the sole writer of calibrated model maps.
+            if "pid_fan_capacity_models" in changes and not isinstance(
+                changes["pid_fan_capacity_models"], dict
+            ):
+                raise HomeAssistantError("Invalid calibrated fan model data")
+            if new["pid_fan_capacity_mode"] == "measured":
+                saved = maps.get(direction)
+                if (new["control_mode"] != "pid"
+                        or not cap.fan_entity
+                        or not fan_capacity_model_is_valid(
+                            saved, mode=direction, physical_entity=cap.primary,
+                            fan_entity=cap.fan_entity, percentage=cap.fan_percentage,
+                            advertised_modes=cap.fan_modes)):
+                    raise HomeAssistantError(
+                        "Measured PID fan capacity requires a valid saved model for this exact HVAC direction"
+                    )
             if new["preset"] not in model.PRESETS:
                 raise HomeAssistantError("Unsupported comfort preset")
             if new["requested_mode"] is not None and new["requested_mode"] not in cap.modes:
@@ -426,6 +463,49 @@ class EquipmentRuntime:
         await self.async_update(spec, {
             "kp": result.kp, "ki": result.ki, "kd": result.kd,
             "pid_last_calibration": model_evidence,
+        })
+
+    async def async_apply_fan_capacity(self, spec: model.ManagedDevice) -> None:
+        """Apply a measured fan/output capacity curve while safely OFF.
+
+        This does not measure capacity, switch the fan, run a relay step test,
+        reset existing PID gains, or issue a physical Home Assistant service.
+        """
+        cfg = model.settings(self.manager, spec)
+        if cfg["control_mode"] != "pid":
+            raise HomeAssistantError("Select PID before applying measured fan capacity")
+        cap = model.capabilities(self.manager, spec)
+        if cap is None or not self._current_spec(spec) or not cap.fan_entity:
+            raise HomeAssistantError("Native fan capabilities unavailable")
+        if cap.domain not in ("climate", "humidifier"):
+            raise HomeAssistantError("Capacity compensation is for ON/OFF equipment with a fan")
+        direction = cfg["pid_fan_capacity_for_mode"]
+        if direction not in model.PID_FAN_DIRECTIONS or direction not in cap.modes:
+            raise HomeAssistantError("Select the specific native heating/cooling/drying direction")
+        record = self._record(spec)
+        source = self.hass.states.get(cap.primary)
+        if (source is None or not output_off(source) or record.get("pending")
+                or record.get("power") or record.get("paused")):
+            raise HomeAssistantError("Physical device must be safely OFF, idle and reconciled")
+        fan_min = model.device_limits(self.manager, spec, cap)["fan_min_percentage"]
+        try:
+            curve = build_fan_capacity_model(
+                percentage=cap.fan_percentage,
+                advertised_modes=cap.fan_modes, measured=cfg,
+                min_speed=fan_min,
+            )
+        except ValueError as error:
+            raise HomeAssistantError(f"Invalid measured fan capacities: {error}") from error
+        saved = {
+            **curve, "direction": direction,
+            "physical_entity": cap.primary, "fan_entity": cap.fan_entity,
+            "sources": list(spec.source_entities),
+        }
+        maps = deepcopy(cfg["pid_fan_capacity_models"])
+        maps[direction] = saved
+        await self.async_update(spec, {
+            "pid_fan_capacity_models": maps,
+            "pid_fan_capacity_mode": "measured",
         })
 
     async def async_set_targets(self, spec: model.ManagedDevice, values: dict,
