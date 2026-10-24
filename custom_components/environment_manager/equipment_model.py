@@ -37,6 +37,11 @@ NUMBER_FIELDS = {
 }
 QUIET_FLAGS = ("quiet_sleep", "quiet_occupied")
 from .pid_calibration import METHODS as PID_CALIBRATION_METHODS, MODEL_FIELDS as PID_MODEL_FIELDS
+from .pid_fan_capacity import (
+    CAPACITY_FIELDS as PID_FAN_CAPACITY_FIELDS,
+    CAPACITY_METHODS as PID_FAN_CAPACITY_METHODS,
+    CALIBRATION_DIRECTIONS as PID_FAN_DIRECTIONS,
+)
 POWER_FIELDS = ("min_on_seconds", "min_off_seconds", "max_on_seconds")
 LIMIT_FIELDS = (
     "temperature_min_limit", "temperature_max_limit",
@@ -51,8 +56,12 @@ DEFAULTS = {"control_mode": "existing", "preset": "none", "requested_mode": None
             "quiet_sleep": False, "quiet_occupied": False,
             "quiet_fan_mode": None, "profile_targets": {}, "profile_fans": {},
             "pid_calibration_method": "manual", "pid_last_calibration": None,
+            "pid_fan_capacity_mode": "legacy",
+            "pid_fan_capacity_for_mode": "choose",
+            "pid_fan_capacity_models": {},
             **{key: item[4] for key, item in NUMBER_FIELDS.items()},
-            **{key: 0.0 for key in PID_MODEL_FIELDS}}
+            **{key: 0.0 for key in PID_MODEL_FIELDS},
+            **{key: 0.0 for key in PID_FAN_CAPACITY_FIELDS}}
 
 
 @dataclass(frozen=True, slots=True)
