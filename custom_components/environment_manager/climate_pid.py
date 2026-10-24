@@ -15,6 +15,7 @@ import time
 from typing import Any, Callable
 
 from .discovery import entity_area, temperature_sensor_c
+from .const import DOMAIN
 from .climate_entry_ownership import foreign_owner_hold
 from .pid_math import (
     DEFAULT_PID, Memory, bounded_command, finite, setpoint_c, step,
