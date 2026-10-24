@@ -1,0 +1,21 @@
+name: Correct beta31 release title
+on:
+  push:
+    branches:
+      - 'chore/beta31-release-title-20261024'
+permissions:
+  contents: write
+jobs:
+  correct_release_title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repair release display name without modifying tag, code, or assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh release view v0.6.0b31 --repo "$GITHUB_REPOSITORY" --json isPrerelease --jq .isPrerelease)" = "true"
+          gh release edit v0.6.0b31 \
+            --repo "$GITHUB_REPOSITORY" \
+            --title 'Home Environment Manager v0.6.0 beta 31'
+          test "$(gh release view v0.6.0b31 --repo "$GITHUB_REPOSITORY" --json name --jq .name)" = "Home Environment Manager v0.6.0 beta 31"
