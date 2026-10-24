@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 41 is available for opt-in testing.** Stable remains **v0.5.1**. Beta41 adds opt-in **measured fan capacity compensation** for PID-controlled ON/OFF appliances: the controller adjusts fan speed and duty from actual measured relative capacity, respects quiet caps and reports unserved demand, while the Legacy strategy remains the default. All earlier safety and beta31–40 fixes remain; the domain is `environment_manager`.
+> **v0.6.0 beta 42 is available for opt-in testing.** Stable remains **v0.5.1**. Beta42 makes every PID parameter entity's friendly name start with **PID** in all 38 supported languages, including per-device calibration/measurements and room PID settings, while leaving non-PID entities and all device behavior unchanged. Beta31–41 fixes remain; the domain is `environment_manager`.
+
+## Beta 42 - PID parameters sort together in all languages
+
+All native managed-controller PID numeric parameters and calibration inputs/buttons/selectors now have **PID · ...** at the beginning of their translated entity name, as do room-level PID and direct-controller tuning parameters. Each of the 38 translations preserves the original localized description and units. A physical channel name, where present, follows PID instead of preceding it.
+
+Home Assistant's device-name prefixing is disabled for these PID parameter entities only, making their actual friendly names group alphabetically in the device UI. Existing entity IDs/unique IDs, native device associations, controller state/permissions, calibration models and non-PID entity names remain unchanged. If you previously assigned a manual entity display name in Home Assistant, clear that name to use the integration's translated PID-first label.
 
 ## Beta 41 - measured fan-stage capacity adjusts ON/OFF PID duration
 
