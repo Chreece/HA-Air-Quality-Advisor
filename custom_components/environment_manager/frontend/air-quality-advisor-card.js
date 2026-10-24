@@ -505,7 +505,7 @@
       // or leave it; replacing shadowRoot.innerHTML while it is open closes
       // the browser's picker and discards any unfinished manual edit.
       this.shadowRoot.addEventListener('focusin', (event) => {
-        const editor = event.target.closest?.('[data-climate-method],[data-climate-input]');
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input]');
         if (!editor) return;
         this._focusedEditor = editor;
         if (this._editRenderTimer !== null) {
@@ -514,7 +514,7 @@
         }
       });
       this.shadowRoot.addEventListener('pointerdown', (event) => {
-        const editor = event.target.closest?.('[data-climate-method],[data-climate-input]');
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input]');
         if (editor) this._focusedEditor = editor;
       });
       this.shadowRoot.addEventListener('focusout', (event) => {
@@ -549,6 +549,46 @@
               detail:{entityId}, bubbles:true, composed:true
             }));
           }
+          return;
+        }
+        const pidSave = event.target.closest?.('[data-save-pid-model]');
+        if (pidSave && this._hass?.callService) {
+          const area=pidSave.getAttribute('data-controller-area');
+          const entityId=pidSave.getAttribute('data-save-pid-model');
+          const field=pidSave.getAttribute('data-pid-model-field');
+          const linked=this._managedControllers(area).find((item)=>
+            item.calibrationNumbers?.some((info)=>
+              info.id===entityId && info.field===field));
+          const input=pidSave.closest('.climate-target-editor')
+            ?.querySelector('input[data-pid-model-input]');
+          const parsed=input ? Number(String(input.value).replace(',','.')) : NaN;
+          const record=linked?.calibrationNumbers?.find((item)=>item.id===entityId);
+          const low=Number(record?.state?.attributes?.min);
+          const high=Number(record?.state?.attributes?.max);
+          if (!linked || !linked.calibrationSelect ||
+              linked.method?.state!=='pid' ||
+              linked.calibrationSelect.state==='manual' ||
+              !Number.isFinite(parsed) || !Number.isFinite(low) ||
+              !Number.isFinite(high) || parsed<low || parsed>high) return;
+          Promise.resolve(this._hass.callService('number','set_value',{
+            entity_id:entityId,value:parsed
+          })).catch((error)=>console.warn('PID model input rejected',error));
+          return;
+        }
+        const pidApply = event.target.closest?.('[data-apply-pid-calibration]');
+        if (pidApply && this._hass?.callService) {
+          const area=pidApply.getAttribute('data-controller-area');
+          const entityId=pidApply.getAttribute('data-apply-pid-calibration');
+          const linked=this._managedControllers(area).find((item)=>
+            item.calibrationButtonId===entityId);
+          if (!linked || linked.method?.state!=='pid' ||
+              !linked.calibrationSelect ||
+              linked.calibrationSelect.state==='manual' ||
+              linked.climate?.state==='unavailable') return;
+          // The server independently checks model validity and physical OFF;
+          // this is a deliberate apply action, never automatic calibration.
+          Promise.resolve(this._hass.callService('button','press',{entity_id:entityId}))
+            .catch((error)=>console.warn('PID calibration not applied',error));
           return;
         }
         const targetSave = event.target.closest?.('[data-save-climate-target]');
@@ -618,21 +658,25 @@
         this._render(true);
       });
       this.shadowRoot.addEventListener('change', (event) => {
-        const selector = event.target.closest?.('[data-climate-method]');
+        const pidSelection = event.target.closest?.('[data-pid-calibration-method]');
+        const selector = pidSelection || event.target.closest?.('[data-climate-method]');
         if (!selector || !this._hass?.callService) return;
         const area = selector.getAttribute('data-controller-area');
-        const entityId = selector.getAttribute('data-climate-method');
-        const current = this._managedControllers(area).find(
-          (item)=>item.methodId===entityId);
+        const entityId = selector.getAttribute(pidSelection ?
+          'data-pid-calibration-method' : 'data-climate-method');
+        const current = this._managedControllers(area).find((item)=>
+          pidSelection ? item.calibrationSelectId===entityId &&
+            item.method?.state==='pid' : item.methodId===entityId);
         const value = selector.value;
-        const choices = current?.method?.attributes?.options;
+        const choices = (pidSelection ? current?.calibrationSelect
+          : current?.method)?.attributes?.options;
         if (!current || current.climate?.state==='unavailable' ||
             !Array.isArray(choices) || !choices.includes(value)) return;
         this._climateEditError = null;
         Promise.resolve(this._hass.callService('select','select_option',{
           entity_id:entityId,option:value
         })).catch((error)=>{
-          console.error('Home Environment Manager control method failed',error);
+          console.error('Home Environment Manager controller selector failed',error);
           this._climateEditError = (CLIMATE_LABELS[this._language()] ||
             CLIMATE_LABELS.en).editFailed;
           this._render(true);
@@ -921,10 +965,31 @@
         ['automatic','manual','off'].every((mode)=>item.attributes.options.includes(mode)));
       const signature = (item) => JSON.stringify(
         safeArray(item.attributes.source_entity_ids).slice().sort());
+      const calibrationSelectors=states.filter(([id,item])=>
+        id.startsWith('select.') && item?.attributes?.area_id===area &&
+        item.attributes.pid_calibration_role==='method');
+      const calibrationButtons=states.filter(([id,item])=>
+        id.startsWith('button.') && item?.attributes?.area_id===area &&
+        item.attributes.pid_calibration_role==='apply');
+      const calibrationInputs=states.filter(([id,item])=>
+        id.startsWith('number.') && item?.attributes?.area_id===area &&
+        typeof item.attributes.pid_calibration_field==='string');
       return physical.map(([entityId, climate])=>{
         const matched = selectors.filter(([,item])=>signature(item)===signature(climate));
         const [methodId, method] = matched.length===1 ? matched[0] : [null,null];
-        return {entityId,climate,methodId,method};
+        const found=calibrationSelectors.filter(([,item])=>signature(item)===signature(climate));
+        const [calibrationSelectId,calibrationSelect]=found.length===1 ?
+          found[0] : [null,null];
+        const buttons=calibrationButtons.filter(([,item])=>signature(item)===signature(climate));
+        const [calibrationButtonId,calibrationButton]=buttons.length===1 ?
+          buttons[0] : [null,null];
+        const calibrationNumbers=calibrationInputs.filter(([,item])=>
+          signature(item)===signature(climate)).map(([id,state])=>({
+            id,state,field:state.attributes.pid_calibration_field,
+          }));
+        return {entityId,climate,methodId,method,calibrationSelectId,
+                calibrationSelect,calibrationButtonId,calibrationButton,
+                calibrationNumbers};
       }).sort((a,b)=>a.entityId.localeCompare(b.entityId));
     }
 
@@ -933,7 +998,9 @@
       // controller is switched to Manual/PID/Off in Home Assistant.
       const rows = Object.entries(this._hass?.states || {})
         .filter(([id, state]) =>
-          (id.startsWith('select.') || id.startsWith('climate.')) &&
+          (id.startsWith('select.') || id.startsWith('climate.') ||
+           (id.startsWith('button.') && state?.attributes?.pid_calibration_role) ||
+           (id.startsWith('number.') && state?.attributes?.pid_calibration_field)) &&
           Array.isArray(state?.attributes?.source_entity_ids) &&
           typeof state.attributes.area_id==='string')
         .map(([id,state])=>[
@@ -942,6 +1009,9 @@
           state.attributes.supported_features,
           state.attributes.options,
           state.attributes.source_entity_ids,
+          state.attributes.pid_calibration_role,
+          state.attributes.pid_calibration_field,
+          state.attributes.calibration_status,
         ]);
       return JSON.stringify(rows);
     }
