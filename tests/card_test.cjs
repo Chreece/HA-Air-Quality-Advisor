@@ -751,3 +751,140 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   }}});
   assert.equal(navigate.pop(),'/config/devices/device/home-registered-id');
 })().catch((err)=>{console.error(err);process.exitCode=1;});
+
+
+// Beta34: room-level Environment means observation, not missing managed
+// devices. Each managed controller offers its own real HA entity and selector.
+{
+  const dashboard=JSON.parse(JSON.stringify(input));
+  dashboard.rooms=[{
+    area_id:'bath',name:'Bathroom',status:'unknown',readings:[
+      {entity_id:'sensor.unclassified_input',name:'sensor.unclassified_input',
+       metric:'unknown',value:null,unit:'',available:false}
+    ],windows:[],
+    environment:{climate_plan:{
+      status:'advisory',controller:'environment',profile:'home',
+      reason:'environment_only_no_hvac',temperature_c:21.5,
+      temperature_evidence:{status:'ready',entity_ids:['sensor.bath_temperature']},
+    }},
+  }];
+  const climateId='climate.bath_controller_climate_controller';
+  const methodId='select.bath_controller_control_method';
+  const climate={state:'off',attributes:{
+    area_id:'bath',source_entity_ids:['humidifier.native'],
+    control_mode:'manual',friendly_name:'Bath manager',
+    supported_features:4+16+128+256,humidity:55,
+    min_humidity:20,max_humidity:80,
+    controller_status:{status:'within_target_band'},
+  }};
+  const method={state:'manual',attributes:{
+    area_id:'bath',source_entity_ids:['humidifier.native'],
+    options:['existing','automatic','manual','pid','off'],
+  }};
+  const calls=[],popups=[];
+  const widget=new Card();
+  widget.setConfig({entity:'sensor.beta34'});
+  widget.dispatchEvent=(event)=>{popups.push(event);return true;};
+  const base={state:'idle',attributes:{dashboard}};
+  const snapshots={
+    'sensor.beta34':base,[climateId]:climate,[methodId]:method,
+    'climate.native':{state:'off',attributes:{fan_modes:['low','high']}},
+  };
+  widget.hass={language:'el',states:snapshots,
+    callService:(domain,service,payload)=>{
+      calls.push([domain,service,payload]);return Promise.resolve();
+    }};
+  let html=widget.shadowRoot.innerHTML;
+  assert.ok(html.includes('Παρακολούθηση δωματίου'),'room-only message not translated');
+  assert.ok(!html.includes('environment_only_no_hvac'),'raw internal reason must be hidden');
+  assert.ok(html.includes('Θερμοκρασία δωματίου'),'verified room temperature shown');
+  assert.ok(html.includes('21,5') || html.includes('21.5'));
+  assert.ok(html.includes('data-open-climate="'+climateId+'"'));
+  assert.ok(html.includes('data-climate-method="'+methodId+'"'));
+  assert.ok(html.includes('data-save-climate-target="'+climateId+'"'));
+  assert.ok(html.includes('data-target-metric="humidity"'));
+  assert.ok(html.includes('data-climate-input="humidity"'));
+  assert.ok(!html.includes('metric_unknown'),'unsupported metric must show identity');
+  assert.ok(html.includes('sensor.unclassified_input'),'unsupported input not hidden');
+
+  const elt=(attrs, editor=null)=>({
+    getAttribute:(key)=>attrs[key]??null,
+    closest:(selector)=>selector==='.climate-target-editor' ? editor : null,
+  });
+  const eventTarget=(match, attrs, editor=null)=>({
+    closest:(selector)=>selector.includes(match) ? elt(attrs,editor) : null,
+  });
+  const previous=global.CustomEvent;
+  global.CustomEvent=class {
+    constructor(type,opts){this.type=type;this.detail=opts.detail;this.bubbles=opts.bubbles;this.composed=opts.composed;}
+  };
+  widget.shadowRoot.listeners.click({target:eventTarget('[data-open-climate]',{
+    'data-open-climate':climateId,'data-controller-area':'bath',
+  })});
+  assert.equal(popups.length,1);
+  assert.equal(popups[0].type,'hass-more-info');
+  assert.deepEqual(popups[0].detail,{entityId:climateId});
+  assert.equal(popups[0].composed,true);
+  global.CustomEvent=previous;
+
+  widget.shadowRoot.listeners.change({target:{
+    value:'automatic',
+    closest:(selector)=>selector==='[data-climate-method]'
+      ? elt({'data-controller-area':'bath','data-climate-method':methodId}) : null,
+  }});
+  assert.deepEqual(calls[0],['select','select_option',
+    {entity_id:methodId,option:'automatic'}]);
+
+  widget.shadowRoot.listeners.click({target:eventTarget(
+    '[data-save-climate-target]',{
+      'data-controller-area':'bath','data-save-climate-target':climateId,
+      'data-target-metric':'humidity',
+    },{querySelector:()=>({value:'58'})})});
+  assert.deepEqual(calls[1],['climate','set_humidity',
+    {entity_id:climateId,humidity:58}]);
+
+  // Wrong area and unsupported numeric targets cannot trigger physical calls.
+  widget.shadowRoot.listeners.click({target:eventTarget(
+    '[data-save-climate-target]',{
+      'data-controller-area':'kitchen','data-save-climate-target':climateId,
+      'data-target-metric':'humidity',
+    },{querySelector:()=>({value:'57'})})});
+  assert.equal(calls.length,2,'reject cross-room entity commands');
+
+  // Independent method changes are reflected even when the room sensor
+  // object itself stays unchanged; no hidden all-entity refresh is needed.
+  method.state='automatic';
+  widget.hass={language:'el',states:snapshots,callService:()=>Promise.resolve()};
+  html=widget.shadowRoot.innerHTML;
+  assert.ok(!html.includes('data-save-climate-target="'+climateId+'"'));
+  assert.ok(html.includes('option value="automatic" selected'));
+}
+
+// A temperature-supporting native controller gets a °C manual editor rather
+// than a fake humidity control; missing device control entities stay read-only.
+{
+  const dashboard=JSON.parse(JSON.stringify(input));
+  dashboard.rooms=[{area_id:'living',name:'Living',status:'safe',
+    readings:[],windows:[],environment:{climate_plan:{
+      status:'advisory',controller:'environment',reason:'environment_only_no_hvac',
+    }}}];
+  const card=new Card();
+  card.setConfig({entity:'sensor.beta34_temp'});
+  card.hass={language:'en',states:{
+    'sensor.beta34_temp':{state:'idle',attributes:{dashboard}},
+    'climate.living_manager':{state:'off',attributes:{
+      area_id:'living',source_entity_ids:['climate.living_native'],
+      control_mode:'manual',friendly_name:'<img src=x onerror=alert(1)>',
+      supported_features:1+16+128+256,temperature:20,
+      min_temp:5,max_temp:35,
+    }},
+    'select.living_manager_control_method':{state:'manual',attributes:{
+      area_id:'living',source_entity_ids:['climate.living_native'],
+      options:['existing','automatic','manual','pid','off'],
+    }},
+  }};
+  assert.ok(card.shadowRoot.innerHTML.includes('data-target-metric="temperature"'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('data-target-metric="humidity"'));
+  assert.ok(card.shadowRoot.innerHTML.includes('&lt;img src=x'));
+  assert.ok(!card.shadowRoot.innerHTML.includes('<img src=x onerror='));
+}
