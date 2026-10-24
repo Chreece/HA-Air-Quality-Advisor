@@ -37,14 +37,61 @@ PID_NUMBERS = {
     "max_change_c": (0.1, 2.0, 0.05, "°C"),
     "min_change_c": (0.05, 1.0, 0.05, "°C"),
 }
-# Room-owned operating bands. Away intentionally uses the room's hard
-# temperature min/max limits, so it has no duplicate setpoint entities here.
-PROFILE_NUMBERS = {
-    f"{profile}_{mode}": (5.0 if mode == "heat" else 6.0,
-                           35.0 if mode == "heat" else 40.0, 0.5, "°C")
-    for profile in ("comfort", "home", "sleep", "eco")
-    for mode in ("heat", "cool")
+# Room-owned operating targets. Every operating profile has its own
+# temperature band and humidity target. The UI exposes only fields supported
+# by at least one selected physical controller in that room.
+ROOM_PROFILES = ("comfort", "home", "away", "sleep", "eco")
+PROFILE_DEFAULTS = {
+    "comfort": {"heat": 20.0, "cool": 26.0, "humidity": 50.0},
+    "home": {"heat": 18.0, "cool": 28.0, "humidity": 50.0},
+    "away": {"heat": 16.0, "cool": 30.0, "humidity": 50.0},
+    "sleep": {"heat": 18.0, "cool": 26.0, "humidity": 50.0},
+    "eco": {"heat": 17.0, "cool": 29.0, "humidity": 50.0},
 }
+PROFILE_NUMBERS = {
+    **{
+        f"{profile}_{mode}": (
+            5.0 if mode == "heat" else 6.0,
+            35.0 if mode == "heat" else 40.0,
+            0.5,
+            "°C",
+        )
+        for profile in ROOM_PROFILES
+        for mode in ("heat", "cool")
+    },
+    **{
+        f"{profile}_humidity": (20.0, 80.0, 1.0, "%")
+        for profile in ROOM_PROFILES
+    },
+}
+
+
+def room_profile_number_fields(manager: Any, area: str) -> tuple[str, ...]:
+    """Capability-gated room profile targets, independent of automation state."""
+    from . import equipment_model as equipment
+
+    heat = cool = humidity = False
+    for spec in equipment.specs(manager):
+        if spec.area_id != area:
+            continue
+        cap = equipment.capabilities(manager, spec)
+        if cap is None:
+            continue
+        modes = set(cap.modes)
+        if cap.temperature or cap.temperature_range:
+            heat = heat or bool(modes & {"heat", "heat_cool", "auto"}) or cap.temperature_range
+            cool = cool or bool(modes & {"cool", "heat_cool", "auto"}) or cap.temperature_range
+        humidity = humidity or cap.humidity
+
+    result: list[str] = []
+    for profile in ROOM_PROFILES:
+        if heat:
+            result.append(f"{profile}_heat")
+        if cool:
+            result.append(f"{profile}_cool")
+        if humidity:
+            result.append(f"{profile}_humidity")
+    return tuple(result)
 THRESHOLD_NUMBERS = {
     key: (
         -40.0 if key in ("min_outdoor_temp", "max_outdoor_temp") else
@@ -252,8 +299,12 @@ async def update_device_setting(manager: Any, kind: str, key: str,
             rooms = current.get(CONF_CLIMATE_ROOMS, {})
             rooms = deepcopy(rooms) if isinstance(rooms, dict) else {}
             original = rooms.get(area)
-            if not isinstance(original, dict) or original.get("enabled") is not True:
-                raise HomeAssistantError("Room climate management is not enabled")
+            original = deepcopy(original) if isinstance(original, dict) else {}
+            # Profile targets are room preferences, not an actuation grant.
+            # They must be editable as soon as compatible equipment is selected.
+            from .device_hierarchy import configured_area_ids
+            if area not in configured_area_ids(current):
+                raise HomeAssistantError("Select compatible equipment for this room first")
             draft = dict(original)
             if kind == "profile":
                 if key != "manual_profile" or value not in (
@@ -263,19 +314,25 @@ async def update_device_setting(manager: Any, kind: str, key: str,
                 draft[key] = value
             else:
                 if key not in PROFILE_NUMBERS:
-                    raise HomeAssistantError("Unsupported comfort profile target")
+                    raise HomeAssistantError("Unsupported room profile target")
                 group, mode = key.rsplit("_", 1)
+                if group not in ROOM_PROFILES or mode not in ("heat", "cool", "humidity"):
+                    raise HomeAssistantError("Unsupported room profile target")
                 old = draft.get("profiles", {})
                 old = deepcopy(old) if isinstance(old, dict) else {}
                 default_profiles, err = profiles(draft)
                 if err:
                     raise HomeAssistantError(f"Invalid existing profile configuration: {err}")
+                parsed = default_profiles[group]
+                saved = old.get(group, {})
                 band = {
-                    "heat_c": default_profiles[group].heat_c,
-                    "cool_c": default_profiles[group].cool_c,
-                    **(old.get(group, {}) if isinstance(old.get(group), dict) else {}),
+                    "heat_c": parsed.heat_c,
+                    "cool_c": parsed.cool_c,
+                    "humidity": PROFILE_DEFAULTS[group]["humidity"],
+                    **(saved if isinstance(saved, dict) else {}),
                 }
-                band[f"{mode}_c"] = _finite(value, PROFILE_NUMBERS[key])
+                target_key = "humidity" if mode == "humidity" else f"{mode}_c"
+                band[target_key] = _finite(value, PROFILE_NUMBERS[key])
                 old[group] = band
                 draft["profiles"] = old
                 _, reason = profiles(draft)
