@@ -92,7 +92,7 @@ def test_normal_hacs_tag_archive_extraction_lands_in_canonical_directory():
 
 def test_beta28_publisher_creates_flat_branch_and_no_zip_release():
     workflow = (
-        ROOT / ".github" / "workflows" / "beta28-canonical-active-targets.yml"
+        ROOT / ".github" / "workflows" / "beta28-final-canonical-active-targets.yml"
     ).read_text(encoding="utf-8")
     assert "python tools/build_beta28_payload.py" in workflow
     assert "git checkout --orphan beta28-payload" in workflow
