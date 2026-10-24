@@ -51,10 +51,20 @@ async def async_setup_entry(hass, entry, async_add_entities):
     from . import equipment_model as equipment
     entities.extend(EquipmentSelect(manager, spec, "control_mode")
                     for spec in equipment.specs(manager))
-    entities.extend(EquipmentSelect(manager, spec, "quiet_fan_mode")
-                    for spec in equipment.specs(manager)
-                    if (cap := equipment.capabilities(manager, spec)) is not None
-                    and cap.fan_modes and not cap.fan_percentage)
+    from homeassistant.helpers import entity_registry as er
+    from .equipment_feature_registration import (
+        quiet_keys, register_late_capabilities,
+    )
+    registry = er.async_get(hass)
+
+    def native_quiet_selects():
+        return [
+            EquipmentSelect(manager, spec, key)
+            for spec in equipment.specs(manager)
+            for key in quiet_keys(manager, registry, spec, platform="select")
+        ]
+
+    entities.extend(native_quiet_selects())
     from .const import CONF_AREAS
     entities.extend(AreaScienceSource(manager, entry.entry_id, area, key)
                     for area in manager.settings.get(CONF_AREAS, [])
@@ -65,6 +75,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
                     if key != "fan_purpose" or (cap := equipment.capabilities(manager, spec)) is not None
                     and (cap.domain == "fan" or set(cap.modes) == {"off", "fan_only"}))
     async_add_grouped_entities(entry.runtime_data, async_add_entities, entities)
+    register_late_capabilities(
+        hass, entry, async_add_entities, entities, native_quiet_selects,
+    )
 
 
 class TTSLanguageSelect(SelectEntity):
@@ -220,6 +233,18 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
 
     def __init__(self, manager, spec, key):
         self._equipment_init(manager, spec, key)
+
+    @property
+    def available(self):
+        if self._key == "quiet_fan_mode":
+            cap = equipment.capabilities(self._manager, self._spec)
+            return bool(cap and cap.fan_modes and not cap.fan_percentage)
+        return super().available
+
+    async def async_added_to_hass(self):
+        await super().async_added_to_hass()
+        if self._key == "quiet_fan_mode":
+            self._watch_native_updates()
 
     @property
     def options(self):
