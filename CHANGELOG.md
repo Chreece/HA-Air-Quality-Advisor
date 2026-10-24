@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0b26 - Room profile targets and active controller methods (beta)
+
+- Remove historical-domain migration completely; `environment_manager` is the sole runtime/config-flow/storage domain.
+- Add Room Environment targets for Comfort, Home, Away, Sleep and Eco with capability-gated heating, cooling and humidity controls.
+- Keep room targets editable even while automation is Off; selecting equipment is enough to define room policy.
+- Make Away use its explicit room profile targets instead of silently substituting room min/max limits.
+- Selecting Automatic, PID or Manual authorizes that exact native controller to start/stop supported physical equipment/native HVAC modes when verified demand requires it.
+- Clear a prior software pause when the user deliberately selects an active control method again.
+- Preserve the physical entity's observed OFF age so selecting PID/Automatic does not create an artificial fresh minimum-OFF dwell.
+- Keep physical availability, windows, identity/ownership, dwell/runtime, defrost, interlock and acknowledgement safety gates.
+
 ## 0.6.0b25 - Single canonical environment_manager integration (beta)
 
 - Register only the canonical `environment_manager` Home Assistant domain, services and frontend path.
