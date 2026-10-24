@@ -14,6 +14,7 @@ from typing import Any
 from .pid_math import bounded_command, target_from_unit, finite
 from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
+from .const import DOMAIN
 
 _LOGGER=logging.getLogger(__name__)
 MODE_DWELL_SECONDS=1800
@@ -47,7 +48,7 @@ class NativeClimateControl:
         self.started=self.clock()
         try:
             from homeassistant.helpers.storage import Store
-            self._store=Store(self.hass,1,f"air_quality_advisor.climate_native_{self.entry_id}")
+            self._store=Store(self.hass,1,f"{DOMAIN}.climate_native_{self.entry_id}")
             loaded=await self._store.async_load()
         except Exception:
             _LOGGER.exception("Climate mode safety state unavailable; native actuation blocked")
