@@ -24,6 +24,8 @@ from .climate_arbitration import _contact_interlock, _physical_climate_conflict
 from .climate_entry_ownership import foreign_owner_hold
 from .occupancy_policy import live_device_permission, room_presence, sleep_presence
 from .pid_math import finite, target_from_unit, target_to_unit, quantize_target
+from .pid_output_allocator import fan_speed_for_pid, ordered_fan_stages, percentage_output_requested
+from .pid_calibration import tune as tune_pid
 from . import equipment_model as model
 
 _LOGGER = logging.getLogger(__name__)
@@ -243,6 +245,15 @@ class EquipmentRuntime:
                 raise HomeAssistantError("Unsupported controller setting")
             if new["control_mode"] not in model.control_modes(self.manager, spec):
                 raise HomeAssistantError("Unsupported control method")
+            if new["pid_calibration_method"] not in model.PID_CALIBRATION_METHODS:
+                raise HomeAssistantError("Unsupported deterministic PID tuning method")
+            # Model fields are inert commissioning inputs. A zero means "not
+            # measured yet"; it is never interpreted as a physical response.
+            for key, limits in model.PID_MODEL_FIELDS.items():
+                value = finite(new[key], 0, limits[1])
+                if value is None or (value > 0 and value < limits[0]):
+                    raise HomeAssistantError(f"Invalid PID response parameter: {key}")
+                new[key] = value
             if new["preset"] not in model.PRESETS:
                 raise HomeAssistantError("Unsupported comfort preset")
             if new["requested_mode"] is not None and new["requested_mode"] not in cap.modes:
@@ -375,6 +386,47 @@ class EquipmentRuntime:
             self._status(spec, "settings_updated", control_mode=new["control_mode"])
         if getattr(self.manager, "_active", False):
             self.manager._recalculate(initial=True)
+
+    async def async_apply_pid_calibration(self, spec: model.ManagedDevice) -> None:
+        """Apply a deterministic measured-model tune, never perform a step test.
+
+        This is an explicit user action on the selected physical controller.
+        No physical service is called; refuse recalibration while power is
+        being cycled or its acknowledgement is pending. Saved manual gains
+        remain untouched on every failed/incomplete model.
+        """
+        cfg = model.settings(self.manager, spec)
+        if cfg["control_mode"] != "pid":
+            raise HomeAssistantError("Select PID before applying calibration")
+        method = cfg["pid_calibration_method"]
+        if method == "manual":
+            raise HomeAssistantError("Manual PID uses the editable Kp/Ki/Kd directly")
+        cap = model.capabilities(self.manager, spec)
+        if cap is None or not self._current_spec(spec):
+            raise HomeAssistantError("Native controller unavailable for calibration")
+        record = self._record(spec)
+        if record.get("pending") or record.get("power"):
+            raise HomeAssistantError("Stop and reconcile physical output before changing PID gains")
+        state = self.hass.states.get(cap.primary)
+        if state is None or not output_off(state):
+            raise HomeAssistantError("Physical device must be OFF when applying new PID gains")
+        try:
+            result = tune_pid(method, cfg, sample_seconds=cfg["sample_seconds"],
+                              constraints=model.NUMBER_FIELDS)
+        except ValueError as error:
+            raise HomeAssistantError(f"PID calibration requires valid measured model: {error}") from error
+        model_evidence = {
+            "method": method,
+            "process_gain": result.process_gain,
+            "time_constant_minutes": result.time_constant_minutes,
+            "dead_time_minutes": result.dead_time_minutes,
+            "lambda_minutes": result.lambda_minutes,
+            "observed_sources": list(spec.source_entities),
+        }
+        await self.async_update(spec, {
+            "kp": result.kp, "ki": result.ki, "kd": result.kd,
+            "pid_last_calibration": model_evidence,
+        })
 
     async def async_set_targets(self, spec: model.ManagedDevice, values: dict,
                                 *, mode: str | None = None) -> None:
