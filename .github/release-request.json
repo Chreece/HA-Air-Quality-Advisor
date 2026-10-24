@@ -1,18 +1,18 @@
 {
-  "version": "0.6.0b37",
+  "version": "0.6.0b38",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b37",
-  "intent": "Fix Recorder db_schema warning 'State attributes for sensor.home_environment_manager_window_recommendations exceed maximum size of 16384 bytes' without altering gr_news_feed, queue or any other integration. Move full Home Environment Manager dashboard data from recommendation sensor state attributes into a permission-checked read-only Home Assistant WebSocket API, and update the bundled card to use it.",
-  "note": "Full multi-room scientific dashboard remains intact over WebSocket; sensor keeps compact recommendation state, counts, revision and bounded legacy metadata under 12KiB. Preserve automatic announcements, climate logic, card interaction protections, existing unique IDs and canonical environment_manager only.",
+  "release_branch": "beta/v0.6.0b38",
+  "intent": "Fix Home Environment Manager dashboard metric tiles where selected unavailable/unsupported sources display long raw sensor.* entity identifiers overlapping adjacent metric cards. Use compact localized labels e.g. Illumination/Φωτισμός and constrain heading layout without inventing supported measurements.",
+  "note": "Only frontend presentation of metric tile labels, clipping/wrapping and source tooltips changes. Preserve Recorder-safe dashboard WebSocket from b37, current entities, raw measurements, selected source IDs, HA services, translations and all physical device safety.",
   "validation_attempt": 0,
   "changes": [
-    "Remove unbounded dashboard_snapshot(...) from AirQualityRecommendation.extra_state_attributes, replacing it with dashboard_api, dashboard_version and dashboard_revision for lightweight state refreshes.",
-    "Hard-budget all remaining recommendation metadata below 12KiB JSON, preserving ordinary small legacy attributes and visibly flagging truncated previews when needed.",
-    "Provide an authenticated read-only environment_manager/dashboard Home Assistant WebSocket command scoped to the exact registered recommendation sensor and POLICY_READ permission; return complete dashboard_snapshot on demand without Recorder writes.",
-    "Update the Lovelace card to discover the compact sensor marker, use hass.callWS for full snapshot, refresh only on revision changes, and retry transient connection failures without losing active selector/manual target edits.",
-    "Preserve old inline dashboard rendering in the frontend for optional compatibility during server/frontend rolling updates while no longer publishing that attribute in new server sensor states.",
-    "Add tests of huge Greek recommendation payloads and strict byte budget, complete >16KiB dashboard response and access denial on real Home Assistant 2026.10, and frontend revision/dedup/retry tests.",
-    "Do not change gr_news_feed, queue, other integrations, physical equipment logic, Home Assistant Recorder configuration, unique IDs or historical data.",
-    "Validate Python 3.13/3.14, Home Assistant 2026.10, HACS/Hassfest, Node card regression, translations, exact flattened HACS prerelease tag."
+    "Render compact user-readable metric headings instead of the full sensor.entity_id whenever an unknown/unavailable selected input has no friendly display name.",
+    "Resolve common sensor suffixes/device classes (illuminance/illumination, presence/occupancy, motion, temperature, humidity, pressure, noise) to localized English/Greek/German/French/Spanish short labels, with sensible fallback for other locales.",
+    "Retain genuine short custom friendly names and shorten arbitrary long unknown identifiers to a compact final descriptive suffix.",
+    "Keep the original exact entity ID and full friendly name in the heading tooltip; do not classify unsupported inputs as valid sensor readings.",
+    "Use a confined flex heading with 2-line ellipsis/clamp and flexible numeric value placement so tiles cannot bleed into each other in narrow layouts.",
+    "Add Node regression checks for bathroom illumination/presence sensors, Greek/German/English titles, unknown source identity, full source tooltip, readable unsupported states and escaped hostile sensor names.",
+    "Keep canonical environment_manager domain, b37 Recorder budget/full WS dashboard, and prior beta native controls unchanged; no migrations, hardware service or other integration edits.",
+    "Gate publication on Node, Python 3.13/3.14, real Home Assistant 2026.10, HACS/Hassfest, translations and exact flat HACS tag payload."
   ]
 }
