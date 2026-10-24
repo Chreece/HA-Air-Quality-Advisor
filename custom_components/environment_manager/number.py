@@ -13,11 +13,12 @@ from .const import (CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES,
                     DOMAIN, SIGNAL_UPDATED)
 from .device_hierarchy import controller_device_info
 from .device_controls import (
-    PID_NUMBERS, PROFILE_NUMBERS, THRESHOLD_NUMBERS,
+    PID_NUMBERS, PROFILE_NUMBERS, PROFILE_DEFAULTS, THRESHOLD_NUMBERS,
     GLOBAL_ENV_NUMBERS, GLOBAL_OCCUPANCY_NUMBERS,
     AREA_ENV_NUMBERS, CLIMATE_OPERATING_NUMBERS, DIRECT_CONTROLLER_NUMBERS,
     DEVICE_TARGET_NUMBERS,
-    pid_settings, climate_settings, update_device_setting, configured_aqi_entities,
+    pid_settings, climate_settings, room_profile_number_fields,
+    update_device_setting, configured_aqi_entities,
 )
 from .climate_strategy import profiles
 
@@ -82,11 +83,15 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 ConfigNumber(manager, entry.entry_id, area_id, "area_environment", key, bounds[:4])
                 for key, bounds in AREA_ENV_NUMBERS.items()
             )
-        if climate_settings(manager.settings, area_id) is not None:
-            numbers.extend(
-                ConfigNumber(manager, entry.entry_id, area_id, "climate_profile", key, bounds)
-                for key, bounds in PROFILE_NUMBERS.items()
+        profile_fields = room_profile_number_fields(manager, area_id)
+        numbers.extend(
+            ConfigNumber(
+                manager, entry.entry_id, area_id, "climate_profile",
+                key, PROFILE_NUMBERS[key],
             )
+            for key in profile_fields
+        )
+        if climate_settings(manager.settings, area_id) is not None:
             numbers.extend(
                 ConfigNumber(manager, entry.entry_id, area_id, "climate_operating", key, bounds[:4])
                 for key, bounds in CLIMATE_OPERATING_NUMBERS.items()
@@ -114,7 +119,8 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
                 if prefix == "climate":
                     chosen = []
                 elif prefix == "humidifier":
-                    chosen = ["humidity_target", "sleep_humidity_target"]
+                    # Humidity operating targets are room/profile-owned.
+                    chosen = []
                 elif prefix == "fan":
                     chosen = ["fan_speed_percent"]
                 else:
@@ -246,13 +252,31 @@ class ConfigNumber(NumberEntity):
             config = pid_settings(settings, self._area_id)
             return float(config[self._key]) if config is not None else None
         if self._kind == "climate_profile":
-            config = climate_settings(settings, self._area_id)
-            if config is None:
+            rooms = settings.get("climate_rooms", {})
+            config = rooms.get(self._area_id, {}) if isinstance(rooms, dict) else {}
+            config = config if isinstance(config, dict) else {}
+            group, mode = self._key.rsplit("_", 1)
+            if group not in PROFILE_DEFAULTS:
                 return None
+            if mode == "humidity":
+                raw = config.get("profiles", {})
+                raw = raw if isinstance(raw, dict) else {}
+                band = raw.get(group, {})
+                band = band if isinstance(band, dict) else {}
+                legacy = config.get(
+                    "sleep_humidity_target" if group == "sleep" else "humidity_target"
+                )
+                value = band.get(
+                    "humidity",
+                    legacy if legacy is not None else PROFILE_DEFAULTS[group]["humidity"],
+                )
+                try:
+                    return float(value)
+                except (TypeError, ValueError, OverflowError):
+                    return None
             parsed, problem = profiles(config)
             if problem:
                 return None
-            group, mode = self._key.rsplit("_", 1)
             return float(getattr(parsed[group], mode + "_c"))
         return None
 
