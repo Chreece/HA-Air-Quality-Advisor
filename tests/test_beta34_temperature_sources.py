@@ -8,7 +8,6 @@ from __future__ import annotations
 import pytest
 from test_discovery import FakeHass, MockState, adapter
 from custom_components.environment_manager.room_sources import room_temperature_evidence
-from custom_components.environment_manager.climate_rooms import gather
 from custom_components.environment_manager.logic import Room
 
 
@@ -26,6 +25,7 @@ def evidence(adapter):
 
 
 def test_multiple_explicit_room_temperatures_give_verified_mean(evidence):
+    from custom_components.environment_manager.climate_rooms import gather
     hass, settings, first, second, _ = evidence
     value, why = room_temperature_evidence(hass, settings, "room")
     assert value==22
@@ -44,6 +44,7 @@ def test_multiple_explicit_room_temperatures_give_verified_mean(evidence):
 
 
 def test_explicit_pin_is_never_replaced_by_other_selected_temperature(evidence):
+    from custom_components.environment_manager.climate_rooms import gather
     hass, settings, first, second, foreign = evidence
     temp, why = room_temperature_evidence(
         hass,settings,"room",pinned=second.entity_id,
