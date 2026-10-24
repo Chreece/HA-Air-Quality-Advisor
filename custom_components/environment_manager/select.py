@@ -17,7 +17,7 @@ from .device_controls import (
 )
 from .device_hierarchy import configured_area_ids
 
-PROFILE_OPTIONS = ("auto", "home", "unoccupied", "away", "sleep")
+PROFILE_OPTIONS = ("auto", "comfort", "home", "away", "sleep", "eco")
 GAIN_SOURCE_OPTIONS = ("defaults", "manual")
 
 
