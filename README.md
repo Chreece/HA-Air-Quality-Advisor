@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b24/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b25/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 24 is available for opt-in testing.** Stable remains **v0.5.1**. Beta24 fixes the HACS domain-switch install by publishing the beta tag itself as a flat `environment_manager` integration payload, avoiding HACS's release-asset ZIP path. Beta22's exact config-entry-ID migration is retained. Do **not** delete the existing integration entry. Physical equipment protections remain mandatory and software tests do not certify hardware.
+> **v0.6.0 beta 25 is available for opt-in testing.** Stable remains **v0.5.1**. Beta25 makes `environment_manager` the **only active/installable domain**. Legacy folders are migration inputs only and are moved out of `custom_components` into a recoverable backup when the canonical integration loads. Do **not** delete the existing config entry; migrate it through Home Environment Manager. Physical equipment protections remain mandatory and software tests do not certify hardware.
+
+## Beta 25 - one canonical integration only
+
+Beta25 exposes only `environment_manager`. The old `air_quality_advisor`, typo `enviroment_manager`, and `home_environment_manager` names are **not** registered as services, frontend paths or installable integrations anymore. They exist only inside the one-time migration reader.
+
+If an older HACS install left `/config/custom_components/air_quality_advisor` or `/config/custom_components/enviroment_manager`, the canonical integration verifies the old folder's manifest, moves it to `/config/.environment_manager_legacy_components/` as backup, and refreshes Home Assistant's custom-component cache. Unrelated custom components are untouched.
+
+All Developer Tools actions use `environment_manager.*` only.
 
 ## Beta 24 - flat HACS tag payload
 
