@@ -1,20 +1,18 @@
 {
-  "version": "0.6.0b34",
+  "version": "0.6.0b35",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b34",
-  "intent": "Use verified, explicitly selected Home Assistant room temperature sensors in monitored-room climate and mold evidence, distinguish environment-only monitoring from individual native HVAC controllers, and add native Managed Climate popups, per-device control method selections and manual target editing to the Lovelace card.",
-  "note": "Do not substitute unavailable pinned sensors, infer HVAC modes from temperature readings, invent physical capabilities or bypass PID/window/ownership/safety checks; preserve the canonical environment_manager domain and all beta31-33 fixes.",
+  "release_branch": "beta/v0.6.0b35",
+  "intent": "Repair Home Environment Manager Lovelace dashboard selector closing without user action and intermittent card render/registry failure requiring hard tab refresh, using DOM-safe interaction lifecycle and self-healing rendering without any physical-device changes.",
+  "note": "Home Assistant updates trigger full shadowRoot.innerHTML recreation in beta34 and destroy open mode selects and manual inputs. Render cache is committed before the HTML rendering can fail. A transient config/device_registry/list failure sets a permanent unavailable flag. Beta35 fixes these exact frontend lifecycles.",
   "validation_attempt": 0,
   "changes": [
-    "Evaluate explicitly selected room temperature sensors (including multiple readings) using strict physical/area/staleness validation; preserve exact pinned source priority and never synthesize a measurement.",
-    "Use verified selected room temperature evidence for mold indicator input only when no fixed sensor is configured, and for room-level climate planning without authorizing extra hardware.",
-    "Expose room temperature evidence and source IDs in climate plan diagnostics rather than silently reporting no measurement.",
-    "Translate environment_only_no_hvac into understandable room-monitoring text; keep independent physical managed controllers separately visible.",
-    "Show each Manager-controlled native climate entity on the room card, opening Home Assistant's own More Info popup on click.",
-    "Expose the exact native managed controller's existing select.control_method options; when Manual is active show supported temperature/humidity setpoint inputs and issue standard select.select_option / climate.set_temperature / climate.set_humidity service calls only for matched device entities.",
-    "Fix legacy card pause/resume calls from old home_environment_manager alias to canonical environment_manager.",
-    "Replace raw metric_unknown on card with source identity; do not relabel unknown measurements as valid.",
-    "Add regression tests for selected sensor mean and pinned failure, card action/target validation, HA popup binding and cross-area safety.",
-    "Gate publication on Python 3.13/3.14, installed HA 2026.10, HACS/Hassfest, 38-language catalogs, frontend checks and flat-tag extraction."
+    "Keep native control-method select and in-progress manual target inputs mounted while editing; queue incoming HA state/config redraws and flush only after the interaction completes.",
+    "Release focused control after an actual committed select change or delayed focusout, preserving click-to-save on manual target fields.",
+    "Wrap dashboard template construction in a recoverable UI error boundary and preserve/retry after an invalid/transient HA state snapshot without needing browser hard reload.",
+    "Commit render-cache references only after successfully constructing/applying complete UI; malformed room rows do not crash the entire card.",
+    "Retry transient Home Assistant device registry lookup failures with bounded backoff instead of permanently latching the registry as unavailable.",
+    "Test live selector staying open across repeated HA updates, manual input preservation, automatic recovery after transient dashboard/render failures, and recovery after WebSocket errors.",
+    "Keep exact native controller IDs, manual targets and physical command authorization unchanged; only canonical environment_manager domain, no migrations or vendor-specific code.",
+    "Validate Node frontend regression, Python 3.13/3.14, Home Assistant 2026.10, HACS/Hassfest, 38-language catalogs and exact flat HACS beta tag extraction."
   ]
 }
