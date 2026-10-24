@@ -134,8 +134,12 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         at_home,home_reason,trackers=home_presence(hass,global_presence,trackers)
     temperature_id=settings.get("temperature_entity")
     pinned=isinstance(temperature_id,str) and bool(temperature_id)
-    temp=(temperature_sensor_c(hass,temperature_id,10) if pinned
-          else selected_temperature_c)
+    # A Manager-supplied temperature is already source/area/freshness
+    # validated, including any explicit pin. Do not re-read and accidentally
+    # accept a pinned source rejected by the selected room inventory.
+    temp=(selected_temperature_c if temperature_evidence is not None
+          else temperature_sensor_c(hass,temperature_id,10) if pinned
+          else None)
     if temp is not None and not -60 <= temp <= 85:
         temp=None
     climate_id=settings.get("climate_entity")
