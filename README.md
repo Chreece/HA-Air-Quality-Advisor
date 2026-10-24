@@ -271,13 +271,13 @@ interlocks.
 
 ## Install or upgrade to the v0.6 beta with HACS
 
-1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required; the integration preserves the existing `air_quality_advisor` domain, entry IDs, entities and settings.
+1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required. The only active integration domain is `environment_manager`; legacy entries are migration inputs only and keep their existing IDs/entities during the one-time migration.
 2. Open [Home Environment Manager in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), or add `Chreece/HA-Home-Environment-Manager` as a **custom Integration repository** if not already installed.
-3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b15**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
+3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b25**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
-5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `home_environment_manager.climate_diagnostics` (or legacy alias `air_quality_advisor.climate_diagnostics`). Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
+5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `environment_manager.climate_diagnostics`. Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b15). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b25). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
 ### Complete configuration translations and explanations — beta 9
@@ -407,7 +407,7 @@ They are not screenshots from a live user's home.
 - Optional room-aware [Announcement Hub](https://github.com/Chreece/HA-Announcement-Hub) output (`notify.announcement_hub`), **or** direct `notify.send_message` and `tts.speak` via supported entities. Not installing Announcement Hub does not affect the recommendation sensor.
 - **One optional AI setting** for both delivery paths. With Announcement Hub configured, it explicitly forwards `use_ai: true/false` and optionally `ai_agent`; otherwise the selected Home Assistant conversation agent rewrites direct notification/TTS text. AI never changes the window decisions and is off by default. Only a **not-running/unavailable Hub** permits Home Assistant direct/persistent notification fallback. A **running Hub** owns room/output routing and rejections; Advisor reports enqueue failure but never creates a second native notification.
 - Auto notifications/TTS can each be enabled or disabled independently. Open announcements wait 90 seconds for conditions to stay stable; close announcements are immediate. Repeated open recommendations have a 15-minute cooldown during the current HA process. New urgent close recommendations are not suppressed by that cooldown, even if the same window was reopened. No notification is generated on every unchanged sensor reading.
-- Manual `air_quality_advisor.announce` action with an independent language override across **38 supported Home Assistant language choices**. Speech requires a compatible TTS voice.
+- Manual `environment_manager.announce` action with an independent language override across **38 supported Home Assistant language choices**. Speech requires a compatible TTS voice.
 - A responsive **Home Environment Manager dashboard card**: safe/attention/unknown room counts, current outdoor weather and pollution, threshold meters, window states, and room-specific advice. Card text follows your **Home Assistant user language**, independently of voice/notification language.
 
 ## International environmental intelligence (v0.4.0)
@@ -458,12 +458,7 @@ local; selected external forecasts come from Home Assistant's existing providers
 
 ### Compatibility and the upcoming PID phase
 
-The public title, integration manifest and dashboard branding use
-**Home Environment Manager**, but the internal domain remains
-`air_quality_advisor`; its original service `air_quality_advisor.announce` (plus the new
-`home_environment_manager.announce` alias),
-existing entity unique IDs, area selections, statistics storage and prior
-configurations are preserved. Existing
+The public title, integration manifest, dashboard branding and Home Assistant domain are all **Home Environment Manager / `environment_manager`**. Historical domains are accepted only as migration sources; they are not registered as services, frontend paths or installable integrations. Existing entity unique IDs, area selections, statistics storage and prior configurations are preserved during migration. Existing
 `custom:air-quality-advisor-card` Lovelace dashboards still work; new
 cards may use `custom:home-environment-manager-card`.
 
@@ -509,7 +504,7 @@ Update through [HACS](https://my.home-assistant.io/redirect/hacs_repository/?own
 
 ## Internationalization — 38 languages
 
-Home Environment Manager supports **38 Home Assistant language choices**, including 33 new locale packs for setup, reconfiguration, room states, notification messages, announcement text and the built-in dashboard card. The card follows the signed-in **Home Assistant user's language**, while `air_quality_advisor.announce` can override message language independently.
+Home Environment Manager supports **38 Home Assistant language choices**, including 33 new locale packs for setup, reconfiguration, room states, notification messages, announcement text and the built-in dashboard card. The card follows the signed-in **Home Assistant user's language**, while `environment_manager.announce` can override message language independently.
 
 **Languages:** English, German, Greek, French, Spanish, Italian, Dutch, Portuguese (Portugal and Brazil), Polish, Russian, Ukrainian, Turkish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Serbian, Swedish, Norwegian Bokmål, Danish, Finnish, Indonesian, Vietnamese, Thai, Hindi, Simplified/Traditional Chinese, Japanese, Korean, Arabic, Hebrew, Persian, Bengali, Urdu and Tamil.
 
@@ -745,7 +740,7 @@ Open **Home Environment Manager → Configure → Announcements**. **Use AI for 
 ## Announcing in a different language on each action
 
 ```yaml
-action: air_quality_advisor.announce
+action: environment_manager.announce
 data:
   language: el  # any supported locale, e.g. el, de or pt-BR
   channels: both  # both, tts, notification
@@ -827,7 +822,7 @@ between `target - offset` and `target`. It is not a compressor duty cycle.
   Such pauses are saved across Home Assistant restarts; the user must explicitly
   resume after checking the current thermostat state.
 - Use the **Pause PID / Resume PID** button on the room's Lovelace card or
-  the action `home_environment_manager.pid_control` with an explicit
+  the action `environment_manager.pid_control` with an explicit
   `area` and `action: pause | resume | reset`. Reset clears PID history and
   remains paused until separately resumed.
 - Missing or stale sensor input, open/unknown windows, active thermostat presets,
@@ -1277,8 +1272,7 @@ The physical AC must be independently commissioned first.
 ### Read-only Home Assistant climate commissioning report (v0.6 draft)
 
 The integration now exposes
-\`home_environment_manager.climate_diagnostics\` (and the backward-compatible
-\`air_quality_advisor.climate_diagnostics\`) under **Developer Tools → Actions**.
+\`environment_manager.climate_diagnostics\` under **Developer Tools → Actions**.
 Select an optional Home Assistant \`area\` to inspect only that configured room,
 or omit it to inspect all explicitly configured climate rooms. Request the
 action response to obtain a structured report of selected entity IDs, actual
@@ -1318,7 +1312,7 @@ of one controller's persistence no longer prevents the remaining
 controllers, announcements, listeners or background tasks from being
 cleaned up.
 
-These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b15).
+These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b25).
 The [development PR #2](https://github.com/Chreece/HA-Home-Environment-Manager/pull/2) remains unmerged and production v0.5.1 stays unchanged pending representative hardware testing.
 
 
