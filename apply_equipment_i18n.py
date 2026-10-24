@@ -91,6 +91,35 @@ PID_CALIBRATION_LABELS = {
 }
 
 
+PID_FAN_CAPACITY_LABELS = {
+    "en": ("PID fan capacity strategy", "Original PID allocation",
+           "Measured capacity compensation", "Calibrate for HVAC mode",
+           "Choose direction", "Heating", "Cooling", "Drying", "Fan only",
+           "Measured fan stage", "Measured fan speed", "Measured delivered capacity",
+           "Apply measured fan capacity"),
+    "el": ("Στρατηγική ισχύος PID ανεμιστήρα", "Αρχική κατανομή PID",
+           "Αντιστάθμιση μετρημένης απόδοσης", "Βαθμονόμηση για λειτουργία HVAC",
+           "Επιλογή λειτουργίας", "Θέρμανση", "Ψύξη", "Αφύγρανση", "Ανεμιστήρας",
+           "Μετρημένη βαθμίδα ανεμιστήρα", "Μετρημένη ταχύτητα ανεμιστήρα",
+           "Μετρημένη σχετική απόδοση", "Εφαρμογή μετρημένης απόδοσης"),
+    "de": ("PID-Lüfterkapazitätsstrategie", "Bisherige PID-Zuordnung",
+           "Kompensation aus Messwerten", "HVAC-Betriebsart kalibrieren",
+           "Betriebsart wählen", "Heizen", "Kühlen", "Entfeuchten", "Nur Lüfter",
+           "Gemessene Lüfterstufe", "Gemessene Lüfterdrehzahl",
+           "Gemessene relative Leistung", "Gemessene Kapazität übernehmen"),
+    "fr": ("Stratégie de capacité du ventilateur PID", "Allocation PID actuelle",
+           "Compensation mesurée", "Mode CVC à étalonner",
+           "Choisir le mode", "Chauffage", "Refroidissement", "Déshumidification",
+           "Ventilateur", "Niveau de ventilation mesuré", "Vitesse mesurée",
+           "Capacité relative mesurée", "Appliquer les mesures de capacité"),
+    "es": ("Estrategia de capacidad del ventilador PID", "Distribución PID actual",
+           "Compensación medida", "Modo HVAC por calibrar",
+           "Elegir modo", "Calefacción", "Refrigeración", "Deshumidificación",
+           "Solo ventilador", "Nivel medido del ventilador", "Velocidad medida",
+           "Capacidad relativa medida", "Aplicar capacidad medida"),
+}
+
+
 def apply_equipment_i18n(root: Path) -> None:
     labels = json.loads((root / "equipment_labels.json").read_text(encoding="utf-8"))
     vocabulary = json.loads((root / "compact_locales.json").read_text(encoding="utf-8"))
@@ -142,6 +171,23 @@ def apply_equipment_i18n(root: Path) -> None:
         ):
             add("number", key, label)
         add("button", "pid_apply_calibration", calibration[8])
+        capacity = PID_FAN_CAPACITY_LABELS.get(lang, PID_FAN_CAPACITY_LABELS["en"])
+        add("select", "pid_fan_capacity_mode", capacity[0], state={
+            "legacy": capacity[1], "measured": capacity[2],
+        })
+        add("select", "pid_fan_capacity_for_mode", capacity[3], state={
+            "choose": capacity[4], "heat": capacity[5], "cool": capacity[6],
+            "dry": capacity[7], "fan_only": capacity[8],
+        })
+        add("button", "pid_apply_fan_capacity", capacity[12])
+        for index in range(1, 5):
+            add("number", f"pid_capacity_stage_{index}",
+                f"{capacity[9]} {index} · {capacity[11]} (%)")
+        for index in range(1, 4):
+            add("number", f"pid_capacity_speed_{index}",
+                f"{capacity[10]} {index} (%)")
+            add("number", f"pid_capacity_output_{index}",
+                f"{capacity[11]} {index} (%)")
         add("number", "cycle_seconds", actuator.get("pwm_period_s") or
             (v["power"] + " · PID · " + pid["pid_sample_seconds"]))
         add("number", "quiet_percentage", words["quiet_percentage"] + " (%)")
