@@ -16,6 +16,7 @@ from .climate_coordination import assigned_entities, duplicate_owners, device_in
 from .climate_arbitration import new_command_gate
 from .discovery import entity_area, temperature_sensor_c
 from .pid_math import bounded_command, finite, target_from_unit
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 STARTUP_WARMUP_S = 300
@@ -75,7 +76,7 @@ class SecondaryClimateSetpoint:
         try:
             from homeassistant.helpers.storage import Store
             self._store = Store(self.hass, 1,
-                f"air_quality_advisor.secondary_native_{self.entry_id}")
+                f"{DOMAIN}.secondary_native_{self.entry_id}")
             saved = await self._store.async_load()
         except Exception:
             _LOGGER.exception("Secondary native thermostat safety storage unavailable")
