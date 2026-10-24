@@ -50,7 +50,9 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
            outdoor_safe:bool|None=None,duplicate_equipment:dict|None=None,
            require_window_contact:bool=False,
            global_presence:dict|None=None,
-           known_areas:set[str]|None=None)->tuple[dict,set[str]]:
+           known_areas:set[str]|None=None,
+           selected_temperature_c:float|None=None,
+           temperature_evidence:dict|None=None)->tuple[dict,set[str]]:
     """Expose what should happen, with provenance, without operating devices."""
     if not isinstance(settings,dict) or not settings.get("enabled"):
         return {"status":"disabled"},set()
@@ -131,7 +133,11 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
     if isinstance(global_presence,dict) and global_presence:
         at_home,home_reason,trackers=home_presence(hass,global_presence,trackers)
     temperature_id=settings.get("temperature_entity")
-    temp=temperature_sensor_c(hass,temperature_id,10) if isinstance(temperature_id,str) else None
+    pinned=isinstance(temperature_id,str) and bool(temperature_id)
+    temp=(temperature_sensor_c(hass,temperature_id,10) if pinned
+          else selected_temperature_c)
+    if temp is not None and not -60 <= temp <= 85:
+        temp=None
     climate_id=settings.get("climate_entity")
     state=hass.states.get(climate_id) if isinstance(climate_id,str) and climate_id.startswith("climate.") else None
     cap=capabilities(state.attributes,state.state) if state else {"kind":"unavailable"}
@@ -232,6 +238,11 @@ def gather(hass:Any,room:Any,settings:dict,*,prior_mode:str|None=None,
         "climate_entity":climate_id,"climate_capabilities":primary_cap,
         "room_planning_capabilities":cap,
         "temperature_entity":temperature_id,"temperature_c":temp,
+        "temperature_evidence":temperature_evidence or {
+            "status": "ready" if temp is not None else "temperature_unavailable",
+            "source": "pinned_sensor" if pinned else "not_configured",
+            "entity_ids": [temperature_id] if pinned else [],
+        },
         "window_safe":window_safe,
         "window_evidence":window_evidence,
         "window_contacts":[win.entity_id for win in room.windows],
