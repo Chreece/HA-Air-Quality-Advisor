@@ -1,17 +1,18 @@
 {
-  "version": "0.6.0b36",
+  "version": "0.6.0b37",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b36",
-  "intent": "Fix logical managed climate control mode displayed as Off when Automatic/PID/Manual has an explicit supported or evaluated HVAC direction but physical output is idle and safely OFF. Keep the physical state separate; report idle action with armed mode, and never force native hardware on.",
-  "note": "The existing managed climate hvac_mode mirrored physical state even though separate Control Method was PID/Automatic/Manual and Controller Status reported within_target_band. Beta36 changes facade presentation only: declared supported/evaluated HVAC direction remains selected while native device is OFF; hvac_action becomes idle. Existing/Off selections and unknown hardware remain conservative.",
+  "release_branch": "beta/v0.6.0b37",
+  "intent": "Fix Recorder db_schema warning 'State attributes for sensor.home_environment_manager_window_recommendations exceed maximum size of 16384 bytes' without altering gr_news_feed, queue or any other integration. Move full Home Environment Manager dashboard data from recommendation sensor state attributes into a permission-checked read-only Home Assistant WebSocket API, and update the bundled card to use it.",
+  "note": "Full multi-room scientific dashboard remains intact over WebSocket; sensor keeps compact recommendation state, counts, revision and bounded legacy metadata under 12KiB. Preserve automatic announcements, climate logic, card interaction protections, existing unique IDs and canonical environment_manager only.",
   "validation_attempt": 0,
   "changes": [
-    "Split ManagedClimate physical HVAC output observation from selected logical supervisory HVAC mode; preserve physical source state and original physical HVAC mode in diagnostic attributes.",
-    "For selected Automatic/PID, use the already evaluated native direction; for explicitly selected Manual/PID/Automatic use only supported requested mode; when only one native direction is advertised, allow that exact option without fabricating unsupported HVAC modes.",
-    "Show HVACAction.IDLE when the supervisory mode is selected but the native physical output is truly OFF, preserving physical OFF for idle periods and safety holds.",
-    "When Off explicitly selected, display Off; when Existing selected, mirror physical source and native HVAC action as before.",
-    "Do not touch EquipmentRuntime demand, duty cycle, native mode/ON/OFF writes, PID targets, safety interlocks, power ownership, acknowledgement or manual pause; preserve beta31–35 fixes.",
-    "Add regressions for heat/cool climate, fan, humidifier/dehumidifier logical HVAC idle, exact physical state attributes, explicit Off/Existing, unavailable source and no unadvertised modes.",
-    "One canonical environment_manager domain with no migrations; validate full Python 3.13/3.14 suite, native Home Assistant 2026.10, card, 38 language catalogs, HACS/Hassfest, and immutable flat beta payload."
+    "Remove unbounded dashboard_snapshot(...) from AirQualityRecommendation.extra_state_attributes, replacing it with dashboard_api, dashboard_version and dashboard_revision for lightweight state refreshes.",
+    "Hard-budget all remaining recommendation metadata below 12KiB JSON, preserving ordinary small legacy attributes and visibly flagging truncated previews when needed.",
+    "Provide an authenticated read-only environment_manager/dashboard Home Assistant WebSocket command scoped to the exact registered recommendation sensor and POLICY_READ permission; return complete dashboard_snapshot on demand without Recorder writes.",
+    "Update the Lovelace card to discover the compact sensor marker, use hass.callWS for full snapshot, refresh only on revision changes, and retry transient connection failures without losing active selector/manual target edits.",
+    "Preserve old inline dashboard rendering in the frontend for optional compatibility during server/frontend rolling updates while no longer publishing that attribute in new server sensor states.",
+    "Add tests of huge Greek recommendation payloads and strict byte budget, complete >16KiB dashboard response and access denial on real Home Assistant 2026.10, and frontend revision/dedup/retry tests.",
+    "Do not change gr_news_feed, queue, other integrations, physical equipment logic, Home Assistant Recorder configuration, unique IDs or historical data.",
+    "Validate Python 3.13/3.14, Home Assistant 2026.10, HACS/Hassfest, Node card regression, translations, exact flattened HACS prerelease tag."
   ]
 }
