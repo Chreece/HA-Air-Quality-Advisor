@@ -1,16 +1,16 @@
 {
-  "version": "0.6.0b31",
+  "version": "0.6.0b32",
   "channel": "beta",
-  "release_branch": "beta/v0.6.0b31",
-  "intent": "Canonical-only beta31 repairing unavailable per-device PID/timing number entities and missing per-room Comfort/Home/Away/Sleep/Eco heating/cooling/humidity profile inputs when native HA equipment starts late; validate full CI, installed HA 2026.10, 38-language translations, HACS/Hassfest and exact flat-tag before publication.",
-  "note": "Keep controller numeric configuration editable through native device unavailability and restore previously exposed room targets; add newly applicable targets when native HA source states arrive without restart; never change physical actuation rules.",
+  "release_branch": "beta/v0.6.0b32",
+  "intent": "Fix user-observed HA 2026.10 10000-event state_reported queue failures and synchronous manifest read_text/open inside the event loop. Eliminate volatile air_evidence_at churn and own generated-entity feedback, without changing native fan/quiet modes, physical HVAC commands or controller safety.",
+  "note": "No publication for quiet fan mode or quiet flags without physical source fan_modes/supported_features evidence. Beta32 covers only proven event flood and blocking manifest I/O, preserving all b31 room target and PID fixes.",
   "validation_attempt": 0,
   "changes": [
-    "Restore per-device PID/timing numbers when the native climate/fan/humidifier is temporarily unavailable at HA startup.",
-    "Retain already-registered capability-appropriate Room Environment heating/cooling/humidity targets when sources start late.",
-    "Listen for native source recovery and register newly applicable profile fields and device PID numbers without duplicating unique IDs.",
-    "Add unit regressions and real HA 2026.10 NumberEntity native-value validation.",
-    "Preserve beta30 Control status diagnostics, beta29 window rules, b28 active control methods and all physical safety interlocks.",
-    "Publish only immutable canonical environment_manager-only HACS flat payload; no domain migration and no stable release changes."
+    "Move manifest.json read_text/open into hass.async_add_executor_job, preserving cache-busting frontend version.",
+    "Ignore volatile air_evidence_at when deciding whether to broadcast all integration states; keep newest evidence for controller safety.",
+    "Skip integration-owned entities in tracked sensor inputs and skip unchanged native source state reports.",
+    "Ignore our own entity/device registry changes while preserving recalculation for physical/room input changes.",
+    "Add regressions for 119 timestamp-only updates with zero dispatcher broadcasts, real changes with exactly one broadcast, and manifest disk I/O from executor.",
+    "Retain existing safety, b31 room/PID recovery, canonical environment_manager domain, and 38 language catalogs."
   ]
 }
