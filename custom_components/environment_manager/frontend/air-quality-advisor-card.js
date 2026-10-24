@@ -505,7 +505,7 @@
       // or leave it; replacing shadowRoot.innerHTML while it is open closes
       // the browser's picker and discards any unfinished manual edit.
       this.shadowRoot.addEventListener('focusin', (event) => {
-        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input]');
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input],[data-pid-capacity-select],[data-pid-capacity-input]');
         if (!editor) return;
         this._focusedEditor = editor;
         if (this._editRenderTimer !== null) {
@@ -514,7 +514,7 @@
         }
       });
       this.shadowRoot.addEventListener('pointerdown', (event) => {
-        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input]');
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input],[data-pid-calibration-method],[data-pid-model-input],[data-pid-capacity-select],[data-pid-capacity-input]');
         if (editor) this._focusedEditor = editor;
       });
       this.shadowRoot.addEventListener('focusout', (event) => {
@@ -549,6 +549,42 @@
               detail:{entityId}, bubbles:true, composed:true
             }));
           }
+          return;
+        }
+        const capacityInputSave = event.target.closest?.('[data-save-pid-capacity]');
+        if (capacityInputSave && this._hass?.callService) {
+          const area=capacityInputSave.getAttribute('data-controller-area');
+          const entityId=capacityInputSave.getAttribute('data-save-pid-capacity');
+          const field=capacityInputSave.getAttribute('data-pid-capacity-field');
+          const parent=this._managedControllers(area).find((item)=>
+            item.capacityNumbers?.some((row)=>
+              row.id===entityId && row.field===field) && item.method?.state==='pid');
+          const chosen=parent?.capacityNumbers.find((item)=>item.id===entityId);
+          const input=capacityInputSave.closest('.climate-target-editor')
+            ?.querySelector('input[data-pid-capacity-input]');
+          const parsed=input ? Number(String(input.value).replace(',','.')) : NaN;
+          const limits=chosen?.state.attributes || {};
+          if (!parent || !input || !Number.isFinite(parsed) ||
+              !Number.isFinite(Number(limits.min)) ||
+              !Number.isFinite(Number(limits.max)) ||
+              parsed < Number(limits.min) || parsed > Number(limits.max)) return;
+          Promise.resolve(this._hass.callService('number','set_value',{
+            entity_id:entityId,value:parsed
+          })).catch((error)=>console.warn('PID fan capacity measurement rejected',error));
+          return;
+        }
+        const capacityApply=event.target.closest?.('[data-apply-pid-fan-capacity]');
+        if (capacityApply && this._hass?.callService) {
+          const area=capacityApply.getAttribute('data-controller-area');
+          const entityId=capacityApply.getAttribute('data-apply-pid-fan-capacity');
+          const matched=this._managedControllers(area).find((item)=>
+            item.capacityButtonId===entityId && item.method?.state==='pid' &&
+            item.capacityDirection?.state!=='choose' &&
+            item.climate?.attributes?.physical_source_state==='off');
+          if (!matched) return;
+          Promise.resolve(this._hass.callService('button','press',{
+            entity_id:entityId
+          })).catch((error)=>console.warn('Measured capacity not applied',error));
           return;
         }
         const pidSave = event.target.closest?.('[data-save-pid-model]');
@@ -658,18 +694,25 @@
         this._render(true);
       });
       this.shadowRoot.addEventListener('change', (event) => {
+        const capacitySelection = event.target.closest?.('[data-pid-capacity-select]');
         const pidSelection = event.target.closest?.('[data-pid-calibration-method]');
-        const selector = pidSelection || event.target.closest?.('[data-climate-method]');
+        const selector = capacitySelection || pidSelection || event.target.closest?.('[data-climate-method]');
         if (!selector || !this._hass?.callService) return;
         const area = selector.getAttribute('data-controller-area');
-        const entityId = selector.getAttribute(pidSelection ?
+        const entityId = selector.getAttribute(capacitySelection ?
+          'data-pid-capacity-select' : pidSelection ?
           'data-pid-calibration-method' : 'data-climate-method');
         const current = this._managedControllers(area).find((item)=>
+          capacitySelection ? item.method?.state==='pid' &&
+            [item.capacityModeId,item.capacityDirectionId].includes(entityId) :
           pidSelection ? item.calibrationSelectId===entityId &&
             item.method?.state==='pid' : item.methodId===entityId);
         const value = selector.value;
-        const choices = (pidSelection ? current?.calibrationSelect
-          : current?.method)?.attributes?.options;
+        const chosenState=capacitySelection ?
+          (entityId===current?.capacityModeId ? current.capacityMode
+            : current?.capacityDirection) :
+          pidSelection ? current?.calibrationSelect : current?.method;
+        const choices = chosenState?.attributes?.options;
         if (!current || current.climate?.state==='unavailable' ||
             !Array.isArray(choices) || !choices.includes(value)) return;
         this._climateEditError = null;
