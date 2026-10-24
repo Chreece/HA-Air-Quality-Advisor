@@ -18,6 +18,7 @@ from datetime import datetime
 from typing import Any, Callable
 
 from .climate_coordination import duplicate_owners, device_inventory
+from .const import DOMAIN
 from .climate_arbitration import new_command_gate
 from .climate_fan_native import FAN_ROLES
 from .discovery import entity_area, reading
