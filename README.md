@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 35 is available for opt-in testing.** Stable remains **v0.5.1**. Beta35 fixes the Lovelace card closing native mode selectors during HA state updates and restores the card automatically after transient dashboard or device registry failures. Room temperatures, native per-device controls, beta31–34 fixes and the sole `environment_manager` domain remain unchanged.
+> **v0.6.0 beta 36 is available for opt-in testing.** Stable remains **v0.5.1**. Beta36 distinguishes an armed managed HVAC controller from its physically OFF output: Automatic/PID/Manual with a selected supported mode shows the selected mode and an Idle action when no physical demand exists. Native state, permissions and b31–35 fixes remain unchanged; the domain stays `environment_manager`.
+
+## Beta 36 - armed climate mode while a physical device is idle
+
+A Manager-created climate controller is supervisory: it can have Automatic, PID or Manual selected while its native thermostat, humidifier or fan remains OFF because the target has already been reached or a PID output is in an OFF interval.
+
+The controller's Home Assistant climate entity now reports its valid selected or evaluated physical HVAC direction and **Idle** action, instead of incorrectly reporting the controller itself as OFF. The raw physical mode stays visible separately as `physical_hvac_mode` and `physical_source_state`. Explicit Off remains Off, and Existing still mirrors native source state. Missing/unsupported modes are never fabricated.
+
+This changes only UI/entity-state reporting. Controller decisions, native services, physical ON/OFF timing, acknowledgement and room safety protections are unchanged.
 
 ## Beta 35 - stable mode dropdown and automatic dashboard recovery
 
