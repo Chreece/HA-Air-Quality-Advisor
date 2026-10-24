@@ -1297,3 +1297,97 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   }}});
   assert.equal(calls.length,0);
 }
+
+
+// Beta41: measured physical fan capacity controls are bound to the EXACT
+// room/physical entity rather than an inferred or neighboring controller.
+{
+  const data=JSON.parse(JSON.stringify(input));
+  data.rooms=[{area_id:'bath',name:'Bathroom',status:'unknown',
+    readings:[],windows:[],environment:{climate_plan:{
+      status:'advisory',controller:'environment',reason:'environment_only_no_hvac',
+    }}}];
+  const source=['climate.physical_bath'];
+  const base={area_id:'bath',source_entity_ids:source};
+  const entity='climate.bath_managed_pid';
+  const method='select.bath_method';
+  const strategy='select.bath_capacity_strategy';
+  const direction='select.bath_capacity_direction';
+  const field='number.bath_capacity_stage_1';
+  const button='button.bath_capacity_apply';
+  const states={
+    'sensor.beta41':{state:'idle',attributes:{dashboard:data}},
+    [entity]:{state:'heat',attributes:{...base,control_mode:'pid',
+      physical_source_state:'off',supported_features:1,
+      controller_status:{pid_fan_capacity:{
+        status:'capacity_limited',compensated_duty_percent:100,
+        expected_delivered_percent:30,unmet_demand_percent:20,
+      }}}},
+    [method]:{state:'pid',attributes:{...base,
+      options:['existing','automatic','manual','pid','off']}},
+    [strategy]:{state:'legacy',attributes:{...base,
+      pid_fan_capacity_role:'strategy',options:['legacy','measured']}},
+    [direction]:{state:'heat',attributes:{...base,
+      pid_fan_capacity_role:'direction',options:['choose','heat','cool','dry']}},
+    [field]:{state:'30',attributes:{...base,
+      pid_fan_capacity_field:'pid_capacity_stage_1',
+      min:0,max:99,step:1}},
+    [button]:{state:'unknown',attributes:{...base,
+      pid_fan_capacity_role:'apply',
+      calibration_status:'ready_to_apply_when_physical_off'}},
+  };
+  const commands=[];
+  const card=new Card();
+  card.setConfig({entity:'sensor.beta41'});
+  card.hass={language:'en',states,
+    callService:(domain,service,params)=>{
+      commands.push([domain,service,params]);return Promise.resolve();
+    }};
+  let html=card.shadowRoot.innerHTML;
+  assert.ok(html.includes('data-pid-capacity-select="'+strategy+'"'));
+  assert.ok(html.includes('data-pid-capacity-select="'+direction+'"'));
+  assert.ok(html.includes('data-pid-capacity-input="pid_capacity_stage_1"'));
+  assert.ok(html.includes('data-save-pid-capacity="'+field+'"'));
+  assert.ok(html.includes('data-apply-pid-fan-capacity="'+button+'"'));
+  assert.ok(html.includes('Unmet demand'));
+  const elt=(attributes,editor=null)=>({
+    getAttribute:(key)=>attributes[key]??null,
+    closest:(key)=>key==='.climate-target-editor'?editor:null,
+  });
+  const pick=elt({'data-controller-area':'bath',
+    'data-pid-capacity-select':direction});
+  pick.value='dry';
+  card.shadowRoot.listeners.change({target:{
+    closest:(query)=>query==='[data-pid-capacity-select]'?pick:null,
+  }});
+  assert.deepEqual(commands.pop(),['select','select_option',{
+    entity_id:direction,option:'dry',
+  }]);
+
+  card.shadowRoot.listeners.click({target:{closest:(query)=>
+    query==='[data-save-pid-capacity]'?
+      elt({'data-controller-area':'bath','data-save-pid-capacity':field,
+        'data-pid-capacity-field':'pid_capacity_stage_1'},
+        {querySelector:()=>({value:'45'})}):null,
+  }});
+  assert.deepEqual(commands.pop(),['number','set_value',{
+    entity_id:field,value:45,
+  }]);
+  card.shadowRoot.listeners.click({target:{closest:(query)=>
+    query==='[data-apply-pid-fan-capacity]'?
+      elt({'data-controller-area':'bath',
+        'data-apply-pid-fan-capacity':button}):null,
+  }});
+  assert.deepEqual(commands.pop(),['button','press',{entity_id:button}]);
+  card.shadowRoot.listeners.click({target:{closest:(query)=>
+    query==='[data-apply-pid-fan-capacity]'?
+      elt({'data-controller-area':'kitchen',
+        'data-apply-pid-fan-capacity':button}):null,
+  }});
+  assert.equal(commands.length,0,'never apply model to another room');
+  states[entity].attributes.physical_source_state='heat';
+  card.hass={language:'en',states,callService:()=>{}};
+  html=card.shadowRoot.innerHTML;
+  assert.ok(html.includes('data-apply-pid-fan-capacity="'+button+'"'));
+  assert.ok(html.includes('Physical output must be OFF'));
+}
