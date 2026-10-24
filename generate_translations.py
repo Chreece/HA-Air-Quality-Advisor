@@ -407,3 +407,9 @@ apply_beta16_i18n(root)
 
 from apply_beta19_i18n import apply_beta19_i18n
 apply_beta19_i18n(root)
+
+# Final presentation-only pass. All PID parameter names must start with PID
+# in every locale, even after downstream generators change room/device labels.
+# The channel name, if present, follows PID so sorting is consistent.
+from apply_pid_sort_i18n import apply_pid_sort_i18n
+apply_pid_sort_i18n(root)
