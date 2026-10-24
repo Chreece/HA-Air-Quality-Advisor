@@ -71,7 +71,7 @@ def build_model(
             raise ValueError("native_full_fan_speed_not_available")
         observed = []
         for speed_key, capacity_key in PERCENT_POINT_FIELDS:
-            speed, value = _number(measured.get(speed_key)), _number(measured.get(capacity_key))
+            speed, value = _number(measured.get(speed_key, 0)), _number(measured.get(capacity_key, 0))
             if speed is None or value is None or not 0 <= speed <= 99 or not 0 <= value <= 99:
                 raise ValueError("invalid_measured_percentage_capacity")
             if speed == value == 0:
