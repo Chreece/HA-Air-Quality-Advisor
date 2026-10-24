@@ -1,0 +1,1826 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Huoneet",
+        "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Huoneet",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Ohita ikkuna-anturit",
+        "description": "2 · Ohita ikkuna-anturit. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ohita ikkuna-anturit"
+        },
+        "data_description": {
+          "excluded_window_entities": "Valitse: Ohita ikkuna-anturit · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Huoneet · Homeindikaattori",
+        "description": "Huoneet: {area_name} ({position}/{total}). 🌡️ 🧊 Homeindikaattori · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit",
+          "mold_indoor_temperature": "Huoneet · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Homeindikaattori · 🧊 °C",
+          "mold_recalibrate": "Homeindikaattori · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Ulko · Lämpötila · lähde · Homeindikaattori"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Huoneet: 🌡️ °C/°F · Homeindikaattori.",
+          "mold_critical_temperature_c": "🧊 Homeindikaattori · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Käytä todellista sopivaa mittausta kohtaan ”Homeindikaattori · ↻ 🌡️”. Arvio ei korvaa kalibroitua anturia.",
+          "mold_outdoor_weather_entity": "Valitse weather.* · Ulko Lämpötila (temperature, °C/°F) → Homeindikaattori. Vaaditaan: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Ulkoilman laatu",
+        "description": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Ulkoilman laatu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Valitse: Ulkoilman laatu · AQI, CO₂, PM2.5, PM10, VOC. Ei saatavilla: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Sää ja varoitukset",
+        "description": "Sää ja varoitukset. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "weather_warnings": "Säävaroitukset"
+        },
+        "data_description": {
+          "weather_entities": "Valitse: Sää ja varoitukset · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Sää ja varoitukset · ⚠ (Ei saatavilla) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Ilmoitukset (valinnainen)",
+        "description": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+        "data": {
+          "language": "Kieli",
+          "automatic_tts": "Automaattinen",
+          "automatic_notifications": "Automaattinen · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Ilmoitukset (valinnainen) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "asetukset · lähde",
+          "tts_engine": "asetukset · lähde · TTS_ENGINE",
+          "media_players": "asetukset · lähde · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Ilmoitukset (valinnainen)",
+          "ai_conversation_agent": "AI · Kieli"
+        },
+        "data_description": {
+          "language": "Määritä ”Kieli” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "automatic_tts": "Oletus: ⛔ · Automaattinen · 🪟 90 s.",
+          "automatic_notifications": "Oletus: ⛔ · Automaattinen · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Oletus: 10 min · 0 = ei koskaan · Kun sama syy jatkuu · Huoneet.",
+          "use_announcement_hub": "Announcement Hub · Ei saatavilla → Home Assistant.",
+          "notify_entities": "Valitse: notify.* · asetukset · lähde.",
+          "tts_engine": "Valitse: tts.* · asetukset · lähde · TTS_ENGINE.",
+          "media_players": "Valitse: media_player.* · asetukset · lähde · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Ilmoitukset (valinnainen) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Valitse: conversation.* (Home Assistant · Oletus)."
+        }
+      },
+      "thresholds": {
+        "title": "Lisäraja-arvot",
+        "description": "Lisäraja-arvot. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ulkona · AQI (≤)",
+          "outdoor_co2": "Ulkona · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ulkona · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ulkona · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ulkona · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ulkona · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Ulko (µg/m³)",
+          "outdoor_o3": "O₃ · Ulko (µg/m³)",
+          "outdoor_so2": "SO₂ · Ulko (µg/m³)",
+          "indoor_aqi": "Ilmanlaatu · AQI (≥)",
+          "indoor_co2": "Ilmanlaatu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Ilmanlaatu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Ilmanlaatu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Ilmanlaatu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Ilmanlaatu · VOC (ppb) (≥)",
+          "indoor_humidity": "Ilmanlaatu · RH (%) (≥)",
+          "min_outdoor_temp": "Ulkona · °C (≥)",
+          "max_outdoor_temp": "Ulkona · °C (≤)",
+          "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
+          "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
+          "max_age_minutes": "⏱ · Avaa (min, ≤)",
+          "indoor_mold": "Homeindikaattori · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Päätösraja kohdalle ”Ulkona · AQI (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_co2": "Päätösraja kohdalle ”Ulkona · CO₂ (ppm) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_pm25": "Päätösraja kohdalle ”Ulkona · PM2.5 (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_pm10": "Päätösraja kohdalle ”Ulkona · PM10 (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_voc": "Päätösraja kohdalle ”Ulkona · VOC (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_voc_parts": "Päätösraja kohdalle ”Ulkona · VOC (ppb) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_no2": "Päätösraja kohdalle ”NO₂ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_o3": "Päätösraja kohdalle ”O₃ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_so2": "Päätösraja kohdalle ”SO₂ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_aqi": "Päätösraja kohdalle ”Ilmanlaatu · AQI (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_co2": "Päätösraja kohdalle ”Ilmanlaatu · CO₂ (ppm) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_pm25": "Päätösraja kohdalle ”Ilmanlaatu · PM2.5 (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_pm10": "Päätösraja kohdalle ”Ilmanlaatu · PM10 (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_voc": "Päätösraja kohdalle ”Ilmanlaatu · VOC (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_voc_parts": "Päätösraja kohdalle ”Ilmanlaatu · VOC (ppb) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_humidity": "Päätösraja kohdalle ”Ilmanlaatu · RH (%) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "min_outdoor_temp": "Päätösraja kohdalle ”Ulkona · °C (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_outdoor_temp": "Päätösraja kohdalle ”Ulkona · °C (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_outdoor_humidity": "Päätösraja kohdalle ”Ulkona · RH (%) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_wind_kmh": "Päätösraja kohdalle ”Sää ja varoitukset · km/h (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_age_minutes": "Päätösraja kohdalle ”⏱ · Avaa (min, ≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_mold": "Päätösraja kohdalle ”Homeindikaattori · ≥ 70%”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "setup_rooms": {
+        "title": "Valvottavat huoneet",
+        "description": "Valvottavat huoneet → lähde → Yleiset asetukset",
+        "data": {
+          "areas": "Valvottavat huoneet"
+        },
+        "data_description": {
+          "areas": "Valvottavat huoneet. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Huone · {area_name} · {room_index}/{room_count}",
+        "description": "Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+        "data": {
+          "windows": "Ikkunat",
+          "air_quality": "Ilmanlaatu- ja ympäristöanturit",
+          "temperature": "Lämpötila",
+          "humidity": "Kosteus",
+          "pressure": "Paineanturit",
+          "climate_devices": "Laitteet"
+        },
+        "data_description": {
+          "windows": "Ikkunat. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "air_quality": "Ilmanlaatu- ja ympäristöanturit. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "temperature": "Lämpötila. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "humidity": "Kosteus. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "pressure": "Paineanturit. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "climate_devices": "Laitteet. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta."
+        }
+      },
+      "setup_general": {
+        "title": "Yleiset asetukset",
+        "description": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin.",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "outdoor_sensors": "Ulkoilman laatu",
+          "weather_warnings": "Säävaroitukset",
+          "general_room_occupancy_sensors": "Huone · Läsnäolo · anturi",
+          "general_home_trackers": "Koti · Läsnäolo · Laitteet",
+          "general_occupied_rooms_entity": "Läsnäolo · Huone · lähde (state)",
+          "general_occupied_rooms_attribute": "Läsnäolo · Huone · lähde (attribute)",
+          "general_sleep_rooms_entity": "Uni · Huone · lähde (state)",
+          "general_sleep_rooms_attribute": "Uni · Huone · lähde (attribute)",
+          "notify_entities": "asetukset · lähde",
+          "media_players": "asetukset · lähde · MEDIA_PLAYERS",
+          "tts_engine": "asetukset · lähde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Valitse · lähde",
+          "language": "TTS · Valitse · lähde",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%",
+          "pollen_entities": "Siitepöly · lähde · Valitse",
+          "use_announcement_hub": "Automaattinen · Announcement Hub",
+          "general_away_cooldown_minutes": "Koti · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Valitse: Sää ja varoitukset · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Valitse: Ulkoilman laatu · AQI, CO₂, PM2.5, PM10, VOC. Ei saatavilla: ⚠",
+          "weather_warnings": "Sää ja varoitukset · ⚠ (Ei saatavilla) → 🪟🔒",
+          "general_room_occupancy_sensors": "Valitse todellinen Home Assistant -lähde kohdalle ”Huone · Läsnäolo · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_home_trackers": "Valitse todellinen Home Assistant -lähde kohdalle ”Koti · Läsnäolo · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Läsnäolo · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_attribute": "Määritä ”Läsnäolo · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "general_sleep_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Uni · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_sleep_rooms_attribute": "Määritä ”Uni · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "notify_entities": "Valitse: notify.* · asetukset · lähde.",
+          "media_players": "Valitse: media_player.* · asetukset · lähde · MEDIA_PLAYERS.",
+          "tts_engine": "Valitse: tts.* · asetukset · lähde · TTS_ENGINE.",
+          "ai_conversation_agent": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · AI · Valitse · lähde · conversation.* / ai_task.*.",
+          "language": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · TTS · Valitse · lähde · provider capabilities.",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Siitepöly · lähde · Valitse.",
+          "use_announcement_hub": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Automaattinen · Announcement Hub.",
+          "general_away_cooldown_minutes": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Koti · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Virheellinen valinta: Ulkoilman laatu (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Ei saatavilla: Ulkoilman laatu (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Virheellinen valinta: Sää ja varoitukset (weather.*).",
+      "invalid_warning": "Virheellinen valinta: Sää ja varoitukset ⚠.",
+      "missing_notify": "Valitse: Announcement Hub / notify.*.",
+      "missing_tts": "Valitse: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Virheellinen valinta: °C min < max.",
+      "no_areas": "Valitse: Huoneet.",
+      "no_window_areas": "Ei saatavilla: Mittaukset (binary_sensor, window).",
+      "invalid_areas": "Virheellinen valinta: Huoneet.",
+      "invalid_window_exclusions": "Virheellinen valinta: Ohita ikkuna-anturit.",
+      "invalid_indoor_exclusions": "Virheellinen valinta: Ohita sisäilma-anturit.",
+      "no_windows_after_exclusions": "Jätä ainakin yksi ikkuna-anturi käyttöön.",
+      "review_areas_after_exclusions": "Tarkista: Huoneet · Mittaukset (0).",
+      "invalid_repeat_minutes": "Virheellinen valinta: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Ei saatavilla: conversation.process.",
+      "invalid_ai_agent": "Virheellinen valinta: conversation.*.",
+      "invalid_mold_temperature_sensor": "Huoneet · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Huoneet · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Homeindikaattori · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Homeindikaattori · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Homeindikaattori · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Virheellinen: Valvottavat huoneet",
+      "invalid_room_source": "Virheellinen: Huone · lähde"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — on jo määritetty.",
+      "setup_area_removed": "Virheellinen: Valvottavat huoneet",
+      "setup_changed": "asetukset ↻ Valvottavat huoneet"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Valitse",
+        "description": "Valitse: Huoneet / Sää ja varoitukset / Ilmoitukset (valinnainen) / Lisäraja-arvot",
+        "menu_options": {
+          "outside_data": "Ulko · lähde",
+          "general_settings": "Yleiset · asetukset",
+          "area_settings": "Alue · asetukset",
+          "delivery": "Ilmoitukset (valinnainen)",
+          "thresholds": "Lisäraja-arvot"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Ohita ikkuna-anturit",
+        "description": "2 · Ohita ikkuna-anturit. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Ohita ikkuna-anturit"
+        },
+        "data_description": {
+          "excluded_window_entities": "Valitse: Ohita ikkuna-anturit · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Huoneet",
+        "description": "1 · 🪟 Huoneet. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Huoneet",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Valitse: Huoneet · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Huoneet · Homeindikaattori",
+        "description": "Huoneet: {area_name} ({position}/{total}). 🌡️ 🧊 Homeindikaattori · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Ohita sisäilma-anturit",
+          "mold_indoor_temperature": "Huoneet · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Homeindikaattori · 🧊 °C",
+          "mold_recalibrate": "Homeindikaattori · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Ulko · Lämpötila · lähde · Homeindikaattori"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Valitse: Ohita sisäilma-anturit · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Huoneet: 🌡️ °C/°F · Homeindikaattori.",
+          "mold_critical_temperature_c": "🧊 Homeindikaattori · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Käytä todellista sopivaa mittausta kohtaan ”Homeindikaattori · ↻ 🌡️”. Arvio ei korvaa kalibroitua anturia.",
+          "mold_outdoor_weather_entity": "Valitse weather.* · Ulko Lämpötila (temperature, °C/°F) → Homeindikaattori. Vaaditaan: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Ulkoilman laatu",
+        "description": "Ulkoilman laatu. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Ulkoilman laatu"
+        },
+        "data_description": {
+          "outdoor_sensors": "Valitse: Ulkoilman laatu · AQI, CO₂, PM2.5, PM10, VOC. Ei saatavilla: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Sää ja varoitukset",
+        "description": "Sää ja varoitukset. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "weather_warnings": "Säävaroitukset"
+        },
+        "data_description": {
+          "weather_entities": "Valitse: Sää ja varoitukset · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Sää ja varoitukset · ⚠ (Ei saatavilla) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Ilmoitukset (valinnainen)",
+        "description": "Ilmoitukset (valinnainen). Automaattiset ilmoitukset · Automaattiset puheilmoitukset. Announcement Hub.",
+        "data": {
+          "language": "Kieli",
+          "automatic_tts": "Automaattinen",
+          "automatic_notifications": "Automaattinen · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Ilmoitukset (valinnainen) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "asetukset · lähde",
+          "tts_engine": "asetukset · lähde · TTS_ENGINE",
+          "media_players": "asetukset · lähde · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Ilmoitukset (valinnainen)",
+          "ai_conversation_agent": "AI · Kieli"
+        },
+        "data_description": {
+          "language": "Määritä ”Kieli” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "automatic_tts": "Oletus: ⛔ · Automaattinen · 🪟 90 s.",
+          "automatic_notifications": "Oletus: ⛔ · Automaattinen · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Oletus: 10 min · 0 = ei koskaan · Kun sama syy jatkuu · Huoneet.",
+          "use_announcement_hub": "Announcement Hub · Ei saatavilla → Home Assistant.",
+          "notify_entities": "Valitse: notify.* · asetukset · lähde.",
+          "tts_engine": "Valitse: tts.* · asetukset · lähde · TTS_ENGINE.",
+          "media_players": "Valitse: media_player.* · asetukset · lähde · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Ilmoitukset (valinnainen) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Valitse: conversation.* (Home Assistant · Oletus)."
+        }
+      },
+      "thresholds": {
+        "title": "Lisäraja-arvot",
+        "description": "Lisäraja-arvot. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Ulkona · AQI (≤)",
+          "outdoor_co2": "Ulkona · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Ulkona · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Ulkona · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Ulkona · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Ulkona · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Ulko (µg/m³)",
+          "outdoor_o3": "O₃ · Ulko (µg/m³)",
+          "outdoor_so2": "SO₂ · Ulko (µg/m³)",
+          "indoor_aqi": "Ilmanlaatu · AQI (≥)",
+          "indoor_co2": "Ilmanlaatu · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Ilmanlaatu · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Ilmanlaatu · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Ilmanlaatu · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Ilmanlaatu · VOC (ppb) (≥)",
+          "indoor_humidity": "Ilmanlaatu · RH (%) (≥)",
+          "min_outdoor_temp": "Ulkona · °C (≥)",
+          "max_outdoor_temp": "Ulkona · °C (≤)",
+          "max_outdoor_humidity": "Ulkona · RH (%) (≤)",
+          "max_wind_kmh": "Sää ja varoitukset · km/h (≤)",
+          "max_age_minutes": "⏱ · Avaa (min, ≤)",
+          "indoor_mold": "Homeindikaattori · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Päätösraja kohdalle ”Ulkona · AQI (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_co2": "Päätösraja kohdalle ”Ulkona · CO₂ (ppm) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_pm25": "Päätösraja kohdalle ”Ulkona · PM2.5 (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_pm10": "Päätösraja kohdalle ”Ulkona · PM10 (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_voc": "Päätösraja kohdalle ”Ulkona · VOC (µg/m³) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_voc_parts": "Päätösraja kohdalle ”Ulkona · VOC (ppb) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_no2": "Päätösraja kohdalle ”NO₂ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_o3": "Päätösraja kohdalle ”O₃ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outdoor_so2": "Päätösraja kohdalle ”SO₂ · Ulko (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_aqi": "Päätösraja kohdalle ”Ilmanlaatu · AQI (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_co2": "Päätösraja kohdalle ”Ilmanlaatu · CO₂ (ppm) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_pm25": "Päätösraja kohdalle ”Ilmanlaatu · PM2.5 (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_pm10": "Päätösraja kohdalle ”Ilmanlaatu · PM10 (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_voc": "Päätösraja kohdalle ”Ilmanlaatu · VOC (µg/m³) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_voc_parts": "Päätösraja kohdalle ”Ilmanlaatu · VOC (ppb) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_humidity": "Päätösraja kohdalle ”Ilmanlaatu · RH (%) (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "min_outdoor_temp": "Päätösraja kohdalle ”Ulkona · °C (≥)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_outdoor_temp": "Päätösraja kohdalle ”Ulkona · °C (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_outdoor_humidity": "Päätösraja kohdalle ”Ulkona · RH (%) (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_wind_kmh": "Päätösraja kohdalle ”Sää ja varoitukset · km/h (≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "max_age_minutes": "Päätösraja kohdalle ”⏱ · Avaa (min, ≤)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "indoor_mold": "Päätösraja kohdalle ”Homeindikaattori · ≥ 70%”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "environment": {
+        "title": "asetukset · asetukset · lähde",
+        "description": "Määritä ”asetukset · asetukset · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "pollen_entity": "Siitepöly · lähde",
+          "pollen_high_from": "POLLEN · Siitepöly · HIGH",
+          "pollen_max_scale": "POLLEN · Siitepöly · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Siitepöly · NO VENT",
+          "aqi_scale_0": "AQI #1 · lähde",
+          "aqi_custom_limit_0": "AQI #1 · tavoite",
+          "aqi_scale_1": "AQI #2 · lähde",
+          "aqi_custom_limit_1": "AQI #2 · tavoite",
+          "aqi_scale_2": "AQI #3 · lähde",
+          "aqi_custom_limit_2": "AQI #3 · tavoite",
+          "aqi_scale_3": "AQI #4 · lähde",
+          "aqi_custom_limit_3": "AQI #4 · tavoite",
+          "aqi_scale_4": "AQI #5 · lähde",
+          "aqi_custom_limit_4": "AQI #5 · tavoite",
+          "aqi_scale_5": "AQI #6 · lähde",
+          "aqi_custom_limit_5": "AQI #6 · tavoite",
+          "aqi_scale_6": "AQI #7 · lähde",
+          "aqi_custom_limit_6": "AQI #7 · tavoite",
+          "aqi_scale_7": "AQI #8 · lähde",
+          "aqi_custom_limit_7": "AQI #8 · tavoite",
+          "aqi_scale_8": "AQI #9 · lähde",
+          "aqi_custom_limit_8": "AQI #9 · tavoite",
+          "aqi_scale_9": "AQI #10 · lähde",
+          "aqi_custom_limit_9": "AQI #10 · tavoite",
+          "aqi_scale_10": "AQI #11 · lähde",
+          "aqi_custom_limit_10": "AQI #11 · tavoite",
+          "aqi_scale_11": "AQI #12 · lähde",
+          "aqi_custom_limit_11": "AQI #12 · tavoite",
+          "aqi_scale_12": "AQI #13 · lähde",
+          "aqi_custom_limit_12": "AQI #13 · tavoite",
+          "aqi_scale_13": "AQI #14 · lähde",
+          "aqi_custom_limit_13": "AQI #14 · tavoite",
+          "aqi_scale_14": "AQI #15 · lähde",
+          "aqi_custom_limit_14": "AQI #15 · tavoite",
+          "aqi_scale_15": "AQI #16 · lähde",
+          "aqi_custom_limit_15": "AQI #16 · tavoite",
+          "aqi_scale_16": "AQI #17 · lähde",
+          "aqi_custom_limit_16": "AQI #17 · tavoite",
+          "aqi_scale_17": "AQI #18 · lähde",
+          "aqi_custom_limit_17": "AQI #18 · tavoite",
+          "aqi_scale_18": "AQI #19 · lähde",
+          "aqi_custom_limit_18": "AQI #19 · tavoite",
+          "aqi_scale_19": "AQI #20 · lähde",
+          "aqi_custom_limit_19": "AQI #20 · tavoite",
+          "aqi_scale_20": "AQI #21 · lähde",
+          "aqi_custom_limit_20": "AQI #21 · tavoite",
+          "aqi_scale_21": "AQI #22 · lähde",
+          "aqi_custom_limit_21": "AQI #22 · tavoite",
+          "aqi_scale_22": "AQI #23 · lähde",
+          "aqi_custom_limit_22": "AQI #23 · tavoite",
+          "aqi_scale_23": "AQI #24 · lähde",
+          "aqi_custom_limit_23": "AQI #24 · tavoite",
+          "aqi_scale_24": "AQI #25 · lähde",
+          "aqi_custom_limit_24": "AQI #25 · tavoite",
+          "aqi_scale_25": "AQI #26 · lähde",
+          "aqi_custom_limit_25": "AQI #26 · tavoite",
+          "aqi_scale_26": "AQI #27 · lähde",
+          "aqi_custom_limit_26": "AQI #27 · tavoite",
+          "aqi_scale_27": "AQI #28 · lähde",
+          "aqi_custom_limit_27": "AQI #28 · tavoite",
+          "aqi_scale_28": "AQI #29 · lähde",
+          "aqi_custom_limit_28": "AQI #29 · tavoite",
+          "aqi_scale_29": "AQI #30 · lähde",
+          "aqi_custom_limit_29": "AQI #30 · tavoite",
+          "aqi_scale_30": "AQI #31 · lähde",
+          "aqi_custom_limit_30": "AQI #31 · tavoite",
+          "aqi_scale_31": "AQI #32 · lähde",
+          "aqi_custom_limit_31": "AQI #32 · tavoite"
+        },
+        "data_description": {
+          "pollen_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Siitepöly · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "pollen_high_from": "Määritä ”POLLEN · Siitepöly · HIGH” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "pollen_max_scale": "Määritä ”POLLEN · Siitepöly · SCALE” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "pollen_avoid_ventilation": "Määritä ”POLLEN · Siitepöly · NO VENT” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_scale_0": "Määritä ”AQI #1 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_0": "Päätösraja kohdalle ”AQI #1 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_1": "Määritä ”AQI #2 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_1": "Päätösraja kohdalle ”AQI #2 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_2": "Määritä ”AQI #3 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_2": "Päätösraja kohdalle ”AQI #3 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_3": "Määritä ”AQI #4 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_3": "Päätösraja kohdalle ”AQI #4 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_4": "Määritä ”AQI #5 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_4": "Päätösraja kohdalle ”AQI #5 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_5": "Määritä ”AQI #6 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_5": "Päätösraja kohdalle ”AQI #6 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_6": "Määritä ”AQI #7 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_6": "Päätösraja kohdalle ”AQI #7 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_7": "Määritä ”AQI #8 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_7": "Päätösraja kohdalle ”AQI #8 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_8": "Määritä ”AQI #9 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_8": "Päätösraja kohdalle ”AQI #9 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_9": "Määritä ”AQI #10 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_9": "Päätösraja kohdalle ”AQI #10 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_10": "Määritä ”AQI #11 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_10": "Päätösraja kohdalle ”AQI #11 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_11": "Määritä ”AQI #12 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_11": "Päätösraja kohdalle ”AQI #12 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_12": "Määritä ”AQI #13 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_12": "Päätösraja kohdalle ”AQI #13 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_13": "Määritä ”AQI #14 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_13": "Päätösraja kohdalle ”AQI #14 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_14": "Määritä ”AQI #15 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_14": "Päätösraja kohdalle ”AQI #15 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_15": "Määritä ”AQI #16 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_15": "Päätösraja kohdalle ”AQI #16 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_16": "Määritä ”AQI #17 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_16": "Päätösraja kohdalle ”AQI #17 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_17": "Määritä ”AQI #18 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_17": "Päätösraja kohdalle ”AQI #18 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_18": "Määritä ”AQI #19 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_18": "Päätösraja kohdalle ”AQI #19 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_19": "Määritä ”AQI #20 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_19": "Päätösraja kohdalle ”AQI #20 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_20": "Määritä ”AQI #21 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_20": "Päätösraja kohdalle ”AQI #21 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_21": "Määritä ”AQI #22 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_21": "Päätösraja kohdalle ”AQI #22 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_22": "Määritä ”AQI #23 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_22": "Päätösraja kohdalle ”AQI #23 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_23": "Määritä ”AQI #24 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_23": "Päätösraja kohdalle ”AQI #24 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_24": "Määritä ”AQI #25 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_24": "Päätösraja kohdalle ”AQI #25 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_25": "Määritä ”AQI #26 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_25": "Päätösraja kohdalle ”AQI #26 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_26": "Määritä ”AQI #27 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_26": "Päätösraja kohdalle ”AQI #27 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_27": "Määritä ”AQI #28 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_27": "Päätösraja kohdalle ”AQI #28 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_28": "Määritä ”AQI #29 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_28": "Päätösraja kohdalle ”AQI #29 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_29": "Määritä ”AQI #30 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_29": "Päätösraja kohdalle ”AQI #30 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_30": "Määritä ”AQI #31 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_30": "Päätösraja kohdalle ”AQI #31 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "aqi_scale_31": "Määritä ”AQI #32 · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "aqi_custom_limit_31": "Päätösraja kohdalle ”AQI #32 · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "environment_room": {
+        "title": "asetukset · asetukset · lähde",
+        "description": "Määritä ”asetukset · asetukset · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "environment_area": "asetukset · lähde"
+        },
+        "data_description": {
+          "environment_area": "Määritä ”asetukset · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon."
+        }
+      },
+      "environment_room_air": {
+        "title": "asetukset · Ulko",
+        "description": "Määritä ”asetukset · Ulko” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "temperature_entity": "Lämpötila · lähde",
+          "room_volume_m3": "asetukset · lähde (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Ilmanpuhdistin · lähde",
+          "extractor_entity": "Poistopuhallin · lähde",
+          "co2_ndir_verified": "CO₂ · Vaaditaan",
+          "co2_target_ppm": "CO₂ · CO₂ · tavoite (ppm)",
+          "sleep_room": "Uni"
+        },
+        "data_description": {
+          "temperature_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Lämpötila · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "room_volume_m3": "Käytä todellista sopivaa mittausta kohtaan ”asetukset · lähde (m³)”. Arvio ei korvaa kalibroitua anturia.",
+          "particle_cadr_m3h": "Käytä todellista sopivaa mittausta kohtaan ”CADR (m³/h)”. Arvio ei korvaa kalibroitua anturia.",
+          "purifier_entity": "Valitse todellinen Home Assistant -Ilmanpuhdistin · lähde kohdalle ”Ilmanpuhdistin · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "extractor_entity": "Valitse todellinen Home Assistant -Poistopuhallin · lähde kohdalle ”Poistopuhallin · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "co2_ndir_verified": "Käytä todellista sopivaa mittausta kohtaan ”CO₂ · Vaaditaan”. Arvio ei korvaa kalibroitua anturia.",
+          "co2_target_ppm": "Päätösraja kohdalle ”CO₂ · CO₂ · tavoite (ppm)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "sleep_room": "Määritä ”Uni” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "asetukset · asetukset · lähde",
+        "description": "Määritä ”asetukset · asetukset · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "radon_entity": "RADON · Rn · lähde",
+          "radon_sensor_verified": "RADON · Rn · anturi · Vaaditaan · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · lähde",
+          "formaldehyde_sensor_verified": "HCHO · anturi · Vaaditaan · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · lähde · anturi (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · anturi · Vaaditaan",
+          "illuminance_entity": "LUX · lähde (lux)",
+          "melanopic_edi_entity": "EDI · EDI · lähde (lx)",
+          "melanopic_spectral_verified": "EDI · Vaaditaan"
+        },
+        "data_description": {
+          "radon_entity": "Valitse todellinen Home Assistant -RADON · Rn · lähde kohdalle ”RADON · Rn · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "radon_sensor_verified": "Käytä todellista sopivaa mittausta kohtaan ”RADON · Rn · anturi · Vaaditaan · SENSOR ✓ · VERIFIED”. Arvio ei korvaa kalibroitua RADON · Rn · anturi · Vaaditaan · SENSOR ✓ · VERIFIEDa.",
+          "radon_reference_bq_m3": "Määritä ”Rn (Bq/m³)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "formaldehyde_entity": "Valitse todellinen Home Assistant -HCHO · lähde kohdalle ”HCHO · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "formaldehyde_sensor_verified": "Käytä todellista sopivaa mittausta kohtaan ”HCHO · anturi · Vaaditaan · SENSOR ✓ · VERIFIED”. Arvio ei korvaa kalibroitua HCHO · anturi · Vaaditaan · SENSOR ✓ · VERIFIEDa.",
+          "noise_entity": "Valitse todellinen Home Assistant -dB(A) · lähde · anturi (dB(A)) kohdalle ”dB(A) · lähde · anturi (dB(A))”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "noise_sensor_calibrated": "Käytä todellista sopivaa mittausta kohtaan ”dB(A) · anturi · Vaaditaan”. Arvio ei korvaa kalibroitua dB(A) · anturi · Vaaditaana.",
+          "illuminance_entity": "Valitse todellinen Home Assistant -LUX · lähde (lux) kohdalle ”LUX · lähde (lux)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "melanopic_edi_entity": "Valitse todellinen Home Assistant -EDI · EDI · lähde (lx) kohdalle ”EDI · EDI · lähde (lx)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "melanopic_spectral_verified": "Käytä todellista sopivaa mittausta kohtaan ”EDI · Vaaditaan”. Arvio ei korvaa kalibroitua anturia."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "asetukset · asetukset · lähde",
+        "description": "Määritä ”asetukset · asetukset · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automaattinen",
+          "radiant_temperature_entity": "Lämpötila · lähde",
+          "air_speed_entity": "lähde · Nopeus · Ulko (m/s)",
+          "air_speed_m_s": "Nopeus · Ulko (m/s)",
+          "met": "asetukset · lähde (met)",
+          "clo": "asetukset · lähde (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Määritä ”PMV / PPD · Automaattinen” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "radiant_temperature_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Lämpötila · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "air_speed_entity": "Valitse todellinen Home Assistant -lähde · Nopeus · Ulko (m/s) kohdalle ”lähde · Nopeus · Ulko (m/s)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "air_speed_m_s": "Käytä todellista sopivaa mittausta kohtaan ”Nopeus · Ulko (m/s)”. Arvio ei korvaa kalibroitua anturia.",
+          "met": "Käytä todellista sopivaa mittausta kohtaan ”asetukset · lähde (met)”. Arvio ei korvaa kalibroitua anturia.",
+          "clo": "Käytä todellista sopivaa mittausta kohtaan ”asetukset · lähde (clo)”. Arvio ei korvaa kalibroitua anturia."
+        }
+      },
+      "pid": {
+        "title": "asetukset · PID",
+        "description": "Määritä ”asetukset · PID” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Tämä asetus ohjaa kohtaa ”PID”. Fyysiset komennot vaativat erillisen luvan ja suojaukset."
+        }
+      },
+      "pid_room": {
+        "title": "asetukset · PID",
+        "description": "Määritä ”asetukset · PID” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "pid_enabled": "PID · Automaattinen · AUTO",
+          "pid_climate_entities": "PID · Laitteet",
+          "pid_temperature_entity": "Lämpötila · lähde",
+          "pid_mode": "PID",
+          "pid_target_c": "tavoite (°C)",
+          "pid_pause_on_window_open": "PID · Ulko"
+        },
+        "data_description": {
+          "pid_enabled": "Tämä asetus ohjaa kohtaa ”PID · Automaattinen · AUTO”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "pid_climate_entities": "Valitse todellinen Home Assistant -lähde kohdalle ”PID · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "pid_temperature_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Lämpötila · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "pid_mode": "Tämä asetus ohjaa kohtaa ”PID”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "pid_target_c": "Päätösraja kohdalle ”tavoite (°C)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "pid_pause_on_window_open": "Tämä asetus ohjaa kohtaa ”PID · Ulko”. Fyysiset komennot vaativat erillisen luvan ja suojaukset."
+        }
+      },
+      "pid_tuning": {
+        "title": "asetukset · PID",
+        "description": "Määritä ”asetukset · PID” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "pid_kp": "PID Kp · ohjaus (% per °C)",
+          "pid_ki": "PID Ki · ohjaus (% per °C-minute)",
+          "pid_kd": "PID Kd · ohjaus (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Tämä asetus ohjaa kohtaa ”PID Kp · ohjaus (% per °C)”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "pid_ki": "Tämä asetus ohjaa kohtaa ”PID Ki · ohjaus (% per °C-minute)”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "pid_kd": "Tämä asetus ohjaa kohtaa ”PID Kd · ohjaus (%·minute per °C)”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "pid_offset_c": "Päätösraja kohdalle ”PID (°C) · PID_OFFSET_C”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "pid_min_setpoint_c": "Päätösraja kohdalle ”PID (°C) · MIN TARGET”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "pid_max_setpoint_c": "Päätösraja kohdalle ”PID (°C) · MAX TARGET”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "pid_sample_seconds": "Tämä aikaraja koskee kohtaa ”PID (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "pid_max_change_c": "Päätösraja kohdalle ”PID (°C) · MAX Δ”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "pid_min_change_c": "Päätösraja kohdalle ”PID (°C) · MIN Δ”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "climate": {
+        "title": "asetukset · Laitteet",
+        "description": "Määritä ”asetukset · Laitteet” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+        "data": {
+          "climate_area": "Laitteet"
+        },
+        "data_description": {
+          "climate_area": "Tämä asetus ohjaa kohtaa ”Laitteet”. Fyysiset komennot vaativat erillisen luvan ja suojaukset."
+        }
+      },
+      "climate_room": {
+        "title": "asetukset · Laitteet",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "climate_enabled": "Laitteet · Automaattinen · AUTO",
+          "climate_allow_actuation": "Laitteet · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Laitteet · Automaattinen · MODE SWITCH",
+          "climate_prefer_native_auto": "Laitteet · Automaattinen · NATIVE",
+          "climate_controller": "Laitteet · ohjaus",
+          "climate_mode": "Laitteet · MODE",
+          "climate_entity": "Laitteet · lähde",
+          "climate_temperature_entity": "Lämpötila · lähde",
+          "climate_hysteresis_c": "Laitteet (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Tämä asetus ohjaa kohtaa ”Laitteet · Automaattinen · AUTO”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_allow_actuation": "Tämä asetus ohjaa kohtaa ”Laitteet · CLIMATE_ALLOW_ACTUATION”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_auto_switch_hvac": "Tämä asetus ohjaa kohtaa ”Laitteet · Automaattinen · MODE SWITCH”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_prefer_native_auto": "Tämä asetus ohjaa kohtaa ”Laitteet · Automaattinen · NATIVE”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_controller": "Tämä asetus ohjaa kohtaa ”Laitteet · ohjaus”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_mode": "Tämä asetus ohjaa kohtaa ”Laitteet · MODE”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_entity": "Valitse todellinen Home Assistant -Laitteet · lähde kohdalle ”Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_temperature_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Lämpötila · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_hysteresis_c": "Päätösraja kohdalle ”Laitteet (°C)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "climate_presence": {
+        "title": "asetukset · Läsnäolo · Laitteet",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "climate_occupancy_sensors": "Läsnäolo · anturi",
+          "climate_away_entities": "Koti · Laitteet",
+          "climate_unknown_occupancy": "Läsnäolo · Laitteet",
+          "climate_unoccupied_delay_minutes": "Laitteet · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Läsnäolo · Laitteet · anturi · Vaaditaan",
+          "climate_away_policy": "Koti · Laitteet · POLICY",
+          "climate_manual_profile": "Laitteet · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Uni · Laitteet",
+          "climate_sleep_schedule_enabled": "Uni · Automaattinen",
+          "climate_sleep_start": "Uni · Laitteet · START",
+          "climate_sleep_end": "Uni · Laitteet · END",
+          "climate_target_source": "Laitteet · lähde · tavoite",
+          "climate_comfort_adjustment_max_c": "Laitteet (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Valitse todellinen Home Assistant -lähde kohdalle ”Läsnäolo · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_away_entities": "Valitse todellinen Home Assistant -lähde kohdalle ”Koti · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_unknown_occupancy": "Tämä asetus ohjaa kohtaa ”Läsnäolo · Laitteet”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_unoccupied_delay_minutes": "Tämä aikaraja koskee kohtaa ”Laitteet · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_occupancy_stale_minutes": "Tämä aikaraja koskee kohtaa ”Läsnäolo · Laitteet · anturi · Vaaditaan”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_away_policy": "Tämä asetus ohjaa kohtaa ”Koti · Laitteet · POLICY”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_manual_profile": "Tämä asetus ohjaa kohtaa ”Laitteet · CLIMATE_MANUAL_PROFILE”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_sleep_active": "Tämä asetus ohjaa kohtaa ”Uni · Laitteet”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_sleep_schedule_enabled": "Tämä asetus ohjaa kohtaa ”Uni · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_sleep_start": "Tämä aikaraja koskee kohtaa ”Uni · Laitteet · START”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_sleep_end": "Tämä aikaraja koskee kohtaa ”Uni · Laitteet · END”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_target_source": "Päätösraja kohdalle ”Laitteet · lähde · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_comfort_adjustment_max_c": "Päätösraja kohdalle ”Laitteet (°C)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "climate_equipment": {
+        "title": "asetukset · Laitteet",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Laitteet · lähde · Lämpötila +",
+          "climate_cool_climate_entity": "COOL · Laitteet · lähde · Lämpötila −",
+          "climate_dry_climate_entity": "DRY · Laitteet · lähde",
+          "climate_fan_climate_entity": "FAN_ONLY · Nopeus · Laitteet · lähde",
+          "climate_humidifier_entity": "HUMIDIFIER · Laitteet · lähde",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Laitteet · lähde",
+          "climate_extraction_fan_entity": "EXTRACT · Nopeus · Laitteet · lähde",
+          "climate_purifier_fan_entity": "Ilmanpuhdistin · lähde",
+          "climate_humidity_entity": "Kosteus · lähde",
+          "climate_humidity_low_rh": "RH · Kosteus · Laitteet (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Kosteus · Laitteet (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Kosteus · Laitteet · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Laitteet · Lämpötila −",
+          "climate_humidity_setpoint_auto": "Kosteus · Automaattinen",
+          "climate_window_efficiency_notify": "Laitteet · Ulko",
+          "climate_dry_fan_mode_auto": "Nopeus · Automaattinen",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Nopeus · Laitteet · Vaaditaan · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Nopeus · Laitteet · Ulko · Vaaditaan · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Nopeus · Laitteet (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Kosteus · Teho · Automaattinen",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Kosteus · Laitteet · Teho · Vaaditaan · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Kosteus · Laitteet · Teho · Ulko · Vaaditaan · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Kosteus · Laitteet · Teho · Automaattinen (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Kosteus · Laitteet · Teho · Sammuta (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Kosteus · Laitteet · Teho · Automaattinen (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Laitteet · Automaattinen · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Valitse todellinen Home Assistant -HEAT · Laitteet · lähde · Lämpötila + kohdalle ”HEAT · Laitteet · lähde · Lämpötila +”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_cool_climate_entity": "Valitse todellinen Home Assistant -COOL · Laitteet · lähde · Lämpötila − kohdalle ”COOL · Laitteet · lähde · Lämpötila −”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_dry_climate_entity": "Valitse todellinen Home Assistant -DRY · Laitteet · lähde kohdalle ”DRY · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_fan_climate_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”FAN_ONLY · Nopeus · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_humidifier_entity": "Valitse todellinen Home Assistant -HUMIDIFIER · Laitteet · lähde kohdalle ”HUMIDIFIER · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_dehumidifier_entity": "Valitse todellinen Home Assistant -DEHUMIDIFIER · Laitteet · lähde kohdalle ”DEHUMIDIFIER · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_extraction_fan_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”EXTRACT · Nopeus · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_purifier_fan_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Ilmanpuhdistin · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_humidity_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Kosteus · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_humidity_low_rh": "Päätösraja kohdalle ”RH · Kosteus · Laitteet (%) · RH MIN”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_humidity_high_rh": "Päätösraja kohdalle ”RH · Kosteus · Laitteet (%) · RH MAX”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_humidity_hysteresis_rh": "Päätösraja kohdalle ”RH · Kosteus · Laitteet · ± RH”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_cooling_dry_deferral_rh_points": "Tämä asetus ohjaa kohtaa ”Laitteet · Lämpötila −”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_humidity_setpoint_auto": "Tämä asetus ohjaa kohtaa ”Kosteus · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_window_efficiency_notify": "Tämä asetus ohjaa kohtaa ”Laitteet · Ulko”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_dry_fan_mode_auto": "Tämä asetus ohjaa kohtaa ”Nopeus · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_dry_fan_hardware_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”DRY/FAN_ONLY · Nopeus · Laitteet · Vaaditaan · HW ✓”. Arvio ei korvaa kalibroitua anturia.",
+          "climate_dry_fan_windowless_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”DRY/FAN_ONLY · Nopeus · Laitteet · Ulko · Vaaditaan · NO WINDOW”. Arvio ei korvaa kalibroitua anturia.",
+          "climate_dry_fan_mode_dwell_s": "Tämä aikaraja koskee kohtaa ”DRY/FAN_ONLY · Nopeus · Laitteet (s) · MODE DWELL”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_humidity_power_auto": "Tämä asetus ohjaa kohtaa ”Kosteus · Teho · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_humidity_power_hardware_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”RH POWER · Kosteus · Laitteet · Teho · Vaaditaan · HW ✓”. Arvio ei korvaa kalibroitua anturia.",
+          "climate_humidity_power_windowless_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”RH POWER · Kosteus · Laitteet · Teho · Ulko · Vaaditaan · NO WINDOW”. Arvio ei korvaa kalibroitua anturia.",
+          "climate_humidity_power_min_on_s": "Tämä aikaraja koskee kohtaa ”RH POWER · Kosteus · Laitteet · Teho · Automaattinen (s) · MIN ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_humidity_power_min_off_s": "Tämä aikaraja koskee kohtaa ”RH POWER · Kosteus · Laitteet · Teho · Sammuta (s) · MIN OFF”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_humidity_power_max_on_s": "Tämä aikaraja koskee kohtaa ”RH POWER · Kosteus · Laitteet · Teho · Automaattinen (s) · MAX ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_secondary_climate_setpoint_auto": "Tämä asetus ohjaa kohtaa ”Laitteet · Automaattinen · TARGET AUTO”. Fyysiset komennot vaativat erillisen luvan ja suojaukset."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "asetukset · Laitteet · Ulko",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "climate_fan_speed_auto": "Nopeus · Automaattinen",
+          "climate_fan_power_auto": "Nopeus · Teho · Automaattinen",
+          "climate_fan_power_hardware_confirmed": "FAN · Nopeus · Laitteet · Teho · Vaaditaan · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Nopeus · Laitteet · Teho · Automaattinen (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Nopeus · Laitteet · Teho · Sammuta (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Nopeus · Laitteet · Teho · Automaattinen (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Laitteet · anturi · Vaaditaan · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Laitteet · lähde",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Laitteet · lähde",
+          "climate_pm25_action_ug_m3": "PM2.5 · Laitteet (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Laitteet · Nopeus (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Laitteet · Nopeus (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Tämä asetus ohjaa kohtaa ”Nopeus · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_fan_power_auto": "Tämä asetus ohjaa kohtaa ”Nopeus · Teho · Automaattinen”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "climate_fan_power_hardware_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”FAN · Nopeus · Laitteet · Teho · Vaaditaan · HW ✓”. Arvio ei korvaa kalibroitua anturia.",
+          "climate_fan_power_min_on_s": "Tämä aikaraja koskee kohtaa ”FAN · Nopeus · Laitteet · Teho · Automaattinen (s) · MIN ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_fan_power_min_off_s": "Tämä aikaraja koskee kohtaa ”FAN · Nopeus · Laitteet · Teho · Sammuta (s) · MIN OFF”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_fan_power_max_on_s": "Tämä aikaraja koskee kohtaa ”FAN · Nopeus · Laitteet · Teho · Automaattinen (s) · MAX ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "climate_pm25_sensor_verified": "Käytä todellista sopivaa mittausta kohtaan ”PM2.5 · PM2.5 · Laitteet · anturi · Vaaditaan · SENSOR ✓ · VERIFIED”. Arvio ei korvaa kalibroitua PM2.5 · PM2.5 · Laitteet · anturi · Vaaditaan · SENSOR ✓ · VERIFIEDa.",
+          "climate_co2_entity": "Valitse todellinen Home Assistant -CO₂ · CO₂ · Laitteet · lähde kohdalle ”CO₂ · CO₂ · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_pm25_entity": "Valitse todellinen Home Assistant -PM2.5 · PM2.5 · Laitteet · lähde kohdalle ”PM2.5 · PM2.5 · Laitteet · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "climate_pm25_action_ug_m3": "Päätösraja kohdalle ”PM2.5 · Laitteet (µg/m³)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_extraction_speed_percent": "Päätösraja kohdalle ”EXTRACT · Laitteet · Nopeus (%) · SPEED %”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "climate_purifier_speed_percent": "Päätösraja kohdalle ”PURIFIER · Laitteet · Nopeus (%) · SPEED %”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja."
+        }
+      },
+      "climate_profiles": {
+        "title": "asetukset · Laitteet",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "home_heat": "Lämmitys · Kotona (°C)",
+          "home_cool": "Jäähdytys · Kotona (°C)",
+          "unoccupied_heat": "Lämmitys · Tyhjä huone (°C)",
+          "unoccupied_cool": "Jäähdytys · Tyhjä huone (°C)",
+          "away_heat": "Lämmitys · Poissa (°C)",
+          "away_cool": "Jäähdytys · Poissa (°C)",
+          "sleep_heat": "Lämmitys · Uni (°C)",
+          "sleep_cool": "Jäähdytys · Uni (°C)"
+        },
+        "data_description": {
+          "home_heat": "”Lämmitys · Kotona (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "home_cool": "”Jäähdytys · Kotona (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "unoccupied_heat": "”Lämmitys · Tyhjä huone (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "unoccupied_cool": "”Jäähdytys · Tyhjä huone (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "away_heat": "”Lämmitys · Poissa (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "away_cool": "”Jäähdytys · Poissa (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "sleep_heat": "”Lämmitys · Uni (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "sleep_cool": "”Jäähdytys · Uni (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta."
+        }
+      },
+      "climate_actuators": {
+        "title": "asetukset · Laitteet",
+        "description": "Alue · asetukset · Laitteet · ohjaus. Läsnäolo · anturi · Vaaditaan.",
+        "data": {
+          "direct_hardware_confirmed": "Vaaditaan",
+          "heat_actuator": "Lämmitys · Laitteet",
+          "cool_actuator": "Jäähdytys · Laitteet",
+          "min_on_s": "Teho · Automaattinen (s) · MIN ON",
+          "min_off_s": "Teho · Sammuta (s)",
+          "max_on_s": "Teho · Automaattinen (s) · MAX ON",
+          "mode_dwell_s": "asetukset · lähde (s) · MODE DWELL",
+          "kp": "PID Kp · ohjaus (percentage points/°C)",
+          "ki": "PID Ki · ohjaus (percentage points/(°C·minute))",
+          "kd": "PID Kd · ohjaus (percentage points·minute/°C)",
+          "sample_seconds": "asetukset · lähde (s) · SAMPLE",
+          "pwm_period_s": "asetukset · lähde (s) · PWM PERIOD",
+          "max_demand_change": "asetukset · lähde · MAX Δ",
+          "min_demand_change": "asetukset · lähde · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”Vaaditaan”. Arvio ei korvaa kalibroitua anturia.",
+          "heat_actuator": "Määritä ”Lämmitys · Laitteet” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "cool_actuator": "Määritä ”Jäähdytys · Laitteet” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "min_on_s": "Tämä aikaraja koskee kohtaa ”Teho · Automaattinen (s) · MIN ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "min_off_s": "Tämä aikaraja koskee kohtaa ”Teho · Sammuta (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "max_on_s": "Tämä aikaraja koskee kohtaa ”Teho · Automaattinen (s) · MAX ON”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "mode_dwell_s": "Tämä aikaraja koskee kohtaa ”asetukset · lähde (s) · MODE DWELL”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "kp": "Määritä ”PID Kp · ohjaus (percentage points/°C)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "ki": "Määritä ”PID Ki · ohjaus (percentage points/(°C·minute))” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "kd": "Määritä ”PID Kd · ohjaus (percentage points·minute/°C)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "sample_seconds": "Tämä aikaraja koskee kohtaa ”asetukset · lähde (s) · SAMPLE”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "pwm_period_s": "Tämä aikaraja koskee kohtaa ”asetukset · lähde (s) · PWM PERIOD”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "max_demand_change": "Määritä ”asetukset · lähde · MAX Δ” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "min_demand_change": "Määritä ”asetukset · lähde · MIN Δ” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon."
+        }
+      },
+      "outside_data": {
+        "title": "Ulko · lähde",
+        "description": "Ulko · lähde: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "menu_options": {
+          "weather": "Sää ja varoitukset",
+          "outdoor": "Ulkoilman laatu",
+          "outside_aqi": "Ulko · AQI",
+          "pollen": "Siitepöly"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Alue · asetukset",
+        "description": "Alue · asetukset: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "menu_options": {
+          "areas": "Huoneet",
+          "indoor_sensors": "Huoneet · Homeindikaattori",
+          "window_sensors": "Ohita ikkuna-anturit",
+          "environment_room": "asetukset · asetukset · lähde",
+          "area_devices": "Ilmastolaitteet"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Laitteet · asetukset",
+        "description": "Valinnainen: jatka antureihin ja laitekohtaisiin turvallisuuslupiin. Jätä pois päältä tallentaaksesi luettelon heti.",
+        "menu_options": {
+          "device_settings": "Laitteet · ohjaus",
+          "device_choice": "Valitse · Laitteet",
+          "device_done": "asetukset · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Yleiset · asetukset",
+        "description": "Yleiset · asetukset: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "general_room_occupancy_sensors": "Huone · Läsnäolo · anturi",
+          "general_occupied_rooms_entity": "Läsnäolo · Huone · lähde (state)",
+          "general_occupied_rooms_attribute": "Läsnäolo · Huone · lähde (attribute)",
+          "general_home_trackers": "Koti · Läsnäolo · Laitteet",
+          "general_home_policy": "Koti · Läsnäolo · ohjaus",
+          "general_sleep_rooms_entity": "Uni · Huone · lähde (state)",
+          "general_sleep_rooms_attribute": "Uni · Huone · lähde (attribute)",
+          "general_source_stale_minutes": "lähde · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Valitse todellinen Home Assistant -lähde kohdalle ”Huone · Läsnäolo · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Läsnäolo · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_attribute": "Määritä ”Läsnäolo · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "general_home_trackers": "Valitse todellinen Home Assistant -lähde kohdalle ”Koti · Läsnäolo · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_home_policy": "Tämä asetus ohjaa kohtaa ”Koti · Läsnäolo · ohjaus”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "general_sleep_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Uni · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_sleep_rooms_attribute": "Määritä ”Uni · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "general_source_stale_minutes": "lähde · Uni / Läsnäolo · max 240 min. Virheellinen · Sammuta."
+        }
+      },
+      "pollen": {
+        "title": "Siitepöly",
+        "description": "Siitepöly: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "pollen_entity": "Siitepöly · lähde",
+          "pollen_high_from": "POLLEN · Siitepöly · HIGH",
+          "pollen_max_scale": "POLLEN · Siitepöly · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Siitepöly · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Siitepöly · lähde”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "pollen_high_from": "Määritä ”POLLEN · Siitepöly · HIGH” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "pollen_max_scale": "Määritä ”POLLEN · Siitepöly · SCALE” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "pollen_avoid_ventilation": "Määritä ”POLLEN · Siitepöly · NO VENT” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon."
+        }
+      },
+      "outside_aqi": {
+        "title": "Ulko · AQI",
+        "description": "Ulko · AQI: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "outside_aqi_entity": "AQI · anturi",
+          "outside_aqi_scale": "AQI · lähde",
+          "outside_aqi_limit": "AQI · tavoite",
+          "outside_aqi_no_sources": "AQI · anturi · Vaaditaan"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”AQI · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "outside_aqi_scale": "Määritä ”AQI · lähde” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "outside_aqi_limit": "Päätösraja kohdalle ”AQI · tavoite”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "outside_aqi_no_sources": "Määritä ”AQI · anturi · Vaaditaan” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon."
+        }
+      },
+      "area_devices": {
+        "title": "Ilmastolaitteet",
+        "description": "Valitse · Alue",
+        "data": {
+          "area_devices_area": "Valitse · Alue"
+        },
+        "data_description": {
+          "area_devices_area": "Valitse todellinen Home Assistant -lähde kohdalle ”Valitse · Alue”. Puuttuvat tai vanhat tiedot estävät toiminnon."
+        }
+      },
+      "select_devices": {
+        "title": "Ilmastolaitteet",
+        "description": "Valitse laitteet tilaan {area_name}. Tallennus luo yhden ohjaimen kutakin fyysistä laitetta kohti huoneen keskukseen. Aseta tavoitteet, profiilit, automaattinen/manuaalinen/pois/PID ja hiljainen käyttö laitteista. Valinta ei käynnistä automaattiohjausta.",
+        "data": {
+          "selected_devices": "Valitse · Laitteet",
+          "configure_device_sources": "Määritä anturit ja laiteluvat nyt"
+        },
+        "data_description": {
+          "selected_devices": "Valitse laitteet tilaan {area_name}. Tallennus luo yhden ohjaimen kutakin fyysistä laitetta kohti huoneen keskukseen. Aseta tavoitteet, profiilit, automaattinen/manuaalinen/pois/PID ja hiljainen käyttö laitteista. Valinta ei käynnistä automaattiohjausta.",
+          "configure_device_sources": "Valinnainen: jatka antureihin ja laitekohtaisiin turvallisuuslupiin. Jätä pois päältä tallentaaksesi luettelon heti."
+        }
+      },
+      "device_choice": {
+        "title": "Valitse · Laitteet",
+        "description": "Valitse · Laitteet: Valitse lähde, anturi / Laitteet · ohjaus.",
+        "data": {
+          "device_choice": "Valitse · Laitteet"
+        },
+        "data_description": {
+          "device_choice": "Valitse todellinen Home Assistant -lähde kohdalle ”Valitse · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon."
+        }
+      },
+      "device_settings": {
+        "title": "Laitteet · ohjaus",
+        "description": "Tämä asetus ohjaa kohtaa ”ohjaus · lähde”. Fyysiset komennot vaativat erillisen luvan ja suojaukset. Käytä todellista sopivaa mittausta kohtaan ”Vaaditaan · Laitteet · Teho”. Arvio ei korvaa kalibroitua anturia. Tämä aikaraja koskee kohtaa ”Teho · min ON (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta. Tämä aikaraja koskee kohtaa ”Teho · min OFF (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta. Määritä ”Uni · ohjaus” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon. Päätösraja kohdalle ”Nopeus (%)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automaattinen ohjaus",
+          "device_method": "ohjaus · lähde",
+          "device_presence_requirement": "ohjaus · Läsnäolo",
+          "device_absence_action": "Sammuta · Läsnäolo",
+          "device_sleep_behavior": "Uni · ohjaus",
+          "device_hardware_confirmed": "Vaaditaan · Laitteet · Teho",
+          "device_temperature_entity": "Lämpötila · anturi",
+          "device_humidity_entity": "Kosteus · anturi",
+          "device_co2_entity": "CO₂ · anturi",
+          "device_pm25_entity": "PM2.5 · anturi",
+          "device_fan_purpose": "ohjaus · Laitteet",
+          "device_sensor_verified": "anturi · Vaaditaan",
+          "device_fan_speed_percent": "Nopeus (%)",
+          "device_humidity_target": "Kosteus · tavoite (%)",
+          "device_sleep_humidity_target": "Uni · Kosteus · tavoite (%)",
+          "device_min_on_s": "Teho · min ON (s)",
+          "device_min_off_s": "Teho · min OFF (s)",
+          "device_max_on_s": "Teho · max ON (s)",
+          "device_home_heat_c": "Lämmitys · Kotona (°C)",
+          "device_home_cool_c": "Jäähdytys · Kotona (°C)",
+          "device_unoccupied_heat_c": "Lämmitys · Tyhjä huone (°C)",
+          "device_unoccupied_cool_c": "Jäähdytys · Tyhjä huone (°C)",
+          "device_away_heat_c": "Lämmitys · Poissa (°C)",
+          "device_away_cool_c": "Jäähdytys · Poissa (°C)",
+          "device_sleep_heat_c": "Lämmitys · Uni (°C)",
+          "device_sleep_cool_c": "Jäähdytys · Uni (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Tämä asetus ohjaa kohtaa ”Automaattinen ohjaus”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "device_method": "Tämä asetus ohjaa kohtaa ”ohjaus · lähde”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "device_presence_requirement": "Määritä ”ohjaus · Läsnäolo” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "device_absence_action": "Tämä asetus ohjaa kohtaa ”Sammuta · Läsnäolo”. Fyysiset komennot vaativat erillisen luvan ja suojaukset.",
+          "device_sleep_behavior": "Määritä ”Uni · ohjaus” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "device_hardware_confirmed": "Käytä todellista sopivaa mittausta kohtaan ”Vaaditaan · Laitteet · Teho”. Arvio ei korvaa kalibroitua anturia.",
+          "device_temperature_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Lämpötila · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "device_humidity_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Kosteus · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "device_co2_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”CO₂ · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "device_pm25_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”PM2.5 · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "device_fan_purpose": "Määritä ”ohjaus · Laitteet” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "device_sensor_verified": "Käytä todellista sopivaa mittausta kohtaan ”anturi · Vaaditaan”. Arvio ei korvaa kalibroitua anturia.",
+          "device_fan_speed_percent": "Päätösraja kohdalle ”Nopeus (%)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "device_humidity_target": "Päätösraja kohdalle ”Kosteus · tavoite (%)”. Vaikuttaa suosituksiin, ei ole lääketieteellinen raja.",
+          "device_sleep_humidity_target": "”Uni · Kosteus · tavoite (%)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_min_on_s": "Tämä aikaraja koskee kohtaa ”Teho · min ON (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "device_min_off_s": "Tämä aikaraja koskee kohtaa ”Teho · min OFF (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "device_max_on_s": "Tämä aikaraja koskee kohtaa ”Teho · max ON (s)”. Se estää liian tiheät kytkennät muttei korvaa laitesuojausta.",
+          "device_home_heat_c": "”Lämmitys · Kotona (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_home_cool_c": "”Jäähdytys · Kotona (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_unoccupied_heat_c": "”Lämmitys · Tyhjä huone (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_unoccupied_cool_c": "”Jäähdytys · Tyhjä huone (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_away_heat_c": "”Lämmitys · Poissa (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_away_cool_c": "”Jäähdytys · Poissa (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_sleep_heat_c": "”Lämmitys · Uni (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta.",
+          "device_sleep_cool_c": "”Jäähdytys · Uni (°C)” tavoite pätee vain vahvistetun läsnäolon tai unen aikana. Tuntematon ei tarkoita tyhjää huonetta."
+        }
+      },
+      "setup_rooms": {
+        "title": "Valvottavat huoneet",
+        "description": "Valvottavat huoneet → lähde → Yleiset asetukset",
+        "data": {
+          "areas": "Valvottavat huoneet"
+        },
+        "data_description": {
+          "areas": "Valvottavat huoneet. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Huone · {area_name} · {room_index}/{room_count}",
+        "description": "Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+        "data": {
+          "windows": "Ikkunat",
+          "air_quality": "Ilmanlaatu- ja ympäristöanturit",
+          "temperature": "Lämpötila",
+          "humidity": "Kosteus",
+          "pressure": "Paineanturit",
+          "climate_devices": "Laitteet"
+        },
+        "data_description": {
+          "windows": "Ikkunat. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "air_quality": "Ilmanlaatu- ja ympäristöanturit. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "temperature": "Lämpötila. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "humidity": "Kosteus. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "pressure": "Paineanturit. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta.",
+          "climate_devices": "Laitteet. Valitse huoneen tulot: laitteen nimi - entiteetin nimi. Tyhjät ryhmät jäävät käyttämättä eivätkä käynnistä automaattista tunnistusta tai ohjausta."
+        }
+      },
+      "setup_general": {
+        "title": "Yleiset asetukset",
+        "description": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin.",
+        "data": {
+          "weather_entities": "Sää ja varoitukset",
+          "outdoor_sensors": "Ulkoilman laatu",
+          "weather_warnings": "Säävaroitukset",
+          "general_room_occupancy_sensors": "Huone · Läsnäolo · anturi",
+          "general_home_trackers": "Koti · Läsnäolo · Laitteet",
+          "general_occupied_rooms_entity": "Läsnäolo · Huone · lähde (state)",
+          "general_occupied_rooms_attribute": "Läsnäolo · Huone · lähde (attribute)",
+          "general_sleep_rooms_entity": "Uni · Huone · lähde (state)",
+          "general_sleep_rooms_attribute": "Uni · Huone · lähde (attribute)",
+          "notify_entities": "asetukset · lähde",
+          "media_players": "asetukset · lähde · MEDIA_PLAYERS",
+          "tts_engine": "asetukset · lähde · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Valitse · lähde",
+          "language": "TTS · Valitse · lähde",
+          "use_mold_indicator": "Homeindikaattori · RH (%) → 70%",
+          "pollen_entities": "Siitepöly · lähde · Valitse",
+          "use_announcement_hub": "Automaattinen · Announcement Hub",
+          "general_away_cooldown_minutes": "Koti · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Valitse: Sää ja varoitukset · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Valitse: Ulkoilman laatu · AQI, CO₂, PM2.5, PM10, VOC. Ei saatavilla: ⚠",
+          "weather_warnings": "Sää ja varoitukset · ⚠ (Ei saatavilla) → 🪟🔒",
+          "general_room_occupancy_sensors": "Valitse todellinen Home Assistant -lähde kohdalle ”Huone · Läsnäolo · anturi”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_home_trackers": "Valitse todellinen Home Assistant -lähde kohdalle ”Koti · Läsnäolo · Laitteet”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Läsnäolo · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_occupied_rooms_attribute": "Määritä ”Läsnäolo · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "general_sleep_rooms_entity": "Valitse todellinen Home Assistant -lähde kohdalle ”Uni · Huone · lähde (state)”. Puuttuvat tai vanhat tiedot estävät toiminnon.",
+          "general_sleep_rooms_attribute": "Määritä ”Uni · Huone · lähde (attribute)” vain valitulle huoneelle. Virheelliset tiedot estävät toiminnon.",
+          "notify_entities": "Valitse: notify.* · asetukset · lähde.",
+          "media_players": "Valitse: media_player.* · asetukset · lähde · MEDIA_PLAYERS.",
+          "tts_engine": "Valitse: tts.* · asetukset · lähde · TTS_ENGINE.",
+          "ai_conversation_agent": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · AI · Valitse · lähde · conversation.* / ai_task.*.",
+          "language": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · TTS · Valitse · lähde · provider capabilities.",
+          "use_mold_indicator": "🧱 Homeindikaattori · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Siitepöly · lähde · Valitse.",
+          "use_announcement_hub": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Automaattinen · Announcement Hub.",
+          "general_away_cooldown_minutes": "Valitse yhteiset lähteet ja ilmoitusten lähdöt. Tallennus päättää määrityksen. Käyttöasetukset jäävät kodin ja huoneiden laitteisiin. · Koti · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Virheellinen valinta: Ulkoilman laatu (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Ei saatavilla: Ulkoilman laatu (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Virheellinen valinta: Sää ja varoitukset (weather.*).",
+      "invalid_warning": "Virheellinen valinta: Sää ja varoitukset ⚠.",
+      "missing_notify": "Valitse: Announcement Hub / notify.*.",
+      "missing_tts": "Valitse: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Virheellinen valinta: °C min < max.",
+      "no_areas": "Valitse: Huoneet.",
+      "no_window_areas": "Ei saatavilla: Mittaukset (binary_sensor, window).",
+      "invalid_areas": "Virheellinen valinta: Huoneet.",
+      "invalid_window_exclusions": "Virheellinen valinta: Ohita ikkuna-anturit.",
+      "invalid_indoor_exclusions": "Virheellinen valinta: Ohita sisäilma-anturit.",
+      "no_windows_after_exclusions": "Jätä ainakin yksi ikkuna-anturi käyttöön.",
+      "review_areas_after_exclusions": "Tarkista: Huoneet · Mittaukset (0).",
+      "invalid_repeat_minutes": "Virheellinen valinta: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Ei saatavilla: conversation.process.",
+      "invalid_ai_agent": "Virheellinen valinta: conversation.*.",
+      "invalid_mold_temperature_sensor": "Huoneet · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Huoneet · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Homeindikaattori · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Homeindikaattori · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Homeindikaattori · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Virheellinen asetus ”asetukset · lähde”. Tarkista lähde, yksikkö ja suojaus.",
+      "invalid_environment_measurement": "Virheellinen asetus ”asetukset · lähde”. Tarkista lähde, yksikkö ja suojaus.",
+      "pmv_requires_explicit_inputs": "Virheellinen asetus ”PMV / PPD”. Tarkista lähde, yksikkö ja suojaus.",
+      "pid_climate_required": "Virheellinen asetus ”PID · Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "pid_temperature_required": "Virheellinen asetus ”PID · Lämpötila”. Tarkista lähde, yksikkö ja suojaus.",
+      "pid_invalid_target": "Virheellinen asetus ”PID · tavoite”. Tarkista lähde, yksikkö ja suojaus.",
+      "pid_duplicate_climate": "Virheellinen asetus ”PID · Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "pid_invalid_parameters": "Virheellinen asetus ”PID”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_dry_fan_control_inputs_missing": "Virheellinen asetus ”Nopeus · Laitteet · ohjaus”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_humidity_power_inputs_missing": "Virheellinen asetus ”Kosteus · Laitteet · Teho”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_secondary_control_inputs_missing": "Virheellinen asetus ”Laitteet · ohjaus”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_fan_power_inputs_missing": "Virheellinen asetus ”Nopeus · Laitteet · Teho”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_fan_control_inputs_missing": "Virheellinen asetus ”Nopeus · Laitteet · ohjaus”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_fan_sensor_invalid": "Virheellinen asetus ”Nopeus · Laitteet · anturi”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_humidity_control_inputs_missing": "Virheellinen asetus ”Kosteus · Laitteet · ohjaus”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_temperature_required": "Virheellinen asetus ”Lämpötila · Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_target_required": "Virheellinen asetus ”Laitteet · tavoite”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_direct_actuator_not_ready": "Virheellinen asetus ”Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_controller_invalid": "Virheellinen asetus ”Laitteet · ohjaus”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_mode_invalid": "Virheellinen asetus ”Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_occupancy_invalid": "Virheellinen asetus ”Läsnäolo · Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_away_invalid": "Virheellinen asetus ”Koti · Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_deadband_invalid": "Virheellinen asetus ”Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_attestation_required": "Virheellinen asetus ”Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_direct_targets_invalid": "Virheellinen asetus ”Laitteet · tavoite”. Tarkista lähde, yksikkö ja suojaus.",
+      "climate_direct_timing_invalid": "Virheellinen asetus ”Laitteet”. Tarkista lähde, yksikkö ja suojaus.",
+      "general_invalid_presence": "Virheellinen · Läsnäolo · asetukset",
+      "general_invalid_trackers": "Virheellinen · Koti · asetukset",
+      "general_invalid_rooms_entity": "Virheellinen · Huone · asetukset",
+      "general_invalid_attribute": "Virheellinen · lähde · asetukset",
+      "general_invalid_source_age": "Virheellinen · lähde · asetukset",
+      "invalid_selected_devices": "Virheellinen · Laitteet · asetukset",
+      "device_policy_invalid": "Virheellinen · Läsnäolo · asetukset",
+      "device_method_invalid": "Virheellinen · ohjaus · asetukset",
+      "device_hardware_required": "Virheellinen · Vaaditaan · asetukset",
+      "device_power_required_for_off": "Virheellinen · Teho · asetukset",
+      "device_temperature_required": "Virheellinen · Lämpötila · asetukset",
+      "device_humidity_required": "Virheellinen · Kosteus · asetukset",
+      "device_air_sensor_required": "Virheellinen · anturi · asetukset",
+      "device_temperature_band_invalid": "Virheellinen · Lämpötila · asetukset",
+      "device_humidity_invalid": "Virheellinen · Kosteus · asetukset",
+      "device_runtime_invalid": "Virheellinen · Teho · asetukset",
+      "invalid_setup_rooms": "Virheellinen: Valvottavat huoneet",
+      "invalid_room_source": "Virheellinen: Huone · lähde"
+    },
+    "abort": {
+      "setup_area_removed": "Virheellinen: Valvottavat huoneet",
+      "setup_changed": "asetukset ↻ Valvottavat huoneet"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Ilmanlaatu",
+        "state": {
+          "open": "Sulje · Mittaukset",
+          "close": "Automaattiset ilmoitukset · Mittaukset",
+          "idle": "Hyvä",
+          "blocked": "Pidä ikkunat kiinni"
+        }
+      },
+      "area_overview": {
+        "name": "Ympäristön yhteenveto"
+      },
+      "area_surface_humidity": {
+        "name": "Pintakosteus (laskettu)"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Ulkona · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Ulkona · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Ulkona · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Ulkona · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Ulkona · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Ulkona · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Ulko (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Ulko (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Ulko (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Ilmanlaatu · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Ilmanlaatu · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Ilmanlaatu · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Ilmanlaatu · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Ilmanlaatu · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Ilmanlaatu · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Ilmanlaatu · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Homeindikaattori · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Ulkona · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Ulkona · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Ulkona · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Sää ja varoitukset · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Avaa (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Ilmoitukset (valinnainen) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "tavoite (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · ohjaus (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · ohjaus (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · ohjaus (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Lämmitys · Huone · Läsnäolo"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Jäähdytys · Huone · Läsnäolo"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Kosteus · Huone · Läsnäolo · tavoite (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Lämmitys · Koti"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Jäähdytys · Koti"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Kosteus · Koti · tavoite (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Lämmitys · Koti · Sammuta"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Jäähdytys · Koti · Sammuta"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Kosteus · Koti · Sammuta · tavoite (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Lämmitys · Uni"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Jäähdytys · Uni"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Kosteus · Uni · tavoite (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Lämmitys · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Jäähdytys · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Kosteus · ECO · tavoite (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Siitepöly · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Siitepöly · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "lähde · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "asetukset · lähde (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · tavoite (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Nopeus · Ulko (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "asetukset · lähde (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "asetukset · lähde (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Laitteet · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Läsnäolo · Laitteet · anturi · Vaaditaan"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Laitteet (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Kosteus · Laitteet (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Kosteus · Laitteet (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Kosteus · Laitteet · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Laitteet · Lämpötila −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Laitteet (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Laitteet · Nopeus (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Laitteet · Nopeus (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · ohjaus (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · ohjaus (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · ohjaus (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "asetukset · lähde (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "asetukset · lähde · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "asetukset · lähde · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Homeindikaattori · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · ohjaus (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · ohjaus (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · ohjaus (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}asetukset · lähde (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Hiljaisen puhalluksen raja (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Teho · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Teho · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Teho · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Huone · Lämpötila · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Huone · Lämpötila · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Huone · Kosteus · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Huone · Kosteus · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Huone · Nopeus · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Huone · Nopeus · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Koti · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automaattinen · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automaattinen"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Ilmoitukset (valinnainen)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Siitepöly · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Uni"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automaattinen"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Uni · Laitteet"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Uni · Automaattinen"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Laitteet · Ulko"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Hiljaisempi toiminta nukuttaessa"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Hiljaisempi toiminta läsnä ollessa"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}anturi · Vaaditaan"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Kieli"
+      },
+      "area_manual_profile": {
+        "name": "Laitteet · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Koti · Läsnäolo · ohjaus"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Läsnäolo · Laitteet"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Koti · Laitteet · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Laitteet · lähde · tavoite"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Ohjaustapa",
+        "state": {
+          "existing": "Nykyinen huonesäädin",
+          "automatic": "Automaattinen",
+          "manual": "Manuaalinen",
+          "off": "Sammuta",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Laitteen hiljainen puhallustila"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}ohjaus · Läsnäolo",
+        "state": {
+          "always": "Automaattinen",
+          "occupied": "Huone · Läsnäolo",
+          "absent": "Huone · Läsnäolo · Sammuta"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Uni · ohjaus",
+        "state": {
+          "normal": "Automaattinen",
+          "pause": "Keskeytä",
+          "sleep_targets": "Uni · tavoite"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}ohjaus · Laitteet",
+        "state": {
+          "extraction": "Ulko · ohjaus",
+          "filtration": "PM2.5 · ohjaus",
+          "auto": "Automaattinen"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Lämpötila · lähde"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "lähde · Nopeus · Ulko (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Uni · Laitteet · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Uni · Laitteet · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Homeindikaattori · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Tarkista ja jatka"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Ilmastonsäädin"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Ilmoitukset (valinnainen) — Home Environment Manager",
+      "description": "Ilmoitukset (valinnainen) · Huoneet",
+      "fields": {
+        "language": {
+          "name": "Kieli",
+          "description": "Kieli"
+        },
+        "channels": {
+          "name": "Ilmoitukset (valinnainen)",
+          "description": "Ilmoitukset (valinnainen)"
+        },
+        "areas": {
+          "name": "Huoneet",
+          "description": "Huoneet"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Oletus",
+        "en": "asetukset · lähde",
+        "de": "asetukset · lähde",
+        "el": "asetukset · lähde",
+        "fr": "asetukset · lähde",
+        "es": "asetukset · lähde",
+        "it": "asetukset · lähde",
+        "nl": "asetukset · lähde",
+        "pt": "asetukset · lähde",
+        "pt-br": "asetukset · lähde",
+        "pl": "asetukset · lähde",
+        "ru": "asetukset · lähde",
+        "uk": "asetukset · lähde",
+        "tr": "asetukset · lähde",
+        "cs": "asetukset · lähde",
+        "sk": "asetukset · lähde",
+        "hu": "asetukset · lähde",
+        "ro": "asetukset · lähde",
+        "bg": "asetukset · lähde",
+        "hr": "asetukset · lähde",
+        "sr": "asetukset · lähde",
+        "sv": "asetukset · lähde",
+        "nb": "asetukset · lähde",
+        "da": "asetukset · lähde",
+        "fi": "asetukset · lähde",
+        "id": "asetukset · lähde",
+        "vi": "asetukset · lähde",
+        "th": "asetukset · lähde",
+        "hi": "asetukset · lähde",
+        "zh-hans": "asetukset · lähde",
+        "zh-hant": "asetukset · lähde",
+        "ja": "asetukset · lähde",
+        "ko": "asetukset · lähde",
+        "ar": "asetukset · lähde",
+        "he": "asetukset · lähde",
+        "fa": "asetukset · lähde",
+        "bn": "asetukset · lähde",
+        "ur": "asetukset · lähde",
+        "ta": "asetukset · lähde"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Koti · Läsnäolo",
+        "all_home": "Koti · Laitteet · Läsnäolo"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "tavoite · ohjaus",
+        "native": "Laitteet · ohjaus",
+        "power": "Teho",
+        "speed": "Nopeus"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automaattinen",
+        "room": "Huone · Läsnäolo",
+        "home": "Koti · Läsnäolo"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Keskeytä",
+        "off": "Sammuta"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automaattinen",
+        "pause": "Keskeytä",
+        "sleep_targets": "Uni · tavoite"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Ulko · ohjaus",
+        "filtration": "PM2.5 · ohjaus"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "lähde · Virheellinen",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "tavoite · asetukset"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Huoneen keskitin",
+      "initiate_flow": {
+        "user": "Huoneen keskitin"
+      },
+      "step": {
+        "user": {
+          "title": "Huoneen keskitin",
+          "description": "Valitse Home Assistantin alue. Ryhmä sisältää huoneen yleiset asetukset ja yhden ohjaimen kutakin valittua fyysistä laitetta kohti. Huoneen lisääminen ei ota käyttöön laitteiden automaattista ohjausta.",
+          "data": {
+            "area_id": "Huone"
+          },
+          "data_description": {
+            "area_id": "Valitse Home Assistantin alue. Ryhmä sisältää huoneen yleiset asetukset ja yhden ohjaimen kutakin valittua fyysistä laitetta kohti. Huoneen lisääminen ei ota käyttöön laitteiden automaattista ohjausta."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Virheellinen: Alue."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

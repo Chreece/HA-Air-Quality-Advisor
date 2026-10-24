@@ -1,0 +1,1826 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "房間",
+        "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "設定 · 來源",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "請選擇: 設定 · 來源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。"
+        }
+      },
+      "window_sensors": {
+        "title": "排除窗戶感測器",
+        "description": "2 · 排除窗戶感測器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗戶感測器"
+        },
+        "data_description": {
+          "excluded_window_entities": "請選擇: 排除窗戶感測器 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "房間 · 黴菌指標",
+        "description": "房間: {area_name} ({position}/{total}). 🌡️ 🧊 黴菌指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "排除室內空氣感測器",
+          "mold_indoor_temperature": "房間 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "黴菌指標 · 🧊 °C",
+          "mold_recalibrate": "黴菌指標 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "室外 · 溫度 · 來源 · 黴菌指標"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "僅為選定房間設定「房間 · 🌡️ (°C/°F)」。資料無效或缺失將停止操作。",
+          "mold_critical_temperature_c": "🧊 黴菌指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "為「黴菌指標 · ↻ 🌡️」使用真實合適的測量值。估算不能取代校準感測器。",
+          "mold_outdoor_weather_entity": "選擇 weather.* · 室外 溫度 (temperature, °C/°F) → 黴菌指標. 必填: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "室外空氣品質",
+        "description": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空氣品質"
+        },
+        "data_description": {
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天氣與警報",
+        "description": "天氣與警報. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "weather_warnings": "天氣警報"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。"
+        }
+      },
+      "delivery": {
+        "title": "播報（選用）",
+        "description": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+        "data": {
+          "language": "語言",
+          "automatic_tts": "自動",
+          "automatic_notifications": "自動 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "播報（選用） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "設定 · 來源",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 播報（選用）",
+          "ai_conversation_agent": "AI · 語言"
+        },
+        "data_description": {
+          "language": "僅為選定房間設定「語言」。資料無效或缺失將停止操作。",
+          "automatic_tts": "此選項控制「自動」。實際裝置指令需個別授權並有獨立保護。",
+          "automatic_notifications": "此選項控制「自動 · AUTOMATIC_NOTIFICATIONS」。實際裝置指令需個別授權並有獨立保護。",
+          "announcement_repeat_minutes": "預設: 10 min · 0 = 永不 · 僅在相同原因持續時 · 房間.",
+          "use_announcement_hub": "Announcement Hub · 無法使用 → Home Assistant.",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "ai_rewrite_announcements": "AI · 播報（選用） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "請選擇: conversation.* (Home Assistant · 預設)."
+        }
+      },
+      "thresholds": {
+        "title": "進階閾值",
+        "description": "進階閾值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 室外 (µg/m³)",
+          "outdoor_o3": "O₃ · 室外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 室外 (µg/m³)",
+          "indoor_aqi": "空氣品質 · AQI (≥)",
+          "indoor_co2": "空氣品質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空氣品質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空氣品質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空氣品質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空氣品質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空氣品質 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天氣與警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)",
+          "indoor_mold": "黴菌指標 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "「室外 · AQI (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_co2": "「室外 · CO₂ (ppm) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_pm25": "「室外 · PM2.5 (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_pm10": "「室外 · PM10 (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_voc": "「室外 · VOC (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_voc_parts": "「室外 · VOC (ppb) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_no2": "「NO₂ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_o3": "「O₃ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_so2": "「SO₂ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_aqi": "「空氣品質 · AQI (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_co2": "「空氣品質 · CO₂ (ppm) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_pm25": "「空氣品質 · PM2.5 (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_pm10": "「空氣品質 · PM10 (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_voc": "「空氣品質 · VOC (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_voc_parts": "「空氣品質 · VOC (ppb) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_humidity": "「空氣品質 · RH (%) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "min_outdoor_temp": "「室外 · °C (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "max_outdoor_temp": "「室外 · °C (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_outdoor_humidity": "「室外 · RH (%) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_wind_kmh": "「天氣與警報 · km/h (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_age_minutes": "「⏱ · 開啟 (min, ≤)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_mold": "「黴菌指標 · ≥ 70%」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "setup_rooms": {
+        "title": "要監測的房間",
+        "description": "要監測的房間 → 來源 → 一般 設定",
+        "data": {
+          "areas": "要監測的房間"
+        },
+        "data_description": {
+          "areas": "要監測的房間. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房間 · {area_name} · {room_index}/{room_count}",
+        "description": "選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+        "data": {
+          "windows": "窗戶",
+          "air_quality": "空氣品質與環境感測器",
+          "temperature": "溫度",
+          "humidity": "濕度",
+          "pressure": "壓力感測器",
+          "climate_devices": "裝置"
+        },
+        "data_description": {
+          "windows": "窗戶. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "air_quality": "空氣品質與環境感測器. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "temperature": "溫度. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "humidity": "濕度. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "pressure": "壓力感測器. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "climate_devices": "裝置. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "outdoor_sensors": "室外空氣品質",
+          "weather_warnings": "天氣警報",
+          "general_room_occupancy_sensors": "房間 · 佔用 · 感測器",
+          "general_home_trackers": "家中 · 佔用 · 裝置",
+          "general_occupied_rooms_entity": "佔用 · 房間 · 來源 (state)",
+          "general_occupied_rooms_attribute": "佔用 · 房間 · 來源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房間 · 來源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房間 · 來源 (attribute)",
+          "notify_entities": "設定 · 來源",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 選擇 · 來源",
+          "language": "TTS · 選擇 · 來源",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 來源 · 選擇",
+          "use_announcement_hub": "自動 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。",
+          "general_room_occupancy_sensors": "為「房間 · 佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_home_trackers": "為「家中 · 佔用 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_entity": "為「佔用 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_attribute": "僅為選定房間設定「佔用 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_sleep_rooms_entity": "為「睡眠 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_sleep_rooms_attribute": "僅為選定房間設定「睡眠 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "ai_conversation_agent": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · AI · 選擇 · 來源 · conversation.* / ai_task.*.",
+          "language": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · TTS · 選擇 · 來源 · provider capabilities.",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。",
+          "pollen_entities": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 花粉 · 來源 · 選擇.",
+          "use_announcement_hub": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 自動 · Announcement Hub.",
+          "general_away_cooldown_minutes": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "選擇無效: 室外空氣品質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "無法使用: 室外空氣品質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "選擇無效: 天氣與警報 (weather.*).",
+      "invalid_warning": "選擇無效: 天氣與警報 ⚠.",
+      "missing_notify": "請選擇: Announcement Hub / notify.*.",
+      "missing_tts": "請選擇: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "選擇無效: °C min < max.",
+      "no_areas": "請選擇: 房間.",
+      "no_window_areas": "無法使用: 測量值 (binary_sensor, window).",
+      "invalid_areas": "選擇無效: 房間.",
+      "invalid_window_exclusions": "選擇無效: 排除窗戶感測器.",
+      "invalid_indoor_exclusions": "選擇無效: 排除室內空氣感測器.",
+      "no_windows_after_exclusions": "至少保留一個窗戶感測器.",
+      "review_areas_after_exclusions": "請檢查: 房間 · 測量值 (0).",
+      "invalid_repeat_minutes": "選擇無效: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "無法使用: conversation.process.",
+      "invalid_ai_agent": "選擇無效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房間 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房間 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "黴菌指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "黴菌指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "無效: 要監測的房間",
+      "invalid_room_source": "無效: 房間 · 來源"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — 已設定.",
+      "setup_area_removed": "無效: 要監測的房間",
+      "setup_changed": "設定 ↻ 要監測的房間"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ 請選擇",
+        "description": "請選擇: 房間 / 天氣與警報 / 播報（選用） / 進階閾值",
+        "menu_options": {
+          "outside_data": "室外 · 來源",
+          "general_settings": "一般 · 設定",
+          "area_settings": "區域 · 設定",
+          "delivery": "播報（選用）",
+          "thresholds": "進階閾值"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "排除窗戶感測器",
+        "description": "2 · 排除窗戶感測器. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "排除窗戶感測器"
+        },
+        "data_description": {
+          "excluded_window_entities": "請選擇: 排除窗戶感測器 · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "房間",
+        "description": "1 · 🪟 房間. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "設定 · 來源",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "請選擇: 設定 · 來源 · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。"
+        }
+      },
+      "indoor_sensors": {
+        "title": "房間 · 黴菌指標",
+        "description": "房間: {area_name} ({position}/{total}). 🌡️ 🧊 黴菌指標 · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "排除室內空氣感測器",
+          "mold_indoor_temperature": "房間 · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "黴菌指標 · 🧊 °C",
+          "mold_recalibrate": "黴菌指標 · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "室外 · 溫度 · 來源 · 黴菌指標"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "請選擇: 排除室內空氣感測器 · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "僅為選定房間設定「房間 · 🌡️ (°C/°F)」。資料無效或缺失將停止操作。",
+          "mold_critical_temperature_c": "🧊 黴菌指標 · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "為「黴菌指標 · ↻ 🌡️」使用真實合適的測量值。估算不能取代校準感測器。",
+          "mold_outdoor_weather_entity": "選擇 weather.* · 室外 溫度 (temperature, °C/°F) → 黴菌指標. 必填: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "室外空氣品質",
+        "description": "室外空氣品質. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "室外空氣品質"
+        },
+        "data_description": {
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠"
+        }
+      },
+      "weather": {
+        "title": "天氣與警報",
+        "description": "天氣與警報. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "weather_warnings": "天氣警報"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。"
+        }
+      },
+      "delivery": {
+        "title": "播報（選用）",
+        "description": "播報（選用）. 自動通知 · 自動語音播報. Announcement Hub.",
+        "data": {
+          "language": "語言",
+          "automatic_tts": "自動",
+          "automatic_notifications": "自動 · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "播報（選用） · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "設定 · 來源",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · 播報（選用）",
+          "ai_conversation_agent": "AI · 語言"
+        },
+        "data_description": {
+          "language": "僅為選定房間設定「語言」。資料無效或缺失將停止操作。",
+          "automatic_tts": "此選項控制「自動」。實際裝置指令需個別授權並有獨立保護。",
+          "automatic_notifications": "此選項控制「自動 · AUTOMATIC_NOTIFICATIONS」。實際裝置指令需個別授權並有獨立保護。",
+          "announcement_repeat_minutes": "預設: 10 min · 0 = 永不 · 僅在相同原因持續時 · 房間.",
+          "use_announcement_hub": "Announcement Hub · 無法使用 → Home Assistant.",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "ai_rewrite_announcements": "AI · 播報（選用） → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "請選擇: conversation.* (Home Assistant · 預設)."
+        }
+      },
+      "thresholds": {
+        "title": "進階閾值",
+        "description": "進階閾值. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "室外 · AQI (≤)",
+          "outdoor_co2": "室外 · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "室外 · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "室外 · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "室外 · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "室外 · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · 室外 (µg/m³)",
+          "outdoor_o3": "O₃ · 室外 (µg/m³)",
+          "outdoor_so2": "SO₂ · 室外 (µg/m³)",
+          "indoor_aqi": "空氣品質 · AQI (≥)",
+          "indoor_co2": "空氣品質 · CO₂ (ppm) (≥)",
+          "indoor_pm25": "空氣品質 · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "空氣品質 · PM10 (µg/m³) (≥)",
+          "indoor_voc": "空氣品質 · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "空氣品質 · VOC (ppb) (≥)",
+          "indoor_humidity": "空氣品質 · RH (%) (≥)",
+          "min_outdoor_temp": "室外 · °C (≥)",
+          "max_outdoor_temp": "室外 · °C (≤)",
+          "max_outdoor_humidity": "室外 · RH (%) (≤)",
+          "max_wind_kmh": "天氣與警報 · km/h (≤)",
+          "max_age_minutes": "⏱ · 開啟 (min, ≤)",
+          "indoor_mold": "黴菌指標 · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "「室外 · AQI (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_co2": "「室外 · CO₂ (ppm) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_pm25": "「室外 · PM2.5 (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_pm10": "「室外 · PM10 (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_voc": "「室外 · VOC (µg/m³) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_voc_parts": "「室外 · VOC (ppb) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_no2": "「NO₂ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_o3": "「O₃ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "outdoor_so2": "「SO₂ · 室外 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_aqi": "「空氣品質 · AQI (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_co2": "「空氣品質 · CO₂ (ppm) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_pm25": "「空氣品質 · PM2.5 (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_pm10": "「空氣品質 · PM10 (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_voc": "「空氣品質 · VOC (µg/m³) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_voc_parts": "「空氣品質 · VOC (ppb) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_humidity": "「空氣品質 · RH (%) (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "min_outdoor_temp": "「室外 · °C (≥)」的決策門檻影響建議，但不是醫療限值。",
+          "max_outdoor_temp": "「室外 · °C (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_outdoor_humidity": "「室外 · RH (%) (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_wind_kmh": "「天氣與警報 · km/h (≤)」的決策門檻影響建議，但不是醫療限值。",
+          "max_age_minutes": "「⏱ · 開啟 (min, ≤)」的決策門檻影響建議，但不是醫療限值。",
+          "indoor_mold": "「黴菌指標 · ≥ 70%」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "environment": {
+        "title": "設定 · 設定 · 來源",
+        "description": "僅為選定房間設定「設定 · 設定 · 來源」。資料無效或缺失將停止操作。",
+        "data": {
+          "pollen_entity": "花粉 · 來源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT",
+          "aqi_scale_0": "AQI #1 · 來源",
+          "aqi_custom_limit_0": "AQI #1 · 目標",
+          "aqi_scale_1": "AQI #2 · 來源",
+          "aqi_custom_limit_1": "AQI #2 · 目標",
+          "aqi_scale_2": "AQI #3 · 來源",
+          "aqi_custom_limit_2": "AQI #3 · 目標",
+          "aqi_scale_3": "AQI #4 · 來源",
+          "aqi_custom_limit_3": "AQI #4 · 目標",
+          "aqi_scale_4": "AQI #5 · 來源",
+          "aqi_custom_limit_4": "AQI #5 · 目標",
+          "aqi_scale_5": "AQI #6 · 來源",
+          "aqi_custom_limit_5": "AQI #6 · 目標",
+          "aqi_scale_6": "AQI #7 · 來源",
+          "aqi_custom_limit_6": "AQI #7 · 目標",
+          "aqi_scale_7": "AQI #8 · 來源",
+          "aqi_custom_limit_7": "AQI #8 · 目標",
+          "aqi_scale_8": "AQI #9 · 來源",
+          "aqi_custom_limit_8": "AQI #9 · 目標",
+          "aqi_scale_9": "AQI #10 · 來源",
+          "aqi_custom_limit_9": "AQI #10 · 目標",
+          "aqi_scale_10": "AQI #11 · 來源",
+          "aqi_custom_limit_10": "AQI #11 · 目標",
+          "aqi_scale_11": "AQI #12 · 來源",
+          "aqi_custom_limit_11": "AQI #12 · 目標",
+          "aqi_scale_12": "AQI #13 · 來源",
+          "aqi_custom_limit_12": "AQI #13 · 目標",
+          "aqi_scale_13": "AQI #14 · 來源",
+          "aqi_custom_limit_13": "AQI #14 · 目標",
+          "aqi_scale_14": "AQI #15 · 來源",
+          "aqi_custom_limit_14": "AQI #15 · 目標",
+          "aqi_scale_15": "AQI #16 · 來源",
+          "aqi_custom_limit_15": "AQI #16 · 目標",
+          "aqi_scale_16": "AQI #17 · 來源",
+          "aqi_custom_limit_16": "AQI #17 · 目標",
+          "aqi_scale_17": "AQI #18 · 來源",
+          "aqi_custom_limit_17": "AQI #18 · 目標",
+          "aqi_scale_18": "AQI #19 · 來源",
+          "aqi_custom_limit_18": "AQI #19 · 目標",
+          "aqi_scale_19": "AQI #20 · 來源",
+          "aqi_custom_limit_19": "AQI #20 · 目標",
+          "aqi_scale_20": "AQI #21 · 來源",
+          "aqi_custom_limit_20": "AQI #21 · 目標",
+          "aqi_scale_21": "AQI #22 · 來源",
+          "aqi_custom_limit_21": "AQI #22 · 目標",
+          "aqi_scale_22": "AQI #23 · 來源",
+          "aqi_custom_limit_22": "AQI #23 · 目標",
+          "aqi_scale_23": "AQI #24 · 來源",
+          "aqi_custom_limit_23": "AQI #24 · 目標",
+          "aqi_scale_24": "AQI #25 · 來源",
+          "aqi_custom_limit_24": "AQI #25 · 目標",
+          "aqi_scale_25": "AQI #26 · 來源",
+          "aqi_custom_limit_25": "AQI #26 · 目標",
+          "aqi_scale_26": "AQI #27 · 來源",
+          "aqi_custom_limit_26": "AQI #27 · 目標",
+          "aqi_scale_27": "AQI #28 · 來源",
+          "aqi_custom_limit_27": "AQI #28 · 目標",
+          "aqi_scale_28": "AQI #29 · 來源",
+          "aqi_custom_limit_28": "AQI #29 · 目標",
+          "aqi_scale_29": "AQI #30 · 來源",
+          "aqi_custom_limit_29": "AQI #30 · 目標",
+          "aqi_scale_30": "AQI #31 · 來源",
+          "aqi_custom_limit_30": "AQI #31 · 目標",
+          "aqi_scale_31": "AQI #32 · 來源",
+          "aqi_custom_limit_31": "AQI #32 · 目標"
+        },
+        "data_description": {
+          "pollen_entity": "為「花粉 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "pollen_high_from": "僅為選定房間設定「POLLEN · 花粉 · HIGH」。資料無效或缺失將停止操作。",
+          "pollen_max_scale": "僅為選定房間設定「POLLEN · 花粉 · SCALE」。資料無效或缺失將停止操作。",
+          "pollen_avoid_ventilation": "僅為選定房間設定「POLLEN · 花粉 · NO VENT」。資料無效或缺失將停止操作。",
+          "aqi_scale_0": "僅為選定房間設定「AQI #1 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_0": "「AQI #1 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_1": "僅為選定房間設定「AQI #2 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_1": "「AQI #2 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_2": "僅為選定房間設定「AQI #3 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_2": "「AQI #3 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_3": "僅為選定房間設定「AQI #4 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_3": "「AQI #4 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_4": "僅為選定房間設定「AQI #5 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_4": "「AQI #5 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_5": "僅為選定房間設定「AQI #6 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_5": "「AQI #6 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_6": "僅為選定房間設定「AQI #7 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_6": "「AQI #7 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_7": "僅為選定房間設定「AQI #8 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_7": "「AQI #8 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_8": "僅為選定房間設定「AQI #9 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_8": "「AQI #9 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_9": "僅為選定房間設定「AQI #10 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_9": "「AQI #10 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_10": "僅為選定房間設定「AQI #11 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_10": "「AQI #11 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_11": "僅為選定房間設定「AQI #12 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_11": "「AQI #12 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_12": "僅為選定房間設定「AQI #13 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_12": "「AQI #13 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_13": "僅為選定房間設定「AQI #14 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_13": "「AQI #14 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_14": "僅為選定房間設定「AQI #15 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_14": "「AQI #15 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_15": "僅為選定房間設定「AQI #16 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_15": "「AQI #16 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_16": "僅為選定房間設定「AQI #17 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_16": "「AQI #17 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_17": "僅為選定房間設定「AQI #18 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_17": "「AQI #18 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_18": "僅為選定房間設定「AQI #19 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_18": "「AQI #19 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_19": "僅為選定房間設定「AQI #20 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_19": "「AQI #20 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_20": "僅為選定房間設定「AQI #21 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_20": "「AQI #21 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_21": "僅為選定房間設定「AQI #22 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_21": "「AQI #22 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_22": "僅為選定房間設定「AQI #23 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_22": "「AQI #23 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_23": "僅為選定房間設定「AQI #24 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_23": "「AQI #24 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_24": "僅為選定房間設定「AQI #25 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_24": "「AQI #25 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_25": "僅為選定房間設定「AQI #26 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_25": "「AQI #26 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_26": "僅為選定房間設定「AQI #27 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_26": "「AQI #27 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_27": "僅為選定房間設定「AQI #28 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_27": "「AQI #28 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_28": "僅為選定房間設定「AQI #29 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_28": "「AQI #29 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_29": "僅為選定房間設定「AQI #30 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_29": "「AQI #30 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_30": "僅為選定房間設定「AQI #31 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_30": "「AQI #31 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "aqi_scale_31": "僅為選定房間設定「AQI #32 · 來源」。資料無效或缺失將停止操作。",
+          "aqi_custom_limit_31": "「AQI #32 · 目標」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "environment_room": {
+        "title": "設定 · 設定 · 來源",
+        "description": "僅為選定房間設定「設定 · 設定 · 來源」。資料無效或缺失將停止操作。",
+        "data": {
+          "environment_area": "設定 · 來源"
+        },
+        "data_description": {
+          "environment_area": "僅為選定房間設定「設定 · 來源」。資料無效或缺失將停止操作。"
+        }
+      },
+      "environment_room_air": {
+        "title": "設定 · 室外",
+        "description": "僅為選定房間設定「設定 · 室外」。資料無效或缺失將停止操作。",
+        "data": {
+          "temperature_entity": "溫度 · 來源",
+          "room_volume_m3": "設定 · 來源 (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "空氣清淨機 · 來源",
+          "extractor_entity": "排風扇 · 來源",
+          "co2_ndir_verified": "CO₂ · 必填",
+          "co2_target_ppm": "CO₂ · CO₂ · 目標 (ppm)",
+          "sleep_room": "睡眠"
+        },
+        "data_description": {
+          "temperature_entity": "為「溫度 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "room_volume_m3": "為「設定 · 來源 (m³)」使用真實合適的測量值。估算不能取代校準感測器。",
+          "particle_cadr_m3h": "為「CADR (m³/h)」使用真實合適的測量值。估算不能取代校準感測器。",
+          "purifier_entity": "為「空氣清淨機 · 來源」選擇真實的 Home Assistant 資料空氣清淨機 · 來源。資料缺失或過期時暫停操作。",
+          "extractor_entity": "為「排風扇 · 來源」選擇真實的 Home Assistant 資料排風扇 · 來源。資料缺失或過期時暫停操作。",
+          "co2_ndir_verified": "為「CO₂ · 必填」使用真實合適的測量值。估算不能取代校準感測器。",
+          "co2_target_ppm": "「CO₂ · CO₂ · 目標 (ppm)」的決策門檻影響建議，但不是醫療限值。",
+          "sleep_room": "僅為選定房間設定「睡眠」。資料無效或缺失將停止操作。"
+        }
+      },
+      "environment_room_exposure": {
+        "title": "設定 · 設定 · 來源",
+        "description": "僅為選定房間設定「設定 · 設定 · 來源」。資料無效或缺失將停止操作。",
+        "data": {
+          "radon_entity": "RADON · Rn · 來源",
+          "radon_sensor_verified": "RADON · Rn · 感測器 · 必填 · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · 來源",
+          "formaldehyde_sensor_verified": "HCHO · 感測器 · 必填 · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · 來源 · 感測器 (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · 感測器 · 必填",
+          "illuminance_entity": "LUX · 來源 (lux)",
+          "melanopic_edi_entity": "EDI · EDI · 來源 (lx)",
+          "melanopic_spectral_verified": "EDI · 必填"
+        },
+        "data_description": {
+          "radon_entity": "為「RADON · Rn · 來源」選擇真實的 Home Assistant 資料RADON · Rn · 來源。資料缺失或過期時暫停操作。",
+          "radon_sensor_verified": "為「RADON · Rn · 感測器 · 必填 · SENSOR ✓ · VERIFIED」使用真實合適的測量值。估算不能取代校準RADON · Rn · 感測器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "radon_reference_bq_m3": "僅為選定房間設定「Rn (Bq/m³)」。資料無效或缺失將停止操作。",
+          "formaldehyde_entity": "為「HCHO · 來源」選擇真實的 Home Assistant 資料HCHO · 來源。資料缺失或過期時暫停操作。",
+          "formaldehyde_sensor_verified": "為「HCHO · 感測器 · 必填 · SENSOR ✓ · VERIFIED」使用真實合適的測量值。估算不能取代校準HCHO · 感測器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "noise_entity": "為「dB(A) · 來源 · 感測器 (dB(A))」選擇真實的 Home Assistant 資料dB(A) · 來源 · 感測器 (dB(A))。資料缺失或過期時暫停操作。",
+          "noise_sensor_calibrated": "為「dB(A) · 感測器 · 必填」使用真實合適的測量值。估算不能取代校準dB(A) · 感測器 · 必填。",
+          "illuminance_entity": "為「LUX · 來源 (lux)」選擇真實的 Home Assistant 資料LUX · 來源 (lux)。資料缺失或過期時暫停操作。",
+          "melanopic_edi_entity": "為「EDI · EDI · 來源 (lx)」選擇真實的 Home Assistant 資料EDI · EDI · 來源 (lx)。資料缺失或過期時暫停操作。",
+          "melanopic_spectral_verified": "為「EDI · 必填」使用真實合適的測量值。估算不能取代校準感測器。"
+        }
+      },
+      "environment_room_comfort": {
+        "title": "設定 · 設定 · 來源",
+        "description": "僅為選定房間設定「設定 · 設定 · 來源」。資料無效或缺失將停止操作。",
+        "data": {
+          "enable_pmv": "PMV / PPD · 自動",
+          "radiant_temperature_entity": "溫度 · 來源",
+          "air_speed_entity": "來源 · 速度 · 室外 (m/s)",
+          "air_speed_m_s": "速度 · 室外 (m/s)",
+          "met": "設定 · 來源 (met)",
+          "clo": "設定 · 來源 (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "僅為選定房間設定「PMV / PPD · 自動」。資料無效或缺失將停止操作。",
+          "radiant_temperature_entity": "為「溫度 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "air_speed_entity": "為「來源 · 速度 · 室外 (m/s)」選擇真實的 Home Assistant 資料來源 · 速度 · 室外 (m/s)。資料缺失或過期時暫停操作。",
+          "air_speed_m_s": "為「速度 · 室外 (m/s)」使用真實合適的測量值。估算不能取代校準感測器。",
+          "met": "為「設定 · 來源 (met)」使用真實合適的測量值。估算不能取代校準感測器。",
+          "clo": "為「設定 · 來源 (clo)」使用真實合適的測量值。估算不能取代校準感測器。"
+        }
+      },
+      "pid": {
+        "title": "設定 · PID",
+        "description": "僅為選定房間設定「設定 · PID」。資料無效或缺失將停止操作。",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "此選項控制「PID」。實際裝置指令需個別授權並有獨立保護。"
+        }
+      },
+      "pid_room": {
+        "title": "設定 · PID",
+        "description": "僅為選定房間設定「設定 · PID」。資料無效或缺失將停止操作。",
+        "data": {
+          "pid_enabled": "PID · 自動 · AUTO",
+          "pid_climate_entities": "PID · 裝置",
+          "pid_temperature_entity": "溫度 · 來源",
+          "pid_mode": "PID",
+          "pid_target_c": "目標 (°C)",
+          "pid_pause_on_window_open": "PID · 室外"
+        },
+        "data_description": {
+          "pid_enabled": "此選項控制「PID · 自動 · AUTO」。實際裝置指令需個別授權並有獨立保護。",
+          "pid_climate_entities": "為「PID · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "pid_temperature_entity": "為「溫度 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "pid_mode": "此選項控制「PID」。實際裝置指令需個別授權並有獨立保護。",
+          "pid_target_c": "「目標 (°C)」的決策門檻影響建議，但不是醫療限值。",
+          "pid_pause_on_window_open": "此選項控制「PID · 室外」。實際裝置指令需個別授權並有獨立保護。"
+        }
+      },
+      "pid_tuning": {
+        "title": "設定 · PID",
+        "description": "僅為選定房間設定「設定 · PID」。資料無效或缺失將停止操作。",
+        "data": {
+          "pid_kp": "PID Kp · 控制 (% per °C)",
+          "pid_ki": "PID Ki · 控制 (% per °C-minute)",
+          "pid_kd": "PID Kd · 控制 (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "此選項控制「PID Kp · 控制 (% per °C)」。實際裝置指令需個別授權並有獨立保護。",
+          "pid_ki": "此選項控制「PID Ki · 控制 (% per °C-minute)」。實際裝置指令需個別授權並有獨立保護。",
+          "pid_kd": "此選項控制「PID Kd · 控制 (%·minute per °C)」。實際裝置指令需個別授權並有獨立保護。",
+          "pid_offset_c": "「PID (°C) · PID_OFFSET_C」的決策門檻影響建議，但不是醫療限值。",
+          "pid_min_setpoint_c": "「PID (°C) · MIN TARGET」的決策門檻影響建議，但不是醫療限值。",
+          "pid_max_setpoint_c": "「PID (°C) · MAX TARGET」的決策門檻影響建議，但不是醫療限值。",
+          "pid_sample_seconds": "此時間參數用於「PID (s)」。避免頻繁切換，但不能取代硬體保護。",
+          "pid_max_change_c": "「PID (°C) · MAX Δ」的決策門檻影響建議，但不是醫療限值。",
+          "pid_min_change_c": "「PID (°C) · MIN Δ」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "climate": {
+        "title": "設定 · 裝置",
+        "description": "僅為選定房間設定「設定 · 裝置」。資料無效或缺失將停止操作。",
+        "data": {
+          "climate_area": "裝置"
+        },
+        "data_description": {
+          "climate_area": "此選項控制「裝置」。實際裝置指令需個別授權並有獨立保護。"
+        }
+      },
+      "climate_room": {
+        "title": "設定 · 裝置",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "climate_enabled": "裝置 · 自動 · AUTO",
+          "climate_allow_actuation": "裝置 · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "裝置 · 自動 · MODE SWITCH",
+          "climate_prefer_native_auto": "裝置 · 自動 · NATIVE",
+          "climate_controller": "裝置 · 控制",
+          "climate_mode": "裝置 · MODE",
+          "climate_entity": "裝置 · 來源",
+          "climate_temperature_entity": "溫度 · 來源",
+          "climate_hysteresis_c": "裝置 (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "此選項控制「裝置 · 自動 · AUTO」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_allow_actuation": "此選項控制「裝置 · CLIMATE_ALLOW_ACTUATION」。實際裝置 · CLIMATE_ALLOW_ACTUATION指令需個別授權並有獨立保護。",
+          "climate_auto_switch_hvac": "此選項控制「裝置 · 自動 · MODE SWITCH」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_prefer_native_auto": "此選項控制「裝置 · 自動 · NATIVE」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_controller": "此選項裝置 · 控制「裝置 · 控制」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_mode": "此選項控制「裝置 · MODE」。實際裝置 · MODE指令需個別授權並有獨立保護。",
+          "climate_entity": "為「裝置 · 來源」選擇真實的 Home Assistant 資料裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_temperature_entity": "為「溫度 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_hysteresis_c": "「裝置 (°C)」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "climate_presence": {
+        "title": "設定 · 佔用 · 裝置",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "climate_occupancy_sensors": "佔用 · 感測器",
+          "climate_away_entities": "家中 · 裝置",
+          "climate_unknown_occupancy": "佔用 · 裝置",
+          "climate_unoccupied_delay_minutes": "裝置 · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "佔用 · 裝置 · 感測器 · 必填",
+          "climate_away_policy": "家中 · 裝置 · POLICY",
+          "climate_manual_profile": "裝置 · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "睡眠 · 裝置",
+          "climate_sleep_schedule_enabled": "睡眠 · 自動",
+          "climate_sleep_start": "睡眠 · 裝置 · START",
+          "climate_sleep_end": "睡眠 · 裝置 · END",
+          "climate_target_source": "裝置 · 來源 · 目標",
+          "climate_comfort_adjustment_max_c": "裝置 (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "為「佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_away_entities": "為「家中 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_unknown_occupancy": "此選項控制「佔用 · 裝置」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_unoccupied_delay_minutes": "此時間參數用於「裝置 · CLIMATE_UNOCCUPIED_DELAY_MINUTES」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_occupancy_stale_minutes": "此時間參數用於「佔用 · 裝置 · 感測器 · 必填」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_away_policy": "此選項控制「家中 · 裝置 · POLICY」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_manual_profile": "此選項控制「裝置 · CLIMATE_MANUAL_PROFILE」。實際裝置 · CLIMATE_MANUAL_PROFILE指令需個別授權並有獨立保護。",
+          "climate_sleep_active": "此選項控制「睡眠 · 裝置」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_sleep_schedule_enabled": "此選項控制「睡眠 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_sleep_start": "此時間參數用於「睡眠 · 裝置 · START」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_sleep_end": "此時間參數用於「睡眠 · 裝置 · END」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_target_source": "「裝置 · 來源 · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "climate_comfort_adjustment_max_c": "「裝置 (°C)」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "climate_equipment": {
+        "title": "設定 · 裝置",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · 裝置 · 來源 · 溫度 +",
+          "climate_cool_climate_entity": "COOL · 裝置 · 來源 · 溫度 −",
+          "climate_dry_climate_entity": "DRY · 裝置 · 來源",
+          "climate_fan_climate_entity": "FAN_ONLY · 速度 · 裝置 · 來源",
+          "climate_humidifier_entity": "HUMIDIFIER · 裝置 · 來源",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · 裝置 · 來源",
+          "climate_extraction_fan_entity": "EXTRACT · 速度 · 裝置 · 來源",
+          "climate_purifier_fan_entity": "空氣清淨機 · 來源",
+          "climate_humidity_entity": "濕度 · 來源",
+          "climate_humidity_low_rh": "RH · 濕度 · 裝置 (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · 濕度 · 裝置 (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · 濕度 · 裝置 · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "裝置 · 溫度 −",
+          "climate_humidity_setpoint_auto": "濕度 · 自動",
+          "climate_window_efficiency_notify": "裝置 · 室外",
+          "climate_dry_fan_mode_auto": "速度 · 自動",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · 速度 · 裝置 · 必填 · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · 速度 · 裝置 · 室外 · 必填 · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · 速度 · 裝置 (s) · MODE DWELL",
+          "climate_humidity_power_auto": "濕度 · 功率 · 自動",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · 濕度 · 裝置 · 功率 · 必填 · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · 濕度 · 裝置 · 功率 · 室外 · 必填 · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · 濕度 · 裝置 · 功率 · 自動 (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · 濕度 · 裝置 · 功率 · 關閉 (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · 濕度 · 裝置 · 功率 · 自動 (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "裝置 · 自動 · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "為「HEAT · 裝置 · 來源 · 溫度 +」選擇真實的 Home Assistant 資料HEAT · 裝置 · 來源 · 溫度 +。資料缺失或過期時暫停操作。",
+          "climate_cool_climate_entity": "為「COOL · 裝置 · 來源 · 溫度 −」選擇真實的 Home Assistant 資料COOL · 裝置 · 來源 · 溫度 −。資料缺失或過期時暫停操作。",
+          "climate_dry_climate_entity": "為「DRY · 裝置 · 來源」選擇真實的 Home Assistant 資料DRY · 裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_fan_climate_entity": "為「FAN_ONLY · 速度 · 裝置 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_humidifier_entity": "為「HUMIDIFIER · 裝置 · 來源」選擇真實的 Home Assistant 資料HUMIDIFIER · 裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_dehumidifier_entity": "為「DEHUMIDIFIER · 裝置 · 來源」選擇真實的 Home Assistant 資料DEHUMIDIFIER · 裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_extraction_fan_entity": "為「EXTRACT · 速度 · 裝置 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_purifier_fan_entity": "為「空氣清淨機 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_humidity_entity": "為「濕度 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "climate_humidity_low_rh": "「RH · 濕度 · 裝置 (%) · RH MIN」的決策門檻影響建議，但不是醫療限值。",
+          "climate_humidity_high_rh": "「RH · 濕度 · 裝置 (%) · RH MAX」的決策門檻影響建議，但不是醫療限值。",
+          "climate_humidity_hysteresis_rh": "「RH · 濕度 · 裝置 · ± RH」的決策門檻影響建議，但不是醫療限值。",
+          "climate_cooling_dry_deferral_rh_points": "此選項控制「裝置 · 溫度 −」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_humidity_setpoint_auto": "此選項控制「濕度 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_window_efficiency_notify": "此選項控制「裝置 · 室外」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_dry_fan_mode_auto": "此選項控制「速度 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_dry_fan_hardware_confirmed": "為「DRY/FAN_ONLY · 速度 · 裝置 · 必填 · HW ✓」使用真實合適的測量值。估算不能取代校準感測器。",
+          "climate_dry_fan_windowless_confirmed": "為「DRY/FAN_ONLY · 速度 · 裝置 · 室外 · 必填 · NO WINDOW」使用真實合適的測量值。估算不能取代校準感測器。",
+          "climate_dry_fan_mode_dwell_s": "此時間參數用於「DRY/FAN_ONLY · 速度 · 裝置 (s) · MODE DWELL」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_humidity_power_auto": "此選項控制「濕度 · 功率 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_humidity_power_hardware_confirmed": "為「RH POWER · 濕度 · 裝置 · 功率 · 必填 · HW ✓」使用真實合適的測量值。估算不能取代校準感測器。",
+          "climate_humidity_power_windowless_confirmed": "為「RH POWER · 濕度 · 裝置 · 功率 · 室外 · 必填 · NO WINDOW」使用真實合適的測量值。估算不能取代校準感測器。",
+          "climate_humidity_power_min_on_s": "此時間參數用於「RH POWER · 濕度 · 裝置 · 功率 · 自動 (s) · MIN ON」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_humidity_power_min_off_s": "此時間參數用於「RH POWER · 濕度 · 裝置 · 功率 · 關閉 (s) · MIN OFF」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_humidity_power_max_on_s": "此時間參數用於「RH POWER · 濕度 · 裝置 · 功率 · 自動 (s) · MAX ON」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_secondary_climate_setpoint_auto": "此選項控制「裝置 · 自動 · TARGET AUTO」。實際裝置指令需個別授權並有獨立保護。"
+        }
+      },
+      "climate_air_strategy": {
+        "title": "設定 · 裝置 · 室外",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "climate_fan_speed_auto": "速度 · 自動",
+          "climate_fan_power_auto": "速度 · 功率 · 自動",
+          "climate_fan_power_hardware_confirmed": "FAN · 速度 · 裝置 · 功率 · 必填 · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · 速度 · 裝置 · 功率 · 自動 (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · 速度 · 裝置 · 功率 · 關閉 (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · 速度 · 裝置 · 功率 · 自動 (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · 裝置 · 感測器 · 必填 · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · 裝置 · 來源",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · 裝置 · 來源",
+          "climate_pm25_action_ug_m3": "PM2.5 · 裝置 (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · 裝置 · 速度 (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · 裝置 · 速度 (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "此選項控制「速度 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_fan_power_auto": "此選項控制「速度 · 功率 · 自動」。實際裝置指令需個別授權並有獨立保護。",
+          "climate_fan_power_hardware_confirmed": "為「FAN · 速度 · 裝置 · 功率 · 必填 · HW ✓」使用真實合適的測量值。估算不能取代校準感測器。",
+          "climate_fan_power_min_on_s": "此時間參數用於「FAN · 速度 · 裝置 · 功率 · 自動 (s) · MIN ON」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_fan_power_min_off_s": "此時間參數用於「FAN · 速度 · 裝置 · 功率 · 關閉 (s) · MIN OFF」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_fan_power_max_on_s": "此時間參數用於「FAN · 速度 · 裝置 · 功率 · 自動 (s) · MAX ON」。避免頻繁切換，但不能取代硬體保護。",
+          "climate_pm25_sensor_verified": "為「PM2.5 · PM2.5 · 裝置 · 感測器 · 必填 · SENSOR ✓ · VERIFIED」使用真實合適的測量值。估算不能取代校準PM2.5 · PM2.5 · 裝置 · 感測器 · 必填 · SENSOR ✓ · VERIFIED。",
+          "climate_co2_entity": "為「CO₂ · CO₂ · 裝置 · 來源」選擇真實的 Home Assistant 資料CO₂ · CO₂ · 裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_pm25_entity": "為「PM2.5 · PM2.5 · 裝置 · 來源」選擇真實的 Home Assistant 資料PM2.5 · PM2.5 · 裝置 · 來源。資料缺失或過期時暫停操作。",
+          "climate_pm25_action_ug_m3": "「PM2.5 · 裝置 (µg/m³)」的決策門檻影響建議，但不是醫療限值。",
+          "climate_extraction_speed_percent": "「EXTRACT · 裝置 · 速度 (%) · SPEED %」的決策門檻影響建議，但不是醫療限值。",
+          "climate_purifier_speed_percent": "「PURIFIER · 裝置 · 速度 (%) · SPEED %」的決策門檻影響建議，但不是醫療限值。"
+        }
+      },
+      "climate_profiles": {
+        "title": "設定 · 裝置",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "home_heat": "供暖 · 在家 (°C)",
+          "home_cool": "製冷 · 在家 (°C)",
+          "unoccupied_heat": "供暖 · 空房間 (°C)",
+          "unoccupied_cool": "製冷 · 空房間 (°C)",
+          "away_heat": "供暖 · 離家 (°C)",
+          "away_cool": "製冷 · 離家 (°C)",
+          "sleep_heat": "供暖 · 睡眠 (°C)",
+          "sleep_cool": "製冷 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "home_heat": "僅在確認有人或睡眠狀態時套用「供暖 · 在家 (°C)」目標。未知不代表空房。",
+          "home_cool": "僅在確認有人或睡眠狀態時套用「製冷 · 在家 (°C)」目標。未知不代表空房。",
+          "unoccupied_heat": "僅在確認有人或睡眠狀態時套用「供暖 · 空房間 (°C)」目標。未知不代表空房。",
+          "unoccupied_cool": "僅在確認有人或睡眠狀態時套用「製冷 · 空房間 (°C)」目標。未知不代表空房。",
+          "away_heat": "僅在確認有人或睡眠狀態時套用「供暖 · 離家 (°C)」目標。未知不代表空房。",
+          "away_cool": "僅在確認有人或睡眠狀態時套用「製冷 · 離家 (°C)」目標。未知不代表空房。",
+          "sleep_heat": "僅在確認有人或睡眠狀態時套用「供暖 · 睡眠 (°C)」目標。未知不代表空房。",
+          "sleep_cool": "僅在確認有人或睡眠狀態時套用「製冷 · 睡眠 (°C)」目標。未知不代表空房。"
+        }
+      },
+      "climate_actuators": {
+        "title": "設定 · 裝置",
+        "description": "區域 · 設定 · 裝置 · 控制. 佔用 · 感測器 · 必填.",
+        "data": {
+          "direct_hardware_confirmed": "必填",
+          "heat_actuator": "供暖 · 裝置",
+          "cool_actuator": "製冷 · 裝置",
+          "min_on_s": "功率 · 自動 (s) · MIN ON",
+          "min_off_s": "功率 · 關閉 (s)",
+          "max_on_s": "功率 · 自動 (s) · MAX ON",
+          "mode_dwell_s": "設定 · 來源 (s) · MODE DWELL",
+          "kp": "PID Kp · 控制 (percentage points/°C)",
+          "ki": "PID Ki · 控制 (percentage points/(°C·minute))",
+          "kd": "PID Kd · 控制 (percentage points·minute/°C)",
+          "sample_seconds": "設定 · 來源 (s) · SAMPLE",
+          "pwm_period_s": "設定 · 來源 (s) · PWM PERIOD",
+          "max_demand_change": "設定 · 來源 · MAX Δ",
+          "min_demand_change": "設定 · 來源 · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "為「必填」使用真實合適的測量值。估算不能取代校準感測器。",
+          "heat_actuator": "僅為選定房間設定「供暖 · 裝置」。資料無效或缺失將停止操作。",
+          "cool_actuator": "僅為選定房間設定「製冷 · 裝置」。資料無效或缺失將停止操作。",
+          "min_on_s": "此時間參數用於「功率 · 自動 (s) · MIN ON」。避免頻繁切換，但不能取代硬體保護。",
+          "min_off_s": "此時間參數用於「功率 · 關閉 (s)」。避免頻繁切換，但不能取代硬體保護。",
+          "max_on_s": "此時間參數用於「功率 · 自動 (s) · MAX ON」。避免頻繁切換，但不能取代硬體保護。",
+          "mode_dwell_s": "此時間參數用於「設定 · 來源 (s) · MODE DWELL」。避免頻繁切換，但不能取代硬體保護。",
+          "kp": "僅為選定房間設定「PID Kp · 控制 (percentage points/°C)」。資料無效或缺失將停止操作。",
+          "ki": "僅為選定房間設定「PID Ki · 控制 (percentage points/(°C·minute))」。資料無效或缺失將停止操作。",
+          "kd": "僅為選定房間設定「PID Kd · 控制 (percentage points·minute/°C)」。資料無效或缺失將停止操作。",
+          "sample_seconds": "此時間參數用於「設定 · 來源 (s) · SAMPLE」。避免頻繁切換，但不能取代硬體保護。",
+          "pwm_period_s": "此時間參數用於「設定 · 來源 (s) · PWM PERIOD」。避免頻繁切換，但不能取代硬體保護。",
+          "max_demand_change": "僅為選定房間設定「設定 · 來源 · MAX Δ」。資料無效或缺失將停止操作。",
+          "min_demand_change": "僅為選定房間設定「設定 · 來源 · MIN Δ」。資料無效或缺失將停止操作。"
+        }
+      },
+      "outside_data": {
+        "title": "室外 · 來源",
+        "description": "室外 · 來源: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "menu_options": {
+          "weather": "天氣與警報",
+          "outdoor": "室外空氣品質",
+          "outside_aqi": "室外 · AQI",
+          "pollen": "花粉"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "區域 · 設定",
+        "description": "區域 · 設定: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "menu_options": {
+          "areas": "房間",
+          "indoor_sensors": "房間 · 黴菌指標",
+          "window_sensors": "排除窗戶感測器",
+          "environment_room": "設定 · 設定 · 來源",
+          "area_devices": "室內環境裝置"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "裝置 · 設定",
+        "description": "選用：繼續設定感測器及裝置專屬安全權限。保持關閉可立即儲存裝置清單。",
+        "menu_options": {
+          "device_settings": "裝置 · 控制",
+          "device_choice": "選擇 · 裝置",
+          "device_done": "設定 · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "一般 · 設定",
+        "description": "一般 · 設定: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "data": {
+          "general_room_occupancy_sensors": "房間 · 佔用 · 感測器",
+          "general_occupied_rooms_entity": "佔用 · 房間 · 來源 (state)",
+          "general_occupied_rooms_attribute": "佔用 · 房間 · 來源 (attribute)",
+          "general_home_trackers": "家中 · 佔用 · 裝置",
+          "general_home_policy": "家中 · 佔用 · 控制",
+          "general_sleep_rooms_entity": "睡眠 · 房間 · 來源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房間 · 來源 (attribute)",
+          "general_source_stale_minutes": "來源 · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "為「房間 · 佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_entity": "為「佔用 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_attribute": "僅為選定房間設定「佔用 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_home_trackers": "為「家中 · 佔用 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_home_policy": "此選項控制「家中 · 佔用 · 控制」。實際裝置指令需個別授權並有獨立保護。",
+          "general_sleep_rooms_entity": "為「睡眠 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_sleep_rooms_attribute": "僅為選定房間設定「睡眠 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_source_stale_minutes": "來源 · 睡眠 / 佔用 · max 240 min. 無效 · 關閉."
+        }
+      },
+      "pollen": {
+        "title": "花粉",
+        "description": "花粉: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "data": {
+          "pollen_entity": "花粉 · 來源",
+          "pollen_high_from": "POLLEN · 花粉 · HIGH",
+          "pollen_max_scale": "POLLEN · 花粉 · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · 花粉 · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "為「花粉 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "pollen_high_from": "僅為選定房間設定「POLLEN · 花粉 · HIGH」。資料無效或缺失將停止操作。",
+          "pollen_max_scale": "僅為選定房間設定「POLLEN · 花粉 · SCALE」。資料無效或缺失將停止操作。",
+          "pollen_avoid_ventilation": "僅為選定房間設定「POLLEN · 花粉 · NO VENT」。資料無效或缺失將停止操作。"
+        }
+      },
+      "outside_aqi": {
+        "title": "室外 · AQI",
+        "description": "室外 · AQI: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "data": {
+          "outside_aqi_entity": "AQI · 感測器",
+          "outside_aqi_scale": "AQI · 來源",
+          "outside_aqi_limit": "AQI · 目標",
+          "outside_aqi_no_sources": "AQI · 感測器 · 必填"
+        },
+        "data_description": {
+          "outside_aqi_entity": "為「AQI · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "outside_aqi_scale": "僅為選定房間設定「AQI · 來源」。資料無效或缺失將停止操作。",
+          "outside_aqi_limit": "「AQI · 目標」的決策門檻影響建議，但不是醫療限值。",
+          "outside_aqi_no_sources": "僅為選定房間設定「AQI · 感測器 · 必填」。資料無效或缺失將停止操作。"
+        }
+      },
+      "area_devices": {
+        "title": "室內環境裝置",
+        "description": "選擇 · 區域",
+        "data": {
+          "area_devices_area": "選擇 · 區域"
+        },
+        "data_description": {
+          "area_devices_area": "為「選擇 · 區域」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。"
+        }
+      },
+      "select_devices": {
+        "title": "室內環境裝置",
+        "description": "選擇{area_name}的裝置。儲存後，房間中樞內會為每台實體裝置建立一個控制裝置。請在各裝置中設定目標、預設、自動/手動/關閉/PID和靜音運作。僅選擇裝置不會啟用自動控制。",
+        "data": {
+          "selected_devices": "選擇 · 裝置",
+          "configure_device_sources": "現在設定感測器與裝置權限"
+        },
+        "data_description": {
+          "selected_devices": "選擇{area_name}的裝置。儲存後，房間中樞內會為每台實體裝置建立一個控制裝置。請在各裝置中設定目標、預設、自動/手動/關閉/PID和靜音運作。僅選擇裝置不會啟用自動控制。",
+          "configure_device_sources": "選用：繼續設定感測器及裝置專屬安全權限。保持關閉可立即儲存裝置清單。"
+        }
+      },
+      "device_choice": {
+        "title": "選擇 · 裝置",
+        "description": "選擇 · 裝置: 選擇 來源, 感測器 / 裝置 · 控制.",
+        "data": {
+          "device_choice": "選擇 · 裝置"
+        },
+        "data_description": {
+          "device_choice": "為「選擇 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。"
+        }
+      },
+      "device_settings": {
+        "title": "裝置 · 控制",
+        "description": "此選項控制「控制 · 來源」。實際裝置指令需個別授權並有獨立保護。 為「必填 · 裝置 · 功率」使用真實合適的測量值。估算不能取代校準感測器。 此時間參數用於「功率 · min ON (s)」。避免頻繁切換，但不能取代硬體保護。 此時間參數用於「功率 · min OFF (s)」。避免頻繁切換，但不能取代硬體保護。 僅為選定房間設定「睡眠 · 控制」。資料無效或缺失將停止操作。 「速度 (%)」的決策門檻影響建議，但不是醫療限值。\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "自動 控制",
+          "device_method": "控制 · 來源",
+          "device_presence_requirement": "控制 · 佔用",
+          "device_absence_action": "關閉 · 佔用",
+          "device_sleep_behavior": "睡眠 · 控制",
+          "device_hardware_confirmed": "必填 · 裝置 · 功率",
+          "device_temperature_entity": "溫度 · 感測器",
+          "device_humidity_entity": "濕度 · 感測器",
+          "device_co2_entity": "CO₂ · 感測器",
+          "device_pm25_entity": "PM2.5 · 感測器",
+          "device_fan_purpose": "控制 · 裝置",
+          "device_sensor_verified": "感測器 · 必填",
+          "device_fan_speed_percent": "速度 (%)",
+          "device_humidity_target": "濕度 · 目標 (%)",
+          "device_sleep_humidity_target": "睡眠 · 濕度 · 目標 (%)",
+          "device_min_on_s": "功率 · min ON (s)",
+          "device_min_off_s": "功率 · min OFF (s)",
+          "device_max_on_s": "功率 · max ON (s)",
+          "device_home_heat_c": "供暖 · 在家 (°C)",
+          "device_home_cool_c": "製冷 · 在家 (°C)",
+          "device_unoccupied_heat_c": "供暖 · 空房間 (°C)",
+          "device_unoccupied_cool_c": "製冷 · 空房間 (°C)",
+          "device_away_heat_c": "供暖 · 離家 (°C)",
+          "device_away_cool_c": "製冷 · 離家 (°C)",
+          "device_sleep_heat_c": "供暖 · 睡眠 (°C)",
+          "device_sleep_cool_c": "製冷 · 睡眠 (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "此選項控制「自動 控制」。實際裝置指令需個別授權並有獨立保護。",
+          "device_method": "此選項控制「控制 · 來源」。實際裝置指令需個別授權並有獨立保護。",
+          "device_presence_requirement": "僅為選定房間設定「控制 · 佔用」。資料無效或缺失將停止操作。",
+          "device_absence_action": "此選項控制「關閉 · 佔用」。實際裝置指令需個別授權並有獨立保護。",
+          "device_sleep_behavior": "僅為選定房間設定「睡眠 · 控制」。資料無效或缺失將停止操作。",
+          "device_hardware_confirmed": "為「必填 · 裝置 · 功率」使用真實合適的測量值。估算不能取代校準感測器。",
+          "device_temperature_entity": "為「溫度 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "device_humidity_entity": "為「濕度 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "device_co2_entity": "為「CO₂ · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "device_pm25_entity": "為「PM2.5 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "device_fan_purpose": "僅為選定房間設定「控制 · 裝置」。資料無效或缺失將停止操作。",
+          "device_sensor_verified": "為「感測器 · 必填」使用真實合適的測量值。估算不能取代校準感測器。",
+          "device_fan_speed_percent": "「速度 (%)」的決策門檻影響建議，但不是醫療限值。",
+          "device_humidity_target": "「濕度 · 目標 (%)」的決策門檻影響建議，但不是醫療限值。",
+          "device_sleep_humidity_target": "僅在確認有人或睡眠狀態時套用「睡眠 · 濕度 · 目標 (%)」目標。未知不代表空房。",
+          "device_min_on_s": "此時間參數用於「功率 · min ON (s)」。避免頻繁切換，但不能取代硬體保護。",
+          "device_min_off_s": "此時間參數用於「功率 · min OFF (s)」。避免頻繁切換，但不能取代硬體保護。",
+          "device_max_on_s": "此時間參數用於「功率 · max ON (s)」。避免頻繁切換，但不能取代硬體保護。",
+          "device_home_heat_c": "僅在確認有人或睡眠狀態時套用「供暖 · 在家 (°C)」目標。未知不代表空房。",
+          "device_home_cool_c": "僅在確認有人或睡眠狀態時套用「製冷 · 在家 (°C)」目標。未知不代表空房。",
+          "device_unoccupied_heat_c": "僅在確認有人或睡眠狀態時套用「供暖 · 空房間 (°C)」目標。未知不代表空房。",
+          "device_unoccupied_cool_c": "僅在確認有人或睡眠狀態時套用「製冷 · 空房間 (°C)」目標。未知不代表空房。",
+          "device_away_heat_c": "僅在確認有人或睡眠狀態時套用「供暖 · 離家 (°C)」目標。未知不代表空房。",
+          "device_away_cool_c": "僅在確認有人或睡眠狀態時套用「製冷 · 離家 (°C)」目標。未知不代表空房。",
+          "device_sleep_heat_c": "僅在確認有人或睡眠狀態時套用「供暖 · 睡眠 (°C)」目標。未知不代表空房。",
+          "device_sleep_cool_c": "僅在確認有人或睡眠狀態時套用「製冷 · 睡眠 (°C)」目標。未知不代表空房。"
+        }
+      },
+      "setup_rooms": {
+        "title": "要監測的房間",
+        "description": "要監測的房間 → 來源 → 一般 設定",
+        "data": {
+          "areas": "要監測的房間"
+        },
+        "data_description": {
+          "areas": "要監測的房間. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_room_sources": {
+        "title": "房間 · {area_name} · {room_index}/{room_count}",
+        "description": "選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+        "data": {
+          "windows": "窗戶",
+          "air_quality": "空氣品質與環境感測器",
+          "temperature": "溫度",
+          "humidity": "濕度",
+          "pressure": "壓力感測器",
+          "climate_devices": "裝置"
+        },
+        "data_description": {
+          "windows": "窗戶. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "air_quality": "空氣品質與環境感測器. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "temperature": "溫度. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "humidity": "濕度. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "pressure": "壓力感測器. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。",
+          "climate_devices": "裝置. 選擇房間的輸入，顯示為裝置名稱 - 實體名稱。空群組不使用，也不會啟用自動探索或控制。"
+        }
+      },
+      "setup_general": {
+        "title": "一般 設定",
+        "description": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。",
+        "data": {
+          "weather_entities": "天氣與警報",
+          "outdoor_sensors": "室外空氣品質",
+          "weather_warnings": "天氣警報",
+          "general_room_occupancy_sensors": "房間 · 佔用 · 感測器",
+          "general_home_trackers": "家中 · 佔用 · 裝置",
+          "general_occupied_rooms_entity": "佔用 · 房間 · 來源 (state)",
+          "general_occupied_rooms_attribute": "佔用 · 房間 · 來源 (attribute)",
+          "general_sleep_rooms_entity": "睡眠 · 房間 · 來源 (state)",
+          "general_sleep_rooms_attribute": "睡眠 · 房間 · 來源 (attribute)",
+          "notify_entities": "設定 · 來源",
+          "media_players": "設定 · 來源 · MEDIA_PLAYERS",
+          "tts_engine": "設定 · 來源 · TTS_ENGINE",
+          "ai_conversation_agent": "AI · 選擇 · 來源",
+          "language": "TTS · 選擇 · 來源",
+          "use_mold_indicator": "黴菌指標 · RH (%) → 70%",
+          "pollen_entities": "花粉 · 來源 · 選擇",
+          "use_announcement_hub": "自動 · Announcement Hub",
+          "general_away_cooldown_minutes": "家中 · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "請選擇: 天氣與警報 · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "請選擇: 室外空氣品質 · AQI, CO₂, PM2.5, PM10, VOC. 無法使用: ⚠",
+          "weather_warnings": "僅為選定房間設定「天氣警報」。資料無效或缺失將停止操作。",
+          "general_room_occupancy_sensors": "為「房間 · 佔用 · 感測器」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_home_trackers": "為「家中 · 佔用 · 裝置」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_entity": "為「佔用 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_occupied_rooms_attribute": "僅為選定房間設定「佔用 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "general_sleep_rooms_entity": "為「睡眠 · 房間 · 來源 (state)」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "general_sleep_rooms_attribute": "僅為選定房間設定「睡眠 · 房間 · 來源 (attribute)」。資料無效或缺失將停止操作。",
+          "notify_entities": "為「設定 · 來源」選擇真實的 Home Assistant 資料來源。資料缺失或過期時暫停操作。",
+          "media_players": "僅為選定房間設定「設定 · 來源 · MEDIA_PLAYERS」。資料無效或缺失將停止操作。",
+          "tts_engine": "僅為選定房間設定「設定 · 來源 · TTS_ENGINE」。資料無效或缺失將停止操作。",
+          "ai_conversation_agent": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · AI · 選擇 · 來源 · conversation.* / ai_task.*.",
+          "language": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · TTS · 選擇 · 來源 · provider capabilities.",
+          "use_mold_indicator": "僅為選定房間設定「黴菌指標 · RH (%) → 70%」。資料無效或缺失將停止操作。",
+          "pollen_entities": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 花粉 · 來源 · 選擇.",
+          "use_announcement_hub": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 自動 · Announcement Hub.",
+          "general_away_cooldown_minutes": "選擇共用輸入源和通知輸出。儲存即完成設定。運作參數保留在家庭和房間裝置上。 · 家中 · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "選擇無效: 室外空氣品質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "無法使用: 室外空氣品質 (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "選擇無效: 天氣與警報 (weather.*).",
+      "invalid_warning": "選擇無效: 天氣與警報 ⚠.",
+      "missing_notify": "請選擇: Announcement Hub / notify.*.",
+      "missing_tts": "請選擇: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "選擇無效: °C min < max.",
+      "no_areas": "請選擇: 房間.",
+      "no_window_areas": "無法使用: 測量值 (binary_sensor, window).",
+      "invalid_areas": "選擇無效: 房間.",
+      "invalid_window_exclusions": "選擇無效: 排除窗戶感測器.",
+      "invalid_indoor_exclusions": "選擇無效: 排除室內空氣感測器.",
+      "no_windows_after_exclusions": "至少保留一個窗戶感測器.",
+      "review_areas_after_exclusions": "請檢查: 房間 · 測量值 (0).",
+      "invalid_repeat_minutes": "選擇無效: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "無法使用: conversation.process.",
+      "invalid_ai_agent": "選擇無效: conversation.*.",
+      "invalid_mold_temperature_sensor": "房間 · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "房間 · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "黴菌指標 · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "黴菌指標 · 🧊 °C ⚠",
+      "invalid_mold_calibration": "黴菌指標 · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "「設定 · 來源」設定無效，請檢查來源、單位及安全條件。",
+      "invalid_environment_measurement": "「設定 · 來源」設定無效，請檢查來源、單位及安全條件。",
+      "pmv_requires_explicit_inputs": "「PMV / PPD」設定無效，請檢查來源、單位及安全條件。",
+      "pid_climate_required": "「PID · 裝置」設定無效，請檢查來源、單位及安全條件。",
+      "pid_temperature_required": "「PID · 溫度」設定無效，請檢查來源、單位及安全條件。",
+      "pid_invalid_target": "「PID · 目標」設定無效，請檢查來源、單位及安全條件。",
+      "pid_duplicate_climate": "「PID · 裝置」設定無效，請檢查來源、單位及安全條件。",
+      "pid_invalid_parameters": "「PID」設定無效，請檢查來源、單位及安全條件。",
+      "climate_dry_fan_control_inputs_missing": "「速度 · 裝置 · 控制」設定無效，請檢查來源、單位及安全條件。",
+      "climate_humidity_power_inputs_missing": "「濕度 · 裝置 · 功率」設定無效，請檢查來源、單位及安全條件。",
+      "climate_secondary_control_inputs_missing": "「裝置 · 控制」設定無效，請檢查來源、單位及安全條件。",
+      "climate_fan_power_inputs_missing": "「速度 · 裝置 · 功率」設定無效，請檢查來源、單位及安全條件。",
+      "climate_fan_control_inputs_missing": "「速度 · 裝置 · 控制」設定無效，請檢查來源、單位及安全條件。",
+      "climate_fan_sensor_invalid": "「速度 · 裝置 · 感測器」設定無效，請檢查來源、單位及安全條件。",
+      "climate_humidity_control_inputs_missing": "「濕度 · 裝置 · 控制」設定無效，請檢查來源、單位及安全條件。",
+      "climate_temperature_required": "「溫度 · 裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_target_required": "「裝置 · 目標」設定無效，請檢查來源、單位及安全條件。",
+      "climate_direct_actuator_not_ready": "「裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_controller_invalid": "「裝置 · 控制」設定無效，請檢查來源、單位及安全條件。",
+      "climate_mode_invalid": "「裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_occupancy_invalid": "「佔用 · 裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_away_invalid": "「家中 · 裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_deadband_invalid": "「裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_attestation_required": "「裝置」設定無效，請檢查來源、單位及安全條件。",
+      "climate_direct_targets_invalid": "「裝置 · 目標」設定無效，請檢查來源、單位及安全條件。",
+      "climate_direct_timing_invalid": "「裝置」設定無效，請檢查來源、單位及安全條件。",
+      "general_invalid_presence": "無效 · 佔用 · 設定",
+      "general_invalid_trackers": "無效 · 家中 · 設定",
+      "general_invalid_rooms_entity": "無效 · 房間 · 設定",
+      "general_invalid_attribute": "無效 · 來源 · 設定",
+      "general_invalid_source_age": "無效 · 來源 · 設定",
+      "invalid_selected_devices": "無效 · 裝置 · 設定",
+      "device_policy_invalid": "無效 · 佔用 · 設定",
+      "device_method_invalid": "無效 · 控制 · 設定",
+      "device_hardware_required": "無效 · 必填 · 設定",
+      "device_power_required_for_off": "無效 · 功率 · 設定",
+      "device_temperature_required": "無效 · 溫度 · 設定",
+      "device_humidity_required": "無效 · 濕度 · 設定",
+      "device_air_sensor_required": "無效 · 感測器 · 設定",
+      "device_temperature_band_invalid": "無效 · 溫度 · 設定",
+      "device_humidity_invalid": "無效 · 濕度 · 設定",
+      "device_runtime_invalid": "無效 · 功率 · 設定",
+      "invalid_setup_rooms": "無效: 要監測的房間",
+      "invalid_room_source": "無效: 房間 · 來源"
+    },
+    "abort": {
+      "setup_area_removed": "無效: 要監測的房間",
+      "setup_changed": "設定 ↻ 要監測的房間"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "空氣品質",
+        "state": {
+          "open": "關閉 · 測量值",
+          "close": "自動通知 · 測量值",
+          "idle": "良好",
+          "blocked": "請保持窗戶關閉"
+        }
+      },
+      "area_overview": {
+        "name": "環境概覽"
+      },
+      "area_surface_humidity": {
+        "name": "表面濕度（計算值）"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "室外 · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "室外 · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "室外 · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "室外 · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "室外 · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "室外 · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · 室外 (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · 室外 (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · 室外 (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "空氣品質 · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "空氣品質 · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "空氣品質 · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "空氣品質 · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "空氣品質 · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "空氣品質 · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "空氣品質 · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "黴菌指標 · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "室外 · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "室外 · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "室外 · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "天氣與警報 · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · 開啟 (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "播報（選用） · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "目標 (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · 控制 (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · 控制 (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · 控制 (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "供暖 · 房間 · 佔用"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "製冷 · 房間 · 佔用"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "濕度 · 房間 · 佔用 · 目標 (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "供暖 · 家中"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "製冷 · 家中"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "濕度 · 家中 · 目標 (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "供暖 · 家中 · 關閉"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "製冷 · 家中 · 關閉"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "濕度 · 家中 · 關閉 · 目標 (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "供暖 · 睡眠"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "製冷 · 睡眠"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "濕度 · 睡眠 · 目標 (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "供暖 · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "製冷 · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "濕度 · ECO · 目標 (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · 花粉 · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · 花粉 · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "來源 · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "設定 · 來源 (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · 目標 (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "速度 · 室外 (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "設定 · 來源 (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "設定 · 來源 (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "裝置 · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "佔用 · 裝置 · 感測器 · 必填"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "裝置 (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · 濕度 · 裝置 (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · 濕度 · 裝置 (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · 濕度 · 裝置 · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "裝置 · 溫度 −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · 裝置 (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · 裝置 · 速度 (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · 裝置 · 速度 (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · 控制 (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · 控制 (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · 控制 (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "設定 · 來源 (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "設定 · 來源 · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "設定 · 來源 · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "黴菌指標 · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · 控制 (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · 控制 (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · 控制 (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}設定 · 來源 (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}低噪音風扇上限 (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}功率 · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}功率 · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}功率 · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "房間 · 溫度 · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "房間 · 溫度 · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "房間 · 濕度 · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "房間 · 濕度 · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "房間 · 速度 · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "房間 · 速度 · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "家中 · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "自動 · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "自動"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · 播報（選用）"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · 花粉 · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "睡眠"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · 自動"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "睡眠 · 裝置"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "睡眠 · 自動"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "裝置 · 室外"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}睡眠時降低噪音"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}有人時降低噪音"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}感測器 · 必填"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "語言"
+      },
+      "area_manual_profile": {
+        "name": "裝置 · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "家中 · 佔用 · 控制"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "佔用 · 裝置"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "家中 · 裝置 · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "裝置 · 來源 · 目標"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}控制方式",
+        "state": {
+          "existing": "現有房間控制器",
+          "automatic": "自動",
+          "manual": "手動",
+          "off": "關閉",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}裝置原生低噪音風扇模式"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}控制 · 佔用",
+        "state": {
+          "always": "自動",
+          "occupied": "房間 · 佔用",
+          "absent": "房間 · 佔用 · 關閉"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}睡眠 · 控制",
+        "state": {
+          "normal": "自動",
+          "pause": "暫停",
+          "sleep_targets": "睡眠 · 目標"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}控制 · 裝置",
+        "state": {
+          "extraction": "室外 · 控制",
+          "filtration": "PM2.5 · 控制",
+          "auto": "自動"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "溫度 · 來源"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "來源 · 速度 · 室外 (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "睡眠 · 裝置 · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "睡眠 · 裝置 · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "黴菌指標 · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}核實並恢復"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}室內環境控制器"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "播報（選用） — Home Environment Manager",
+      "description": "播報（選用） · 房間",
+      "fields": {
+        "language": {
+          "name": "語言",
+          "description": "語言"
+        },
+        "channels": {
+          "name": "播報（選用）",
+          "description": "播報（選用）"
+        },
+        "areas": {
+          "name": "房間",
+          "description": "房間"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — 預設",
+        "en": "設定 · 來源",
+        "de": "設定 · 來源",
+        "el": "設定 · 來源",
+        "fr": "設定 · 來源",
+        "es": "設定 · 來源",
+        "it": "設定 · 來源",
+        "nl": "設定 · 來源",
+        "pt": "設定 · 來源",
+        "pt-br": "設定 · 來源",
+        "pl": "設定 · 來源",
+        "ru": "設定 · 來源",
+        "uk": "設定 · 來源",
+        "tr": "設定 · 來源",
+        "cs": "設定 · 來源",
+        "sk": "設定 · 來源",
+        "hu": "設定 · 來源",
+        "ro": "設定 · 來源",
+        "bg": "設定 · 來源",
+        "hr": "設定 · 來源",
+        "sr": "設定 · 來源",
+        "sv": "設定 · 來源",
+        "nb": "設定 · 來源",
+        "da": "設定 · 來源",
+        "fi": "設定 · 來源",
+        "id": "設定 · 來源",
+        "vi": "設定 · 來源",
+        "th": "設定 · 來源",
+        "hi": "設定 · 來源",
+        "zh-hans": "設定 · 來源",
+        "zh-hant": "設定 · 來源",
+        "ja": "設定 · 來源",
+        "ko": "設定 · 來源",
+        "ar": "設定 · 來源",
+        "he": "設定 · 來源",
+        "fa": "設定 · 來源",
+        "bn": "設定 · 來源",
+        "ur": "設定 · 來源",
+        "ta": "設定 · 來源"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "家中 · 佔用",
+        "all_home": "家中 · 裝置 · 佔用"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "目標 · 控制",
+        "native": "裝置 · 控制",
+        "power": "功率",
+        "speed": "速度"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "自動",
+        "room": "房間 · 佔用",
+        "home": "家中 · 佔用"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "暫停",
+        "off": "關閉"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "自動",
+        "pause": "暫停",
+        "sleep_targets": "睡眠 · 目標"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "室外 · 控制",
+        "filtration": "PM2.5 · 控制"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "來源 · 無效",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "目標 · 設定"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "房間中樞",
+      "initiate_flow": {
+        "user": "房間中樞"
+      },
+      "step": {
+        "user": {
+          "title": "房間中樞",
+          "description": "選擇一個 Home Assistant 區域。其群組包含房間的一般設定，以及每個已選實體裝置對應的一個控制器裝置。新增房間不會啟用裝置的自動控制。",
+          "data": {
+            "area_id": "房間"
+          },
+          "data_description": {
+            "area_id": "選擇一個 Home Assistant 區域。其群組包含房間的一般設定，以及每個已選實體裝置對應的一個控制器裝置。新增房間不會啟用裝置的自動控制。"
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "無效: 區域."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
