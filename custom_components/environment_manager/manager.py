@@ -152,6 +152,7 @@ class AirQualityManager:
             weather(self.hass, ent, max_age) for ent in config.get(CONF_WEATHER, [])
         )
         raw_rooms = selected_rooms  # Keep source RH before optional mold substitution.
+        from .room_sources import room_temperature_evidence
         mold_temperature_entities: set[str] = set()
         # Preserve the exact set of supported, included humidity sensors
         # before replacing them with the derived room mold indicator.
@@ -171,9 +172,13 @@ class AirQualityManager:
                 sensor_id = calibration.get("indoor_temperature_entity")
                 if isinstance(sensor_id, str):
                     mold_temperature_entities.add(sensor_id)
-                indoor_c = (
-                    temperature_sensor_c(self.hass, sensor_id, max_age)
-                    if isinstance(sensor_id, str) else None
+                # A manually pinned mold temperature keeps exact-source
+                # authority. If there is no pin, use only the room's explicitly
+                # selected current temperature sensor(s), not an invented one.
+                indoor_c, _ = room_temperature_evidence(
+                    self.hass, config, room.area_id,
+                    pinned=sensor_id if isinstance(sensor_id, str) else None,
+                    age_minutes=max_age,
                 )
                 mold_reading = estimate_mold_for_room(
                     room, indoor_c, current_weather, calibration,
@@ -289,8 +294,16 @@ class AirQualityManager:
                 )
                 comfort=pmv_air.get("air_temperature_target_c") if (
                     pmv_air.get("status")=="estimate") else None
+                temperature_c, temperature_meta = room_temperature_evidence(
+                    self.hass, config, monitored.area_id,
+                    pinned=settings.get("temperature_entity")
+                    if isinstance(settings, dict) else None,
+                    age_minutes=10,
+                )
                 state,tracked=climate_room_plan(
                     self.hass,raw_for_climate[monitored.area_id],settings,
+                    selected_temperature_c=temperature_c,
+                    temperature_evidence=temperature_meta,
                     prior_mode=prior,comfort_target_c=comfort,
                     outdoor_safe=base_plan.outdoor_safe,
                     duplicate_equipment=duplicate_devices,
