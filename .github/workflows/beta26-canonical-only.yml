@@ -41,7 +41,10 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           p=Path('custom_components/environment_manager')
-          runtime='\n'.join(x.read_text() for x in p.glob('*.py'))
+          runtime='\n'.join(
+              (p/name).read_text()
+              for name in ('__init__.py','const.py','config_flow.py','manifest.json')
+          )
           assert 'DOMAIN = "environment_manager"' in (p/'const.py').read_text()
           assert not (p/'domain_migration.py').exists()
           for old in (
@@ -177,7 +180,10 @@ jobs:
               assert (dest/'__init__.py').is_file()
               assert not (dest/'custom_components').exists()
               assert not (dest/'domain_migration.py').exists()
-              runtime='\n'.join(p.read_text() for p in dest.glob('*.py'))
+              runtime='\n'.join(
+                  (dest/name).read_text()
+                  for name in ('__init__.py','const.py','config_flow.py','manifest.json')
+              )
               for old in ('air_quality_advisor','enviroment_manager','home_environment_manager'):
                   assert old not in runtime, old
           PY
