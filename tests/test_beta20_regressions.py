@@ -12,7 +12,7 @@ def test_exact_requested_domain_and_only_one_package():
     const=source("const.py")
     assert '"domain": "environment_manager"' in manifest
     assert 'DOMAIN = "environment_manager"' in const
-    assert 'LEGACY_DOMAIN = "air_quality_advisor"' in const
+    assert 'MIGRATION_SOURCE_DOMAINS = ("enviroment_manager", "air_quality_advisor")' in const
     assert PKG.is_dir()
     assert not (ROOT/"custom_components/enviroment_manager").exists()
     assert not (ROOT/"custom_components/air_quality_advisor").exists()
