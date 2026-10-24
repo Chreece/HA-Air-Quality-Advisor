@@ -51,6 +51,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
     from . import equipment_model as equipment
     entities.extend(EquipmentSelect(manager, spec, "control_mode")
                     for spec in equipment.specs(manager))
+    entities.extend(EquipmentSelect(manager, spec, "pid_calibration_method")
+                    for spec in equipment.specs(manager)
+                    if "pid" in equipment.control_modes(manager, spec))
     from homeassistant.helpers import entity_registry as er
     from .equipment_feature_registration import (
         quiet_keys, register_late_capabilities,
@@ -239,6 +242,8 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
         if self._key == "quiet_fan_mode":
             cap = equipment.capabilities(self._manager, self._spec)
             return bool(cap and cap.fan_modes and not cap.fan_percentage)
+        if self._key == "pid_calibration_method":
+            return self.controller_settings["control_mode"] == "pid"
         return super().available
 
     async def async_added_to_hass(self):
@@ -250,6 +255,8 @@ class EquipmentSelect(EquipmentEntity, SelectEntity):
     def options(self):
         if self._key == "control_mode":
             return list(equipment.control_modes(self._manager, self._spec))
+        if self._key == "pid_calibration_method":
+            return list(equipment.PID_CALIBRATION_METHODS)
         if self._key in equipment.DEVICE_SELECTS:
             return list(equipment.DEVICE_SELECTS[self._key])
         cap = equipment.capabilities(self._manager, self._spec)
