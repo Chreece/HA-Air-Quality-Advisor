@@ -76,7 +76,7 @@ def test_all_38_locales_and_canonical_strings_have_pid_first_names():
                 # Literal PID prefixes must not duplicate; underscore tokens
                 # like PID_OFFSET_C are technical suffix identifiers, not
                 # a second standalone PID word.
-                assert len(re.findall(r"(?<!\\w)PID(?!\\w)", label)) == 1, (
+                assert len(re.findall(r"(?<!\w)PID(?!\w)", label)) == 1, (
                     path.name, key, label,
                 )
         # Exact field/option meanings and other entity groups are still there.
