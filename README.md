@@ -21,7 +21,15 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 33 is available for opt-in testing.** Stable remains **v0.5.1**. Beta33 restores capability-dependent native quiet fan switches and the quiet fan-mode selector when underlying physical devices start late, preserving previous entity IDs and supporting all brands. Managed climate physical availability now refreshes from exact source events. Beta32 event-loop fixes and beta31 Room/PID controls are preserved; the only integration domain is `environment_manager`.
+> **v0.6.0 beta 34 is available for opt-in testing.** Stable remains **v0.5.1**. Beta34 fixes Room Environment temperature evidence using verified sensors selected in Room Setup, explains Environment-only monitoring separately from real device climate controllers, and adds click-to-open native managed climate entities plus per-device method and Manual target controls in the card. Beta31–33 fixes remain; the sole domain is `environment_manager`.
+
+## Beta 34 - room temperature evidence and native device climate card controls
+
+Room climate plans no longer ignore the temperature sensors explicitly chosen in each Room Setup. With no dedicated temperature pin, all selected real and fresh same-area sensors must qualify; their mean provides room temperature evidence. An existing pinned sensor is never silently replaced, and missing/stale/incorrectly assigned readings remain unavailable rather than fabricating a safe temperature. Mold monitoring may use the same selected room temperature evidence when it has no dedicated calibrated indoor temperature pin.
+
+**Environment-only** means the room-wide plan is monitoring, not that its independent humidity/fan/climate controllers do not exist. The dashboard now shows each real Manager-controlled climate entity per room. Click its name to open the Home Assistant entity popup; choose the exact device's existing Automatic/PID/Manual/Off method in the card. When Manual is selected, editable native temperature and humidity targets appear only if the physical climate capabilities support them. Writes use exact Manager entity IDs and native Home Assistant services, with bounds/availability checks. The room's independent physical control permissions and safety gates are unchanged.
+
+The card also calls `environment_manager` for room climate/PID actions instead of the removed legacy domain and no longer renders raw `metric_unknown` for unsupported selected readings.
 
 ## Beta 33 - generic native quiet fan controls survive late startup
 
