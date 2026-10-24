@@ -1117,8 +1117,14 @@ class EquipmentRuntime:
         if cap.fan_percentage:
             dev = model.device_config(self.manager, spec, cap.primary)
             normal = selected_fan or dev.get("fan_speed_percent") or normal
-            if demand is not None:
-                normal = max(1., demand)
+            if demand is not None and automatic and cfg["control_mode"] == "pid":
+                planned = fan_speed_for_pid(
+                    demand, modes=cap.fan_modes, percentage=True,
+                    min_percentage=model.device_limits(self.manager, spec, cap)["fan_min_percentage"],
+                    max_percentage=model.device_limits(self.manager, spec, cap)["fan_max_percentage"],
+                )
+                if planned is not None:
+                    normal = planned
             quiet_state = self._quiet_context(spec, cfg, plan) if automatic else False
             if quiet_state is None:
                 self._status(spec, "quiet_context_unknown")
@@ -1150,6 +1156,17 @@ class EquipmentRuntime:
             quiet = quiet_state is True
             low = cfg.get("quiet_fan_mode") or ("low" if "low" in cap.fan_modes else None)
             value = low if quiet and low is not None else normal
+            # Map the same PID demand to Low/Medium/High ONLY where the
+            # physical source advertises an unambiguous ordered speed set.
+            # Arbitrary native presets keep their saved profile/normal speed.
+            if (automatic and cfg["control_mode"] == "pid"
+                    and demand is not None and demand > 0):
+                chosen = fan_speed_for_pid(
+                    demand, modes=cap.fan_modes, percentage=False,
+                    quiet=quiet, quiet_mode=low,
+                )
+                if chosen is not None:
+                    value = chosen
             if value not in cap.fan_modes:
                 return False
             service = "set_fan_mode" if cap.fan_entity.startswith("climate.") else "set_preset_mode"
@@ -1288,14 +1305,30 @@ class EquipmentRuntime:
                 self._memory[spec.identifier] = (signature, memory, anchor)
                 demand = memory.demand
                 on_min, off_min, _ = model.timing(self.manager, spec, cap)
-                wanted = model.duty_on(demand, self.clock()-anchor, cfg["cycle_seconds"], on_min, off_min,
-                                       starting=output_off(state))
+                # Use ONE modulation dimension for continuously adjustable
+                # standalone fans. Never multiply a PID percentage by a
+                # second PWM duty. Binary valves/heaters retain safe slow PWM.
+                if cap.domain == "fan" and cap.fan_percentage:
+                    min_speed = model.device_limits(self.manager, spec, cap)["fan_min_percentage"]
+                    wanted = percentage_output_requested(demand, min_percentage=min_speed)
+                elif cap.domain == "fan" and ordered_fan_stages(cap.fan_modes):
+                    wanted = demand > 0
+                else:
+                    wanted = model.duty_on(
+                        demand, self.clock()-anchor, cfg["cycle_seconds"],
+                        on_min, off_min, starting=output_off(state),
+                    )
             else:
                 # Hysteresis preserves current output until the opposite boundary.
                 band = .3 if metric == "temperature" else 2 if metric == "humidity" else 50 if metric == "co2" else 2
                 wanted = error > band or not output_off(state) and error > -band
             if power and (cap.domain != "number" and cap.domain != "input_number"):
                 desired = mode if wanted else "off"
+                if wanted and output_off(state) and cap.fan_modes and (
+                    cfg.get("quiet_sleep") or cfg.get("quiet_occupied")
+                ) and self._quiet_context(spec, cfg, plan) is None:
+                    self._status(spec, "quiet_context_unknown")
+                    return  # Never power on into an unknown quiet context.
                 if (state.state == "off") != (desired == "off") or cap.domain == "climate" and state.state != desired:
                     await self._power(spec, cap, desired, automatic=True)
                     return
@@ -1341,7 +1374,9 @@ class EquipmentRuntime:
                 return
             if spec.identifier in self._invalidated:
                 return
-        if await self._fan(spec, cap, cfg, plan, demand if cap.domain == "fan" else None, auto):
+        if await self._fan(spec, cap, cfg, plan,
+                           demand if auto and cfg["control_mode"] == "pid" else None,
+                           auto):
             return
         if spec.identifier in self._invalidated:
             return
