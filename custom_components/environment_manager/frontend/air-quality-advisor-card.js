@@ -1074,6 +1074,8 @@
           id,state.state,state.attributes.control_mode,
           state.attributes.temperature,state.attributes.humidity,
           state.attributes.supported_features,
+          state.attributes.physical_source_state,
+          state.attributes.controller_status?.pid_fan_capacity,
           state.attributes.options,
           state.attributes.source_entity_ids,
           state.attributes.pid_calibration_role,
