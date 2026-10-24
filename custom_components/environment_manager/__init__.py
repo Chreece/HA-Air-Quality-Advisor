@@ -14,13 +14,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
 
-from .const import (DOMAIN, LEGACY_DOMAIN, BETA20_DOMAIN, LEGACY_PUBLIC_ACTION_DOMAIN, PLATFORMS, LANGUAGES)
+from .const import DOMAIN, PLATFORMS, LANGUAGES
 from .manager import AirQualityManager
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
-PUBLIC_ACTION_DOMAIN = LEGACY_PUBLIC_ACTION_DOMAIN
-SERVICE_ALIAS_DOMAINS = (PUBLIC_ACTION_DOMAIN, BETA20_DOMAIN, LEGACY_DOMAIN)
-
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     """Serve and register the card once; installation needs no www copy/YAML."""
@@ -28,8 +25,6 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     card_path = Path(__file__).parent / "frontend" / "air-quality-advisor-card.js"
     await hass.http.async_register_static_paths([
         StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
-        StaticPathConfig(f"/{BETA20_DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
-        StaticPathConfig(f"/{LEGACY_DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
     ])
     # This is a native HA frontend registration, not a Lovelace storage mutation.
     # Pin the cache key to the integration version so HACS updates refresh the JS.
@@ -181,15 +176,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             DOMAIN, "announce", async_announce_action,
             schema=SERVICE_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
         )
-        # A user-facing service alias for the rebrand. Both service domains
-        # intentionally call the same manager: no duplicate announcements.
-        for alias in SERVICE_ALIAS_DOMAINS:
-            if not hass.services.has_service(alias, "announce"):
-                hass.services.async_register(
-                    alias, "announce", async_announce_action,
-                    schema=SERVICE_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
-                )
-    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "pid_control"):
+    if not hass.services.has_service(DOMAIN, "pid_control"):
         async def async_pid_action(call: ServiceCall) -> ServiceResponse:
             manager,why=_exact_room_manager(
                 hass,call.data["area"],"pid_rooms",
@@ -202,13 +189,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
             return result if call.return_response else None
 
-        for service_domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
-            if not hass.services.has_service(service_domain, "pid_control"):
-                hass.services.async_register(
-                    service_domain, "pid_control", async_pid_action,
-                    schema=PID_CONTROL_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
-                )
-    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_control"):
+        hass.services.async_register(
+            DOMAIN, "pid_control", async_pid_action,
+            schema=PID_CONTROL_SCHEMA, supports_response=SupportsResponse.OPTIONAL,
+        )
+    if not hass.services.has_service(DOMAIN, "climate_control"):
         async def async_native_action(call: ServiceCall) -> ServiceResponse:
             manager,why=_exact_room_manager(
                 hass,call.data["area"],"climate_rooms",
@@ -219,14 +204,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 call.data["area"],call.data["action"]
             )
             return result if call.return_response else None
-        for domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
-            if not hass.services.has_service(domain,"climate_control"):
-                hass.services.async_register(
-                    domain,"climate_control",async_native_action,
-                    schema=NATIVE_CLIMATE_SCHEMA,
-                    supports_response=SupportsResponse.OPTIONAL,
-                )
-    if not hass.services.has_service(PUBLIC_ACTION_DOMAIN, "climate_diagnostics"):
+        hass.services.async_register(
+            DOMAIN, "climate_control", async_native_action,
+            schema=NATIVE_CLIMATE_SCHEMA,
+            supports_response=SupportsResponse.OPTIONAL,
+        )
+    if not hass.services.has_service(DOMAIN, "climate_diagnostics"):
         async def async_diagnostics(call: ServiceCall) -> ServiceResponse:
             # This is an explicit read-only request. Only configured rooms
             # are reported; no raw registry secrets, device identifiers, or
@@ -250,13 +233,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             }
             return response if call.return_response else None
 
-        for domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
-            if not hass.services.has_service(domain, "climate_diagnostics"):
-                hass.services.async_register(
-                    domain, "climate_diagnostics", async_diagnostics,
-                    schema=CLIMATE_DIAGNOSTICS_SCHEMA,
-                    supports_response=SupportsResponse.OPTIONAL,
-                )
+        hass.services.async_register(
+            DOMAIN, "climate_diagnostics", async_diagnostics,
+            schema=CLIMATE_DIAGNOSTICS_SCHEMA,
+            supports_response=SupportsResponse.OPTIONAL,
+        )
     return True
 
 
@@ -266,15 +247,12 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await entry.runtime_data.async_stop()
     hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
     if not hass.data.get(DOMAIN):
-        hass.services.async_remove(DOMAIN, "announce")
-        for alias in SERVICE_ALIAS_DOMAINS:
-            if hass.services.has_service(alias, "announce"):
-                hass.services.async_remove(alias, "announce")
-        for service_domain in (DOMAIN, *SERVICE_ALIAS_DOMAINS):
-            if hass.services.has_service(service_domain, "pid_control"):
-                hass.services.async_remove(service_domain, "pid_control")
-            if hass.services.has_service(service_domain, "climate_control"):
-                hass.services.async_remove(service_domain, "climate_control")
-            if hass.services.has_service(service_domain, "climate_diagnostics"):
-                hass.services.async_remove(service_domain, "climate_diagnostics")
+        if hass.services.has_service(DOMAIN, "announce"):
+            hass.services.async_remove(DOMAIN, "announce")
+        if hass.services.has_service(DOMAIN, "pid_control"):
+            hass.services.async_remove(DOMAIN, "pid_control")
+        if hass.services.has_service(DOMAIN, "climate_control"):
+            hass.services.async_remove(DOMAIN, "climate_control")
+        if hass.services.has_service(DOMAIN, "climate_diagnostics"):
+            hass.services.async_remove(DOMAIN, "climate_diagnostics")
     return True
