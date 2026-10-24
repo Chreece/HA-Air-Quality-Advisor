@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b27 - Canonical storage, room targets and active controllers (beta)
+
+- Supersede beta26 because two native safety stores still used historical `air_quality_advisor.*` keys.
+- Canonicalize every runtime/config-flow/service/storage namespace to `environment_manager`; no old-domain migration code ships.
+- Preserve Room Environment Comfort/Home/Away/Sleep/Eco heating, cooling and humidity targets.
+- Preserve active Automatic/PID/Manual behavior: method selection alone authorizes the exact native controller to start/stop supported physical equipment or HVAC modes on verified demand.
+- Preserve observed physical OFF age across method selection and allow explicit method reselection to re-arm a prior software pause.
+- Keep minimum ON/OFF, maximum runtime, window, availability, ownership, defrost/interlock and acknowledgement protections.
+
 ## 0.6.0b26 - Room profile targets and active controller methods (beta)
 
 - Remove historical-domain migration completely; `environment_manager` is the sole runtime/config-flow/storage domain.
