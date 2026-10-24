@@ -40,6 +40,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     add_extra_js_url(
         hass, f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest['version']}"
     )
+    # A full multi-room dashboard cannot safely fit in Recorder attributes.
+    # Its authenticated WebSocket API is read-only and registered just once
+    # per canonical integration setup, not once per config entry.
+    from .dashboard_api import async_register_dashboard_api
+
+    async_register_dashboard_api(hass)
     return True
 
 
