@@ -967,16 +967,16 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   }};
   assert.ok(card.shadowRoot.innerHTML.includes('data-climate-input="temperature"'));
   const editingMarkup=card.shadowRoot.innerHTML;
-  const input={value:'25',closest(selector){
+  const pendingTargetInput={value:'25',closest(selector){
     return selector.includes('data-climate-input') || selector.includes('data-climate-method')
       ? this : null;
   }};
-  card.shadowRoot.listeners.focusin({target:input});
+  card.shadowRoot.listeners.focusin({target:pendingTargetInput});
   physical.attributes={...physical.attributes,temperature:21};
   card.hass={...next};
   assert.equal(card.shadowRoot.innerHTML,editingMarkup,
     'manual setpoint input must preserve unsaved value while focused');
-  card.shadowRoot.listeners.focusout({target:input});
+  card.shadowRoot.listeners.focusout({target:pendingTargetInput});
   await new Promise((resolve)=>setTimeout(resolve,130));
   assert.notEqual(card.shadowRoot.innerHTML,editingMarkup,
     'queued state changes must be applied after editing ends');
