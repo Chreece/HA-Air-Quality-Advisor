@@ -57,7 +57,8 @@ class ManagedClimate(EquipmentEntity, ClimateEntity):
         return [HVACMode(v) for v in self._caps.modes] if self._caps else []
 
     @property
-    def hvac_mode(self):
+    def _physical_hvac_mode(self):
+        """Observed native output, not the independently selected controller mode."""
         cap, state = self._caps, self._state
         if cap is None or state is None or state.state in ("unknown", "unavailable"):
             return None
@@ -67,22 +68,75 @@ class ManagedClimate(EquipmentEntity, ClimateEntity):
             value = finite(state.state, 0, 100)
             if value is None:
                 return None
-            return HVACMode.OFF if value == 0 else HVACMode(next(v for v in cap.modes if v != "off"))
-        return HVACMode.OFF if state.state == "off" else HVACMode(next(v for v in cap.modes if v != "off"))
+            return HVACMode.OFF if value == 0 else HVACMode(
+                next(v for v in cap.modes if v != "off")
+            )
+        return HVACMode.OFF if state.state == "off" else HVACMode(
+            next(v for v in cap.modes if v != "off")
+        )
+
+    @property
+    def hvac_mode(self):
+        """Supervisory intent: an idle thermostat remains armed, not OFF.
+
+        HA's climate state denotes the selected controller mode. It must not
+        mirror native appliance OFF during hysteresis, a PID OFF interval or
+        a minimum-off safety hold. Only the existing/native passthrough mode
+        deliberately mirrors physical hardware.
+
+        Never invent heat/cool/dry capabilities: selected and evaluated modes
+        must belong to this exact physical endpoint's advertised modes.
+        """
+        cap = self._caps
+        if cap is None or not self.available:
+            return None
+        settings = self.controller_settings
+        method = settings["control_mode"]
+        native_mode = self._physical_hvac_mode
+        if method == "existing":
+            return native_mode
+        if method == "off":
+            return HVACMode.OFF
+
+        requested = settings.get("requested_mode")
+        status = self._manager.equipment.statuses.get(self._spec.identifier, {})
+        evaluated = status.get("mode") if isinstance(status, dict) else None
+        # Automatic is selected from measured needs by the active controller;
+        # PID preserves an explicit single-direction selection when supplied.
+        if method in ("automatic", "pid") and evaluated in cap.modes and evaluated != "off":
+            return HVACMode(evaluated)
+        if method in ("manual", "pid", "automatic") and requested in cap.modes and requested != "off":
+            return HVACMode(requested)
+        if native_mode is not None and native_mode != HVACMode.OFF:
+            return native_mode
+        active = [mode for mode in cap.modes if mode != "off"]
+        if method in ("automatic", "pid") and len(active) == 1:
+            return HVACMode(active[0])
+        # A multichannel device with no selected/evaluated direction cannot
+        # claim to be heating/cooling while the direction is still unknown.
+        return HVACMode.OFF
 
     @property
     def hvac_action(self):
         state, cap = self._state, self._caps
-        if state is None or cap is None:
+        if state is None or cap is None or state.state in ("unknown", "unavailable"):
             return None
-        if self.hvac_mode == HVACMode.OFF:
+        selected = self.hvac_mode
+        if selected is None:
+            return None
+        if selected == HVACMode.OFF:
             return HVACAction.OFF
+        # Logical controller remains armed while the physical output is OFF:
+        # HA climate must show IDLE, not OFF or fictitious heating/drying.
+        if self._physical_hvac_mode == HVACMode.OFF:
+            return HVACAction.IDLE
         if cap.domain == "climate":
             value = state.attributes.get("hvac_action")
             return HVACAction(value) if value in {item.value for item in HVACAction} else None
         if cap.domain == "fan":
             return HVACAction.FAN
-        # An ON dehumidifier can be defrosting or idle. Do not invent DRYING.
+        # Native humidifiers/dehumidifiers do not expose a reliable HVACAction.
+        # Never turn an observed ON state into fabricated DRYING/HEATING.
         return None
 
     @property
@@ -191,7 +245,9 @@ class ManagedClimate(EquipmentEntity, ClimateEntity):
         return {**super().extra_state_attributes, "control_mode": cfg["control_mode"],
                 "requested_hvac_mode": cfg["requested_mode"],
                 "active_profile": model.profile_name(cfg, model.plan_for(self._manager, self._spec)),
-                "physical_hvac_mode": self.hvac_mode,
+                "physical_hvac_mode": self._physical_hvac_mode,
+                "physical_source_state": self._state.state if self._state else "unavailable",
+                "controller_mode_selected": cfg["control_mode"] in ("automatic", "pid", "manual"),
                 "power_control_commissioned": model.permission(self._manager, self._spec, cap)[1] if cap else False,
                 "measurements": self._manager.equipment.measurements(self._spec, cap) if cap else {}}
 
