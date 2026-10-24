@@ -347,8 +347,8 @@ class ConfigNumber(NumberEntity):
         if self._kind == "device_target":
             rooms = settings.get("climate_rooms", {})
             cfg = rooms.get(self._area_id, {}) if isinstance(rooms, dict) else {}
-            profiles = cfg.get("device_settings", {}) if isinstance(cfg, dict) else {}
-            dev = profiles.get(self._entity_id, {}) if isinstance(profiles, dict) else {}
+            device_settings = cfg.get("device_settings", {}) if isinstance(cfg, dict) else {}
+            dev = device_settings.get(self._entity_id, {}) if isinstance(device_settings, dict) else {}
             raw = dev.get(self._key, DEVICE_TARGET_NUMBERS[self._key][4])
             return float(raw) if raw is not None else None
         if self._kind == "global_threshold":
