@@ -242,6 +242,31 @@ def test_uncommissioned_power_never_starts_a_device(runtime_module):
     asyncio.run(run())
 
 
+def test_pid_can_start_without_window_contact_and_blocks_missing_selected_contact(runtime_module):
+    async def scenario(selection, should_start):
+        h = home(runtime_module, domain="climate", state="off", mode="pid",
+                 controls={"kp": 20., "ki": .1})
+        # No previously computed plan: exercise the live fallback used during
+        # setup/reconfiguration. An explicitly empty windows list means that
+        # the room has no contact interlock, not that a contact is unknown.
+        h.manager.plan.environment = {}
+        h.manager.entry.data["room_sources"] = {
+            "room": {"windows": selection}
+        }
+        plan = m.plan_for(h.manager, h.spec)
+        assert plan["window_safe"] is should_start
+        await tick(h)
+        assert bool(h.hass.services.calls) is should_start
+        if should_start:
+            assert h.hass.services.calls[0][1] == "set_hvac_mode"
+            assert h.hass.services.calls[0][2]["hvac_mode"] == "heat"
+        else:
+            assert h.runtime.statuses[h.spec.identifier]["status"] == "open_or_unknown_window"
+
+    asyncio.run(scenario([], True))
+    asyncio.run(scenario(["binary_sensor.missing_window"], False))
+
+
 def test_selecting_active_control_mode_rearms_and_uses_real_off_age(runtime_module):
     async def run(algorithm):
         h = home(runtime_module, domain="climate", mode="existing")
