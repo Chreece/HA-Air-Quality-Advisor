@@ -182,6 +182,13 @@ def test_dry_only_facade_has_real_humidity_controller_without_temperature(platfo
         assert not entity.supported_features & platforms.Features.TARGET_TEMPERATURE
         assert entity.supported_features & platforms.Features.TARGET_HUMIDITY
         await entity.async_set_humidity(55)
+        saved = h.manager.entry.options["climate_rooms"]["room"]["profiles"]
+        assert saved["comfort"]["humidity"] == 55
+        target = model.targets(
+            h.manager, h.spec, entity._caps, entity.controller_settings,
+            model.plan_for(h.manager, h.spec),
+        )
+        assert target["humidity"] == 55
         assert entity.target_humidity==55
         assert h.hass.services.calls==[]
     asyncio.run(run())
