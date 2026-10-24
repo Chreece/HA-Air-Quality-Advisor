@@ -27,7 +27,16 @@ def test_all_38_device_controller_catalogs_have_native_labels_and_explanations()
         }.items():
             for key in names:
                 name = entities[domain]["equipment_" + key]["name"]
-                assert name.startswith("{channel}") and len(name) > len("{channel}"), (lang, domain, key)
+                if domain == "number" and key in (
+                    "kp", "ki", "kd", "sample_seconds", "cycle_seconds"
+                ):
+                    assert name.startswith("PID · {channel}") and len(name) > len("PID · {channel}"), (
+                        lang, domain, key, name,
+                    )
+                else:
+                    assert name.startswith("{channel}") and len(name) > len("{channel}"), (
+                        lang, domain, key,
+                    )
         assert set(entities["select"]["equipment_control_mode"]["state"]) == {
             "existing", "automatic", "manual", "off", "pid"}
         assert set(entities["select"]["equipment_presence_requirement"]["state"]) == {
@@ -50,10 +59,12 @@ def test_equipment_translation_final_pass_is_idempotent(tmp_path, monkeypatch):
     # Run the actual final generator against complete catalogs, not a toy sample.
     monkeypatch.syspath_prepend(str(ROOT))
     from apply_equipment_i18n import apply_equipment_i18n
+    from apply_pid_sort_i18n import apply_pid_sort_i18n
     for filename in ("equipment_labels.json", "compact_locales.json", "strings.json", "equipment_text.py"):
         shutil.copy(COMPONENT / filename, tmp_path / filename)
     shutil.copytree(COMPONENT / "translations", tmp_path / "translations")
     files = [tmp_path / "strings.json", tmp_path / "equipment_text.py", *sorted((tmp_path / "translations").glob("*.json"))]
     before = {p.relative_to(tmp_path): p.read_bytes() for p in files}
     apply_equipment_i18n(tmp_path)
+    apply_pid_sort_i18n(tmp_path)
     assert {p.relative_to(tmp_path): p.read_bytes() for p in files} == before
