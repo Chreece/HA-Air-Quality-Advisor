@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0b25 - Single canonical environment_manager integration (beta)
+
+- Register only the canonical `environment_manager` Home Assistant domain, services and frontend path.
+- Remove runtime compatibility aliases for `air_quality_advisor`, beta20 `enviroment_manager` and `home_environment_manager`; retain historical strings only as migration inputs.
+- Move verified leftover legacy integration folders out of `custom_components` into `.environment_manager_legacy_components` backups and refresh HA's custom-component cache.
+- Preserve the exact config-entry ID, subentries, entity/device identity, user customizations and stored settings during one-time migration.
+- Keep beta24's flat HACS tag payload so the release itself contains only one installable integration.
+- Update current documentation and actions to `environment_manager.*` only.
+
 ## 0.6.0b24 - Flat HACS tag payload (beta)
 
 - Stop using HACS `zip_release` after the release-asset path still failed in the domain-switch upgrade.
