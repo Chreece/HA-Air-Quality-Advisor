@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 37 is available for opt-in testing.** Stable remains **v0.5.1**. Beta37 fixes Recorder's 16 KiB attribute-limit warning for the Home Environment Manager window recommendation sensor: its full dashboard is now served read-only through an authenticated WebSocket API, while state metadata stays under 12 KiB. The bundled card uses that API; b31–36 fixes and the canonical `environment_manager` domain remain unchanged.
+> **v0.6.0 beta 38 is available for opt-in testing.** Stable remains **v0.5.1**. Beta38 fixes oversized room metric tile headings by displaying short readable sensor labels such as Illumination instead of raw sensor IDs, with two-line layout constraints and exact entity-ID tooltips. Beta37's Recorder-safe dashboard and prior backend controls are preserved; the sole domain is `environment_manager`.
+
+## Beta 38 - compact tile names and no cross-tile overlap
+
+Unsupported or unavailable selected sensor readings sometimes appeared with their complete `sensor.badezimmer_...` entity ID in a tiny metric tile, overlapping adjacent tiles. The card now uses short labels inferred from valid display metadata or common descriptive suffixes (such as Illumination/Φωτισμός, Presence/Παρουσία) while keeping the exact entity ID in a hover tooltip. Unknown sensors remain marked Unavailable; a friendly name does not make a sensor valid. Generic long names are shortened without changing entity IDs or selected inputs.
+
+The tile heading uses a bounded two-line flex layout so labels, information icons and measured values stay within their own tiles. No recorder, hardware or integration behavior is changed.
 
 ## Beta 37 - Recorder-safe recommendations and full WebSocket dashboard
 
