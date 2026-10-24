@@ -1,0 +1,1829 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Ruangan",
+        "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "pengaturan · sumber",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Pilih: pengaturan · sumber · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Kecualikan sensor jendela",
+        "description": "2 · Kecualikan sensor jendela. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Kecualikan sensor jendela"
+        },
+        "data_description": {
+          "excluded_window_entities": "Pilih: Kecualikan sensor jendela · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Ruangan · Indikator jamur",
+        "description": "Ruangan: {area_name} ({position}/{total}). 🌡️ 🧊 Indikator jamur · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan",
+          "mold_indoor_temperature": "Ruangan · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikator jamur · 🧊 °C",
+          "mold_recalibrate": "Indikator jamur · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Luar · Suhu · sumber · Indikator jamur"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Ruangan: 🌡️ °C/°F · Indikator jamur.",
+          "mold_critical_temperature_c": "🧊 Indikator jamur · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Gunakan pengukuran nyata yang sesuai untuk “Indikator jamur · ↻ 🌡️”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "mold_outdoor_weather_entity": "Pilih weather.* · Luar Suhu (temperature, °C/°F) → Indikator jamur. Wajib: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Kualitas udara luar",
+        "description": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kualitas udara luar"
+        },
+        "data_description": {
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Cuaca dan peringatan",
+        "description": "Cuaca dan peringatan. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "weather_warnings": "Peringatan cuaca"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Pengumuman (opsional)",
+        "description": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+        "data": {
+          "language": "Bahasa",
+          "automatic_tts": "Otomatis",
+          "automatic_notifications": "Otomatis · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Pengumuman (opsional) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "pengaturan · sumber",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Pengumuman (opsional)",
+          "ai_conversation_agent": "AI · Bahasa"
+        },
+        "data_description": {
+          "language": "Atur “Bahasa” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "automatic_tts": "Bawaan: ⛔ · Otomatis · 🪟 90 s. Opsi ini mengatur “Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "automatic_notifications": "Opsi ini mengatur “Otomatis · AUTOMATIC_NOTIFICATIONS”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "announcement_repeat_minutes": "Bawaan: 10 min · 0 = tidak pernah · Selama penyebab yang sama berlanjut · Ruangan.",
+          "use_announcement_hub": "Announcement Hub · Tidak tersedia → Home Assistant.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Pengumuman (opsional) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Pilih: conversation.* (Home Assistant · Bawaan)."
+        }
+      },
+      "thresholds": {
+        "title": "Ambang batas lanjutan",
+        "description": "Ambang batas lanjutan. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Di luar · AQI (≤)",
+          "outdoor_co2": "Di luar · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Di luar · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Di luar · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Di luar · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Di luar · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Luar (µg/m³)",
+          "outdoor_o3": "O₃ · Luar (µg/m³)",
+          "outdoor_so2": "SO₂ · Luar (µg/m³)",
+          "indoor_aqi": "Kualitas udara · AQI (≥)",
+          "indoor_co2": "Kualitas udara · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kualitas udara · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kualitas udara · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kualitas udara · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kualitas udara · VOC (ppb) (≥)",
+          "indoor_humidity": "Kualitas udara · RH (%) (≥)",
+          "min_outdoor_temp": "Di luar · °C (≥)",
+          "max_outdoor_temp": "Di luar · °C (≤)",
+          "max_outdoor_humidity": "Di luar · RH (%) (≤)",
+          "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
+          "max_age_minutes": "⏱ · Buka (min, ≤)",
+          "indoor_mold": "Indikator jamur · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Ambang keputusan untuk “Di luar · AQI (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_co2": "Ambang keputusan untuk “Di luar · CO₂ (ppm) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_pm25": "Ambang keputusan untuk “Di luar · PM2.5 (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_pm10": "Ambang keputusan untuk “Di luar · PM10 (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_voc": "Ambang keputusan untuk “Di luar · VOC (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_voc_parts": "Ambang keputusan untuk “Di luar · VOC (ppb) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_no2": "Ambang keputusan untuk “NO₂ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_o3": "Ambang keputusan untuk “O₃ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_so2": "Ambang keputusan untuk “SO₂ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_aqi": "Ambang keputusan untuk “Kualitas udara · AQI (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_co2": "Ambang keputusan untuk “Kualitas udara · CO₂ (ppm) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_pm25": "Ambang keputusan untuk “Kualitas udara · PM2.5 (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_pm10": "Ambang keputusan untuk “Kualitas udara · PM10 (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_voc": "Ambang keputusan untuk “Kualitas udara · VOC (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_voc_parts": "Ambang keputusan untuk “Kualitas udara · VOC (ppb) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_humidity": "Ambang keputusan untuk “Kualitas udara · RH (%) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "min_outdoor_temp": "Ambang keputusan untuk “Di luar · °C (≥)”. Memengaruhi saran, bukan batas medis.",
+          "max_outdoor_temp": "Ambang keputusan untuk “Di luar · °C (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_outdoor_humidity": "Ambang keputusan untuk “Di luar · RH (%) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_wind_kmh": "Ambang keputusan untuk “Cuaca dan peringatan · km/h (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_age_minutes": "Ambang keputusan untuk “⏱ · Buka (min, ≤)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_mold": "Ambang keputusan untuk “Indikator jamur · ≥ 70%”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "setup_rooms": {
+        "title": "Ruangan untuk dipantau",
+        "description": "Ruangan untuk dipantau → sumber → Umum pengaturan",
+        "data": {
+          "areas": "Ruangan untuk dipantau"
+        },
+        "data_description": {
+          "areas": "Ruangan untuk dipantau. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Ruangan · {area_name} · {room_index}/{room_count}",
+        "description": "Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+        "data": {
+          "windows": "Jendela",
+          "air_quality": "Sensor kualitas udara dan lingkungan",
+          "temperature": "Suhu",
+          "humidity": "Kelembapan",
+          "pressure": "Sensor tekanan",
+          "climate_devices": "Perangkat"
+        },
+        "data_description": {
+          "windows": "Jendela. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "air_quality": "Sensor kualitas udara dan lingkungan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "temperature": "Suhu. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "humidity": "Kelembapan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "pressure": "Sensor tekanan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "climate_devices": "Perangkat. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_general": {
+        "title": "Umum pengaturan",
+        "description": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan.",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "outdoor_sensors": "Kualitas udara luar",
+          "weather_warnings": "Peringatan cuaca",
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "notify_entities": "pengaturan · sumber",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Pilih · sumber",
+          "language": "TTS · Pilih · sumber",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%",
+          "pollen_entities": "Serbuk sari · sumber · Pilih",
+          "use_announcement_hub": "Otomatis · Announcement Hub",
+          "general_away_cooldown_minutes": "Rumah · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒",
+          "general_room_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Ruangan · Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_home_trackers": "Pilih sumber Home Assistant nyata untuk “Rumah · Kehadiran · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Kehadiran · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_attribute": "Atur “Kehadiran · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_sleep_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Tidur · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_sleep_rooms_attribute": "Atur “Tidur · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "ai_conversation_agent": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · AI · Pilih · sumber · conversation.* / ai_task.*.",
+          "language": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · TTS · Pilih · sumber · provider capabilities.",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Serbuk sari · sumber · Pilih.",
+          "use_announcement_hub": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Otomatis · Announcement Hub.",
+          "general_away_cooldown_minutes": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Rumah · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Pilihan tidak valid: Kualitas udara luar (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Tidak tersedia: Kualitas udara luar (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Pilihan tidak valid: Cuaca dan peringatan (weather.*).",
+      "invalid_warning": "Pilihan tidak valid: Cuaca dan peringatan ⚠.",
+      "missing_notify": "Pilih: Announcement Hub / notify.*.",
+      "missing_tts": "Pilih: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Pilihan tidak valid: °C min < max.",
+      "no_areas": "Pilih: Ruangan.",
+      "no_window_areas": "Tidak tersedia: Pengukuran (binary_sensor, window).",
+      "invalid_areas": "Pilihan tidak valid: Ruangan.",
+      "invalid_window_exclusions": "Pilihan tidak valid: Kecualikan sensor jendela.",
+      "invalid_indoor_exclusions": "Pilihan tidak valid: Kecualikan sensor udara dalam ruangan.",
+      "no_windows_after_exclusions": "Sisakan setidaknya satu sensor jendela.",
+      "review_areas_after_exclusions": "Periksa: Ruangan · Pengukuran (0).",
+      "invalid_repeat_minutes": "Pilihan tidak valid: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Tidak tersedia: conversation.process.",
+      "invalid_ai_agent": "Pilihan tidak valid: conversation.*.",
+      "invalid_mold_temperature_sensor": "Ruangan · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Ruangan · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikator jamur · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikator jamur · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Tidak valid: Ruangan untuk dipantau",
+      "invalid_room_source": "Tidak valid: Ruangan · sumber"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — sudah dikonfigurasi.",
+      "setup_area_removed": "Tidak valid: Ruangan untuk dipantau",
+      "setup_changed": "pengaturan ↻ Ruangan untuk dipantau"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Pilih",
+        "description": "Pilih: Ruangan / Cuaca dan peringatan / Pengumuman (opsional) / Ambang batas lanjutan",
+        "menu_options": {
+          "outside_data": "Luar · sumber",
+          "general_settings": "Umum · pengaturan",
+          "area_settings": "Area · pengaturan",
+          "delivery": "Pengumuman (opsional)",
+          "thresholds": "Ambang batas lanjutan"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Kecualikan sensor jendela",
+        "description": "2 · Kecualikan sensor jendela. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Kecualikan sensor jendela"
+        },
+        "data_description": {
+          "excluded_window_entities": "Pilih: Kecualikan sensor jendela · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Ruangan",
+        "description": "1 · 🪟 Ruangan. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "pengaturan · sumber",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Pilih: pengaturan · sumber · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Ruangan · Indikator jamur",
+        "description": "Ruangan: {area_name} ({position}/{total}). 🌡️ 🧊 Indikator jamur · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Kecualikan sensor udara dalam ruangan",
+          "mold_indoor_temperature": "Ruangan · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Indikator jamur · 🧊 °C",
+          "mold_recalibrate": "Indikator jamur · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Luar · Suhu · sumber · Indikator jamur"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Pilih: Kecualikan sensor udara dalam ruangan · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Ruangan: 🌡️ °C/°F · Indikator jamur.",
+          "mold_critical_temperature_c": "🧊 Indikator jamur · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Gunakan pengukuran nyata yang sesuai untuk “Indikator jamur · ↻ 🌡️”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "mold_outdoor_weather_entity": "Pilih weather.* · Luar Suhu (temperature, °C/°F) → Indikator jamur. Wajib: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Kualitas udara luar",
+        "description": "Kualitas udara luar. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Kualitas udara luar"
+        },
+        "data_description": {
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Cuaca dan peringatan",
+        "description": "Cuaca dan peringatan. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "weather_warnings": "Peringatan cuaca"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Pengumuman (opsional)",
+        "description": "Pengumuman (opsional). Notifikasi otomatis · Pengumuman suara otomatis. Announcement Hub.",
+        "data": {
+          "language": "Bahasa",
+          "automatic_tts": "Otomatis",
+          "automatic_notifications": "Otomatis · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Pengumuman (opsional) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "pengaturan · sumber",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Pengumuman (opsional)",
+          "ai_conversation_agent": "AI · Bahasa"
+        },
+        "data_description": {
+          "language": "Atur “Bahasa” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "automatic_tts": "Bawaan: ⛔ · Otomatis · 🪟 90 s. Opsi ini mengatur “Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "automatic_notifications": "Opsi ini mengatur “Otomatis · AUTOMATIC_NOTIFICATIONS”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "announcement_repeat_minutes": "Bawaan: 10 min · 0 = tidak pernah · Selama penyebab yang sama berlanjut · Ruangan.",
+          "use_announcement_hub": "Announcement Hub · Tidak tersedia → Home Assistant.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Pengumuman (opsional) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Pilih: conversation.* (Home Assistant · Bawaan)."
+        }
+      },
+      "thresholds": {
+        "title": "Ambang batas lanjutan",
+        "description": "Ambang batas lanjutan. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Di luar · AQI (≤)",
+          "outdoor_co2": "Di luar · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Di luar · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Di luar · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Di luar · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Di luar · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Luar (µg/m³)",
+          "outdoor_o3": "O₃ · Luar (µg/m³)",
+          "outdoor_so2": "SO₂ · Luar (µg/m³)",
+          "indoor_aqi": "Kualitas udara · AQI (≥)",
+          "indoor_co2": "Kualitas udara · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Kualitas udara · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Kualitas udara · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Kualitas udara · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Kualitas udara · VOC (ppb) (≥)",
+          "indoor_humidity": "Kualitas udara · RH (%) (≥)",
+          "min_outdoor_temp": "Di luar · °C (≥)",
+          "max_outdoor_temp": "Di luar · °C (≤)",
+          "max_outdoor_humidity": "Di luar · RH (%) (≤)",
+          "max_wind_kmh": "Cuaca dan peringatan · km/h (≤)",
+          "max_age_minutes": "⏱ · Buka (min, ≤)",
+          "indoor_mold": "Indikator jamur · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Ambang keputusan untuk “Di luar · AQI (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_co2": "Ambang keputusan untuk “Di luar · CO₂ (ppm) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_pm25": "Ambang keputusan untuk “Di luar · PM2.5 (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_pm10": "Ambang keputusan untuk “Di luar · PM10 (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_voc": "Ambang keputusan untuk “Di luar · VOC (µg/m³) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_voc_parts": "Ambang keputusan untuk “Di luar · VOC (ppb) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_no2": "Ambang keputusan untuk “NO₂ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_o3": "Ambang keputusan untuk “O₃ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "outdoor_so2": "Ambang keputusan untuk “SO₂ · Luar (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_aqi": "Ambang keputusan untuk “Kualitas udara · AQI (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_co2": "Ambang keputusan untuk “Kualitas udara · CO₂ (ppm) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_pm25": "Ambang keputusan untuk “Kualitas udara · PM2.5 (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_pm10": "Ambang keputusan untuk “Kualitas udara · PM10 (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_voc": "Ambang keputusan untuk “Kualitas udara · VOC (µg/m³) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_voc_parts": "Ambang keputusan untuk “Kualitas udara · VOC (ppb) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_humidity": "Ambang keputusan untuk “Kualitas udara · RH (%) (≥)”. Memengaruhi saran, bukan batas medis.",
+          "min_outdoor_temp": "Ambang keputusan untuk “Di luar · °C (≥)”. Memengaruhi saran, bukan batas medis.",
+          "max_outdoor_temp": "Ambang keputusan untuk “Di luar · °C (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_outdoor_humidity": "Ambang keputusan untuk “Di luar · RH (%) (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_wind_kmh": "Ambang keputusan untuk “Cuaca dan peringatan · km/h (≤)”. Memengaruhi saran, bukan batas medis.",
+          "max_age_minutes": "Ambang keputusan untuk “⏱ · Buka (min, ≤)”. Memengaruhi saran, bukan batas medis.",
+          "indoor_mold": "Ambang keputusan untuk “Indikator jamur · ≥ 70%”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "environment": {
+        "title": "pengaturan · pengaturan · sumber",
+        "description": "Atur “pengaturan · pengaturan · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "pollen_entity": "Serbuk sari · sumber",
+          "pollen_high_from": "POLLEN · Serbuk sari · HIGH",
+          "pollen_max_scale": "POLLEN · Serbuk sari · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Serbuk sari · NO VENT",
+          "aqi_scale_0": "AQI #1 · sumber",
+          "aqi_custom_limit_0": "AQI #1 · target",
+          "aqi_scale_1": "AQI #2 · sumber",
+          "aqi_custom_limit_1": "AQI #2 · target",
+          "aqi_scale_2": "AQI #3 · sumber",
+          "aqi_custom_limit_2": "AQI #3 · target",
+          "aqi_scale_3": "AQI #4 · sumber",
+          "aqi_custom_limit_3": "AQI #4 · target",
+          "aqi_scale_4": "AQI #5 · sumber",
+          "aqi_custom_limit_4": "AQI #5 · target",
+          "aqi_scale_5": "AQI #6 · sumber",
+          "aqi_custom_limit_5": "AQI #6 · target",
+          "aqi_scale_6": "AQI #7 · sumber",
+          "aqi_custom_limit_6": "AQI #7 · target",
+          "aqi_scale_7": "AQI #8 · sumber",
+          "aqi_custom_limit_7": "AQI #8 · target",
+          "aqi_scale_8": "AQI #9 · sumber",
+          "aqi_custom_limit_8": "AQI #9 · target",
+          "aqi_scale_9": "AQI #10 · sumber",
+          "aqi_custom_limit_9": "AQI #10 · target",
+          "aqi_scale_10": "AQI #11 · sumber",
+          "aqi_custom_limit_10": "AQI #11 · target",
+          "aqi_scale_11": "AQI #12 · sumber",
+          "aqi_custom_limit_11": "AQI #12 · target",
+          "aqi_scale_12": "AQI #13 · sumber",
+          "aqi_custom_limit_12": "AQI #13 · target",
+          "aqi_scale_13": "AQI #14 · sumber",
+          "aqi_custom_limit_13": "AQI #14 · target",
+          "aqi_scale_14": "AQI #15 · sumber",
+          "aqi_custom_limit_14": "AQI #15 · target",
+          "aqi_scale_15": "AQI #16 · sumber",
+          "aqi_custom_limit_15": "AQI #16 · target",
+          "aqi_scale_16": "AQI #17 · sumber",
+          "aqi_custom_limit_16": "AQI #17 · target",
+          "aqi_scale_17": "AQI #18 · sumber",
+          "aqi_custom_limit_17": "AQI #18 · target",
+          "aqi_scale_18": "AQI #19 · sumber",
+          "aqi_custom_limit_18": "AQI #19 · target",
+          "aqi_scale_19": "AQI #20 · sumber",
+          "aqi_custom_limit_19": "AQI #20 · target",
+          "aqi_scale_20": "AQI #21 · sumber",
+          "aqi_custom_limit_20": "AQI #21 · target",
+          "aqi_scale_21": "AQI #22 · sumber",
+          "aqi_custom_limit_21": "AQI #22 · target",
+          "aqi_scale_22": "AQI #23 · sumber",
+          "aqi_custom_limit_22": "AQI #23 · target",
+          "aqi_scale_23": "AQI #24 · sumber",
+          "aqi_custom_limit_23": "AQI #24 · target",
+          "aqi_scale_24": "AQI #25 · sumber",
+          "aqi_custom_limit_24": "AQI #25 · target",
+          "aqi_scale_25": "AQI #26 · sumber",
+          "aqi_custom_limit_25": "AQI #26 · target",
+          "aqi_scale_26": "AQI #27 · sumber",
+          "aqi_custom_limit_26": "AQI #27 · target",
+          "aqi_scale_27": "AQI #28 · sumber",
+          "aqi_custom_limit_27": "AQI #28 · target",
+          "aqi_scale_28": "AQI #29 · sumber",
+          "aqi_custom_limit_28": "AQI #29 · target",
+          "aqi_scale_29": "AQI #30 · sumber",
+          "aqi_custom_limit_29": "AQI #30 · target",
+          "aqi_scale_30": "AQI #31 · sumber",
+          "aqi_custom_limit_30": "AQI #31 · target",
+          "aqi_scale_31": "AQI #32 · sumber",
+          "aqi_custom_limit_31": "AQI #32 · target"
+        },
+        "data_description": {
+          "pollen_entity": "Pilih sumber Home Assistant nyata untuk “Serbuk sari · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "pollen_high_from": "Atur “POLLEN · Serbuk sari · HIGH” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_max_scale": "Atur “POLLEN · Serbuk sari · SCALE” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_avoid_ventilation": "Atur “POLLEN · Serbuk sari · NO VENT” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_scale_0": "Atur “AQI #1 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_0": "Ambang keputusan untuk “AQI #1 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_1": "Atur “AQI #2 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_1": "Ambang keputusan untuk “AQI #2 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_2": "Atur “AQI #3 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_2": "Ambang keputusan untuk “AQI #3 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_3": "Atur “AQI #4 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_3": "Ambang keputusan untuk “AQI #4 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_4": "Atur “AQI #5 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_4": "Ambang keputusan untuk “AQI #5 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_5": "Atur “AQI #6 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_5": "Ambang keputusan untuk “AQI #6 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_6": "Atur “AQI #7 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_6": "Ambang keputusan untuk “AQI #7 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_7": "Atur “AQI #8 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_7": "Ambang keputusan untuk “AQI #8 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_8": "Atur “AQI #9 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_8": "Ambang keputusan untuk “AQI #9 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_9": "Atur “AQI #10 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_9": "Ambang keputusan untuk “AQI #10 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_10": "Atur “AQI #11 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_10": "Ambang keputusan untuk “AQI #11 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_11": "Atur “AQI #12 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_11": "Ambang keputusan untuk “AQI #12 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_12": "Atur “AQI #13 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_12": "Ambang keputusan untuk “AQI #13 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_13": "Atur “AQI #14 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_13": "Ambang keputusan untuk “AQI #14 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_14": "Atur “AQI #15 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_14": "Ambang keputusan untuk “AQI #15 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_15": "Atur “AQI #16 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_15": "Ambang keputusan untuk “AQI #16 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_16": "Atur “AQI #17 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_16": "Ambang keputusan untuk “AQI #17 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_17": "Atur “AQI #18 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_17": "Ambang keputusan untuk “AQI #18 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_18": "Atur “AQI #19 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_18": "Ambang keputusan untuk “AQI #19 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_19": "Atur “AQI #20 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_19": "Ambang keputusan untuk “AQI #20 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_20": "Atur “AQI #21 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_20": "Ambang keputusan untuk “AQI #21 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_21": "Atur “AQI #22 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_21": "Ambang keputusan untuk “AQI #22 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_22": "Atur “AQI #23 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_22": "Ambang keputusan untuk “AQI #23 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_23": "Atur “AQI #24 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_23": "Ambang keputusan untuk “AQI #24 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_24": "Atur “AQI #25 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_24": "Ambang keputusan untuk “AQI #25 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_25": "Atur “AQI #26 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_25": "Ambang keputusan untuk “AQI #26 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_26": "Atur “AQI #27 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_26": "Ambang keputusan untuk “AQI #27 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_27": "Atur “AQI #28 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_27": "Ambang keputusan untuk “AQI #28 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_28": "Atur “AQI #29 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_28": "Ambang keputusan untuk “AQI #29 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_29": "Atur “AQI #30 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_29": "Ambang keputusan untuk “AQI #30 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_30": "Atur “AQI #31 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_30": "Ambang keputusan untuk “AQI #31 · target”. Memengaruhi saran, bukan batas medis.",
+          "aqi_scale_31": "Atur “AQI #32 · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "aqi_custom_limit_31": "Ambang keputusan untuk “AQI #32 · target”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "environment_room": {
+        "title": "pengaturan · pengaturan · sumber",
+        "description": "Atur “pengaturan · pengaturan · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "environment_area": "pengaturan · sumber"
+        },
+        "data_description": {
+          "environment_area": "Atur “pengaturan · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan."
+        }
+      },
+      "environment_room_air": {
+        "title": "pengaturan · Luar",
+        "description": "Atur “pengaturan · Luar” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "temperature_entity": "Suhu · sumber",
+          "room_volume_m3": "pengaturan · sumber (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Pembersih udara · sumber",
+          "extractor_entity": "Kipas ekstraksi · sumber",
+          "co2_ndir_verified": "CO₂ · Wajib",
+          "co2_target_ppm": "CO₂ · CO₂ · target (ppm)",
+          "sleep_room": "Tidur"
+        },
+        "data_description": {
+          "temperature_entity": "Pilih sumber Home Assistant nyata untuk “Suhu · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "room_volume_m3": "Gunakan pengukuran nyata yang sesuai untuk “pengaturan · sumber (m³)”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "particle_cadr_m3h": "Gunakan pengukuran nyata yang sesuai untuk “CADR (m³/h)”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "purifier_entity": "Pilih Pembersih udara · sumber Home Assistant nyata untuk “Pembersih udara · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "extractor_entity": "Pilih Kipas ekstraksi · sumber Home Assistant nyata untuk “Kipas ekstraksi · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "co2_ndir_verified": "Gunakan pengukuran nyata yang sesuai untuk “CO₂ · Wajib”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "co2_target_ppm": "Ambang keputusan untuk “CO₂ · CO₂ · target (ppm)”. Memengaruhi saran, bukan batas medis.",
+          "sleep_room": "Atur “Tidur” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "pengaturan · pengaturan · sumber",
+        "description": "Atur “pengaturan · pengaturan · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "radon_entity": "RADON · Rn · sumber",
+          "radon_sensor_verified": "RADON · Rn · sensor · Wajib · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · sumber",
+          "formaldehyde_sensor_verified": "HCHO · sensor · Wajib · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · sumber · sensor (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · sensor · Wajib",
+          "illuminance_entity": "LUX · sumber (lux)",
+          "melanopic_edi_entity": "EDI · EDI · sumber (lx)",
+          "melanopic_spectral_verified": "EDI · Wajib"
+        },
+        "data_description": {
+          "radon_entity": "Pilih RADON · Rn · sumber Home Assistant nyata untuk “RADON · Rn · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "radon_sensor_verified": "Gunakan pengukuran nyata yang sesuai untuk “RADON · Rn · sensor · Wajib · SENSOR ✓ · VERIFIED”. Perkiraan tidak menggantikan RADON · Rn · sensor · Wajib · SENSOR ✓ · VERIFIED terkalibrasi.",
+          "radon_reference_bq_m3": "Atur “Rn (Bq/m³)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "formaldehyde_entity": "Pilih HCHO · sumber Home Assistant nyata untuk “HCHO · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "formaldehyde_sensor_verified": "Gunakan pengukuran nyata yang sesuai untuk “HCHO · sensor · Wajib · SENSOR ✓ · VERIFIED”. Perkiraan tidak menggantikan HCHO · sensor · Wajib · SENSOR ✓ · VERIFIED terkalibrasi.",
+          "noise_entity": "Pilih dB(A) · sumber · sensor (dB(A)) Home Assistant nyata untuk “dB(A) · sumber · sensor (dB(A))”. Data hilang atau usang menghentikan tindakan terkait.",
+          "noise_sensor_calibrated": "Gunakan pengukuran nyata yang sesuai untuk “dB(A) · sensor · Wajib”. Perkiraan tidak menggantikan dB(A) · sensor · Wajib terkalibrasi.",
+          "illuminance_entity": "Pilih LUX · sumber (lux) Home Assistant nyata untuk “LUX · sumber (lux)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "melanopic_edi_entity": "Pilih EDI · EDI · sumber (lx) Home Assistant nyata untuk “EDI · EDI · sumber (lx)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "melanopic_spectral_verified": "Gunakan pengukuran nyata yang sesuai untuk “EDI · Wajib”. Perkiraan tidak menggantikan sensor terkalibrasi."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "pengaturan · pengaturan · sumber",
+        "description": "Atur “pengaturan · pengaturan · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Otomatis",
+          "radiant_temperature_entity": "Suhu · sumber",
+          "air_speed_entity": "sumber · Kecepatan · Luar (m/s)",
+          "air_speed_m_s": "Kecepatan · Luar (m/s)",
+          "met": "pengaturan · sumber (met)",
+          "clo": "pengaturan · sumber (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Atur “PMV / PPD · Otomatis” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "radiant_temperature_entity": "Pilih sumber Home Assistant nyata untuk “Suhu · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "air_speed_entity": "Pilih sumber · Kecepatan · Luar (m/s) Home Assistant nyata untuk “sumber · Kecepatan · Luar (m/s)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "air_speed_m_s": "Gunakan pengukuran nyata yang sesuai untuk “Kecepatan · Luar (m/s)”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "met": "Gunakan pengukuran nyata yang sesuai untuk “pengaturan · sumber (met)”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "clo": "Gunakan pengukuran nyata yang sesuai untuk “pengaturan · sumber (clo)”. Perkiraan tidak menggantikan sensor terkalibrasi."
+        }
+      },
+      "pid": {
+        "title": "pengaturan · PID",
+        "description": "Atur “pengaturan · PID” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Opsi ini mengatur “PID”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri."
+        }
+      },
+      "pid_room": {
+        "title": "pengaturan · PID",
+        "description": "Atur “pengaturan · PID” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "pid_enabled": "PID · Otomatis · AUTO",
+          "pid_climate_entities": "PID · Perangkat",
+          "pid_temperature_entity": "Suhu · sumber",
+          "pid_mode": "PID",
+          "pid_target_c": "target (°C)",
+          "pid_pause_on_window_open": "PID · Luar"
+        },
+        "data_description": {
+          "pid_enabled": "Opsi ini mengatur “PID · Otomatis · AUTO”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "pid_climate_entities": "Pilih sumber Home Assistant nyata untuk “PID · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "pid_temperature_entity": "Pilih sumber Home Assistant nyata untuk “Suhu · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "pid_mode": "Opsi ini mengatur “PID”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "pid_target_c": "Ambang keputusan untuk “target (°C)”. Memengaruhi saran, bukan batas medis.",
+          "pid_pause_on_window_open": "Opsi ini mengatur “PID · Luar”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri."
+        }
+      },
+      "pid_tuning": {
+        "title": "pengaturan · PID",
+        "description": "Atur “pengaturan · PID” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "pid_kp": "PID Kp · kendali (% per °C)",
+          "pid_ki": "PID Ki · kendali (% per °C-minute)",
+          "pid_kd": "PID Kd · kendali (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Opsi ini mengatur “PID Kp · kendali (% per °C)”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "pid_ki": "Opsi ini mengatur “PID Ki · kendali (% per °C-minute)”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "pid_kd": "Opsi ini mengatur “PID Kd · kendali (%·minute per °C)”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "pid_offset_c": "Ambang keputusan untuk “PID (°C) · PID_OFFSET_C”. Memengaruhi saran, bukan batas medis.",
+          "pid_min_setpoint_c": "Ambang keputusan untuk “PID (°C) · MIN TARGET”. Memengaruhi saran, bukan batas medis.",
+          "pid_max_setpoint_c": "Ambang keputusan untuk “PID (°C) · MAX TARGET”. Memengaruhi saran, bukan batas medis.",
+          "pid_sample_seconds": "Waktu ini mengatur “PID (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "pid_max_change_c": "Ambang keputusan untuk “PID (°C) · MAX Δ”. Memengaruhi saran, bukan batas medis.",
+          "pid_min_change_c": "Ambang keputusan untuk “PID (°C) · MIN Δ”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "climate": {
+        "title": "pengaturan · Perangkat",
+        "description": "Atur “pengaturan · Perangkat” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+        "data": {
+          "climate_area": "Perangkat"
+        },
+        "data_description": {
+          "climate_area": "Opsi ini mengatur “Perangkat”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri."
+        }
+      },
+      "climate_room": {
+        "title": "pengaturan · Perangkat",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "climate_enabled": "Perangkat · Otomatis · AUTO",
+          "climate_allow_actuation": "Perangkat · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Perangkat · Otomatis · MODE SWITCH",
+          "climate_prefer_native_auto": "Perangkat · Otomatis · NATIVE",
+          "climate_controller": "Perangkat · kendali",
+          "climate_mode": "Perangkat · MODE",
+          "climate_entity": "Perangkat · sumber",
+          "climate_temperature_entity": "Suhu · sumber",
+          "climate_hysteresis_c": "Perangkat (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Opsi ini mengatur “Perangkat · Otomatis · AUTO”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_allow_actuation": "Opsi ini mengatur “Perangkat · CLIMATE_ALLOW_ACTUATION”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_auto_switch_hvac": "Opsi ini mengatur “Perangkat · Otomatis · MODE SWITCH”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_prefer_native_auto": "Opsi ini mengatur “Perangkat · Otomatis · NATIVE”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_controller": "Opsi ini mengatur “Perangkat · kendali”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_mode": "Opsi ini mengatur “Perangkat · MODE”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_entity": "Pilih Perangkat · sumber Home Assistant nyata untuk “Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_temperature_entity": "Pilih sumber Home Assistant nyata untuk “Suhu · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_hysteresis_c": "Ambang keputusan untuk “Perangkat (°C)”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "climate_presence": {
+        "title": "pengaturan · Kehadiran · Perangkat",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "climate_occupancy_sensors": "Kehadiran · sensor",
+          "climate_away_entities": "Rumah · Perangkat",
+          "climate_unknown_occupancy": "Kehadiran · Perangkat",
+          "climate_unoccupied_delay_minutes": "Perangkat · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Kehadiran · Perangkat · sensor · Wajib",
+          "climate_away_policy": "Rumah · Perangkat · POLICY",
+          "climate_manual_profile": "Perangkat · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Tidur · Perangkat",
+          "climate_sleep_schedule_enabled": "Tidur · Otomatis",
+          "climate_sleep_start": "Tidur · Perangkat · START",
+          "climate_sleep_end": "Tidur · Perangkat · END",
+          "climate_target_source": "Perangkat · sumber · target",
+          "climate_comfort_adjustment_max_c": "Perangkat (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_away_entities": "Pilih sumber Home Assistant nyata untuk “Rumah · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_unknown_occupancy": "Opsi ini mengatur “Kehadiran · Perangkat”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_unoccupied_delay_minutes": "Waktu ini mengatur “Perangkat · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_occupancy_stale_minutes": "Waktu ini mengatur “Kehadiran · Perangkat · sensor · Wajib”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_away_policy": "Opsi ini mengatur “Rumah · Perangkat · POLICY”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_manual_profile": "Opsi ini mengatur “Perangkat · CLIMATE_MANUAL_PROFILE”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_sleep_active": "Opsi ini mengatur “Tidur · Perangkat”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_sleep_schedule_enabled": "Opsi ini mengatur “Tidur · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_sleep_start": "Waktu ini mengatur “Tidur · Perangkat · START”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_sleep_end": "Waktu ini mengatur “Tidur · Perangkat · END”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_target_source": "Ambang keputusan untuk “Perangkat · sumber · target”. Memengaruhi saran, bukan batas medis.",
+          "climate_comfort_adjustment_max_c": "Ambang keputusan untuk “Perangkat (°C)”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "climate_equipment": {
+        "title": "pengaturan · Perangkat",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Perangkat · sumber · Suhu +",
+          "climate_cool_climate_entity": "COOL · Perangkat · sumber · Suhu −",
+          "climate_dry_climate_entity": "DRY · Perangkat · sumber",
+          "climate_fan_climate_entity": "FAN_ONLY · Kecepatan · Perangkat · sumber",
+          "climate_humidifier_entity": "HUMIDIFIER · Perangkat · sumber",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Perangkat · sumber",
+          "climate_extraction_fan_entity": "EXTRACT · Kecepatan · Perangkat · sumber",
+          "climate_purifier_fan_entity": "Pembersih udara · sumber",
+          "climate_humidity_entity": "Kelembapan · sumber",
+          "climate_humidity_low_rh": "RH · Kelembapan · Perangkat (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Kelembapan · Perangkat (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Kelembapan · Perangkat · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Perangkat · Suhu −",
+          "climate_humidity_setpoint_auto": "Kelembapan · Otomatis",
+          "climate_window_efficiency_notify": "Perangkat · Luar",
+          "climate_dry_fan_mode_auto": "Kecepatan · Otomatis",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Kecepatan · Perangkat · Wajib · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Kecepatan · Perangkat · Luar · Wajib · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Kecepatan · Perangkat (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Kelembapan · Daya · Otomatis",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Kelembapan · Perangkat · Daya · Wajib · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Kelembapan · Perangkat · Daya · Luar · Wajib · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Kelembapan · Perangkat · Daya · Otomatis (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Kelembapan · Perangkat · Daya · Matikan (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Kelembapan · Perangkat · Daya · Otomatis (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Perangkat · Otomatis · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Pilih HEAT · Perangkat · sumber · Suhu + Home Assistant nyata untuk “HEAT · Perangkat · sumber · Suhu +”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_cool_climate_entity": "Pilih COOL · Perangkat · sumber · Suhu − Home Assistant nyata untuk “COOL · Perangkat · sumber · Suhu −”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_dry_climate_entity": "Pilih DRY · Perangkat · sumber Home Assistant nyata untuk “DRY · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_fan_climate_entity": "Pilih sumber Home Assistant nyata untuk “FAN_ONLY · Kecepatan · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_humidifier_entity": "Pilih HUMIDIFIER · Perangkat · sumber Home Assistant nyata untuk “HUMIDIFIER · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_dehumidifier_entity": "Pilih DEHUMIDIFIER · Perangkat · sumber Home Assistant nyata untuk “DEHUMIDIFIER · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_extraction_fan_entity": "Pilih sumber Home Assistant nyata untuk “EXTRACT · Kecepatan · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_purifier_fan_entity": "Pilih sumber Home Assistant nyata untuk “Pembersih udara · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_humidity_entity": "Pilih sumber Home Assistant nyata untuk “Kelembapan · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_humidity_low_rh": "Ambang keputusan untuk “RH · Kelembapan · Perangkat (%) · RH MIN”. Memengaruhi saran, bukan batas medis.",
+          "climate_humidity_high_rh": "Ambang keputusan untuk “RH · Kelembapan · Perangkat (%) · RH MAX”. Memengaruhi saran, bukan batas medis.",
+          "climate_humidity_hysteresis_rh": "Ambang keputusan untuk “RH · Kelembapan · Perangkat · ± RH”. Memengaruhi saran, bukan batas medis.",
+          "climate_cooling_dry_deferral_rh_points": "Opsi ini mengatur “Perangkat · Suhu −”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_humidity_setpoint_auto": "Opsi ini mengatur “Kelembapan · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_window_efficiency_notify": "Opsi ini mengatur “Perangkat · Luar”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_dry_fan_mode_auto": "Opsi ini mengatur “Kecepatan · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_dry_fan_hardware_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “DRY/FAN_ONLY · Kecepatan · Perangkat · Wajib · HW ✓”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "climate_dry_fan_windowless_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “DRY/FAN_ONLY · Kecepatan · Perangkat · Luar · Wajib · NO WINDOW”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "climate_dry_fan_mode_dwell_s": "Waktu ini mengatur “DRY/FAN_ONLY · Kecepatan · Perangkat (s) · MODE DWELL”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_humidity_power_auto": "Opsi ini mengatur “Kelembapan · Daya · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_humidity_power_hardware_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “RH POWER · Kelembapan · Perangkat · Daya · Wajib · HW ✓”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "climate_humidity_power_windowless_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “RH POWER · Kelembapan · Perangkat · Daya · Luar · Wajib · NO WINDOW”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "climate_humidity_power_min_on_s": "Waktu ini mengatur “RH POWER · Kelembapan · Perangkat · Daya · Otomatis (s) · MIN ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_humidity_power_min_off_s": "Waktu ini mengatur “RH POWER · Kelembapan · Perangkat · Daya · Matikan (s) · MIN OFF”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_humidity_power_max_on_s": "Waktu ini mengatur “RH POWER · Kelembapan · Perangkat · Daya · Otomatis (s) · MAX ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_secondary_climate_setpoint_auto": "Opsi ini mengatur “Perangkat · Otomatis · TARGET AUTO”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "pengaturan · Perangkat · Luar",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "climate_fan_speed_auto": "Kecepatan · Otomatis",
+          "climate_fan_power_auto": "Kecepatan · Daya · Otomatis",
+          "climate_fan_power_hardware_confirmed": "FAN · Kecepatan · Perangkat · Daya · Wajib · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Kecepatan · Perangkat · Daya · Otomatis (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Kecepatan · Perangkat · Daya · Matikan (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Kecepatan · Perangkat · Daya · Otomatis (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Perangkat · sensor · Wajib · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Perangkat · sumber",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Perangkat · sumber",
+          "climate_pm25_action_ug_m3": "PM2.5 · Perangkat (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Perangkat · Kecepatan (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Perangkat · Kecepatan (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Opsi ini mengatur “Kecepatan · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_fan_power_auto": "Opsi ini mengatur “Kecepatan · Daya · Otomatis”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "climate_fan_power_hardware_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “FAN · Kecepatan · Perangkat · Daya · Wajib · HW ✓”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "climate_fan_power_min_on_s": "Waktu ini mengatur “FAN · Kecepatan · Perangkat · Daya · Otomatis (s) · MIN ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_fan_power_min_off_s": "Waktu ini mengatur “FAN · Kecepatan · Perangkat · Daya · Matikan (s) · MIN OFF”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_fan_power_max_on_s": "Waktu ini mengatur “FAN · Kecepatan · Perangkat · Daya · Otomatis (s) · MAX ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "climate_pm25_sensor_verified": "Gunakan pengukuran nyata yang sesuai untuk “PM2.5 · PM2.5 · Perangkat · sensor · Wajib · SENSOR ✓ · VERIFIED”. Perkiraan tidak menggantikan PM2.5 · PM2.5 · Perangkat · sensor · Wajib · SENSOR ✓ · VERIFIED terkalibrasi.",
+          "climate_co2_entity": "Pilih CO₂ · CO₂ · Perangkat · sumber Home Assistant nyata untuk “CO₂ · CO₂ · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_pm25_entity": "Pilih PM2.5 · PM2.5 · Perangkat · sumber Home Assistant nyata untuk “PM2.5 · PM2.5 · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "climate_pm25_action_ug_m3": "Ambang keputusan untuk “PM2.5 · Perangkat (µg/m³)”. Memengaruhi saran, bukan batas medis.",
+          "climate_extraction_speed_percent": "Ambang keputusan untuk “EXTRACT · Perangkat · Kecepatan (%) · SPEED %”. Memengaruhi saran, bukan batas medis.",
+          "climate_purifier_speed_percent": "Ambang keputusan untuk “PURIFIER · Perangkat · Kecepatan (%) · SPEED %”. Memengaruhi saran, bukan batas medis."
+        }
+      },
+      "climate_profiles": {
+        "title": "pengaturan · Perangkat",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "home_heat": "Pemanasan · Di rumah (°C)",
+          "home_cool": "Pendinginan · Di rumah (°C)",
+          "unoccupied_heat": "Pemanasan · Ruang kosong (°C)",
+          "unoccupied_cool": "Pendinginan · Ruang kosong (°C)",
+          "away_heat": "Pemanasan · Pergi (°C)",
+          "away_cool": "Pendinginan · Pergi (°C)",
+          "sleep_heat": "Pemanasan · Tidur (°C)",
+          "sleep_cool": "Pendinginan · Tidur (°C)"
+        },
+        "data_description": {
+          "home_heat": "Target “Pemanasan · Di rumah (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "home_cool": "Target “Pendinginan · Di rumah (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "unoccupied_heat": "Target “Pemanasan · Ruang kosong (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "unoccupied_cool": "Target “Pendinginan · Ruang kosong (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "away_heat": "Target “Pemanasan · Pergi (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "away_cool": "Target “Pendinginan · Pergi (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "sleep_heat": "Target “Pemanasan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "sleep_cool": "Target “Pendinginan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong."
+        }
+      },
+      "climate_actuators": {
+        "title": "pengaturan · Perangkat",
+        "description": "Area · pengaturan · Perangkat · kendali. Kehadiran · sensor · Wajib.",
+        "data": {
+          "direct_hardware_confirmed": "Wajib",
+          "heat_actuator": "Pemanasan · Perangkat",
+          "cool_actuator": "Pendinginan · Perangkat",
+          "min_on_s": "Daya · Otomatis (s) · MIN ON",
+          "min_off_s": "Daya · Matikan (s)",
+          "max_on_s": "Daya · Otomatis (s) · MAX ON",
+          "mode_dwell_s": "pengaturan · sumber (s) · MODE DWELL",
+          "kp": "PID Kp · kendali (percentage points/°C)",
+          "ki": "PID Ki · kendali (percentage points/(°C·minute))",
+          "kd": "PID Kd · kendali (percentage points·minute/°C)",
+          "sample_seconds": "pengaturan · sumber (s) · SAMPLE",
+          "pwm_period_s": "pengaturan · sumber (s) · PWM PERIOD",
+          "max_demand_change": "pengaturan · sumber · MAX Δ",
+          "min_demand_change": "pengaturan · sumber · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “Wajib”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "heat_actuator": "Atur “Pemanasan · Perangkat” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "cool_actuator": "Atur “Pendinginan · Perangkat” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "min_on_s": "Waktu ini mengatur “Daya · Otomatis (s) · MIN ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "min_off_s": "Waktu ini mengatur “Daya · Matikan (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "max_on_s": "Waktu ini mengatur “Daya · Otomatis (s) · MAX ON”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "mode_dwell_s": "Waktu ini mengatur “pengaturan · sumber (s) · MODE DWELL”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "kp": "Atur “PID Kp · kendali (percentage points/°C)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "ki": "Atur “PID Ki · kendali (percentage points/(°C·minute))” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "kd": "Atur “PID Kd · kendali (percentage points·minute/°C)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "sample_seconds": "Waktu ini mengatur “pengaturan · sumber (s) · SAMPLE”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "pwm_period_s": "Waktu ini mengatur “pengaturan · sumber (s) · PWM PERIOD”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "max_demand_change": "Atur “pengaturan · sumber · MAX Δ” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "min_demand_change": "Atur “pengaturan · sumber · MIN Δ” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan."
+        }
+      },
+      "outside_data": {
+        "title": "Luar · sumber",
+        "description": "Luar · sumber: Pilih sumber, sensor / Perangkat · kendali.",
+        "menu_options": {
+          "weather": "Cuaca dan peringatan",
+          "outdoor": "Kualitas udara luar",
+          "outside_aqi": "Luar · AQI",
+          "pollen": "Serbuk sari"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Area · pengaturan",
+        "description": "Area · pengaturan: Pilih sumber, sensor / Perangkat · kendali.",
+        "menu_options": {
+          "areas": "Ruangan",
+          "indoor_sensors": "Ruangan · Indikator jamur",
+          "window_sensors": "Kecualikan sensor jendela",
+          "environment_room": "pengaturan · pengaturan · sumber",
+          "area_devices": "Perangkat iklim"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Perangkat · pengaturan",
+        "description": "Opsional: lanjutkan ke sensor dan izin keselamatan khusus perangkat. Biarkan mati untuk langsung menyimpan daftar.",
+        "menu_options": {
+          "device_settings": "Perangkat · kendali",
+          "device_choice": "Pilih · Perangkat",
+          "device_done": "pengaturan · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Umum · pengaturan",
+        "description": "Umum · pengaturan: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_home_policy": "Rumah · Kehadiran · kendali",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "general_source_stale_minutes": "sumber · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Ruangan · Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Kehadiran · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_attribute": "Atur “Kehadiran · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_home_trackers": "Pilih sumber Home Assistant nyata untuk “Rumah · Kehadiran · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_home_policy": "Opsi ini mengatur “Rumah · Kehadiran · kendali”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "general_sleep_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Tidur · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_sleep_rooms_attribute": "Atur “Tidur · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_source_stale_minutes": "sumber · Tidur / Kehadiran · max 240 min. Tidak valid · Matikan."
+        }
+      },
+      "pollen": {
+        "title": "Serbuk sari",
+        "description": "Serbuk sari: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "pollen_entity": "Serbuk sari · sumber",
+          "pollen_high_from": "POLLEN · Serbuk sari · HIGH",
+          "pollen_max_scale": "POLLEN · Serbuk sari · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Serbuk sari · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Pilih sumber Home Assistant nyata untuk “Serbuk sari · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "pollen_high_from": "Atur “POLLEN · Serbuk sari · HIGH” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_max_scale": "Atur “POLLEN · Serbuk sari · SCALE” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "pollen_avoid_ventilation": "Atur “POLLEN · Serbuk sari · NO VENT” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan."
+        }
+      },
+      "outside_aqi": {
+        "title": "Luar · AQI",
+        "description": "Luar · AQI: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "outside_aqi_entity": "AQI · sumber · Luar",
+          "outside_aqi_scale": "AQI · sumber",
+          "outside_aqi_limit": "AQI · Luar · target",
+          "outside_aqi_no_sources": "AQI · sensor · Wajib"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Pilih sumber Home Assistant nyata untuk “AQI · sumber · Luar”. Data hilang atau usang menghentikan tindakan terkait.",
+          "outside_aqi_scale": "Atur “AQI · sumber” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "outside_aqi_limit": "Ambang keputusan untuk “AQI · Luar · target”. Memengaruhi saran, bukan batas medis.",
+          "outside_aqi_no_sources": "Atur “AQI · sensor · Wajib” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan."
+        }
+      },
+      "area_devices": {
+        "title": "Perangkat iklim",
+        "description": "Pilih · Area",
+        "data": {
+          "area_devices_area": "Pilih · Area"
+        },
+        "data_description": {
+          "area_devices_area": "Pilih sumber Home Assistant nyata untuk “Pilih · Area”. Data hilang atau usang menghentikan tindakan terkait."
+        }
+      },
+      "select_devices": {
+        "title": "Perangkat iklim",
+        "description": "Pilih perangkat untuk {area_name}. Menyimpan membuat satu pengendali per produk fisik dalam hub ruangan. Atur target, profil, otomatis/manual/mati/PID dan operasi senyap pada perangkat. Pemilihan tidak mengaktifkan kendali otomatis.",
+        "data": {
+          "selected_devices": "Pilih · Perangkat",
+          "configure_device_sources": "Atur sensor dan izin perangkat sekarang"
+        },
+        "data_description": {
+          "selected_devices": "Pilih perangkat untuk {area_name}. Menyimpan membuat satu pengendali per produk fisik dalam hub ruangan. Atur target, profil, otomatis/manual/mati/PID dan operasi senyap pada perangkat. Pemilihan tidak mengaktifkan kendali otomatis.",
+          "configure_device_sources": "Opsional: lanjutkan ke sensor dan izin keselamatan khusus perangkat. Biarkan mati untuk langsung menyimpan daftar."
+        }
+      },
+      "device_choice": {
+        "title": "Pilih · Perangkat",
+        "description": "Pilih · Perangkat: Pilih sumber, sensor / Perangkat · kendali.",
+        "data": {
+          "device_choice": "Pilih · Perangkat"
+        },
+        "data_description": {
+          "device_choice": "Pilih sumber Home Assistant nyata untuk “Pilih · Perangkat”. Data hilang atau usang menghentikan tindakan terkait."
+        }
+      },
+      "device_settings": {
+        "title": "Perangkat · kendali",
+        "description": "Opsi ini mengatur “kendali · sumber”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri. Gunakan pengukuran nyata yang sesuai untuk “Wajib · Perangkat · Daya”. Perkiraan tidak menggantikan sensor terkalibrasi. Waktu ini mengatur “Daya · min ON (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat. Waktu ini mengatur “Daya · min OFF (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat. Atur “Tidur · kendali” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan. Ambang keputusan untuk “Kecepatan (%)”. Memengaruhi saran, bukan batas medis.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Otomatis kendali",
+          "device_method": "kendali · sumber",
+          "device_presence_requirement": "kendali · Kehadiran",
+          "device_absence_action": "Matikan · Kehadiran",
+          "device_sleep_behavior": "Tidur · kendali",
+          "device_hardware_confirmed": "Wajib · Perangkat · Daya",
+          "device_temperature_entity": "Suhu · sensor",
+          "device_humidity_entity": "Kelembapan · sensor",
+          "device_co2_entity": "CO₂ · Perangkat · sumber",
+          "device_pm25_entity": "PM2.5 · Perangkat · sumber",
+          "device_fan_purpose": "kendali · Perangkat",
+          "device_sensor_verified": "sensor · Wajib",
+          "device_fan_speed_percent": "Kecepatan (%)",
+          "device_humidity_target": "Kelembapan · target (%)",
+          "device_sleep_humidity_target": "Tidur · Kelembapan · target (%)",
+          "device_min_on_s": "Daya · min ON (s)",
+          "device_min_off_s": "Daya · min OFF (s)",
+          "device_max_on_s": "Daya · max ON (s)",
+          "device_home_heat_c": "Pemanasan · Di rumah (°C)",
+          "device_home_cool_c": "Pendinginan · Di rumah (°C)",
+          "device_unoccupied_heat_c": "Pemanasan · Ruang kosong (°C)",
+          "device_unoccupied_cool_c": "Pendinginan · Ruang kosong (°C)",
+          "device_away_heat_c": "Pemanasan · Pergi (°C)",
+          "device_away_cool_c": "Pendinginan · Pergi (°C)",
+          "device_sleep_heat_c": "Pemanasan · Tidur (°C)",
+          "device_sleep_cool_c": "Pendinginan · Tidur (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Opsi ini mengatur “Otomatis kendali”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "device_method": "Opsi ini mengatur “kendali · sumber”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "device_presence_requirement": "Atur “kendali · Kehadiran” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "device_absence_action": "Opsi ini mengatur “Matikan · Kehadiran”. Perintah fisik memerlukan izin terpisah dan perlindungan mandiri.",
+          "device_sleep_behavior": "Atur “Tidur · kendali” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "device_hardware_confirmed": "Gunakan pengukuran nyata yang sesuai untuk “Wajib · Perangkat · Daya”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "device_temperature_entity": "Pilih sumber Home Assistant nyata untuk “Suhu · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "device_humidity_entity": "Pilih sumber Home Assistant nyata untuk “Kelembapan · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "device_co2_entity": "Pilih sumber Home Assistant nyata untuk “CO₂ · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "device_pm25_entity": "Pilih sumber Home Assistant nyata untuk “PM2.5 · Perangkat · sumber”. Data hilang atau usang menghentikan tindakan terkait.",
+          "device_fan_purpose": "Atur “kendali · Perangkat” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "device_sensor_verified": "Gunakan pengukuran nyata yang sesuai untuk “sensor · Wajib”. Perkiraan tidak menggantikan sensor terkalibrasi.",
+          "device_fan_speed_percent": "Ambang keputusan untuk “Kecepatan (%)”. Memengaruhi saran, bukan batas medis.",
+          "device_humidity_target": "Ambang keputusan untuk “Kelembapan · target (%)”. Memengaruhi saran, bukan batas medis.",
+          "device_sleep_humidity_target": "Target “Tidur · Kelembapan · target (%)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_min_on_s": "Waktu ini mengatur “Daya · min ON (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "device_min_off_s": "Waktu ini mengatur “Daya · min OFF (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "device_max_on_s": "Waktu ini mengatur “Daya · max ON (s)”. Membatasi siklus cepat dan bukan pengganti perlindungan perangkat.",
+          "device_home_heat_c": "Target “Pemanasan · Di rumah (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_home_cool_c": "Target “Pendinginan · Di rumah (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_unoccupied_heat_c": "Target “Pemanasan · Ruang kosong (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_unoccupied_cool_c": "Target “Pendinginan · Ruang kosong (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_away_heat_c": "Target “Pemanasan · Pergi (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_away_cool_c": "Target “Pendinginan · Pergi (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_sleep_heat_c": "Target “Pemanasan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong.",
+          "device_sleep_cool_c": "Target “Pendinginan · Tidur (°C)” berlaku saat keberadaan atau tidur terkonfirmasi. Status tidak diketahui bukan berarti kosong."
+        }
+      },
+      "setup_rooms": {
+        "title": "Ruangan untuk dipantau",
+        "description": "Ruangan untuk dipantau → sumber → Umum pengaturan",
+        "data": {
+          "areas": "Ruangan untuk dipantau"
+        },
+        "data_description": {
+          "areas": "Ruangan untuk dipantau. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Ruangan · {area_name} · {room_index}/{room_count}",
+        "description": "Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+        "data": {
+          "windows": "Jendela",
+          "air_quality": "Sensor kualitas udara dan lingkungan",
+          "temperature": "Suhu",
+          "humidity": "Kelembapan",
+          "pressure": "Sensor tekanan",
+          "climate_devices": "Perangkat"
+        },
+        "data_description": {
+          "windows": "Jendela. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "air_quality": "Sensor kualitas udara dan lingkungan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "temperature": "Suhu. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "humidity": "Kelembapan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "pressure": "Sensor tekanan. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis.",
+          "climate_devices": "Perangkat. Pilih masukan ruangan: nama perangkat - nama entitas. Kelompok kosong tidak digunakan dan tidak mengaktifkan penemuan atau kendali otomatis."
+        }
+      },
+      "setup_general": {
+        "title": "Umum pengaturan",
+        "description": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan.",
+        "data": {
+          "weather_entities": "Cuaca dan peringatan",
+          "outdoor_sensors": "Kualitas udara luar",
+          "weather_warnings": "Peringatan cuaca",
+          "general_room_occupancy_sensors": "Ruangan · Kehadiran · sensor",
+          "general_home_trackers": "Rumah · Kehadiran · Perangkat",
+          "general_occupied_rooms_entity": "Kehadiran · Ruangan · sumber (state)",
+          "general_occupied_rooms_attribute": "Kehadiran · Ruangan · sumber (attribute)",
+          "general_sleep_rooms_entity": "Tidur · Ruangan · sumber (state)",
+          "general_sleep_rooms_attribute": "Tidur · Ruangan · sumber (attribute)",
+          "notify_entities": "pengaturan · sumber",
+          "media_players": "pengaturan · sumber · MEDIA_PLAYERS",
+          "tts_engine": "pengaturan · sumber · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Pilih · sumber",
+          "language": "TTS · Pilih · sumber",
+          "use_mold_indicator": "Indikator jamur · RH (%) → 70%",
+          "pollen_entities": "Serbuk sari · sumber · Pilih",
+          "use_announcement_hub": "Otomatis · Announcement Hub",
+          "general_away_cooldown_minutes": "Rumah · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Pilih: Cuaca dan peringatan · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Pilih: Kualitas udara luar · AQI, CO₂, PM2.5, PM10, VOC. Tidak tersedia: ⚠",
+          "weather_warnings": "Cuaca dan peringatan · ⚠ (Tidak tersedia) → 🪟🔒",
+          "general_room_occupancy_sensors": "Pilih sumber Home Assistant nyata untuk “Ruangan · Kehadiran · sensor”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_home_trackers": "Pilih sumber Home Assistant nyata untuk “Rumah · Kehadiran · Perangkat”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Kehadiran · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_occupied_rooms_attribute": "Atur “Kehadiran · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "general_sleep_rooms_entity": "Pilih sumber Home Assistant nyata untuk “Tidur · Ruangan · sumber (state)”. Data hilang atau usang menghentikan tindakan terkait.",
+          "general_sleep_rooms_attribute": "Atur “Tidur · Ruangan · sumber (attribute)” hanya untuk ruang terpilih. Data tidak valid menghambat tindakan.",
+          "notify_entities": "Pilih: notify.* · pengaturan · sumber.",
+          "media_players": "Pilih: media_player.* · pengaturan · sumber · MEDIA_PLAYERS.",
+          "tts_engine": "Pilih: tts.* · pengaturan · sumber · TTS_ENGINE.",
+          "ai_conversation_agent": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · AI · Pilih · sumber · conversation.* / ai_task.*.",
+          "language": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · TTS · Pilih · sumber · provider capabilities.",
+          "use_mold_indicator": "🧱 Indikator jamur · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Serbuk sari · sumber · Pilih.",
+          "use_announcement_hub": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Otomatis · Announcement Hub.",
+          "general_away_cooldown_minutes": "Pilih sumber bersama dan keluaran notifikasi. Simpan menyelesaikan penyiapan. Pengaturan operasi tetap berada pada perangkat rumah dan ruangan. · Rumah · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Pilihan tidak valid: Kualitas udara luar (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Tidak tersedia: Kualitas udara luar (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Pilihan tidak valid: Cuaca dan peringatan (weather.*).",
+      "invalid_warning": "Pilihan tidak valid: Cuaca dan peringatan ⚠.",
+      "missing_notify": "Pilih: Announcement Hub / notify.*.",
+      "missing_tts": "Pilih: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Pilihan tidak valid: °C min < max.",
+      "no_areas": "Pilih: Ruangan.",
+      "no_window_areas": "Tidak tersedia: Pengukuran (binary_sensor, window).",
+      "invalid_areas": "Pilihan tidak valid: Ruangan.",
+      "invalid_window_exclusions": "Pilihan tidak valid: Kecualikan sensor jendela.",
+      "invalid_indoor_exclusions": "Pilihan tidak valid: Kecualikan sensor udara dalam ruangan.",
+      "no_windows_after_exclusions": "Sisakan setidaknya satu sensor jendela.",
+      "review_areas_after_exclusions": "Periksa: Ruangan · Pengukuran (0).",
+      "invalid_repeat_minutes": "Pilihan tidak valid: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Tidak tersedia: conversation.process.",
+      "invalid_ai_agent": "Pilihan tidak valid: conversation.*.",
+      "invalid_mold_temperature_sensor": "Ruangan · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Ruangan · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Indikator jamur · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Indikator jamur · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Indikator jamur · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Pengaturan “pengaturan · sumber” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "invalid_environment_measurement": "Pengaturan “pengaturan · sumber” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pmv_requires_explicit_inputs": "Pengaturan “PMV / PPD” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pid_climate_required": "Pengaturan “PID · Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pid_temperature_required": "Pengaturan “PID · Suhu” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pid_invalid_target": "Pengaturan “PID · target” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pid_duplicate_climate": "Pengaturan “PID · Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "pid_invalid_parameters": "Pengaturan “PID” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_dry_fan_control_inputs_missing": "Pengaturan “Kecepatan · Perangkat · kendali” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_humidity_power_inputs_missing": "Pengaturan “Kelembapan · Perangkat · Daya” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_secondary_control_inputs_missing": "Pengaturan “Perangkat · kendali” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_fan_power_inputs_missing": "Pengaturan “Kecepatan · Perangkat · Daya” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_fan_control_inputs_missing": "Pengaturan “Kecepatan · Perangkat · kendali” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_fan_sensor_invalid": "Pengaturan “Kecepatan · Perangkat · sensor” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_humidity_control_inputs_missing": "Pengaturan “Kelembapan · Perangkat · kendali” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_temperature_required": "Pengaturan “Suhu · Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_target_required": "Pengaturan “Perangkat · target” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_direct_actuator_not_ready": "Pengaturan “Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_controller_invalid": "Pengaturan “Perangkat · kendali” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_mode_invalid": "Pengaturan “Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_occupancy_invalid": "Pengaturan “Kehadiran · Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_away_invalid": "Pengaturan “Rumah · Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_deadband_invalid": "Pengaturan “Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_attestation_required": "Pengaturan “Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_direct_targets_invalid": "Pengaturan “Perangkat · target” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "climate_direct_timing_invalid": "Pengaturan “Perangkat” tidak valid. Periksa sumber, satuan, dan keamanan.",
+      "general_invalid_presence": "Tidak valid · Kehadiran · pengaturan",
+      "general_invalid_trackers": "Tidak valid · Rumah · pengaturan",
+      "general_invalid_rooms_entity": "Tidak valid · Ruangan · pengaturan",
+      "general_invalid_attribute": "Tidak valid · sumber · pengaturan",
+      "general_invalid_source_age": "Tidak valid · sumber · pengaturan",
+      "invalid_selected_devices": "Tidak valid · Perangkat · pengaturan",
+      "device_policy_invalid": "Tidak valid · Kehadiran · pengaturan",
+      "device_method_invalid": "Tidak valid · kendali · pengaturan",
+      "device_hardware_required": "Tidak valid · Wajib · pengaturan",
+      "device_power_required_for_off": "Tidak valid · Daya · pengaturan",
+      "device_temperature_required": "Tidak valid · Suhu · pengaturan",
+      "device_humidity_required": "Tidak valid · Kelembapan · pengaturan",
+      "device_air_sensor_required": "Tidak valid · sensor · pengaturan",
+      "device_temperature_band_invalid": "Tidak valid · Suhu · pengaturan",
+      "device_humidity_invalid": "Tidak valid · Kelembapan · pengaturan",
+      "device_runtime_invalid": "Tidak valid · Daya · pengaturan",
+      "invalid_setup_rooms": "Tidak valid: Ruangan untuk dipantau",
+      "invalid_room_source": "Tidak valid: Ruangan · sumber"
+    },
+    "abort": {
+      "setup_area_removed": "Tidak valid: Ruangan untuk dipantau",
+      "setup_changed": "pengaturan ↻ Ruangan untuk dipantau"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Kualitas udara",
+        "state": {
+          "open": "Tutup · Pengukuran",
+          "close": "Notifikasi otomatis · Pengukuran",
+          "idle": "Baik",
+          "blocked": "Biarkan jendela tertutup"
+        }
+      },
+      "area_overview": {
+        "name": "Ringkasan lingkungan"
+      },
+      "area_surface_humidity": {
+        "name": "Kelembapan permukaan (terhitung)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}Status pengendali"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Di luar · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Di luar · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Di luar · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Di luar · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Di luar · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Di luar · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Luar (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Luar (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Luar (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Kualitas udara · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Kualitas udara · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Kualitas udara · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Kualitas udara · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Kualitas udara · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Kualitas udara · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Kualitas udara · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Indikator jamur · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Di luar · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Di luar · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Di luar · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Cuaca dan peringatan · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Buka (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Pengumuman (opsional) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "target (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · kendali (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · kendali (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · kendali (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Pemanasan · Ruangan · Kehadiran"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Pendinginan · Ruangan · Kehadiran"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Kelembapan · Ruangan · Kehadiran · target (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Pemanasan · Rumah"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Pendinginan · Rumah"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Kelembapan · Rumah · target (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Pemanasan · Rumah · Matikan"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Pendinginan · Rumah · Matikan"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Kelembapan · Rumah · Matikan · target (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Pemanasan · Tidur"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Pendinginan · Tidur"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Kelembapan · Tidur · target (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Pemanasan · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Pendinginan · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Kelembapan · ECO · target (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Serbuk sari · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Serbuk sari · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "sumber · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "pengaturan · sumber (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · target (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Kecepatan · Luar (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "pengaturan · sumber (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "pengaturan · sumber (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Perangkat · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Kehadiran · Perangkat · sensor · Wajib"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Perangkat (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Kelembapan · Perangkat (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Kelembapan · Perangkat (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Kelembapan · Perangkat · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Perangkat · Suhu −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Perangkat (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Perangkat · Kecepatan (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Perangkat · Kecepatan (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · kendali (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · kendali (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · kendali (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "pengaturan · sumber (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "pengaturan · sumber · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "pengaturan · sumber · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Indikator jamur · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · kendali (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · kendali (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · kendali (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}pengaturan · sumber (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Batas kipas senyap (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Daya · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Daya · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Daya · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Ruangan · Suhu · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Ruangan · Suhu · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Ruangan · Kelembapan · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Ruangan · Kelembapan · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Ruangan · Kecepatan · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Ruangan · Kecepatan · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Rumah · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Otomatis · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Otomatis"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Pengumuman (opsional)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Serbuk sari · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Tidur"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Otomatis"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Tidur · Perangkat"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Tidur · Otomatis"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Perangkat · Luar"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Lebih senyap saat tidur"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Lebih senyap saat ruangan terisi"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}sensor · Wajib"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Bahasa"
+      },
+      "area_manual_profile": {
+        "name": "Perangkat · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Rumah · Kehadiran · kendali"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Kehadiran · Perangkat"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Rumah · Perangkat · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Perangkat · sumber · target"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metode kendali",
+        "state": {
+          "existing": "Pengendali ruangan yang ada",
+          "automatic": "Otomatis",
+          "manual": "Manual",
+          "off": "Matikan",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Mode kipas senyap bawaan"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}kendali · Kehadiran",
+        "state": {
+          "always": "Otomatis",
+          "occupied": "Ruangan · Kehadiran",
+          "absent": "Ruangan · Kehadiran · Matikan"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Tidur · kendali",
+        "state": {
+          "normal": "Otomatis",
+          "pause": "Jeda",
+          "sleep_targets": "Tidur · target"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}kendali · Perangkat",
+        "state": {
+          "extraction": "Luar · kendali",
+          "filtration": "PM2.5 · kendali",
+          "auto": "Otomatis"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Suhu · sumber"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "sumber · Kecepatan · Luar (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Tidur · Perangkat · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Tidur · Perangkat · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Indikator jamur · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Periksa dan lanjutkan"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Pengendali iklim"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Pengumuman (opsional) — Home Environment Manager",
+      "description": "Pengumuman (opsional) · Ruangan",
+      "fields": {
+        "language": {
+          "name": "Bahasa",
+          "description": "Bahasa"
+        },
+        "channels": {
+          "name": "Pengumuman (opsional)",
+          "description": "Pengumuman (opsional)"
+        },
+        "areas": {
+          "name": "Ruangan",
+          "description": "Ruangan"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Bawaan",
+        "en": "pengaturan · sumber",
+        "de": "pengaturan · sumber",
+        "el": "pengaturan · sumber",
+        "fr": "pengaturan · sumber",
+        "es": "pengaturan · sumber",
+        "it": "pengaturan · sumber",
+        "nl": "pengaturan · sumber",
+        "pt": "pengaturan · sumber",
+        "pt-br": "pengaturan · sumber",
+        "pl": "pengaturan · sumber",
+        "ru": "pengaturan · sumber",
+        "uk": "pengaturan · sumber",
+        "tr": "pengaturan · sumber",
+        "cs": "pengaturan · sumber",
+        "sk": "pengaturan · sumber",
+        "hu": "pengaturan · sumber",
+        "ro": "pengaturan · sumber",
+        "bg": "pengaturan · sumber",
+        "hr": "pengaturan · sumber",
+        "sr": "pengaturan · sumber",
+        "sv": "pengaturan · sumber",
+        "nb": "pengaturan · sumber",
+        "da": "pengaturan · sumber",
+        "fi": "pengaturan · sumber",
+        "id": "pengaturan · sumber",
+        "vi": "pengaturan · sumber",
+        "th": "pengaturan · sumber",
+        "hi": "pengaturan · sumber",
+        "zh-hans": "pengaturan · sumber",
+        "zh-hant": "pengaturan · sumber",
+        "ja": "pengaturan · sumber",
+        "ko": "pengaturan · sumber",
+        "ar": "pengaturan · sumber",
+        "he": "pengaturan · sumber",
+        "fa": "pengaturan · sumber",
+        "bn": "pengaturan · sumber",
+        "ur": "pengaturan · sumber",
+        "ta": "pengaturan · sumber"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Rumah · Kehadiran",
+        "all_home": "Rumah · Perangkat · Kehadiran"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "target · kendali",
+        "native": "Perangkat · kendali",
+        "power": "Daya",
+        "speed": "Kecepatan"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Otomatis",
+        "room": "Ruangan · Kehadiran",
+        "home": "Rumah · Kehadiran"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Jeda",
+        "off": "Matikan"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Otomatis",
+        "pause": "Jeda",
+        "sleep_targets": "Tidur · target"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Luar · kendali",
+        "filtration": "PM2.5 · kendali"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "sumber · Tidak valid",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "target · pengaturan"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Pusat ruangan",
+      "initiate_flow": {
+        "user": "Pusat ruangan"
+      },
+      "step": {
+        "user": {
+          "title": "Pusat ruangan",
+          "description": "Pilih area Home Assistant. Grupnya berisi pengaturan umum ruangan dan satu pengendali untuk setiap perangkat fisik yang dipilih. Menambahkan ruangan tidak mengaktifkan kendali peralatan otomatis.",
+          "data": {
+            "area_id": "Ruangan"
+          },
+          "data_description": {
+            "area_id": "Pilih area Home Assistant. Grupnya berisi pengaturan umum ruangan dan satu pengendali untuk setiap perangkat fisik yang dipilih. Menambahkan ruangan tidak mengaktifkan kendali peralatan otomatis."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Tidak valid: Area."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}

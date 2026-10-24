@@ -1,0 +1,1829 @@
+{
+  "title": "Home Environment Manager",
+  "config": {
+    "step": {
+      "areas": {
+        "title": "Pomieszczenia",
+        "description": "1 · 🪟 Pomieszczenia. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Pomieszczenia",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "window_sensors": {
+        "title": "Wyklucz czujniki okien",
+        "description": "2 · Wyklucz czujniki okien. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Wyklucz czujniki okien"
+        },
+        "data_description": {
+          "excluded_window_entities": "Wybierz: Wyklucz czujniki okien · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "indoor_sensors": {
+        "title": "Pomieszczenia · Wskaźnik pleśni",
+        "description": "Pomieszczenia: {area_name} ({position}/{total}). 🌡️ 🧊 Wskaźnik pleśni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego",
+          "mold_indoor_temperature": "Pomieszczenia · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Wskaźnik pleśni · 🧊 °C",
+          "mold_recalibrate": "Wskaźnik pleśni · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Zewnętrzne · Temperatura · źródło · Wskaźnik pleśni"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Pomieszczenia: 🌡️ °C/°F · Wskaźnik pleśni.",
+          "mold_critical_temperature_c": "🧊 Wskaźnik pleśni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Użyj rzeczywistego odpowiedniego pomiaru dla „Wskaźnik pleśni · ↻ 🌡️”. Oszacowanie nie zastępuje kalibracji.",
+          "mold_outdoor_weather_entity": "Wybierz weather.* · Zewnętrzne Temperatura (temperature, °C/°F) → Wskaźnik pleśni. Wymagane: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Jakość powietrza na zewnątrz",
+        "description": "Jakość powietrza na zewnątrz. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Jakość powietrza na zewnątrz"
+        },
+        "data_description": {
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Pogoda i ostrzeżenia",
+        "description": "Pogoda i ostrzeżenia. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "weather_warnings": "Ostrzeżenia pogodowe"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Komunikaty (opcjonalnie)",
+        "description": "Komunikaty (opcjonalnie). Automatyczne powiadomienia · Automatyczne komunikaty głosowe. Announcement Hub.",
+        "data": {
+          "language": "Język",
+          "automatic_tts": "Automatyczne",
+          "automatic_notifications": "Automatyczne · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Komunikaty (opcjonalnie) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ustawienia · źródło",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Komunikaty (opcjonalnie)",
+          "ai_conversation_agent": "AI · Język"
+        },
+        "data_description": {
+          "language": "Ustaw „Język” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "automatic_tts": "Domyślne: ⛔ · Automatyczne · 🪟 90 s.",
+          "automatic_notifications": "Domyślne: ⛔ · Automatyczne · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Domyślne: 10 min · 0 = nigdy · Dopóki trwa ta sama przyczyna · Pomieszczenia.",
+          "use_announcement_hub": "Announcement Hub · Niedostępne → Home Assistant.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Komunikaty (opcjonalnie) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Wybierz: conversation.* (Home Assistant · Domyślne)."
+        }
+      },
+      "thresholds": {
+        "title": "Zaawansowane progi",
+        "description": "Zaawansowane progi. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Na zewnątrz · AQI (≤)",
+          "outdoor_co2": "Na zewnątrz · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Na zewnątrz · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Na zewnątrz · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Na zewnątrz · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Na zewnątrz · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Zewnętrzne (µg/m³)",
+          "outdoor_o3": "O₃ · Zewnętrzne (µg/m³)",
+          "outdoor_so2": "SO₂ · Zewnętrzne (µg/m³)",
+          "indoor_aqi": "Jakość powietrza · AQI (≥)",
+          "indoor_co2": "Jakość powietrza · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Jakość powietrza · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Jakość powietrza · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Jakość powietrza · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Jakość powietrza · VOC (ppb) (≥)",
+          "indoor_humidity": "Jakość powietrza · RH (%) (≥)",
+          "min_outdoor_temp": "Na zewnątrz · °C (≥)",
+          "max_outdoor_temp": "Na zewnątrz · °C (≤)",
+          "max_outdoor_humidity": "Na zewnątrz · RH (%) (≤)",
+          "max_wind_kmh": "Pogoda i ostrzeżenia · km/h (≤)",
+          "max_age_minutes": "⏱ · Otwórz (min, ≤)",
+          "indoor_mold": "Wskaźnik pleśni · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Próg decyzji dla „Na zewnątrz · AQI (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_co2": "Próg decyzji dla „Na zewnątrz · CO₂ (ppm) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_pm25": "Próg decyzji dla „Na zewnątrz · PM2.5 (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_pm10": "Próg decyzji dla „Na zewnątrz · PM10 (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_voc": "Próg decyzji dla „Na zewnątrz · VOC (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_voc_parts": "Próg decyzji dla „Na zewnątrz · VOC (ppb) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_no2": "Próg decyzji dla „NO₂ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_o3": "Próg decyzji dla „O₃ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_so2": "Próg decyzji dla „SO₂ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_aqi": "Próg decyzji dla „Jakość powietrza · AQI (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_co2": "Próg decyzji dla „Jakość powietrza · CO₂ (ppm) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_pm25": "Próg decyzji dla „Jakość powietrza · PM2.5 (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_pm10": "Próg decyzji dla „Jakość powietrza · PM10 (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_voc": "Próg decyzji dla „Jakość powietrza · VOC (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_voc_parts": "Próg decyzji dla „Jakość powietrza · VOC (ppb) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_humidity": "Próg decyzji dla „Jakość powietrza · RH (%) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "min_outdoor_temp": "Próg decyzji dla „Na zewnątrz · °C (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_outdoor_temp": "Próg decyzji dla „Na zewnątrz · °C (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_outdoor_humidity": "Próg decyzji dla „Na zewnątrz · RH (%) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_wind_kmh": "Próg decyzji dla „Pogoda i ostrzeżenia · km/h (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_age_minutes": "Próg decyzji dla „⏱ · Otwórz (min, ≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_mold": "Próg decyzji dla „Wskaźnik pleśni · ≥ 70%”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "setup_rooms": {
+        "title": "Pomieszczenia do monitorowania",
+        "description": "Pomieszczenia do monitorowania → źródło → Ogólne ustawienia",
+        "data": {
+          "areas": "Pomieszczenia do monitorowania"
+        },
+        "data_description": {
+          "areas": "Pomieszczenia do monitorowania. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pokój · {area_name} · {room_index}/{room_count}",
+        "description": "Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+        "data": {
+          "windows": "Okna",
+          "air_quality": "Czujniki jakości powietrza i otoczenia",
+          "temperature": "Temperatura",
+          "humidity": "Wilgotność",
+          "pressure": "Czujniki ciśnienia",
+          "climate_devices": "Urządzenia"
+        },
+        "data_description": {
+          "windows": "Okna. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "air_quality": "Czujniki jakości powietrza i otoczenia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "temperature": "Temperatura. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "humidity": "Wilgotność. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "pressure": "Czujniki ciśnienia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "climate_devices": "Urządzenia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_general": {
+        "title": "Ogólne ustawienia",
+        "description": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń.",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "outdoor_sensors": "Jakość powietrza na zewnątrz",
+          "weather_warnings": "Ostrzeżenia pogodowe",
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "notify_entities": "ustawienia · źródło",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Wybierz · źródło",
+          "language": "TTS · Wybierz · źródło",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%",
+          "pollen_entities": "Pyłki · źródło · Wybierz",
+          "use_announcement_hub": "Automatyczne · Announcement Hub",
+          "general_away_cooldown_minutes": "Dom · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒",
+          "general_room_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Pokój · Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "general_home_trackers": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Obecność · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_attribute": "Ustaw „Obecność · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_sleep_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Sen · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_sleep_rooms_attribute": "Ustaw „Sen · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "ai_conversation_agent": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · AI · Wybierz · źródło · conversation.* / ai_task.*.",
+          "language": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · TTS · Wybierz · źródło · provider capabilities.",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Pyłki · źródło · Wybierz.",
+          "use_announcement_hub": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Automatyczne · Announcement Hub.",
+          "general_away_cooldown_minutes": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Dom · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Nieprawidłowy wybór: Jakość powietrza na zewnątrz (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Niedostępne: Jakość powietrza na zewnątrz (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Nieprawidłowy wybór: Pogoda i ostrzeżenia (weather.*).",
+      "invalid_warning": "Nieprawidłowy wybór: Pogoda i ostrzeżenia ⚠.",
+      "missing_notify": "Wybierz: Announcement Hub / notify.*.",
+      "missing_tts": "Wybierz: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Nieprawidłowy wybór: °C min < max.",
+      "no_areas": "Wybierz: Pomieszczenia.",
+      "no_window_areas": "Niedostępne: Pomiary (binary_sensor, window).",
+      "invalid_areas": "Nieprawidłowy wybór: Pomieszczenia.",
+      "invalid_window_exclusions": "Nieprawidłowy wybór: Wyklucz czujniki okien.",
+      "invalid_indoor_exclusions": "Nieprawidłowy wybór: Wyklucz czujniki powietrza wewnętrznego.",
+      "no_windows_after_exclusions": "Pozostaw przynajmniej jeden czujnik okna.",
+      "review_areas_after_exclusions": "Sprawdź: Pomieszczenia · Pomiary (0).",
+      "invalid_repeat_minutes": "Nieprawidłowy wybór: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Niedostępne: conversation.process.",
+      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*.",
+      "invalid_mold_temperature_sensor": "Pomieszczenia · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Pomieszczenia · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Wskaźnik pleśni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Wskaźnik pleśni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠",
+      "invalid_setup_rooms": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "invalid_room_source": "Nieprawidłowe: Pokój · źródło"
+    },
+    "abort": {
+      "already_configured": "Home Environment Manager — już skonfigurowano.",
+      "setup_area_removed": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "setup_changed": "ustawienia ↻ Pomieszczenia do monitorowania"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "⚙️ Wybierz",
+        "description": "Wybierz: Pomieszczenia / Pogoda i ostrzeżenia / Komunikaty (opcjonalnie) / Zaawansowane progi",
+        "menu_options": {
+          "outside_data": "Zewnętrzne · źródło",
+          "general_settings": "Ogólne · ustawienia",
+          "area_settings": "Obszar · ustawienia",
+          "delivery": "Komunikaty (opcjonalnie)",
+          "thresholds": "Zaawansowane progi"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "window_sensors": {
+        "title": "Wyklucz czujniki okien",
+        "description": "2 · Wyklucz czujniki okien. ☑ 🚫 · ☐ ✓. binary_sensor (window).",
+        "data": {
+          "excluded_window_entities": "Wyklucz czujniki okien"
+        },
+        "data_description": {
+          "excluded_window_entities": "Wybierz: Wyklucz czujniki okien · ☑ 🚫 · ☐ ✓ · binary_sensor (window)."
+        }
+      },
+      "areas": {
+        "title": "Pomieszczenia",
+        "description": "1 · 🪟 Pomieszczenia. binary_sensor (device_class: window).",
+        "data": {
+          "areas": "Pomieszczenia",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%"
+        },
+        "data_description": {
+          "areas": "Wybierz: Pomieszczenia · 🪟 binary_sensor (device_class: window).",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊"
+        }
+      },
+      "indoor_sensors": {
+        "title": "Pomieszczenia · Wskaźnik pleśni",
+        "description": "Pomieszczenia: {area_name} ({position}/{total}). 🌡️ 🧊 Wskaźnik pleśni · °C · ΔT ≥ 3°C. ☑ 🚫 · ☐ ✓\n\n{mold_room_notice}",
+        "data": {
+          "excluded_indoor_entities": "Wyklucz czujniki powietrza wewnętrznego",
+          "mold_indoor_temperature": "Pomieszczenia · 🌡️ (°C/°F)",
+          "mold_critical_temperature_c": "Wskaźnik pleśni · 🧊 °C",
+          "mold_recalibrate": "Wskaźnik pleśni · ↻ 🌡️",
+          "mold_outdoor_weather_entity": "Zewnętrzne · Temperatura · źródło · Wskaźnik pleśni"
+        },
+        "data_description": {
+          "excluded_indoor_entities": "Wybierz: Wyklucz czujniki powietrza wewnętrznego · ☑ 🚫 · ☐ ✓ · CO₂, AQI, PM2.5, PM10, VOC, RH.",
+          "mold_indoor_temperature": "Pomieszczenia: 🌡️ °C/°F · Wskaźnik pleśni.",
+          "mold_critical_temperature_c": "🧊 Wskaźnik pleśni · 🌡️ °C · ΔT ≥ 3°C. 🧊 ↔ 🌡️ · ↻",
+          "mold_recalibrate": "Użyj rzeczywistego odpowiedniego pomiaru dla „Wskaźnik pleśni · ↻ 🌡️”. Oszacowanie nie zastępuje kalibracji.",
+          "mold_outdoor_weather_entity": "Wybierz weather.* · Zewnętrzne Temperatura (temperature, °C/°F) → Wskaźnik pleśni. Wymagane: temperature."
+        }
+      },
+      "outdoor": {
+        "title": "Jakość powietrza na zewnątrz",
+        "description": "Jakość powietrza na zewnątrz. AQI, CO₂, PM2.5, PM10, VOC.",
+        "data": {
+          "outdoor_sensors": "Jakość powietrza na zewnątrz"
+        },
+        "data_description": {
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠"
+        }
+      },
+      "weather": {
+        "title": "Pogoda i ostrzeżenia",
+        "description": "Pogoda i ostrzeżenia. weather.*\n\n{mold_weather_notice}",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "weather_warnings": "Ostrzeżenia pogodowe"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒"
+        }
+      },
+      "delivery": {
+        "title": "Komunikaty (opcjonalnie)",
+        "description": "Komunikaty (opcjonalnie). Automatyczne powiadomienia · Automatyczne komunikaty głosowe. Announcement Hub.",
+        "data": {
+          "language": "Język",
+          "automatic_tts": "Automatyczne",
+          "automatic_notifications": "Automatyczne · AUTOMATIC_NOTIFICATIONS",
+          "announcement_repeat_minutes": "Komunikaty (opcjonalnie) · 0–1440 min",
+          "use_announcement_hub": "Announcement Hub",
+          "notify_entities": "ustawienia · źródło",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "ai_rewrite_announcements": "AI · Komunikaty (opcjonalnie)",
+          "ai_conversation_agent": "AI · Język"
+        },
+        "data_description": {
+          "language": "Ustaw „Język” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "automatic_tts": "Domyślne: ⛔ · Automatyczne · 🪟 90 s.",
+          "automatic_notifications": "Domyślne: ⛔ · Automatyczne · AUTOMATIC_NOTIFICATIONS.",
+          "announcement_repeat_minutes": "Domyślne: 10 min · 0 = nigdy · Dopóki trwa ta sama przyczyna · Pomieszczenia.",
+          "use_announcement_hub": "Announcement Hub · Niedostępne → Home Assistant.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "ai_rewrite_announcements": "AI · Komunikaty (opcjonalnie) → Announcement Hub (use_ai) / Home Assistant.",
+          "ai_conversation_agent": "Wybierz: conversation.* (Home Assistant · Domyślne)."
+        }
+      },
+      "thresholds": {
+        "title": "Zaawansowane progi",
+        "description": "Zaawansowane progi. AQI (US: 0–500), CO₂, PM2.5, PM10, VOC, RH.",
+        "data": {
+          "outdoor_aqi": "Na zewnątrz · AQI (≤)",
+          "outdoor_co2": "Na zewnątrz · CO₂ (ppm) (≤)",
+          "outdoor_pm25": "Na zewnątrz · PM2.5 (µg/m³) (≤)",
+          "outdoor_pm10": "Na zewnątrz · PM10 (µg/m³) (≤)",
+          "outdoor_voc": "Na zewnątrz · VOC (µg/m³) (≤)",
+          "outdoor_voc_parts": "Na zewnątrz · VOC (ppb) (≤)",
+          "outdoor_no2": "NO₂ · Zewnętrzne (µg/m³)",
+          "outdoor_o3": "O₃ · Zewnętrzne (µg/m³)",
+          "outdoor_so2": "SO₂ · Zewnętrzne (µg/m³)",
+          "indoor_aqi": "Jakość powietrza · AQI (≥)",
+          "indoor_co2": "Jakość powietrza · CO₂ (ppm) (≥)",
+          "indoor_pm25": "Jakość powietrza · PM2.5 (µg/m³) (≥)",
+          "indoor_pm10": "Jakość powietrza · PM10 (µg/m³) (≥)",
+          "indoor_voc": "Jakość powietrza · VOC (µg/m³) (≥)",
+          "indoor_voc_parts": "Jakość powietrza · VOC (ppb) (≥)",
+          "indoor_humidity": "Jakość powietrza · RH (%) (≥)",
+          "min_outdoor_temp": "Na zewnątrz · °C (≥)",
+          "max_outdoor_temp": "Na zewnątrz · °C (≤)",
+          "max_outdoor_humidity": "Na zewnątrz · RH (%) (≤)",
+          "max_wind_kmh": "Pogoda i ostrzeżenia · km/h (≤)",
+          "max_age_minutes": "⏱ · Otwórz (min, ≤)",
+          "indoor_mold": "Wskaźnik pleśni · ≥ 70%"
+        },
+        "data_description": {
+          "outdoor_aqi": "Próg decyzji dla „Na zewnątrz · AQI (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_co2": "Próg decyzji dla „Na zewnątrz · CO₂ (ppm) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_pm25": "Próg decyzji dla „Na zewnątrz · PM2.5 (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_pm10": "Próg decyzji dla „Na zewnątrz · PM10 (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_voc": "Próg decyzji dla „Na zewnątrz · VOC (µg/m³) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_voc_parts": "Próg decyzji dla „Na zewnątrz · VOC (ppb) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_no2": "Próg decyzji dla „NO₂ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_o3": "Próg decyzji dla „O₃ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outdoor_so2": "Próg decyzji dla „SO₂ · Zewnętrzne (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_aqi": "Próg decyzji dla „Jakość powietrza · AQI (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_co2": "Próg decyzji dla „Jakość powietrza · CO₂ (ppm) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_pm25": "Próg decyzji dla „Jakość powietrza · PM2.5 (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_pm10": "Próg decyzji dla „Jakość powietrza · PM10 (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_voc": "Próg decyzji dla „Jakość powietrza · VOC (µg/m³) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_voc_parts": "Próg decyzji dla „Jakość powietrza · VOC (ppb) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_humidity": "Próg decyzji dla „Jakość powietrza · RH (%) (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "min_outdoor_temp": "Próg decyzji dla „Na zewnątrz · °C (≥)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_outdoor_temp": "Próg decyzji dla „Na zewnątrz · °C (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_outdoor_humidity": "Próg decyzji dla „Na zewnątrz · RH (%) (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_wind_kmh": "Próg decyzji dla „Pogoda i ostrzeżenia · km/h (≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "max_age_minutes": "Próg decyzji dla „⏱ · Otwórz (min, ≤)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "indoor_mold": "Próg decyzji dla „Wskaźnik pleśni · ≥ 70%”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "environment": {
+        "title": "ustawienia · ustawienia · źródło",
+        "description": "Ustaw „ustawienia · ustawienia · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "pollen_entity": "Pyłki · źródło",
+          "pollen_high_from": "POLLEN · Pyłki · HIGH",
+          "pollen_max_scale": "POLLEN · Pyłki · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pyłki · NO VENT",
+          "aqi_scale_0": "AQI #1 · źródło",
+          "aqi_custom_limit_0": "AQI #1 · cel",
+          "aqi_scale_1": "AQI #2 · źródło",
+          "aqi_custom_limit_1": "AQI #2 · cel",
+          "aqi_scale_2": "AQI #3 · źródło",
+          "aqi_custom_limit_2": "AQI #3 · cel",
+          "aqi_scale_3": "AQI #4 · źródło",
+          "aqi_custom_limit_3": "AQI #4 · cel",
+          "aqi_scale_4": "AQI #5 · źródło",
+          "aqi_custom_limit_4": "AQI #5 · cel",
+          "aqi_scale_5": "AQI #6 · źródło",
+          "aqi_custom_limit_5": "AQI #6 · cel",
+          "aqi_scale_6": "AQI #7 · źródło",
+          "aqi_custom_limit_6": "AQI #7 · cel",
+          "aqi_scale_7": "AQI #8 · źródło",
+          "aqi_custom_limit_7": "AQI #8 · cel",
+          "aqi_scale_8": "AQI #9 · źródło",
+          "aqi_custom_limit_8": "AQI #9 · cel",
+          "aqi_scale_9": "AQI #10 · źródło",
+          "aqi_custom_limit_9": "AQI #10 · cel",
+          "aqi_scale_10": "AQI #11 · źródło",
+          "aqi_custom_limit_10": "AQI #11 · cel",
+          "aqi_scale_11": "AQI #12 · źródło",
+          "aqi_custom_limit_11": "AQI #12 · cel",
+          "aqi_scale_12": "AQI #13 · źródło",
+          "aqi_custom_limit_12": "AQI #13 · cel",
+          "aqi_scale_13": "AQI #14 · źródło",
+          "aqi_custom_limit_13": "AQI #14 · cel",
+          "aqi_scale_14": "AQI #15 · źródło",
+          "aqi_custom_limit_14": "AQI #15 · cel",
+          "aqi_scale_15": "AQI #16 · źródło",
+          "aqi_custom_limit_15": "AQI #16 · cel",
+          "aqi_scale_16": "AQI #17 · źródło",
+          "aqi_custom_limit_16": "AQI #17 · cel",
+          "aqi_scale_17": "AQI #18 · źródło",
+          "aqi_custom_limit_17": "AQI #18 · cel",
+          "aqi_scale_18": "AQI #19 · źródło",
+          "aqi_custom_limit_18": "AQI #19 · cel",
+          "aqi_scale_19": "AQI #20 · źródło",
+          "aqi_custom_limit_19": "AQI #20 · cel",
+          "aqi_scale_20": "AQI #21 · źródło",
+          "aqi_custom_limit_20": "AQI #21 · cel",
+          "aqi_scale_21": "AQI #22 · źródło",
+          "aqi_custom_limit_21": "AQI #22 · cel",
+          "aqi_scale_22": "AQI #23 · źródło",
+          "aqi_custom_limit_22": "AQI #23 · cel",
+          "aqi_scale_23": "AQI #24 · źródło",
+          "aqi_custom_limit_23": "AQI #24 · cel",
+          "aqi_scale_24": "AQI #25 · źródło",
+          "aqi_custom_limit_24": "AQI #25 · cel",
+          "aqi_scale_25": "AQI #26 · źródło",
+          "aqi_custom_limit_25": "AQI #26 · cel",
+          "aqi_scale_26": "AQI #27 · źródło",
+          "aqi_custom_limit_26": "AQI #27 · cel",
+          "aqi_scale_27": "AQI #28 · źródło",
+          "aqi_custom_limit_27": "AQI #28 · cel",
+          "aqi_scale_28": "AQI #29 · źródło",
+          "aqi_custom_limit_28": "AQI #29 · cel",
+          "aqi_scale_29": "AQI #30 · źródło",
+          "aqi_custom_limit_29": "AQI #30 · cel",
+          "aqi_scale_30": "AQI #31 · źródło",
+          "aqi_custom_limit_30": "AQI #31 · cel",
+          "aqi_scale_31": "AQI #32 · źródło",
+          "aqi_custom_limit_31": "AQI #32 · cel"
+        },
+        "data_description": {
+          "pollen_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Pyłki · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "pollen_high_from": "Ustaw „POLLEN · Pyłki · HIGH” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_max_scale": "Ustaw „POLLEN · Pyłki · SCALE” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_avoid_ventilation": "Ustaw „POLLEN · Pyłki · NO VENT” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_scale_0": "Ustaw „AQI #1 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_0": "Próg decyzji dla „AQI #1 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_1": "Ustaw „AQI #2 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_1": "Próg decyzji dla „AQI #2 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_2": "Ustaw „AQI #3 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_2": "Próg decyzji dla „AQI #3 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_3": "Ustaw „AQI #4 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_3": "Próg decyzji dla „AQI #4 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_4": "Ustaw „AQI #5 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_4": "Próg decyzji dla „AQI #5 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_5": "Ustaw „AQI #6 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_5": "Próg decyzji dla „AQI #6 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_6": "Ustaw „AQI #7 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_6": "Próg decyzji dla „AQI #7 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_7": "Ustaw „AQI #8 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_7": "Próg decyzji dla „AQI #8 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_8": "Ustaw „AQI #9 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_8": "Próg decyzji dla „AQI #9 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_9": "Ustaw „AQI #10 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_9": "Próg decyzji dla „AQI #10 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_10": "Ustaw „AQI #11 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_10": "Próg decyzji dla „AQI #11 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_11": "Ustaw „AQI #12 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_11": "Próg decyzji dla „AQI #12 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_12": "Ustaw „AQI #13 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_12": "Próg decyzji dla „AQI #13 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_13": "Ustaw „AQI #14 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_13": "Próg decyzji dla „AQI #14 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_14": "Ustaw „AQI #15 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_14": "Próg decyzji dla „AQI #15 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_15": "Ustaw „AQI #16 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_15": "Próg decyzji dla „AQI #16 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_16": "Ustaw „AQI #17 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_16": "Próg decyzji dla „AQI #17 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_17": "Ustaw „AQI #18 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_17": "Próg decyzji dla „AQI #18 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_18": "Ustaw „AQI #19 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_18": "Próg decyzji dla „AQI #19 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_19": "Ustaw „AQI #20 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_19": "Próg decyzji dla „AQI #20 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_20": "Ustaw „AQI #21 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_20": "Próg decyzji dla „AQI #21 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_21": "Ustaw „AQI #22 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_21": "Próg decyzji dla „AQI #22 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_22": "Ustaw „AQI #23 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_22": "Próg decyzji dla „AQI #23 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_23": "Ustaw „AQI #24 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_23": "Próg decyzji dla „AQI #24 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_24": "Ustaw „AQI #25 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_24": "Próg decyzji dla „AQI #25 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_25": "Ustaw „AQI #26 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_25": "Próg decyzji dla „AQI #26 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_26": "Ustaw „AQI #27 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_26": "Próg decyzji dla „AQI #27 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_27": "Ustaw „AQI #28 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_27": "Próg decyzji dla „AQI #28 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_28": "Ustaw „AQI #29 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_28": "Próg decyzji dla „AQI #29 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_29": "Ustaw „AQI #30 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_29": "Próg decyzji dla „AQI #30 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_30": "Ustaw „AQI #31 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_30": "Próg decyzji dla „AQI #31 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "aqi_scale_31": "Ustaw „AQI #32 · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "aqi_custom_limit_31": "Próg decyzji dla „AQI #32 · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "environment_room": {
+        "title": "ustawienia · ustawienia · źródło",
+        "description": "Ustaw „ustawienia · ustawienia · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "environment_area": "ustawienia · źródło"
+        },
+        "data_description": {
+          "environment_area": "Ustaw „ustawienia · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie."
+        }
+      },
+      "environment_room_air": {
+        "title": "ustawienia · Zewnętrzne",
+        "description": "Ustaw „ustawienia · Zewnętrzne” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "temperature_entity": "Temperatura · źródło",
+          "room_volume_m3": "ustawienia · źródło (m³)",
+          "particle_cadr_m3h": "CADR (m³/h)",
+          "purifier_entity": "Oczyszczacz powietrza · źródło",
+          "extractor_entity": "Wentylator wyciągowy · źródło",
+          "co2_ndir_verified": "CO₂ · Wymagane",
+          "co2_target_ppm": "CO₂ · CO₂ · cel (ppm)",
+          "sleep_room": "Sen"
+        },
+        "data_description": {
+          "temperature_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Temperatura · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "room_volume_m3": "Użyj rzeczywistego odpowiedniego pomiaru dla „ustawienia · źródło (m³)”. Oszacowanie nie zastępuje kalibracji.",
+          "particle_cadr_m3h": "Użyj rzeczywistego odpowiedniego pomiaru dla „CADR (m³/h)”. Oszacowanie nie zastępuje kalibracji.",
+          "purifier_entity": "Wybierz rzeczywiste Oczyszczacz powietrza · źródło Home Assistant dla „Oczyszczacz powietrza · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "extractor_entity": "Wybierz rzeczywiste Wentylator wyciągowy · źródło Home Assistant dla „Wentylator wyciągowy · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "co2_ndir_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „CO₂ · Wymagane”. Oszacowanie nie zastępuje kalibracji.",
+          "co2_target_ppm": "Próg decyzji dla „CO₂ · CO₂ · cel (ppm)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "sleep_room": "Ustaw „Sen” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie."
+        }
+      },
+      "environment_room_exposure": {
+        "title": "ustawienia · ustawienia · źródło",
+        "description": "Ustaw „ustawienia · ustawienia · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "radon_entity": "RADON · Rn · źródło",
+          "radon_sensor_verified": "RADON · Rn · czujnik · Wymagane · SENSOR ✓ · VERIFIED",
+          "radon_reference_bq_m3": "Rn (Bq/m³)",
+          "formaldehyde_entity": "HCHO · źródło",
+          "formaldehyde_sensor_verified": "HCHO · czujnik · Wymagane · SENSOR ✓ · VERIFIED",
+          "noise_entity": "dB(A) · źródło · czujnik (dB(A))",
+          "noise_sensor_calibrated": "dB(A) · czujnik · Wymagane",
+          "illuminance_entity": "LUX · źródło (lux)",
+          "melanopic_edi_entity": "EDI · EDI · źródło (lx)",
+          "melanopic_spectral_verified": "EDI · Wymagane"
+        },
+        "data_description": {
+          "radon_entity": "Wybierz rzeczywiste RADON · Rn · źródło Home Assistant dla „RADON · Rn · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "radon_sensor_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „RADON · Rn · czujnik · Wymagane · SENSOR ✓ · VERIFIED”. Oszacowanie nie zastępuje kalibracji.",
+          "radon_reference_bq_m3": "Ustaw „Rn (Bq/m³)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "formaldehyde_entity": "Wybierz rzeczywiste HCHO · źródło Home Assistant dla „HCHO · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "formaldehyde_sensor_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „HCHO · czujnik · Wymagane · SENSOR ✓ · VERIFIED”. Oszacowanie nie zastępuje kalibracji.",
+          "noise_entity": "Wybierz rzeczywiste dB(A) · źródło · czujnik (dB(A)) Home Assistant dla „dB(A) · źródło · czujnik (dB(A))”. Brak lub stare dane wstrzymują działanie.",
+          "noise_sensor_calibrated": "Użyj rzeczywistego odpowiedniego pomiaru dla „dB(A) · czujnik · Wymagane”. Oszacowanie nie zastępuje kalibracji.",
+          "illuminance_entity": "Wybierz rzeczywiste LUX · źródło (lux) Home Assistant dla „LUX · źródło (lux)”. Brak lub stare dane wstrzymują działanie.",
+          "melanopic_edi_entity": "Wybierz rzeczywiste EDI · EDI · źródło (lx) Home Assistant dla „EDI · EDI · źródło (lx)”. Brak lub stare dane wstrzymują działanie.",
+          "melanopic_spectral_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „EDI · Wymagane”. Oszacowanie nie zastępuje kalibracji."
+        }
+      },
+      "environment_room_comfort": {
+        "title": "ustawienia · ustawienia · źródło",
+        "description": "Ustaw „ustawienia · ustawienia · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "enable_pmv": "PMV / PPD · Automatyczne",
+          "radiant_temperature_entity": "Temperatura · źródło",
+          "air_speed_entity": "źródło · Prędkość · Zewnętrzne (m/s)",
+          "air_speed_m_s": "Prędkość · Zewnętrzne (m/s)",
+          "met": "ustawienia · źródło (met)",
+          "clo": "ustawienia · źródło (clo)"
+        },
+        "data_description": {
+          "enable_pmv": "Ustaw „PMV / PPD · Automatyczne” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "radiant_temperature_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Temperatura · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "air_speed_entity": "Wybierz rzeczywiste źródło · Prędkość · Zewnętrzne (m/s) Home Assistant dla „źródło · Prędkość · Zewnętrzne (m/s)”. Brak lub stare dane wstrzymują działanie.",
+          "air_speed_m_s": "Użyj rzeczywistego odpowiedniego pomiaru dla „Prędkość · Zewnętrzne (m/s)”. Oszacowanie nie zastępuje kalibracji.",
+          "met": "Użyj rzeczywistego odpowiedniego pomiaru dla „ustawienia · źródło (met)”. Oszacowanie nie zastępuje kalibracji.",
+          "clo": "Użyj rzeczywistego odpowiedniego pomiaru dla „ustawienia · źródło (clo)”. Oszacowanie nie zastępuje kalibracji."
+        }
+      },
+      "pid": {
+        "title": "ustawienia · PID",
+        "description": "Ustaw „ustawienia · PID” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "pid_area": "PID"
+        },
+        "data_description": {
+          "pid_area": "Ta opcja steruje „PID”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń."
+        }
+      },
+      "pid_room": {
+        "title": "ustawienia · PID",
+        "description": "Ustaw „ustawienia · PID” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "pid_enabled": "PID · Automatyczne · AUTO",
+          "pid_climate_entities": "PID · Urządzenia",
+          "pid_temperature_entity": "Temperatura · źródło",
+          "pid_mode": "PID",
+          "pid_target_c": "cel (°C)",
+          "pid_pause_on_window_open": "PID · Zewnętrzne"
+        },
+        "data_description": {
+          "pid_enabled": "Ta opcja steruje „PID · Automatyczne · AUTO”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "pid_climate_entities": "Wybierz rzeczywiste źródło Home Assistant dla „PID · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "pid_temperature_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Temperatura · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "pid_mode": "Ta opcja steruje „PID”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "pid_target_c": "Próg decyzji dla „cel (°C)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "pid_pause_on_window_open": "Ta opcja steruje „PID · Zewnętrzne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń."
+        }
+      },
+      "pid_tuning": {
+        "title": "ustawienia · PID",
+        "description": "Ustaw „ustawienia · PID” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "pid_kp": "PID Kp · sterowanie (% per °C)",
+          "pid_ki": "PID Ki · sterowanie (% per °C-minute)",
+          "pid_kd": "PID Kd · sterowanie (%·minute per °C)",
+          "pid_offset_c": "PID (°C) · PID_OFFSET_C",
+          "pid_min_setpoint_c": "PID (°C) · MIN TARGET",
+          "pid_max_setpoint_c": "PID (°C) · MAX TARGET",
+          "pid_sample_seconds": "PID (s)",
+          "pid_max_change_c": "PID (°C) · MAX Δ",
+          "pid_min_change_c": "PID (°C) · MIN Δ"
+        },
+        "data_description": {
+          "pid_kp": "Ta opcja steruje „PID Kp · sterowanie (% per °C)”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "pid_ki": "Ta opcja steruje „PID Ki · sterowanie (% per °C-minute)”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "pid_kd": "Ta opcja steruje „PID Kd · sterowanie (%·minute per °C)”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "pid_offset_c": "Próg decyzji dla „PID (°C) · PID_OFFSET_C”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "pid_min_setpoint_c": "Próg decyzji dla „PID (°C) · MIN TARGET”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "pid_max_setpoint_c": "Próg decyzji dla „PID (°C) · MAX TARGET”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "pid_sample_seconds": "Ten czas określa „PID (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "pid_max_change_c": "Próg decyzji dla „PID (°C) · MAX Δ”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "pid_min_change_c": "Próg decyzji dla „PID (°C) · MIN Δ”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "climate": {
+        "title": "ustawienia · Urządzenia",
+        "description": "Ustaw „ustawienia · Urządzenia” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+        "data": {
+          "climate_area": "Urządzenia"
+        },
+        "data_description": {
+          "climate_area": "Ta opcja steruje „Urządzenia”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń."
+        }
+      },
+      "climate_room": {
+        "title": "ustawienia · Urządzenia",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "climate_enabled": "Urządzenia · Automatyczne · AUTO",
+          "climate_allow_actuation": "Urządzenia · CLIMATE_ALLOW_ACTUATION",
+          "climate_auto_switch_hvac": "Urządzenia · Automatyczne · MODE SWITCH",
+          "climate_prefer_native_auto": "Urządzenia · Automatyczne · NATIVE",
+          "climate_controller": "Urządzenia · sterowanie",
+          "climate_mode": "Urządzenia · MODE",
+          "climate_entity": "Urządzenia · źródło",
+          "climate_temperature_entity": "Temperatura · źródło",
+          "climate_hysteresis_c": "Urządzenia (°C)"
+        },
+        "data_description": {
+          "climate_enabled": "Ta opcja steruje „Urządzenia · Automatyczne · AUTO”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_allow_actuation": "Ta opcja steruje „Urządzenia · CLIMATE_ALLOW_ACTUATION”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_auto_switch_hvac": "Ta opcja steruje „Urządzenia · Automatyczne · MODE SWITCH”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_prefer_native_auto": "Ta opcja steruje „Urządzenia · Automatyczne · NATIVE”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_controller": "Ta opcja steruje „Urządzenia · sterowanie”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_mode": "Ta opcja steruje „Urządzenia · MODE”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_entity": "Wybierz rzeczywiste Urządzenia · źródło Home Assistant dla „Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_temperature_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Temperatura · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_hysteresis_c": "Próg decyzji dla „Urządzenia (°C)”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "climate_presence": {
+        "title": "ustawienia · Obecność · Urządzenia",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "climate_occupancy_sensors": "Obecność · czujnik",
+          "climate_away_entities": "Dom · Urządzenia",
+          "climate_unknown_occupancy": "Obecność · Urządzenia",
+          "climate_unoccupied_delay_minutes": "Urządzenia · CLIMATE_UNOCCUPIED_DELAY_MINUTES",
+          "climate_occupancy_stale_minutes": "Obecność · Urządzenia · czujnik · Wymagane",
+          "climate_away_policy": "Dom · Urządzenia · POLICY",
+          "climate_manual_profile": "Urządzenia · CLIMATE_MANUAL_PROFILE",
+          "climate_sleep_active": "Sen · Urządzenia",
+          "climate_sleep_schedule_enabled": "Sen · Automatyczne",
+          "climate_sleep_start": "Sen · Urządzenia · START",
+          "climate_sleep_end": "Sen · Urządzenia · END",
+          "climate_target_source": "Urządzenia · źródło · cel",
+          "climate_comfort_adjustment_max_c": "Urządzenia (°C)"
+        },
+        "data_description": {
+          "climate_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "climate_away_entities": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "climate_unknown_occupancy": "Ta opcja steruje „Obecność · Urządzenia”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_unoccupied_delay_minutes": "Ten czas określa „Urządzenia · CLIMATE_UNOCCUPIED_DELAY_MINUTES”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_occupancy_stale_minutes": "Ten czas określa „Obecność · Urządzenia · czujnik · Wymagane”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_away_policy": "Ta opcja steruje „Dom · Urządzenia · POLICY”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_manual_profile": "Ta opcja steruje „Urządzenia · CLIMATE_MANUAL_PROFILE”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_sleep_active": "Ta opcja steruje „Sen · Urządzenia”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_sleep_schedule_enabled": "Ta opcja steruje „Sen · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_sleep_start": "Ten czas określa „Sen · Urządzenia · START”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_sleep_end": "Ten czas określa „Sen · Urządzenia · END”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_target_source": "Próg decyzji dla „Urządzenia · źródło · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_comfort_adjustment_max_c": "Próg decyzji dla „Urządzenia (°C)”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "climate_equipment": {
+        "title": "ustawienia · Urządzenia",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "climate_heat_climate_entity": "HEAT · Urządzenia · źródło · Temperatura +",
+          "climate_cool_climate_entity": "COOL · Urządzenia · źródło · Temperatura −",
+          "climate_dry_climate_entity": "DRY · Urządzenia · źródło",
+          "climate_fan_climate_entity": "FAN_ONLY · Prędkość · Urządzenia · źródło",
+          "climate_humidifier_entity": "HUMIDIFIER · Urządzenia · źródło",
+          "climate_dehumidifier_entity": "DEHUMIDIFIER · Urządzenia · źródło",
+          "climate_extraction_fan_entity": "EXTRACT · Prędkość · Urządzenia · źródło",
+          "climate_purifier_fan_entity": "Oczyszczacz powietrza · źródło",
+          "climate_humidity_entity": "Wilgotność · źródło",
+          "climate_humidity_low_rh": "RH · Wilgotność · Urządzenia (%) · RH MIN",
+          "climate_humidity_high_rh": "RH · Wilgotność · Urządzenia (%) · RH MAX",
+          "climate_humidity_hysteresis_rh": "RH · Wilgotność · Urządzenia · ± RH",
+          "climate_cooling_dry_deferral_rh_points": "Urządzenia · Temperatura −",
+          "climate_humidity_setpoint_auto": "Wilgotność · Automatyczne",
+          "climate_window_efficiency_notify": "Urządzenia · Zewnętrzne",
+          "climate_dry_fan_mode_auto": "Prędkość · Automatyczne",
+          "climate_dry_fan_hardware_confirmed": "DRY/FAN_ONLY · Prędkość · Urządzenia · Wymagane · HW ✓",
+          "climate_dry_fan_windowless_confirmed": "DRY/FAN_ONLY · Prędkość · Urządzenia · Zewnętrzne · Wymagane · NO WINDOW",
+          "climate_dry_fan_mode_dwell_s": "DRY/FAN_ONLY · Prędkość · Urządzenia (s) · MODE DWELL",
+          "climate_humidity_power_auto": "Wilgotność · Moc · Automatyczne",
+          "climate_humidity_power_hardware_confirmed": "RH POWER · Wilgotność · Urządzenia · Moc · Wymagane · HW ✓",
+          "climate_humidity_power_windowless_confirmed": "RH POWER · Wilgotność · Urządzenia · Moc · Zewnętrzne · Wymagane · NO WINDOW",
+          "climate_humidity_power_min_on_s": "RH POWER · Wilgotność · Urządzenia · Moc · Automatyczne (s) · MIN ON",
+          "climate_humidity_power_min_off_s": "RH POWER · Wilgotność · Urządzenia · Moc · Wyłącz (s) · MIN OFF",
+          "climate_humidity_power_max_on_s": "RH POWER · Wilgotność · Urządzenia · Moc · Automatyczne (s) · MAX ON",
+          "climate_secondary_climate_setpoint_auto": "Urządzenia · Automatyczne · TARGET AUTO"
+        },
+        "data_description": {
+          "climate_heat_climate_entity": "Wybierz rzeczywiste HEAT · Urządzenia · źródło · Temperatura + Home Assistant dla „HEAT · Urządzenia · źródło · Temperatura +”. Brak lub stare dane wstrzymują działanie.",
+          "climate_cool_climate_entity": "Wybierz rzeczywiste COOL · Urządzenia · źródło · Temperatura − Home Assistant dla „COOL · Urządzenia · źródło · Temperatura −”. Brak lub stare dane wstrzymują działanie.",
+          "climate_dry_climate_entity": "Wybierz rzeczywiste DRY · Urządzenia · źródło Home Assistant dla „DRY · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_fan_climate_entity": "Wybierz rzeczywiste źródło Home Assistant dla „FAN_ONLY · Prędkość · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_humidifier_entity": "Wybierz rzeczywiste HUMIDIFIER · Urządzenia · źródło Home Assistant dla „HUMIDIFIER · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_dehumidifier_entity": "Wybierz rzeczywiste DEHUMIDIFIER · Urządzenia · źródło Home Assistant dla „DEHUMIDIFIER · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_extraction_fan_entity": "Wybierz rzeczywiste źródło Home Assistant dla „EXTRACT · Prędkość · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_purifier_fan_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Oczyszczacz powietrza · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_humidity_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Wilgotność · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_humidity_low_rh": "Próg decyzji dla „RH · Wilgotność · Urządzenia (%) · RH MIN”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_humidity_high_rh": "Próg decyzji dla „RH · Wilgotność · Urządzenia (%) · RH MAX”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_humidity_hysteresis_rh": "Próg decyzji dla „RH · Wilgotność · Urządzenia · ± RH”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_cooling_dry_deferral_rh_points": "Ta opcja steruje „Urządzenia · Temperatura −”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_humidity_setpoint_auto": "Ta opcja steruje „Wilgotność · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_window_efficiency_notify": "Ta opcja steruje „Urządzenia · Zewnętrzne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_dry_fan_mode_auto": "Ta opcja steruje „Prędkość · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_dry_fan_hardware_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „DRY/FAN_ONLY · Prędkość · Urządzenia · Wymagane · HW ✓”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_dry_fan_windowless_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „DRY/FAN_ONLY · Prędkość · Urządzenia · Zewnętrzne · Wymagane · NO WINDOW”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_dry_fan_mode_dwell_s": "Ten czas określa „DRY/FAN_ONLY · Prędkość · Urządzenia (s) · MODE DWELL”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_humidity_power_auto": "Ta opcja steruje „Wilgotność · Moc · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_humidity_power_hardware_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „RH POWER · Wilgotność · Urządzenia · Moc · Wymagane · HW ✓”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_humidity_power_windowless_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „RH POWER · Wilgotność · Urządzenia · Moc · Zewnętrzne · Wymagane · NO WINDOW”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_humidity_power_min_on_s": "Ten czas określa „RH POWER · Wilgotność · Urządzenia · Moc · Automatyczne (s) · MIN ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_humidity_power_min_off_s": "Ten czas określa „RH POWER · Wilgotność · Urządzenia · Moc · Wyłącz (s) · MIN OFF”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_humidity_power_max_on_s": "Ten czas określa „RH POWER · Wilgotność · Urządzenia · Moc · Automatyczne (s) · MAX ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_secondary_climate_setpoint_auto": "Ta opcja steruje „Urządzenia · Automatyczne · TARGET AUTO”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń."
+        }
+      },
+      "climate_air_strategy": {
+        "title": "ustawienia · Urządzenia · Zewnętrzne",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "climate_fan_speed_auto": "Prędkość · Automatyczne",
+          "climate_fan_power_auto": "Prędkość · Moc · Automatyczne",
+          "climate_fan_power_hardware_confirmed": "FAN · Prędkość · Urządzenia · Moc · Wymagane · HW ✓",
+          "climate_fan_power_min_on_s": "FAN · Prędkość · Urządzenia · Moc · Automatyczne (s) · MIN ON",
+          "climate_fan_power_min_off_s": "FAN · Prędkość · Urządzenia · Moc · Wyłącz (s) · MIN OFF",
+          "climate_fan_power_max_on_s": "FAN · Prędkość · Urządzenia · Moc · Automatyczne (s) · MAX ON",
+          "climate_pm25_sensor_verified": "PM2.5 · PM2.5 · Urządzenia · czujnik · Wymagane · SENSOR ✓ · VERIFIED",
+          "climate_co2_entity": "CO₂ · CO₂ · Urządzenia · źródło",
+          "climate_pm25_entity": "PM2.5 · PM2.5 · Urządzenia · źródło",
+          "climate_pm25_action_ug_m3": "PM2.5 · Urządzenia (µg/m³)",
+          "climate_extraction_speed_percent": "EXTRACT · Urządzenia · Prędkość (%) · SPEED %",
+          "climate_purifier_speed_percent": "PURIFIER · Urządzenia · Prędkość (%) · SPEED %"
+        },
+        "data_description": {
+          "climate_fan_speed_auto": "Ta opcja steruje „Prędkość · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_fan_power_auto": "Ta opcja steruje „Prędkość · Moc · Automatyczne”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "climate_fan_power_hardware_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „FAN · Prędkość · Urządzenia · Moc · Wymagane · HW ✓”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_fan_power_min_on_s": "Ten czas określa „FAN · Prędkość · Urządzenia · Moc · Automatyczne (s) · MIN ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_fan_power_min_off_s": "Ten czas określa „FAN · Prędkość · Urządzenia · Moc · Wyłącz (s) · MIN OFF”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_fan_power_max_on_s": "Ten czas określa „FAN · Prędkość · Urządzenia · Moc · Automatyczne (s) · MAX ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "climate_pm25_sensor_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „PM2.5 · PM2.5 · Urządzenia · czujnik · Wymagane · SENSOR ✓ · VERIFIED”. Oszacowanie nie zastępuje kalibracji.",
+          "climate_co2_entity": "Wybierz rzeczywiste CO₂ · CO₂ · Urządzenia · źródło Home Assistant dla „CO₂ · CO₂ · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_pm25_entity": "Wybierz rzeczywiste PM2.5 · PM2.5 · Urządzenia · źródło Home Assistant dla „PM2.5 · PM2.5 · Urządzenia · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "climate_pm25_action_ug_m3": "Próg decyzji dla „PM2.5 · Urządzenia (µg/m³)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_extraction_speed_percent": "Próg decyzji dla „EXTRACT · Urządzenia · Prędkość (%) · SPEED %”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "climate_purifier_speed_percent": "Próg decyzji dla „PURIFIER · Urządzenia · Prędkość (%) · SPEED %”. Wpływa na zalecenia, lecz nie jest normą medyczną."
+        }
+      },
+      "climate_profiles": {
+        "title": "ustawienia · Urządzenia",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "home_heat": "Ogrzewanie · W domu (°C)",
+          "home_cool": "Chłodzenie · W domu (°C)",
+          "unoccupied_heat": "Ogrzewanie · Pusty pokój (°C)",
+          "unoccupied_cool": "Chłodzenie · Pusty pokój (°C)",
+          "away_heat": "Ogrzewanie · Nieobecność (°C)",
+          "away_cool": "Chłodzenie · Nieobecność (°C)",
+          "sleep_heat": "Ogrzewanie · Sen (°C)",
+          "sleep_cool": "Chłodzenie · Sen (°C)"
+        },
+        "data_description": {
+          "home_heat": "Wartość docelowa „Ogrzewanie · W domu (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "home_cool": "Wartość docelowa „Chłodzenie · W domu (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "unoccupied_heat": "Wartość docelowa „Ogrzewanie · Pusty pokój (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "unoccupied_cool": "Wartość docelowa „Chłodzenie · Pusty pokój (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "away_heat": "Wartość docelowa „Ogrzewanie · Nieobecność (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "away_cool": "Wartość docelowa „Chłodzenie · Nieobecność (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "sleep_heat": "Wartość docelowa „Ogrzewanie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "sleep_cool": "Wartość docelowa „Chłodzenie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju."
+        }
+      },
+      "climate_actuators": {
+        "title": "ustawienia · Urządzenia",
+        "description": "Obszar · ustawienia · Urządzenia · sterowanie. Obecność · czujnik · Wymagane.",
+        "data": {
+          "direct_hardware_confirmed": "Wymagane",
+          "heat_actuator": "Ogrzewanie · Urządzenia",
+          "cool_actuator": "Chłodzenie · Urządzenia",
+          "min_on_s": "Moc · Automatyczne (s) · MIN ON",
+          "min_off_s": "Moc · Wyłącz (s)",
+          "max_on_s": "Moc · Automatyczne (s) · MAX ON",
+          "mode_dwell_s": "ustawienia · źródło (s) · MODE DWELL",
+          "kp": "PID Kp · sterowanie (percentage points/°C)",
+          "ki": "PID Ki · sterowanie (percentage points/(°C·minute))",
+          "kd": "PID Kd · sterowanie (percentage points·minute/°C)",
+          "sample_seconds": "ustawienia · źródło (s) · SAMPLE",
+          "pwm_period_s": "ustawienia · źródło (s) · PWM PERIOD",
+          "max_demand_change": "ustawienia · źródło · MAX Δ",
+          "min_demand_change": "ustawienia · źródło · MIN Δ"
+        },
+        "data_description": {
+          "direct_hardware_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „Wymagane”. Oszacowanie nie zastępuje kalibracji.",
+          "heat_actuator": "Ustaw „Ogrzewanie · Urządzenia” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "cool_actuator": "Ustaw „Chłodzenie · Urządzenia” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "min_on_s": "Ten czas określa „Moc · Automatyczne (s) · MIN ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "min_off_s": "Ten czas określa „Moc · Wyłącz (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "max_on_s": "Ten czas określa „Moc · Automatyczne (s) · MAX ON”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "mode_dwell_s": "Ten czas określa „ustawienia · źródło (s) · MODE DWELL”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "kp": "Ustaw „PID Kp · sterowanie (percentage points/°C)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "ki": "Ustaw „PID Ki · sterowanie (percentage points/(°C·minute))” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "kd": "Ustaw „PID Kd · sterowanie (percentage points·minute/°C)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "sample_seconds": "Ten czas określa „ustawienia · źródło (s) · SAMPLE”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "pwm_period_s": "Ten czas określa „ustawienia · źródło (s) · PWM PERIOD”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "max_demand_change": "Ustaw „ustawienia · źródło · MAX Δ” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "min_demand_change": "Ustaw „ustawienia · źródło · MIN Δ” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie."
+        }
+      },
+      "outside_data": {
+        "title": "Zewnętrzne · źródło",
+        "description": "Zewnętrzne · źródło: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "menu_options": {
+          "weather": "Pogoda i ostrzeżenia",
+          "outdoor": "Jakość powietrza na zewnątrz",
+          "outside_aqi": "Zewnętrzne · AQI",
+          "pollen": "Pyłki"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "area_settings": {
+        "title": "Obszar · ustawienia",
+        "description": "Obszar · ustawienia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "menu_options": {
+          "areas": "Pomieszczenia",
+          "indoor_sensors": "Pomieszczenia · Wskaźnik pleśni",
+          "window_sensors": "Wyklucz czujniki okien",
+          "environment_room": "ustawienia · ustawienia · źródło",
+          "area_devices": "Urządzenia klimatyczne"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "device_menu": {
+        "title": "Urządzenia · ustawienia",
+        "description": "Opcjonalnie: przejdź do czujników i uprawnień bezpieczeństwa urządzenia. Pozostaw wyłączone, aby od razu zapisać listę.",
+        "menu_options": {
+          "device_settings": "Urządzenia · sterowanie",
+          "device_choice": "Wybierz · Urządzenia",
+          "device_done": "ustawienia · ✓"
+        },
+        "data": {},
+        "data_description": {}
+      },
+      "general_settings": {
+        "title": "Ogólne · ustawienia",
+        "description": "Ogólne · ustawienia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_home_policy": "Dom · Obecność · sterowanie",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "general_source_stale_minutes": "źródło · max (min)"
+        },
+        "data_description": {
+          "general_room_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Pokój · Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_attribute": "Ustaw „Obecność · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_home_trackers": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Obecność · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "general_home_policy": "Ta opcja steruje „Dom · Obecność · sterowanie”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "general_sleep_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Sen · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_sleep_rooms_attribute": "Ustaw „Sen · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_source_stale_minutes": "źródło · Sen / Obecność · max 240 min. Nieprawidłowe · Wyłącz."
+        }
+      },
+      "pollen": {
+        "title": "Pyłki",
+        "description": "Pyłki: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "pollen_entity": "Pyłki · źródło",
+          "pollen_high_from": "POLLEN · Pyłki · HIGH",
+          "pollen_max_scale": "POLLEN · Pyłki · SCALE",
+          "pollen_avoid_ventilation": "POLLEN · Pyłki · NO VENT"
+        },
+        "data_description": {
+          "pollen_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Pyłki · źródło”. Brak lub stare dane wstrzymują działanie.",
+          "pollen_high_from": "Ustaw „POLLEN · Pyłki · HIGH” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_max_scale": "Ustaw „POLLEN · Pyłki · SCALE” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "pollen_avoid_ventilation": "Ustaw „POLLEN · Pyłki · NO VENT” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie."
+        }
+      },
+      "outside_aqi": {
+        "title": "Zewnętrzne · AQI",
+        "description": "Zewnętrzne · AQI: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "outside_aqi_entity": "AQI · czujnik",
+          "outside_aqi_scale": "AQI · źródło",
+          "outside_aqi_limit": "AQI · cel",
+          "outside_aqi_no_sources": "AQI · czujnik · Wymagane"
+        },
+        "data_description": {
+          "outside_aqi_entity": "Wybierz rzeczywiste źródło Home Assistant dla „AQI · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "outside_aqi_scale": "Ustaw „AQI · źródło” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "outside_aqi_limit": "Próg decyzji dla „AQI · cel”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "outside_aqi_no_sources": "Ustaw „AQI · czujnik · Wymagane” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie."
+        }
+      },
+      "area_devices": {
+        "title": "Urządzenia klimatyczne",
+        "description": "Wybierz · Obszar",
+        "data": {
+          "area_devices_area": "Wybierz · Obszar"
+        },
+        "data_description": {
+          "area_devices_area": "Wybierz rzeczywiste źródło Home Assistant dla „Wybierz · Obszar”. Brak lub stare dane wstrzymują działanie."
+        }
+      },
+      "select_devices": {
+        "title": "Urządzenia klimatyczne",
+        "description": "Wybierz urządzenia dla {area_name}. Zapis tworzy jeden sterownik na fizyczne urządzenie w centrali pomieszczenia. Cele, profile, tryby automatyczny/ręczny/wyłączony/PID i cichą pracę ustawiaj na urządzeniach. Wybór nie włącza sterowania automatycznego.",
+        "data": {
+          "selected_devices": "Wybierz · Urządzenia",
+          "configure_device_sources": "Skonfiguruj teraz czujniki i uprawnienia"
+        },
+        "data_description": {
+          "selected_devices": "Wybierz urządzenia dla {area_name}. Zapis tworzy jeden sterownik na fizyczne urządzenie w centrali pomieszczenia. Cele, profile, tryby automatyczny/ręczny/wyłączony/PID i cichą pracę ustawiaj na urządzeniach. Wybór nie włącza sterowania automatycznego.",
+          "configure_device_sources": "Opcjonalnie: przejdź do czujników i uprawnień bezpieczeństwa urządzenia. Pozostaw wyłączone, aby od razu zapisać listę."
+        }
+      },
+      "device_choice": {
+        "title": "Wybierz · Urządzenia",
+        "description": "Wybierz · Urządzenia: Wybierz źródło, czujnik / Urządzenia · sterowanie.",
+        "data": {
+          "device_choice": "Wybierz · Urządzenia"
+        },
+        "data_description": {
+          "device_choice": "Wybierz rzeczywiste źródło Home Assistant dla „Wybierz · Urządzenia”. Brak lub stare dane wstrzymują działanie."
+        }
+      },
+      "device_settings": {
+        "title": "Urządzenia · sterowanie",
+        "description": "Ta opcja steruje „sterowanie · źródło”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń. Użyj rzeczywistego odpowiedniego pomiaru dla „Wymagane · Urządzenia · Moc”. Oszacowanie nie zastępuje kalibracji. Ten czas określa „Moc · min ON (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń. Ten czas określa „Moc · min OFF (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń. Ustaw „Sen · sterowanie” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie. Próg decyzji dla „Prędkość (%)”. Wpływa na zalecenia, lecz nie jest normą medyczną.\n\n{device_name} · {device_entity} · {area_name}",
+        "data": {
+          "device_auto_control": "Automatyczne sterowanie",
+          "device_method": "sterowanie · źródło",
+          "device_presence_requirement": "sterowanie · Obecność",
+          "device_absence_action": "Wyłącz · Obecność",
+          "device_sleep_behavior": "Sen · sterowanie",
+          "device_hardware_confirmed": "Wymagane · Urządzenia · Moc",
+          "device_temperature_entity": "Temperatura · czujnik",
+          "device_humidity_entity": "Wilgotność · czujnik",
+          "device_co2_entity": "CO₂ · czujnik",
+          "device_pm25_entity": "PM2.5 · czujnik",
+          "device_fan_purpose": "sterowanie · Urządzenia",
+          "device_sensor_verified": "czujnik · Wymagane",
+          "device_fan_speed_percent": "Prędkość (%)",
+          "device_humidity_target": "Wilgotność · cel (%)",
+          "device_sleep_humidity_target": "Sen · Wilgotność · cel (%)",
+          "device_min_on_s": "Moc · min ON (s)",
+          "device_min_off_s": "Moc · min OFF (s)",
+          "device_max_on_s": "Moc · max ON (s)",
+          "device_home_heat_c": "Ogrzewanie · W domu (°C)",
+          "device_home_cool_c": "Chłodzenie · W domu (°C)",
+          "device_unoccupied_heat_c": "Ogrzewanie · Pusty pokój (°C)",
+          "device_unoccupied_cool_c": "Chłodzenie · Pusty pokój (°C)",
+          "device_away_heat_c": "Ogrzewanie · Nieobecność (°C)",
+          "device_away_cool_c": "Chłodzenie · Nieobecność (°C)",
+          "device_sleep_heat_c": "Ogrzewanie · Sen (°C)",
+          "device_sleep_cool_c": "Chłodzenie · Sen (°C)"
+        },
+        "data_description": {
+          "device_auto_control": "Ta opcja steruje „Automatyczne sterowanie”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "device_method": "Ta opcja steruje „sterowanie · źródło”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "device_presence_requirement": "Ustaw „sterowanie · Obecność” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "device_absence_action": "Ta opcja steruje „Wyłącz · Obecność”. Polecenia sprzętowe wymagają osobnej zgody i zabezpieczeń.",
+          "device_sleep_behavior": "Ustaw „Sen · sterowanie” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "device_hardware_confirmed": "Użyj rzeczywistego odpowiedniego pomiaru dla „Wymagane · Urządzenia · Moc”. Oszacowanie nie zastępuje kalibracji.",
+          "device_temperature_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Temperatura · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "device_humidity_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Wilgotność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "device_co2_entity": "Wybierz rzeczywiste źródło Home Assistant dla „CO₂ · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "device_pm25_entity": "Wybierz rzeczywiste źródło Home Assistant dla „PM2.5 · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "device_fan_purpose": "Ustaw „sterowanie · Urządzenia” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "device_sensor_verified": "Użyj rzeczywistego odpowiedniego pomiaru dla „czujnik · Wymagane”. Oszacowanie nie zastępuje kalibracji.",
+          "device_fan_speed_percent": "Próg decyzji dla „Prędkość (%)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "device_humidity_target": "Próg decyzji dla „Wilgotność · cel (%)”. Wpływa na zalecenia, lecz nie jest normą medyczną.",
+          "device_sleep_humidity_target": "Wartość docelowa „Sen · Wilgotność · cel (%)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_min_on_s": "Ten czas określa „Moc · min ON (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "device_min_off_s": "Ten czas określa „Moc · min OFF (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "device_max_on_s": "Ten czas określa „Moc · max ON (s)”. Ogranicza częste przełączanie i nie zastępuje zabezpieczeń.",
+          "device_home_heat_c": "Wartość docelowa „Ogrzewanie · W domu (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_home_cool_c": "Wartość docelowa „Chłodzenie · W domu (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_unoccupied_heat_c": "Wartość docelowa „Ogrzewanie · Pusty pokój (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_unoccupied_cool_c": "Wartość docelowa „Chłodzenie · Pusty pokój (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_away_heat_c": "Wartość docelowa „Ogrzewanie · Nieobecność (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_away_cool_c": "Wartość docelowa „Chłodzenie · Nieobecność (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_sleep_heat_c": "Wartość docelowa „Ogrzewanie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju.",
+          "device_sleep_cool_c": "Wartość docelowa „Chłodzenie · Sen (°C)” obowiązuje przy potwierdzonej obecności lub śnie. Nieznany stan nie oznacza pustego pokoju."
+        }
+      },
+      "setup_rooms": {
+        "title": "Pomieszczenia do monitorowania",
+        "description": "Pomieszczenia do monitorowania → źródło → Ogólne ustawienia",
+        "data": {
+          "areas": "Pomieszczenia do monitorowania"
+        },
+        "data_description": {
+          "areas": "Pomieszczenia do monitorowania. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_room_sources": {
+        "title": "Pokój · {area_name} · {room_index}/{room_count}",
+        "description": "Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+        "data": {
+          "windows": "Okna",
+          "air_quality": "Czujniki jakości powietrza i otoczenia",
+          "temperature": "Temperatura",
+          "humidity": "Wilgotność",
+          "pressure": "Czujniki ciśnienia",
+          "climate_devices": "Urządzenia"
+        },
+        "data_description": {
+          "windows": "Okna. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "air_quality": "Czujniki jakości powietrza i otoczenia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "temperature": "Temperatura. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "humidity": "Wilgotność. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "pressure": "Czujniki ciśnienia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania.",
+          "climate_devices": "Urządzenia. Wybierz wejścia pomieszczenia: nazwa urządzenia - nazwa encji. Puste grupy pozostają nieużywane i nie włączają automatycznego wykrywania ani sterowania."
+        }
+      },
+      "setup_general": {
+        "title": "Ogólne ustawienia",
+        "description": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń.",
+        "data": {
+          "weather_entities": "Pogoda i ostrzeżenia",
+          "outdoor_sensors": "Jakość powietrza na zewnątrz",
+          "weather_warnings": "Ostrzeżenia pogodowe",
+          "general_room_occupancy_sensors": "Pokój · Obecność · czujnik",
+          "general_home_trackers": "Dom · Obecność · Urządzenia",
+          "general_occupied_rooms_entity": "Obecność · Pokój · źródło (state)",
+          "general_occupied_rooms_attribute": "Obecność · Pokój · źródło (attribute)",
+          "general_sleep_rooms_entity": "Sen · Pokój · źródło (state)",
+          "general_sleep_rooms_attribute": "Sen · Pokój · źródło (attribute)",
+          "notify_entities": "ustawienia · źródło",
+          "media_players": "ustawienia · źródło · MEDIA_PLAYERS",
+          "tts_engine": "ustawienia · źródło · TTS_ENGINE",
+          "ai_conversation_agent": "AI · Wybierz · źródło",
+          "language": "TTS · Wybierz · źródło",
+          "use_mold_indicator": "Wskaźnik pleśni · RH (%) → 70%",
+          "pollen_entities": "Pyłki · źródło · Wybierz",
+          "use_announcement_hub": "Automatyczne · Announcement Hub",
+          "general_away_cooldown_minutes": "Dom · Away · cooldown (min)"
+        },
+        "data_description": {
+          "weather_entities": "Wybierz: Pogoda i ostrzeżenia · weather.* · 🌧️/⛈️/💨 → 🪟🔒 🌡️ weather.* · temperature (°C/°F) → 🧊",
+          "outdoor_sensors": "Wybierz: Jakość powietrza na zewnątrz · AQI, CO₂, PM2.5, PM10, VOC. Niedostępne: ⚠",
+          "weather_warnings": "Pogoda i ostrzeżenia · ⚠ (Niedostępne) → 🪟🔒",
+          "general_room_occupancy_sensors": "Wybierz rzeczywiste źródło Home Assistant dla „Pokój · Obecność · czujnik”. Brak lub stare dane wstrzymują działanie.",
+          "general_home_trackers": "Wybierz rzeczywiste źródło Home Assistant dla „Dom · Obecność · Urządzenia”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Obecność · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_occupied_rooms_attribute": "Ustaw „Obecność · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "general_sleep_rooms_entity": "Wybierz rzeczywiste źródło Home Assistant dla „Sen · Pokój · źródło (state)”. Brak lub stare dane wstrzymują działanie.",
+          "general_sleep_rooms_attribute": "Ustaw „Sen · Pokój · źródło (attribute)” tylko dla wybranego pokoju. Brak danych lub niezgodność blokuje działanie.",
+          "notify_entities": "Wybierz: notify.* · ustawienia · źródło.",
+          "media_players": "Wybierz: media_player.* · ustawienia · źródło · MEDIA_PLAYERS.",
+          "tts_engine": "Wybierz: tts.* · ustawienia · źródło · TTS_ENGINE.",
+          "ai_conversation_agent": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · AI · Wybierz · źródło · conversation.* / ai_task.*.",
+          "language": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · TTS · Wybierz · źródło · provider capabilities.",
+          "use_mold_indicator": "🧱 Wskaźnik pleśni · RH (%) → ≈70% · 🌡️ 🧊",
+          "pollen_entities": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Pyłki · źródło · Wybierz.",
+          "use_announcement_hub": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Automatyczne · Announcement Hub.",
+          "general_away_cooldown_minutes": "Wybierz wspólne źródła i wyjścia powiadomień. Zapis kończy konfigurację. Ustawienia pracy pozostają na urządzeniach domu i pomieszczeń. · Dom · Away · cooldown (min) · occupancy transition delay."
+        }
+      }
+    },
+    "error": {
+      "invalid_outdoor": "Nieprawidłowy wybór: Jakość powietrza na zewnątrz (AQI, CO₂, PM2.5, PM10, VOC).",
+      "no_outdoor": "Niedostępne: Jakość powietrza na zewnątrz (AQI, CO₂, PM2.5, PM10, VOC).",
+      "invalid_weather": "Nieprawidłowy wybór: Pogoda i ostrzeżenia (weather.*).",
+      "invalid_warning": "Nieprawidłowy wybór: Pogoda i ostrzeżenia ⚠.",
+      "missing_notify": "Wybierz: Announcement Hub / notify.*.",
+      "missing_tts": "Wybierz: Announcement Hub / tts.* + media_player.*.",
+      "temperature_range": "Nieprawidłowy wybór: °C min < max.",
+      "no_areas": "Wybierz: Pomieszczenia.",
+      "no_window_areas": "Niedostępne: Pomiary (binary_sensor, window).",
+      "invalid_areas": "Nieprawidłowy wybór: Pomieszczenia.",
+      "invalid_window_exclusions": "Nieprawidłowy wybór: Wyklucz czujniki okien.",
+      "invalid_indoor_exclusions": "Nieprawidłowy wybór: Wyklucz czujniki powietrza wewnętrznego.",
+      "no_windows_after_exclusions": "Pozostaw przynajmniej jeden czujnik okna.",
+      "review_areas_after_exclusions": "Sprawdź: Pomieszczenia · Pomiary (0).",
+      "invalid_repeat_minutes": "Nieprawidłowy wybór: 0–1440 min (0 = ⛔).",
+      "missing_ai_service": "Niedostępne: conversation.process.",
+      "invalid_ai_agent": "Nieprawidłowy wybór: conversation.*.",
+      "invalid_mold_temperature_sensor": "Pomieszczenia · 🌡️ ⚠",
+      "missing_mold_indoor_temperature": "Pomieszczenia · 🌡️ ∅",
+      "missing_mold_outdoor_temperature": "Wskaźnik pleśni · 🌤️ 🌡️ ∅",
+      "invalid_mold_surface_temperature": "Wskaźnik pleśni · 🧊 °C ⚠",
+      "invalid_mold_calibration": "Wskaźnik pleśni · ΔT ≥ 3°C ⚠",
+      "invalid_environment_scale": "Nieprawidłowe ustawienie „ustawienia · źródło”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "invalid_environment_measurement": "Nieprawidłowe ustawienie „ustawienia · źródło”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pmv_requires_explicit_inputs": "Nieprawidłowe ustawienie „PMV / PPD”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pid_climate_required": "Nieprawidłowe ustawienie „PID · Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pid_temperature_required": "Nieprawidłowe ustawienie „PID · Temperatura”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pid_invalid_target": "Nieprawidłowe ustawienie „PID · cel”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pid_duplicate_climate": "Nieprawidłowe ustawienie „PID · Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "pid_invalid_parameters": "Nieprawidłowe ustawienie „PID”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_dry_fan_control_inputs_missing": "Nieprawidłowe ustawienie „Prędkość · Urządzenia · sterowanie”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_humidity_power_inputs_missing": "Nieprawidłowe ustawienie „Wilgotność · Urządzenia · Moc”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_secondary_control_inputs_missing": "Nieprawidłowe ustawienie „Urządzenia · sterowanie”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_fan_power_inputs_missing": "Nieprawidłowe ustawienie „Prędkość · Urządzenia · Moc”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_fan_control_inputs_missing": "Nieprawidłowe ustawienie „Prędkość · Urządzenia · sterowanie”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_fan_sensor_invalid": "Nieprawidłowe ustawienie „Prędkość · Urządzenia · czujnik”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_humidity_control_inputs_missing": "Nieprawidłowe ustawienie „Wilgotność · Urządzenia · sterowanie”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_temperature_required": "Nieprawidłowe ustawienie „Temperatura · Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_target_required": "Nieprawidłowe ustawienie „Urządzenia · cel”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_direct_actuator_not_ready": "Nieprawidłowe ustawienie „Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_controller_invalid": "Nieprawidłowe ustawienie „Urządzenia · sterowanie”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_mode_invalid": "Nieprawidłowe ustawienie „Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_occupancy_invalid": "Nieprawidłowe ustawienie „Obecność · Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_away_invalid": "Nieprawidłowe ustawienie „Dom · Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_deadband_invalid": "Nieprawidłowe ustawienie „Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_attestation_required": "Nieprawidłowe ustawienie „Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_direct_targets_invalid": "Nieprawidłowe ustawienie „Urządzenia · cel”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "climate_direct_timing_invalid": "Nieprawidłowe ustawienie „Urządzenia”. Sprawdź źródło, jednostki i bezpieczeństwo.",
+      "general_invalid_presence": "Nieprawidłowe · Obecność · ustawienia",
+      "general_invalid_trackers": "Nieprawidłowe · Dom · ustawienia",
+      "general_invalid_rooms_entity": "Nieprawidłowe · Pokój · ustawienia",
+      "general_invalid_attribute": "Nieprawidłowe · źródło · ustawienia",
+      "general_invalid_source_age": "Nieprawidłowe · źródło · ustawienia",
+      "invalid_selected_devices": "Nieprawidłowe · Urządzenia · ustawienia",
+      "device_policy_invalid": "Nieprawidłowe · Obecność · ustawienia",
+      "device_method_invalid": "Nieprawidłowe · sterowanie · ustawienia",
+      "device_hardware_required": "Nieprawidłowe · Wymagane · ustawienia",
+      "device_power_required_for_off": "Nieprawidłowe · Moc · ustawienia",
+      "device_temperature_required": "Nieprawidłowe · Temperatura · ustawienia",
+      "device_humidity_required": "Nieprawidłowe · Wilgotność · ustawienia",
+      "device_air_sensor_required": "Nieprawidłowe · czujnik · ustawienia",
+      "device_temperature_band_invalid": "Nieprawidłowe · Temperatura · ustawienia",
+      "device_humidity_invalid": "Nieprawidłowe · Wilgotność · ustawienia",
+      "device_runtime_invalid": "Nieprawidłowe · Moc · ustawienia",
+      "invalid_setup_rooms": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "invalid_room_source": "Nieprawidłowe: Pokój · źródło"
+    },
+    "abort": {
+      "setup_area_removed": "Nieprawidłowe: Pomieszczenia do monitorowania",
+      "setup_changed": "ustawienia ↻ Pomieszczenia do monitorowania"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommendation": {
+        "name": "Jakość powietrza",
+        "state": {
+          "open": "Zamknij · Pomiary",
+          "close": "Automatyczne powiadomienia · Pomiary",
+          "idle": "Dobra",
+          "blocked": "Pozostaw okna zamknięte"
+        }
+      },
+      "area_overview": {
+        "name": "Przegląd środowiska"
+      },
+      "area_surface_humidity": {
+        "name": "Wilgotność powierzchni (obliczona)"
+      },
+      "equipment_control_status": {
+        "name": "{channel}Stan sterownika"
+      }
+    },
+    "number": {
+      "global_threshold_outdoor_aqi": {
+        "name": "Na zewnątrz · AQI (≤)"
+      },
+      "global_threshold_outdoor_co2": {
+        "name": "Na zewnątrz · CO₂ (ppm) (≤)"
+      },
+      "global_threshold_outdoor_pm25": {
+        "name": "Na zewnątrz · PM2.5 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_pm10": {
+        "name": "Na zewnątrz · PM10 (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc": {
+        "name": "Na zewnątrz · VOC (µg/m³) (≤)"
+      },
+      "global_threshold_outdoor_voc_parts": {
+        "name": "Na zewnątrz · VOC (ppb) (≤)"
+      },
+      "global_threshold_outdoor_no2": {
+        "name": "NO₂ · Zewnętrzne (µg/m³)"
+      },
+      "global_threshold_outdoor_o3": {
+        "name": "O₃ · Zewnętrzne (µg/m³)"
+      },
+      "global_threshold_outdoor_so2": {
+        "name": "SO₂ · Zewnętrzne (µg/m³)"
+      },
+      "global_threshold_indoor_aqi": {
+        "name": "Jakość powietrza · AQI (≥)"
+      },
+      "global_threshold_indoor_co2": {
+        "name": "Jakość powietrza · CO₂ (ppm) (≥)"
+      },
+      "global_threshold_indoor_pm25": {
+        "name": "Jakość powietrza · PM2.5 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_pm10": {
+        "name": "Jakość powietrza · PM10 (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc": {
+        "name": "Jakość powietrza · VOC (µg/m³) (≥)"
+      },
+      "global_threshold_indoor_voc_parts": {
+        "name": "Jakość powietrza · VOC (ppb) (≥)"
+      },
+      "global_threshold_indoor_humidity": {
+        "name": "Jakość powietrza · RH (%) (≥)"
+      },
+      "global_threshold_indoor_mold": {
+        "name": "Wskaźnik pleśni · ≥ 70%"
+      },
+      "global_threshold_min_outdoor_temp": {
+        "name": "Na zewnątrz · °C (≥)"
+      },
+      "global_threshold_max_outdoor_temp": {
+        "name": "Na zewnątrz · °C (≤)"
+      },
+      "global_threshold_max_outdoor_humidity": {
+        "name": "Na zewnątrz · RH (%) (≤)"
+      },
+      "global_threshold_max_wind_kmh": {
+        "name": "Pogoda i ostrzeżenia · km/h (≤)"
+      },
+      "global_threshold_max_age_minutes": {
+        "name": "⏱ · Otwórz (min, ≤)"
+      },
+      "global_setting_announcement_repeat_minutes": {
+        "name": "Komunikaty (opcjonalnie) · 0–1440 min"
+      },
+      "area_pid_target_c": {
+        "name": "cel (°C)"
+      },
+      "area_pid_kp": {
+        "name": "PID Kp · sterowanie (% per °C)"
+      },
+      "area_pid_ki": {
+        "name": "PID Ki · sterowanie (% per °C-minute)"
+      },
+      "area_pid_kd": {
+        "name": "PID Kd · sterowanie (%·minute per °C)"
+      },
+      "area_pid_offset_c": {
+        "name": "PID (°C) · PID_OFFSET_C"
+      },
+      "area_pid_min_setpoint_c": {
+        "name": "PID (°C) · MIN TARGET"
+      },
+      "area_pid_max_setpoint_c": {
+        "name": "PID (°C) · MAX TARGET"
+      },
+      "area_pid_sample_seconds": {
+        "name": "PID (s)"
+      },
+      "area_pid_max_change_c": {
+        "name": "PID (°C) · MAX Δ"
+      },
+      "area_pid_min_change_c": {
+        "name": "PID (°C) · MIN Δ"
+      },
+      "area_climate_profile_comfort_heat": {
+        "name": "Ogrzewanie · Pokój · Obecność"
+      },
+      "area_climate_profile_comfort_cool": {
+        "name": "Chłodzenie · Pokój · Obecność"
+      },
+      "area_climate_profile_comfort_humidity": {
+        "name": "Wilgotność · Pokój · Obecność · cel (%)"
+      },
+      "area_climate_profile_home_heat": {
+        "name": "Ogrzewanie · Dom"
+      },
+      "area_climate_profile_home_cool": {
+        "name": "Chłodzenie · Dom"
+      },
+      "area_climate_profile_home_humidity": {
+        "name": "Wilgotność · Dom · cel (%)"
+      },
+      "area_climate_profile_away_heat": {
+        "name": "Ogrzewanie · Dom · Wyłącz"
+      },
+      "area_climate_profile_away_cool": {
+        "name": "Chłodzenie · Dom · Wyłącz"
+      },
+      "area_climate_profile_away_humidity": {
+        "name": "Wilgotność · Dom · Wyłącz · cel (%)"
+      },
+      "area_climate_profile_sleep_heat": {
+        "name": "Ogrzewanie · Sen"
+      },
+      "area_climate_profile_sleep_cool": {
+        "name": "Chłodzenie · Sen"
+      },
+      "area_climate_profile_sleep_humidity": {
+        "name": "Wilgotność · Sen · cel (%)"
+      },
+      "area_climate_profile_eco_heat": {
+        "name": "Ogrzewanie · ECO"
+      },
+      "area_climate_profile_eco_cool": {
+        "name": "Chłodzenie · ECO"
+      },
+      "area_climate_profile_eco_humidity": {
+        "name": "Wilgotność · ECO · cel (%)"
+      },
+      "global_environment_pollen_high_from": {
+        "name": "POLLEN · Pyłki · HIGH"
+      },
+      "global_environment_pollen_max_scale": {
+        "name": "POLLEN · Pyłki · SCALE"
+      },
+      "global_occupancy_source_stale_minutes": {
+        "name": "źródło · max (min)"
+      },
+      "area_area_environment_room_volume_m3": {
+        "name": "ustawienia · źródło (m³)"
+      },
+      "area_area_environment_particle_cadr_m3h": {
+        "name": "CADR (m³/h)"
+      },
+      "area_area_environment_co2_target_ppm": {
+        "name": "CO₂ · CO₂ · cel (ppm)"
+      },
+      "area_area_environment_radon_reference_bq_m3": {
+        "name": "Rn (Bq/m³)"
+      },
+      "area_area_environment_air_speed_m_s": {
+        "name": "Prędkość · Zewnętrzne (m/s)"
+      },
+      "area_area_environment_met": {
+        "name": "ustawienia · źródło (met)"
+      },
+      "area_area_environment_clo": {
+        "name": "ustawienia · źródło (clo)"
+      },
+      "area_climate_operating_unoccupied_delay_minutes": {
+        "name": "Urządzenia · CLIMATE_UNOCCUPIED_DELAY_MINUTES"
+      },
+      "area_climate_operating_occupancy_stale_minutes": {
+        "name": "Obecność · Urządzenia · czujnik · Wymagane"
+      },
+      "area_climate_operating_comfort_adjustment_max_c": {
+        "name": "Urządzenia (°C)"
+      },
+      "area_climate_operating_humidity_low_rh": {
+        "name": "RH · Wilgotność · Urządzenia (%) · RH MIN"
+      },
+      "area_climate_operating_humidity_high_rh": {
+        "name": "RH · Wilgotność · Urządzenia (%) · RH MAX"
+      },
+      "area_climate_operating_humidity_hysteresis_rh": {
+        "name": "RH · Wilgotność · Urządzenia · ± RH"
+      },
+      "area_climate_operating_cooling_dry_deferral_rh_points": {
+        "name": "Urządzenia · Temperatura −"
+      },
+      "area_climate_operating_pm25_action_ug_m3": {
+        "name": "PM2.5 · Urządzenia (µg/m³)"
+      },
+      "area_climate_operating_extraction_speed_percent": {
+        "name": "EXTRACT · Urządzenia · Prędkość (%) · SPEED %"
+      },
+      "area_climate_operating_purifier_speed_percent": {
+        "name": "PURIFIER · Urządzenia · Prędkość (%) · SPEED %"
+      },
+      "area_direct_tuning_kp": {
+        "name": "PID Kp · sterowanie (percentage points/°C)"
+      },
+      "area_direct_tuning_ki": {
+        "name": "PID Ki · sterowanie (percentage points/(°C·minute))"
+      },
+      "area_direct_tuning_kd": {
+        "name": "PID Kd · sterowanie (percentage points·minute/°C)"
+      },
+      "area_direct_tuning_sample_seconds": {
+        "name": "ustawienia · źródło (s) · SAMPLE"
+      },
+      "area_direct_tuning_max_demand_change": {
+        "name": "ustawienia · źródło · MAX Δ"
+      },
+      "area_direct_tuning_min_demand_change": {
+        "name": "ustawienia · źródło · MIN Δ"
+      },
+      "area_mold_surface_critical_temperature_c": {
+        "name": "Wskaźnik pleśni · 🧊 °C"
+      },
+      "equipment_kp": {
+        "name": "{channel}PID Kp · sterowanie (% per °C)"
+      },
+      "equipment_ki": {
+        "name": "{channel}PID Ki · sterowanie (% per °C-minute)"
+      },
+      "equipment_kd": {
+        "name": "{channel}PID Kd · sterowanie (%·minute per °C)"
+      },
+      "equipment_sample_seconds": {
+        "name": "{channel}PID (s)"
+      },
+      "equipment_cycle_seconds": {
+        "name": "{channel}ustawienia · źródło (s) · PWM PERIOD"
+      },
+      "equipment_quiet_percentage": {
+        "name": "{channel}Limit cichej pracy wentylatora (%)"
+      },
+      "equipment_min_on_seconds": {
+        "name": "{channel}Moc · min ON (s)"
+      },
+      "equipment_min_off_seconds": {
+        "name": "{channel}Moc · min OFF (s)"
+      },
+      "equipment_max_on_seconds": {
+        "name": "{channel}Moc · max ON (s)"
+      },
+      "area_room_equipment_limit_temperature_min_limit": {
+        "name": "Pokój · Temperatura · min"
+      },
+      "area_room_equipment_limit_temperature_max_limit": {
+        "name": "Pokój · Temperatura · max"
+      },
+      "area_room_equipment_limit_humidity_min_limit": {
+        "name": "Pokój · Wilgotność · min"
+      },
+      "area_room_equipment_limit_humidity_max_limit": {
+        "name": "Pokój · Wilgotność · max"
+      },
+      "area_room_equipment_limit_fan_min_percentage": {
+        "name": "Pokój · Prędkość · min (%)"
+      },
+      "area_room_equipment_limit_fan_max_percentage": {
+        "name": "Pokój · Prędkość · max (%)"
+      },
+      "home_global_occupancy_away_cooldown_minutes": {
+        "name": "Dom · Away · cooldown (min)"
+      }
+    },
+    "switch": {
+      "home_automatic_notifications": {
+        "name": "Automatyczne · AUTOMATIC_NOTIFICATIONS"
+      },
+      "home_automatic_tts": {
+        "name": "Automatyczne"
+      },
+      "home_use_announcement_hub": {
+        "name": "Announcement Hub"
+      },
+      "home_ai_rewrite_announcements": {
+        "name": "AI · Komunikaty (opcjonalnie)"
+      },
+      "home_global_environment_pollen_avoid_ventilation": {
+        "name": "POLLEN · Pyłki · NO VENT"
+      },
+      "area_area_environment_sleep_room": {
+        "name": "Sen"
+      },
+      "area_area_environment_enable_pmv": {
+        "name": "PMV / PPD · Automatyczne"
+      },
+      "area_climate_operating_sleep_active": {
+        "name": "Sen · Urządzenia"
+      },
+      "area_climate_operating_sleep_schedule_enabled": {
+        "name": "Sen · Automatyczne"
+      },
+      "area_climate_operating_window_efficiency_notify": {
+        "name": "Urządzenia · Zewnętrzne"
+      },
+      "equipment_quiet_sleep": {
+        "name": "{channel}Mniejszy hałas podczas snu"
+      },
+      "equipment_quiet_occupied": {
+        "name": "{channel}Mniejszy hałas podczas obecności"
+      },
+      "equipment_sensor_verified": {
+        "name": "{channel}czujnik · Wymagane"
+      }
+    },
+    "select": {
+      "home_language": {
+        "name": "Język"
+      },
+      "area_manual_profile": {
+        "name": "Urządzenia · CLIMATE_MANUAL_PROFILE"
+      },
+      "area_pid_gain_source": {
+        "name": "Gain source",
+        "state": {
+          "defaults": "Defaults",
+          "manual": "Manual"
+        }
+      },
+      "home_global_policy_home_policy": {
+        "name": "Dom · Obecność · sterowanie"
+      },
+      "area_climate_policy_unknown_occupancy": {
+        "name": "Obecność · Urządzenia"
+      },
+      "area_climate_policy_away_policy": {
+        "name": "Dom · Urządzenia · POLICY"
+      },
+      "area_climate_policy_target_source": {
+        "name": "Urządzenia · źródło · cel"
+      },
+      "equipment_control_mode": {
+        "name": "{channel}Metoda sterowania",
+        "state": {
+          "existing": "Dotychczasowy regulator pomieszczenia",
+          "automatic": "Automatyczne",
+          "manual": "Ręczne",
+          "off": "Wyłącz",
+          "pid": "PID"
+        }
+      },
+      "equipment_quiet_fan_mode": {
+        "name": "{channel}Natywny cichy bieg wentylatora"
+      },
+      "equipment_presence_requirement": {
+        "name": "{channel}sterowanie · Obecność",
+        "state": {
+          "always": "Automatyczne",
+          "occupied": "Pokój · Obecność",
+          "absent": "Pokój · Obecność · Wyłącz"
+        }
+      },
+      "equipment_sleep_behavior": {
+        "name": "{channel}Sen · sterowanie",
+        "state": {
+          "normal": "Automatyczne",
+          "pause": "Wstrzymaj",
+          "sleep_targets": "Sen · cel"
+        }
+      },
+      "equipment_fan_purpose": {
+        "name": "{channel}sterowanie · Urządzenia",
+        "state": {
+          "extraction": "Zewnętrzne · sterowanie",
+          "filtration": "PM2.5 · sterowanie",
+          "auto": "Automatyczne"
+        }
+      },
+      "area_area_science_radiant_temperature_entity": {
+        "name": "Temperatura · źródło"
+      },
+      "area_area_science_air_speed_entity": {
+        "name": "źródło · Prędkość · Zewnętrzne (m/s)"
+      }
+    },
+    "time": {
+      "area_climate_sleep_start": {
+        "name": "Sen · Urządzenia · START"
+      },
+      "area_climate_sleep_end": {
+        "name": "Sen · Urządzenia · END"
+      }
+    },
+    "button": {
+      "area_recalculate_mold": {
+        "name": "Wskaźnik pleśni · ↻ 🌡️"
+      },
+      "equipment_resume": {
+        "name": "{channel}Sprawdź i wznów"
+      }
+    },
+    "climate": {
+      "equipment_climate": {
+        "name": "{channel}Regulator klimatu"
+      }
+    }
+  },
+  "services": {
+    "announce": {
+      "name": "Komunikaty (opcjonalnie) — Home Environment Manager",
+      "description": "Komunikaty (opcjonalnie) · Pomieszczenia",
+      "fields": {
+        "language": {
+          "name": "Język",
+          "description": "Język"
+        },
+        "channels": {
+          "name": "Komunikaty (opcjonalnie)",
+          "description": "Komunikaty (opcjonalnie)"
+        },
+        "areas": {
+          "name": "Pomieszczenia",
+          "description": "Pomieszczenia"
+        }
+      }
+    },
+    "pid_control": {
+      "name": "PID climate control",
+      "description": "Explicitly pause, resume or reset a room controller. Climate modes are never switched.",
+      "fields": {
+        "area": {
+          "name": "Room",
+          "description": "Explicit Home Assistant room ID"
+        },
+        "action": {
+          "name": "Action",
+          "description": "Pause, resume, or reset (reset stays paused)"
+        }
+      }
+    }
+  },
+  "selector": {
+    "output_language": {
+      "options": {
+        "auto": "Home Assistant — Domyślne",
+        "en": "ustawienia · źródło",
+        "de": "ustawienia · źródło",
+        "el": "ustawienia · źródło",
+        "fr": "ustawienia · źródło",
+        "es": "ustawienia · źródło",
+        "it": "ustawienia · źródło",
+        "nl": "ustawienia · źródło",
+        "pt": "ustawienia · źródło",
+        "pt-br": "ustawienia · źródło",
+        "pl": "ustawienia · źródło",
+        "ru": "ustawienia · źródło",
+        "uk": "ustawienia · źródło",
+        "tr": "ustawienia · źródło",
+        "cs": "ustawienia · źródło",
+        "sk": "ustawienia · źródło",
+        "hu": "ustawienia · źródło",
+        "ro": "ustawienia · źródło",
+        "bg": "ustawienia · źródło",
+        "hr": "ustawienia · źródło",
+        "sr": "ustawienia · źródło",
+        "sv": "ustawienia · źródło",
+        "nb": "ustawienia · źródło",
+        "da": "ustawienia · źródło",
+        "fi": "ustawienia · źródło",
+        "id": "ustawienia · źródło",
+        "vi": "ustawienia · źródło",
+        "th": "ustawienia · źródło",
+        "hi": "ustawienia · źródło",
+        "zh-hans": "ustawienia · źródło",
+        "zh-hant": "ustawienia · źródło",
+        "ja": "ustawienia · źródło",
+        "ko": "ustawienia · źródło",
+        "ar": "ustawienia · źródło",
+        "he": "ustawienia · źródło",
+        "fa": "ustawienia · źródło",
+        "bn": "ustawienia · źródło",
+        "ur": "ustawienia · źródło",
+        "ta": "ustawienia · źródło"
+      }
+    },
+    "general_home_policy": {
+      "options": {
+        "any_home": "Dom · Obecność",
+        "all_home": "Dom · Urządzenia · Obecność"
+      }
+    },
+    "device_method": {
+      "options": {
+        "setpoint": "cel · sterowanie",
+        "native": "Urządzenia · sterowanie",
+        "power": "Moc",
+        "speed": "Prędkość"
+      }
+    },
+    "device_presence_requirement": {
+      "options": {
+        "always": "Automatyczne",
+        "room": "Pokój · Obecność",
+        "home": "Dom · Obecność"
+      }
+    },
+    "device_absence_action": {
+      "options": {
+        "hold": "Wstrzymaj",
+        "off": "Wyłącz"
+      }
+    },
+    "device_sleep_behavior": {
+      "options": {
+        "normal": "Automatyczne",
+        "pause": "Wstrzymaj",
+        "sleep_targets": "Sen · cel"
+      }
+    },
+    "device_fan_purpose": {
+      "options": {
+        "extraction": "Zewnętrzne · sterowanie",
+        "filtration": "PM2.5 · sterowanie"
+      }
+    },
+    "outside_aqi_scale": {
+      "options": {
+        "not_configured": "źródło · Nieprawidłowe",
+        "us_epa": "US EPA AQI (0–500)",
+        "eea_category": "EEA AQI (1–6)",
+        "custom": "cel · ustawienia"
+      }
+    }
+  },
+  "config_subentries": {
+    "room": {
+      "entry_type": "Centrala pomieszczenia",
+      "initiate_flow": {
+        "user": "Centrala pomieszczenia"
+      },
+      "step": {
+        "user": {
+          "title": "Centrala pomieszczenia",
+          "description": "Wybierz obszar Home Assistant. Grupa zawiera ogólne ustawienia pomieszczenia i jeden sterownik na wybrane urządzenie fizyczne. Dodanie pomieszczenia nie włącza automatycznego sterowania urządzeniami.",
+          "data": {
+            "area_id": "Pokój"
+          },
+          "data_description": {
+            "area_id": "Wybierz obszar Home Assistant. Grupa zawiera ogólne ustawienia pomieszczenia i jeden sterownik na wybrane urządzenie fizyczne. Dodanie pomieszczenia nie włącza automatycznego sterowania urządzeniami."
+          }
+        }
+      },
+      "error": {
+        "invalid_area": "Nieprawidłowe: Obszar."
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured%]"
+      }
+    }
+  }
+}
