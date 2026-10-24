@@ -242,6 +242,35 @@ def test_uncommissioned_power_never_starts_a_device(runtime_module):
     asyncio.run(run())
 
 
+def test_selecting_active_control_mode_rearms_and_uses_real_off_age(runtime_module):
+    async def run(algorithm):
+        h = home(runtime_module, domain="climate", mode="existing")
+        # The physical unit has already satisfied its minimum-OFF dwell.
+        h.state.last_changed = datetime.fromtimestamp(
+            h.clock[0] - 900, tz=timezone.utc
+        )
+        record = h.runtime._record(h.spec)
+        record["paused"] = "physical_manual_override"
+        record["off_at"][h.entity] = h.clock[0]  # stale selector-time value
+
+        await h.runtime.async_update(
+            h.spec,
+            {"control_mode": algorithm, "requested_mode": "heat"},
+        )
+        saved = m.settings(h.manager, h.spec)
+        assert saved["control_mode"] == algorithm
+        assert "paused" not in record
+        assert record["off_at"][h.entity] == h.clock[0] - 900
+
+        await tick(h)
+        assert h.hass.services.calls
+        assert h.hass.services.calls[0][1] == "set_hvac_mode"
+        assert h.hass.services.calls[0][2]["hvac_mode"] == "heat"
+
+    asyncio.run(run("automatic"))
+    asyncio.run(run("pid"))
+
+
 def test_mode_selector_is_explicit_exact_device_authorization(runtime_module):
     async def run():
         h = home(runtime_module, mode="existing")
@@ -260,9 +289,8 @@ def test_presets_are_independent_and_change_policy_targets(runtime_module):
     sleep = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "sleep"}, h.plan)
     away = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "away"}, h.plan)
     comfort = m.targets(h.manager, h.spec, h.cap, {**h.cfg, "preset": "comfort"}, h.plan)
-    limits=m.device_limits(h.manager,h.spec,h.cap)
-    assert away["heat"] == limits["temperature_min_limit"]
-    assert away["cool"] == limits["temperature_max_limit"]
+    assert away["heat"] == 16
+    assert away["cool"] == 30
     assert comfort["heat"] > old["heat"]
     assert sleep["heat"] >= away["heat"]
     eco=m.targets(h.manager,h.spec,h.cap,{**h.cfg,"preset":"eco"},h.plan)
