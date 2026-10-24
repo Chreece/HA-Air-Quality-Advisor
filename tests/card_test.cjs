@@ -1215,3 +1215,85 @@ assert.ok(nativeDryCard.shadowRoot.innerHTML.includes('data-climate-action="resu
   assert.ok(!demoCard.shadowRoot.innerHTML.includes('<img src=x onerror='),
     'user-supplied malicious or long names must not become executable markup');
 }
+
+
+// Beta40: each configured controller has its own deterministic PID method and
+// model inputs; no model is applied without a deliberate exact-device press.
+{
+  const dashboard=JSON.parse(JSON.stringify(input));
+  dashboard.rooms=[{area_id:'bath',name:'Badezimmer',status:'unknown',
+    readings:[],windows:[],environment:{climate_plan:{
+      status:'advisory',controller:'environment',reason:'environment_only_no_hvac',
+    }}}];
+  const climateId='climate.bath_pid_managed';
+  const methodId='select.bath_pid_method';
+  const tuneId='select.bath_pid_calibration_method';
+  const numberId='number.bath_pid_process_gain';
+  const buttonId='button.bath_pid_apply';
+  const source=['climate.real_bath'];
+  const shared={area_id:'bath',source_entity_ids:source};
+  const states={
+    'sensor.beta40':{state:'idle',attributes:{dashboard}},
+    [climateId]:{state:'heat',attributes:{
+      ...shared,control_mode:'pid',supported_features:1,
+    }},
+    [methodId]:{state:'pid',attributes:{...shared,
+      options:['existing','automatic','manual','pid','off']}},
+    [tuneId]:{state:'imc_lambda',attributes:{...shared,
+      pid_calibration_role:'method',
+      options:['manual','imc_lambda','cohen_coon']}},
+    [numberId]:{state:'100',attributes:{...shared,
+      pid_calibration_field:'pid_process_gain',min:0,max:10000,step:.001}},
+    [buttonId]:{state:'unknown',attributes:{...shared,
+      pid_calibration_role:'apply',calibration_status:'ready_to_apply_when_physical_off'}},
+  };
+  const calls=[];
+  const card=new Card();
+  card.setConfig({entity:'sensor.beta40'});
+  card.hass={language:'el',states,
+    callService:(domain,service,detail)=>{
+      calls.push([domain,service,detail]);return Promise.resolve();
+    }};
+  const html=card.shadowRoot.innerHTML;
+  assert.ok(html.includes('data-pid-calibration-method="'+tuneId+'"'));
+  assert.ok(html.includes('Μέθοδος βαθμονόμησης PID'));
+  assert.ok(html.includes('option value="imc_lambda" selected'));
+  assert.ok(html.includes('data-pid-model-field="pid_process_gain"'));
+  assert.ok(html.includes('data-apply-pid-calibration="'+buttonId+'"'));
+
+  const element=(attrs, editor=null)=>({
+    getAttribute(name){return attrs[name]??null;},
+    closest(query){return query==='.climate-target-editor'?editor:null;},
+  });
+  const option=element({'data-controller-area':'bath',
+                       'data-pid-calibration-method':tuneId});
+  option.value='cohen_coon';
+  card.shadowRoot.listeners.change({target:{
+    closest(query){return query==='[data-pid-calibration-method]'?option:null;},
+  }});
+  assert.deepEqual(calls.pop(),['select','select_option',{
+    entity_id:tuneId,option:'cohen_coon',
+  }]);
+  card.shadowRoot.listeners.click({target:{closest(query){
+    return query==='[data-save-pid-model]'
+      ?element({'data-controller-area':'bath','data-save-pid-model':numberId,
+                'data-pid-model-field':'pid_process_gain'},
+               {querySelector:()=>({value:'50'})}) : null;
+  }}});
+  assert.deepEqual(calls.pop(),['number','set_value',{
+    entity_id:numberId,value:50,
+  }]);
+  card.shadowRoot.listeners.click({target:{closest(query){
+    return query==='[data-apply-pid-calibration]'
+      ?element({'data-controller-area':'bath',
+                'data-apply-pid-calibration':buttonId}) : null;
+  }}});
+  assert.deepEqual(calls.pop(),['button','press',{entity_id:buttonId}]);
+  // A foreign button cannot modify an unrelated physical controller.
+  card.shadowRoot.listeners.click({target:{closest(query){
+    return query==='[data-apply-pid-calibration]'
+      ?element({'data-controller-area':'kitchen',
+                'data-apply-pid-calibration':buttonId}) : null;
+  }}});
+  assert.equal(calls.length,0);
+}
