@@ -1,4 +1,4 @@
-"""Beta40 HACS domain-switch and flat-tag payload contract."""
+"""Beta41 HACS domain-switch and flat-tag payload contract."""
 from __future__ import annotations
 
 import importlib.util
@@ -12,8 +12,8 @@ PKG = ROOT / "custom_components" / "environment_manager"
 
 
 def _builder():
-    path = ROOT / "tools" / "build_beta40_payload.py"
-    spec = importlib.util.spec_from_file_location("beta40_payload_builder", path)
+    path = ROOT / "tools" / "build_beta41_payload.py"
+    spec = importlib.util.spec_from_file_location("beta41_payload_builder", path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(module)
@@ -31,7 +31,7 @@ def test_hacs_root_discovery_is_canonical():
     assert hacs["hide_default_branch"] is True
     assert root_manifest == canonical
     assert canonical["domain"] == "environment_manager"
-    assert canonical["version"] == "0.6.0b40"
+    assert canonical["version"] == "0.6.0b41"
 
 
 def test_flat_payload_contains_only_integration_root_plus_hacs_metadata():
@@ -85,19 +85,19 @@ def test_normal_hacs_tag_archive_extraction_lands_in_canonical_directory():
             (destination / "manifest.json").read_text(encoding="utf-8")
         )
         assert manifest["domain"] == "environment_manager"
-        assert manifest["version"] == "0.6.0b40"
+        assert manifest["version"] == "0.6.0b41"
         assert (destination / "__init__.py").is_file()
         assert not (destination / "custom_components").exists()
 
 
-def test_beta40_publisher_creates_flat_branch_and_no_zip_release():
+def test_beta41_publisher_creates_flat_branch_and_no_zip_release():
     workflow = (
-        ROOT / ".github" / "workflows" / "beta40-pid-calibration-output.yml"
+        ROOT / ".github" / "workflows" / "beta41-measured-fan-capacity.yml"
     ).read_text(encoding="utf-8")
-    assert "python tools/build_beta40_payload.py" in workflow
-    assert "git checkout --orphan beta40-payload" in workflow
-    assert "git push origin HEAD:refs/heads/beta/v0.6.0b40" in workflow
-    assert "gh release create v0.6.0b40" in workflow
+    assert "python tools/build_beta41_payload.py" in workflow
+    assert "git checkout --orphan beta41-payload" in workflow
+    assert "git push origin HEAD:refs/heads/beta/v0.6.0b41" in workflow
+    assert "gh release create v0.6.0b41" in workflow
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     assert hacs.get("zip_release") is not True
     assert "filename" not in hacs
