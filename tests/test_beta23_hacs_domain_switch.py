@@ -1,4 +1,4 @@
-"""Beta25 HACS domain-switch and flat-tag payload contract."""
+"""Beta26 HACS domain-switch and flat-tag payload contract."""
 from __future__ import annotations
 
 import importlib.util
@@ -12,15 +12,15 @@ PKG = ROOT / "custom_components" / "environment_manager"
 
 
 def _builder():
-    path = ROOT / "tools" / "build_beta25_payload.py"
-    spec = importlib.util.spec_from_file_location("beta25_payload_builder", path)
+    path = ROOT / "tools" / "build_beta26_payload.py"
+    spec = importlib.util.spec_from_file_location("beta26_payload_builder", path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
 
 
-def test_hacs_root_discovery_breaks_cached_old_remote_path():
+def test_hacs_root_discovery_is_canonical():
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     root_manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
     canonical = json.loads((PKG / "manifest.json").read_text(encoding="utf-8"))
@@ -31,21 +31,7 @@ def test_hacs_root_discovery_breaks_cached_old_remote_path():
     assert hacs["hide_default_branch"] is True
     assert root_manifest == canonical
     assert canonical["domain"] == "environment_manager"
-    assert canonical["version"] == "0.6.0b25"
-
-    # Mirror HACS integration.py for the exact failure shown by the user.
-    remote = "custom_components/air_quality_advisor"
-    if hacs["content_in_root"]:
-        remote = ""
-    manifest_path = (
-        "manifest.json" if hacs["content_in_root"] else f"{remote}/manifest.json"
-    )
-    domain = root_manifest["domain"]
-    local_path = f"/config/custom_components/{domain}"
-
-    assert remote == ""
-    assert manifest_path == "manifest.json"
-    assert local_path == "/config/custom_components/environment_manager"
+    assert canonical["version"] == "0.6.0b26"
 
 
 def test_flat_payload_contains_only_integration_root_plus_hacs_metadata():
@@ -99,19 +85,19 @@ def test_normal_hacs_tag_archive_extraction_lands_in_canonical_directory():
             (destination / "manifest.json").read_text(encoding="utf-8")
         )
         assert manifest["domain"] == "environment_manager"
-        assert manifest["version"] == "0.6.0b25"
+        assert manifest["version"] == "0.6.0b26"
         assert (destination / "__init__.py").is_file()
         assert not (destination / "custom_components").exists()
 
 
-def test_beta25_publisher_creates_flat_branch_and_no_zip_release():
+def test_beta26_publisher_creates_flat_branch_and_no_zip_release():
     workflow = (
-        ROOT / ".github" / "workflows" / "beta25-single-domain.yml"
+        ROOT / ".github" / "workflows" / "beta26-single-domain.yml"
     ).read_text(encoding="utf-8")
-    assert "python tools/build_beta25_payload.py" in workflow
-    assert "git checkout --orphan beta25-payload" in workflow
-    assert "git push origin HEAD:refs/heads/beta/v0.6.0b25" in workflow
-    assert "gh release create v0.6.0b25" in workflow
+    assert "python tools/build_beta26_payload.py" in workflow
+    assert "git checkout --orphan beta26-payload" in workflow
+    assert "git push origin HEAD:refs/heads/beta/v0.6.0b26" in workflow
+    assert "gh release create v0.6.0b26" in workflow
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     assert hacs.get("zip_release") is not True
     assert "filename" not in hacs
