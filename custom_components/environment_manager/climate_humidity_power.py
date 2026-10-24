@@ -17,6 +17,7 @@ from datetime import datetime
 from typing import Any, Callable
 
 from .climate_coordination import device_inventory, duplicate_owners
+from .const import DOMAIN
 from .climate_equipment import humidity_advice
 from .climate_arbitration import new_command_gate
 from .climate_humidity_native import _target as native_humidity_target
