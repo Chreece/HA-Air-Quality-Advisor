@@ -181,7 +181,7 @@ def test_system_notification_uses_stable_room_id_and_catches_failures():
     assert reg.calls[0][:3] == (
         "persistent_notification", "create",
         {"title": "Air quality", "message": "Open window",
-         "notification_id": "air_quality_advisor_living"},
+         "notification_id": "environment_manager_living"},
     )
     hass, reg = home()
     reg.pn_active = False
