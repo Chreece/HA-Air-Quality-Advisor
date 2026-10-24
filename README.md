@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b28/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b29/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,13 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 28 is available for opt-in testing.** Stable remains **v0.5.1**. Beta28 is the final frozen promotion of the canonical `environment_manager` build: Room Environment owns Comfort / Home / Away / Sleep / Eco temperature and humidity targets, and selecting Automatic / PID / Manual activates that exact native controller when verified demand requires it. Beta26 and beta27 are superseded intermediate payloads.
+> **v0.6.0 beta 29 is available for opt-in testing.** Stable remains **v0.5.1**. Beta29 fixes the false window interlock that could leave a monitored room's authorized PID/Automatic climate controllers OFF when the room has **no configured window contact**. Existing configured contacts still must be closed and valid. It retains the canonical `environment_manager` domain, room targets for Comfort / Home / Away / Sleep / Eco, and native PID/Automatic device actuation.
+
+## Beta 29 - optional window contact must not block room heating
+
+Monitored rooms **without any window contact** can now operate their authorized heating, cooling and humidity controllers on verified demand; Home Environment Manager no longer treats absent optional hardware as an open window. **Any configured/discovered window contact that is open, missing or unavailable still blocks actuation.** The controller's live fallback and primary room plan agree on this rule.
+
+The one canonical `environment_manager` integration, Comfort/Home/Away/Sleep/Eco room targets, PID/Automatic native device ON/OFF and safety dwell/ownership checks remain intact.
 
 ## Beta 28 - final canonical room targets and active controllers
 
