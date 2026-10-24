@@ -1359,6 +1359,21 @@
       const l=CLIMATE_LABELS[this._language()] || CLIMATE_LABELS.en;
       const methods={existing:l.existing,automatic:l.automatic,manual:l.manual,
         pid:l.pid,off:l.off};
+      const pidLabels={
+        en:['PID tuning method','Manual gains','IMC / Lambda','Cohen–Coon',
+          'Process gain (PV / full output)','Time constant (min)','Dead time (min)',
+          'Lambda (min)','Save input','Apply calibration','Measured step response required'],
+        el:['Μέθοδος βαθμονόμησης PID','Χειροκίνητα','IMC / Λάμδα','Cohen–Coon',
+          'Κέρδος διεργασίας','Χρονική σταθερά (λεπτά)','Νεκρός χρόνος (λεπτά)',
+          'Λάμδα (λεπτά)','Αποθήκευση εισόδου','Εφαρμογή βαθμονόμησης','Απαιτείται μετρημένη απόκριση'],
+        de:['PID-Abstimmverfahren','Manuell','IMC / Lambda','Cohen–Coon',
+          'Prozessverstärkung','Zeitkonstante (min)','Totzeit (min)',
+          'Lambda (min)','Eingabe speichern','PID-Werte anwenden','Gemessene Sprungantwort erforderlich'],
+      }[this._language()] || [
+        'PID tuning method','Manual gains','IMC / Lambda','Cohen–Coon',
+        'Process gain','Time constant (min)','Dead time (min)','Lambda (min)',
+        'Save input','Apply calibration','Measured response required',
+      ];
       const sections=devices.map((entry)=>{
         const state=entry.climate;
         const attrs=state.attributes || {};
@@ -1378,6 +1393,51 @@
             (option===control ? 'selected' : '')+'>'+
             escape(methods[option] || option)+'</option>').join('')+
           '</select></label>' : '';
+        const calMethods={manual:pidLabels[1],imc_lambda:pidLabels[2],
+          cohen_coon:pidLabels[3]};
+        const selectedCalibration=entry.calibrationSelect?.state || 'manual';
+        const calibrationOptions=entry.calibrationSelect?.attributes?.options || [];
+        const calibrationMethod=control==='pid' && entry.calibrationSelectId &&
+          calibrationOptions.length
+          ? '<label class="managed-method-label"><span>'+escape(pidLabels[0])+'</span>'+
+            '<select data-pid-calibration-method="'+escape(entry.calibrationSelectId)+
+            '" data-controller-area="'+escape(room.area_id)+'" '+
+            (available ? '' : 'disabled')+'>'+
+            calibrationOptions.map((option)=>
+              '<option value="'+escape(option)+'" '+
+              (option===selectedCalibration ? 'selected' : '')+'>'+
+              escape(calMethods[option] || option)+'</option>').join('')+
+            '</select></label>' : '';
+        const pidModelFields=[
+          ['pid_process_gain',pidLabels[4]],
+          ['pid_time_constant_minutes',pidLabels[5]],
+          ['pid_dead_time_minutes',pidLabels[6]],
+          ['pid_lambda_minutes',pidLabels[7]],
+        ].filter(([key])=>selectedCalibration==='imc_lambda' ||
+          key!=='pid_lambda_minutes');
+        const pidInputs=(control==='pid' && selectedCalibration!=='manual')
+          ? pidModelFields.map(([key,label])=>{
+              const match=entry.calibrationNumbers?.find(item=>item.field===key);
+              if (!match) return '';
+              const bound=match.state.attributes || {};
+              return '<div class="climate-target-editor">'+
+                '<label><span>'+escape(label)+'</span>'+
+                '<input type="number" data-pid-model-input="'+escape(key)+
+                '" min="'+escape(bound.min ?? 0)+'" max="'+escape(bound.max ?? 10000)+
+                '" step="'+escape(bound.step ?? 0.1)+'" value="'+
+                escape(match.state.state==='unavailable' ? '' : match.state.state)+
+                '"></label><button type="button" data-save-pid-model="'+escape(match.id)+
+                '" data-pid-model-field="'+escape(key)+'" data-controller-area="'+
+                escape(room.area_id)+'">'+escape(pidLabels[8])+'</button></div>';
+            }).join('') : '';
+        const apply=(control==='pid' && selectedCalibration!=='manual' &&
+          entry.calibrationButtonId)
+          ? '<div class="managed-status">'+escape(pidLabels[10])+' · '+
+             escape(entry.calibrationButton?.attributes?.calibration_status || '')+
+            '</div><button type="button" class="pid-button" '+
+            'data-apply-pid-calibration="'+escape(entry.calibrationButtonId)+
+            '" data-controller-area="'+escape(room.area_id)+'" '+
+            (!available ? 'disabled' : '')+'>'+escape(pidLabels[9])+'</button>' : '';
         const features=Number(attrs.supported_features) || 0;
         const editable=available && control==='manual';
         const editors=[];
@@ -1412,7 +1472,7 @@
           '<div class="managed-status">'+escape(entry.entityId)+
           ' · '+escape(state.state)+
           (status ? ' · '+escape(status.replaceAll('_',' ')) : '')+'</div>'+
-          method+editors.join('')+'</section>';
+          method+calibrationMethod+pidInputs+apply+editors.join('')+'</section>';
       }).join('');
       return '<div class="managed-controllers">'+
         '<strong>'+escape(l.devices)+'</strong>'+
