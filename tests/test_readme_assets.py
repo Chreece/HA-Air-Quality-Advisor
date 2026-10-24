@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 RAW_ROOT = "https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/"
-VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7", "v0.6.0b8", "v0.6.0b9", "v0.6.0b10", "v0.6.0b11", "v0.6.0b12", "v0.6.0b13", "v0.6.0b14", "v0.6.0b15", "v0.6.0b16", "v0.6.0b17", "v0.6.0b18", "v0.6.0b21", "v0.6.0b22", "v0.6.0b23", "v0.6.0b24", "v0.6.0b25", "v0.6.0b26", "v0.6.0b27", "v0.6.0b28")
+VALID_REFS = ("main", "v0.6.0b1", "v0.6.0b2", "v0.6.0b3", "v0.6.0b4", "v0.6.0b5", "v0.6.0b6", "v0.6.0b7", "v0.6.0b8", "v0.6.0b9", "v0.6.0b10", "v0.6.0b11", "v0.6.0b12", "v0.6.0b13", "v0.6.0b14", "v0.6.0b15", "v0.6.0b16", "v0.6.0b17", "v0.6.0b18", "v0.6.0b21", "v0.6.0b22", "v0.6.0b23", "v0.6.0b24", "v0.6.0b25", "v0.6.0b26", "v0.6.0b27", "v0.6.0b28", "v0.6.0b29"
 LOCAL_ASSET_ROOT = ".github/assets/"
 
 
