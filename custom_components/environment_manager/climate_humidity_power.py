@@ -89,10 +89,10 @@ class HumidityPowerControl:
         self._started = self.clock()
         try:
             from homeassistant.helpers.storage import Store
-            from .domain_migration import async_open_migrated_store
-            self._store, loaded = await async_open_migrated_store(
-                self.hass, 1, "humidity_power", self.entry_id
+            self._store = Store(
+                self.hass, 1, f"{DOMAIN}.humidity_power_{self.entry_id}"
             )
+            loaded = await self._store.async_load()
         except Exception:
             _LOGGER.exception("Humidity power safety history unavailable")
             return
