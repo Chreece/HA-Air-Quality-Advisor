@@ -282,7 +282,12 @@ class EquipmentRuntime:
                 changes["pid_fan_capacity_models"], dict
             ):
                 raise HomeAssistantError("Invalid calibrated fan model data")
-            if new["pid_fan_capacity_mode"] == "measured" and new["control_mode"] == "pid":
+            if (new["pid_fan_capacity_mode"] == "measured"
+                    and new["control_mode"] == "pid"
+                    and "pid_fan_capacity_mode" in changes):
+                # Changing the *calibration edit direction* must not disable an
+                # existing measured model for another HVAC mode. Only entering
+                # Measured strategy or Apply requires an existing valid model.
                 saved = maps.get(direction)
                 if (not cap.fan_entity
                         or not fan_capacity_model_is_valid(
