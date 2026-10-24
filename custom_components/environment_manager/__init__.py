@@ -20,10 +20,8 @@ from .manager import AirQualityManager
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
-    """Serve the canonical integration and retire verified legacy folders."""
+    """Serve the canonical integration."""
     hass.data.setdefault(DOMAIN, {})
-    from .domain_migration import async_quarantine_legacy_component_dirs
-    await async_quarantine_legacy_component_dirs(hass)
     card_path = Path(__file__).parent / "frontend" / "air-quality-advisor-card.js"
     await hass.http.async_register_static_paths([
         StaticPathConfig(f"/{DOMAIN}/air-quality-advisor-card.js", str(card_path), True),
@@ -67,7 +65,7 @@ def _exact_room_manager(hass: HomeAssistant, area: str,
                         section: str) -> tuple[Any | None, str | None]:
     """Select exactly one active owner for room-scoped control actions.
 
-    Multiple historical config entries may coexist. Never silently route
+    Multiple config entries must never silently route
     a room to the first one or broadcast a control action to multiple
     managers; ambiguous area ownership must fail closed.
     """
@@ -94,10 +92,6 @@ def _exact_room_manager(hass: HomeAssistant, area: str,
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Existing installations retain entry IDs and selected devices. Only the
-    # uncustomized legacy display title is migrated to the new product name.
-    if getattr(entry, "title", None) in ("Air Quality Advisor", "Home Environment Advisor"):
-        hass.config_entries.async_update_entry(entry, title="Home Environment Manager")
     from .room_hubs import async_sync_room_hubs, async_watch_room_hubs, home_subentry_id
     room_subentries = async_sync_room_hubs(hass, entry)
     manager = AirQualityManager(hass, entry)
