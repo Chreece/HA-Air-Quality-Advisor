@@ -21,7 +21,17 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 40 is available for opt-in testing.** Stable remains **v0.5.1**. Beta40 coordinates a per-device PID output across binary ON/OFF, verified 0–100% modulation, real Low/Medium/High native fan stages and quiet-room limits; it adds Manual / IMC-Lambda / Cohen–Coon deterministic calibration choices using measured process models. All prior safety and beta31–39 fixes remain; the domain is `environment_manager`.
+> **v0.6.0 beta 41 is available for opt-in testing.** Stable remains **v0.5.1**. Beta41 adds opt-in **measured fan capacity compensation** for PID-controlled ON/OFF appliances: the controller adjusts fan speed and duty from actual measured relative capacity, respects quiet caps and reports unserved demand, while the Legacy strategy remains the default. All earlier safety and beta31–40 fixes remain; the domain is `environment_manager`.
+
+## Beta 41 - measured fan-stage capacity adjusts ON/OFF PID duration
+
+When a native ON/OFF heater, cooler or dryer also exposes a controllable fan, Low/Medium/High settings may deliver widely different physical output. A fan speed setting cannot be equated with a percentage of heating or moisture-removal capacity.
+
+Under the exact physical controller's PID mode, fill measured *relative delivered capacity* for each supported native speed, choose the specific HVAC direction (Heat/Cool/Dry), and press **Apply measured fan capacity** while the physical output is OFF. For discrete stages, the highest real supported stage is the 100% relative reference; every slower stage needs its measured relative capacity. For percentage fans, provide at least two measured supported speed/output pairs, with native 100% speed the reference. No live probing or default assumed low/medium percentages. Legacy remains the default and can be restored in the capacity strategy selector.
+
+The allocator chooses a supported speed and compensates binary ON-time by the **measured ratio**. E.g. demand 50% at Medium measured capacity 65% gives about 77% nominal ON time, subject to physical minimum ON/OFF and maximum-runtime interlocks. Quiet when sleeping/occupied caps fan speed first: if Low only delivers 30% against a 50% demand, the controller reports 20% unmet demand rather than raising speed or fabricating capacity. Calibration curves are tied to native source and HVAC direction and never silently transferred.
+
+Per-device calibrated strategy, direction, measured fields, Apply button and read-only capacity/duty/shortfall diagnostics are available on the controller device and dashboard. Avoid using a different mode or room condition without new physical measurements.
 
 ## Beta 40 - coordinated PID outputs and deterministic per-device calibration
 
