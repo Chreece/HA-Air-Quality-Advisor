@@ -674,13 +674,17 @@
     }
 
     _loadDeviceIds() {
-      if (this._deviceRegistryLoading || this._deviceRegistryUnavailable ||
-          this._deviceRegistryLoaded || !this._hass?.callWS) return;
-      this._deviceRegistryLoading = Promise.resolve(
+      // Loading/reconnect failures are transient. A permanent "unavailable"
+      // latch previously required a browser hard refresh to recover links.
+      if (this._deviceRegistryLoading || this._deviceRegistryLoaded ||
+          !this._hass?.callWS || Date.now()<this._deviceRegistryNextAttemptAt) return;
+      // Defer the call to catch both synchronous WebSocket failures and
+      // rejected promises without escaping from Home Assistant's hass setter.
+      this._deviceRegistryLoading = Promise.resolve().then(() =>
         this._hass.callWS({type:'config/device_registry/list'})
       ).then((entries) => {
         if (!Array.isArray(entries)) throw new Error('Invalid device registry');
-        const belong = (d) => safeArray(d.identifiers)
+        const belong = (d) => safeArray(d?.identifiers)
           .filter((pair) => Array.isArray(pair) && pair[0]==='environment_manager')
           .map((pair) => pair[1]);
         const home = entries.filter((device) => belong(device).some(
@@ -691,30 +695,39 @@
         const parent = home.find((device)=>device.id===currentDevice) ||
                        (home.length===1 ? home[0] : null);
         if (!parent) {
-          this._deviceRegistryUnavailable = true;
-          return; // Ambiguous installation: never open somebody else's device.
+          // Multiple integrations or an incomplete HA registry are ambiguous.
+          // Do not navigate to a guessed device; retry when HA reconnects.
+          throw new Error('Home device registry not yet unambiguous');
         }
-        this._homeDeviceId = parent.id;
         const ids = belong(parent);
         const entryId = ids.find((id) => typeof id==='string' && !id.includes('_area_'));
-        if (!entryId) {
-          this._deviceRegistryUnavailable = true;
-          return;
-        }
-        this._areaDeviceIds.clear();
+        if (!entryId) throw new Error('Home device registry is incomplete');
+        const roomDevices = new Map();
         for (const device of entries) {
           for (const identifier of belong(device)) {
             const prefix = entryId+'_area_';
             if (typeof identifier === 'string' && identifier.startsWith(prefix)) {
-              this._areaDeviceIds.set(identifier.slice(prefix.length),device.id);
+              roomDevices.set(identifier.slice(prefix.length),device.id);
             }
           }
         }
+        this._homeDeviceId = parent.id;
+        this._areaDeviceIds = roomDevices;
         this._deviceRegistryLoaded = true;
+        this._deviceRegistryUnavailable = false;
+        this._deviceRegistryFailureCount = 0;
+        this._deviceRegistryNextAttemptAt = 0;
         this._render(true);
       }).catch((error) => {
-        this._deviceRegistryUnavailable = true;
-        console.warn('Home Environment Manager device links unavailable', error);
+        this._deviceRegistryLoaded = false;
+        this._deviceRegistryFailureCount = Math.min(6, this._deviceRegistryFailureCount+1);
+        this._deviceRegistryNextAttemptAt = Date.now()+
+          Math.min(60000, 1000*(2**this._deviceRegistryFailureCount));
+        // A temporary websocket/registry outage must not break card rendering
+        // and must not generate a console warning on every hass state update.
+        if (this._deviceRegistryFailureCount<=2) {
+          console.warn('Home Environment Manager device links will retry', error);
+        }
       }).finally(() => { this._deviceRegistryLoading = null; });
     }
 
