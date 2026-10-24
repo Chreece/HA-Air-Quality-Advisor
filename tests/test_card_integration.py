@@ -30,7 +30,9 @@ def test_static_registration_and_cache_version_are_declared():
     assert 'f"/{DOMAIN}/air-quality-advisor-card.js?v={manifest[\'version\']}"' in source
 
 
-def test_single_sensor_still_exposes_dashboard_without_new_entities():
+def test_single_recommendation_sensor_retains_dashboard_beside_controller_diagnostics():
     source = (INTEGRATION / "sensor.py").read_text()
     assert "dashboard_snapshot" in source
-    assert "async_add_grouped_entities(entry.runtime_data, async_add_entities, [AirQualityRecommendation" in source
+    assert "async_add_grouped_entities(entry.runtime_data, async_add_entities, [" in source
+    assert "AirQualityRecommendation(entry.runtime_data, entry.entry_id)" in source
+    assert "ControllerStatusSensor(entry.runtime_data, spec)" in source
