@@ -485,6 +485,37 @@
       this._deviceRegistryLoading = null;
       this._deviceRegistryUnavailable = false;
       this._deviceRegistryLoaded = false;
+      this._deviceRegistryFailureCount = 0;
+      this._deviceRegistryNextAttemptAt = 0;
+      this._focusedEditor = null;
+      this._pendingRender = false;
+      this._pendingForceRender = false;
+      this._editRenderTimer = null;
+      this._lastRenderError = null;
+      this._hasValidRender = false;
+      // A focused native select/input belongs to the user until they commit
+      // or leave it; replacing shadowRoot.innerHTML while it is open closes
+      // the browser's picker and discards any unfinished manual edit.
+      this.shadowRoot.addEventListener('focusin', (event) => {
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input]');
+        if (!editor) return;
+        this._focusedEditor = editor;
+        if (this._editRenderTimer !== null) {
+          clearTimeout(this._editRenderTimer);
+          this._editRenderTimer = null;
+        }
+      });
+      this.shadowRoot.addEventListener('pointerdown', (event) => {
+        const editor = event.target.closest?.('[data-climate-method],[data-climate-input]');
+        if (editor) this._focusedEditor = editor;
+      });
+      this.shadowRoot.addEventListener('focusout', (event) => {
+        if (event.target !== this._focusedEditor) return;
+        this._focusedEditor = null;
+        // A click on Save follows input focusout. Defer the DOM replacement
+        // until after click dispatch so its target is not removed beforehand.
+        this._flushDeferredRenderSoon();
+      });
       this.shadowRoot.addEventListener('click', (event) => {
         const edit = event.target.closest?.('[data-edit-area],[data-edit-home]');
         if (edit) {
@@ -598,7 +629,33 @@
             CLIMATE_LABELS.en).editFailed;
           this._render(true);
         });
+        // A native change event commits the user's selected option. This is
+        // the earliest safe point to let the Manual target editor appear.
+        if (this._focusedEditor === selector) {
+          this._focusedEditor = null;
+          this._pendingRender = true;
+          this._flushDeferredRenderSoon();
+        }
       });
+    }
+
+    _flushDeferredRenderSoon() {
+      if (this._editRenderTimer !== null) clearTimeout(this._editRenderTimer);
+      this._editRenderTimer = setTimeout(() => {
+        this._editRenderTimer = null;
+        if (this._focusedEditor || !this._pendingRender) return;
+        const forced = this._pendingForceRender;
+        this._pendingRender = false;
+        this._pendingForceRender = false;
+        this._render(forced);
+      }, 80);
+    }
+
+    disconnectedCallback() {
+      if (this._editRenderTimer !== null) {
+        clearTimeout(this._editRenderTimer);
+        this._editRenderTimer = null;
+      }
     }
 
     setConfig(config) {
