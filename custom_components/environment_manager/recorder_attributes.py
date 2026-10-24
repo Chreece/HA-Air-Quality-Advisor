@@ -52,7 +52,7 @@ def bounded_attributes(
             while low <= high:
                 mid = (low + high) // 2
                 trial = {**result, key: value[:mid]}
-                if _size(trial) <= max_bytes:
+                if _size(trial) <= payload_budget:
                     best = mid
                     low = mid + 1
                 else:
