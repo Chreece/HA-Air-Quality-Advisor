@@ -909,6 +909,9 @@ def test_temperature_limits_clamp_profile_and_native_write(runtime_module):
 def test_humidity_limits_override_target_and_rate_limit(runtime_module):
     async def run():
         h = home(runtime_module, domain="humidifier", state="on", power=False)
+        h.room["profiles"] = {
+            "comfort": {"heat_c": 20, "cool_c": 26, "humidity": 60}
+        }
         h.manager.entry.data["environment_rooms"] = {
             "room": {"equipment_limits": {
                 "humidity_min_limit": 40, "humidity_max_limit": 55}}
