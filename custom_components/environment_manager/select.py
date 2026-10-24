@@ -147,6 +147,8 @@ class ConfigSelect(SelectEntity):
         self._setting_key = setting_key or kind
         self._entity_id = entity_id
         self._attr_options = list(options)
+        if kind == "pid_gain_source":
+            self._attr_has_entity_name = False
         suffix = f"{kind}_{self._setting_key}" if setting_key else kind
         if entity_id:
             suffix = f"{kind}_{entity_id.replace('.', '_')}_{self._setting_key}"
