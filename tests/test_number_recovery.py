@@ -174,3 +174,18 @@ def test_native_entity_recovery_adds_missing_room_numbers_without_restart(
         data={"entity_id": "climate.heater"},
     ))
     assert len(added) == before
+
+
+def test_every_room_profile_number_has_a_real_native_value(numbers):
+    manager, _, _, _, _ = configured()
+    from custom_components.environment_manager.device_controls import (
+        PROFILE_NUMBERS, PROFILE_DEFAULTS,
+    )
+
+    for key, bounds in PROFILE_NUMBERS.items():
+        entity = numbers.ConfigNumber(
+            manager, "entry", "living", "climate_profile", key, bounds,
+        )
+        group, mode = key.rsplit("_", 1)
+        expected = PROFILE_DEFAULTS[group][mode]
+        assert entity.native_value == expected, key
