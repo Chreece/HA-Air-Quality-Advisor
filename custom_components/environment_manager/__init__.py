@@ -1,4 +1,4 @@
-"""Home Environment Manager (backward-compatible Home Assistant domain)."""
+"""Home Environment Manager."""
 
 from __future__ import annotations
 
