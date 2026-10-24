@@ -145,3 +145,39 @@ def test_environment_only_plans_moisture_without_temperature_or_climate_device(a
     assert result["temperature_c"] is None
     assert result["equipment_plan"]["moisture"]["entity_id"]==dryer.entity_id
     assert humidity.entity_id in tracked and dryer.entity_id in tracked
+
+
+def test_no_window_contact_configured_does_not_block_room_climate(adapter):
+    """Absent optional hardware is not an open window; bad configured data is."""
+    from custom_components.environment_manager.climate_rooms import gather
+
+    cfg = {
+        "enabled": True, "controller": "device", "mode": "heat",
+        "temperature_entity": "sensor.kitchen_temperature",
+        "climate_entity": "climate.kitchen",
+    }
+    h = home(room_occupied=True)
+    no_contact = Room("kitchen", "Kitchen", (), ())
+    plan, _ = gather(h, no_contact, cfg, require_window_contact=False)
+    assert plan["window_safe"] is True
+    assert plan["window_evidence"] == "no_contact_configured"
+    assert plan["window_contacts"] == []
+
+    unknown = Room("kitchen", "Kitchen",
+                   (Window("binary_sensor.kitchen_window", "Window", None),), ())
+    blocked, _ = gather(h, unknown, cfg, require_window_contact=False)
+    assert blocked["window_safe"] is False
+    assert blocked["window_evidence"] == "open_or_unavailable_contact"
+
+    opened = Room("kitchen", "Kitchen",
+                  (Window("binary_sensor.kitchen_window", "Window", True),), ())
+    blocked, _ = gather(h, opened, cfg, require_window_contact=False)
+    assert blocked["window_safe"] is False
+
+
+def test_manager_does_not_require_unselected_window_hardware(adapter):
+    from pathlib import Path
+    manager = (Path(__file__).resolve().parents[1] /
+               "custom_components/environment_manager/manager.py").read_text()
+    assert "require_window_contact=False" in manager
+    assert "require_window_contact=monitored.area_id in monitored_areas" not in manager
