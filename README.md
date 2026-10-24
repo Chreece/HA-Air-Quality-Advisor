@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b27/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
+  <img src="https://raw.githubusercontent.com/Chreece/HA-Home-Environment-Manager/v0.6.0b28/.github/assets/home-environment-manager-banner.svg" alt="Home Environment Manager — room-aware ventilation recommendations for Home Assistant" width="100%">
 </p>
 
 <p align="center">
@@ -21,7 +21,17 @@
 
 # Home Environment Manager for Home Assistant
 
-> **v0.6.0 beta 27 is available for opt-in testing.** Stable remains **v0.5.1**. Beta27 supersedes beta26 with the same Room Environment profile targets and active Automatic/PID/Manual controller behavior, plus the final canonical storage cleanup: every runtime and persisted safety store now uses only `environment_manager`.
+> **v0.6.0 beta 28 is available for opt-in testing.** Stable remains **v0.5.1**. Beta28 is the final frozen promotion of the canonical `environment_manager` build: Room Environment owns Comfort / Home / Away / Sleep / Eco temperature and humidity targets, and selecting Automatic / PID / Manual activates that exact native controller when verified demand requires it. Beta26 and beta27 are superseded intermediate payloads.
+
+## Beta 28 - final canonical room targets and active controllers
+
+Beta28 is built from the fully validated final source after beta26/beta27 were found to be intermediate payloads. It ships only the canonical `environment_manager` domain and uses `environment_manager.*` for every runtime/storage namespace.
+
+Each Room Environment device exposes capability-appropriate **Comfort / Home / Away / Sleep / Eco** heating, cooling and humidity targets. These are editable room policies even while automation is Off.
+
+Selecting **Automatic, PID or Manual** on a managed native controller is sufficient authorization for that exact controller to regulate and to start/stop the supported physical device or HVAC mode when verified demand requires it. There is no second power toggle. Real minimum ON/OFF time, max runtime, windows, availability, ownership, defrost/interlocks and acknowledgement protections still apply.
+
+Beta28 also preserves the physical entity's actual OFF age when selecting a method and treats deliberate method reselection as an explicit re-arm of a previous software pause.
 
 ## Beta 27 - canonical storage, room targets and active controllers
 
@@ -299,11 +309,11 @@ interlocks.
 
 1. **Back up Home Assistant and your existing configuration.** Home Assistant 2026.10+ is required. The only active integration domain is `environment_manager`; legacy entries are migration inputs only and keep their existing IDs/entities during the one-time migration.
 2. Open [Home Environment Manager in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=Chreece&repository=HA-Home-Environment-Manager&category=integration), or add `Chreece/HA-Home-Environment-Manager` as a **custom Integration repository** if not already installed.
-3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b27**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
+3. Open the integration in HACS, choose **Redownload** or the available version-selection menu, enable **Show beta versions** (wording depends on your HACS version), and select **v0.6.0b28**. Beta versions are deliberately optional; do not download `main` to obtain the beta.
 4. Restart Home Assistant after the installation/update, then verify that **Home Environment Manager** loads and your prior windows, announcement settings, sensors and entities are retained.
 5. Start with **read-only climate diagnostics** in Developer Tools → Actions: `environment_manager.climate_diagnostics`. Leave direct relay/PWM, fan power, humidifier power and native DRY/FAN_ONLY auto-control unapproved until equipment-specific commissioning.
 
-If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b27). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
+If your HACS version cannot select prereleases, use the **Manual installation ZIP** attached to the [beta GitHub release](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b28). Extract it into the Home Assistant configuration directory, preserving `custom_components/environment_manager/`, then restart. **The ZIP is a manual-install asset; HACS installs the selected version from the GitHub tag.** To return to stable, use HACS to select **v0.5.1**, then restart. Beta-only settings may need review after downgrading.
 
 
 ### Complete configuration translations and explanations — beta 9
@@ -1338,7 +1348,7 @@ of one controller's persistence no longer prevents the remaining
 controllers, announcements, listeners or background tasks from being
 cleaned up.
 
-These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b27).
+These features are included in the opt-in [v0.6.0b15 prerelease](https://github.com/Chreece/HA-Home-Environment-Manager/releases/tag/v0.6.0b28).
 The [development PR #2](https://github.com/Chreece/HA-Home-Environment-Manager/pull/2) remains unmerged and production v0.5.1 stays unchanged pending representative hardware testing.
 
 
