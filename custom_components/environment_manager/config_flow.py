@@ -24,7 +24,7 @@ from .const import (
     CONF_REPEAT_MINUTES, DEFAULT_REPEAT_MINUTES, MAX_REPEAT_MINUTES,
     CONF_AI_REWRITE, CONF_AI_AGENT,
     CONF_THRESHOLDS, CONF_TTS_ENGINE, CONF_WARNINGS, CONF_WEATHER,
-    DEFAULT_THRESHOLDS, DOMAIN, MIGRATION_SOURCE_DOMAINS, CONF_USE_MOLD, CONF_MOLD_ROOMS,
+    DEFAULT_THRESHOLDS, DOMAIN, CONF_USE_MOLD, CONF_MOLD_ROOMS,
     CONF_MOLD_ROOM_SENSOR, CONF_MOLD_CRITICAL_TEMP, CONF_MOLD_RECALIBRATE,
     CONF_ENVIRONMENT_GLOBAL, CONF_ENVIRONMENT_ROOMS, CONF_PID_ROOMS, CONF_CLIMATE_ROOMS,
 )
@@ -1805,56 +1805,12 @@ class AirQualityConfigFlow(_FlowMixin, config_entries.ConfigFlow, domain=DOMAIN)
         return {"room": RoomHubFlow}
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Start a clean canonical environment_manager setup."""
         if self._async_current_entries():
             return self.async_abort(reason="already_configured")
-        entries = getattr(self.hass, "config_entries", None)
-        legacy = ([entry for domain in MIGRATION_SOURCE_DOMAINS for entry in entries.async_entries(domain)] if entries is not None else [])
-        if len(legacy) > 1:
-            return self.async_abort(reason="legacy_migration_ambiguous")
-        if len(legacy) == 1:
-            self._legacy_entry_id = legacy[0].entry_id
-            return await self.async_step_migrate_legacy()
-        # Show the first setup form without reserving our static unique ID.
-        # Otherwise a frontend-disconnected/abandoned first attempt leaves an
-        # in-memory flow with ID "home" and every retry aborts as
-        # already_in_progress *before the first form is shown*.
-        #
-        # This integration allows only one new "home" entry. Reject existing
-        # entries up front, including older installations with no unique_id,
-        # but claim the unique ID only immediately before creating the entry.
         self._editing = False
         self._values = {}
         return await self.async_step_setup_rooms()
-
-    async def async_step_migrate_legacy(
-        self, user_input: dict[str, Any] | None = None
-    ) -> ConfigFlowResult:
-        legacy_id=getattr(self,"_legacy_entry_id",None)
-        legacy=self.hass.config_entries.async_get_entry(legacy_id) if legacy_id else None
-        if legacy is None or legacy.domain not in MIGRATION_SOURCE_DOMAINS:
-            return self.async_abort(reason="legacy_migration_missing")
-        if user_input is None:
-            return self.async_show_form(
-                step_id="migrate_legacy",
-                data_schema=probatio.Schema({
-                    probatio.Required("confirm",default=True): selector.BooleanSelector()
-                }),
-                last_step=True,
-            )
-        if user_input.get("confirm") is not True:
-            return self.async_abort(reason="legacy_migration_cancelled")
-        # Preserve the exact ConfigEntry identity. Home Assistant freezes
-        # ConfigEntry.domain and offers no public cross-domain setter, so the
-        # migration helper performs a validated in-place reindex with rollback.
-        from .domain_migration import async_migrate_legacy_registry
-        migrated = await async_migrate_legacy_registry(self.hass, legacy)
-        if not getattr(migrated, "disabled_by", None):
-            if not await self.hass.config_entries.async_setup(migrated.entry_id):
-                raise RuntimeError(
-                    "Environment Manager domain migration completed but setup failed"
-                )
-        # The existing entry now belongs to DOMAIN; no second entry is created.
-        return self.async_abort(reason="already_configured")
 
     async def _finish(self) -> ConfigFlowResult:
         # A stale, unfinished setup flow must not prevent a fresh attempt
