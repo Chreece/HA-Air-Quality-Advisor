@@ -171,7 +171,10 @@ def test_runtime_quiet_capacity_saturates_and_reports_shortfall(runtime_module):
         a=h.runtime._fan_allocations[h.spec.identifier]
         assert a["speed"]=="low" and a["status"]=="capacity_limited"
         assert a["compensated_duty_percent"]==100
-        assert a["unmet_demand_percent"]==20
+        assert a["stage_capacity_percent"]==30
+        assert a["unmet_demand_percent"]>0
+        assert a["unmet_demand_percent"]==pytest.approx(
+            a["demand_percent"]-a["stage_capacity_percent"])
         assert h.hass.services.calls[0][1]=="set_hvac_mode"
     asyncio.run(run())
 
